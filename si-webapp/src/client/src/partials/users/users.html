@@ -1,0 +1,45 @@
+<h1>{{'Users.title' | translate}}</h1>
+<div>
+    <form>
+        <div class="row">
+            <label class="col-md-2" for="firstName">{{'Users.form.firstName' | translate}}</label>
+            <div class="col-md-3">
+                <input class="form-control" type="text" ng-model="vm.userData.firstName" id="firstName">
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-2" for="lastName">{{'Users.form.lastName' | translate}}</label>
+            <div class="col-md-3">
+                <input class="form-control" type="text" ng-model="vm.userData.lastName" id="lastName">
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-2" for="email">{{'Users.form.email' | translate}}</label>
+            <div class="col-md-3">
+                <input class="form-control" type="text" ng-model="vm.userData.email" id="email">
+            </div>
+        </div>
+        <div class="row">
+            <button ng-click="vm.saveUserData()" class="pull-right btn btn-toolbar btn-success">{{'Users.form.button.save' | translate}}</button>
+        </div>
+    </form>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{{'Users.form.firstName' | translate}}</th>
+            <th>{{'Users.form.lastName' | translate}}</th>
+            <th>{{'Users.form.email' | translate}}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in vm.users">
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.email}}</td>
+            <td><button class="btn btn-sm btn-danger" ng-click="vm.deleteUserData(user.userId)">{{'Users.form.button.delete' | translate}}</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

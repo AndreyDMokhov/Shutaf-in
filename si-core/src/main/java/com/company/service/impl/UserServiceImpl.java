@@ -58,6 +58,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Override
+    @Transactional
+    public void deleteUser(Integer userId) {
+        userRepository.deleteUser(userId);
+    }
+
     private Map<String, String> getValidationErrors(User user, boolean isUserIdRequired) {
         Map<String, String> map = new HashMap<>();
         if (StringUtils.isBlank(user.getFirstName())) {

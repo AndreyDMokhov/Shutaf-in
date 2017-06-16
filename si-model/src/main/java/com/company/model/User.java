@@ -16,8 +16,19 @@ public class User {
     @Column(name = "LAST_NAME", nullable = false, length = 50)
     private String lastName;
 
+    @Column(name = "EMAIL", nullable = false, length = 50)
+    private String email;
+
 
     public User() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getUserId() {

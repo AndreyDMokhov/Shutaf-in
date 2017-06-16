@@ -1,0 +1,1 @@
+app.constant('CACHED_LANGUAGE', 'userLanguage');

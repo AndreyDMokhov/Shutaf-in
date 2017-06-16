@@ -1,0 +1,26 @@
+{
+
+  "SECTION":"HEADER",
+  "Header.button.changeLanguage":"Language",
+
+  "SECTION":"ABOUT",
+  "About.title":"About",
+
+  "SECTION":"USERS",
+  "Users.title":"Users",
+  "Users.message.save.success":"User has been successfully saved",
+  "Users.message.save.fail":"An error occurred on user save",
+  "Users.message.update.success":"User has been successfully updated",
+  "Users.message.update.fail":"An error occurred on user update",
+  "Users.message.delete.success":"User has been successfully deleted",
+  "Users.message.delete.fail":"An error occurred on user deletion",
+  "Users.form.firstName":"First name",
+  "Users.form.lastName":"Last name",
+  "Users.form.email":"Email address",
+  "Users.form.button.save":"Save",
+  "Users.form.button.delete":"Delete",
+
+  "SECTION":"HOME",
+  "Home.title":"Home",
+  "Home.description":"This is a service for searching neighbours."
+}

@@ -1,0 +1,42 @@
+{
+  "name": "web",
+  "description": "",
+  "main": "index.html",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5.9",
+    "jquery": "3.1.1",
+    "angular-animate": "1.5.9",
+    "angular-touch": "1.5.9",
+    "angular-sanitize": "1.5.9",
+    "angular-ui-router": "0.3.2",
+    "ui-bootstrap": "2.4.0",
+    "angular-ui-grid": "3.0.7",
+    "ng-dialog": "0.6.4",
+    "ng-notify": "0.7.1",
+    "restangular": "1.5.2",
+    "lodash": "4.17.4",
+    "angular-strap": "2.3.10",
+    "bootstrap": "^3.3.7",
+    "angular-bootstrap": "^2.4.0",
+    "angular-ui-bootstrap": "2.3.1",
+    "angular-motion": "^0.4.4",
+    "angular-translate": "^2.15.1",
+    "angular-translate-handler-log": "^2.15.1",
+    "angular-translate-loader-url": "^2.15.1",
+    "angular-translate-storage-local": "^2.15.1",
+    "angular-translate-storage-cookie": "^2.15.1",
+    "angular-translate-interpolation-messageformat": "^2.15.1",
+    "angular-translate-loader-static-files": "^2.15.1"
+  },
+  "resolutions": {
+    "angular": "1.5.9"
+  }
+}

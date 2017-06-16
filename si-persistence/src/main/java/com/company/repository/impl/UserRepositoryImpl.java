@@ -51,4 +51,13 @@ public class UserRepositoryImpl implements UserRepository {
         Query query = getSession().createQuery(hql.toString());
         return query.getResultList();
     }
+
+    @Override
+    public void deleteUser(Integer userId) {
+        StringBuilder hql = new StringBuilder();
+        hql.append("delete from User where id=:id");
+        Query query = getSession().createQuery(hql.toString());
+        query.setParameter("id", userId);
+        query.executeUpdate();
+    }
 }

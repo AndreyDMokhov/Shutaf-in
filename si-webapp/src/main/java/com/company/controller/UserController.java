@@ -39,4 +39,9 @@ public class UserController {
     public List<User> getUsers() {
         return userService.findAll();
     }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void deleteUser(@PathVariable("id") Integer userId) {
+        userService.deleteUser(userId);
+    }
 }

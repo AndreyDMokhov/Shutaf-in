@@ -1,0 +1,25 @@
+{
+  "SECTION":"HEADER",
+  "Header.button.changeLanguage":"Язык",
+
+  "SECTION":"ABOUT",
+  "About.title":"О нас",
+
+  "SECTION":"USERS",
+  "Users.title":"Пользователи",
+  "Users.message.save.success":"Пользователь успещно сохранен",
+  "Users.message.save.fail":"Ошибка при попытка сохранения пользователя",
+  "Users.message.update.success":"Пользователь успещно обновлен",
+  "Users.message.update.fail":"Ошибка при попытка обновления пользователя",
+  "Users.message.delete.success":"Пользователь успещно удален",
+  "Users.message.delete.fail":"Ошибка при попытка удаления пользователя",
+  "Users.form.firstName":"Имя",
+  "Users.form.lastName":"Фамилия",
+  "Users.form.email":"Электронный адерс",
+  "Users.form.button.save":"Сохранить",
+  "Users.form.button.delete":"Удалить",
+
+  "SECTION":"HOME",
+  "Home.title":"Домашняя",
+  "Home.description":"Это сервис для поиска соседей."
+}
