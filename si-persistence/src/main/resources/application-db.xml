@@ -17,12 +17,13 @@
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="com.company"/>
+        <property name="packagesToScan" value="com.shutafin"/>
         <property name="hibernateProperties">
             <value>
                 hibernate.dialect=${hibernate.dialect}
                 hibernate.hbm2ddl.auto=${hibernate.hbm2ddl.auto}
                 hibernate.show_sql=${hibernate.show_sql}
+                hibernate.id.new_generator_mappings=${hibernate.id.new_generator_mappings}
             </value>
         </property>
     </bean>

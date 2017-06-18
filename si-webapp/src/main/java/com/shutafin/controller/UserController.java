@@ -1,12 +1,11 @@
-package com.company.controller;
+package com.shutafin.controller;
 
-import com.company.model.User;
-import com.company.service.UserService;
+import com.shutafin.model.web.UserInfoWeb;
+import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,30 +17,30 @@ public class UserController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void save(@RequestBody User user) {
+    public void save(@RequestBody UserInfoWeb user) {
         userService.save(user);
     }
 
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void update(@RequestBody User user) {
+    public void update(@RequestBody UserInfoWeb user) {
 
         userService.update(user);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public User getUserById(@PathVariable("id") Integer userId) {
+    public UserInfoWeb getUserById(@PathVariable("id") Long userId) {
         return userService.findByUserId(userId);
     }
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<User> getUsers() {
+    public List<UserInfoWeb> getUsers() {
         return userService.findAll();
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUser(@PathVariable("id") Integer userId) {
+    public void deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUser(userId);
     }
 }

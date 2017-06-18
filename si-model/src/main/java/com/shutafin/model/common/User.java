@@ -1,14 +1,12 @@
-package com.company.model;
+package com.shutafin.model.common;
+
+import com.shutafin.model.AbstractEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "USERS")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer userId;
+public class User extends AbstractEntity {
 
     @Column(name = "FIRST_NAME", nullable = false, length = 50)
     private String firstName;
@@ -29,14 +27,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public String getFirstName() {

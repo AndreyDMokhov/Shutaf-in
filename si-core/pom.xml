@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.company</groupId>
+        <groupId>com.shutafin</groupId>
         <artifactId>si-parent</artifactId>
         <version>0.1</version>
     </parent>
@@ -43,13 +43,13 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.company</groupId>
+            <groupId>com.shutafin</groupId>
             <artifactId>si-persistence</artifactId>
             <version>0.1</version>
         </dependency>
 
         <dependency>
-            <groupId>com.company</groupId>
+            <groupId>com.shutafin</groupId>
             <artifactId>si-model</artifactId>
             <version>0.1</version>
         </dependency>

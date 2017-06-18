@@ -20,6 +20,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "usersController",
                 controllerAs: "vm",
                 url: "/users"
-            })
+            });
     $urlRouterProvider.otherwise("/home");
 });
