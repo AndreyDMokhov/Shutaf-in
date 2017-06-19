@@ -1,11 +1,11 @@
-package com.shutafin.model.common;
+package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "USER")
 public class User extends AbstractEntity {
 
     @Column(name = "FIRST_NAME", nullable = false, length = 50)
@@ -14,7 +14,7 @@ public class User extends AbstractEntity {
     @Column(name = "LAST_NAME", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "EMAIL", nullable = false, length = 50)
+    @Column(name = "EMAIL", nullable = false, length = 50, unique = true)
     private String email;
 
 

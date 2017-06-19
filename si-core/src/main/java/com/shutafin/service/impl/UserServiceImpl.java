@@ -1,10 +1,7 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.common.User;
-import com.shutafin.model.common.UserInfo;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserInfoWeb;
-import com.shutafin.repository.GenderRepository;
-import com.shutafin.repository.UserInfoRepository;
 import com.shutafin.repository.UserRepository;
 import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +18,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserInfoRepository userInfoRepository;
-
-    @Autowired
-    private GenderRepository genderRepository;
-
     @Override
     @Transactional
     public void save(UserInfoWeb userInfoWeb) {
@@ -38,62 +29,26 @@ public class UserServiceImpl implements UserService {
 
         Long userId = (Long) userRepository.save(user);
         user.setId(userId);
-
-        UserInfo userInfo = new UserInfo();
-        if (userInfoWeb.getAge() != null) {
-
-            userInfo.setAge(userInfoWeb.getAge());
-        }
-
-        if (userInfoWeb.getGenderId() != null) {
-            userInfo.setGender(genderRepository.findById(userInfoWeb.getGenderId()));
-        }
-
-
-        userInfo.setUser(user);
-
-        userInfoRepository.save(userInfo);
     }
 
     @Override
     @Transactional
     public void update(UserInfoWeb userInfo) {
-        UserInfo dbUserInfo = userInfoRepository.getByUserId(userInfo.getUserId());
-        User user = dbUserInfo.getUser();
-        user.setEmail(userInfo.getEmail());
-        user.setFirstName(userInfo.getFirstName());
-        user.setLastName(userInfo.getLastName());
 
-        dbUserInfo.setGender(genderRepository.findById(userInfo.getGenderId()));
-        dbUserInfo.setAge(userInfo.getAge());
-        userInfoRepository.save(dbUserInfo);
     }
 
     @Override
     @Transactional
     public UserInfoWeb findByUserId(Long userId) {
-        UserInfo userInfo = userInfoRepository.getByUserId(userId);
-        if (userInfo == null) {
-
-            return null;
-        }
-
-        return getUserInfoWeb(userInfo);
-
+        return null;
     }
 
-    private UserInfoWeb getUserInfoWeb(UserInfo userInfo) {
+    private UserInfoWeb getUserInfoWeb(User userInfo) {
         UserInfoWeb userInfoWeb = new UserInfoWeb();
-        userInfoWeb.setUserId(userInfo.getUser().getId());
-        userInfoWeb.setFirstName(userInfo.getUser().getFirstName());
-        userInfoWeb.setLastName(userInfo.getUser().getLastName());
-        userInfoWeb.setEmail(userInfo.getUser().getEmail());
-
-        userInfoWeb.setAge(userInfo.getAge());
-
-        if (userInfo.getGender() != null) {
-            userInfoWeb.setGenderId(userInfo.getGender().getId());
-        }
+        userInfoWeb.setUserId(userInfo.getId());
+        userInfoWeb.setFirstName(userInfo.getFirstName());
+        userInfoWeb.setLastName(userInfo.getLastName());
+        userInfoWeb.setEmail(userInfo.getEmail());
 
         return userInfoWeb;
     }
@@ -101,11 +56,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<UserInfoWeb> findAll() {
-        List<UserInfo> userInfoList = userInfoRepository.findAll();
+        List<User> userInfoList = userRepository.findAll();
         List<UserInfoWeb> userInfoWebList = new ArrayList<>();
 
-        for (UserInfo userInfo : userInfoList) {
-            userInfoWebList.add(getUserInfoWeb(userInfo));
+        for (User user : userInfoList) {
+            userInfoWebList.add(getUserInfoWeb(user));
         }
 
         return userInfoWebList;
