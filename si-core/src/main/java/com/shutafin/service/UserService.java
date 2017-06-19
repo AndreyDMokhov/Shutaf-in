@@ -1,6 +1,6 @@
 package com.shutafin.service;
 
-import com.shutafin.model.web.UserInfoWeb;
+import com.shutafin.model.web.user.UserInfoWeb;
 
 import java.util.List;
 

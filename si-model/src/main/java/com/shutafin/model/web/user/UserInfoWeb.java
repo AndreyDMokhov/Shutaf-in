@@ -1,13 +1,14 @@
-package com.shutafin.model.web;
+package com.shutafin.model.web.user;
 
 
+import com.shutafin.model.web.DataResponse;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-public class UserInfoWeb {
+public class UserInfoWeb implements DataResponse {
 
     @Min(value = 1)
     private Long userId;

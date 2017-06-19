@@ -2,7 +2,7 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.common.User;
 import com.shutafin.model.common.UserInfo;
-import com.shutafin.model.web.UserInfoWeb;
+import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.repository.GenderRepository;
 import com.shutafin.repository.UserInfoRepository;
 import com.shutafin.repository.UserRepository;
