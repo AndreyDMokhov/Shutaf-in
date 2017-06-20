@@ -1,9 +1,9 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
-import com.shutafin.model.infrastructure.AccountStatus;
-import com.shutafin.model.infrastructure.AccountType;
-import com.shutafin.model.infrastructure.Language;
+import com.shutafin.model.entities.infrastructure.AccountStatus;
+import com.shutafin.model.entities.infrastructure.AccountType;
+import com.shutafin.model.entities.infrastructure.Language;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

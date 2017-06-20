@@ -1,6 +1,6 @@
 package com.shutafin.repository.infrastructure;
 
-import com.shutafin.model.infrastructure.AccountStatus;
+import com.shutafin.model.entities.infrastructure.AccountStatus;
 import com.shutafin.repository.base.Dao;
 
 /**

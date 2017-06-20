@@ -1,4 +1,4 @@
-package com.shutafin.model.infrastructure;
+package com.shutafin.model.entities.infrastructure;
 
 import com.shutafin.model.AbstractConstEntity;
 
