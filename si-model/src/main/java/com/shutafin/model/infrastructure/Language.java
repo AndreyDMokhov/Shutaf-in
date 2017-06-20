@@ -1,4 +1,4 @@
-package com.shutafin.model.entities;
+package com.shutafin.model.infrastructure;
 
 import com.shutafin.model.AbstractConstEntity;
 
@@ -11,14 +11,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "I_LANGUAGE")
-public class ILanguage extends AbstractConstEntity {
+public class Language extends AbstractConstEntity {
     @Column(name = "LANGUAGE_NATIVE_NAME", nullable = false, length = 100)
     private String languageNativeName;
 
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive = true;
 
-    public ILanguage() {
+    public Language() {
     }
 
     public String getLanguageNativeName() {

@@ -1,6 +1,9 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
+import com.shutafin.model.infrastructure.AccountStatus;
+import com.shutafin.model.infrastructure.AccountType;
+import com.shutafin.model.infrastructure.Language;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -19,15 +22,15 @@ public class UserAccount extends AbstractBaseEntity {
 
     @JoinColumn(name = "ACCOUNT_STATUS_ID", nullable = false)
     @OneToOne
-    private IAccountStatus iAccountStatus;
+    private AccountStatus accountStatus;
 
     @JoinColumn(name = "ACCOUNT_TYPE_ID", nullable = false)
     @OneToOne
-    private IAccountType iAccountType;
+    private AccountType accountType;
 
     @JoinColumn(name = "LANGUAGE_ID", nullable = false)
     @OneToOne
-    private ILanguage iLanguage;
+    private Language language;
 
     public UserAccount() {
     }
@@ -40,27 +43,27 @@ public class UserAccount extends AbstractBaseEntity {
         this.user = user;
     }
 
-    public IAccountStatus getiAccountStatus() {
-        return iAccountStatus;
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
     }
 
-    public void setiAccountStatus(IAccountStatus iAccountStatus) {
-        this.iAccountStatus = iAccountStatus;
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
     }
 
-    public IAccountType getiAccountType() {
-        return iAccountType;
+    public AccountType getAccountType() {
+        return accountType;
     }
 
-    public void setiAccountType(IAccountType iAccountType) {
-        this.iAccountType = iAccountType;
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
-    public ILanguage getiLanguage() {
-        return iLanguage;
+    public Language getLanguage() {
+        return language;
     }
 
-    public void setiLanguage(ILanguage iLanguage) {
-        this.iLanguage = iLanguage;
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }
