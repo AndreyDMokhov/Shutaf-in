@@ -18,19 +18,6 @@ public class User extends AbstractEntity {
     @Column(name = "EMAIL", nullable = false, length = 50, unique = true)
     private String email;
 
-    private Set<UserSession> userSessions = new HashSet<UserSession>();
-
-    //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OneToMany(mappedBy = "user")
-    public Set<UserSession> getUserSessions() {
-        return this.userSessions;
-    }
-
-    public void setUserSessions(Set<UserSession> userSessions) {
-        this.userSessions = userSessions;
-    }
-
-
 
     public User() {
     }
