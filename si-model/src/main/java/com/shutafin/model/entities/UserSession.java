@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "USER_SESSION")
 public class UserSession extends AbstractEntity {
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
-    @OneToOne
+    @ManyToOne
     private User user;
 
     @Column(name = "IS_VALID", nullable = false)
