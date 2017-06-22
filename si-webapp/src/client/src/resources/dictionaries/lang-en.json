@@ -26,8 +26,9 @@
 
   "SECTION": "LOGIN",
   "Login.title": "Login",
-  "Login.form.login": "Email: ",
-  "Login.form.password": "Password: ",
+  "Login.form.email": "Email ",
+  "Login.form.password": "Password ",
   "Login.form.button.login": "Login",
-  "Login.form.error": "Wrong login or password!"
+  "Login.form.errorEmail": "Please Enter a valid email address",
+  "Login.form.errorPassword": "Please Enter at least 8 characters"
 }

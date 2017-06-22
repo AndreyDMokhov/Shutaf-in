@@ -4,18 +4,20 @@
           ng-submit="vm.submit()">
         <div class="form-group"
              ng-class="{'has-error': loginForm.email.$invalid && loginForm.email.$dirty, 'has-success': loginForm.email.$valid }">
-            <input type="email" class="form-control" placeholder="Email" name="email" ng-model="vm.loginData.email"
+            <input type="email" class="form-control" placeholder="{{'Login.form.email' | translate}}"
+                   ng-maxLength="50" name="email" ng-model="vm.loginData.email"
                    required/>
-            <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">Please Enter a valid email
-                address</p>
+            <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">{{'Login.form.errorEmail' |
+                translate}}</p>
         </div>
         <div class="form-group"
              ng-class="{'has-error': loginForm.password.$invalid && loginForm.password.$dirty, 'has-success': loginForm.password.$valid}">
-            <input type="password" class="form-control" placeholder="Password" name="password"
+            <input type="password" class="form-control" placeholder="{{'Login.form.password' | translate}}"
+                   name="password"
                    ng-model="vm.loginData.password"
-                   ng-minLength="6" required/>
-            <p class="help-block" ng-if="loginForm.password.$invalid && loginForm.password.$dirty">Please Enter at least
-                6 characters</p>
+                   ng-minLength="8" ng-maxLength="25" required/>
+            <p class="help-block" ng-if="loginForm.password.$invalid && loginForm.password.$dirty">
+                {{'Login.form.errorPassword' | translate}}</p>
         </div>
         <input type="submit" value="{{'Login.title' | translate}}" class="btn btn-default pull-right"
                ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid">

@@ -1,4 +1,4 @@
-app.controller('loginController', function (loginModel) {
+app.controller('loginController', function (loginModel, $filter, notify, $modal) {
 
     var vm = this;
 

@@ -24,9 +24,10 @@
   "Home.description":"Это сервис для поиска соседей.",
 
   "SECTION": "LOGIN",
-  "Login.title": "Login",
-  "Login.form.login": "Email: ",
-  "Login.form.password": "Пароль: ",
+  "Login.title": "Вход",
+  "Login.form.email": "Email ",
+  "Login.form.password": "Пароль ",
   "Login.form.button.login": "Вход",
-  "Login.form.error": "Неверный логин или пароль!"
+  "Login.form.errorEmail": "Введите корректный Email",
+  "Login.form.errorPassword": "Длинна пароля должна быть не мньше 8 знаков"
 }
