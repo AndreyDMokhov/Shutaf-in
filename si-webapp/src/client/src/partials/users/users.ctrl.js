@@ -1,4 +1,4 @@
-app.controller('usersController', function (usersModel, $filter) {
+app.controller('usersController', function (usersModel, $filter, notify, $modal) {
     var vm = this;
 
     vm.userData = {};
@@ -23,11 +23,10 @@ app.controller('usersController', function (usersModel, $filter) {
         usersModel.saveUser(vm.userData).then(
             function (success) {
 
-                alert($filter('translate')('Users.message.save.success'));
+                notify.set($filter('translate')('Users.message.save.success'), {type: 'success'});
                 getUserData();
             }, function (error) {
-
-                alert($filter('translate')('Users.message.save.fail'));
+                notify.set($filter('translate')('Users.message.save.fail'), {type:'error'});
                 console.log(error);
             });
     }
@@ -35,12 +34,10 @@ app.controller('usersController', function (usersModel, $filter) {
     function updateUserData() {
         usersModel.updateUser().then(
             function (success) {
-
-                alert($filter('translate')('Users.message.update.success'));
+                notify.set($filter('translate')('Users.message.update.success'), {type: 'success'});
                 getUserData();
             }, function (error) {
-
-                alert($filter('translate')('Users.message.update.fail'));
+                notify.set($filter('translate')('Users.message.update.fail'), {type:'error'});
                 console.log(error);
             });
     }
@@ -48,10 +45,10 @@ app.controller('usersController', function (usersModel, $filter) {
     function deleteUserData(id) {
         usersModel.deleteUser(id).then(
             function (success) {
-                alert($filter('translate')('Users.message.delete.success'));
+                notify.set($filter('translate')('Users.message.delete.success'), {type: 'success'});
                 getUserData();
             }, function (error) {
-                alert($filter('translate')('Users.message.delete.fail'));
+                notify.set($filter('translate')('Users.message.delete.fail'), {type:'error'});
                 console.log(error);
             });
     }
