@@ -4,21 +4,21 @@ package com.shutafin.exception.exceptions;
 import com.shutafin.exception.AbstractAPIException;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.error.errors.InputValidationError;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class InputValidationException extends AbstractAPIException {
+public abstract class ValidationException extends AbstractAPIException {
 
     private static final String DOT_SEPARATOR = ".";
-    private BindingResult result;
 
-    public InputValidationException(BindingResult result) {
-        this.result = result;
+    public ValidationException(String systemMessage) {
+        super(systemMessage);
     }
 
+    public ValidationException() {
+    }
 
     @Override
     protected ErrorType getErrorType() {
@@ -32,16 +32,18 @@ public class InputValidationException extends AbstractAPIException {
 
     private List<String> getViolatedConstraintsList() {
         List<String> violatedConstraints = new ArrayList<>();
-        for (FieldError fieldError : this.result.getFieldErrors()) {
+        for (Map.Entry<String, String> map : getFieldErrors().entrySet()) {
             String builder =
                     getErrorType().getErrorCodeType() +
                     DOT_SEPARATOR +
-                    fieldError.getField() +
+                    map.getKey() +
                     DOT_SEPARATOR +
-                    fieldError.getCode();
+                    map.getValue();
 
             violatedConstraints.add(builder);
         }
         return violatedConstraints;
     }
+
+    protected abstract Map<String, String> getFieldErrors();
 }

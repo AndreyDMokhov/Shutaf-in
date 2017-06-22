@@ -1,6 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.InputValidationException;
+import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
