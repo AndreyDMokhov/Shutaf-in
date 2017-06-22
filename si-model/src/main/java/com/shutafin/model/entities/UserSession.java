@@ -1,7 +1,6 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,7 +24,7 @@ public class UserSession extends AbstractEntity {
     @Column(name = "IS_EXPIRABLE ", nullable = false)
     private Boolean isExpirable;
 
-    @CreationTimestamp
+
     @Column(name = "EXPIRATION_TIME", nullable = false, updatable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date expirationDate;
