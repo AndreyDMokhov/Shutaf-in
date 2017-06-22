@@ -1,4 +1,4 @@
-app.controller('userRegistration', function () {
+app.controller('userRegistration', function (registrationModel) {
     var vm = this;
 
     vm.registrationData = {}
