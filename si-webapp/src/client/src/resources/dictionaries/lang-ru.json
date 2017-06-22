@@ -15,11 +15,31 @@
   "Users.message.delete.fail":"Ошибка при попытка удаления пользователя",
   "Users.form.firstName":"Имя",
   "Users.form.lastName":"Фамилия",
-  "Users.form.email":"Электронный адерс",
+  "Users.form.email":"Электронный адрес",
   "Users.form.button.save":"Сохранить",
   "Users.form.button.delete":"Удалить",
 
   "SECTION":"HOME",
   "Home.title":"Домашняя",
-  "Home.description":"Это сервис для поиска соседей."
+  "Home.description":"Это сервис для поиска соседей.",
+
+  "SECTION":"REGISTRATION",
+  "Registration.title":"Регистрация",
+  "Registration.description":"Регистрация пользователя",
+  "Registration.form.firstName":"Имя",
+  "Registration.form.lastName":"Фамилия",
+  "Registration.form.email":"Электронный адрес",
+  "Registration.form.password":"Пароль",
+  "Registration.form.confirmPassword":"Подтверждение пароля",
+  "Registration.form.msg.wrongEmail":"Проверьте адрес электронной почты",
+  "Registration.form.msg.confirmPassword": "Пароли не совпадают. Введите новый пароль и подтвердите его..",
+  "Registration.form.msg.shortFirstName":"Необходимо ввести не менее 3 знаков",
+  "Registration.form.msg.shortLastName":"Необходимо ввести не менее 3 знаков",
+  "Registration.form.msg.shortPassword":"Необходимо ввести не менее 8 знаков",
+  "Registration.form.msg.requiredFirstName":"Обязательное поле",
+  "Registration.form.msg.requiredLastName":"Обязательное поле",
+  "Registration.form.msg.requiredEmail":"Обязательное поле",
+  "Registration.form.msg.requiredPassword":"Обязательное поле",
+  "Registration.form.btn.cancel":"Отмена",
+  "Registration.form.btn.registration":"Продолжить"
 }
