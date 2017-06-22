@@ -14,6 +14,14 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/about"
             })
+
+        .state("registration",
+            {
+                templateUrl: "partials/registration/registration.html",
+                controller: "userRegistration",
+                controllerAs: "vm",
+                url: "/registration"
+            })
         .state("users",
             {
                 templateUrl: "partials/users/users.html",
