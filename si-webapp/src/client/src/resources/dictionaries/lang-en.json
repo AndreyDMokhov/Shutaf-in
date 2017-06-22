@@ -22,5 +22,12 @@
 
   "SECTION":"HOME",
   "Home.title":"Home",
-  "Home.description":"This is a service for searching neighbours."
+  "Home.description":"This is a service for searching neighbours.",
+
+  "SECTION": "LOGIN",
+  "Login.title": "Login",
+  "Login.form.login": "Email: ",
+  "Login.form.password": "Password: ",
+  "Login.form.button.login": "Login",
+  "Login.form.error": "Wrong login or password!"
 }

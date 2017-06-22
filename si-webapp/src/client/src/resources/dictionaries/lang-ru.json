@@ -21,5 +21,12 @@
 
   "SECTION":"HOME",
   "Home.title":"Домашняя",
-  "Home.description":"Это сервис для поиска соседей."
+  "Home.description":"Это сервис для поиска соседей.",
+
+  "SECTION": "LOGIN",
+  "Login.title": "Login",
+  "Login.form.login": "Email: ",
+  "Login.form.password": "Пароль: ",
+  "Login.form.button.login": "Вход",
+  "Login.form.error": "Неверный логин или пароль!"
 }
