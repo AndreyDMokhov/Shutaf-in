@@ -19,8 +19,6 @@ app.controller('userRegistration', function (registrationModel, $http) {
     vm.registerUser = registerUser;
 });
 
-
-
 app.directive("matchPassword", function () {
     return {
         require: "ngModel",
