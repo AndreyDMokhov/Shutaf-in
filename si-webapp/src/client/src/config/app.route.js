@@ -20,6 +20,14 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "usersController",
                 controllerAs: "vm",
                 url: "/users"
+            })
+
+        .state("login",
+            {
+                templateUrl: "partials/login/login.html",
+                controller: "loginController",
+                controllerAs: "vm",
+                url: "/login"
             });
     $urlRouterProvider.otherwise("/home");
 });
