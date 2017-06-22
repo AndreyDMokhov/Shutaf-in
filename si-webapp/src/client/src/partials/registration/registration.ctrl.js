@@ -1,21 +1,21 @@
-app.controller('userRegistration', function (registrationModel) {
+app.controller('userRegistration', function (registrationModel, $http) {
     var vm = this;
 
-    vm.registrationData = {}
+    vm.registrationData = {};
 
     function registerUser() {
         console.log(vm.registrationData);
         registrationModel.registerUser(vm.registrationData).then(
-    function (success) {
-        alert('Registration is ok');
+            function (success ) {
+                localStorage.setItem("session_Id", success.headers('session_id'))
+                console.log(success.headers('session_id'));
+                alert('Registration is ok');
 
-    },function (error) {
+            },function (error) {
                 alert("Registration fail");
                 console.log(error);
-            }
-        )
-    }
-
+            })
+    };
     vm.registerUser = registerUser;
 });
 
