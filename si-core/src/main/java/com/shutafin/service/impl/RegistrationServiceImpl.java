@@ -1,5 +1,6 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.exception.exceptions.validation.EmailNotUniqueValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserCredentials;
@@ -102,10 +103,15 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     private User saveUser(RegistrationRequestWeb registrationRequestWeb) {
         User user = new User();
-        user.setId(registrationRequestWeb.getUserId());
         user.setFirstName(registrationRequestWeb.getFirstName());
         user.setLastName(registrationRequestWeb.getLastName());
-        user.setEmail(registrationRequestWeb.getEmail());
+
+        String email = registrationRequestWeb.getEmail();
+        if (userRepository.findByUserEmail(email) != null){
+            throw new EmailNotUniqueValidationException("Email " + email + " exist!");
+        }else {
+            user.setEmail(email);
+        }
 
         Long userId = (Long) userRepository.save(user);
         user.setId(userId);

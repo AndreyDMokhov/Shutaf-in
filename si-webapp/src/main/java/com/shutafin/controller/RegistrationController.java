@@ -1,6 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.InputValidationException;
+import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,6 @@ public class RegistrationController {
             throw new InputValidationException(result);
         }
         String sessionId = registrationService.save(registrationRequestWeb);
-        System.out.println(sessionId);
         response.addHeader("session_id", sessionId);
     }
 }

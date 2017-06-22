@@ -4,14 +4,10 @@ import com.shutafin.model.web.DataResponse;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class RegistrationRequestWeb implements DataResponse {
-
-    @Min(value = 1)
-    private Long userId;
 
     @NotBlank
     @Size(min=3, max=50)
@@ -23,7 +19,7 @@ public class RegistrationRequestWeb implements DataResponse {
 
     @NotBlank
     @Email
-    @Size(max=25)
+    @Size(max=50)
     private String email;
 
     @NotBlank
@@ -34,20 +30,11 @@ public class RegistrationRequestWeb implements DataResponse {
     public RegistrationRequestWeb() {
     }
 
-    public RegistrationRequestWeb(Long userId, String firstName, String lastName, String email, String password) {
-        this.userId = userId;
+    public RegistrationRequestWeb(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getFirstName() {
