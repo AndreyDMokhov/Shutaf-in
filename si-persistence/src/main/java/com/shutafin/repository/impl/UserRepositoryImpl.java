@@ -5,7 +5,6 @@ import com.shutafin.model.entities.User;
 import com.shutafin.repository.UserRepository;
 import com.shutafin.repository.base.AbstractEntityDao;
 import org.springframework.stereotype.Repository;
-import com.shutafin.exception.exceptions.*;
 
 
 @Repository

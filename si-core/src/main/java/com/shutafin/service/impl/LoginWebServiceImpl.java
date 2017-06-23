@@ -60,9 +60,9 @@ public class LoginWebServiceImpl implements LoginService {
     }
 
     private void checkUserPassword(LoginWebModel loginWeb, User user) {
-        //       check password, if not correct, throw exeption.
+//       check password, if not correct, throw exeption.
         try{
-        if (loginWeb.getPassword().contentEquals(userCredentials.findById(user.getId()).getPasswordHash())) {
+        if (!loginWeb.getPassword().equals(userCredentials.findById(user.getId()).getPasswordHash())) {
             throw new AuthenticationException();
         }}
         catch(Exception e){
@@ -78,7 +78,6 @@ public class LoginWebServiceImpl implements LoginService {
             throw new AuthenticationException();
         return user;
     }
-
 
     public void logout(String sessionId) {
 
