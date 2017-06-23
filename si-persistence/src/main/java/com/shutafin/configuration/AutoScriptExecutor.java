@@ -85,6 +85,9 @@ public class AutoScriptExecutor implements ApplicationListener<ContextRefreshedE
     }
 
     private Integer getFileNumber(Resource file) {
+        if (!file.getFilename().matches("\\d+.sql")){
+            return -1;
+        }
         try {
             Integer fileNumber = Integer.parseInt(file.getFilename().split("\\.")[0]);
             return fileNumber;
