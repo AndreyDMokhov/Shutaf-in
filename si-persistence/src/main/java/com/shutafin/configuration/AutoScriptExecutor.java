@@ -1,17 +1,16 @@
 package com.shutafin.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.jdbc.datasource.init.ScriptStatementFailedException;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
@@ -20,8 +19,8 @@ import java.util.TreeMap;
 
 //TODO: change to transactions in order to rollback in case of errors
 
-@Component
-public class AutoScriptExecutor implements ApplicationListener<ContextRefreshedEvent> {
+@Configuration
+public class AutoScriptExecutor {
 
     private final static String DB_UPDATE_TABLE_NAME = "db_update";
     private final static String CREATE_DB_UPDATE_TABLE_SCRIPT = "CREATE TABLE `DB_UPDATE`" +
@@ -37,6 +36,7 @@ public class AutoScriptExecutor implements ApplicationListener<ContextRefreshedE
     @Autowired
     private DataSource dataSource;
 
+    @PostConstruct
     public void checkDatabase() {
 
         getLastExecutedScript();
@@ -106,7 +106,7 @@ public class AutoScriptExecutor implements ApplicationListener<ContextRefreshedE
         }
     }
 
-    @Transactional("dsTransactionManager")
+    @Transactional
     private void executeSqlScript(Resource script) {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(script);
         try {
@@ -118,8 +118,4 @@ public class AutoScriptExecutor implements ApplicationListener<ContextRefreshedE
         }
     }
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        checkDatabase();
-    }
 }
