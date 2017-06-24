@@ -7,5 +7,4 @@ import com.shutafin.model.web.LoginWebModel;
  */
 public interface LoginService {
     String login(LoginWebModel login);
-    void logout(String sessionId);
 }

@@ -1,20 +1,15 @@
 app.factory('loginModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
+        RestangularProvider.setFullResponse(true);
         RestangularProvider.setBaseUrl('/api/login');
     });
 
     function login(params) {
-        return rest.one('/login').customPOST(params);
-    }
-
-    function logout() {
-        return rest.one('/logout').customPOST();
+        return  rest.one('/').customPOST(params);
     }
 
     return {
-
-        login: login,
-        logout: logout
+        login: login
     }
 });

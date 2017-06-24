@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 @Transactional
 
-public class LoginWebServiceImpl implements LoginService {
+public class LoginServiceImpl implements LoginService {
 
     private static final Boolean IS_VALID = true;
     private static final int NUMBER_DAYS_EXPIRATION = 30;
@@ -60,7 +60,7 @@ public class LoginWebServiceImpl implements LoginService {
     }
 
     private void checkUserPassword(LoginWebModel loginWeb, User user) {
-//       check password, if not correct, throw exeption.
+//       check password, if not correct, throw exception.
         try{
         if (!loginWeb.getPassword().equals(userCredentials.findById(user.getId()).getPasswordHash())) {
             throw new AuthenticationException();
@@ -79,7 +79,4 @@ public class LoginWebServiceImpl implements LoginService {
         return user;
     }
 
-    public void logout(String sessionId) {
-
-    }
 }

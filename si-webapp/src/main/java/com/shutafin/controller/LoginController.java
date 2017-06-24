@@ -2,11 +2,14 @@ package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.InputValidationException;
 import com.shutafin.model.web.LoginWebModel;
-import com.shutafin.service.impl.LoginWebServiceImpl;
+import com.shutafin.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,23 +20,18 @@ import javax.validation.Valid;
 public class LoginController {
 
 
-
     @Autowired
-    private LoginWebServiceImpl loginWebService;
+    private LoginService loginWebService;
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void login(@RequestBody @Valid LoginWebModel loginWeb, BindingResult result, HttpServletResponse response) {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        String sessionId = loginWebService.login(loginWeb);
-        response.addHeader("session_id", sessionId);
+        String session = loginWebService.login(loginWeb);
+        response.addHeader("session_id", session);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void logout(@RequestBody @Valid HttpServletRequest request) {
-        System.out.println(request.toString());
-        loginWebService.logout(request.toString());
-    }
+
 }

@@ -12,7 +12,7 @@ public class UserRepositoryImpl extends AbstractEntityDao<User> implements UserR
 
     public User findUserByEmail(String email){
         return (User) getSession()
-                .createQuery("SELECT e FROM "+ User.class.getName()+ " e where e.email = :email")
+                .createQuery("SELECT e FROM User e where e.email = :email")
                 .setParameter("email", email).uniqueResult();
         }
     }

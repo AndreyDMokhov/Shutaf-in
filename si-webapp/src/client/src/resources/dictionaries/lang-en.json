@@ -30,5 +30,10 @@
   "Login.form.password": "Password ",
   "Login.form.button.login": "Login",
   "Login.form.errorEmail": "Please Enter a valid email address",
-  "Login.form.errorPassword": "Please Enter at least 8 characters"
+  "Login.form.errorPassword": "Please Enter at least 8 characters",
+  "Login.message.fail": "Wrong User or Password",
+  "Login.message.success": "We are glad to see You again!",
+
+  "SECTION": "LOGOUT",
+  "Logout.button": "Logout"
 }

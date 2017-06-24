@@ -1,7 +1,7 @@
-<h1>{{'Login.title' | translate}}</h1>
-<div>
-    <form name="loginForm" novalidate ng-app="loginApp" ng-controller="loginController as vm"
-          ng-submit="vm.submit()">
+<div class="col-md-6 col-md-offset-3" ng-controller="loginController">
+    <h2>{{'Login.title' | translate}}</h2>
+
+    <form name="loginForm" novalidate role="form">
         <div class="form-group"
              ng-class="{'has-error': loginForm.email.$invalid && loginForm.email.$dirty, 'has-success': loginForm.email.$valid }">
             <input type="email" class="form-control" placeholder="{{'Login.form.email' | translate}}"
@@ -19,8 +19,12 @@
             <p class="help-block" ng-if="loginForm.password.$invalid && loginForm.password.$dirty">
                 {{'Login.form.errorPassword' | translate}}</p>
         </div>
-        <input type="submit" value="{{'Login.title' | translate}}" class="btn btn-default pull-right"
-               ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid">
-        </input>
+        <div class="form-actions">
+             <button ng-click="vm.login()" type="submit"
+                    ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid"
+                    class="btn btn-default pull-right">{{'Login.title' | translate}}
+            </button>
+        </div>
     </form>
 </div>
+
