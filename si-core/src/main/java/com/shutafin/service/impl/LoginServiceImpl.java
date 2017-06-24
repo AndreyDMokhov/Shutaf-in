@@ -19,7 +19,6 @@ import java.util.UUID;
 
 @Service
 @Transactional
-
 public class LoginServiceImpl implements LoginService {
 
     private static final Boolean IS_VALID = true;
@@ -27,55 +26,48 @@ public class LoginServiceImpl implements LoginService {
     private static final Boolean IS_EXPIRABLE = false;
 
     @Autowired
+    private
     UserSessionRepository userSessionRepository;
     @Autowired
+    private
     UserCredentialsRepository userCredentials;
     @Autowired
+    private
     UserRepository userPersistence;
 
-    public String login(LoginWebModel loginWeb) {
-//        find user by email
+    public String getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
-//        check password
         checkUserPassword(loginWeb, user);
-//        get new session with id
         return generateSession(user);
     }
 
     private String generateSession(User user) {
         UserSession userSession = new UserSession();
         userSession.setUser(user);
-//        set session as valid
         userSession.setValid(IS_VALID);
-//        get new session id
         userSession.setSessionId(UUID.randomUUID().toString());
-//        get expiration date
         userSession.setExpirationDate(DateUtils.addDays(new Date(), (NUMBER_DAYS_EXPIRATION)));
         userSession.setExpirable(IS_EXPIRABLE);
-//        get table id
         Long userSessionId = (Long) userSessionRepository.save(userSession);
         userSession.setId(userSessionId);
-//        return session id direct to web
         return userSession.getSessionId();
     }
 
     private void checkUserPassword(LoginWebModel loginWeb, User user) {
-//       check password, if not correct, throw exception.
-        try{
-        if (!loginWeb.getPassword().equals(userCredentials.findById(user.getId()).getPasswordHash())) {
-            throw new AuthenticationException();
-        }}
-        catch(Exception e){
+        try {
+            if (!loginWeb.getPassword().equals(userCredentials.findUserByUserId(user).getPasswordHash())) {
+                throw new AuthenticationException();
+            }
+        } catch (Exception e) {
             throw new AuthenticationException();
         }
     }
 
     private User findUserByEmail(LoginWebModel loginWeb) {
-//        find user by email
         User user = userPersistence.findUserByEmail(loginWeb.getEmail());
-//        check if user exist, if not, throw exception
-        if (user == null)
+        if (user == null) {
             throw new AuthenticationException();
+        }
         return user;
     }
 

@@ -3,25 +3,38 @@
 
     <form name="loginForm" novalidate role="form">
         <div class="form-group"
-             ng-class="{'has-error': loginForm.email.$invalid && loginForm.email.$dirty, 'has-success': loginForm.email.$valid }">
+
+             ng-class="{'has-error': loginForm.email.$invalid && loginForm.email.$dirty,
+              'has-success': loginForm.email.$valid }">
+
             <input type="email" class="form-control" placeholder="{{'Login.form.email' | translate}}"
                    ng-maxLength="50" name="email" ng-model="vm.loginData.email"
                    required/>
-            <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">{{'Login.form.errorEmail' |
-                translate}}</p>
+
+            <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">
+
+                {{'Login.form.errorEmail' | translate}}</p>
         </div>
+
         <div class="form-group"
-             ng-class="{'has-error': loginForm.password.$invalid && loginForm.password.$dirty, 'has-success': loginForm.password.$valid}">
+
+             ng-class="{'has-error': loginForm.password.$invalid && loginForm.password.$dirty,
+             'has-success': loginForm.password.$valid}">
+
             <input type="password" class="form-control" placeholder="{{'Login.form.password' | translate}}"
                    name="password"
                    ng-model="vm.loginData.password"
                    ng-minLength="8" ng-maxLength="25" required/>
+
             <p class="help-block" ng-if="loginForm.password.$invalid && loginForm.password.$dirty">
+
                 {{'Login.form.errorPassword' | translate}}</p>
         </div>
         <div class="form-actions">
-             <button ng-click="vm.login()" type="submit"
+            <button ng-click="vm.login()" type="submit"
+
                     ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid"
+
                     class="btn btn-default pull-right">{{'Login.title' | translate}}
             </button>
         </div>

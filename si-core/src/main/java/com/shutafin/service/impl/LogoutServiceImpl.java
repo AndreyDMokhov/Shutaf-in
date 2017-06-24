@@ -15,18 +15,15 @@ import javax.transaction.Transactional;
 public class LogoutServiceImpl implements LogoutService {
 
     @Autowired
+    private
     UserSessionRepository userSessionRepository;
 
     @Override
     public void logout(String sessionId) {
-//      get session by Id
         UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
-//      if empty, throw exception
         if(userSession==null)
             throw new AuthenticationException();;
-//        set field "is_valid" to false
         userSession.setValid(false);
-//        update session id
         userSessionRepository.update(userSession);
     }
 }

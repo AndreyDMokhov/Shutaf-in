@@ -1,4 +1,4 @@
-app.controller('loginController', function (loginModel, Restangular, $filter, $state, notify, $window) {
+app.controller('loginController', function (loginModel, $filter, $state, notify) {
 
     var vm = this;
 

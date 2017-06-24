@@ -29,7 +29,7 @@ public class LoginController {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        String session = loginWebService.login(loginWeb);
+        String session = loginWebService.getSessionIdByEmail(loginWeb);
         response.addHeader("session_id", session);
     }
 
