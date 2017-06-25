@@ -41,5 +41,8 @@
   "Registration.form.msg.requiredEmail":"Email is required",
   "Registration.form.msg.requiredPassword":"Password is required",
   "Registration.form.btn.cancel":"Cancel",
-  "Registration.form.btn.registration":"Register"
+  "Registration.form.btn.registration":"Register",
+  "Registration.form.msg.registrationOK":"Registration is ok",
+  "Registration.form.msg.registrationFail":"Registration fail"
+
 }

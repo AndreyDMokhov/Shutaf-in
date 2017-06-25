@@ -41,5 +41,7 @@
   "Registration.form.msg.requiredEmail":"Обязательное поле",
   "Registration.form.msg.requiredPassword":"Обязательное поле",
   "Registration.form.btn.cancel":"Отмена",
-  "Registration.form.btn.registration":"Продолжить"
+  "Registration.form.btn.registration":"Продолжить",
+  "Registration.form.msg.registrationOK":"Добро пожаловать!",
+  "Registration.form.msg.registrationFail":"Ошибка регистрации"
 }
