@@ -48,8 +48,7 @@ public class LoginServiceImpl implements LoginService {
         userSession.setSessionId(UUID.randomUUID().toString());
         userSession.setExpirationDate(DateUtils.addDays(new Date(), (NUMBER_DAYS_EXPIRATION)));
         userSession.setExpirable(IS_EXPIRABLE);
-        Long userSessionId = (Long) userSessionRepository.save(userSession);
-        userSession.setId(userSessionId);
+        userSessionRepository.save(userSession);
         return userSession.getSessionId();
     }
 
