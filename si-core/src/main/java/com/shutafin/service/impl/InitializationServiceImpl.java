@@ -1,13 +1,13 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.web.initialization.LanguageInfoWeb;
+import com.shutafin.model.web.initialization.LanguageWeb;
 import com.shutafin.repository.infrastructure.LanguageRepository;
 import com.shutafin.service.initialization.InitializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,26 +24,27 @@ public class InitializationServiceImpl implements InitializationService {
     private LanguageRepository languageRepository;
 
     @Override
-    public Map<String, Object> findAllConstants() {
-        HashMap<String, Object> constants = new HashMap<>();
+    @Transactional(readOnly = true)
+    public Map<String, List> findAllConstants() {
+        HashMap<String, List> constants = new HashMap<>();
 
         constants.put("languages", getAllLanguages());
 
         return constants;
     }
 
-    private ArrayList<LanguageInfoWeb> getAllLanguages() {
+    private ArrayList<LanguageWeb> getAllLanguages() {
         List<Language> languages = languageRepository.findAll();
-        ArrayList<LanguageInfoWeb> languageInfoWebList = new ArrayList<>();
+        ArrayList<LanguageWeb> languageWebList = new ArrayList<>();
         for(Language lang : languages){
             if (lang.getActive()){
-                languageInfoWebList.add(getLanguageInfoWeb(lang));
+                languageWebList.add(getLanguageInfoWeb(lang));
             }
         }
-        return languageInfoWebList;
+        return languageWebList;
     }
 
-    private LanguageInfoWeb getLanguageInfoWeb(Language lang) {
-        return new LanguageInfoWeb(lang.getId(), lang.getDescription(), lang.getLanguageNativeName());
+    private LanguageWeb getLanguageInfoWeb(Language lang) {
+        return new LanguageWeb(lang.getId(), lang.getDescription(), lang.getLanguageNativeName());
     }
 }
