@@ -20,7 +20,7 @@
                         class="{active : ('login' | includedByState)} glyphicon glyphicon-log-in"></span>
                     {{'Login.title' | translate}}</a></li>
 
-                <li ng-show="vm.sessionService.isAuthenticated()"><a href="#" ng-click="vm.logout()">
+                <li ng-show="vm.sessionService.isAuthenticated()"><a class="pointer" ui-sref="logout">
                     <span class="glyphicon glyphicon-log-out"></span>
                     {{'Logout.button' | translate}} </a>
                 </li>

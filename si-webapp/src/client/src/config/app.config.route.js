@@ -28,6 +28,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "loginController",
                 controllerAs: "vm",
                 url: "/login"
+            })
+        .state("logout",
+            {
+                controller: "logoutController",
+                url: "/logout"
             });
     $urlRouterProvider.otherwise("/home");
 });

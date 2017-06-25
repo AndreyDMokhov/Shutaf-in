@@ -21,8 +21,9 @@ public class LogoutServiceImpl implements LogoutService {
     @Override
     public void logout(String sessionId) {
         UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
-        if(userSession==null)
-            throw new AuthenticationException();;
+        if (userSession == null) {
+            throw new AuthenticationException();
+        }
         userSession.setValid(false);
         userSessionRepository.update(userSession);
     }

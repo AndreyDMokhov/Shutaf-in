@@ -1,7 +1,4 @@
-/**
- * Created by Rogov on 24.06.2017.
- */
-app.factory('logoutService', function (Restangular) {
+app.factory('logoutModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('/api/logout');
