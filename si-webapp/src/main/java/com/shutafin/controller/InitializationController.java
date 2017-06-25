@@ -1,4 +1,4 @@
-package com.shutafin.initialization;
+package com.shutafin.controller;
 
 import com.shutafin.service.initialization.InitializationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +20,13 @@ public class InitializationController {
     @Autowired
     private InitializationService initializationService;
 
-    @RequestMapping(value = "/constants", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<String, List> getConstants(){
-        return initializationService.findAllConstants();
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Map<String, List> getAll(){
+        return initializationService.findAll();
+    }
+
+    @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Map<String, List> getLanguages(){
+        return initializationService.findAllLanguages();
     }
 }

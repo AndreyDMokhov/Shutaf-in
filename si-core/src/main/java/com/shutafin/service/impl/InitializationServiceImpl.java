@@ -25,7 +25,17 @@ public class InitializationServiceImpl implements InitializationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, List> findAllConstants() {
+    public Map<String, List> findAll() {
+        HashMap<String, List> constants = new HashMap<>();
+
+        constants.putAll(findAllLanguages());
+
+        return constants;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, List> findAllLanguages() {
         HashMap<String, List> constants = new HashMap<>();
 
         constants.put("languages", getAllLanguages());
