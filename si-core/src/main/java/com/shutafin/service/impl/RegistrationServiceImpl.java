@@ -4,7 +4,6 @@ import com.shutafin.exception.exceptions.validation.EmailNotUniqueValidationExce
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserCredentials;
-import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.entities.infrastructure.AccountStatus;
 import com.shutafin.model.entities.infrastructure.AccountType;
 import com.shutafin.model.entities.infrastructure.Language;
@@ -12,18 +11,15 @@ import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.repository.UserAccountRepository;
 import com.shutafin.repository.UserCredentialsRepository;
 import com.shutafin.repository.UserRepository;
-import com.shutafin.repository.UserSessionRepository;
 import com.shutafin.repository.infrastructure.AccountStatusRepository;
 import com.shutafin.repository.infrastructure.AccountTypeRepository;
 import com.shutafin.repository.infrastructure.LanguageRepository;
 import com.shutafin.service.RegistrationService;
-import org.apache.commons.lang3.time.DateUtils;
+import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -33,9 +29,6 @@ public class RegistrationServiceImpl implements RegistrationService{
     private static final int ACCOUNT_TYPE_ID = 1;
     private static final int LANGUAGE_ID = 1;
     private static final String PASSWORD_SALT = "Salt";
-    private static final Boolean IS_EXPIRABLE = false;
-    private static final Boolean IS_VALID = true;
-    private static final int NUMBER_DAYS_EXPIRATION = 30;
 
     @Autowired
     private UserRepository userRepository;
@@ -48,9 +41,9 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Autowired
     private UserCredentialsRepository userCredentialsRepository;
     @Autowired
-    private UserSessionRepository userSessionRepository;
-    @Autowired
     private LanguageRepository languageRepository;
+    @Autowired
+    private SessionManagementService sessionManagementService;
 
     @Override
     @Transactional
@@ -58,29 +51,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         User user = saveUser(registrationRequestWeb);
         saveUserAccount(user);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
-        UserSession userSession = saveUserSession(user);
-        return userSession.getSessionId();
-    }
-
-    private String newSessionId(){
-        return UUID.randomUUID().toString();
-    }
-
-    private Date getExpirationDate(int numberOfDays){
-        return DateUtils.addDays(new Date(), numberOfDays);
-    }
-
-    private UserSession saveUserSession(User user){
-        UserSession userSession = new UserSession();
-        userSession.setUser(user);
-        userSession.setValid(IS_VALID);
-        userSession.setSessionId(newSessionId());
-        userSession.setExpirationDate(getExpirationDate(NUMBER_DAYS_EXPIRATION));
-        userSession.setExpirable(IS_EXPIRABLE);
-
-        Long userSessionId = (Long) userSessionRepository.save(userSession);
-        userSession.setId(userSessionId);
-        return userSession;
+        return sessionManagementService.generateSession(user);
     }
 
     private void saveUserCredentials(User user, String password){
@@ -88,9 +59,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         userCredentials.setUser(user);
         userCredentials.setPasswordHash(password);
         userCredentials.setPasswordSalt(PASSWORD_SALT);
-
-        Long userCredentialsId = (Long) userCredentialsRepository.save(userCredentials);
-        userCredentials.setId(userCredentialsId);
+        userCredentialsRepository.save(userCredentials);
     }
 
     private void saveUserAccount(User user){
@@ -102,9 +71,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         userAccount.setAccountType(accountType);
         Language language = languageRepository.findById(LANGUAGE_ID);
         userAccount.setLanguage(language);
-
-        Long userAccountId = (Long) userAccountRepository.save(userAccount);
-        userAccount.setId(userAccountId);
+        userAccountRepository.save(userAccount);
     }
 
     private User saveUser(RegistrationRequestWeb registrationRequestWeb) {
@@ -119,8 +86,7 @@ public class RegistrationServiceImpl implements RegistrationService{
             user.setEmail(email);
         }
 
-        Long userId = (Long) userRepository.save(user);
-        user.setId(userId);
+        userRepository.save(user);
         return user;
     }
 }
