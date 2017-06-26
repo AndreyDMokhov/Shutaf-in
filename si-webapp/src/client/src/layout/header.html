@@ -6,29 +6,49 @@
             </div>
             <ul class="nav navbar-nav">
                 <li ng-class="{active : ('home' | includedByState)}">
-                    <a ui-sref="home">{{'Home.title' | translate}}</a>
+                    <a ui-sref="home">
+                        <span class="fa fa-home header-icon-size"></span>
+                        {{'Home.title' | translate}}
+                    </a>
                 </li>
-                <li ng-class="{active : ('about' | includedByState)}">
-                    <a ui-sref="about">{{'About.title' | translate}}</a>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('about' | includedByState)}">
+                    <a ui-sref="about">
+                        {{'About.title' | translate}}
+                        <span class="fa fa-book header-icon-size"></span>
+                    </a>
                 </li>
-                <li ng-class="{active : ('users' | includedByState)}">
+                <li ng-hide="true" ng-class="{active : ('users' | includedByState)}">
                     <a ui-sref="users">{{'Users.title' | translate}}</a>
                 </li>
-                <li ng-class="{active : ('registration' | includedByState)}">
-                    <a ui-sref="registration">{{'Registration.title' | translate}}</a>
-                </li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-hide="vm.sessionService.isAuthenticated()"><a ui-sref="login"><span
-                        class="{active : ('login' | includedByState)} glyphicon glyphicon-log-in"></span>
-                    {{'Login.title' | translate}}</a></li>
-
-                <li ng-show="vm.sessionService.isAuthenticated()"><a class="pointer" ui-sref="logout">
-                    <span class="glyphicon glyphicon-log-out"></span>
-                    {{'Logout.button' | translate}} </a>
+                <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('registration' | includedByState)}">
+                    <a ui-sref="registration">
+                        <i class="glyphicon glyphicon-log-in fa-rotate-90" aria-hidden="true"></i>
+                        {{'Registration.title' | translate}}
+                    </a>
                 </li>
+                <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('login' | includedByState)}">
+                    <a ui-sref="login">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        {{'Login.title' | translate}}
+                    </a>
+                </li>
+
+                <li ng-show="vm.sessionService.isAuthenticated()">
+                    <a ui-sref="logout">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        {{'Logout.button' | translate}}
+                    </a>
+                </li>
+                <li class="divider-vertical"></li>
                 <li uib-dropdown>
-                    <a href="#" uib-dropdown-toggle>{{'Header.button.changeLanguage' | translate}} <b class="caret"></b></a>
+                    <a href="#" uib-dropdown-toggle>|
+                        <span class="fa fa-language header-icon-size" aria-hidden="true"></span>
+                        {{'Header.button.changeLanguage' | translate}}
+                        <b class="caret"></b>
+                    </a>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
                         <li role="menuitem"><a class="pointer" ng-click="vm.setLanguageCode('en')">English</a></li>
                         <li role="menuitem"><a class="pointer" ng-click="vm.setLanguageCode('ru')">Русский</a></li>

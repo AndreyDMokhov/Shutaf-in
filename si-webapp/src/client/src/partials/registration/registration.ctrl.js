@@ -11,7 +11,7 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
         registrationModel.registerUser(vm.registrationData).then(
             function (success) {
                 vm.dataLoading = false;
-                localStorage.setItem("session_Id", success.headers('session_id'));
+                localStorage.setItem("session_id", success.headers('session_id'));
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
                 $state.go("home");
             }, function (error) {
