@@ -1,0 +1,52 @@
+<div class="col-md-6 col-md-offset-3" ng-controller="loginController">
+    <h2>{{'Login.title' | translate}}</h2>
+
+    <form name="loginForm" novalidate role="form">
+        <div class="form-group"
+             ng-class="{
+                    'has-error': loginForm.email.$invalid && loginForm.email.$dirty,
+                    'has-success': loginForm.email.$valid }">
+            <label for="email">{{'Login.form.email' | translate}}</label>
+            <input  value="email"
+                    class="form-control"
+                    ng-maxLength="50"
+                    name="email"
+                    id="email"
+                    ng-model="vm.loginData.email"
+                    required/>
+
+            <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">
+                {{'Login.form.errorEmail' | translate}}
+            </p>
+        </div>
+
+        <div ng-class="{
+                    'has-error': loginForm.password.$invalid && loginForm.password.$dirty,
+                    'has-success': loginForm.password.$valid}">
+            <label for="password">{{'Login.form.password' | translate}}</label>
+            <input type="password"
+                   class="form-control"
+                   name="password"
+                   id="password"
+                   ng-model="vm.loginData.password"
+                   ng-minLength="8"
+                   ng-maxLength="25"
+                   required/>
+
+            <p class="help-block" ng-if="loginForm.password.$invalid && loginForm.password.$dirty">
+                {{'Login.form.errorPassword' | translate}}
+            </p>
+        </div>
+        <br/>
+
+        <div class="form-actions">
+            <button ng-click="vm.login()"
+                    type="submit"
+                    ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid"
+                    class="btn btn-primary pull-right">
+                {{'Login.title' | translate}}
+                <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
+            </button>
+        </div>
+    </form>
+</div>

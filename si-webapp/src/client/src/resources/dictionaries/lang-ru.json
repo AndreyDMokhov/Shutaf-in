@@ -43,5 +43,19 @@
   "Registration.form.btn.cancel":"Отмена",
   "Registration.form.btn.registration":"Продолжить",
   "Registration.form.msg.registrationOK":"Добро пожаловать!",
-  "Registration.form.msg.registrationFail":"Ошибка регистрации"
+  "Registration.form.msg.registrationFail":"Ошибка регистрации",
+
+  "SECTION": "LOGIN",
+  "Login.title": "Вход",
+  "Login.form.email": "Электронная почта",
+  "Login.form.password": "Пароль ",
+  "Login.form.button.login": "Вход",
+  "Login.form.errorEmail": "Введите корректную электронную почту",
+  "Login.form.errorPassword": "Длинна пароля должна быть не мньше 8 знаков",
+  "Login.message.fail": "Неверное имя пользователя или пароль",
+  "Login.message.success": "Мы рады Вас видеть!",
+
+  "SECTION": "LOGOUT",
+  "Logout.button": "Выход"
+
 }

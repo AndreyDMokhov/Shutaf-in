@@ -43,6 +43,20 @@
   "Registration.form.btn.cancel":"Cancel",
   "Registration.form.btn.registration":"Register",
   "Registration.form.msg.registrationOK":"Registration is ok",
-  "Registration.form.msg.registrationFail":"Registration fail"
+  "Registration.form.msg.registrationFail":"Registration fail",
 
+  "Home.description":"This is a service for searching neighbours.",
+
+  "SECTION": "LOGIN",
+  "Login.title": "Login",
+  "Login.form.email": "Email ",
+  "Login.form.password": "Password ",
+  "Login.form.button.login": "Login",
+  "Login.form.errorEmail": "Please Enter a valid email address",
+  "Login.form.errorPassword": "Please Enter at least 8 characters",
+  "Login.message.fail": "Incorrect email or password",
+  "Login.message.success": "We are glad to see You again!",
+
+  "SECTION": "LOGOUT",
+  "Logout.button": "Logout"
 }
