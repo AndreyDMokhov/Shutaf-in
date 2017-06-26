@@ -8,6 +8,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.jdbc.datasource.init.ScriptStatementFailedException;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 //TODO: change to transactions in order to rollback in case of errors
+//TODO: fix: if there are several scripts in 1 SQL file, only last statement is rolled back
 
 @Configuration
 public class AutoScriptExecutor {
@@ -39,17 +41,22 @@ public class AutoScriptExecutor {
     @PostConstruct
     public void checkDatabase() {
 
-        getLastExecutedScript();
-        getAllSqlScripts();
+        readLastExecutedScript();
+        readAllSqlScripts();
 
-        for (Map.Entry<Integer, Resource> script :
-                sqlScripts.tailMap(lastExecutedSqlScript, false).entrySet()) {
-            executeSqlScript(script.getValue());
+        try {
+            for (Map.Entry<Integer, Resource> script :
+                    sqlScripts.tailMap(lastExecutedSqlScript, false).entrySet()) {
+                executeSqlScript(script.getValue());
+                updateLastExecutedScript(lastExecutedSqlScript);
+            }
+
+        } catch (ScriptStatementFailedException exp) {
+            throw exp;
         }
-        updateLastExecutedScript(sqlScripts.lastKey());
     }
 
-    private void getLastExecutedScript() {
+    private void readLastExecutedScript() {
         String showTablesQuery = "SHOW TABLES;";
         List<String> tables = jdbcTemplate.queryForList(showTablesQuery, String.class);
         if (tables.contains(DB_UPDATE_TABLE_NAME)) {
@@ -71,7 +78,7 @@ public class AutoScriptExecutor {
         executeQuery(updateQuery);
     }
 
-    private void getAllSqlScripts() {
+    private void readAllSqlScripts() {
         try {
             ClassLoader cl = this.getClass().getClassLoader();
             ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
@@ -106,16 +113,20 @@ public class AutoScriptExecutor {
         }
     }
 
-    @Transactional
-    private void executeSqlScript(Resource script) {
+    @Transactional (propagation = Propagation.REQUIRED)
+    private void executeSqlScript(Resource script) throws ScriptStatementFailedException{
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(script);
+
         try {
             databasePopulator.execute(dataSource);
             lastExecutedSqlScript = getFileNumber(script);
+
         } catch (ScriptStatementFailedException exp) {
             System.out.println("Error while executing SQL Script");
+
             throw exp;
         }
     }
+
 
 }
