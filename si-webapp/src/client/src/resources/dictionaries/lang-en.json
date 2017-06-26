@@ -1,5 +1,4 @@
 {
-
   "SECTION":"HEADER",
   "Header.button.changeLanguage":"Language",
 
@@ -22,6 +21,30 @@
 
   "SECTION":"HOME",
   "Home.title":"Home",
+  "Home.description":"This is a service for searching neighbours.",
+
+  "SECTION":"REGISTRATION",
+  "Registration.title":"Registration",
+  "Registration.description":"User registration",
+  "Registration.form.firstName":"First name",
+  "Registration.form.lastName":"Last name",
+  "Registration.form.email":"Email",
+  "Registration.form.password":"Password",
+  "Registration.form.confirmPassword":"Confirm password",
+  "Registration.form.msg.wrongEmail":"Make sure your email address is correct",
+  "Registration.form.msg.confirmPassword": "Your password doesn't match. Please retype your password to confirm it.",
+  "Registration.form.msg.shortFirstName":"3 characters or longer",
+  "Registration.form.msg.shortLastName":"3 characters or longer",
+  "Registration.form.msg.shortPassword":"8 characters or longer",
+  "Registration.form.msg.requiredFirstName":"First name is required",
+  "Registration.form.msg.requiredLastName":"Last name is required",
+  "Registration.form.msg.requiredEmail":"Email is required",
+  "Registration.form.msg.requiredPassword":"Password is required",
+  "Registration.form.btn.cancel":"Cancel",
+  "Registration.form.btn.registration":"Register",
+  "Registration.form.msg.registrationOK":"Registration is ok",
+  "Registration.form.msg.registrationFail":"Registration fail",
+
   "Home.description":"This is a service for searching neighbours.",
 
   "SECTION": "LOGIN",
