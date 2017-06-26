@@ -113,7 +113,7 @@ public class AutoScriptExecutor {
         }
     }
 
-    @Transactional (propagation = Propagation.REQUIRED)
+    @Transactional (value = "dsTransactionManager", propagation = Propagation.REQUIRED)
     private void executeSqlScript(Resource script) throws ScriptStatementFailedException{
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(script);
 
