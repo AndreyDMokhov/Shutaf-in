@@ -24,7 +24,6 @@ public class RegistrationRequestWeb implements DataResponse {
 
     @NotBlank
     @Length(min=8, max=25)
-    @Pattern(regexp = "[a-zA-Z0-9]*")
     private String password;
 
     public RegistrationRequestWeb() {
