@@ -3,17 +3,19 @@ package com.shutafin.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.jdbc.datasource.init.ScriptStatementFailedException;
+import org.springframework.jdbc.datasource.init.ScriptException;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,20 +41,14 @@ public class AutoScriptExecutor {
     private DataSource dataSource;
 
     @PostConstruct
-    public void checkDatabase() {
+    public void checkDatabase() throws SQLException {
 
         readLastExecutedScript();
         readAllSqlScripts();
 
-        try {
-            for (Map.Entry<Integer, Resource> script :
-                    sqlScripts.tailMap(lastExecutedSqlScript, false).entrySet()) {
-                executeSqlScript(script.getValue());
-                updateLastExecutedScript(lastExecutedSqlScript);
-            }
-
-        } catch (ScriptStatementFailedException exp) {
-            throw exp;
+        for (Map.Entry<Integer, Resource> script : sqlScripts.tailMap(lastExecutedSqlScript, false).entrySet()) {
+            executeSqlScript(script.getValue());
+            updateLastExecutedScript(lastExecutedSqlScript);
         }
     }
 
@@ -114,17 +110,25 @@ public class AutoScriptExecutor {
     }
 
     @Transactional (value = "dsTransactionManager", propagation = Propagation.REQUIRED)
-    private void executeSqlScript(Resource script) throws ScriptStatementFailedException{
-        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(script);
+    private void executeSqlScript(Resource script) throws SQLException {
 
         try {
-            databasePopulator.execute(dataSource);
+            ScriptUtils.executeSqlScript(
+                            dataSource.getConnection(),
+                            new EncodedResource(script),
+                            false,
+                            false,
+                            "",
+                            "#",
+                            "",
+                            "");
             lastExecutedSqlScript = getFileNumber(script);
 
-        } catch (ScriptStatementFailedException exp) {
+        } catch (SQLException | ScriptException e) {
             System.out.println("Error while executing SQL Script");
+            e.printStackTrace();
 
-            throw exp;
+            throw e;
         }
     }
 
