@@ -20,6 +20,9 @@
                 <li ng-hide="true" ng-class="{active : ('users' | includedByState)}">
                     <a ui-sref="users">{{'Users.title' | translate}}</a>
                 </li>
+                <li ng-hide="false" ng-class="{active : ('userSettings' | includedByState)}">
+                    <a ui-sref="userSettings">{{'UserSettings.title' | translate}}</a>
+                </li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">

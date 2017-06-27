@@ -58,5 +58,9 @@
   "Login.message.success": "We are glad to see You again!",
 
   "SECTION": "LOGOUT",
-  "Logout.button": "Logout"
+  "Logout.button": "Logout",
+
+  "SECTION": "USERSETTINGS",
+  "UserSettings.title": "User Settings"
+
 }
