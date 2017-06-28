@@ -15,13 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-//TODO: change to transactions in order to rollback in case of errors
-//TODO: fix: if there are several scripts in 1 SQL file, only last statement is rolled back
 
 @Configuration
 public class AutoScriptExecutor {
@@ -40,9 +39,11 @@ public class AutoScriptExecutor {
     @Autowired
     private DataSource dataSource;
 
+    private Connection connection;
+
     @PostConstruct
     public void checkDatabase() throws SQLException {
-
+        establishConnection();
         readLastExecutedScript();
         readAllSqlScripts();
 
@@ -50,6 +51,17 @@ public class AutoScriptExecutor {
             executeSqlScript(script.getValue());
             updateLastExecutedScript(lastExecutedSqlScript);
         }
+    }
+
+    private void establishConnection() {
+        try {
+            connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
+        } catch (SQLException exp) {
+            System.out.println("Error during establishing connection");
+            exp.printStackTrace();
+        }
+
     }
 
     private void readLastExecutedScript() {
@@ -88,7 +100,7 @@ public class AutoScriptExecutor {
     }
 
     private Integer getFileNumber(Resource file) {
-        if (!file.getFilename().matches("\\d+.sql")){
+        if (!file.getFilename().matches("\\d+.sql")) {
             return -1;
         }
         try {
@@ -109,26 +121,44 @@ public class AutoScriptExecutor {
         }
     }
 
-    @Transactional (value = "dsTransactionManager", propagation = Propagation.REQUIRED)
+    @Transactional(value = "dsTransactionManager", propagation = Propagation.REQUIRED)
     private void executeSqlScript(Resource script) throws SQLException {
-
         try {
             ScriptUtils.executeSqlScript(
-                            dataSource.getConnection(),
-                            new EncodedResource(script),
-                            false,
-                            false,
-                            "",
-                            "#",
-                            "",
-                            "");
+                    connection,
+                    new EncodedResource(script),
+                    false,
+                    false,
+                    "--",
+                    ";",
+                    "*/",
+                    "/*");
             lastExecutedSqlScript = getFileNumber(script);
+            commit();
 
-        } catch (SQLException | ScriptException e) {
+        } catch (ScriptException e) {
             System.out.println("Error while executing SQL Script");
+            rollback();
             e.printStackTrace();
 
             throw e;
+        }
+    }
+
+    private void commit() {
+        try {
+            connection.commit();
+        } catch (SQLException exp) {
+            System.out.println("Error during committing changes");
+        }
+    }
+
+    private void rollback() {
+        try {
+            System.out.println("Rolling back");
+            connection.rollback();
+        } catch (SQLException exp) {
+            System.out.println("Error during rolling back changes");
         }
     }
 
