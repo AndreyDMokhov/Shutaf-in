@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface UserSessionRepository extends PersistentDao<UserSession> {
     UserSession findSessionBySessionId(String sessionId);
-    UserSession findSessionByUser(User user);
-    List<UserSession> findAllInvalidSessions();
+    UserSession findSessionBySessionIdAndIiValid(String sessionId, boolean isValid);
+    int updateIsValidAllSessionsByUser(User user);
     List<UserSession> findAllInvalidSessions(Date date);
-    void updateAllValidExpiredSessions();
+    int updateAllValidExpiredSessions();
 }
