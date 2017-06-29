@@ -1,7 +1,9 @@
 package com.shutafin.controller;
 
 
+import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.model.web.user.UserSettingsWeb;
+import com.shutafin.service.UserService;
 import com.shutafin.service.UserSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +23,16 @@ public class UserSettingsController {
     @Autowired
     UserSettingsService userSettingsService;
 
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public UserInfoWeb get(HttpServletRequest request) {
+        String sessionId = request.getHeader("session_id");
+        System.out.println(sessionId);
+        return userService.findByUserId(2L);
+    }
+
     @RequestMapping(value = "/save", method = RequestMethod.PUT)
     public void save(@RequestBody @Valid UserSettingsWeb userSettingsWeb, HttpServletRequest request) {
         String sessionId = request.getHeader("session_id");
@@ -29,7 +41,7 @@ public class UserSettingsController {
 //            throw new AuthenticationException();
 //        }
 
-        userSettingsService.save(userSettingsWeb,sessionId);
+        userSettingsService.save(userSettingsWeb, sessionId);
 
     }
 

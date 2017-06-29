@@ -4,7 +4,7 @@
         <div class="row">
             <label class="col-md-2" for="firstName">{{'Users.form.firstName' | translate}}</label>
             <div class="col-md-3">
-                <input class="form-control" type="text" ng-model="vm.userData.firstName" id="firstName">
+                <input class="form-control" value="Jane" type="text" ng-model="vm.userData.firstName" id="firstName">
             </div>
         </div>
         <div class="row">
@@ -23,17 +23,17 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>{{'Users.form.firstName' | translate}}</th>
-            <th>{{'Users.form.lastName' | translate}}</th>
-            <th>{{'Users.form.email' | translate}}</th>
+            <th>{{'User.form.firstName' | translate}}</th>
+            <th>{{'User.form.lastName' | translate}}</th>
+            <!--<th>{{'Users.form.email' | translate}}</th>-->
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="user in vm.users">
+        <tr ng-repeat="user in vm.user">
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
-            <td>{{user.email}}</td>
+            <!--<td>{{user.email}}</td>-->
         </tr>
         </tbody>
     </table>

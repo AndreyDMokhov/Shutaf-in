@@ -1,24 +1,22 @@
 app.factory('userSettingsModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
-        // RestangularProvider.setBaseUrl('/api/users');
+        RestangularProvider.setBaseUrl('/api/userSettings');
+        RestangularProvider.setDefaultHeaders({'session_id':localStorage.getItem('session_id')});
     });
 
 
-    function getUsers(params) {
-        return rest.all('/api/users/').customGETLIST('', params);
+    function getCurrentUserData(params) {
+        return rest.all('/get').customGET('', params);
     }
 
     function saveNewData(params) {
-        // return rest.one('/api/userSettings/save').customPUT(params);
-    //    ONLY TESTS
-        rest.setDefaultHeaders({'session_id':localStorage.getItem('session_id')});
-        return  rest.one('/api/userSettings/save').customPUT(params);
+        return  rest.one('/save').customPUT(params);
     }
 
 
     return {
-        getUsers: getUsers,
+        getCurrentUserData: getCurrentUserData,
         saveNewData: saveNewData
     }
 });

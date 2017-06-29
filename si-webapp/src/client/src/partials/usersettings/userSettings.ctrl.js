@@ -2,18 +2,18 @@ app.controller('userSettingsController', function (userSettingsModel, $filter, n
     var vm = this;
 
     vm.userData = {};
-    vm.users = {};
+    vm.user = {};
 
     function activate() {
-        getUserData();
+        getCurrentUserData();
 
     }
 
-    function getUserData() {
+    function getCurrentUserData() {
 
-        userSettingsModel.getUsers().then(
+        userSettingsModel.getCurrentUserData().then(
             function (success) {
-                vm.users = success;
+                vm.user = success;
             }, function (error) {
                 console.log(error);
             });
@@ -24,7 +24,7 @@ app.controller('userSettingsController', function (userSettingsModel, $filter, n
             function (success) {
 
                 notify.set($filter('translate')('Users.message.save.success'), {type: 'success'});
-                getUserData();
+                getCurrentUserData();
             }, function (error) {
                 notify.set($filter('translate')('Users.message.save.fail'), {type:'error'});
                 console.log(error);
@@ -35,6 +35,6 @@ app.controller('userSettingsController', function (userSettingsModel, $filter, n
     activate();
 
     vm.saveNewData = saveNewData;
-    vm.getUserData = getUserData;
+    vm.getCurrentUserData = getCurrentUserData;
 
 });
