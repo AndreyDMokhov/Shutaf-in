@@ -17,7 +17,7 @@ app.factory('languageService', function ($translate, CACHED_LANGUAGE, $state, Re
     function setLanguage(code) {
         if (code === undefined || code === null) {
             localStorage.setItem(CACHED_LANGUAGE, 'en');
-            $translate.use(code);
+            $translate.use(localStorage.getItem(CACHED_LANGUAGE));
             return;
         }
         localStorage.setItem(CACHED_LANGUAGE, code);
