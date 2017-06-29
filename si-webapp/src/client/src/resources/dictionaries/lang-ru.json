@@ -56,6 +56,24 @@
   "Login.message.success": "Мы рады Вас видеть!",
 
   "SECTION": "LOGOUT",
-  "Logout.button": "Выход"
+  "Logout.button": "Выход",
+
+  "SECTION": "SECURITYSETTINGS",
+  "SecuritySettings.button": "Настройки безопасности",
+  "SecuritySettings.title": "Настройки безопасности аккаунта",
+  "SecuritySettingsEmail.title": "Изменить адрес электронной почты",
+  "SecuritySettingsPassword.title": "Изменить пароль",
+  "SecuritySettings.form.email": "Электронная почта",
+  "SecuritySettings.form.wrongEmail": "Проверьте адрес электронной почты",
+  "SecuritySettings.form.password": "Пароль",
+  "SecuritySettings.form.errorPassword": "Неверный пароль",
+  "SecuritySettings.form.newEmail": "Введите новый адрес электронной почты",
+  "SecuritySettings.form.requiredEmail": "Обязательное поле",
+  "SecuritySettings.form.btn.changeEmail": "Сохранить",
+  "SecuritySettings.form.btn.cancel": "Отмена",
+
+
+  "SecuritySettings.msg.fail": "Неверное имя пользователя или пароль",
+  "SecuritySettings.msg.success": "Изменения сохранены"
 
 }

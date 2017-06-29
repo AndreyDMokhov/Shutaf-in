@@ -58,5 +58,21 @@
   "Login.message.success": "We are glad to see You again!",
 
   "SECTION": "LOGOUT",
-  "Logout.button": "Logout"
+  "Logout.button": "Logout",
+
+  "SECTION": "ACCOUNTSETTINGS",
+  "SecuritySettings.button": "Security Settings",
+  "SecuritySettings.title": "Account Security Settings",
+  "SecuritySettingsEmail.title": "Change email",
+  "SecuritySettingsPassword.title": "Change password",
+  "SecuritySettings.form.email": "Email",
+  "SecuritySettings.form.wrongEmail": "Make sure your email address is correct",
+  "SecuritySettings.form.password": "Password",
+  "SecuritySettings.form.errorPassword": "Incorrect password",
+  "SecuritySettings.form.newEmail": "Please enter new Email",
+  "SecuritySettings.form.requiredEmail": "Email is required",
+  "SecuritySettings.form.btn.changeEmail": "Save",
+  "SecuritySettings.form.btn.cancel": "Cancel",
+  "SecuritySettings.msg.fail": "Incorrect email or password",
+  "SecuritySettings.msg.success": "Changes saved"
 }

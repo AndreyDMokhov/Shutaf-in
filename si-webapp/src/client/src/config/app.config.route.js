@@ -41,6 +41,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             {
                 controller: "logoutController",
                 url: "/logout"
+            })
+        .state("security-settings",
+            {
+                templateUrl: "partials/security_settings/security_settings.html",
+                controller: "securitySettingsCtrl",
+                controllerAs: "vm",
+                url: "/security-settings"
             });
     $urlRouterProvider.otherwise("/home");
 });

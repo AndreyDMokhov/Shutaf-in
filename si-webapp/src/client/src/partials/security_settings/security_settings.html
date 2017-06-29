@@ -1,0 +1,87 @@
+<div class="col-md-6 col-md-offset-3" ng-controller="securitySettingsCtrl">
+    <h2>{{"SecuritySettings.title"|translate}}</h2>
+
+    <h3>{{'SecuritySettingsEmail.title' | translate}}</h3>
+
+    <form name="form" novalidate role="form">
+
+        <div class="form-group"
+             ng-class="{
+                    'has-error': form.email.$dirty && form.email.$error.email || form.email.$dirty && form.email.$invalid}">
+            <label for="email">{{'SecuritySettings.form.email' | translate}}</label>
+            <input  value="email"
+                    class="form-control"
+                    ng-maxLength="50"
+                    name="email"
+                    id="email"
+                    ng-model="vm.securitySettingsData.email"
+                    required/>
+
+            <p class="help-block" ng-if="form.email.$invalid && form.email.$dirty">
+                {{'SecuritySettings.form.wrongEmail' | translate}}
+            </p>
+        </div>
+
+        <div class="form-group"
+            ng-class="{
+                    'has-error': form.password.$invalid && form.password.$dirty,
+                    'has-success': form.password.$valid}">
+            <label for="password">{{'SecuritySettings.form.password' | translate}}</label>
+            <input type="password"
+                   class="form-control"
+                   name="password"
+                   id="password"
+                   ng-model="vm.securitySettingsData.password"
+                   ng-minLength="8"
+                   ng-maxLength="25"
+                   required/>
+
+            <p class="help-block" ng-if="form.password.$invalid && form.password.$dirty">
+                {{'SecuritySettings.form.errorPassword' | translate}}
+            </p>
+        </div>
+
+        <div class="form-group"
+             ng-class="{
+             'has-error': form.email.$dirty && form.email.$error.email || form.email.$dirty && form.email.$invalid}">
+
+            <label for="newEmail">{{"SecuritySettings.form.newEmail"|translate}}</label>
+            <input type="email"
+                   name="newEmail"
+                   id="newEmail"
+                   class="form-control"
+                   ng-model="vm.securitySetingsData.email"
+                   required
+                   maxlength="50"/>
+            <span ng-show="form.newEmail.$invalid && form.newEmail.$error.required || form.newEmail.$dirty && form.newEmail.$invalid"
+                  class="help-block">
+                 <span ng-show="form.newEmail.$invalid && form.newEmail.$error.required && form.newEmail.$dirty"
+                       class="help-block">
+                        {{"SecuritySettings.form.requiredEmail"|translate}}
+                 </span>
+                <span ng-show="form.newEmail.$dirty && form.newEmail.$invalid && !form.newEmail.$error.required"
+                      class="help-block">
+                    {{"SecuritySettings.form.wrongEmail"|translate}}
+                </span>
+            </span>
+        </div>
+
+
+        <div class="form-actions">
+            <button ng-click="vm.changeEmail()"
+                    type="submit"
+                    ng-disabled="form.$invalid"
+                    class="btn btn-primary">
+                {{"SecuritySettings.form.btn.changeEmail"|translate}}
+                <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
+            </button>
+
+            <a ui-sref="home" class="btn btn-link">{{"SecuritySettings.form.btn.cancel"|translate}}</a>
+        </div>
+    </form>
+
+    <h3>{{'SecuritySettingsPassword.title' | translate}}</h3>
+
+
+
+</div>

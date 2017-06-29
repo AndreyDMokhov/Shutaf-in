@@ -42,6 +42,14 @@
                         {{'Logout.button' | translate}}
                     </a>
                 </li>
+
+                <li ng-show="vm.sessionService.isAuthenticated()">
+                    <a ui-sref="security-settings">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'SecuritySettings.button' | translate}}
+                    </a>
+                </li>
+
                 <li class="divider-vertical"></li>
                 <li uib-dropdown>
                     <a href="#" uib-dropdown-toggle>|
