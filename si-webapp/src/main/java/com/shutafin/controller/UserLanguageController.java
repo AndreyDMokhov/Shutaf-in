@@ -29,7 +29,7 @@ public class UserLanguageController {
         userLanguageService.update(userLanguageWeb, sessionId);
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/get", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public Language get(@RequestHeader(value = "session_id") String sessionId){
         return userLanguageService.get(sessionId);
     }

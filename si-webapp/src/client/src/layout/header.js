@@ -14,17 +14,6 @@ app.controller("headerController", function (languageService, sessionService, in
                 return err;
             }
         );
-
-        languageService.getUserLanguage().then(
-            function(result){//success
-                language = result.data.language;
-            },
-            function(err){//fail
-                console.log(err);
-                return err;
-            }
-        );
-        languageService.setLanguage(language.description);
     }
 
     function setLanguageCode(code, id) {

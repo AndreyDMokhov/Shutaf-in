@@ -3,14 +3,15 @@ app.factory('languageService', function ($translate, CACHED_LANGUAGE, $state, Re
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
         RestangularProvider.setBaseUrl('/api');
-        RestangularProvider.setDefaultHeaders({"session_id" : localStorage.getItem("session_id")});
     });
 
     function getUserLanguage() {
-        return rest.one('/user/account/get').customGET();
+        rest.setDefaultHeaders({"session_id" : localStorage.getItem("session_id")});
+        return rest.one('/user/account/get').customPOST();
     }
 
     function updateUserLanguage(params) {
+        rest.setDefaultHeaders({"session_id" : localStorage.getItem("session_id")});
         return rest.one('/user/account/update').customPUT(params);
     }
 
