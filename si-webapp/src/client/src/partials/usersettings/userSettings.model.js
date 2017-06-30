@@ -10,13 +10,13 @@ app.factory('userSettingsModel', function (Restangular) {
         return rest.all('/get').customGET('', params);
     }
 
-    function saveNewData(params) {
+    function saveNewUserData(params) {
         return  rest.one('/save').customPUT(params);
     }
 
 
     return {
         getCurrentUserData: getCurrentUserData,
-        saveNewData: saveNewData
+        saveNewUserData: saveNewUserData
     }
 });

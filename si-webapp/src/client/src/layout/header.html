@@ -20,13 +20,10 @@
                 <li ng-hide="true" ng-class="{active : ('users' | includedByState)}">
                     <a ui-sref="users">{{'Users.title' | translate}}</a>
                 </li>
-                <li ng-hide="false" ng-class="{active : ('userSettings' | includedByState)}">
-                    <a ui-sref="userSettings">{{'UserSettings.title' | translate}}</a>
-                </li>
-
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('registration' | includedByState)}">
+                <li ng-hide="vm.sessionService.isAuthenticated()"
+                    ng-class="{active : ('registration' | includedByState)}">
                     <a ui-sref="registration">
                         <i class="glyphicon glyphicon-log-in fa-rotate-90" aria-hidden="true"></i>
                         {{'Registration.title' | translate}}
@@ -38,7 +35,13 @@
                         {{'Login.title' | translate}}
                     </a>
                 </li>
-
+                <li ng-show="vm.sessionService.isAuthenticated()"
+                    ng-class="{active : ('userSettings' | includedByState)}">
+                    <a ui-sref="userSettings">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'UserSettings.title' | translate}}
+                    </a>
+                </li>
                 <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>

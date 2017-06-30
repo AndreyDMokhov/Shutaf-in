@@ -1,12 +1,13 @@
 app.controller('userSettingsController', function (userSettingsModel, $filter, notify) {
     var vm = this;
 
-    vm.userData = {};
+    vm.dataLoading = false;
+
     vm.user = {};
+    vm.dataFormDb = {};
 
     function activate() {
         getCurrentUserData();
-
     }
 
     function getCurrentUserData() {
@@ -19,22 +20,28 @@ app.controller('userSettingsController', function (userSettingsModel, $filter, n
             });
     }
 
-    function saveNewData() {
-        userSettingsModel.saveNewData(vm.userData).then(
-            function (success) {
+    function saveNewUserData() {
+          vm.dataLoading = true;
 
-                notify.set($filter('translate')('Users.message.save.success'), {type: 'success'});
-                getCurrentUserData();
-            }, function (error) {
-                notify.set($filter('translate')('Users.message.save.fail'), {type:'error'});
-                console.log(error);
-            });
+            userSettingsModel.saveNewUserData(vm.user).then(
+                function (success) {
+                    vm.dataLoading = false;
+
+                    notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
+                    getCurrentUserData();
+                }, function (error) {
+                    vm.dataLoading = false;
+
+                    notify.set($filter('translate')('UserSettings.message.save.fail'), {type: 'error'});
+                    console.log(error);
+                });
+
     }
 
 
     activate();
 
-    vm.saveNewData = saveNewData;
+    vm.saveNewUserData = saveNewUserData;
     vm.getCurrentUserData = getCurrentUserData;
 
 });

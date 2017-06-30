@@ -59,5 +59,12 @@
   "Logout.button": "Выход",
 
   "SECTION": "USERSETTINGS",
-  "UserSettings.title": "Настройки Пользователя"
+  "UserSettings.title": "Настройки",
+  "UserSettings.form.firstName":"Ваше Имя",
+  "UserSettings.form.lastName":"Ваша Фамилия",
+  "UserSettings.form.button.save":"Сохранить",
+  "UserSettings.form.firstNameError": "Неверный ввод имени",
+  "UserSettings.form.lastNameError": "Неверный ввод фамилии",
+  "UserSettings.message.save.success":"Пользователь успешно сохранен",
+  "UserSettings.message.save.fail":"Ошибка при попытке сохранения пользователя"
 }
