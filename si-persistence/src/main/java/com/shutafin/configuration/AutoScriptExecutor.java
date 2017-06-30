@@ -116,7 +116,9 @@ public class AutoScriptExecutor {
         try {
             jdbcTemplate.execute(query);
         } catch (Exception exp) {
-            System.out.println("Error while executing query\n" + exp);
+            System.out.println("Error while executing query with JDBC Template");
+            System.out.println("Query: " + query);
+            System.out.println(exp.getCause());
             throw exp;
         }
     }
@@ -137,10 +139,10 @@ public class AutoScriptExecutor {
             commit();
 
         } catch (ScriptException e) {
-            System.out.println("Error while executing SQL Script");
+            System.out.println("Error while executing SQL Script:");
+            System.out.println(e.getMessage().replace(": ", ":\n")
+                    .replace("; ", ";\n"));
             rollback();
-            e.printStackTrace();
-
             throw e;
         }
     }
