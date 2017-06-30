@@ -9,8 +9,6 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -123,7 +121,6 @@ public class AutoScriptExecutor {
         }
     }
 
-    @Transactional(value = "dsTransactionManager", propagation = Propagation.REQUIRED)
     private void executeSqlScript(Resource script) throws SQLException {
         try {
             ScriptUtils.executeSqlScript(
