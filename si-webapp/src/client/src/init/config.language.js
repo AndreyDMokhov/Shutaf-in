@@ -1,4 +1,4 @@
-app.factory('languageService', function ($translate, CACHED_LANGUAGE, $state, Restangular) {
+app.factory('languageService', function ($translate, CACHED_LANGUAGE, Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
