@@ -1,0 +1,33 @@
+How to Deploy Shutaf-il-project
+
+0.If you are reading this, then we expect that these applications are on your computer,
+if not, then please refer to the installation references according to your platform
+0.1) Maven link for install  https://maven.apache.org/install.html
+0.2) Java  link  for install http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+0.3) Git   link for install  https://git-scm.com/downloads
+
+1.You need check these applications are installed in your environment, if not, install them:
+
+1.1) MySQL Server  link  for install Community version https://dev.mysql.com/downloads/mysql/
+    a) and  WorkBench https://dev.mysql.com/downloads/workbench/
+1.2) NodeJS
+    a) https://nodejs.org/en/
+1.3) Gulp
+    a) Gulp install  after completed installation  NodeJS http://gulpjs.com
+
+1.4) Bower
+    a) Bower install after completed installation  NodeJS https://bower.io/#install-bower
+
+2. After check  and install  all  application  you  need config your project
+2.1) Connect to your mysql and create new DB
+    a) create new shem -- CREATE SCHEMA `userdb` ;
+    b) make sure that your password and username are the same as those specified in the : shutaf-in/si-persistence/src/main/resources/database.config.properties
+2.2) Create node modules  on  our client and bower
+    a) in client folder shutaf-in/si-webapp/src/client run  command  npm  install
+       cd (path_to_project)/si-webapp/src/client
+       npm install
+3. Run  project in  localhost
+3.1) Build your project and run Spring-Boot-Application
+3.2) in client folder shutaf-in/si-webapp/src/client run  command  gulp connect
+    a) cd (path_to_project)/si-webapp/src/client
+    b) gulp connect
