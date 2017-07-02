@@ -23,14 +23,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/userSettings")
 
-public class UserSettingsController extends BaseController {
+public class UserSettingsController  {
 
     @Autowired
     UserSettingsService userSettingsService;
-
-//    only test
-    @Autowired
-    private UserService userService;
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public UserSettingsWeb get(@RequestBody @Valid HttpServletRequest request, BindingResult result) {
@@ -38,14 +34,18 @@ public class UserSettingsController extends BaseController {
             throw new InputValidationException(result);
         }
         String sessionId = request.getHeader("session_id");
-        UserSettingsWeb userSettingsWeb = userSettingsService.get()
-        return users.get(1);
+
+        if (StringUtils.isBlank(sessionId)) {
+            throw new AuthenticationException();
+        }
+        UserSettingsWeb userSettingsWeb = userSettingsService.get(sessionId);
+        return userSettingsWeb;
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.PUT)
     public void save(@RequestBody @Valid UserSettingsWeb userSettingsWeb, HttpServletRequest request) {
         String sessionId = request.getHeader("session_id");
-        System.out.println(sessionId);
+//        System.out.println(sessionId);
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }

@@ -29,28 +29,40 @@ public class UserSettingsServiceImpl implements UserSettingsService {
         String firstName = userSettingsWeb.getFirstName();
         String lastNameWeb = userSettingsWeb.getLastName();
         UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
-        if (!isExpirationDate(userSession)) {
+        if (!isExpirationDateAndValid(userSession)) {
             throw new AuthenticationException();
         }
 
-//        Long id = userSession.getId();
-
         User user = userSession.getUser();
         System.out.println(user);
-        if (firstName == null) {
+        if (user.getFirstName().equals(firstName)) {
             user.setLastName(lastNameWeb);
-        }if (lastNameWeb == null) {
+        }else if (user.getLastName().equals(lastNameWeb)) {
             user.setFirstName(firstName);
-        }if(firstName != null && lastNameWeb != null){
+        }else{
             user.setFirstName(firstName);
             user.setLastName(lastNameWeb);
         }
     }
 
-    private boolean isExpirationDate(UserSession userSession) {
+    @Override
+    @Transactional
+    public UserSettingsWeb get(String sessionId) {
+        UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
+        if (!isExpirationDateAndValid(userSession)) {
+            throw new AuthenticationException();
+        }
+        User user = userSession.getUser();
+        return  new UserSettingsWeb(user.getFirstName(), user.getLastName()/*, user.getEmail()*/);
+    }
+
+    private boolean isExpirationDateAndValid(UserSession userSession) {
         Date date = new Date();
         if(!date.before(userSession.getExpirationDate())) {
-            throw new AuthenticationException();
+            return false;
+        }
+        if (!userSession.getValid()) {
+            return false;
         }
         return true;
     }

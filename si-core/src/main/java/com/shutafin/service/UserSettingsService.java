@@ -9,4 +9,6 @@ public interface UserSettingsService {
 
 
     void save(UserSettingsWeb userSettingsWeb, String sessionId);
+
+    UserSettingsWeb get (String sessionId);
 }

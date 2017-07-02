@@ -18,17 +18,17 @@ public class UserSettingsWeb implements DataResponse {
     @Length(min=3, max=50)
     private String lastName;
 
-    @NotBlank
-    @Email
-    private String email;
+//    @NotBlank
+//    @Email
+//    private String email;
 
     public UserSettingsWeb() {
     }
 
-    public UserSettingsWeb(String firstName, String lastName, String email) {
+    public UserSettingsWeb(String firstName, String lastName/*, String email*/) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+//        this.email = email;
     }
 
     public String getFirstName() {
@@ -47,7 +47,7 @@ public class UserSettingsWeb implements DataResponse {
         this.lastName = lastName;
     }
 
-    public void setEmail(String email) { this.email = email; }
-
-    public String getEmail() { return email;}
+//    public void setEmail(String email) { this.email = email; }
+//
+//    public String getEmail() { return email;}
 }
