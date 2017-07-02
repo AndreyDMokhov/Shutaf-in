@@ -21,11 +21,12 @@ public class UserController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void save(@RequestBody @Valid UserInfoWeb user, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new InputValidationException(result);
-        }
+            if (result.hasErrors()) {
+                throw new InputValidationException(result);
+            }
         userService.save(user);
     }
+
 
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})

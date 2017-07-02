@@ -2,10 +2,13 @@ package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserSession;
-import com.shutafin.model.web.user.UserSettingsWeb;
+import com.shutafin.model.entities.infrastructure.Language;
+import com.shutafin.model.web.user.UserAccountSettingsWeb;
+import com.shutafin.repository.UserAccountRepository;
 import com.shutafin.repository.UserSessionRepository;
-import com.shutafin.service.UserSettingsService;
+import com.shutafin.service.UserAccountSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +21,18 @@ import java.util.Date;
 
 @Service
 @Transactional
-public class UserSettingsServiceImpl implements UserSettingsService {
+public class UserAccountSettingsServiceImpl implements UserAccountSettingsService {
 
     @Autowired
     private UserSessionRepository userSessionRepository;
+    @Autowired
+    private UserAccountRepository userAccountRepository;
 
     @Override
     @Transactional
-    public void save(UserSettingsWeb userSettingsWeb, String sessionId) {
-        String firstName = userSettingsWeb.getFirstName();
-        String lastNameWeb = userSettingsWeb.getLastName();
+    public void save(UserAccountSettingsWeb userAccountSettingsWeb, String sessionId) {
+        String firstName = userAccountSettingsWeb.getFirstName();
+        String lastNameWeb = userAccountSettingsWeb.getLastName();
         UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
         if (!isExpirationDateAndValid(userSession)) {
             throw new AuthenticationException();
@@ -47,13 +52,17 @@ public class UserSettingsServiceImpl implements UserSettingsService {
 
     @Override
     @Transactional
-    public UserSettingsWeb get(String sessionId) {
+    public UserAccountSettingsWeb get(String sessionId) {
         UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
+
         if (!isExpirationDateAndValid(userSession)) {
             throw new AuthenticationException();
         }
         User user = userSession.getUser();
-        return  new UserSettingsWeb(user.getFirstName(), user.getLastName()/*, user.getEmail()*/);
+        UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
+        Language language = userAccount.getLanguage();
+
+        return new UserAccountSettingsWeb(user.getFirstName(), user.getLastName(), userAccount.getLanguage().getLanguageNativeName());
     }
 
     private boolean isExpirationDateAndValid(UserSession userSession) {

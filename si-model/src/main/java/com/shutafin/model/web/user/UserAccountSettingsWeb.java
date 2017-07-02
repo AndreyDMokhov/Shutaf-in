@@ -1,14 +1,13 @@
 package com.shutafin.model.web.user;
 
 import com.shutafin.model.web.DataResponse;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Created by usera on 6/29/2017.
  */
-public class UserSettingsWeb implements DataResponse {
+public class UserAccountSettingsWeb implements DataResponse {
 
     @NotBlank
     @Length(min=3, max=50)
@@ -18,17 +17,16 @@ public class UserSettingsWeb implements DataResponse {
     @Length(min=3, max=50)
     private String lastName;
 
-//    @NotBlank
-//    @Email
-//    private String email;
+    @NotBlank
+    private String languageId;
 
-    public UserSettingsWeb() {
+    public UserAccountSettingsWeb() {
     }
 
-    public UserSettingsWeb(String firstName, String lastName/*, String email*/) {
+    public UserAccountSettingsWeb(String firstName, String lastName, String languageId) {
         this.firstName = firstName;
         this.lastName = lastName;
-//        this.email = email;
+        this.languageId = languageId;
     }
 
     public String getFirstName() {
@@ -47,7 +45,7 @@ public class UserSettingsWeb implements DataResponse {
         this.lastName = lastName;
     }
 
-//    public void setEmail(String email) { this.email = email; }
-//
-//    public String getEmail() { return email;}
+    public String getLanguageId() {return languageId;}
+
+    public void setLanguageId(String languageId) {this.languageId = languageId;}
 }
