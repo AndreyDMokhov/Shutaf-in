@@ -62,7 +62,7 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
         UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
         Language language = userAccount.getLanguage();
 
-        return new UserAccountSettingsWeb(user.getFirstName(), user.getLastName(), userAccount.getLanguage().getLanguageNativeName());
+        return new UserAccountSettingsWeb(user.getFirstName(), user.getLastName(), language.getLanguageNativeName());
     }
 
     private boolean isExpirationDateAndValid(UserSession userSession) {
