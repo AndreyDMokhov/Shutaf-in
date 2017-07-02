@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.user.UserInfoWeb;
@@ -17,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
+
 
 
 @RestController
 @RequestMapping("/userSettings")
 
-public class UserSettingsController  {
+public class UserSettingsController {
 
     @Autowired
     UserSettingsService userSettingsService;

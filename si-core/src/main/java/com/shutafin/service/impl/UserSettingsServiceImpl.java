@@ -34,7 +34,7 @@ public class UserSettingsServiceImpl implements UserSettingsService {
         }
 
         User user = userSession.getUser();
-        System.out.println(user);
+//        System.out.println(user);
         if (user.getFirstName().equals(firstName)) {
             user.setLastName(lastNameWeb);
         }else if (user.getLastName().equals(lastNameWeb)) {

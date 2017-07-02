@@ -1,40 +1,56 @@
-<h1>{{'UserSettings.title' | translate}}</h1>
-<div>
-    <form>
-        <div class="row">
-            <label class="col-md-2" for="firstName">{{'Users.form.firstName' | translate}}</label>
-            <div class="col-md-3">
-                <input class="form-control" type="text" ng-model="vm.userData.firstName" id="firstName">
-            </div>
+<div class="col-md-6 col-md-offset-3" ng-controller="userSettingsController">
+    <h2>{{'UserSettings.title' | translate}}</h2>
+
+    <form name="settingsForm" novalidate role="form">
+        <div class="form-group"
+             ng-class="{
+                    'has-error': settingsForm.firstName.$invalid && settingsForm.firstName.$dirty,
+                    'has-success': settingsForm.firstName.$valid }">
+            <label for="firstName">{{'UserSettings.form.firstName' | translate}}</label>
+            <input
+                    class="form-control"
+                    name="firstName"
+                    id="firstName"
+                    ng-model="vm.user.firstName"
+                    ng-pattern="/^[a-zA-Z\s]*$/"
+                    ng-minLength="3"
+                    ng-maxLength="50"
+                    required/>
+
+            <p class="help-block" ng-if="settingsForm.firstName.$invalid && settingsForm.firstName.$dirty">
+                {{'UserSettings.form.firstNameError' | translate}}
+            </p>
         </div>
-        <div class="row">
-            <label class="col-md-2" for="lastName">{{'Users.form.lastName' | translate}}</label>
-            <div class="col-md-3">
-                <input class="form-control" type="text" ng-model="vm.userData.lastName" id="lastName">
-            </div>
+
+        <div class="form-group"
+             ng-class="{
+                    'has-error': settingsForm.lastName.$invalid && settingsForm.lastName.$dirty,
+                    'has-success': settingsForm.lastName.$valid }">
+            <label for="lastName">{{'UserSettings.form.lastName' | translate}}</label>
+            <input
+                    class="form-control"
+                    name="lastName"
+                    id="lastName"
+                    ng-model="vm.user.lastName"
+                    ng-pattern="/^[a-zA-Z\s]*$/"
+                    ng-minLength="3"
+                    ng-maxLength="50"
+                    required/>
+
+            <p class="help-block" ng-if="settingsForm.lastName.$invalid && settingsForm.lastName.$dirty">
+                {{'UserSettings.form.lastNameError' | translate}}
+            </p>
         </div>
-        <div class="row">
-            <button ng-click="vm.saveNewData()" class="pull-right btn btn-toolbar btn-success">{{'Users.form.button.save' | translate}}</button>
+        <br/>
+
+        <div class="form-actions">
+            <button ng-click="vm.saveNewUserData()"
+                    type="submit"
+                    ng-disabled="settingsForm.firstName.$invalid || settingsForm.lastName.$invalid"
+                    class="btn btn-success pull-right">
+                {{'UserSettings.form.button.save' | translate}}
+                <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
+            </button>
         </div>
     </form>
-
-    <!--ONLY FOR TESTS-->
-
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>{{'Users.form.firstName' | translate}}</th>
-            <th>{{'Users.form.lastName' | translate}}</th>
-            <th>{{'Users.form.email' | translate}}</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="user in vm.users">
-            <td>{{user.firstName}}</td>
-            <td>{{user.lastName}}</td>
-            <td>{{user.email}}</td>
-        </tr>
-        </tbody>
-    </table>
 </div>

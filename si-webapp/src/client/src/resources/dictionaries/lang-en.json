@@ -45,8 +45,6 @@
   "Registration.form.msg.registrationOK":"Registration is ok",
   "Registration.form.msg.registrationFail":"Registration fail",
 
-  "Home.description":"This is a service for searching neighbours.",
-
   "SECTION": "LOGIN",
   "Login.title": "Login",
   "Login.form.email": "Email ",
@@ -61,6 +59,14 @@
   "Logout.button": "Logout",
 
   "SECTION": "USERSETTINGS",
-  "UserSettings.title": "User Settings"
+  "UserSettings.title": "User Settings",
+  "UserSettings.form.firstName":"Your first name",
+  "UserSettings.form.lastName":"Your last name",
+  "UserSettings.form.button.save":"Save",
+  "UserSettings.form.firstNameError": "Incorrect first name",
+  "UserSettings.form.lastNameError":"Incorrect first name",
+  "UserSettings.message.save.success":"Has been successfully saved",
+  "UserSettings.message.save.fail":"An error occurred on user save"
+
 
 }
