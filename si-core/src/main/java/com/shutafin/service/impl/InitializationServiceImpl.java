@@ -1,5 +1,8 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.repository.infrastructure.CityRepository;
+import com.shutafin.repository.infrastructure.CountryRepository;
+import com.shutafin.repository.infrastructure.GenderRepository;
 import com.shutafin.repository.infrastructure.LanguageRepository;
 import com.shutafin.service.initialization.InitializationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,15 @@ public class InitializationServiceImpl implements InitializationService {
     @Autowired
     private LanguageRepository languageRepository;
 
+    @Autowired
+    private GenderRepository genderRepository;
+
+    @Autowired
+    private CountryRepository countryRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
+
 
     @Override
     @Transactional(readOnly = true)
@@ -23,6 +35,23 @@ public class InitializationServiceImpl implements InitializationService {
         return languageRepository.findAll();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List findAllGenders() {
+        return genderRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List findAllCountries() {
+        return countryRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List findAllCities() {
+        return cityRepository.findAll();
+    }
 
 
 }

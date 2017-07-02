@@ -23,6 +23,9 @@ public class InitializationController {
     public Map<String, List> getAll(){
         return new HashMap<String, List>() {{
             put("languages", initializationService.findAllLanguages());
+            put("genders", initializationService.findAllGenders());
+            put("countries", initializationService.findAllCountries());
+            put("cities", initializationService.findAllCities());
         }};
 
     }
@@ -30,5 +33,20 @@ public class InitializationController {
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List getLanguages(){
         return initializationService.findAllLanguages();
+    }
+
+    @RequestMapping(value = "/genders", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List getGenders(){
+        return initializationService.findAllGenders();
+    }
+
+    @RequestMapping(value = "/countries", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List getCountries(){
+        return initializationService.findAllCountries();
+    }
+
+    @RequestMapping(value = "/cities", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List getCities(){
+        return initializationService.findAllCities();
     }
 }
