@@ -51,7 +51,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         User user = saveUser(registrationRequestWeb);
         saveUserAccount(user);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
-        return sessionManagementService.generateSession(user);
+        return sessionManagementService.generateNewSession(user);
     }
 
     private void saveUserCredentials(User user, String password){
