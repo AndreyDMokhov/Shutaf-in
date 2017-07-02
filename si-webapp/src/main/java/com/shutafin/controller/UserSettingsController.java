@@ -36,16 +36,16 @@ public class UserSettingsController {
 //        only test
         System.out.println(sessionId);
         List<UserInfoWeb> users = userService.findAll();
-        return users.get(1);
+        return users.get(2);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.PUT)
     public void save(@RequestBody @Valid UserSettingsWeb userSettingsWeb, HttpServletRequest request) {
         String sessionId = request.getHeader("session_id");
         System.out.println(sessionId);
-//        if (!StringUtils.isBlank(sessionId)) {
-//            throw new AuthenticationException();
-//        }
+        if (StringUtils.isBlank(sessionId)) {
+            throw new AuthenticationException();
+        }
 
         userSettingsService.save(userSettingsWeb, sessionId);
 
