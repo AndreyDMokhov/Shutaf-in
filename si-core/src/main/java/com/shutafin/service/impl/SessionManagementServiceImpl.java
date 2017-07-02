@@ -41,7 +41,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Override
     @Transactional(readOnly = true)
     public void validate(String sessionId) throws AuthenticationException {
-        UserSession userSession = userSessionRepository.findSessionBySessionIdAndIiValid(sessionId, IS_TRUE);
+        UserSession userSession = userSessionRepository.findSessionBySessionIdAndInValid(sessionId, IS_TRUE);
         if (userSession == null){
             throw new AuthenticationException();
         }
