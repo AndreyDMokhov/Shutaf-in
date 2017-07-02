@@ -33,4 +33,7 @@ app.factory('languageService', function ($translate, CACHED_LANGUAGE, Restangula
         getUserLanguage:getUserLanguage
     }
 
+
+
+
 });

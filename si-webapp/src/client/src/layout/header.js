@@ -1,27 +1,21 @@
-app.controller("headerController", function (languageService, sessionService, initializationService) {
+app.controller("headerController", function (languageService, sessionService, constantService) {
 
     var vm = this;
-    vm.initialization = {};
-    var language = {};
+
     vm.sessionService = sessionService;
 
-    function activate() {
-        initializationService.getAll().then(
-            function (result) {
-                vm.initialization = result;
-            }, function (err) {
-                console.log(err);
-                return err;
-            }
-        );
+    function init() {
+        constantService.init();
     }
 
-    function setLanguageCode(code, id) {
+
+    function setLanguageCode(code) {
         languageService.setLanguage(code);
         languageService.updateUserLanguage({"languageId" : id});
     }
 
-    activate();
+
+    init();
 
     vm.setLanguageCode = setLanguageCode;
 
