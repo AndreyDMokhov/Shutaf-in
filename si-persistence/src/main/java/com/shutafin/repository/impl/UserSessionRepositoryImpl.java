@@ -20,6 +20,7 @@ public class UserSessionRepositoryImpl extends AbstractEntityDao<UserSession> im
         return (UserSession) getSession()
                 .createQuery("SELECT e FROM UserSession e where e.sessionId = :sessionId")
                 .setParameter("sessionId", sessionId)
+                .setCacheable(true)
                 .uniqueResult();
     }
 
