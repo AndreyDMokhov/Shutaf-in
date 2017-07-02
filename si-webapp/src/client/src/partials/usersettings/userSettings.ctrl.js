@@ -1,10 +1,9 @@
-app.controller('userSettingsController', function (userSettingsModel, $filter, notify) {
+app.controller('userSettingsController', function (userSettingsModel, languageService, CACHED_LANGUAGE, $filter, notify) {
     var vm = this;
 
     vm.dataLoading = false;
 
-    vm.user = {};
-    vm.dataFormDb = {};
+    vm.accountSettings = {};
 
     function activate() {
         getCurrentUserData();
@@ -14,7 +13,8 @@ app.controller('userSettingsController', function (userSettingsModel, $filter, n
 
         userSettingsModel.getCurrentUserData().then(
             function (success) {
-                vm.user = success;
+                vm.accountSettings = success;
+                languageService.setLanguage(vm.accountSettings.languageId);
             }, function (error) {
                 console.log(error);
             });
@@ -22,8 +22,8 @@ app.controller('userSettingsController', function (userSettingsModel, $filter, n
 
     function saveNewUserData() {
           vm.dataLoading = true;
-
-            userSettingsModel.saveNewUserData(vm.user).then(
+        vm.accountSettings.languageId = localStorage.getItem(CACHED_LANGUAGE);
+            userSettingsModel.saveNewUserData(vm.accountSettings).then(
                 function (success) {
                     vm.dataLoading = false;
 

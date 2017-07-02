@@ -31,6 +31,7 @@ public class UserSettingsServiceImpl implements UserSettingsService {
     public void save(UserSettingsWeb userSettingsWeb, String sessionId) {
         String firstName = userSettingsWeb.getFirstName();
         String lastNameWeb = userSettingsWeb.getLastName();
+        String languageId = userSettingsWeb.getLanguageId();
         UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
         if (!isExpirationDate(userSession)) {
             throw new AuthenticationException();

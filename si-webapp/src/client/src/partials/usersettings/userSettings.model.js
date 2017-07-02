@@ -7,7 +7,7 @@ app.factory('userSettingsModel', function (Restangular) {
 
 
     function getCurrentUserData(params) {
-        return rest.all('/get').customGET('', params);
+        return rest.one('/get').customGET(params);
     }
 
     function saveNewUserData(params) {
