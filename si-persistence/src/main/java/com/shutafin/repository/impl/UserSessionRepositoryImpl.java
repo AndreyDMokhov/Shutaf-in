@@ -25,7 +25,7 @@ public class UserSessionRepositoryImpl extends AbstractEntityDao<UserSession> im
     }
 
     @Override
-    public UserSession findSessionBySessionIdAndIiValid(String sessionId, boolean isValid) {
+    public UserSession findSessionBySessionIdAndInValid(String sessionId, boolean isValid) {
         return (UserSession) getSession()
                 .createQuery("SELECT e FROM UserSession e where e.sessionId = :sessionId AND e.isValid = :isValid")
                 .setParameter("sessionId", sessionId)
