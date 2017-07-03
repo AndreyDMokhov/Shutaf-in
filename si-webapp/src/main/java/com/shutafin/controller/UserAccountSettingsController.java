@@ -1,12 +1,13 @@
 package com.shutafin.controller;
 
-
 import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.web.user.UserSettingsWeb;
-import com.shutafin.service.UserSettingsService;
+import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.web.user.UserAccountSettingsWeb;
+import com.shutafin.service.UserAccountSettingsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,35 +18,37 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("/userSettings")
+@RequestMapping("/usersettings")
 
-public class UserSettingsController {
+public class UserAccountSettingsController {
 
     @Autowired
-    UserSettingsService userSettingsService;
+    UserAccountSettingsService userAccountSettingsService;
 
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserSettingsWeb get(HttpServletRequest request) {
-        String sessionId = request.getHeader("session_id");
-//        only test
-        System.out.println(sessionId);
-        UserSettingsWeb userSettingsWeb = new UserSettingsWeb("first", "last", "ru");
-        System.out.println("From Server: "+userSettingsWeb.getFirstName()+" "+userSettingsWeb.getLastName()+" "+userSettingsWeb.getLanguageId());
-        return userSettingsWeb;
-    }
-
-    @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void save(@RequestBody @Valid UserSettingsWeb userSettingsWeb, HttpServletRequest request) {
+    public UserAccountSettingsWeb get(HttpServletRequest request) {
         String sessionId = request.getHeader("session_id");
         System.out.println(sessionId);
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }
+        UserAccountSettingsWeb userAccountSettingsWeb = userAccountSettingsService.get(sessionId);
+        return userAccountSettingsWeb;
+    }
 
-        System.out.println("To Server: "+userSettingsWeb.getFirstName()+" "+userSettingsWeb.getLastName()+" "+userSettingsWeb.getLanguageId());
-//        userSettingsService.save(userSettingsWeb, sessionId);
+    @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void save(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb, HttpServletRequest request, BindingResult result) {
+        String sessionId = request.getHeader("session_id");
+        System.out.println(sessionId);
 
+        if (StringUtils.isBlank(sessionId)) {
+            throw new AuthenticationException();
+        }
+        if (result.hasErrors()) {
+            throw new InputValidationException(result);
+        }
+        userAccountSettingsService.save(userAccountSettingsWeb, sessionId);
     }
 
 }
