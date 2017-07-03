@@ -11,9 +11,11 @@ import java.util.List;
  * Created by evgeny on 6/20/2017.
  */
 public interface UserSessionRepository extends PersistentDao<UserSession> {
+
     UserSession findSessionBySessionId(String sessionId);
-    UserSession findSessionBySessionIdAndIiValid(String sessionId);
-    int updateIsValidAllSessionsByUser(User user);
-    List<UserSession> findAllInvalidSessions(Date date);
+    UserSession findSessionBySessionIdAndIsValid(String sessionId, boolean isValid);
+    User findUserBySessionIdAndIsValid(String sessionId, boolean isValid);
+    UserSession findSessionBySessionIdAndInValid(String sessionId, boolean isValid);
     int updateAllValidExpiredSessions();
+    int deleteAllInvalidSessions(Date date);
 }

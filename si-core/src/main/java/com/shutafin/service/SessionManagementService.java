@@ -4,14 +4,16 @@ import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SessionManagementService {
-    String generateSession(User user);
+
+    User findUserWithValidSession(String sessionId);
+    UserSession findValidUserSession(String sessionId);
     void validate(String sessionId) throws AuthenticationException;
-    void invalidate(User user);
-    List<UserSession> findAllInvalidSessions();
-    List<UserSession> findAllInvalidSessions(int numDaysExperation);
+    String generateNewSession(User user);
+    void invalidateUserSession(String sessionId);
     void invalidateAllExpiredSessions();
-    UserSession findSessionBySessionIdAndIiValid(String sessionId);
+    void deleteAllInvalidSessions();
 }

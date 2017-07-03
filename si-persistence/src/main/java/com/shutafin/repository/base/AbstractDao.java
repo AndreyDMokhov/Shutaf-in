@@ -43,6 +43,6 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     @Override
     public T findById(Serializable id) {
-        return getSession().load(getEntityClass(), id);
+        return getSession().get(getEntityClass(), id);
     }
 }

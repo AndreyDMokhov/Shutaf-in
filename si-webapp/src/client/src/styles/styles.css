@@ -12,3 +12,4 @@
 .header-icon-size {
     font-size: 1.15em
 }
+label.required:after {content: " *"; color: red;}
