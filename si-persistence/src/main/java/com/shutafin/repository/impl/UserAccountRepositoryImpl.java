@@ -14,7 +14,7 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
     @Override
     public UserAccount getAccountUserByUserId(User user) {
         return (UserAccount) getSession()
-                .createQuery("FROM UserAccount e where e.userId = :userId")
+                .createQuery("FROM UserAccount e where e.user.id = :userId")
                 .setParameter("userId", user.getId()).uniqueResult();
     }
 }
