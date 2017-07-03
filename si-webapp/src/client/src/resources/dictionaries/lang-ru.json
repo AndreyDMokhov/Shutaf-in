@@ -56,6 +56,11 @@
   "Login.message.success": "Мы рады Вас видеть!",
 
   "SECTION": "LOGOUT",
-  "Logout.button": "Выход"
+  "Logout.button": "Выход",
+
+  "SECTION": "PROFILE",
+  "Profile.title" : "Профиль",
+  "Profile.birthday" : "Дата рождения",
+  "Profile.city" : "Город"
 
 }

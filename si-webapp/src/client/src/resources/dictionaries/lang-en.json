@@ -58,5 +58,12 @@
   "Login.message.success": "We are glad to see You again!",
 
   "SECTION": "LOGOUT",
-  "Logout.button": "Logout"
+  "Logout.button": "Logout",
+
+  "SECTION": "PROFILE",
+  "Profile.title" : "Profile",
+  "Profile.birthday" : "Birthday",
+  "Profile.city" : "Current city"
+
+
 }

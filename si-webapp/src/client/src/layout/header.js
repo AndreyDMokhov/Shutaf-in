@@ -1,4 +1,4 @@
-app.controller("headerController", function (languageService, sessionService, constantService) {
+app.controller("headerController", function (languageService, sessionService, constantService, userInitService) {
 
     var vm = this;
 
@@ -8,6 +8,10 @@ app.controller("headerController", function (languageService, sessionService, co
         constantService.init();
     }
 
+    if (vm.sessionService.isAuthenticated()) {
+        var session_id = localStorage.getItem('session_id');
+        userInitService.init(session_id);
+    }
 
     function setLanguageCode(code) {
         languageService.setLanguage(code);

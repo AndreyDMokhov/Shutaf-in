@@ -1,4 +1,4 @@
-app.controller('loginController', function (loginModel, $filter, $state, notify) {
+app.controller('loginController', function (loginModel, $filter, $state, notify, userInitService) {
 
     var vm = this;
 
@@ -11,8 +11,9 @@ app.controller('loginController', function (loginModel, $filter, $state, notify)
         loginModel.login(vm.loginData).then(
             function (success) {
                 vm.dataLoading = false;
-
+                var session_id = success.headers('session_id')
                 localStorage.setItem("session_id", success.headers('session_id'));
+                    userInitService.init(session_id);
 
                 notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                 $state.go('home');
