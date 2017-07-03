@@ -24,7 +24,7 @@ public class UserInitializationController {
     @RequestMapping(value = "/init", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<String, UserInit> getAll(@RequestHeader(value = "session_id") String sessionId) {
 
-        UserSession userSession = sessionManagementService.findSessionBySessionIdAndIiValid(sessionId);
+        UserSession userSession = sessionManagementService.findValidUserSession(sessionId);
 
         if (userSession == null) {
             throw new AuthenticationException();
