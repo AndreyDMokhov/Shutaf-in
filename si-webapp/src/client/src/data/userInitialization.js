@@ -1,29 +1,35 @@
-app.factory('userInitService', function (Restangular, $q) {
+app.factory('userInitService', function (Restangular, $q, $rootScope) {
     var rest = Restangular.withConfig(function (Configurer) {
         Configurer.setBaseUrl('/api/userInitialization');
     });
 
-    var data = [];
-    var sessionId = localStorage.getItem('session_id');
+    var data = {};
 
     function getUserProfile() {
-        data.userProfile = data.userProfile || JSON.parse(sessionStorage.getItem("userProfile")) || rest.all('userProfile').getList().$object;
+        data.userProfile = data.userProfile || JSON.parse(sessionStorage.getItem("userProfile")) || rest.all('userProfile').get().$object;
+        console.log(data.userProfile);
         return data.userProfile;
     }
 
-    function init(sessionId) {
+    function init() {
+
         var deferred = $q.defer();
+        rest.setDefaultHeaders({'session_id':localStorage.getItem('session_id')});
         data = rest.one("init").withHttpConfig({timeout: 10000});
-        data.customPOST(sessionId).then(
-            function success(success) {
+        data.get().then(
+            function (success) {
                 data.userProfile = success.userProfile;
                 sessionStorage.setItem("userProfile", JSON.stringify(data.userProfile));
+                $rootScope.brand = success.userProfile.firstName +" " + success.userProfile.lastName;
+
+
                 deferred.resolve(data);
             },
-            function error() {
+            function (error) {
                 return deferred.reject();
             }
         );
+
         return deferred.promise;
     }
 

@@ -13,4 +13,5 @@ public interface SessionManagementService {
     List<UserSession> findAllInvalidSessions();
     List<UserSession> findAllInvalidSessions(int numDaysExperation);
     void invalidateAllExpiredSessions();
+    UserSession findSessionBySessionIdAndIiValid(String sessionId);
 }

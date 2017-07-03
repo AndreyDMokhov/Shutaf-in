@@ -41,7 +41,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Override
     @Transactional(readOnly = true)
     public void validate(String sessionId) throws AuthenticationException {
-        UserSession userSession = userSessionRepository.findSessionBySessionIdAndIiValid(sessionId, IS_FALSE);
+        UserSession userSession = userSessionRepository.findSessionBySessionIdAndIiValid(sessionId);
         if (userSession != null){
             throw new AuthenticationException();
         }
@@ -70,5 +70,11 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Transactional
     public void invalidateAllExpiredSessions() {
         userSessionRepository.updateAllValidExpiredSessions();
+    }
+
+    @Override
+    @Transactional
+    public UserSession findSessionBySessionIdAndIiValid(String sessionId) {
+        return userSessionRepository.findSessionBySessionId(sessionId);
     }
 }

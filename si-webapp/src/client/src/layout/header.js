@@ -1,16 +1,17 @@
-app.controller("headerController", function (languageService, sessionService, constantService, userInitService) {
+app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService) {
 
     var vm = this;
 
     vm.sessionService = sessionService;
+    // vm.brand="Shutaf-In";
+    $rootScope.brand = "Shutaf-In";
 
     function init() {
         constantService.init();
     }
 
     if (vm.sessionService.isAuthenticated()) {
-        var session_id = localStorage.getItem('session_id');
-        userInitService.init(session_id);
+        userInitService.init();
     }
 
     function setLanguageCode(code) {

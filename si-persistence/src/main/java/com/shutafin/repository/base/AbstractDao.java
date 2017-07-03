@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Repository
@@ -22,7 +23,13 @@ public abstract class AbstractDao<T> implements Dao<T> {
     }
 
     public AbstractDao() {
-        entityClass =  (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        Type genericSuperclass = getClass().getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType) {
+
+            entityClass = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        } else {
+            entityClass = (Class<T>) Object.class;
+        }
     }
 
     protected Session getSession() {

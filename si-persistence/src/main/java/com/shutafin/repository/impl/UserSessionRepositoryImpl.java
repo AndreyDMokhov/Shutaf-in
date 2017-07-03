@@ -24,11 +24,10 @@ public class UserSessionRepositoryImpl extends AbstractEntityDao<UserSession> im
     }
 
     @Override
-    public UserSession findSessionBySessionIdAndIiValid(String sessionId, boolean isValid) {
+    public UserSession findSessionBySessionIdAndIiValid(String sessionId) {
         return (UserSession) getSession()
-                .createQuery("SELECT e FROM UserSession e where e.sessionId = :sessionId AND e.isValid = :isValid")
+                .createQuery("SELECT e FROM UserSession e where e.sessionId = :sessionId AND e.isValid = 1")
                 .setParameter("sessionId", sessionId)
-                .setParameter("isValid", isValid)
                 .uniqueResult();
     }
 

@@ -1,4 +1,4 @@
-app.controller('userRegistration', function (registrationModel, notify, $state, $filter, userInitService) {
+app.controller('userRegistration', function ($rootScope, registrationModel, notify, $state, $filter, userInitService) {
     var vm = this;
     vm.registrationData = {};
 
@@ -13,7 +13,7 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
                 vm.dataLoading = false;
                 var session_id = success.headers('session_id')
                 localStorage.setItem("session_id", session_id);
-                userInitService.init(session_id);
+                userInitService.init();
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
                 $state.go("home");
             }, function (error) {
