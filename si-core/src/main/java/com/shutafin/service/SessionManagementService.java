@@ -4,9 +4,6 @@ import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
 
-import java.util.Date;
-import java.util.List;
-
 public interface SessionManagementService {
 
     User findUserWithValidSession(String sessionId);

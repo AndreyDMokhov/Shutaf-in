@@ -1,15 +1,14 @@
-package com.shutafin.exception;
+package com.shutafin.controller;
 
+import com.shutafin.exception.AbstractAPIException;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorResponse;
 import com.shutafin.model.web.error.ErrorType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @ControllerAdvice
 public class ExceptionHandlerController {

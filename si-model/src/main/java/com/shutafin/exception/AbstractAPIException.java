@@ -23,6 +23,6 @@ public abstract class AbstractAPIException extends RuntimeException {
         return new ErrorResponse(getMessage(), getErrorType());
     }
 
-    protected abstract ErrorType getErrorType();
+    public abstract ErrorType getErrorType();
 
 }

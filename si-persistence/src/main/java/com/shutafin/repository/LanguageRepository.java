@@ -1,4 +1,4 @@
-package com.shutafin.repository.infrastructure;
+package com.shutafin.repository;
 
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.repository.base.Dao;

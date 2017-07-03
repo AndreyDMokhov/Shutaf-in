@@ -1,4 +1,4 @@
-package com.shutafin.service.initialization;
+package com.shutafin.service;
 
 import java.util.List;
 
