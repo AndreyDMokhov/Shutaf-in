@@ -1,8 +1,8 @@
 package com.shutafin.repository.infrastructure;
 
-import com.shutafin.model.entities.infrastructure.Gender;
-import com.shutafin.repository.base.Dao;
+import com.shutafin.model.entities.infrastructure.locale.GenderLocalized;
+import com.shutafin.repository.base.LocalizedDao;
 
 
-public interface GenderRepository extends Dao<Gender> {
+public interface GenderRepository extends LocalizedDao<GenderLocalized> {
 }

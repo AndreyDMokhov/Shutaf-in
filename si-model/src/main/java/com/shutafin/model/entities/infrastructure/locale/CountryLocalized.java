@@ -1,22 +1,23 @@
-package com.shutafin.model.entities.infrastructure;
+package com.shutafin.model.entities.infrastructure.locale;
 
-import com.shutafin.model.AbstractConstEntity;
+import com.shutafin.model.AbstractLocalizedConstEntity;
+import com.shutafin.model.entities.infrastructure.Country;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "I_CITY")
+@Table(name = "I_COUNTRY_LOCALE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
-public class City extends AbstractConstEntity{
+public class CountryLocalized extends AbstractLocalizedConstEntity {
 
     @JoinColumn(name = "COUNTRY_ID", nullable = false)
     @ManyToOne
     private Country country;
 
-    public City() {
+    public CountryLocalized() {
     }
 
     public Country getCountry() {

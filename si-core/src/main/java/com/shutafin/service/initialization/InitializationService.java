@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface InitializationService {
     List findAllLanguages();
-    List findAllGenders();
-    List findAllCountries();
-    List findAllCities();
+    List findAllGendersByLanguage(Integer languageId);
+    List findAllCountriesByLanguage(Integer languageId);
+    List findAllCitiesByLanguage(Integer languageId);
 }

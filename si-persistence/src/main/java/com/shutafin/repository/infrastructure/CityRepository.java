@@ -1,10 +1,7 @@
 package com.shutafin.repository.infrastructure;
 
-import com.shutafin.model.entities.infrastructure.City;
-import com.shutafin.repository.base.Dao;
+import com.shutafin.model.entities.infrastructure.locale.CityLocalized;
+import com.shutafin.repository.base.LocalizedDao;
 
-/**
- * Created by PC on 02.07.2017.
- */
-public interface CityRepository extends Dao<City> {
+public interface CityRepository extends LocalizedDao<CityLocalized> {
 }

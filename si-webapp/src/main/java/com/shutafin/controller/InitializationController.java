@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -23,9 +24,6 @@ public class InitializationController {
     public Map<String, List> getAll(){
         return new HashMap<String, List>() {{
             put("languages", initializationService.findAllLanguages());
-            put("genders", initializationService.findAllGenders());
-            put("countries", initializationService.findAllCountries());
-            put("cities", initializationService.findAllCities());
         }};
 
     }
@@ -36,17 +34,17 @@ public class InitializationController {
     }
 
     @RequestMapping(value = "/genders", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List getGenders(){
-        return initializationService.findAllGenders();
+    public List getGenders(@RequestParam Integer languageId){
+        return initializationService.findAllGendersByLanguage(languageId);
     }
 
     @RequestMapping(value = "/countries", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List getCountries(){
-        return initializationService.findAllCountries();
+    public List getCountries(@RequestParam Integer languageId){
+        return initializationService.findAllCountriesByLanguage(languageId);
     }
 
     @RequestMapping(value = "/cities", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List getCities(){
-        return initializationService.findAllCities();
+    public List getCities(@RequestParam Integer languageId){
+        return initializationService.findAllCitiesByLanguage(languageId);
     }
 }

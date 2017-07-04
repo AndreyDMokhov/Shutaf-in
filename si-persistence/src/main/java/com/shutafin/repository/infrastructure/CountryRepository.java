@@ -1,8 +1,8 @@
 package com.shutafin.repository.infrastructure;
 
-import com.shutafin.model.entities.infrastructure.Country;
-import com.shutafin.repository.base.Dao;
+import com.shutafin.model.entities.infrastructure.locale.CountryLocalized;
+import com.shutafin.repository.base.LocalizedDao;
 
 
-public interface CountryRepository extends Dao<Country> {
+public interface CountryRepository extends LocalizedDao<CountryLocalized> {
 }

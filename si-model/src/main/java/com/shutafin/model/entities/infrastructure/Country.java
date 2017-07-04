@@ -12,18 +12,7 @@ import javax.persistence.*;
 @Cacheable
 public class Country extends AbstractConstEntity {
 
-    @JoinColumn(name = "LANGUAGE_ID", nullable = false)
-    @ManyToOne
-    private Language language;
-
     public Country() {
     }
 
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
 }
