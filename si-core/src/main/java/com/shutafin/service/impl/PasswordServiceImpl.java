@@ -2,18 +2,20 @@ package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.UserCredentials;
 import com.shutafin.repository.UserCredentialsRepository;
 import com.shutafin.service.PasswordService;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-/**
- * Created by Rogov on 04.07.2017.
- */
+@Service
+@Transactional
 public class PasswordServiceImpl implements PasswordService {
 
     private static final int SALT_LEN = 16;
@@ -27,15 +29,15 @@ public class PasswordServiceImpl implements PasswordService {
     private UserCredentialsRepository userCredentialsRepository;
 
     @Override
+    @Transactional
     public void saveUserPasswordToDb(User user, String password) {
         Argon2 argon2 = Argon2Factory.create();
         String salt = generateSalt();
         String hash = argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password+SALT+salt);
-
-        System.out.println(salt+" "+hash);
-
-        userCredentialsRepository.findUserByUserId(user);
-
+        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
+        userCredentials.setPasswordHash(hash);
+        userCredentials.setPasswordSalt(salt);
+        userCredentialsRepository.update(userCredentials);
     }
 
     private String generateSalt() {
@@ -47,11 +49,14 @@ public class PasswordServiceImpl implements PasswordService {
 
 
     @Override
+    @Transactional
     public void checkUserPassword(User user, String password) throws AuthenticationException {
         Argon2 argon2 = Argon2Factory.create();
-
-
+        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
+        String hash = userCredentials.getPasswordHash();
+        String salt = userCredentials.getPasswordSalt();
+        if(!argon2.verify(hash, password+SALT+salt)){
+            throw new AuthenticationException();
+        }
     }
-
-
 }
