@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by usera on 6/29/2017.
@@ -42,7 +43,8 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
             throw new AuthenticationException();
         }
         User user = userSession.getUser();
-        if (updateLanguage(user, userAccountSettingsWeb) || updateFirstLastNames(user, userAccountSettingsWeb)) {
+        updateLanguage(user, userAccountSettingsWeb);
+        if (updateFirstLastNames(user, userAccountSettingsWeb)) {
             userRepository.update(user);
         }
     }
@@ -51,12 +53,6 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
         String firstName = userAccountSettingsWeb.getFirstName();
         String lastNameWeb = userAccountSettingsWeb.getLastName();
         if(!user.getFirstName().equals(firstName) && !user.getLastName().equals(lastNameWeb)) {
-            if (user.getFirstName().equals(firstName)) {
-                user.setLastName(lastNameWeb);
-            }
-            if (user.getLastName().equals(lastNameWeb)) {
-                user.setFirstName(firstName);
-            }
             user.setFirstName(firstName);
             user.setLastName(lastNameWeb);
             return true;
@@ -64,17 +60,19 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
         return false;
     }
 
-    private boolean updateLanguage(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
-        String languageId = userAccountSettingsWeb.getLanguageId();
+    private void updateLanguage(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
+        String languageId = userAccountSettingsWeb.getLanguageId(); //"ru"
         UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
         String languageDB = userAccount.getLanguage().getDescription();
         if (!languageDB.equals(languageId)){
-            Language language = languageRepository.findById(languageId);
-            userAccount.setLanguage(language);
+            List<Language> languages = languageRepository.findAll();
+            for (Language language: languages) {
+                if(language.getDescription().equals(languageId)){
+                    userAccount.setLanguage(language);
+                }
+            }
             userAccountRepository.update(userAccount);
-            return true;
         }
-        return false;
     }
 
     @Override
