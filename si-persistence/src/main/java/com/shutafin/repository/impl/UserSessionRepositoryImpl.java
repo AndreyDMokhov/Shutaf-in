@@ -20,38 +20,53 @@ public class UserSessionRepositoryImpl extends AbstractEntityDao<UserSession> im
         return (UserSession) getSession()
                 .createQuery("SELECT e FROM UserSession e where e.sessionId = :sessionId")
                 .setParameter("sessionId", sessionId)
+                .setCacheable(true)
                 .uniqueResult();
     }
 
     @Override
-    public UserSession findSessionBySessionIdAndIiValid(String sessionId, boolean isValid) {
+    public UserSession findSessionBySessionIdAndIsValid(String sessionId, boolean isValid) {
         return (UserSession) getSession()
-                .createQuery("SELECT e FROM UserSession e where e.sessionId = :sessionId AND e.isValid = :isValid")
+                .createQuery("SELECT e FROM UserSession e WHERE e.sessionId = :sessionId AND e.isValid = :isValid")
                 .setParameter("sessionId", sessionId)
                 .setParameter("isValid", isValid)
+                .setCacheable(true)
                 .uniqueResult();
     }
 
     @Override
-    public int updateIsValidAllSessionsByUser(User user) {
+    public User findUserBySessionIdAndIsValid(String sessionId, boolean isValid) {
+        return (User) getSession()
+                .createQuery("SELECT e.user FROM UserSession e WHERE e.sessionId = :sessionId AND e.isValid = :isValid")
+                .setParameter("sessionId", sessionId)
+                .setParameter("isValid", isValid)
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
+    @Override
+    public UserSession findSessionBySessionIdAndInValid(String sessionId, boolean isValid) {
+        return (UserSession) getSession()
+                .createQuery("SELECT e FROM UserSession e WHERE e.sessionId = :sessionId AND e.isValid = :isValid")
+                .setParameter("sessionId", sessionId)
+                .setParameter("isValid", isValid)
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
+   @Override
+    public int updateAllValidExpiredSessions() {
         return getSession()
-                .createQuery("update UserSession e set e.isValid = false where e.user = :user")
-                .setParameter("user", user)
+                .createQuery("UPDATE UserSession e SET e.isValid = false WHERE e.expirationDate < :date")
+                .setParameter("date", new Date())
                 .executeUpdate();
     }
 
     @Override
-    public List<UserSession> findAllInvalidSessions(Date date) {
-        return (List<UserSession>) getSession()
-                .createQuery("FROM UserSession e where e.expirationDate < :date")
-                .setParameter("date", date)
-                .list();
-    }
-
-    @Override
-    public int updateAllValidExpiredSessions() {
+    public int deleteAllInvalidSessions(Date date) {
         return getSession()
-                .createQuery("update UserSession e set e.isValid = false where e.isExpirable = true")
+                .createQuery("DELETE FROM UserSession e WHERE e.isValid = false AND e.expirationDate < :date")
+                .setParameter("date", date)
                 .executeUpdate();
     }
 

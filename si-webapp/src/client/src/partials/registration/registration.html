@@ -5,7 +5,7 @@
              ng-class="{
                 'has-error':  form.firstName.$dirty && !form.firstName.$valid }">
 
-            <label for="firstName">{{"Registration.form.firstName"|translate}}</label>
+            <label class="required" for="firstName">{{"Registration.form.firstName"|translate}}</label>
             <input type="text"
                    name="firstName"
                    id="firstName"
@@ -29,7 +29,7 @@
              ng-class="{
                 'has-error': form.lastName.$dirty && form.lastName.$error.required
                     || form.lastName.$dirty && !form.lastName.$valid }">
-            <label for="lastName">{{"Registration.form.lastName"|translate}}</label>
+            <label class="required" for="lastName">{{"Registration.form.lastName"|translate}}</label>
             <input type="text"
                    name="lastName"
                    id="lastName"
@@ -53,7 +53,7 @@
              ng-class="{
              'has-error': form.email.$dirty && form.email.$error.email || form.email.$dirty && form.email.$invalid}">
 
-            <label for="email">{{"Registration.form.email"|translate}}</label>
+            <label class="required" for="email">{{"Registration.form.email"|translate}}</label>
             <input type="email"
                    name="email"
                    id="email"
@@ -76,7 +76,7 @@
         <div class="form-group"
              ng-class="{
                 'has-error': form.password.$dirty && form.password.$invalid }">
-            <label for="password">{{"Registration.form.password"|translate}}</label>
+            <label class="required" for="password">{{"Registration.form.password"|translate}}</label>
             <input type="password"
                    name="password"
                    id="password"
@@ -99,7 +99,7 @@
         <div class="form-group"
              ng-class="{
                     'has-error': form.confirmPassword.$dirty && form.confirmPassword.$error.required || form.password.$modelValue !== form.confirmPassword.$modelValue && !form.confirmPassword.$error.required}">
-            <label for="confirmPassword">{{"Registration.form.confirmPassword"|translate}}</label>
+            <label class="required" for="confirmPassword">{{"Registration.form.confirmPassword"|translate}}</label>
             <input type="password"
                    name="confirmPassword"
                    id="confirmPassword"
