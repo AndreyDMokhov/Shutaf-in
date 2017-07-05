@@ -50,14 +50,14 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
     }
 
     private boolean updateFirstLastNames(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
-        String firstName = userAccountSettingsWeb.getFirstName();
+        String firstNameWeb = userAccountSettingsWeb.getFirstName();
         String lastNameWeb = userAccountSettingsWeb.getLastName();
-        if(!user.getFirstName().equals(firstName) && !user.getLastName().equals(lastNameWeb)) {
-            user.setFirstName(firstName);
-            user.setLastName(lastNameWeb);
-            return true;
+        if(user.getFirstName().equals(firstNameWeb) && user.getLastName().equals(lastNameWeb)) {
+            return false;
         }
-        return false;
+        user.setFirstName(firstNameWeb);
+        user.setLastName(lastNameWeb);
+        return true;
     }
 
     private void updateLanguage(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
