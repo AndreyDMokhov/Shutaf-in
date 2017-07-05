@@ -18,8 +18,7 @@ import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -78,14 +77,11 @@ public class RegistrationServiceImpl implements RegistrationService{
         User user = new User();
         user.setFirstName(registrationRequestWeb.getFirstName());
         user.setLastName(registrationRequestWeb.getLastName());
-
         String email = registrationRequestWeb.getEmail();
         if (userRepository.findUserByEmail(email) != null){
             throw new EmailNotUniqueValidationException("Email " + email + " exist!");
-        }else {
-            user.setEmail(email);
         }
-
+        user.setEmail(email);
         userRepository.save(user);
         return user;
     }
