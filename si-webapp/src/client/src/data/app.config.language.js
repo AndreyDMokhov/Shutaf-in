@@ -1,4 +1,4 @@
-app.factory('languageService', function ($translate, CACHED_LANGUAGE, $state) {
+app.factory('languageService', function ($translate, CACHED_LANGUAGE) {
 
     function setLanguage(code) {
         if (code === undefined || code === null) {

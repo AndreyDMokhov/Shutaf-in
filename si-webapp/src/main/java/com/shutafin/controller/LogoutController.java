@@ -22,7 +22,7 @@ public class LogoutController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void logout(HttpServletRequest request) {
         String sessionId = request.getHeader("session_id");
-        if (!StringUtils.isBlank(sessionId) && sessionId.length() < MIN_LENGTH_SESSION_ID) {
+        if (StringUtils.isBlank(sessionId) || sessionId.length() < MIN_LENGTH_SESSION_ID) {
             throw new AuthenticationException();
         }
         logoutService.logout(sessionId);

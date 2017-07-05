@@ -6,7 +6,7 @@
              ng-class="{
                     'has-error': loginForm.email.$invalid && loginForm.email.$dirty,
                     'has-success': loginForm.email.$valid }">
-            <label for="email">{{'Login.form.email' | translate}}</label>
+            <label class="required" for="email">{{'Login.form.email' | translate}}</label>
             <input  value="email"
                     class="form-control"
                     ng-maxLength="50"
@@ -23,7 +23,7 @@
         <div ng-class="{
                     'has-error': loginForm.password.$invalid && loginForm.password.$dirty,
                     'has-success': loginForm.password.$valid}">
-            <label for="password">{{'Login.form.password' | translate}}</label>
+            <label class="required" for="password">{{'Login.form.password' | translate}}</label>
             <input type="password"
                    class="form-control"
                    name="password"

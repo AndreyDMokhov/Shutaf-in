@@ -1,7 +1,10 @@
 package com.shutafin.model.entities.infrastructure;
 
 import com.shutafin.model.AbstractConstEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,6 +14,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "I_LANGUAGE")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
 public class Language extends AbstractConstEntity {
     @Column(name = "LANGUAGE_NATIVE_NAME", nullable = false, length = 100)
     private String languageNativeName;
