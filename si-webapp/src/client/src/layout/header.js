@@ -1,10 +1,9 @@
-app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService) {
+app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter) {
 
     var vm = this;
 
     vm.sessionService = sessionService;
-    // vm.brand="Shutaf-In";
-    $rootScope.brand = "Shutaf-In";
+    $rootScope.brand = ($filter('translate')("Header.brand"));
 
     function init() {
         constantService.init();

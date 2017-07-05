@@ -13,7 +13,6 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
                 vm.dataLoading = false;
                 localStorage.setItem("session_id", success.headers('session_id'));
                  userInitService.init();
-                // $rootScope.brand = JSON.parse(sessionStorage.getItem("userProfile")).firstName
                 notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                 $state.go('home');
             }, function (error) {

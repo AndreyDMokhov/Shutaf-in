@@ -29,12 +29,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/users"
             })
-        .state("profile",
+        .state("userProfile",
             {
                 templateUrl: "partials/userProfilePage/userProfilePage.html",
                 controller: "userProfilePage",
                 controllerAs: "vm",
-                url: "/profile"
+                url: "/userProfile"
             })
 
         .state("login",

@@ -1,4 +1,4 @@
-app.controller('logoutController', function ($rootScope, logoutModel, $window, $state) {
+app.controller('logoutController', function ($rootScope, logoutModel, $window, $state,$filter) {
 
     function logout() {
         logoutModel.logout().then(function (success) {
@@ -8,7 +8,7 @@ app.controller('logoutController', function ($rootScope, logoutModel, $window, $
         });
         localStorage.removeItem('session_id');
         sessionStorage.removeItem('userProfile');
-    $rootScope.brand = "Shutaf-In";
+    $rootScope.brand = ($filter('translate')('Header.brand'));
     }
 
    logout();

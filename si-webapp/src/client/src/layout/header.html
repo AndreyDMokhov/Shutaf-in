@@ -21,8 +21,8 @@
                     <a ui-sref="users">{{'Users.title' | translate}}</a>
                 </li>
 
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('profile' | includedByState)}">
-                    <a ui-sref="profile">{{'Profile.title' | translate}}</a>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userProfile' | includedByState)}">
+                    <a ui-sref="userProfile">{{'Profile.title' | translate}}</a>
                 </li>
 
             </ul>
