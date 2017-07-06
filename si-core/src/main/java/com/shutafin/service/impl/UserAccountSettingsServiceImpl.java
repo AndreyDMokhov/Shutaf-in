@@ -2,7 +2,6 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.user.UserAccountSettingsWeb;
 import com.shutafin.repository.UserAccountRepository;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.Date;
 import java.util.List;
 
 /**
