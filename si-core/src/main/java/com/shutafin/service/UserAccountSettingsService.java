@@ -1,5 +1,6 @@
 package com.shutafin.service;
 
+import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserAccountSettingsWeb;
 
 /**
@@ -8,7 +9,7 @@ import com.shutafin.model.web.user.UserAccountSettingsWeb;
 public interface UserAccountSettingsService {
 
 
-    void save(UserAccountSettingsWeb userAccountSettingsWeb, String sessionId);
+    void save(UserAccountSettingsWeb userAccountSettingsWeb, User user);
 
-    UserAccountSettingsWeb get (String sessionId);
+    UserAccountSettingsWeb get (User user);
 }

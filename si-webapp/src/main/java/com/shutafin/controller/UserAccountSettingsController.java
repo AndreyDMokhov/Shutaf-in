@@ -2,7 +2,9 @@ package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserAccountSettingsWeb;
+import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserAccountSettingsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class UserAccountSettingsController {
     @Autowired
     UserAccountSettingsService userAccountSettingsService;
 
+    @Autowired
+    SessionManagementService sessionManagementService;
+
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserAccountSettingsWeb get(HttpServletRequest request) {
@@ -32,7 +37,8 @@ public class UserAccountSettingsController {
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }
-        UserAccountSettingsWeb userAccountSettingsWeb = userAccountSettingsService.get(sessionId);
+        User user = sessionManagementService.findUserWithValidSession(sessionId);
+        UserAccountSettingsWeb userAccountSettingsWeb = userAccountSettingsService.get(user);
         return userAccountSettingsWeb;
     }
 
@@ -45,7 +51,8 @@ public class UserAccountSettingsController {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        userAccountSettingsService.save(userAccountSettingsWeb, sessionId);
+        User user = sessionManagementService.findUserWithValidSession(sessionId);
+        userAccountSettingsService.save(userAccountSettingsWeb, user);
     }
 
 }
