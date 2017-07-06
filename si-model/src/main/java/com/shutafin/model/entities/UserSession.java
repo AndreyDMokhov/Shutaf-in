@@ -1,15 +1,19 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
-/**
- * Created by evgeny on 6/20/2017.
- */
+
 @Entity
 @Table(name = "USER_SESSION")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 public class UserSession extends AbstractEntity {
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
     @ManyToOne
