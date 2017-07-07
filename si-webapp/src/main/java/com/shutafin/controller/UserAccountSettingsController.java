@@ -30,20 +30,20 @@ public class UserAccountSettingsController {
     @Autowired
     SessionManagementService sessionManagementService;
 
-
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserAccountSettingsWeb get(HttpServletRequest request) {
+    public UserAccountSettingsWeb getCurrentAccountSettingsWeb(HttpServletRequest request) {
         String sessionId = request.getHeader("session_id");
+        System.out.println(sessionId);
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }
         User user = sessionManagementService.findUserWithValidSession(sessionId);
-        UserAccountSettingsWeb userAccountSettingsWeb = userAccountSettingsService.get(user);
+        UserAccountSettingsWeb userAccountSettingsWeb = userAccountSettingsService.getCurrentAccountSettings(user);
         return userAccountSettingsWeb;
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void save(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb, HttpServletRequest request, BindingResult result) {
+    public void saveNewAccountSettingsWeb(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb, HttpServletRequest request, BindingResult result) {
         String sessionId = request.getHeader("session_id");
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
@@ -52,7 +52,7 @@ public class UserAccountSettingsController {
             throw new InputValidationException(result);
         }
         User user = sessionManagementService.findUserWithValidSession(sessionId);
-        userAccountSettingsService.save(userAccountSettingsWeb, user);
+        userAccountSettingsService.saveNewAccountSettings(userAccountSettingsWeb, user);
     }
 
 }

@@ -30,46 +30,45 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
     @Autowired
     private LanguageRepository languageRepository;
 
+        @Override
+    @Transactional
+    public UserAccountSettingsWeb getCurrentAccountSettings(User user) {
+        UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
+        Language language = userAccount.getLanguage();
+        return new UserAccountSettingsWeb(user.getFirstName(), user.getLastName(), language.getDescription());
+    }
+
     @Override
     @Transactional
-    public void save(UserAccountSettingsWeb userAccountSettingsWeb, User user) {
-        if (updateFirstLastNames(user, userAccountSettingsWeb)) {
-            userRepository.update(user);
-        }
+    public void saveNewAccountSettings(UserAccountSettingsWeb userAccountSettingsWeb, User user) {
+        updateFirstLastNames(user, userAccountSettingsWeb);
         updateLanguage(user, userAccountSettingsWeb);
     }
 
-    private boolean updateFirstLastNames(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
+    private void updateFirstLastNames(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
         String firstNameWeb = userAccountSettingsWeb.getFirstName();
         String lastNameWeb = userAccountSettingsWeb.getLastName();
-        if(user.getFirstName().equals(firstNameWeb) && user.getLastName().equals(lastNameWeb)) {
-            return false;
+        if (user.getFirstName().equals(firstNameWeb) && user.getLastName().equals(lastNameWeb)) {
+            return;
         }
         user.setFirstName(firstNameWeb);
         user.setLastName(lastNameWeb);
-        return true;
+        userRepository.update(user);
+
     }
 
     private void updateLanguage(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
-        String languageId = userAccountSettingsWeb.getLanguageId();
+        String languageDes = userAccountSettingsWeb.getLanguageDes();
         UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
         String languageDB = userAccount.getLanguage().getDescription();
-        if (!languageDB.equals(languageId)){
+        if (!languageDB.equals(languageDes)) {
             List<Language> languages = languageRepository.findAll();
-            for (Language language: languages) {
-                if(language.getDescription().equals(languageId)){
+            for (Language language : languages) {
+                if (language.getDescription().equals(languageDes)) {
                     userAccount.setLanguage(language);
                 }
             }
             userAccountRepository.update(userAccount);
         }
-    }
-
-    @Override
-    @Transactional
-    public UserAccountSettingsWeb get(User user) {
-        UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
-        Language language = userAccount.getLanguage();
-        return new UserAccountSettingsWeb(user.getFirstName(), user.getLastName(), language.getDescription());
     }
 }

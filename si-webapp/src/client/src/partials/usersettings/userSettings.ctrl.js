@@ -14,7 +14,7 @@ app.controller('userSettingsController', function (userSettingsModel, languageSe
         userSettingsModel.getCurrentUserData().then(
             function (success) {
                 vm.accountSettings = success;
-                languageService.setLanguage(vm.accountSettings.languageId);
+                languageService.setLanguage(vm.accountSettings.languageDes);
             }, function (error) {
                 console.log(error);
             });
@@ -22,7 +22,7 @@ app.controller('userSettingsController', function (userSettingsModel, languageSe
 
     function saveNewUserData() {
           vm.dataLoading = true;
-        vm.accountSettings.languageId = localStorage.getItem(CACHED_LANGUAGE);
+        vm.accountSettings.languageDes = localStorage.getItem(CACHED_LANGUAGE);
             userSettingsModel.saveNewUserData(vm.accountSettings).then(
                 function (success) {
                     vm.dataLoading = false;
@@ -37,7 +37,6 @@ app.controller('userSettingsController', function (userSettingsModel, languageSe
                 });
 
     }
-
 
     activate();
 

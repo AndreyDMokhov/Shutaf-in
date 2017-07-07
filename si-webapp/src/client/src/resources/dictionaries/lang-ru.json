@@ -59,7 +59,7 @@
   "Logout.button": "Выход",
 
   "SECTION": "USERSETTINGS",
-  "UserSettings.title": "Настройки",
+  "UserSettings.title": "Настройки Пользователя",
   "UserSettings.form.firstName":"Ваше Имя",
   "UserSettings.form.lastName":"Ваша Фамилия",
   "UserSettings.form.button.save":"Сохранить",

@@ -5,7 +5,6 @@ app.factory('userSettingsModel', function (Restangular) {
         RestangularProvider.setDefaultHeaders({'session_id':localStorage.getItem('session_id')});
     });
 
-
     function getCurrentUserData(params) {
         return rest.one('/get').customGET(params);
     }
@@ -13,7 +12,6 @@ app.factory('userSettingsModel', function (Restangular) {
     function saveNewUserData(params) {
         return  rest.one('/save').customPUT(params);
     }
-
 
     return {
         getCurrentUserData: getCurrentUserData,

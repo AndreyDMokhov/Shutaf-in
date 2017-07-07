@@ -18,15 +18,15 @@ public class UserAccountSettingsWeb implements DataResponse {
     private String lastName;
 
     @NotBlank
-    private String languageId;
+    private String languageDes;
 
     public UserAccountSettingsWeb() {
     }
 
-    public UserAccountSettingsWeb(String firstName, String lastName, String languageId) {
+    public UserAccountSettingsWeb(String firstName, String lastName, String languageDes) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.languageId = languageId;
+        this.languageDes = languageDes;
     }
 
     public String getFirstName() {
@@ -45,7 +45,7 @@ public class UserAccountSettingsWeb implements DataResponse {
         this.lastName = lastName;
     }
 
-    public String getLanguageId() {return languageId;}
+    public String getLanguageDes() {return languageDes;}
 
-    public void setLanguageId(String languageId) {this.languageId = languageId;}
+    public void setLanguageDes(String languageDes) {this.languageDes = languageDes;}
 }
