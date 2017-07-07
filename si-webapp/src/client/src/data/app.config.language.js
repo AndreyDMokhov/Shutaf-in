@@ -1,4 +1,4 @@
-app.factory('languageService', function ($translate, CACHED_LANGUAGE, Restangular) {
+app.factory('languageService', function ($translate, CACHED_LANGUAGE, CACHED_LANGUAGE_ID, Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
@@ -11,7 +11,13 @@ app.factory('languageService', function ($translate, CACHED_LANGUAGE, Restangula
     }
 
     function updateUserLanguage(params) {
-        rest.setDefaultHeaders({"session_id" : localStorage.getItem("session_id")});
+        localStorage.setItem(CACHED_LANGUAGE_ID, params.languageId);
+
+        var sessionId = localStorage.getItem("session_id");
+        if (sessionId === undefined || sessionId === null){
+            return;
+        }
+        rest.setDefaultHeaders({"session_id" : sessionId});
         return rest.one('/language').customPUT(params);
     }
 

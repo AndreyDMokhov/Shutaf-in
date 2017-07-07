@@ -20,8 +20,6 @@ public class UserLanguageServiceImpl implements UserLanguageService {
 
     @Autowired
     private UserAccountRepository userAccountRepository;
-    @Autowired
-    private UserSessionRepository userSessionRepository;
 
     @Override
     @Transactional(readOnly = true)

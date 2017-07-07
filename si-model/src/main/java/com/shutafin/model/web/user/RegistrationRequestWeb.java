@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Min;
 
 public class RegistrationRequestWeb implements DataResponse {
 
@@ -26,14 +26,18 @@ public class RegistrationRequestWeb implements DataResponse {
     @Length(min=8, max=25)
     private String password;
 
+    @Min(value = 1)
+    private Integer userLanguageId;
+
     public RegistrationRequestWeb() {
     }
 
-    public RegistrationRequestWeb(String firstName, String lastName, String email, String password) {
+    public RegistrationRequestWeb(String firstName, String lastName, String email, String password, Integer userLanguageId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.userLanguageId = userLanguageId;
     }
 
     public String getFirstName() {
@@ -66,5 +70,13 @@ public class RegistrationRequestWeb implements DataResponse {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getUserLanguageId() {
+        return userLanguageId;
+    }
+
+    public void setUserLanguageId(Integer userLanguageId) {
+        this.userLanguageId = userLanguageId;
     }
 }
