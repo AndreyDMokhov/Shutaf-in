@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> implements UserAccountRepository {
     @Override
-    public Language getUserLanguage(User user) {
+    public Language findUserLanguage(User user) {
         return (Language) getSession()
                 .createQuery("SELECT u.language FROM UserAccount u WHERE u.user = :user")
                 .setParameter("user", user)
@@ -24,7 +24,7 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
     @Override
     public void updateUserLanguage(Integer languageId, User user) {
         getSession()
-                .createQuery("UPDATE UserAccount SET language_id = :languageId WHERE user_id = :userId")
+                .createQuery("UPDATE UserAccount SET language.id = :languageId WHERE user.id = :userId")
                 .setParameter("languageId", languageId)
                 .setParameter("userId", user.getId())
         .executeUpdate();

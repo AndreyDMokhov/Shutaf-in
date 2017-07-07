@@ -8,8 +8,6 @@ import com.shutafin.model.web.account.UserLanguageWeb;
  * Created by evgeny on 6/26/2017.
  */
 public interface UserLanguageService {
-    Language get(String sessionId);
-    void update(UserLanguageWeb userAccount, String sessionId);
-    void update(UserLanguageWeb userAccount, User user);
-    UserLanguageWeb findById(Long id);
+    Language findUserLanguage(User user);
+    void updateUserLanguage(UserLanguageWeb userAccount, User user);
 }
