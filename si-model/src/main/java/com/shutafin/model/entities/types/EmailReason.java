@@ -5,19 +5,25 @@ package com.shutafin.model.entities.types;
  * 03 / Jul / 2017
  */
 public enum EmailReason {
-    REGISTRATION_CONFIRMATION(1),
-    CHANGE_EMAIL(2),
-    CHANGE_PASSWORD(3),
-    RESET_PASSWORD(4);
+    REGISTRATION_CONFIRMATION(1, "registration"),
+    CHANGE_EMAIL(2, "changeEmail"),
+    CHANGE_PASSWORD(3, "changePassword"),
+    RESET_PASSWORD(4, "resetPassword");
 
     private Integer id;
+    private String propertyPrefix;
 
-    EmailReason(Integer id) {
+    EmailReason(Integer id, String propertyPrefix) {
         this.id = id;
+        this.propertyPrefix = propertyPrefix;
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public String getPropertyPrefix() {
+        return propertyPrefix;
     }
 
     public static EmailReason getById(Integer id) {

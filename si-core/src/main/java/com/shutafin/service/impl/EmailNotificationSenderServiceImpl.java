@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.Serializable;
 
 /**
  * Created by Edward Kats.
@@ -39,9 +38,11 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
     @Override
     @Transactional
     public void sendEmail(EmailMessage emailMessage, EmailReason emailReason) {
-        EmailTemplateHelper helper = new EmailTemplateHelper();
         BaseTemplate baseTemplate = emailMessage.getMailTemplate();
+
+        EmailTemplateHelper helper = new EmailTemplateHelper();
         String messageContent = helper.getMessageContent(baseTemplate.getTokenValueMap(), baseTemplate.getHtmlTemplate());
+
         String emailTo = emailMessage.getUser().getEmail();
 
 
@@ -52,8 +53,9 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
                                                                         emailReason);
 
         try {
-            mailSender.send(getMimeMessage(emailTo, messageContent, baseTemplate.getHeader()));
+            mailSender.send(getMimeMessage(emailTo, messageContent, baseTemplate.getEmailHeader()));
         } catch (Exception e) {
+            e.printStackTrace();
             emailNotificationLog.setSendFailed(Boolean.TRUE);
             emailNotificationLogRepository.update(emailNotificationLog);
             throw new EmailSendException();
@@ -82,15 +84,8 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
     private EmailNotificationLog getEmailNotificationLog(String html, String emailTo, User user, EmailReason emailReason) {
 
         EmailNotificationLog emailNotificationLog = new EmailNotificationLog();
-        //todo create a proper object to serialize to database
-        emailNotificationLog.setEmailContentJson(
-                                    new JsonConverterHelper<>().getJson(new Object() {
 
-                                        public String getContent() {
-                                            return html;
-                                        }
-                                    })
-        );
+        emailNotificationLog.setEmailContent(html);
 
         emailNotificationLog.setEmailReason(emailReason);
         emailNotificationLog.setSendFailed(Boolean.FALSE);

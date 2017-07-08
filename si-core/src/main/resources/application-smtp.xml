@@ -13,6 +13,7 @@
         <property name="port" value="${mail.smtp.port}"/>
         <property name="username" value="shutafin@gmail.com"/>
         <property name="password" value="shutafin2017k"/>
+        <property name="defaultEncoding" value="UTF-8"/>
         <property name="javaMailProperties" >
             <value>
                 mail.smtp.auth=${mail.smtp.auth}

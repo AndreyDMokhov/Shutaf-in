@@ -24,9 +24,9 @@ public class EmailNotificationLog extends AbstractEntity {
     @Column(name = "IS_SEND_FAILED")
     private Boolean isSendFailed;
 
-    @Column(name = "EMAIL_CONTENT_JSON", nullable = false)
+    @Column(name = "EMAIL_CONTENT", nullable = false)
     @Lob
-    private String emailContentJson;
+    private String emailContent;
 
     @Column(name = "EMAIL_REASON_ID", nullable = false)
     @Convert(converter = EmailReasonConverter.class)
@@ -59,12 +59,12 @@ public class EmailNotificationLog extends AbstractEntity {
         isSendFailed = sendFailed;
     }
 
-    public String getEmailContentJson() {
-        return emailContentJson;
+    public String getEmailContent() {
+        return emailContent;
     }
 
-    public void setEmailContentJson(String emailContentJson) {
-        this.emailContentJson = emailContentJson;
+    public void setEmailContent(String emailContent) {
+        this.emailContent = emailContent;
     }
 
     public EmailReason getEmailReason() {
