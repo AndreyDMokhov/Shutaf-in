@@ -22,7 +22,7 @@ public class UserInitializationRepositoryImpl extends AbstractEntityDao implemen
         hql.append(" ua.language.id ");
         hql.append(" ) ");
         hql.append(" from UserAccount ua ");
-        hql.append(" where ua.id =:id ");
+        hql.append(" where ua.user.id =:id ");
 
         return (UserInit) getSession()
                             .createQuery(hql.toString())

@@ -9,11 +9,11 @@ app.controller('userRegistration', function ($rootScope, registrationModel, noti
     function registerUser() {
         console.log(vm.registrationData);
         vm.dataLoading = true;
-        vm.registrationData[CACHED_LANGUAGE_ID] = localStorage.getItem(CACHED_LANGUAGE_ID);
+        vm.registrationData.userLanguageId = parseInt(localStorage.getItem(CACHED_LANGUAGE_ID));
         registrationModel.registerUser(vm.registrationData).then(
             function (success) {
                 vm.dataLoading = false;
-                var session_id = success.headers('session_id')
+                var session_id = success.headers('session_id');
                 localStorage.setItem("session_id", session_id);
                 userInitService.init();
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});

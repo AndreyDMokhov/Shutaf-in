@@ -7,7 +7,7 @@ app.controller('logoutController', function ($rootScope, logoutModel, $window, $
             $state.go('home');
         });
         localStorage.removeItem('session_id');
-        languageService.setLanguage(null);  //set default GUI language
+        languageService.setDefaultLanguage();  //set default GUI language
         sessionStorage.removeItem('userProfile');
     $rootScope.brand = ($filter('translate')('Header.brand'));
     }

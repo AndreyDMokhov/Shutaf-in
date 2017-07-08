@@ -17,8 +17,7 @@ app.controller("headerController", function ($rootScope, languageService, sessio
 
 
     function setLanguageCode(code, id) {
-        languageService.setLanguage(code);
-        languageService.updateUserLanguage({"languageId" : id});
+        languageService.updateUserLanguage({"id" : id, "description" : code});
     }
 
     init();

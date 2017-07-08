@@ -1,11 +1,9 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.account.UserLanguageWeb;
 import com.shutafin.repository.UserAccountRepository;
-import com.shutafin.repository.UserSessionRepository;
 import com.shutafin.service.UserLanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +31,7 @@ public class UserLanguageServiceImpl implements UserLanguageService {
     @Override
     @Transactional
     public void updateUserLanguage(UserLanguageWeb userLanguageWeb, User user) {
-        userAccountRepository.updateUserLanguage(userLanguageWeb.getLanguageId(), user);
+        userAccountRepository.updateUserLanguage(userLanguageWeb.getId(), user);
     }
 
 }
