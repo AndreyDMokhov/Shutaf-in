@@ -1,4 +1,4 @@
-app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, userInitService, $q) {
+app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService) {
 
     var vm = this;
 
@@ -15,6 +15,17 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
                  userInitService.init();
                 notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                 $state.go('home');
+
+                languageService.getUserLanguage().then(
+                    function(result){//success
+                        languageService.setLanguage(result.data.description);
+                    },
+                    function(err){//fail
+                        console.log(err);
+                        return err;
+                    }
+                );
+
             }, function (error) {
 
                 vm.dataLoading = false;

@@ -1,4 +1,5 @@
-app.controller('userRegistration', function ($rootScope, registrationModel, notify, $state, $filter, userInitService) {
+app.controller('userRegistration', function ($rootScope, registrationModel, notify, $state, $filter, userInitService, CACHED_LANGUAGE_ID) {
+
     var vm = this;
     vm.registrationData = {};
 
@@ -8,6 +9,7 @@ app.controller('userRegistration', function ($rootScope, registrationModel, noti
     function registerUser() {
         console.log(vm.registrationData);
         vm.dataLoading = true;
+        vm.registrationData[CACHED_LANGUAGE_ID] = localStorage.getItem(CACHED_LANGUAGE_ID);
         registrationModel.registerUser(vm.registrationData).then(
             function (success) {
                 vm.dataLoading = false;

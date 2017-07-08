@@ -18,8 +18,7 @@ import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -49,7 +48,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Transactional
     public String save(RegistrationRequestWeb registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
-        saveUserAccount(user);
+        saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         return sessionManagementService.generateNewSession(user);
     }
@@ -62,14 +61,18 @@ public class RegistrationServiceImpl implements RegistrationService{
         userCredentialsRepository.save(userCredentials);
     }
 
-    private void saveUserAccount(User user){
+    private void saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb){
         UserAccount userAccount = new UserAccount();
         userAccount.setUser(user);
         AccountStatus accountStatus = accountStatusRepository.findById(ACCOUNT_STATUS_ID);
         userAccount.setAccountStatus(accountStatus);
         AccountType accountType = accountTypeRepository.findById(ACCOUNT_TYPE_ID);
         userAccount.setAccountType(accountType);
-        Language language = languageRepository.findById(LANGUAGE_ID);
+
+        Language language = languageRepository.findById(registrationRequestWeb.getUserLanguageId());
+        if (language == null){
+            language = languageRepository.findById(LANGUAGE_ID);
+        }
         userAccount.setLanguage(language);
         userAccountRepository.save(userAccount);
     }
@@ -78,14 +81,11 @@ public class RegistrationServiceImpl implements RegistrationService{
         User user = new User();
         user.setFirstName(registrationRequestWeb.getFirstName());
         user.setLastName(registrationRequestWeb.getLastName());
-
         String email = registrationRequestWeb.getEmail();
         if (userRepository.findUserByEmail(email) != null){
             throw new EmailNotUniqueValidationException("Email " + email + " exist!");
-        }else {
-            user.setEmail(email);
         }
-
+        user.setEmail(email);
         userRepository.save(user);
         return user;
     }
