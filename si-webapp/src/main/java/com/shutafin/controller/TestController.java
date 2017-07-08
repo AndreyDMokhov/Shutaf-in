@@ -1,5 +1,6 @@
 package com.shutafin.controller;
 
+import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.EmailReason;
@@ -39,6 +40,10 @@ public class TestController {
     @Transactional
     public void testEmail(@RequestHeader("session_id") String sessioId) {
         User user = sessionManagementService.findUserWithValidSession(sessioId);
+
+        if (user == null) {
+            throw new AuthenticationException();
+        }
         Language language = (Language) initializationService.findAllLanguages().get(1);
 
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(user, EmailReason.REGISTRATION_CONFIRMATION, language, "http://localhost:7000");

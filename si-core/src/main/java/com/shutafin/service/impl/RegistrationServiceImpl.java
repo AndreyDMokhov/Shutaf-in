@@ -79,7 +79,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         user.setLastName(registrationRequestWeb.getLastName());
         String email = registrationRequestWeb.getEmail();
         if (userRepository.findUserByEmail(email) != null){
-            throw new EmailNotUniqueValidationException("Email " + email + " exist!");
+            throw new EmailNotUniqueValidationException("Email " + email + " already exists");
         }
         user.setEmail(email);
         userRepository.save(user);

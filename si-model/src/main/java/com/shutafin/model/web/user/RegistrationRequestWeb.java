@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 public class RegistrationRequestWeb implements DataResponse {
 
@@ -27,6 +28,7 @@ public class RegistrationRequestWeb implements DataResponse {
     private String password;
 
     @Min(value = 1)
+    @NotNull
     private Integer userLanguageId;
 
     public RegistrationRequestWeb() {
