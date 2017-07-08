@@ -7,7 +7,7 @@ import com.shutafin.model.web.error.ErrorType;
 public class AuthenticationException extends AbstractAPIException {
 
     @Override
-    protected ErrorType getErrorType() {
+    public ErrorType getErrorType() {
         return ErrorType.AUTHENTICATION;
     }
 

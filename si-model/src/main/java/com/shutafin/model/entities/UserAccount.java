@@ -1,14 +1,13 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
-import com.shutafin.model.entities.infrastructure.AccountStatus;
-import com.shutafin.model.entities.infrastructure.AccountType;
 import com.shutafin.model.entities.infrastructure.Language;
+import com.shutafin.model.entities.types.AccountStatus;
+import com.shutafin.model.entities.types.AccountStatusConverter;
+import com.shutafin.model.entities.types.AccountType;
+import com.shutafin.model.entities.types.AccountTypeConverter;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by evgeny on 6/20/2017.
@@ -20,12 +19,12 @@ public class UserAccount extends AbstractBaseEntity {
     @OneToOne
     private User user;
 
-    @JoinColumn(name = "ACCOUNT_STATUS_ID", nullable = false)
-    @OneToOne
+    @Column(name = "ACCOUNT_STATUS_ID", nullable = false)
+    @Convert(converter = AccountStatusConverter.class)
     private AccountStatus accountStatus;
 
-    @JoinColumn(name = "ACCOUNT_TYPE_ID", nullable = false)
-    @OneToOne
+    @Column(name = "ACCOUNT_TYPE_ID", nullable = false)
+    @Convert(converter = AccountTypeConverter.class)
     private AccountType accountType;
 
     @JoinColumn(name = "LANGUAGE_ID", nullable = false)

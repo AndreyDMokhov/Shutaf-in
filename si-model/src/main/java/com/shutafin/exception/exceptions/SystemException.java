@@ -7,7 +7,7 @@ import com.shutafin.model.web.error.ErrorType;
 public class SystemException extends AbstractAPIException {
 
     @Override
-    protected ErrorType getErrorType() {
+    public ErrorType getErrorType() {
         return ErrorType.SYSTEM;
     }
 
