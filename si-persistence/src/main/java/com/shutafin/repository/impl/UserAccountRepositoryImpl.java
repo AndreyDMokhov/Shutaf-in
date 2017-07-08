@@ -29,4 +29,10 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
                 .setParameter("userId", user.getId())
         .executeUpdate();
     }
+    @Override
+    public UserAccount findUserAccountByUser(User user) {
+        return (UserAccount) getSession()
+                .createQuery("SELECT e FROM UserAccount e where e.user = :user")
+                .setParameter("user", user).uniqueResult();
+    }
 }

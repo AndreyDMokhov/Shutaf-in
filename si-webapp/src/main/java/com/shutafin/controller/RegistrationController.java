@@ -15,17 +15,11 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class RegistrationController {
 
-    private static final String STRING_SESSION_D = "session_id";
 
     @Autowired
     private RegistrationService registrationService;
 
-    private String sessionId;
 
-    @ModelAttribute
-    public void setResponseHeader(HttpServletResponse response) {
-        response.setHeader(STRING_SESSION_D, sessionId);
-    }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
@@ -33,7 +27,7 @@ public class RegistrationController {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        sessionId = registrationService.save(registrationRequestWeb);
-        setResponseHeader(response);
+        String sessionId = registrationService.save(registrationRequestWeb);
+        response.setHeader("session_id", sessionId);
     }
 }

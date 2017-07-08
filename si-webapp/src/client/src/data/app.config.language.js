@@ -11,35 +11,41 @@ app.factory('languageService', function ($translate, CACHED_LANGUAGE, CACHED_LAN
     }
 
     function updateUserLanguage(params) {
-        localStorage.setItem(CACHED_LANGUAGE_ID, params.languageId);
+        localStorage.setItem(CACHED_LANGUAGE_ID, params.id);
+        localStorage.setItem(CACHED_LANGUAGE, params.description);
+
+        _setLanguage(params.description);
+
 
         var sessionId = localStorage.getItem("session_id");
         if (sessionId === undefined || sessionId === null){
             return;
         }
         rest.setDefaultHeaders({"session_id" : sessionId});
-        return rest.one('/language').customPUT(params);
+        return rest.one('/language').customPUT(params.id);
     }
 
-    function setLanguage(code) {
+    function _setLanguage(code) {
         if (code === undefined || code === null) {
             localStorage.setItem(CACHED_LANGUAGE, 'en');
             $translate.use(localStorage.getItem(CACHED_LANGUAGE));
             return;
         }
-        localStorage.setItem(CACHED_LANGUAGE, code);
-        $translate.use(code);
 
+        $translate.use(code);
+    }
+
+    function setDefaultLanguage() {
+        var defaultLanguageCode = 'en';
+        localStorage.setItem(CACHED_LANGUAGE, defaultLanguageCode);
+        localStorage.removeItem(CACHED_LANGUAGE_ID);
+        $translate.use(defaultLanguageCode);
     }
 
 
     return {
-        setLanguage:setLanguage,
+        setDefaultLanguage:setDefaultLanguage,
         updateUserLanguage:updateUserLanguage,
         getUserLanguage:getUserLanguage
     }
-
-
-
-
 });
