@@ -40,19 +40,19 @@ public class InitializationServiceImpl implements InitializationService {
     @Override
     public List findAllGendersByLanguage(Integer languageId) {
         Language language = languageRepository.findById(languageId);
-        return genderRepository.findAllByLanguage(language);
+        return genderRepository.getWebData(language);
     }
 
     @Override
     public List findAllCountriesByLanguage(Integer languageId) {
         Language language = languageRepository.findById(languageId);
-        return countryRepository.findAllByLanguage(language);
+        return countryRepository.getWebData(language);
     }
 
     @Override
     public List findAllCitiesByLanguage(Integer languageId) {
         Language language = languageRepository.findById(languageId);
-        return cityRepository.findAllByLanguage(language);
+        return cityRepository.getWebData(language);
     }
 
 
