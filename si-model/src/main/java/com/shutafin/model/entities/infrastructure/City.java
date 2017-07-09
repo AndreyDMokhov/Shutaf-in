@@ -1,6 +1,6 @@
 package com.shutafin.model.entities.infrastructure;
 
-import com.shutafin.model.AbstractConstEntity;
+import com.shutafin.model.AbstractKeyConstEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "I_CITY")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
-public class City extends AbstractConstEntity{
+public class City extends AbstractKeyConstEntity {
 
     @JoinColumn(name = "COUNTRY_ID", nullable = false)
     @ManyToOne
