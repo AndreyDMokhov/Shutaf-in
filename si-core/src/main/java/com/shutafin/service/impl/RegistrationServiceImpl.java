@@ -13,7 +13,7 @@ import com.shutafin.repository.UserCredentialsRepository;
 import com.shutafin.repository.UserRepository;
 import com.shutafin.repository.infrastructure.AccountStatusRepository;
 import com.shutafin.repository.infrastructure.AccountTypeRepository;
-import com.shutafin.repository.infrastructure.LanguageRepository;
+import com.shutafin.repository.LanguageRepository;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;

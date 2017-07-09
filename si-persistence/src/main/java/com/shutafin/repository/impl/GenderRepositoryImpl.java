@@ -4,7 +4,7 @@ import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.locale.GenderLocalized;
 import com.shutafin.model.web.initialization.GenderWeb;
 import com.shutafin.repository.base.AbstractLocalizedConstEntityDao;
-import com.shutafin.repository.infrastructure.GenderRepository;
+import com.shutafin.repository.GenderRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

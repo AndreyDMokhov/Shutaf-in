@@ -4,7 +4,7 @@ import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.locale.CityLocalized;
 import com.shutafin.model.web.initialization.CityWeb;
 import com.shutafin.repository.base.AbstractLocalizedConstEntityDao;
-import com.shutafin.repository.infrastructure.CityRepository;
+import com.shutafin.repository.CityRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
