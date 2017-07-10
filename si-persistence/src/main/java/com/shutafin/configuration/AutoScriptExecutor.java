@@ -23,7 +23,7 @@ import java.util.TreeMap;
 @Configuration
 public class AutoScriptExecutor {
 
-    private final static String DB_UPDATE_TABLE_NAME = "db_update";
+    private final static String DB_UPDATE_TABLE_NAME = "DB_UPDATE";
     private final static String CREATE_DB_UPDATE_TABLE_SCRIPT = "CREATE TABLE `DB_UPDATE`" +
             " (`SCRIPT_ID` INT);";
     private final static String INSERT_BASIC_VAL_SCRIPT = "INSERT INTO `DB_UPDATE`(`SCRIPT_ID`) VALUES (0);";
@@ -65,8 +65,8 @@ public class AutoScriptExecutor {
     private void readLastExecutedScript() {
         String showTablesQuery = "SHOW TABLES;";
         List<String> tables = jdbcTemplate.queryForList(showTablesQuery, String.class);
-        if (tables.contains(DB_UPDATE_TABLE_NAME)) {
-            String selectQuery = "SELECT script_id FROM DB_UPDATE;";
+        if (tables.contains(DB_UPDATE_TABLE_NAME) || tables.contains(DB_UPDATE_TABLE_NAME.toLowerCase())) {
+            String selectQuery = "SELECT SCRIPT_ID FROM DB_UPDATE;";
             lastExecutedSqlScript = jdbcTemplate.queryForObject(selectQuery, Integer.class);
         } else {
             initDbUpdateTable();
@@ -80,7 +80,7 @@ public class AutoScriptExecutor {
     }
 
     private void updateLastExecutedScript(int lastScriptNumber) {
-        String updateQuery = "UPDATE DB_UPDATE SET script_id=" + lastScriptNumber;
+        String updateQuery = "UPDATE DB_UPDATE SET SCRIPT_ID=" + lastScriptNumber;
         executeQuery(updateQuery);
     }
 

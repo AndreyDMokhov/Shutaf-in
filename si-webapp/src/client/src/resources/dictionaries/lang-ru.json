@@ -1,6 +1,7 @@
 {
   "SECTION":"HEADER",
   "Header.button.changeLanguage":"Язык",
+  "Header.brand":"Shutaf-In",
 
   "SECTION":"ABOUT",
   "About.title":"О нас",
@@ -56,6 +57,12 @@
   "Login.message.success": "Мы рады Вас видеть!",
 
   "SECTION": "LOGOUT",
+  "Logout.button": "Выход",
+
+  "SECTION": "PROFILE",
+  "Profile.title" : "Профиль",
+  "Profile.birthday" : "Дата рождения",
+  "Profile.city" : "Город"
   "Logout.button": "Выход",
 
   "SECTION": "USERSETTINGS",

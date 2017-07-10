@@ -1,6 +1,7 @@
 {
   "SECTION":"HEADER",
   "Header.button.changeLanguage":"Language",
+  "Header.brand":"Shutaf-In",
 
   "SECTION":"ABOUT",
   "About.title":"About",
@@ -56,6 +57,14 @@
   "Login.message.success": "We are glad to see You again!",
 
   "SECTION": "LOGOUT",
+  "Logout.button": "Logout",
+
+  "SECTION": "PROFILE",
+  "Profile.title" : "Profile",
+  "Profile.birthday" : "Birthday",
+  "Profile.city" : "Current city"
+
+
   "Logout.button": "Logout",
 
   "SECTION": "USERSETTINGS",
