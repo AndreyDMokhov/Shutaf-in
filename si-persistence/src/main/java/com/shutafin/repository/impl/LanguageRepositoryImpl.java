@@ -1,7 +1,7 @@
 package com.shutafin.repository.impl;
 
 import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.repository.infrastructure.LanguageRepository;
+import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.base.AbstractConstEntityDao;
 import org.springframework.stereotype.Repository;
 
