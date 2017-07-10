@@ -4,9 +4,6 @@ import com.shutafin.model.web.DataResponse;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-/**
- * Created by usera on 6/29/2017.
- */
 public class UserAccountSettingsWeb implements DataResponse {
 
     @NotBlank
@@ -18,15 +15,15 @@ public class UserAccountSettingsWeb implements DataResponse {
     private String lastName;
 
     @NotBlank
-    private String languageDes;
+    private Integer languageId;
 
     public UserAccountSettingsWeb() {
     }
 
-    public UserAccountSettingsWeb(String firstName, String lastName, String languageDes) {
+    public UserAccountSettingsWeb(String firstName, String lastName, Integer languageId) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.languageDes = languageDes;
+        this.languageId = languageId;
     }
 
     public String getFirstName() {
@@ -45,7 +42,7 @@ public class UserAccountSettingsWeb implements DataResponse {
         this.lastName = lastName;
     }
 
-    public String getLanguageDes() {return languageDes;}
+    public Integer getLanguageId() {return languageId;}
 
-    public void setLanguageDes(String languageDes) {this.languageDes = languageDes;}
+    public void setLanguageId(Integer languageId) {this.languageId = languageId;}
 }

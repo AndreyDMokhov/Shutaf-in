@@ -7,7 +7,7 @@ import com.shutafin.model.web.user.UserAccountSettingsWeb;
 import com.shutafin.repository.UserAccountRepository;
 import com.shutafin.repository.UserRepository;
 
-import com.shutafin.repository.infrastructure.LanguageRepository;
+import com.shutafin.repository.LanguageRepository;
 import com.shutafin.service.UserAccountSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by usera on 6/29/2017.
- */
 
 @Service
 @Transactional
@@ -30,12 +27,12 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
     @Autowired
     private LanguageRepository languageRepository;
 
-        @Override
+    @Override
     @Transactional
     public UserAccountSettingsWeb getCurrentAccountSettings(User user) {
         UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
         Language language = userAccount.getLanguage();
-        return new UserAccountSettingsWeb(user.getFirstName(), user.getLastName(), language.getDescription());
+        return new UserAccountSettingsWeb(user.getFirstName(), user.getLastName(), language.getId());
     }
 
     @Override
@@ -58,16 +55,12 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
     }
 
     private void updateLanguage(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
-        String languageDes = userAccountSettingsWeb.getLanguageDes();
+        Integer languageId = userAccountSettingsWeb.getLanguageId();
         UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
-        String languageDB = userAccount.getLanguage().getDescription();
-        if (!languageDB.equals(languageDes)) {
-            List<Language> languages = languageRepository.findAll();
-            for (Language language : languages) {
-                if (language.getDescription().equals(languageDes)) {
-                    userAccount.setLanguage(language);
-                }
-            }
+        Integer languageDB = userAccount.getLanguage().getId();
+        if (!(languageDB == languageId)) {
+            Language language = languageRepository.findById(languageId);
+            userAccount.setLanguage(language);
             userAccountRepository.update(userAccount);
         }
     }

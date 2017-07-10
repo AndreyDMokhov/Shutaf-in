@@ -62,7 +62,7 @@
   "SECTION": "PROFILE",
   "Profile.title" : "Profile",
   "Profile.birthday" : "Birthday",
-  "Profile.city" : "Current city"
+  "Profile.city" : "Current city",
 
 
   "Logout.button": "Logout",

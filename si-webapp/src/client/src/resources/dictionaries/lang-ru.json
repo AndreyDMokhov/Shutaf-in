@@ -62,7 +62,7 @@
   "SECTION": "PROFILE",
   "Profile.title" : "Профиль",
   "Profile.birthday" : "Дата рождения",
-  "Profile.city" : "Город"
+  "Profile.city" : "Город",
   "Logout.button": "Выход",
 
   "SECTION": "USERSETTINGS",
