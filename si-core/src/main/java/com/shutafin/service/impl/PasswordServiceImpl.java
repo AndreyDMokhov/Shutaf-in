@@ -41,7 +41,7 @@ public class PasswordServiceImpl implements PasswordService {
     public void updateUserPasswordInDb(User user, String password){
         UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
         if(userCredentials==null){
-            throw new SystemException();
+            throw new SystemException("UserCredentials for user with ID {"+user.getId()+"} does not exist");
         }
         generatePasswordAndSaveCredentialsToDb (userCredentials, password);
     }
@@ -74,6 +74,4 @@ public class PasswordServiceImpl implements PasswordService {
         }
         return true;
     }
-
-
 }
