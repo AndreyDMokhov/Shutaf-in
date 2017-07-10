@@ -23,7 +23,7 @@ public class ChangePasswordServiceImpl implements ChangePasswordService{
 
     @Transactional
     @Override
-    public String changePassword(ChangePasswordWeb changePasswordWeb, String session_id) {
+    public void changePassword(ChangePasswordWeb changePasswordWeb, String session_id) {
         User user = sessionManagementService.findUserWithValidSession(session_id);
         if (user == null){
             throw new AuthenticationException();
@@ -33,6 +33,5 @@ public class ChangePasswordServiceImpl implements ChangePasswordService{
             throw new AuthenticationException();
         }
         userCredentials.setPasswordHash(changePasswordWeb.getNewPassword());
-        return sessionManagementService.generateNewSession(user);
     }
 }

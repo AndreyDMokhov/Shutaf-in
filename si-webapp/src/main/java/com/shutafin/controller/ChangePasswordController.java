@@ -22,24 +22,16 @@ public class ChangePasswordController {
     @Autowired
     private ChangePasswordService changePasswordService;
 
-    private String sessionId;
-
-    @ModelAttribute
-    public void setResponseHeader(HttpServletResponse response) {
-        response.setHeader(STRING_SESSION_D, sessionId);
-    }
-
     @RequestMapping(value = "/change", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void changePassword(@RequestBody @Valid ChangePasswordWeb changePasswordWeb, BindingResult result,
-                             HttpServletRequest request, HttpServletResponse response){
-        sessionId = request.getHeader(STRING_SESSION_D);
+                             HttpServletRequest request){
+        String sessionId = request.getHeader(STRING_SESSION_D);
         if (sessionId == null){
             throw new AuthenticationException();
         }
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        sessionId = changePasswordService.changePassword(changePasswordWeb, sessionId);
-        setResponseHeader(response);
+        changePasswordService.changePassword(changePasswordWeb, sessionId);
     }
 }
