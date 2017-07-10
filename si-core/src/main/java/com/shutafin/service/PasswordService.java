@@ -11,6 +11,8 @@ public interface PasswordService {
 
     public void saveUserPasswordToDb (User user, String password);
 
-    public void checkUserPassword (User user, String password) throws AuthenticationException;
+    public boolean isPasswordCorrect(User user, String password);
+
+    public void updateUserPasswordInDb(User user, String password);
 
 }

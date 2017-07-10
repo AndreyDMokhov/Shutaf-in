@@ -1,6 +1,6 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
+import com.shutafin.exception.exceptions.SystemException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserCredentials;
 import com.shutafin.repository.UserCredentialsRepository;
@@ -9,8 +9,8 @@ import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -31,10 +31,25 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     @Transactional
     public void saveUserPasswordToDb(User user, String password) {
+        UserCredentials userCredentials = new UserCredentials();
+        userCredentials.setUser(user);
+        generatePasswordAndSaveCredentialsToDb (userCredentials, password);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserPasswordInDb(User user, String password){
+        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
+        if(userCredentials==null){
+            throw new SystemException();
+        }
+        generatePasswordAndSaveCredentialsToDb (userCredentials, password);
+    }
+
+    private void generatePasswordAndSaveCredentialsToDb (UserCredentials userCredentials, String password){
         Argon2 argon2 = Argon2Factory.create();
         String salt = generateSalt();
         String hash = argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password+SALT+salt);
-        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
         userCredentials.setPasswordHash(hash);
         userCredentials.setPasswordSalt(salt);
         userCredentialsRepository.update(userCredentials);
@@ -47,16 +62,18 @@ public class PasswordServiceImpl implements PasswordService {
         return salt;
     }
 
-
     @Override
     @Transactional
-    public void checkUserPassword(User user, String password) throws AuthenticationException {
+    public boolean isPasswordCorrect(User user, String password){
         Argon2 argon2 = Argon2Factory.create();
         UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
         String hash = userCredentials.getPasswordHash();
         String salt = userCredentials.getPasswordSalt();
         if(!argon2.verify(hash, password+SALT+salt)){
-            throw new AuthenticationException();
+            return false;
         }
+        return true;
     }
+
+
 }
