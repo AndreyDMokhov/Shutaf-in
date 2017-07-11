@@ -5,7 +5,9 @@ public enum ErrorType {
 
     INPUT(400, "INP"),
     SYSTEM(500, "SYS"),
-    AUTHENTICATION(401, "AUT");
+    AUTHENTICATION(401, "AUT"),
+    EMAIL_SEND_ERROR(503, "ESE"),
+    EMAIL_CONFIGURATION_ERROR(500, "ECE");
 
     private Integer httpCode;
     private String errorCodeType;
