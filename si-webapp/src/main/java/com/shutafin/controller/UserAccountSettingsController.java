@@ -33,7 +33,6 @@ public class UserAccountSettingsController {
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserAccountSettingsWeb getCurrentAccountSettingsWeb(HttpServletRequest request) {
         String sessionId = request.getHeader("session_id");
-        System.out.println(sessionId);
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }

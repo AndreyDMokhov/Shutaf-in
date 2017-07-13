@@ -39,6 +39,14 @@
                 {{'UserSettings.form.lastNameError' | translate}}
             </p>
         </div>
+        <select
+                name="languageSelect"
+                id="languageSelect"
+                ng-options="language.languageNativeName for language in vm.languages"
+                class="form-control"
+                ng-model="vm.languageSelect">
+            <option selected>{{languageSelect.nativeName}}</option>
+        </select>
         <br/>
 
         <div class="form-actions">

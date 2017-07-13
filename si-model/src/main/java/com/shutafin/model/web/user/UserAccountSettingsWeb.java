@@ -4,6 +4,9 @@ import com.shutafin.model.web.DataResponse;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class UserAccountSettingsWeb implements DataResponse {
 
     @NotBlank
@@ -14,7 +17,8 @@ public class UserAccountSettingsWeb implements DataResponse {
     @Length(min=3, max=50)
     private String lastName;
 
-    @NotBlank
+    @Min(value = 1)
+    @NotNull
     private Integer languageId;
 
     public UserAccountSettingsWeb() {
