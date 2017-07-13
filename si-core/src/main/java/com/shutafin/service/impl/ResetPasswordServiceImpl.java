@@ -32,7 +32,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private static final Boolean IS_FALSE = false;
     private static final int HOURS_EXPIRATION = 24;
-    private static final String LINK = "/api/reset-password/confirmation/";
+    private static final String LINK = "/#/reset-password/confirmation/";
     private static final String HTTP = "http://";
 
     @Autowired
