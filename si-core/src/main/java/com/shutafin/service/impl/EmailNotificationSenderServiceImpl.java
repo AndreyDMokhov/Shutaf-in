@@ -43,7 +43,7 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         EmailTemplateHelper helper = new EmailTemplateHelper();
         String messageContent = helper.getMessageContent(baseTemplate.getTokenValueMap(), baseTemplate.getHtmlTemplate());
 
-        String emailTo = emailMessage.getUser().getEmail();
+        String emailTo = emailMessage.getEmailTo();
 
 
         EmailNotificationLog emailNotificationLog = getEmailNotificationLog(
