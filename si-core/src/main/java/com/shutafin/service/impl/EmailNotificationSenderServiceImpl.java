@@ -1,9 +1,8 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.EmailProcessingException;
+import com.shutafin.exception.exceptions.EmailNotificationProcessingException;
 import com.shutafin.exception.exceptions.EmailSendException;
 import com.shutafin.helpers.EmailTemplateHelper;
-import com.shutafin.helpers.JsonConverterHelper;
 import com.shutafin.model.entities.EmailNotificationLog;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.types.EmailReason;
@@ -77,7 +76,7 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
         } catch (MessagingException e) {
             e.printStackTrace();
-            throw new EmailProcessingException();
+            throw new EmailNotificationProcessingException();
         }
     }
 

@@ -30,29 +30,45 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     @Transactional
-    public void saveUserPasswordToDb(User user, String password) {
+    public void createAndSaveUserPassword(User user, String password) {
         UserCredentials userCredentials = new UserCredentials();
         userCredentials.setUser(user);
-        generatePasswordAndSaveCredentialsToDb (userCredentials, password);
+        userCredentialsRepository.save(populateWithSaltAndHash(userCredentials, password));
     }
 
     @Override
     @Transactional
-    public void updateUserPasswordInDb(User user, String password){
+    public void updateUserPasswordInDb(User user, String password) {
         UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
-        if(userCredentials==null){
-            throw new SystemException("UserCredentials for user with ID {"+user.getId()+"} does not exist");
+        if (userCredentials == null) {
+            throw new SystemException("UserCredentials for user with ID {" + user.getId() + "} does not exist");
         }
-        generatePasswordAndSaveCredentialsToDb (userCredentials, password);
+        userCredentialsRepository.update(populateWithSaltAndHash(userCredentials, password));
     }
 
-    private void generatePasswordAndSaveCredentialsToDb (UserCredentials userCredentials, String password){
+    @Override
+    @Transactional
+    public boolean isPasswordCorrect(User user, String password) {
         Argon2 argon2 = Argon2Factory.create();
+        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
+        String hash = userCredentials.getPasswordHash();
+        String salt = userCredentials.getPasswordSalt();
+        return argon2.verify(hash, password + SALT + salt);
+    }
+
+    private UserCredentials populateWithSaltAndHash(UserCredentials userCredentials, String password) {
         String salt = generateSalt();
-        String hash = argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password+SALT+salt);
+        String hash = generateHash(salt, password);
+
         userCredentials.setPasswordHash(hash);
         userCredentials.setPasswordSalt(salt);
-        userCredentialsRepository.update(userCredentials);
+        return userCredentials;
+    }
+
+    private String generateHash(String salt, String password) {
+        Argon2 argon2 = Argon2Factory.create();
+        String hash = argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password + SALT + salt);
+        return hash;
     }
 
     private String generateSalt() {
@@ -60,18 +76,5 @@ public class PasswordServiceImpl implements PasswordService {
         secureRandom.nextBytes(bytes);
         String salt = Base64.getEncoder().encodeToString(bytes);
         return salt;
-    }
-
-    @Override
-    @Transactional
-    public boolean isPasswordCorrect(User user, String password){
-        Argon2 argon2 = Argon2Factory.create();
-        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
-        String hash = userCredentials.getPasswordHash();
-        String salt = userCredentials.getPasswordSalt();
-        if(!argon2.verify(hash, password+SALT+salt)){
-            return false;
-        }
-        return true;
     }
 }
