@@ -14,6 +14,7 @@ import com.shutafin.repository.UserRepository;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
+import com.shutafin.service.UserImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,12 +43,16 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Autowired
     private SessionManagementService sessionManagementService;
 
+    @Autowired
+    private UserImageService userImageService;
+
     @Override
     @Transactional
     public String save(RegistrationRequestWeb registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
         saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
+        userImageService.createUserImageDirectory(user);
         return sessionManagementService.generateNewSession(user);
     }
 
