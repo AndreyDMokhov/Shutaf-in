@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -76,14 +75,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     }
 
     private String createLink(String uuid) {
-        String link;
-        try {
-            link = HTTP + environmentConfigurationService.getServerAddress() + LINK + uuid;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Unexpected error occurred");
-        }
-        return link;
+        return HTTP + environmentConfigurationService.getServerAddress() + LINK + uuid;
     }
 
     private String createResetPasswordConfirmation(User user){

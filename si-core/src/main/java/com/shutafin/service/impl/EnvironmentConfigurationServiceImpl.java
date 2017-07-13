@@ -4,24 +4,29 @@ import com.shutafin.service.EnvironmentConfigurationService;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.URL;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 @Service
 public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigurationService {
 
     private static final String APPLICATION_PROPERTIES = "si-core/src/main/resources/application.properties";
-    private static final String EXTERNAL_PORT = "external.port1";
-    private static final String EXTERNAL_IP_SERVER = "external.ip.server1";
+    private static final String EXTERNAL_PORT = "external.port";
 
     @Override
-    public String getServerAddress() throws IOException {
+    public String getServerAddress() {
         Properties prop = getProperties();
         String externalPort = prop.getProperty(EXTERNAL_PORT);
-        String externalIpServer = prop.getProperty(EXTERNAL_IP_SERVER);
-        URL whatismyip = new URL(externalIpServer);
-        BufferedReader input = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
-        return input.readLine() + ":" + externalPort;
+        InetAddress addr;
+        try {
+            addr = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Unexpected error occurred");
+        }
+        String ip = addr.getHostAddress();
+        return ip + ":" + externalPort;
     }
 
     private Properties getProperties() {
