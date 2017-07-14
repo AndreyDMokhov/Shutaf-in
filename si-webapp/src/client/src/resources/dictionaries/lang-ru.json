@@ -49,6 +49,7 @@
   "Registration.form.btn.registration":"Продолжить",
   "Registration.form.msg.registrationOK":"Добро пожаловать!",
   "Registration.form.msg.registrationFail":"Ошибка регистрации",
+  "Registration.form.msg.emailDuplication":"Электронный адрес уже зарегистрирован",
 
   "SECTION": "LOGIN",
   "Login.title": "Вход",

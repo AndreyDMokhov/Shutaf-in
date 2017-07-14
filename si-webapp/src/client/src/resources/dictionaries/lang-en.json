@@ -49,6 +49,7 @@
   "Registration.form.btn.registration":"Register",
   "Registration.form.msg.registrationOK":"Registration is ok",
   "Registration.form.msg.registrationFail":"Registration fail",
+  "Registration.form.msg.emailDuplication":"Email already exists",
 
   "Home.description":"This is a service for searching neighbours.",
 

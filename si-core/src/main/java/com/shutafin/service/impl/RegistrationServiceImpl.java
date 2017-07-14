@@ -12,8 +12,12 @@ import com.shutafin.model.entities.types.AccountType;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.repository.*;
-import com.shutafin.service.*;
+import com.shutafin.repository.UserAccountRepository;
+import com.shutafin.repository.UserRepository;
+import com.shutafin.repository.LanguageRepository;
+import com.shutafin.service.PasswordService;
+import com.shutafin.service.RegistrationService;
+import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,19 +28,13 @@ import java.util.UUID;
 @Transactional
 public class RegistrationServiceImpl implements RegistrationService{
 
-    private static final int ACCOUNT_STATUS_ID = 1;
-    private static final int ACCOUNT_TYPE_ID = 1;
     private static final int LANGUAGE_ID = 1;
-    private static final String PASSWORD_SALT = "Salt";
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
-    private UserCredentialsRepository userCredentialsRepository;
 
     @Autowired
     private LanguageRepository languageRepository;
@@ -55,6 +53,9 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     @Autowired
     private SessionManagementService sessionManagementService;
+
+    @Autowired
+    private PasswordService passwordService;
 
     @Override
     @Transactional
@@ -88,11 +89,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     }
 
     private void saveUserCredentials(User user, String password){
-        UserCredentials userCredentials = new UserCredentials();
-        userCredentials.setUser(user);
-        userCredentials.setPasswordHash(password);
-        userCredentials.setPasswordSalt(PASSWORD_SALT);
-        userCredentialsRepository.save(userCredentials);
+        passwordService.createAndSaveUserPassword(user, password);
     }
 
     private void saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb){

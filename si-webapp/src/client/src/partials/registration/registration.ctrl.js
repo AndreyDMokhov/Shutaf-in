@@ -17,7 +17,14 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
                 $state.go("home");
             }, function (error) {
                 vm.dataLoading = false;
-                notify.set($filter('translate')("Registration.form.msg.registrationFail"), {type: 'error'});
+
+                if (error.data.error.errorTypeCode === 'EDE') {
+
+                    notify.set($filter('translate')("Registration.form.msg.emailDuplication"), {type: 'error'});
+                } else {
+
+                    notify.set($filter('translate')("Registration.form.msg.registrationFail"), {type: 'error'});
+                }
             })
     };
 

@@ -10,6 +10,7 @@ import com.shutafin.repository.UserRepository;
 import com.shutafin.repository.UserSessionRepository;
 import com.shutafin.service.LoginService;
 import com.shutafin.service.RegistrationConfirmationService;
+import com.shutafin.service.PasswordService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +28,13 @@ public class LoginServiceImpl implements LoginService {
     private static final Boolean IS_EXPIRABLE = false;
 
     @Autowired
-    private
-    UserSessionRepository userSessionRepository;
+    private UserSessionRepository userSessionRepository;
+
     @Autowired
-    private
-    UserCredentialsRepository userCredentials;
+    private UserRepository userPersistence;
+
     @Autowired
-    private
-    UserRepository userPersistence;
+    private PasswordService passwordService;
 
     @Autowired
     private RegistrationConfirmationService registrationConfirmationService;
@@ -60,11 +60,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void checkUserPassword(LoginWebModel loginWeb, User user) {
-        try {
-            if (!loginWeb.getPassword().equals(userCredentials.findUserByUserId(user).getPasswordHash())) {
-                throw new AuthenticationException();
-            }
-        } catch (Exception e) {
+        if (! passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
             throw new AuthenticationException();
         }
     }
