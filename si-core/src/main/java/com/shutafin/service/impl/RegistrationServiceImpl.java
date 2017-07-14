@@ -44,6 +44,9 @@ public class RegistrationServiceImpl implements RegistrationService{
     private SessionManagementService sessionManagementService;
 
     @Autowired
+    private PasswordService passwordService;
+
+    @Autowired
     private UserImageService userImageService;
 
     @Override
