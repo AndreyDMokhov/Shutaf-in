@@ -4,6 +4,7 @@ import com.shutafin.exception.exceptions.ResourceDoesNotExistException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.repository.ImageStorageRepository;
 import com.shutafin.repository.UserImageRepository;
 import com.shutafin.service.EnvironmentConfigurationService;
@@ -26,23 +27,26 @@ public class UserImageServiceImpl implements UserImageService {
     private static final String IMAGE_EXTENSION = ".jpg";
 
     @Autowired
-    UserImageRepository userImageRepository;
+    private UserImageRepository userImageRepository;
 
     @Autowired
-    ImageStorageRepository imageStorageRepository;
+    private ImageStorageRepository imageStorageRepository;
 
     @Autowired
-    EnvironmentConfigurationService environmentConfigurationService;
+    private EnvironmentConfigurationService environmentConfigurationService;
 
     @Override
     @Transactional
-    public void addUserImage(String image, User user) {
-        UserImage userImage = createUserImage(user);
+    public void addUserImage(UserImageWeb image, User user) {
+        UserImage userImage = new UserImage();
+        String imageEncoded = image.getImage();
+        userImage.setUser(user);
         Long userImageId = (Long) userImageRepository.save(userImage);
         userImage.setId(userImageId);
-        userImage.setLocalPath(getUserDirectoryPath(user) + String.valueOf(userImageId) + IMAGE_EXTENSION);
-        saveUserImageToFileSystem(image, userImage);
-        createImageBackup(userImage, image);
+        String imageLocalPath = getUserDirectoryPath(user) + String.valueOf(userImageId) + IMAGE_EXTENSION;
+        userImage.setLocalPath(imageLocalPath);
+        saveUserImageToFileSystem(imageEncoded, userImage);
+        createImageBackup(userImage, imageEncoded);
         userImageRepository.update(userImage);
 
     }
@@ -51,8 +55,8 @@ public class UserImageServiceImpl implements UserImageService {
     @Transactional
     public UserImage getUserImage(User user, Long userImageId) {
         UserImage userImage = userImageRepository.findById(userImageId);
-        if (userImage == null || user.getId() != userImage.getUser().getId()) {
-            throw new ResourceDoesNotExistException("User Image does not exist");
+        if (userImage == null || !user.getId().equals(userImage.getUser().getId())) {
+            throw new ResourceDoesNotExistException(String.format("User Image with ID %d was not found", userImageId));
         }
         saveUserImageToFileSystem(userImage.getImageStorage().getImageEncoded(), userImage);
         return userImage;
@@ -73,7 +77,8 @@ public class UserImageServiceImpl implements UserImageService {
             try {
                 directory.mkdir();
             } catch (Exception exp) {
-                System.out.println("Cannot create directory\n" + exp);
+                System.out.println("Cannot create directory");
+                exp.printStackTrace();
             }
         }
     }
@@ -83,23 +88,11 @@ public class UserImageServiceImpl implements UserImageService {
         image.delete();
     }
 
-    private UserImage createUserImage(User user) {
-        UserImage userImage = new UserImage();
-        Timestamp timestampCreated = new Timestamp(System.currentTimeMillis());
-
-        userImage.setUser(user);
-        userImage.setCreatedDate(timestampCreated);
-
-        return userImage;
-    }
-
     private String getUserDirectoryPath(User user) {
         String userDirPath = environmentConfigurationService.getLocalImagePath() + String.valueOf(user.getId())
-                + environmentConfigurationService.getDelimetr();
+                + File.separator;
         return userDirPath;
     }
-
-
 
     private void saveUserImageToFileSystem(String image, UserImage userImage) {
         File imageFile = new File(userImage.getLocalPath());

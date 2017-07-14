@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 public class UserImageController {
 
     @Autowired
-    UserImageService userImageService;
+    private UserImageService userImageService;
 
     @Autowired
-    SessionManagementService sessionManagementService;
+    private SessionManagementService sessionManagementService;
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserImageWeb getUserImage(@RequestHeader(value = "session_id") String sessionId,
@@ -39,12 +39,11 @@ public class UserImageController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void addUserImage(@RequestHeader(value = "session_id") String sessionId,
-                               @RequestBody String image) {
+                               @RequestBody UserImageWeb image) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
             throw new AuthenticationException();
         }
-        image = image.split(":")[1].split("\"")[1];
         userImageService.addUserImage(image, user);
     }
 

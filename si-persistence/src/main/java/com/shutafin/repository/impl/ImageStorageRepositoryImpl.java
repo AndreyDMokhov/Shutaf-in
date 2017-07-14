@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 public class ImageStorageRepositoryImpl extends AbstractEntityDao<ImageStorage> implements ImageStorageRepository {
 
     @Override
-    public ImageStorage findStoredUserImage(UserImage userImage) {
+    public ImageStorage findImageStorage(UserImage userImage) {
         return (ImageStorage) getSession()
-                .createQuery("from StoredImage si where si.userImage.id = :userImageId")
-                .setParameter("userImageId", userImage.getId()).uniqueResult();
+                .createQuery("from ImageStorage img where img.userImage = :userImage")
+                .setParameter("userImage", userImage).uniqueResult();
     }
 }

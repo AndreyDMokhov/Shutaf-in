@@ -8,9 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigurationService {
 
-    private static final String WINDOWS_DELIMETR = "/";
-    private static final String UNIX_DELIMETR = "/";
-
     @Value("${windows.base.path}")
     private String windowsBasePath;
 
@@ -23,15 +20,6 @@ public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigura
             return windowsBasePath;
         } else {
             return unixBasePath;
-        }
-    }
-
-    @Override
-    public String getDelimetr() {
-        if (SystemUtils.IS_OS_WINDOWS) {
-            return WINDOWS_DELIMETR;
-        } else {
-            return UNIX_DELIMETR;
         }
     }
 }

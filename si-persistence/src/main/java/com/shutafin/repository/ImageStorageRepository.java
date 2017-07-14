@@ -6,5 +6,5 @@ import com.shutafin.repository.base.PersistentDao;
 
 public interface ImageStorageRepository extends PersistentDao<ImageStorage> {
 
-    ImageStorage findStoredUserImage(UserImage userImage);
+    ImageStorage findImageStorage(UserImage userImage);
 }

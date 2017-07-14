@@ -16,7 +16,7 @@ public class UserImage extends AbstractEntity {
     @OneToOne
     private ImageStorage imageStorage;
 
-    @Column(name = "LOCAL_PATH")
+    @Column(name = "LOCAL_PATH", unique = true, length = 200)
     private String localPath;
 
     public UserImage() {

@@ -10,8 +10,7 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource(value = {
         "classpath:application-context.xml",
         "classpath:application-db.xml",
-        "classpath:application-smtp.xml",
-        "classpath:application-environment.xml"})
+        "classpath:application-smtp.xml"})
 public class App {
 
 
