@@ -27,13 +27,7 @@ public class UserImageController {
     public UserImageWeb getUserImage(@RequestHeader(value = "session_id") String sessionId,
                                      @RequestParam(value = "image_id") Long userImageId) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
-        if (user == null) {
-            throw new AuthenticationException();
-        }
         UserImage image = userImageService.getUserImage(user, userImageId);
-        if (image == null) {
-            throw new ResourceDoesNotExistException("No User Image found");
-        }
         return new UserImageWeb(image.getImageStorage().getImageEncoded(), image.getCreatedDate().toString());
     }
 
@@ -41,9 +35,6 @@ public class UserImageController {
     public void addUserImage(@RequestHeader(value = "session_id") String sessionId,
                                @RequestBody UserImageWeb image) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
-        if (user == null) {
-            throw new AuthenticationException();
-        }
         userImageService.addUserImage(image, user);
     }
 
@@ -51,13 +42,7 @@ public class UserImageController {
     public void deleteUserImage(@RequestHeader(value = "session_id") String sessionId,
                                @RequestParam(value = "image_id") Long userImageId) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
-        if (user == null) {
-            throw new AuthenticationException();
-        }
         UserImage image = userImageService.getUserImage(user, userImageId);
-        if (image == null) {
-            throw new ResourceDoesNotExistException("No User Image found");
-        }
         userImageService.deleteUserImage(image);
     }
 }
