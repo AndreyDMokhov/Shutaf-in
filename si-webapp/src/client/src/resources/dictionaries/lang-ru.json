@@ -24,6 +24,10 @@
   "Home.title":"Домашняя",
   "Home.description":"Это сервис для поиска соседей.",
 
+  "SECTION":"ERRORS",
+  "Error.404.code":"404",
+  "Error.404.description":"Похоже, что ссылка потеряна или не существует",
+
   "SECTION":"REGISTRATION",
   "Registration.title":"Регистрация",
   "Registration.description":"Регистрация пользователя",

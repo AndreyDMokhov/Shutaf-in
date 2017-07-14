@@ -7,7 +7,8 @@ public enum ErrorType {
     SYSTEM(500, "SYS"),
     AUTHENTICATION(401, "AUT"),
     EMAIL_SEND_ERROR(503, "ESE"),
-    EMAIL_CONFIGURATION_ERROR(500, "ECE");
+    EMAIL_CONFIGURATION_ERROR(500, "ECE"),
+    RESOURCE_NOT_FOUND_ERROR(404, "RNF");
 
     private Integer httpCode;
     private String errorCodeType;

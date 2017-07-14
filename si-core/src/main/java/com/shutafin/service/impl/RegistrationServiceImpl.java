@@ -1,22 +1,24 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.exception.exceptions.validation.EmailNotUniqueValidationException;
+import com.shutafin.model.entities.RegistrationConfirmation;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserCredentials;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.AccountStatus;
 import com.shutafin.model.entities.types.AccountType;
+import com.shutafin.model.entities.types.EmailReason;
+import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.repository.UserAccountRepository;
-import com.shutafin.repository.UserCredentialsRepository;
-import com.shutafin.repository.UserRepository;
-import com.shutafin.repository.LanguageRepository;
-import com.shutafin.service.RegistrationService;
-import com.shutafin.service.SessionManagementService;
+import com.shutafin.repository.*;
+import com.shutafin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -40,15 +42,49 @@ public class RegistrationServiceImpl implements RegistrationService{
     private LanguageRepository languageRepository;
 
     @Autowired
+    private EmailNotificationSenderService mailSenderService;
+
+    @Autowired
+    private EmailTemplateService emailTemplateService;
+
+    @Autowired
+    private RegistrationConfirmationRepository registrationConfirmationRepository;
+
+    @Autowired
+    private EnvironmentConfigurationService environmentConfigurationService;
+
+    @Autowired
     private SessionManagementService sessionManagementService;
 
     @Override
     @Transactional
-    public String save(RegistrationRequestWeb registrationRequestWeb) {
+    public void save(RegistrationRequestWeb registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
         saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
-        return sessionManagementService.generateNewSession(user);
+
+        RegistrationConfirmation registrationConfirmation = new RegistrationConfirmation();
+        registrationConfirmation.setUser(user);
+        registrationConfirmation.setConfirmed(false);
+        registrationConfirmation.setUrlLink(UUID.randomUUID().toString());
+        registrationConfirmationRepository.save(registrationConfirmation);
+
+        Language language = languageRepository.findById(registrationRequestWeb.getUserLanguageId());
+
+        String link = environmentConfigurationService.getServerAddress() + "/registration/confirmation/" + registrationConfirmation.getUrlLink();
+        EmailMessage emailMessage = emailTemplateService.getEmailMessage(registrationConfirmation.getUser(), EmailReason.REGISTRATION_CONFIRMATION, language, link);
+        mailSenderService.sendEmail(emailMessage, EmailReason.REGISTRATION_CONFIRMATION);
+    }
+
+    @Override
+    public String confirmRegistration(String link) {
+        RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.getRegistrationConfirmationByUrlLink(link);
+        if (registrationConfirmation == null){
+            throw new ResourceNotFoundException();
+        }
+        registrationConfirmation.setConfirmed(true);
+        registrationConfirmationRepository.update(registrationConfirmation);
+        return sessionManagementService.generateNewSession(registrationConfirmation.getUser());
     }
 
     private void saveUserCredentials(User user, String password){

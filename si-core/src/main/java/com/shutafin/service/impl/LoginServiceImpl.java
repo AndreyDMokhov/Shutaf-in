@@ -9,6 +9,7 @@ import com.shutafin.repository.UserCredentialsRepository;
 import com.shutafin.repository.UserRepository;
 import com.shutafin.repository.UserSessionRepository;
 import com.shutafin.service.LoginService;
+import com.shutafin.service.RegistrationConfirmationService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,14 @@ public class LoginServiceImpl implements LoginService {
     private
     UserRepository userPersistence;
 
+    @Autowired
+    private RegistrationConfirmationService registrationConfirmationService;
+
     public String getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
+        if ( ! registrationConfirmationService.isUserConfirmed(user)){
+            throw new AuthenticationException();
+        }
         checkUserPassword(loginWeb, user);
         return generateSession(user);
     }

@@ -24,6 +24,10 @@
   "Home.title":"Home",
   "Home.description":"This is a service for searching neighbours.",
 
+  "SECTION":"ERRORS",
+  "Error.404.code":"404",
+  "Error.404.description":"Looks like the link is lost or does not exist",
+
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
   "Registration.description":"User registration",
