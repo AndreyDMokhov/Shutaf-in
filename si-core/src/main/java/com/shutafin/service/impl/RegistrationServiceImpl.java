@@ -71,7 +71,7 @@ public class RegistrationServiceImpl implements RegistrationService{
 
         Language language = languageRepository.findById(registrationRequestWeb.getUserLanguageId());
 
-        String link = environmentConfigurationService.getServerAddress() + "/registration/confirmation/" + registrationConfirmation.getUrlLink();
+        String link = environmentConfigurationService.getServerAddress() + "/#/users/registration/confirmation/" + registrationConfirmation.getUrlLink();
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(registrationConfirmation.getUser(), EmailReason.REGISTRATION_CONFIRMATION, language, link);
         mailSenderService.sendEmail(emailMessage, EmailReason.REGISTRATION_CONFIRMATION);
     }

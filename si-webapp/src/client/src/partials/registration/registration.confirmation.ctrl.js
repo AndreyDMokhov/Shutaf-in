@@ -1,7 +1,7 @@
 /**
  * Created by evgeny on 7/10/2017.
  */
-app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, CACHED_LANGUAGE_ID, $stateParams) {
+app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService) {
 
     var vm = this;
 
@@ -20,6 +20,15 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                 var session_id = success.headers('session_id');
                 localStorage.setItem("session_id", session_id);
                 userInitService.init();
+                languageService.getUserLanguage().then(
+                    function(result){//success
+                        languageService.updateUserLanguage(result.data);
+                    },
+                    function(err){//fail
+                        console.log(err);
+                        return err;
+                    }
+                );
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
                 $state.go("home");
             }, function (error) {
