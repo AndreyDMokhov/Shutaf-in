@@ -13,12 +13,12 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
                 vm.dataLoading = false;
                 localStorage.setItem("session_id", success.headers('session_id'));
                 userInitService.init();
-                notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                 $state.go('home');
 
                 languageService.getUserLanguage().then(
                     function(result){//success
                         languageService.updateUserLanguage(result.data);
+                        notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                     },
                     function(err){//fail
                         console.log(err);
