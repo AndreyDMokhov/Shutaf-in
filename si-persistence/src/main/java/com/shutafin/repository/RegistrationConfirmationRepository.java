@@ -1,6 +1,7 @@
 package com.shutafin.repository;
 
 import com.shutafin.model.entities.RegistrationConfirmation;
+import com.shutafin.model.entities.User;
 import com.shutafin.repository.base.PersistentDao;
 
 /**
@@ -8,4 +9,5 @@ import com.shutafin.repository.base.PersistentDao;
  */
 public interface RegistrationConfirmationRepository extends PersistentDao<RegistrationConfirmation> {
     RegistrationConfirmation getRegistrationConfirmationByUrlLink(String link);
+    Boolean isUserConfirmed(User user);
 }

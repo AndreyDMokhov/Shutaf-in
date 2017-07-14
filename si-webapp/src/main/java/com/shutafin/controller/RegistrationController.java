@@ -33,7 +33,7 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
-    public void registrationConfirm(@PathVariable String link, HttpServletResponse response){
+    public void setUserAccountConfirmedAndGetSessionId(@PathVariable String link, HttpServletResponse response){
         String sessionId = registrationService.confirmRegistration(link);
         response.setHeader("session_id", sessionId);
     }

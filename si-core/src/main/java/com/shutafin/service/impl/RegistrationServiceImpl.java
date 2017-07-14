@@ -12,12 +12,11 @@ import com.shutafin.model.entities.types.AccountType;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
+import com.shutafin.repository.RegistrationConfirmationRepository;
 import com.shutafin.repository.UserAccountRepository;
 import com.shutafin.repository.UserRepository;
 import com.shutafin.repository.LanguageRepository;
-import com.shutafin.service.PasswordService;
-import com.shutafin.service.RegistrationService;
-import com.shutafin.service.SessionManagementService;
+import com.shutafin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,14 +62,17 @@ public class RegistrationServiceImpl implements RegistrationService{
         User user = saveUser(registrationRequestWeb);
         saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
+        sendConfirmRegistrationEmail(user, registrationRequestWeb);
+    }
 
+    private void sendConfirmRegistrationEmail(User user, RegistrationRequestWeb registrationRequestWeb) {
         RegistrationConfirmation registrationConfirmation = new RegistrationConfirmation();
         registrationConfirmation.setUser(user);
         registrationConfirmation.setConfirmed(false);
         registrationConfirmation.setUrlLink(UUID.randomUUID().toString());
         registrationConfirmationRepository.save(registrationConfirmation);
 
-        Language language = languageRepository.findById(registrationRequestWeb.getUserLanguageId());
+        Language language = userAccountRepository.findUserAccountByUser(user).getLanguage();
 
         String link = environmentConfigurationService.getServerAddress() + "/#/users/registration/confirmation/" + registrationConfirmation.getUrlLink();
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(registrationConfirmation.getUser(), EmailReason.REGISTRATION_CONFIRMATION, language, link);
@@ -78,6 +80,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     }
 
     @Override
+    @Transactional
     public String confirmRegistration(String link) {
         RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.getRegistrationConfirmationByUrlLink(link);
         if (registrationConfirmation == null){
@@ -85,6 +88,11 @@ public class RegistrationServiceImpl implements RegistrationService{
         }
         registrationConfirmation.setConfirmed(true);
         registrationConfirmationRepository.update(registrationConfirmation);
+
+        UserAccount userAccount = userAccountRepository.findUserAccountByUser(registrationConfirmation.getUser());
+        userAccount.setAccountStatus(AccountStatus.CONFIRMED);
+        userAccountRepository.update(userAccount);
+
         return sessionManagementService.generateNewSession(registrationConfirmation.getUser());
     }
 

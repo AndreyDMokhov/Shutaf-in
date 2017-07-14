@@ -3,13 +3,14 @@ package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserSession;
+import com.shutafin.model.entities.types.AccountStatus;
 import com.shutafin.model.web.LoginWebModel;
-import com.shutafin.repository.UserCredentialsRepository;
+import com.shutafin.repository.UserAccountRepository;
 import com.shutafin.repository.UserRepository;
 import com.shutafin.repository.UserSessionRepository;
 import com.shutafin.service.LoginService;
-import com.shutafin.service.RegistrationConfirmationService;
 import com.shutafin.service.PasswordService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,16 @@ public class LoginServiceImpl implements LoginService {
     private PasswordService passwordService;
 
     @Autowired
-    private RegistrationConfirmationService registrationConfirmationService;
+    private UserAccountRepository userAccountRepository;
 
     public String getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
-        if ( ! registrationConfirmationService.isUserConfirmed(user)){
+
+        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+        if (userAccount.getAccountStatus() != AccountStatus.CONFIRMED){
             throw new AuthenticationException();
         }
+
         checkUserPassword(loginWeb, user);
         return generateSession(user);
     }
