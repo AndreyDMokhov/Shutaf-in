@@ -9,7 +9,8 @@ app.controller('userRegistration', function ($rootScope, registrationModel, noti
     function registerUser() {
         console.log(vm.registrationData);
         vm.dataLoading = true;
-        vm.registrationData.userLanguageId = parseInt(localStorage.getItem(CACHED_LANGUAGE_ID));
+
+        vm.registrationData.userLanguageId = localStorage.getItem(CACHED_LANGUAGE_ID);
         registrationModel.registerUser(vm.registrationData).then(
             function (success) {
                 vm.dataLoading = false;
@@ -20,12 +21,17 @@ app.controller('userRegistration', function ($rootScope, registrationModel, noti
                 $state.go("home");
             }, function (error) {
                 vm.dataLoading = false;
-                notify.set($filter('translate')("Registration.form.msg.registrationFail"), {type: 'error'});
+
+                if (error.data.error.errorTypeCode === 'EDE') {
+
+                    notify.set($filter('translate')("Registration.form.msg.emailDuplication"), {type: 'error'});
+                } else {
+
+                    notify.set($filter('translate')("Registration.form.msg.registrationFail"), {type: 'error'});
+                }
             })
     };
 
     vm.registerUser = registerUser;
 
 });
-
-
