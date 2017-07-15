@@ -35,5 +35,3 @@ app.controller('userRegistration', function ($rootScope, registrationModel, noti
     vm.registerUser = registerUser;
 
 });
-
-
