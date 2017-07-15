@@ -47,6 +47,14 @@
                         {{'Logout.button' | translate}}
                     </a>
                 </li>
+
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('security-settingsPassword' | includedByState)}">
+                    <a ui-sref="security-settingsPassword">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'SecuritySettingsPassword.button' | translate}}
+                    </a>
+                </li>
+
                 <li class="divider-vertical"></li>
                 <li uib-dropdown>
                     <a href="#" uib-dropdown-toggle>|

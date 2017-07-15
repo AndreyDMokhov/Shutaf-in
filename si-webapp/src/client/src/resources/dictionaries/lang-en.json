@@ -65,7 +65,28 @@
   "SECTION": "PROFILE",
   "Profile.title" : "Profile",
   "Profile.birthday" : "Birthday",
-  "Profile.city" : "Current city"
+  "Profile.city" : "Current city",
 
 
+  "Logout.button": "Logout",
+
+  "SECTION": "SECURITY SETTINGS",
+  "SecuritySettingsEmail.button": "Settings email",
+  "SecuritySettingsPassword.button": "Settings password",
+  "SecuritySettingsEmail.title": "Change email",
+  "SecuritySettingsPassword.title": "Change password",
+  "SecuritySettings.form.email": "Email",
+  "SecuritySettings.form.wrongEmail": "Make sure your email address is correct",
+  "SecuritySettings.form.password": "Password",
+  "SecuritySettings.form.errorPassword": "Incorrect password",
+  "SecuritySettings.form.newEmail": "Please enter new email:",
+  "SecuritySettings.form.requiredEmail": "Email is required",
+  "SecuritySettings.form.btn.saveChanges": "Save",
+  "SecuritySettings.form.btn.cancel": "Cancel",
+  "SecuritySettings.form.newPassword": "New password",
+  "SecuritySettings.form.confirmPassword": "Confirm password",
+  "SecuritySettings.form.confirmErrorPassword": "Your password doesn't match. Please retype your password to confirm it",
+  "SecuritySettings.msg.fail": "Changes not saved",
+  "SecuritySettings.form.btn.loading": "Loading data",
+  "SecuritySettings.msg.success": "Changes saved"
 }
