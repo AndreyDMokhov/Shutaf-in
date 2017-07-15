@@ -20,10 +20,8 @@ public abstract class ValidationException extends AbstractAPIException {
     public ValidationException() {
     }
 
-    @Override
-    public ErrorType getErrorType() {
-        return ErrorType.INPUT;
-    }
+
+    public abstract ErrorType getErrorType();
 
     @Override
     public InputValidationError getErrorResponse() {
