@@ -44,7 +44,7 @@ public class LoginServiceImpl implements LoginService {
         User user = findUserByEmail(loginWeb);
 
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
-        if (userAccount.getAccountStatus() != AccountStatus.CONFIRMED){
+        if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED){
             throw new AuthenticationException();
         }
 
