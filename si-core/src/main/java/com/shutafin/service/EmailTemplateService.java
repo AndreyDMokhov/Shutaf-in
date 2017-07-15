@@ -11,4 +11,5 @@ public interface EmailTemplateService {
 
     BaseTemplate getTemplate(EmailReason emailReason, Language language, String link);
     EmailMessage getEmailMessage(User user, EmailReason emailReason, Language language, String link);
+    EmailMessage getEmailMessage(String emailTo, EmailReason emailReason, Language language, String link);
 }

@@ -7,7 +7,7 @@ import com.shutafin.model.web.error.ErrorType;
  * Created by Edward Kats.
  * 03 / Jul / 2017
  */
-public class EmailProcessingException extends AbstractAPIException {
+public class EmailNotificationProcessingException extends AbstractAPIException {
 
     @Override
     public ErrorType getErrorType() {
