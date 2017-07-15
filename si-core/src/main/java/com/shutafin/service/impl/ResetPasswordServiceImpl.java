@@ -4,7 +4,6 @@ import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ResetPasswordConfirmation;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.entities.UserCredentials;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
@@ -12,12 +11,8 @@ import com.shutafin.model.web.user.EmailWeb;
 import com.shutafin.model.web.user.PasswordWeb;
 import com.shutafin.repository.ResetPasswordConfirmationRepository;
 import com.shutafin.repository.UserAccountRepository;
-import com.shutafin.repository.UserCredentialsRepository;
 import com.shutafin.repository.UserRepository;
-import com.shutafin.service.EmailNotificationSenderService;
-import com.shutafin.service.EmailTemplateService;
-import com.shutafin.service.EnvironmentConfigurationService;
-import com.shutafin.service.ResetPasswordService;
+import com.shutafin.service.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,10 +25,8 @@ import java.util.UUID;
 @Transactional
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
-    private static final Boolean IS_FALSE = false;
-    private static final int HOURS_EXPIRATION = 24;
-    private static final String LINK = "/#/reset-password/confirmation/";
-    private static final String HTTP = "http://";
+    private static final int LINK_HOURS_EXPIRATION = 24;
+    private static final String reset_password_confirmation_url = "/#/reset-password/confirmation/";
 
     @Autowired
     private UserRepository userRepository;
@@ -54,17 +47,16 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private EnvironmentConfigurationService environmentConfigurationService;
 
     @Autowired
-    private UserCredentialsRepository userCredentialsRepository;
-
+    private PasswordService passwordService;
 
     @Transactional
     @Override
     public void resetPasswordRequest(EmailWeb emailWeb) {
         User user = userRepository.findUserByEmail(emailWeb.getEmail());
         if (user != null){
-            String uuid = createResetPasswordConfirmation(user);
+            ResetPasswordConfirmation resetPasswordConfirmation = saveResetPasswordConfirmation(user);
             UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
-            sendMessage(user, userAccount.getLanguage(), uuid);
+            sendMessage(user, userAccount.getLanguage(), resetPasswordConfirmation.getUrlLink());
         }
     }
 
@@ -75,19 +67,20 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     }
 
     private String createLink(String uuid) {
-        return HTTP + environmentConfigurationService.getServerAddress() + LINK + uuid;
+        return environmentConfigurationService.getServerAddress() + reset_password_confirmation_url + uuid;
     }
 
-    private String createResetPasswordConfirmation(User user){
-        ResetPasswordConfirmation resetPswdConfirm = new ResetPasswordConfirmation();
-        resetPswdConfirm.setUser(user);
-        resetPswdConfirm.setUrlLink(UUID.randomUUID().toString());
-        resetPswdConfirm.setConfirmed(IS_FALSE);
-        resetPswdConfirm.setExpiresAt(DateUtils.addHours(new Date(), (HOURS_EXPIRATION)));
-        resetPasswordConfirmationRepository.save(resetPswdConfirm);
-        return resetPswdConfirm.getUrlLink();
+    private ResetPasswordConfirmation saveResetPasswordConfirmation(User user){
+        ResetPasswordConfirmation resetPasswordConfirmation = new ResetPasswordConfirmation();
+        resetPasswordConfirmation.setUser(user);
+        resetPasswordConfirmation.setUrlLink(UUID.randomUUID().toString());
+        resetPasswordConfirmation.setConfirmed(false);
+        resetPasswordConfirmation.setExpiresAt(DateUtils.addHours(new Date(), (LINK_HOURS_EXPIRATION)));
+        resetPasswordConfirmationRepository.save(resetPasswordConfirmation);
+        return resetPasswordConfirmation;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void resetPasswordValidation(String link) {
         if (resetPasswordConfirmationRepository.findValidUrlLink(link) == null){
@@ -102,8 +95,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         if (resetPasswordConfirmation == null){
             throw new ResourceNotFoundException();
         }
-        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(resetPasswordConfirmation.getUser());
-        userCredentials.setPasswordHash(passwordWeb.getNewPassword());
+        passwordService.updateUserPasswordInDb(resetPasswordConfirmation.getUser(), passwordWeb.getNewPassword());
     }
 
 }

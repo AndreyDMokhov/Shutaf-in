@@ -24,7 +24,10 @@ public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigura
             e.printStackTrace();
             throw new IllegalStateException("Unexpected error occurred");
         }
-        return ip + ":" + externalPort;
+        if (externalPort != null){
+            ip = ip + ":" + externalPort;
+        }
+        return "http://" + ip;
     }
 
 }
