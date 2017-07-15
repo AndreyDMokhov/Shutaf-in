@@ -1,6 +1,5 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.exception.exceptions.ResourceDoesNotExistException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
@@ -38,9 +37,6 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     @Transactional
     public void addUserImage(UserImageWeb image, User user) {
-        if (user == null) {
-            throw new AuthenticationException();
-        }
         UserImage userImage = new UserImage();
         String imageEncoded = image.getImage();
         userImage.setUser(user);
@@ -57,9 +53,6 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     @Transactional
     public UserImage getUserImage(User user, Long userImageId) {
-        if (user == null) {
-            throw new AuthenticationException();
-        }
         UserImage userImage = userImageRepository.findById(userImageId);
         if (userImage == null || !user.getId().equals(userImage.getUser().getId())) {
             throw new ResourceDoesNotExistException(String.format("User Image with ID %d was not found", userImageId));
