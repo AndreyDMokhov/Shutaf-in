@@ -1,6 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.exception.exceptions.SystemException;
 import com.shutafin.service.EnvironmentConfigurationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigura
             InetAddress ip = InetAddress.getLocalHost();
             serverAddress = ip.getHostAddress();
         } catch (UnknownHostException e) {
-            throw new ResourceNotFoundException();
+            throw new SystemException(e.getMessage() + ":\n" + e.getStackTrace());
         }
         return "http://" + serverAddress + port;
     }

@@ -10,7 +10,7 @@ app.controller('errorsController', function ($filter, $stateParams) {
         if (code===undefined || code===null || code===""){
             code = 404;
         }
-        vm.errorData.code = $filter('translate')('Error.'+code+'.code');
+        vm.errorData.code = code;
         vm.errorData.description = $filter('translate')('Error.'+code+'.description');
     }
 

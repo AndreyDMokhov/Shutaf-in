@@ -25,7 +25,7 @@
   "Home.description":"This is a service for searching neighbours.",
 
   "SECTION":"ERRORS",
-  "Error.404.code":"404",
+  "Error.unexpected.server.error":"Unexpected server error occurred. Try to reload the page.",
   "Error.404.description":"Looks like the link is lost or does not exist",
 
   "SECTION":"REGISTRATION",

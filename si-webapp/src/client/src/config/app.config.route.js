@@ -20,7 +20,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: "partials/registration/registration.html",
                 controller: "userRegistration",
                 controllerAs: "vm",
-                url: "/registration"
+                url: "/registration/request"
             })
         .state("registrationConfirmation",
             {

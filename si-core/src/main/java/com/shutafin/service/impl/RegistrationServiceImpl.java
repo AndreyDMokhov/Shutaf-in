@@ -51,37 +51,32 @@ public class RegistrationServiceImpl implements RegistrationService{
     private EnvironmentConfigurationService environmentConfigurationService;
 
     @Autowired
-    private SessionManagementService sessionManagementService;
-
-    @Autowired
     private PasswordService passwordService;
 
     @Override
     @Transactional
     public void save(RegistrationRequestWeb registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
-        saveUserAccount(user, registrationRequestWeb);
+        UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
-        sendConfirmRegistrationEmail(user, registrationRequestWeb);
+        sendConfirmRegistrationEmail(user, userAccount);
     }
 
-    private void sendConfirmRegistrationEmail(User user, RegistrationRequestWeb registrationRequestWeb) {
+    private void sendConfirmRegistrationEmail(User user, UserAccount userAccount) {
         RegistrationConfirmation registrationConfirmation = new RegistrationConfirmation();
         registrationConfirmation.setUser(user);
         registrationConfirmation.setConfirmed(false);
         registrationConfirmation.setUrlLink(UUID.randomUUID().toString());
         registrationConfirmationRepository.save(registrationConfirmation);
 
-        Language language = userAccountRepository.findUserAccountByUser(user).getLanguage();
-
         String link = environmentConfigurationService.getServerAddress() + "/#/users/registration/confirmation/" + registrationConfirmation.getUrlLink();
-        EmailMessage emailMessage = emailTemplateService.getEmailMessage(registrationConfirmation.getUser(), EmailReason.REGISTRATION_CONFIRMATION, language, link);
+        EmailMessage emailMessage = emailTemplateService.getEmailMessage(registrationConfirmation.getUser(), EmailReason.REGISTRATION_CONFIRMATION, userAccount.getLanguage(), link);
         mailSenderService.sendEmail(emailMessage, EmailReason.REGISTRATION_CONFIRMATION);
     }
 
     @Override
     @Transactional
-    public String confirmRegistration(String link) {
+    public User confirmRegistration(String link) {
         RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.getRegistrationConfirmationByUrlLink(link);
         if (registrationConfirmation == null){
             throw new ResourceNotFoundException();
@@ -93,14 +88,14 @@ public class RegistrationServiceImpl implements RegistrationService{
         userAccount.setAccountStatus(AccountStatus.CONFIRMED);
         userAccountRepository.update(userAccount);
 
-        return sessionManagementService.generateNewSession(registrationConfirmation.getUser());
+        return registrationConfirmation.getUser();
     }
 
     private void saveUserCredentials(User user, String password){
         passwordService.createAndSaveUserPassword(user, password);
     }
 
-    private void saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb){
+    private UserAccount saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb){
         UserAccount userAccount = new UserAccount();
         userAccount.setUser(user);
         userAccount.setAccountStatus(AccountStatus.NEW);
@@ -112,6 +107,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         }
         userAccount.setLanguage(language);
         userAccountRepository.save(userAccount);
+        return userAccount;
     }
 
     private User saveUser(RegistrationRequestWeb registrationRequestWeb) {

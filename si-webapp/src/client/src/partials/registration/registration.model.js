@@ -6,7 +6,7 @@ app.factory('registrationModel', function (Restangular) {
     });
 
     function registerUser(params) {
-        return rest.one('/registration').customPOST(params);
+        return rest.one('/registration/request').customPOST(params);
     }
 
     return {
