@@ -2,10 +2,9 @@ package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserCredentials;
 import com.shutafin.model.web.user.ChangePasswordWeb;
-import com.shutafin.repository.UserCredentialsRepository;
 import com.shutafin.service.ChangePasswordService;
+import com.shutafin.service.PasswordService;
 import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class ChangePasswordServiceImpl implements ChangePasswordService{
     private SessionManagementService sessionManagementService;
 
     @Autowired
-    private UserCredentialsRepository userCredentialsRepository;
+    private PasswordService passwordService;
 
     @Transactional
     @Override
@@ -28,10 +27,8 @@ public class ChangePasswordServiceImpl implements ChangePasswordService{
         if (user == null){
             throw new AuthenticationException();
         }
-        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
-        if (!userCredentials.getPasswordHash().equals(changePasswordWeb.getOldPassword())){
-            throw new AuthenticationException();
+        if (passwordService.isPasswordCorrect(user,changePasswordWeb.getOldPassword())){
+            passwordService.updateUserPasswordInDb(user, changePasswordWeb.getNewPassword());
         }
-        userCredentials.setPasswordHash(changePasswordWeb.getNewPassword());
     }
 }
