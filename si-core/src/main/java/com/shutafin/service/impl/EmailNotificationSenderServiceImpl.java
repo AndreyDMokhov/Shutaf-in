@@ -46,10 +46,10 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
 
         EmailNotificationLog emailNotificationLog = getEmailNotificationLog(
-                                                                        messageContent,
-                                                                        emailTo,
-                                                                        emailMessage.getUser(),
-                                                                        emailReason);
+                messageContent,
+                emailTo,
+                emailMessage.getUser(),
+                emailReason);
 
         try {
             mailSender.send(getMimeMessage(emailTo, messageContent, baseTemplate.getEmailHeader()));
