@@ -40,7 +40,12 @@
                         {{'Login.title' | translate}}
                     </a>
                 </li>
-
+                <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('resetPassword' | includedByState)}">
+                    <a ui-sref="resetPassword">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        {{'ResetPassword.title' |translate}}
+                    </a>
+                </li>
                 <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>

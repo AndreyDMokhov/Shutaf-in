@@ -47,8 +47,6 @@
   "Registration.form.msg.registrationFail":"Registration fail",
   "Registration.form.msg.emailDuplication":"Email already exists",
 
-  "Home.description":"This is a service for searching neighbours.",
-
   "SECTION": "LOGIN",
   "Login.title": "Login",
   "Login.form.email": "Email ",
@@ -65,7 +63,23 @@
   "SECTION": "PROFILE",
   "Profile.title" : "Profile",
   "Profile.birthday" : "Birthday",
-  "Profile.city" : "Current city"
+  "Profile.city" : "Current city",
 
+  "SECTION": "RESET_PASSWORD",
+  "ResetPassword.emaiSent" : "Email sent to specified address",
+  "ResetPassword.passChanged": "Password changed successfully",
+  "ResetPassword.unexpectedError": "Unexpected error occurred",
+  "ResetPassword.title": "Reset password",
+  "ResetPassword.description": "Reset password",
+  "ResetPassword.form.email": "Email",
+  "ResetPassword.form.password":"Password",
+  "ResetPassword.form.msg.confirmPassword": "Your password doesn't match. Please retype your password to confirm it.",
+  "ResetPassword.form.msg.wrongEmail":"Make sure your email address is correct",
+  "ResetPassword.form.btn.next":"Next",
+  "ResetPassword.form.btn.cancel":"Cancel",
+  "ResetPassword.form.btn.save":"Save",
+  "ResetPassword.form.msg.requiredPassword":"Password is required",
+  "ResetPassword.form.msg.shortPassword":"8 characters or longer",
+  "ResetPassword.form.confirmPassword":"Confirm password"
 
 }

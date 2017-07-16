@@ -48,6 +48,26 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             {
                 controller: "logoutController",
                 url: "/logout"
-            });
+            })
+        .state("resetPassword",
+            {
+                templateUrl: "partials/resetPassword/resetPasswordInputEmail.html",
+                controller: "resetPasswordController",
+                controllerAs: "vm",
+                url: "/resetPassword"
+            })
+        .state("error404",
+            {
+                templateUrl: 'partials/resetPassword/page404.html',
+                controller: 'error404Controller',
+                controllerAs: "vm"
+            })
+        .state('inputNewPassword', {
+            url: "/reset-password/confirmation/{link}",
+            templateUrl: 'partials/resetPassword/resetPasswordInputNewPassword.html',
+            controller: 'resetPasswordConfirmation',
+            controllerAs: "vm"
+        });
+
     $urlRouterProvider.otherwise("/home");
 });
