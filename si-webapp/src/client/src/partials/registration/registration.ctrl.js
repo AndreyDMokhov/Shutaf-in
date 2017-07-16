@@ -7,7 +7,6 @@ app.controller('userRegistration', function ($rootScope, registrationModel, noti
 
 
     function registerUser() {
-        console.log(vm.registrationData);
         vm.dataLoading = true;
 
         vm.registrationData.userLanguageId = localStorage.getItem(CACHED_LANGUAGE_ID);
