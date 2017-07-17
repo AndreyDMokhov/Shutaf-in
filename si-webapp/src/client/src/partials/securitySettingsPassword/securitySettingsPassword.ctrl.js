@@ -1,4 +1,4 @@
-app.controller('securitySettingsPasswordController', function (securitySettingsPasswordModel, notify, $state, $filter/*, $stateParams*/) {
+app.controller('securitySettingsPasswordController', function ($rootScope, securitySettingsPasswordModel, notify, $filter /*, $stateParams*/) {
 
     var vm = this;
     //var urlLink = $stateParams.urlLink;
@@ -8,10 +8,10 @@ app.controller('securitySettingsPasswordController', function (securitySettingsP
     vm.securitySettings = {};
 
 
-    function updatePassword() {
+    function changePassword() {
         vm.dataLoading=true;
 
-        securitySettingsPasswordModel.updatePassword(vm.securitySettings).then(
+        securitySettingsPasswordModel.changePassword(vm.securitySettings).then(
             function (success) {
                 vm.dataLoading = false;
                 notify.set($filter('translate')("SecuritySettings.msg.success"), {type: 'success'});
@@ -22,6 +22,6 @@ app.controller('securitySettingsPasswordController', function (securitySettingsP
     }
 
 
-    vm.updatePassword = updatePassword;
+    vm.changePassword = changePassword;
 
 });
