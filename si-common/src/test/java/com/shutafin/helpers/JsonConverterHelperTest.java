@@ -42,29 +42,3 @@ public class JsonConverterHelperTest {
 
 
 }
-
-class DummyUserForObjectMapper {
-
-    private Integer age;
-    private String name;
-    private Boolean isAvailable;
-
-    public DummyUserForObjectMapper(Integer age, String name, Boolean isAvailable) {
-        this.age = age;
-        this.name = name;
-        this.isAvailable = isAvailable;
-    }
-
-
-    public Integer getAge() {
-        return age;
-    }
-    public String getName() {
-        return name;
-    }
-
-
-    public Boolean getAvailable() {
-        return isAvailable;
-    }
-}
