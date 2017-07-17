@@ -49,10 +49,10 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         notNull(language);
         notBlank(link);
 
-        return new EmailMessage(user, getTemplate(
-                                            emailReason,
-                                            language,
-                                            link
+        return new EmailMessage(user.getEmail(), getTemplate(
+                emailReason,
+                language,
+                link
         ));
     }
 
@@ -78,5 +78,12 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
     }
 
 
-
+    @Override
+    public EmailMessage getEmailMessage(String emailTo, EmailReason emailReason, Language language, String link) {
+        return new EmailMessage(emailTo, getTemplate(
+                emailReason,
+                language,
+                link
+        ));
+    }
 }

@@ -24,6 +24,10 @@
   "Home.title":"Home",
   "Home.description":"This is a service for searching neighbours.",
 
+  "SECTION":"ERRORS",
+  "Error.unexpected.server.error":"Unexpected server error occurred. Try to reload the page.",
+  "Error.404.description":"Looks like the link is lost or does not exist",
+
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
   "Registration.description":"User registration",
@@ -45,6 +49,7 @@
   "Registration.form.btn.registration":"Register",
   "Registration.form.msg.registrationOK":"Registration is ok",
   "Registration.form.msg.registrationFail":"Registration fail",
+  "Registration.form.msg.emailDuplication":"Email already exists",
 
   "SECTION": "LOGIN",
   "Login.title": "Login",
