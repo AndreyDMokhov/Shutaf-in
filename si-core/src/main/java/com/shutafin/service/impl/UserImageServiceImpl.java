@@ -1,6 +1,6 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.ResourceDoesNotExistException;
+`import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
@@ -55,7 +55,7 @@ public class UserImageServiceImpl implements UserImageService {
     public UserImage getUserImage(User user, Long userImageId) {
         UserImage userImage = userImageRepository.findById(userImageId);
         if (userImage == null || !user.getId().equals(userImage.getUser().getId())) {
-            throw new ResourceDoesNotExistException(String.format("User Image with ID %d was not found", userImageId));
+            throw new ResourceNotFoundException(String.format("User Image with ID %d was not found", userImageId));
         }
         saveUserImageToFileSystem(userImage.getImageStorage().getImageEncoded(), userImage);
         return userImage;

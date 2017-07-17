@@ -69,9 +69,11 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Transactional
     public User confirmRegistration(String link) {
         RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.getRegistrationConfirmationByUrlLink(link);
+
         if (registrationConfirmation == null){
             throw new ResourceNotFoundException();
         }
+
         registrationConfirmation.setConfirmed(true);
         registrationConfirmationRepository.update(registrationConfirmation);
 
