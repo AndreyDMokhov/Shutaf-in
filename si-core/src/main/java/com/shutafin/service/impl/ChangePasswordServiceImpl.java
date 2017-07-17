@@ -24,11 +24,9 @@ public class ChangePasswordServiceImpl implements ChangePasswordService{
     @Override
     public void changePassword(ChangePasswordWeb changePasswordWeb, String session_id) {
         User user = sessionManagementService.findUserWithValidSession(session_id);
-        if (user == null){
+        if (user == null || !passwordService.isPasswordCorrect(user,changePasswordWeb.getOldPassword())){
             throw new AuthenticationException();
         }
-        if (passwordService.isPasswordCorrect(user,changePasswordWeb.getOldPassword())){
-            passwordService.updateUserPasswordInDb(user, changePasswordWeb.getNewPassword());
-        }
+        passwordService.updateUserPasswordInDb(user, changePasswordWeb.getNewPassword());
     }
 }

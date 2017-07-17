@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/account/security-settings")
+@RequestMapping("users/password")
 public class ChangePasswordController {
 
     private static final String STRING_SESSION_D = "session_id";
@@ -22,7 +22,7 @@ public class ChangePasswordController {
     @Autowired
     private ChangePasswordService changePasswordService;
 
-    @RequestMapping(value = "/password", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "change", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void changePassword(@RequestBody @Valid ChangePasswordWeb changePasswordWeb, BindingResult result,
                              HttpServletRequest request){
         String sessionId = request.getHeader(STRING_SESSION_D);
