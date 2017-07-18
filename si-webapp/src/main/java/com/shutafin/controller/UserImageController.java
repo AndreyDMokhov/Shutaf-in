@@ -21,9 +21,9 @@ public class UserImageController {
     @Autowired
     private SessionManagementService sessionManagementService;
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb getUserImage(@RequestHeader(value = "session_id") String sessionId,
-                                     @RequestParam(value = "image_id") Long userImageId) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserImageWeb getUserImage(@RequestHeader(value = "session_id", required = false) String sessionId,
+                                     @PathVariable(value = "id") Long userImageId) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
             throw new AuthenticationException();
@@ -32,8 +32,8 @@ public class UserImageController {
         return new UserImageWeb(image.getImageStorage().getImageEncoded(), image.getCreatedDate().toString());
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void addUserImage(@RequestHeader(value = "session_id") String sessionId,
+    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void addUserImage(@RequestHeader(value = "session_id", required = false) String sessionId,
                                @RequestBody UserImageWeb image) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
@@ -42,14 +42,13 @@ public class UserImageController {
         userImageService.addUserImage(image, user);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserImage(@RequestHeader(value = "session_id") String sessionId,
-                               @RequestParam(value = "image_id") Long userImageId) {
+                               @PathVariable(value = "id") Long userImageId) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
             throw new AuthenticationException();
         }
-        UserImage image = userImageService.getUserImage(user, userImageId);
-        userImageService.deleteUserImage(image);
+        userImageService.deleteUserImage(user, userImageId);
     }
 }

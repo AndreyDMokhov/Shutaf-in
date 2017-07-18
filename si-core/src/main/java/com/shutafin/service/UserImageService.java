@@ -8,7 +8,7 @@ public interface UserImageService {
 
     void addUserImage(UserImageWeb image, User user);
     UserImage getUserImage(User user, Long userImageId);
-    void deleteUserImage(UserImage userImage);
+    void deleteUserImage(User user, Long userImageId);
     void createUserImageDirectory(User user);
 
 }

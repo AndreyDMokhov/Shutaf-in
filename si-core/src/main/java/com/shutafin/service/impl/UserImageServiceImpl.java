@@ -34,6 +34,9 @@ public class UserImageServiceImpl implements UserImageService {
     @Autowired
     private EnvironmentConfigurationService environmentConfigurationService;
 
+    @Autowired
+    private UserImageService userImageService;
+
     @Override
     @Transactional
     public void addUserImage(UserImageWeb image, User user) {
@@ -63,7 +66,9 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
-    public void deleteUserImage(UserImage userImage) {
+    public void deleteUserImage(User user, Long userImageId) {
+
+        UserImage userImage = userImageService.getUserImage(user, userImageId);
         deleteLocalImage(userImage);
         imageStorageRepository.delete(userImage.getImageStorage());
         userImageRepository.delete(userImage);
@@ -74,12 +79,7 @@ public class UserImageServiceImpl implements UserImageService {
         String userDirPath = getUserDirectoryPath(user);
         File directory = new File(userDirPath);
         if (!directory.exists()) {
-            try {
-                directory.mkdir();
-            } catch (Exception exp) {
-                System.out.println("Cannot create directory");
-                exp.printStackTrace();
-            }
+            directory.mkdir();
         }
     }
 
@@ -105,8 +105,10 @@ public class UserImageServiceImpl implements UserImageService {
                 outputStream.close();
             }
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
             System.out.println("File not found\n" + e);
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Error while saving image to file\n" + e);
         }
     }
