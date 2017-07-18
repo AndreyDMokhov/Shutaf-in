@@ -45,7 +45,8 @@ public class UserImageServiceImpl implements UserImageService {
         String imageLocalPath = getUserDirectoryPath(user) + String.valueOf(userImageId) + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         saveUserImageToFileSystem(imageEncoded, userImage);
-        createImageBackup(userImage, imageEncoded);
+        ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
+        userImage.setImageStorage(imageStorage);
         userImageRepository.update(userImage);
 
     }
@@ -110,12 +111,12 @@ public class UserImageServiceImpl implements UserImageService {
         }
     }
 
-    private void createImageBackup(UserImage userImage, String image) {
+    private ImageStorage createImageBackup(UserImage userImage, String image) {
         ImageStorage imageStorage = new ImageStorage();
         imageStorage.setImageEncoded(image);
         imageStorage.setUserImage(userImage);
         Long storedImageId = (Long) imageStorageRepository.save(imageStorage);
         imageStorage.setId(storedImageId);
-        userImage.setImageStorage(imageStorage);
+        return imageStorage;
     }
 }
