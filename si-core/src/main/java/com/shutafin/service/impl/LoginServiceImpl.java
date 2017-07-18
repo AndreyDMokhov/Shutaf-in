@@ -3,8 +3,11 @@ package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserSession;
+import com.shutafin.model.entities.types.AccountStatus;
 import com.shutafin.model.web.LoginWebModel;
+import com.shutafin.repository.UserAccountRepository;
 import com.shutafin.repository.UserRepository;
 import com.shutafin.repository.UserSessionRepository;
 import com.shutafin.service.LoginService;
@@ -34,8 +37,17 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private PasswordService passwordService;
 
+    @Autowired
+    private UserAccountRepository userAccountRepository;
+
     public String getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
+
+        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+        if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED){
+            throw new AuthenticationException();
+        }
+
         checkUserPassword(loginWeb, user);
         return generateSession(user);
     }

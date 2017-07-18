@@ -8,7 +8,8 @@ public enum ErrorType {
     AUTHENTICATION(401, ErrorCode.AUT),
     EMAIL_SEND_ERROR(503, ErrorCode.ESE),
     EMAIL_CONFIGURATION_ERROR(500, ErrorCode.ECE),
-    EMAIL_DUPLICATION_EXCEPTION(400, ErrorCode.EDE);
+    EMAIL_DUPLICATION_EXCEPTION(400, ErrorCode.EDE),
+    RESOURCE_NOT_FOUND_ERROR(404, ErrorCode.RNF);
 
     private Integer httpCode;
     private ErrorCode errorCodeType;
@@ -29,5 +30,5 @@ public enum ErrorType {
 
 
 enum ErrorCode {
-    INP, SYS, AUT, ESE, ECE, EDE;
+    INP, SYS, AUT, ESE, ECE, EDE, RNF;
 }
