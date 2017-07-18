@@ -1,5 +1,6 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.service.InitializationService;
 import com.shutafin.repository.CityRepository;
