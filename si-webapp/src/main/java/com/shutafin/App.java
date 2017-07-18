@@ -7,7 +7,10 @@ import org.springframework.context.annotation.ImportResource;
 
 
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-@ImportResource(value = {"classpath:application-context.xml", "classpath:application-db.xml"})
+@ImportResource(value = {
+        "classpath:application-context.xml",
+        "classpath:application-db.xml",
+        "classpath:application-smtp.xml"})
 public class App {
 
 

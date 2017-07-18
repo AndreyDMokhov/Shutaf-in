@@ -2,7 +2,7 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand">Shutaf-In</a>
+                <a class="navbar-brand">{{brand}}</a>
             </div>
             <ul class="nav navbar-nav">
                 <li ng-class="{active : ('home' | includedByState)}">
@@ -21,9 +21,14 @@
                     <a ui-sref="users">{{'Users.title' | translate}}</a>
                 </li>
 
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userProfile' | includedByState)}">
+                    <a ui-sref="userProfile">{{'Profile.title' | translate}}</a>
+                </li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('registration' | includedByState)}">
+                <li ng-hide="vm.sessionService.isAuthenticated()"
+                    ng-class="{active : ('registration' | includedByState)}">
                     <a ui-sref="registration">
                         <i class="glyphicon glyphicon-log-in fa-rotate-90" aria-hidden="true"></i>
                         {{'Registration.title' | translate}}
@@ -50,8 +55,7 @@
                         <b class="caret"></b>
                     </a>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                        <li role="menuitem"><a class="pointer" ng-click="vm.setLanguageCode('en')">English</a></li>
-                        <li role="menuitem"><a class="pointer" ng-click="vm.setLanguageCode('ru')">Русский</a></li>
+                        <li role="menuitem" ng-repeat="lang in vm.initialization.languages"><a class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a></li>
                     </ul>
                 </li>
             </ul>

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,54 +20,67 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     private static final int NUMBER_DAYS_EXPIRATION = 30;
     private static final Boolean IS_FALSE = false;
     private static final Boolean IS_TRUE = true;
+    private static final int EXPIRED_SESSION_DELETE_TIME = 10;
 
     @Autowired
     private UserSessionRepository userSessionRepository;
 
     @Override
+    @Transactional(readOnly = true)
+    public User findUserWithValidSession(String sessionId) {
+        return userSessionRepository.findUserBySessionIdAndIsValid(sessionId, IS_TRUE);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserSession findValidUserSession(String sessionId) {
+        return userSessionRepository.findSessionBySessionIdAndInValid(sessionId, IS_TRUE);
+    }
+
+    @Override
     @Transactional
-    public String generateSession(User user) {
+    public void validate(String sessionId) throws AuthenticationException {
+        UserSession userSession = findValidUserSession(sessionId);
+        if (userSession == null){
+            throw new AuthenticationException();
+        }
+        userSession.setExpirationDate(DateUtils.addDays(new Date(), (NUMBER_DAYS_EXPIRATION)));
+        userSessionRepository.update(userSession);
+    }
+
+    @Override
+    @Transactional
+    public String generateNewSession(User user) {
         UserSession userSession = new UserSession();
         userSession.setUser(user);
         userSession.setValid(IS_TRUE);
         userSession.setSessionId(UUID.randomUUID().toString());
         userSession.setExpirable(IS_FALSE);
-        userSession.setExpirationDate(DateUtils.addDays(new Date(), (NUMBER_DAYS_EXPIRATION)));
+        userSession.setExpirationDate(DateUtils.addDays(new Date(), NUMBER_DAYS_EXPIRATION));
         userSessionRepository.save(userSession);
         return userSession.getSessionId();
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public void validate(String sessionId) throws AuthenticationException {
-        UserSession userSession = userSessionRepository.findSessionBySessionIdAndInValid(sessionId, IS_TRUE);
-        if (userSession == null){
-            throw new AuthenticationException();
-        }
-    }
-
-    @Override
     @Transactional
-    public void invalidate(User user) {
-        userSessionRepository.updateIsValidAllSessionsByUser(user);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<UserSession> findAllInvalidSessions() {
-        return userSessionRepository.findAllInvalidSessions(new Date());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<UserSession> findAllInvalidSessions(int numMinuteExperation) {
-        Date date = DateUtils.addMinutes(new Date(), -numMinuteExperation);
-        return userSessionRepository.findAllInvalidSessions(date);
+    public void invalidateUserSession(String sessionId) {
+        UserSession userSession = userSessionRepository.findSessionBySessionIdAndIsValid(sessionId, IS_TRUE);
+        if (userSession != null){
+            userSession.setValid(IS_FALSE);
+            userSessionRepository.update(userSession);
+        }
     }
 
     @Override
     @Transactional
     public void invalidateAllExpiredSessions() {
         userSessionRepository.updateAllValidExpiredSessions();
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllInvalidSessions() {
+        Date date = DateUtils.addMinutes(new Date(), -(EXPIRED_SESSION_DELETE_TIME));
+        userSessionRepository.deleteAllInvalidSessions(date);
     }
 }
