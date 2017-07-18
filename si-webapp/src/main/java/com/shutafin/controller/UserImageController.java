@@ -1,7 +1,6 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.exception.exceptions.ResourceDoesNotExistException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.user.UserImageWeb;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/images")

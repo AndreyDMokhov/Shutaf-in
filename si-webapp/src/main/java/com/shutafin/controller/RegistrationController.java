@@ -1,8 +1,10 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.service.RegistrationService;
+import com.shutafin.repository.UserRepository;
+import com.shutafin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -15,19 +17,24 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class RegistrationController {
 
-
     @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    private SessionManagementService sessionManagementService;
 
-
-    @RequestMapping(value = "/registration", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/registration/request", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
                                        BindingResult result, HttpServletResponse response){
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        String sessionId = registrationService.save(registrationRequestWeb);
-        response.setHeader("session_id", sessionId);
+        registrationService.save(registrationRequestWeb);
+    }
+
+    @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
+    public void confirmRegistration(@PathVariable String link, HttpServletResponse response){
+        User user = registrationService.confirmRegistration(link);
+        response.setHeader("session_id", sessionManagementService.generateNewSession(user));
     }
 }

@@ -2,6 +2,7 @@ package com.shutafin.exception.exceptions.validation;
 
 
 import com.shutafin.exception.exceptions.ValidationException;
+import com.shutafin.model.web.error.ErrorType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -12,6 +13,7 @@ public class InputValidationException extends ValidationException {
     private BindingResult result;
 
     public InputValidationException(BindingResult result) {
+        super(result.getFieldErrors().toString());
         this.result = result;
     }
 
@@ -23,5 +25,10 @@ public class InputValidationException extends ValidationException {
             map.put(fieldError.getField(), fieldError.getCode());
         }
         return map;
+    }
+
+    @Override
+    public ErrorType getErrorType() {
+        return ErrorType.INPUT;
     }
 }
