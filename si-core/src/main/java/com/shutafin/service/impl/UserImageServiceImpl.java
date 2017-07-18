@@ -1,6 +1,6 @@
 package com.shutafin.service.impl;
 
-`import com.shutafin.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
