@@ -88,6 +88,10 @@
   "SecuritySettings.form.confirmErrorPassword": "Пароли не совпадают. Введите новый пароль и подтвердите его",
   "SecuritySettings.msg.fail": "Изменения не сохранены",
   "SecuritySettings.form.btn.loading": "Загрузка данных",
-  "SecuritySettings.msg.success": "Изменения сохранены"
+  "SecuritySettings.msg.success": "Изменения сохранены",
+  "SecuritySettings.msg.successRequest": "Запрос был успешно отправлен",
+  "SecuritySettings.msg.error.emailDuplication": "Электронный адрес уже зарегистрирован",
+  "SecuritySettings.msg.error.authentication": "Ошибка аутентификации",
+  "SecuritySettings.msg.systemError": "Системная ошибка"
 
 }

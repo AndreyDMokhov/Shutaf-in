@@ -62,12 +62,18 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "logoutController",
                 url: "/logout"
             })
-        .state("security-settingsPassword",
+        .state("changeEmailReguest",
             {
-                templateUrl: "partials/securitySettingsPassword/securitySettingsPassword.html",
-                controller: "securitySettingsPasswordController",
+                templateUrl: "partials/registration/registration.html",
+                controller: "securitySettingsChangeEmailRequestController",
                 controllerAs: "vm",
-                url: "/account/security-settings/password"
-            });
+                url: "/user/account/change-email-request"
+            })
+        /*.state("changeEmailConfirmation",
+            {
+                controller: "registrationConfirmation",
+                controllerAs: "vm",
+                url: "/user/account/change-email-confirm/{link}"
+            })*/
     $urlRouterProvider.otherwise("/home");
 });

@@ -48,10 +48,10 @@
                     </a>
                 </li>
 
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('security-settingsPassword' | includedByState)}">
-                    <a ui-sref="security-settingsPassword">
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('changeEmailReguest' | includedByState)}">
+                    <a ui-sref="changeEmailReguest">
                         <span class="glyphicon glyphicon-cog"></span>
-                        {{'SecuritySettingsPassword.button' | translate}}
+                        {{'SecuritySettingsEmail.button' | translate}}
                     </a>
                 </li>
 

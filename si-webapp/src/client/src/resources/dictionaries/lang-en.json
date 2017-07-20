@@ -92,5 +92,9 @@
   "SecuritySettings.form.confirmErrorPassword": "Your password doesn't match. Please retype your password to confirm it",
   "SecuritySettings.msg.fail": "Changes not saved",
   "SecuritySettings.form.btn.loading": "Loading data",
-  "SecuritySettings.msg.success": "Changes saved"
+  "SecuritySettings.msg.success": "Changes saved",
+  "SecuritySettings.msg.successRequest": "The request was sent successfully",
+  "SecuritySettings.msg.error.emailDuplication": "Email already exists",
+  "SecuritySettings.msg.error.authentication": "Authentication error",
+  "SecuritySettings.msg.systemError": "System error"
 }
