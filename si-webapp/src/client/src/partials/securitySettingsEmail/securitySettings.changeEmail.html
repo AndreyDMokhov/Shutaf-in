@@ -9,7 +9,6 @@
         }
         $(document).on('click', 'button[type="submit"]', function () {
             $(this).attr({
-                'text': 'text',
                 'type': 'button'
             });
         });
@@ -43,19 +42,19 @@
 
                 <div class="form-group"
                      ng-class="{
-                                'has-error': form.password.$invalid && form.password.$dirty,
-                                'has-success': form.password.$valid}">
-                    <label class="required" for="password">{{'Login.form.password' | translate}}</label>
+                                'has-error': form.userPassword.$invalid && form.userPassword.$dirty,
+                                'has-success': form.userPassword.$valid}">
+                    <label class="required" for="userPassword">{{'SecuritySettings.form.password' | translate}}</label>
                     <input type="password"
                            class="form-control"
-                           name="password"
-                           id="password"
-                           ng-model="vm.securitySettings.password"
+                           name="userPassword"
+                           id="userPassword"
+                           ng-model="vm.securitySettings.userPassword"
                            ng-minLength="8"
                            ng-maxLength="25"
                            required/>
 
-                    <p class="help-block" ng-if="form.password.$invalid && form.password.$dirty">
+                    <p class="help-block" ng-if="form.userPassword.$invalid && form.userPassword.$dirty">
                         {{'SecuritySettings.form.errorPassword' | translate}}
                     </p>
                 </div>

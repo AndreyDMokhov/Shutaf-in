@@ -15,7 +15,7 @@ app.controller('securitySettingsChangeEmailConfirmController', function ($state,
             function (success) {
                 vm.dataLoading = false;
                 notify.set($filter('translate')("SecuritySettings.msg.success"), {type: 'success'});
-                $state.go("home");
+                $state.go("logout");
             }, function (error) {
                 vm.dataLoading = false;
                 var status = error.status;

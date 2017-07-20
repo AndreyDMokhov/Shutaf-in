@@ -95,6 +95,6 @@
   "SecuritySettings.msg.success": "Changes saved",
   "SecuritySettings.msg.successRequest": "The request was sent successfully",
   "SecuritySettings.msg.error.emailDuplication": "Email already exists",
-  "SecuritySettings.msg.error.authentication": "Authentication error",
+  "SecuritySettings.msg.error.authentication": "Incorrect email or password",
   "SecuritySettings.msg.systemError": "System error"
 }

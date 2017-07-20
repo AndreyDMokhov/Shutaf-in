@@ -91,7 +91,7 @@
   "SecuritySettings.msg.success": "Изменения сохранены",
   "SecuritySettings.msg.successRequest": "Запрос был успешно отправлен",
   "SecuritySettings.msg.error.emailDuplication": "Электронный адрес уже зарегистрирован",
-  "SecuritySettings.msg.error.authentication": "Ошибка аутентификации",
+  "SecuritySettings.msg.error.authentication": "Неверный адрес электронной почты или пароль",
   "SecuritySettings.msg.systemError": "Системная ошибка"
 
 }
