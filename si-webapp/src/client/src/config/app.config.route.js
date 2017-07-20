@@ -64,14 +64,14 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             })
         .state("changeEmailReguest",
             {
-                templateUrl: "partials/registration/registration.html",
+                templateUrl: "partials/securitySettingsEmail/securitySettings.changeEmail.html",
                 controller: "securitySettingsChangeEmailRequestController",
                 controllerAs: "vm",
                 url: "/user/account/change-email-request"
             })
         /*.state("changeEmailConfirmation",
             {
-                controller: "registrationConfirmation",
+                controller: "securitySettingsChangeEmailConfirmController",
                 controllerAs: "vm",
                 url: "/user/account/change-email-confirm/{link}"
             })*/
