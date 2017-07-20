@@ -1,36 +1,118 @@
 <div class="container"  >
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad" >
 
-
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{vm.userProfile.lastName}} {{vm.userProfile.firstName}} </h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-3 col-lg-3 " align="center"><img alt="User Pic"
-                                                                            src="https://static.wixstatic.com/media/e133a3_e75eade182b847b981272b95cb7be9e9.jpg"
-                                                                            class="img-responsive"></div>
-
-                        <div class=" col-md-8 col-lg-8 " style="margin-left: 30px">
-                            <table class="table table-user-information">
-                                <tbody>
-
-                                <tr>
-                                    <td>{{'Profile.birthday' | translate}}</td>
-                                    <td>to be implemented</td>
-                                </tr>
-                                <tr>
-                                    <td>{{'Profile.city' | translate}}</td>
-                                    <td>to be implemented</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+        <form name="form">
+            <h3>Single File Selection</h3>
+            <div class="input-group">
+                <label for="file">Select File</label>
+                <input type="file" ng-model="file" name="file" id="file"base-sixty-four-input required onload="onLoad" maxsize="500" accept="image/*">
+                <span class="help-block">
+          <ul>
+            <li>required</li>
+            <li>maxsize = 500</li>
+            <li>accept = image/*</li>
+          </ul>
+        </span>
             </div>
-        </div>
+            <div class="alert" ng-class="{'alert-danger': form.file.$invalid, 'alert-success': form.file.$valid}">
+                form.file.$error:
+                {{form.file.$error}}
+            </div>
+            <b>Model Value:</b>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>filename</th>
+                    <th>filetype</th>
+                    <th>filesize (<i><small>KB</small></i>)</th>
+                    <th>base64</th>
+                </tr>
+                <tr ng-show="file">
+                    <td>{{file.filename}}</td>
+                    <td>{{file.filetype}}</td>
+                    <td>{{file.filesize / 1000}}</td>
+                    <td>{{file.base64.substring(0, 30)}}...</td>
+                </tr>
+                <tr>
+                    <td colspan="4" ng-show="!file">
+                        <small><i>No file selected.</i></small>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <h3>Multiple Files Selection</h3>
+            <div class="input-group">
+                <label for="file">Select Files</label>
+                <span class="help-block">
+          <ul>
+            <li>required</li>
+            <li>minsize = 500</li>
+            <li>accept = image/*, .zip</li>
+            <li>minnum = 2</li>
+          </ul>
+        </span>
+                <input type="file" ng-model="files" name="files" base-sixty-four-input multiple accept="image/*, .zip" minsize="500" required minnum="2" on-change="onChange">
+            </div>
+            <div class="alert" ng-class="{'alert-danger': form.files.$invalid, 'alert-success': form.files.$valid}">
+                form.files.$error:
+                {{form.files.$error}}
+            </div>
+            <b>Model Value:</b>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>filename</th>
+                    <th>filetype</th>
+                    <th>filesize (<i><small>KB</small></i>)</th>
+                    <th>base64</th>
+                </tr>
+                <tr ng-repeat="file in files">
+                    <td>{{file.filename}}</td>
+                    <td>{{file.filetype}}</td>
+                    <td>{{file.filesize / 1000}}</td>
+                    <td>{{file.base64.substring(0, 30)}}...</td>
+                </tr>
+                <tr>
+                    <td colspan="4" ng-show="files.length == 0">
+                        <small><i>No file selected.</i></small>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
+
+
+
+    <!--<div class="row">-->
+        <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad" >-->
+
+
+            <!--<div class="panel panel-info">-->
+                <!--<div class="panel-heading">-->
+                    <!--<h3 class="panel-title">{{vm.userProfile.firstName}} {{vm.userProfile.lastName}} </h3>-->
+                <!--</div>-->
+                <!--<div class="panel-body">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-3 col-lg-3 " align="center"><img alt="User Pic"-->
+                                                                            <!--src="https://static.wixstatic.com/media/e133a3_e75eade182b847b981272b95cb7be9e9.jpg"-->
+                                                                            <!--class="img-responsive"></div>-->
+
+                        <!--<div class=" col-md-8 col-lg-8 " style="margin-left: 30px">-->
+                            <!--<table class="table table-user-information">-->
+                                <!--<tbody>-->
+
+                                <!--<tr>-->
+                                    <!--<td>{{'Profile.birthday' | translate}}</td>-->
+                                    <!--<td>to be implemented</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>{{'Profile.city' | translate}}</td>-->
+                                    <!--<td>to be implemented</td>-->
+                                <!--</tr>-->
+                                <!--</tbody>-->
+                            <!--</table>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>

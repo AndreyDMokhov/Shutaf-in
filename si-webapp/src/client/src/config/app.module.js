@@ -11,5 +11,6 @@ var app = angular.module("app", [
     'ui.grid.selection',
     'ui.router',
     'restangular',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'naif.base64'
 ]);
