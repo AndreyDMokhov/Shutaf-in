@@ -1,16 +1,25 @@
 app.controller('userProfilePage', function ($state, $filter, sessionService, $scope) {
     var vm = this;
     vm.userProfile = JSON.parse(sessionStorage.getItem('userProfile'));
-
+    vm.infofiles={"filename":"AAA"};
+    vm.avatarImage = '../../images/default_avatar.png';
+    // console.log(vm.infofiles)
     $scope.onChange = function (e, fileList) {
         alert('this is on-change handler!');
     };
 
-    $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
-        alert('this is handler for file reader onload event!');
+    function onLoad (e, reader, file, fileList, fileOjects, fileObj) {
+        console.log(vm.infofiles)
     };
 
-    var uploadedCount = 0;
+    function try1 () {
+        onLoad();
+        console.log(vm.infofiles.filename)
 
-    $scope.files = [];
+    };
+
+
+
+    vm.onLoad = onLoad
+    vm.try1= try1;
 });

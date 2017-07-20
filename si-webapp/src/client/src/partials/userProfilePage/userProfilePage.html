@@ -1,81 +1,47 @@
-<div class="container"  >
+<div class="container"  ng-controller="userProfilePage as vm" >
 
     <div class="container">
         <form name="form">
             <h3>Single File Selection</h3>
             <div class="input-group">
-                <label for="file">Select File</label>
-                <input type="file" ng-model="file" name="file" id="file"base-sixty-four-input required onload="onLoad" maxsize="500" accept="image/*">
-                <span class="help-block">
-          <ul>
-            <li>required</li>
-            <li>maxsize = 500</li>
-            <li>accept = image/*</li>
-          </ul>
-        </span>
-            </div>
-            <div class="alert" ng-class="{'alert-danger': form.file.$invalid, 'alert-success': form.file.$valid}">
-                form.file.$error:
-                {{form.file.$error}}
+                <label for="filename">
+                    <img src="{{vm.avatarImage}}" alt="" class="img-responsive"
+                         onmouseover="style='cursor: pointer ' " onmouseout=" style='cursor: auto '"
+                         uib-tooltip="Click to change image!" tooltip-placement="bottom"
+                         tooltip-class="customClass">
+                </label>
+                <input ng-show="hide" type="file"  ng-model="vm.infofiles"  name="filename" id="filename" base-sixty-four-input  onload="vm.onLoad" maxsize="500" accept="image/*">
             </div>
             <b>Model Value:</b>
-            <table class="table table-bordered table-striped">
-                <tr>
-                    <th>filename</th>
-                    <th>filetype</th>
-                    <th>filesize (<i><small>KB</small></i>)</th>
-                    <th>base64</th>
-                </tr>
-                <tr ng-show="file">
-                    <td>{{file.filename}}</td>
-                    <td>{{file.filetype}}</td>
-                    <td>{{file.filesize / 1000}}</td>
-                    <td>{{file.base64.substring(0, 30)}}...</td>
-                </tr>
-                <tr>
-                    <td colspan="4" ng-show="!file">
-                        <small><i>No file selected.</i></small>
-                    </td>
-                </tr>
+            <!--<table class="table table-bordered table-striped">-->
+                <!--<tr>-->
+                    <!--<th>filename</th>-->
+                    <!--<th>filetype</th>-->
+                    <!--<th>filesize (<i><small>KB</small></i>)</th>-->
+                    <!--<th>base64</th>-->
+                <!--</tr>-->
+                <br>
+<span ng-model="vm.infofiles" >{{vm.infofiles.filename}}</span>
+            <input type="text" ng-model="vm.infofiles.ooo">
+<button ng-click="vm.try1()">try</button>
+            <!--<input type="file" fileread="uploadme.src" base-sixty-four-input>-->
+            <!--<input type="text" ng-model="vm.infofiles.src" base-sixty-four-input>-->
+
+
+            <!--<tr ng-show="vm.infofiles" ng-model="vm.infofiles">-->
+                    <!--<td ng-model="vm.infofiles">{{vm.infofiles.filename}}</td>-->
+                    <!--<td>{{vm.infofiles.filetype}}</td>-->
+                    <!--<td>{{vm.infofiles.filesize}}</td>-->
+                    <!--<td>{{vm.infofiles.base64.substring(0, 30)}}...</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td colspan="4" ng-show="!file">-->
+                        <!--<small><i>No file selected.</i></small>-->
+                    <!--</td>-->
+                <!--</tr>-->
             </table>
             <hr>
-            <h3>Multiple Files Selection</h3>
-            <div class="input-group">
-                <label for="file">Select Files</label>
-                <span class="help-block">
-          <ul>
-            <li>required</li>
-            <li>minsize = 500</li>
-            <li>accept = image/*, .zip</li>
-            <li>minnum = 2</li>
-          </ul>
-        </span>
-                <input type="file" ng-model="files" name="files" base-sixty-four-input multiple accept="image/*, .zip" minsize="500" required minnum="2" on-change="onChange">
-            </div>
-            <div class="alert" ng-class="{'alert-danger': form.files.$invalid, 'alert-success': form.files.$valid}">
-                form.files.$error:
-                {{form.files.$error}}
-            </div>
-            <b>Model Value:</b>
-            <table class="table table-bordered table-striped">
-                <tr>
-                    <th>filename</th>
-                    <th>filetype</th>
-                    <th>filesize (<i><small>KB</small></i>)</th>
-                    <th>base64</th>
-                </tr>
-                <tr ng-repeat="file in files">
-                    <td>{{file.filename}}</td>
-                    <td>{{file.filetype}}</td>
-                    <td>{{file.filesize / 1000}}</td>
-                    <td>{{file.base64.substring(0, 30)}}...</td>
-                </tr>
-                <tr>
-                    <td colspan="4" ng-show="files.length == 0">
-                        <small><i>No file selected.</i></small>
-                    </td>
-                </tr>
-            </table>
+
         </form>
     </div>
 
