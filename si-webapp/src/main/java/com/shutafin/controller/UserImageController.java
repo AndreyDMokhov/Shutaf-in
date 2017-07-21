@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/images")
@@ -50,5 +52,14 @@ public class UserImageController {
             throw new AuthenticationException();
         }
         userImageService.deleteUserImage(user, userImageId);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<Long> getAllUserImages(@RequestHeader(value = "session_id") String sessionId) {
+        User user = sessionManagementService.findUserWithValidSession(sessionId);
+        if (user == null) {
+            throw new AuthenticationException();
+        }
+        return userImageService.getAllUserImages(user);
     }
 }

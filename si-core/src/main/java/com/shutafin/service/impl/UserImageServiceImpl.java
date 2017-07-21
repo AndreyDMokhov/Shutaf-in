@@ -17,7 +17,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 @Transactional
@@ -81,6 +83,15 @@ public class UserImageServiceImpl implements UserImageService {
         if (!directory.exists()) {
             directory.mkdir();
         }
+    }
+
+    @Override
+    public List<Long> getAllUserImages(User user) {
+        List<Long> userImageIds = new ArrayList<>();
+        for (UserImage userImage: userImageRepository.findAllUserImages(user)) {
+            userImageIds.add(userImage.getId());
+        }
+        return userImageIds;
     }
 
     private void deleteLocalImage(UserImage userImage) {
