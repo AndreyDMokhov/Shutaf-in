@@ -31,22 +31,25 @@ public class UserImageController {
             throw new AuthenticationException();
         }
         UserImage image = userImageService.getUserImage(user, userImageId);
-        return new UserImageWeb(image.getImageStorage().getImageEncoded(), image.getCreatedDate().toString());
+        return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().toString());
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void addUserImage(@RequestHeader(value = "session_id", required = false) String sessionId,
-                               @RequestBody UserImageWeb image) {
+    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserImageWeb addUserImage(@RequestHeader(value = "session_id", required = false) String sessionId,
+                                     @RequestBody UserImageWeb image) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
             throw new AuthenticationException();
         }
-        userImageService.addUserImage(image, user);
+        UserImage userImage = userImageService.addUserImage(image, user);
+        return new UserImageWeb(userImage.getId(), null, userImage.getCreatedDate().toString());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserImage(@RequestHeader(value = "session_id") String sessionId,
-                               @PathVariable(value = "id") Long userImageId) {
+                                @PathVariable(value = "id") Long userImageId) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
             throw new AuthenticationException();

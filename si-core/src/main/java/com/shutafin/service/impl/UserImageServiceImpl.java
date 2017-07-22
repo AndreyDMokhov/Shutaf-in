@@ -41,7 +41,7 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     @Transactional
-    public void addUserImage(UserImageWeb image, User user) {
+    public UserImage addUserImage(UserImageWeb image, User user) {
         UserImage userImage = new UserImage();
         String imageEncoded = image.getImage();
         userImage.setUser(user);
@@ -53,7 +53,7 @@ public class UserImageServiceImpl implements UserImageService {
         ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
         userImage.setImageStorage(imageStorage);
         userImageRepository.update(userImage);
-
+        return userImage;
     }
 
     @Override

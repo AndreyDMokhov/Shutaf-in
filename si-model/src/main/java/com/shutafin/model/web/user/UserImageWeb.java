@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class UserImageWeb implements DataResponse {
 
+    private Long id;
+
     @NotBlank
     private String image;
 
@@ -13,9 +15,18 @@ public class UserImageWeb implements DataResponse {
     public UserImageWeb() {
     }
 
-    public UserImageWeb(String image, String createdDate) {
+    public UserImageWeb(Long id, String image, String createdDate) {
+        this.id = id;
         this.image = image;
         this.createdDate = createdDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getImage() {

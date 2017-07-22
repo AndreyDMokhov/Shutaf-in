@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserImageService {
 
-    void addUserImage(UserImageWeb image, User user);
+    UserImage addUserImage(UserImageWeb image, User user);
     UserImage getUserImage(User user, Long userImageId);
     void deleteUserImage(User user, Long userImageId);
     void createUserImageDirectory(User user);
