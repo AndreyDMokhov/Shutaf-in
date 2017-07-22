@@ -66,10 +66,6 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
 
     private void sendChangeConfirmationEmail(EmailChangeConfirmation emailChangeConfirmation, UserAccount userAccount) {
         String link = environmentConfigurationService.getServerAddress() + "/#/account/email-change/" + emailChangeConfirmation.getUrlLink();
-        System.out.println(link);
-        System.out.println(emailChangeConfirmation.getUser());
-        System.out.println(EmailReason.CHANGE_EMAIL);
-        System.out.println(userAccount.getLanguage());
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailChangeConfirmation.getUser(), EmailReason.CHANGE_EMAIL, userAccount.getLanguage(), link);
         mailSenderService.sendEmail(emailMessage, EmailReason.CHANGE_EMAIL);
     }
