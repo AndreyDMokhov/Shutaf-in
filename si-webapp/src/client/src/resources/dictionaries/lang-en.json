@@ -69,9 +69,6 @@
   "Profile.birthday" : "Birthday",
   "Profile.city" : "Current city",
 
-
-  "Logout.button": "Logout",
-
   "SECTION": "USERSETTINGS",
   "UserSettings.title": "User Settings",
   "UserSettings.form.firstName":"Your first name",
@@ -80,6 +77,29 @@
   "UserSettings.form.firstNameError": "Incorrect first name",
   "UserSettings.form.lastNameError":"Incorrect last name",
   "UserSettings.message.save.success":"Has been successfully saved",
-  "UserSettings.message.save.fail":"An error occurred on user save"
+  "UserSettings.message.save.fail":"An error occurred on user save",
 
+  "SECTION": "SECURITY SETTINGS",
+  "SecuritySettingsEmail.button": "Settings email",
+  "SecuritySettingsPassword.button": "Settings password",
+  "SecuritySettingsEmail.title": "Change email",
+  "SecuritySettingsPassword.title": "Change password",
+  "SecuritySettings.form.email": "Email",
+  "SecuritySettings.form.wrongEmail": "Make sure your email address is correct",
+  "SecuritySettings.form.password": "Password",
+  "SecuritySettings.form.errorPassword": "Incorrect password",
+  "SecuritySettings.form.newEmail": "Please enter new email:",
+  "SecuritySettings.form.requiredEmail": "Email is required",
+  "SecuritySettings.form.btn.saveChanges": "Save",
+  "SecuritySettings.form.btn.cancel": "Cancel",
+  "SecuritySettings.form.newPassword": "New password",
+  "SecuritySettings.form.confirmPassword": "Confirm password",
+  "SecuritySettings.form.confirmErrorPassword": "Your password doesn't match. Please retype your password to confirm it",
+  "SecuritySettings.msg.fail": "Changes not saved",
+  "SecuritySettings.form.btn.loading": "Loading data",
+  "SecuritySettings.msg.success": "Changes saved",
+  "SecuritySettings.msg.successRequest": "The request was sent successfully",
+  "SecuritySettings.msg.error.emailDuplication": "Email already exists",
+  "SecuritySettings.msg.error.authentication": "Incorrect email or password",
+  "SecuritySettings.msg.systemError": "System error"
 }
