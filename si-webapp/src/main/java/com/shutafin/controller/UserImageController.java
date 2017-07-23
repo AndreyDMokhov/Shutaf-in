@@ -39,11 +39,13 @@ public class UserImageController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserImageWeb addUserImage(@RequestHeader(value = "session_id", required = false) String sessionId,
                                      @RequestBody UserImageWeb image) {
+
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
             throw new AuthenticationException();
         }
         UserImage userImage = userImageService.addUserImage(image, user);
+
         return new UserImageWeb(userImage.getId(), null, userImage.getCreatedDate().toString());
     }
 
