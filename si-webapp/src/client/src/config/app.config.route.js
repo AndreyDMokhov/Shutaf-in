@@ -69,7 +69,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "logoutController",
                 url: "/logout"
             })
-        .state("changeEmailReguest",
+        .state("emailChangeReguest",
             {
                 templateUrl: "partials/securitySettingsEmail/securitySettings.changeEmail.html",
                 controller: "securitySettingsChangeEmailRequestController",

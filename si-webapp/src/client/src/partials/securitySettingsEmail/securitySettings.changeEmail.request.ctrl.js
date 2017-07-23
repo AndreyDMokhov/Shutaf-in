@@ -4,7 +4,7 @@ app.controller('securitySettingsChangeEmailRequestController', function ($state,
     vm.dataLoading = false;
     vm.securitySettings = {};
 
-    function changeEmailRequest() {
+    function emailChangeRequest() {
         vm.dataLoading=true;
 
         securitySettingsChangeEmailModel.emailChangeRequest(vm.securitySettings).then(
@@ -24,5 +24,5 @@ app.controller('securitySettingsChangeEmailRequestController', function ($state,
             });
     }
 
-    vm.changeEmailRequest = changeEmailRequest;
+    vm.emailChangeRequest = emailChangeRequest;
 });
