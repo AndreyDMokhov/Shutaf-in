@@ -54,8 +54,8 @@
                     </a>
                 </li>
 
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('changeEmailReguest' | includedByState)}">
-                    <a ui-sref="changeEmailReguest">
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('emailChangeReguest' | includedByState)}">
+                    <a ui-sref="emailChangeReguest">
                         <span class="glyphicon glyphicon-cog"></span>
                         {{'SecuritySettingsEmail.button' | translate}}
                     </a>
