@@ -31,5 +31,3 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
     vm.registerUser = registerUser;
 
 });
-
-
