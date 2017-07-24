@@ -44,7 +44,18 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, $sc
         )
     };
 
+    function getList() {
+        userProfileModel.getImages().then(
+            function (success) {
+                console.log(success)
+            },
+            function(error){
+                console.log(error)
+            }
+        )
+    };
 
     vm.onLoad = onLoad
     vm.addImage = addImage;
+    vm.getList = getList
 });

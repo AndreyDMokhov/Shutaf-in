@@ -15,6 +15,10 @@ app.factory('userProfileModel', function (Restangular, CACHED_USER_IMAGE_ID, $q)
         rest.setDefaultHeaders({'session_id': localStorage.getItem('session_id')});
         return rest.one('/').customPOST(params)
     }
+    function getImages(params) {
+        rest.setDefaultHeaders({'session_id': localStorage.getItem('session_id')});
+        return rest.all('/').customGETLIST( params);
+    }
 
 
     function getDataImage() {
@@ -46,6 +50,7 @@ app.factory('userProfileModel', function (Restangular, CACHED_USER_IMAGE_ID, $q)
     return {
         getImage: getImage,
         addImage: addImage,
-        getDataImage:getDataImage
+        getDataImage:getDataImage,
+        getImages:getImages
     }
 })
