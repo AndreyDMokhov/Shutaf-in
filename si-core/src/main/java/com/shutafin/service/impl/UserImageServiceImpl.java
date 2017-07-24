@@ -86,12 +86,8 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
-    public List<Long> getAllUserImages(User user) {
-        List<Long> userImageIds = new ArrayList<>();
-        for (UserImage userImage: userImageRepository.findAllUserImages(user)) {
-            userImageIds.add(userImage.getId());
-        }
-        return userImageIds;
+    public List<UserImage> getAllUserImages(User user) {
+        return userImageRepository.findAllUserImages(user);
     }
 
     private void deleteLocalImage(UserImage userImage) {

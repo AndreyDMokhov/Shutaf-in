@@ -12,6 +12,6 @@ public interface UserImageService {
     UserImage getUserImage(User user, Long userImageId);
     void deleteUserImage(User user, Long userImageId);
     void createUserImageDirectory(User user);
-    List<Long> getAllUserImages(User user);
+    List<UserImage> getAllUserImages(User user);
 
 }

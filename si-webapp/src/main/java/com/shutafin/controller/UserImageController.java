@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -60,11 +61,16 @@ public class UserImageController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Long> getAllUserImages(@RequestHeader(value = "session_id") String sessionId) {
+    public List<UserImageWeb> getAllUserImages(@RequestHeader(value = "session_id") String sessionId) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
             throw new AuthenticationException();
         }
-        return userImageService.getAllUserImages(user);
+        List<UserImageWeb> userImages = new ArrayList<>();
+        for (UserImage userImage : userImageService.getAllUserImages(user)) {
+            userImages.add(new UserImageWeb(userImage.getId(), userImage.getImageStorage().getImageEncoded(),
+                    userImage.getCreatedDate().toString()));
+        }
+        return userImages;
     }
 }
