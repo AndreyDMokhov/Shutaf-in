@@ -6,6 +6,8 @@ public class UserInit implements DataResponse {
     private String firstName;
     private String lastName;
     private int languageId;
+    private Long userImageId;
+    private String userImage;
 
     public String getFirstName() {
         return firstName;
@@ -31,6 +33,22 @@ public class UserInit implements DataResponse {
         this.languageId = languageId;
     }
 
+    public Long getUserImageId() {
+        return userImageId;
+    }
+
+    public void setUserImageId(Long userImageId) {
+        this.userImageId = userImageId;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
+    }
+
     public UserInit() {
     }
 
@@ -39,6 +57,14 @@ public class UserInit implements DataResponse {
         this.firstName = firstName;
         this.lastName = lastName;
         this.languageId = languageId;
+    }
+
+    public UserInit(String firstName, String lastName, int languageId, Long userImageId, String userImage) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.languageId = languageId;
+        this.userImageId = userImageId;
+        this.userImage = userImage;
     }
 }
 
