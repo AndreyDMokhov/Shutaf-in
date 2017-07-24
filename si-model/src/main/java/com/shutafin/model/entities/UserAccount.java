@@ -31,6 +31,10 @@ public class UserAccount extends AbstractBaseEntity {
     @OneToOne
     private Language language;
 
+    @JoinColumn(name = "USER_IMAGE_ID")
+    @OneToOne
+    private UserImage userImage;
+
     public UserAccount() {
     }
 
@@ -64,5 +68,13 @@ public class UserAccount extends AbstractBaseEntity {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public UserImage getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(UserImage userImage) {
+        this.userImage = userImage;
     }
 }
