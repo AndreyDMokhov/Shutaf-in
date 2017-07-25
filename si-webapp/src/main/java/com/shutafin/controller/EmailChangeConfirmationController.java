@@ -4,16 +4,14 @@ import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.EmailChangeConfirmationWeb;
+import com.shutafin.model.web.user.EmailChangedWeb;
 import com.shutafin.service.EmailChangeConfirmationService;
 import com.shutafin.service.SessionManagementService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -44,7 +42,11 @@ public class EmailChangeConfirmationController {
         }
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         emailChangeConfirmationService.emailChangeRequest(user, emailChangeConfirmationWeb);
-
     }
 
+    @RequestMapping(value = "/change-email-confirmation/{link}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public EmailChangedWeb emailChangeConfirmation (@PathVariable("link") String link) {
+        EmailChangedWeb emailChangedWeb = emailChangeConfirmationService.emailChangeConfirmation(link);
+        return emailChangedWeb;
+    }
 }

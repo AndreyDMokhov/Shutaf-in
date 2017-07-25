@@ -17,7 +17,8 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
     public UserAccount getAccountUserByUserId(User user) {
         return (UserAccount) getSession()
                 .createQuery("FROM UserAccount e where e.user.id = :userId")
-                .setParameter("userId", user.getId()).uniqueResult();
+                .setParameter("userId", user.getId())
+                .uniqueResult();
     }
     @Override
     public Language findUserLanguage(User user) {
