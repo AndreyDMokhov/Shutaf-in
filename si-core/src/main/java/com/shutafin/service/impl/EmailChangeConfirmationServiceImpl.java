@@ -103,14 +103,10 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
         }
 
         emailChangeConfirmation.setConfirmed(true);
-
         updateUserEmail(
                 emailChangeConfirmation.getUser(),
                 getNewEmail(emailChangeConfirmation)
         );
-
-
-
         return (emailChangeConfirmation.getConnectedId().isConfirmed()) ?
                 new EmailChangedWeb(true)
                 :
