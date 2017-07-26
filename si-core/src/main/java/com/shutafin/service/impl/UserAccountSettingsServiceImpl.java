@@ -65,6 +65,13 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
         return userAccountRepository.findUserAccountImage(user);
     }
 
+    @Override
+    public void removeUserAccountImage(User user) {
+        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+        userAccount.setUserImage(null);
+        userAccountRepository.removeUserAccountImage(user);
+    }
+
     private void updateFirstLastNames(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
         String firstNameWeb = userAccountSettingsWeb.getFirstName();
         String lastNameWeb = userAccountSettingsWeb.getLastName();

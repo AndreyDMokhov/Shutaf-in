@@ -67,8 +67,21 @@ public class UserAccountSettingsController {
             throw new AuthenticationException();
         }
         UserImage image = userAccountSettingsService.findUserAccountImage(user);
+        if (image == null) {
+            return null;
+        }
         return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
                 image.getCreatedDate().toString());
+    }
+
+    @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void removeUserAccountImage(@RequestHeader(value = "session_id") String sessionId) {
+        User user = sessionManagementService.findUserWithValidSession(sessionId);
+        if (user == null) {
+            throw new AuthenticationException();
+        }
+
+        userAccountSettingsService.removeUserAccountImage(user);
     }
 
 }
