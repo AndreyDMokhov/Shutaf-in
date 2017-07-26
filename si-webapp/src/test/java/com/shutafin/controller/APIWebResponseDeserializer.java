@@ -1,9 +1,6 @@
 package com.shutafin.controller;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.DataResponse;
 import com.shutafin.model.web.error.ErrorResponse;
@@ -16,8 +13,18 @@ public class APIWebResponseDeserializer implements JsonDeserializer<APIWebRespon
     public APIWebResponse deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         DataResponse data =jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("data"), DataResponse.class);
 
-        ErrorResponse error = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("error"), InputValidationError.class);
+        JsonObject error = jsonElement.getAsJsonObject().get("error").getAsJsonObject();
+        String errorTypeCode = error.getAsJsonObject().get("errorTypeCode").getAsString();
 
-        return new APIWebResponse(error, data);
+        ErrorResponse errorResponse;
+        if (errorTypeCode.equals("INP")){
+            errorResponse = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("error"), InputValidationError.class);
+        }else {
+            errorResponse = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("error"), ErrorResponse.class);
+        }
+
+
+
+        return new APIWebResponse(errorResponse, data);
     }
 }
