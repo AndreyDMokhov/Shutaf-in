@@ -18,4 +18,5 @@ public class Test extends BaseSpringTests{
         }
         System.out.println(apiResponse.getData());
     }
+
 }

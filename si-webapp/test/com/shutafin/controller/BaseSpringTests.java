@@ -50,6 +50,7 @@ public class BaseSpringTests {
         apiResponse.setStatus(result.getResponse().getStatus());
 
         return apiResponse;
+
     }
 
 }
