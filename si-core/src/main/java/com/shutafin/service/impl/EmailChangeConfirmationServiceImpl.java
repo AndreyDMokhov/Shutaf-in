@@ -23,10 +23,6 @@ import javax.validation.ConstraintViolationException;
 import java.util.Date;
 import java.util.UUID;
 
-/**
- * Created by usera on 7/16/2017.
- */
-
 @Service
 @Transactional
 public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmationService {
@@ -134,14 +130,23 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     }
 
     private void sendChangeEmailNotification(EmailChangeConfirmation emailChangeConfirmation, UserAccount userAccount) {
-        String link = environmentConfigurationService.getServerAddress() + "/#/account/email-change/" + emailChangeConfirmation.getUrlLink();
+        String link = environmentConfigurationService.getServerAddress() + "/#/settings/change-email/confirmation/" + emailChangeConfirmation.getUrlLink();
+        EmailMessage emailMessage;
         if (emailChangeConfirmation.isNewEmail()) {
-            EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailChangeConfirmation.getUpdateEmailAddress(), EmailReason.CHANGE_EMAIL, userAccount.getLanguage(), link);
-            mailSenderService.sendEmail(emailMessage, EmailReason.CHANGE_EMAIL);
+            emailMessage = emailTemplateService.getEmailMessage(
+                                                        emailChangeConfirmation.getUpdateEmailAddress(),
+                                                        EmailReason.CHANGE_EMAIL,
+                                                        userAccount.getLanguage(),
+                                                        link);
+
         } else {
-            EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailChangeConfirmation.getUser(), EmailReason.CHANGE_EMAIL, userAccount.getLanguage(), link);
-            mailSenderService.sendEmail(emailMessage, EmailReason.CHANGE_EMAIL);
+            emailMessage = emailTemplateService.getEmailMessage(
+                                                        emailChangeConfirmation.getUser(),
+                                                        EmailReason.CHANGE_EMAIL,
+                                                        userAccount.getLanguage(),
+                                                        link);
         }
+        mailSenderService.sendEmail(emailMessage, EmailReason.CHANGE_EMAIL);
 
     }
 
