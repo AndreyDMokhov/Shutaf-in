@@ -66,7 +66,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
 
         deleteAllCurrentEmailChangeRequests(user);
 
-        UserAccount userAccount = userAccountRepository.getAccountUserByUserId(user);
+        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         Date expirationTime = DateUtils.addDays(new Date(), 1);
         EmailChangeConfirmation oldEmailObject = saveToBD(
                                                         user,
