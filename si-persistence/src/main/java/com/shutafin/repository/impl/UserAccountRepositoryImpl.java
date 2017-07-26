@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> implements UserAccountRepository {
-
-
     @Override
     public Language findUserLanguage(User user) {
         return (Language) getSession()
