@@ -2,7 +2,6 @@ package com.shutafin.repository.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.repository.UserAccountRepository;
 import com.shutafin.repository.base.AbstractEntityDao;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> implements UserAccountRepository {
+
+
     @Override
     public Language findUserLanguage(User user) {
         return (Language) getSession()
