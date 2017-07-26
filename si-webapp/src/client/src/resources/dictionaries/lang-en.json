@@ -74,11 +74,10 @@
 
   "SECTION": "USERSETTINGS",
   "UserSettings.title": "User Settings",
-  "UserSettings.form.firstName":"Your first name",
-  "UserSettings.form.lastName":"Your last name",
-  "UserSettings.form.button.save":"Save",
-  "UserSettings.form.firstNameError": "Incorrect first name",
-  "UserSettings.form.lastNameError":"Incorrect last name",
+  "UserSettings.form.firstName":"First name",
+  "UserSettings.form.lastName":"Last name",
+  "UserSettings.form.button.submit":"Submit",
+  "UserSettings.form.inputFieldError": "This field may contain {{minLength}} to {{maxLength}} characters",
   "UserSettings.message.save.success":"Has been successfully saved",
   "UserSettings.message.save.fail":"An error occurred on user save"
 

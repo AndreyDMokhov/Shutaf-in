@@ -72,11 +72,10 @@
 
   "SECTION": "USERSETTINGS",
   "UserSettings.title": "Настройки Пользователя",
-  "UserSettings.form.firstName":"Ваше Имя",
-  "UserSettings.form.lastName":"Ваша Фамилия",
-  "UserSettings.form.button.save":"Сохранить",
-  "UserSettings.form.firstNameError": "Неверный ввод имени",
-  "UserSettings.form.lastNameError": "Неверный ввод фамилии",
+  "UserSettings.form.firstName":"Имя",
+  "UserSettings.form.lastName":"Фамилия",
+  "UserSettings.form.button.submit":"Применить",
+  "UserSettings.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
   "UserSettings.message.save.success":"Пользователь успешно сохранен",
   "UserSettings.message.save.fail":"Ошибка при попытке сохранения пользователя"
 }

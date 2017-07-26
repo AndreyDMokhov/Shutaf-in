@@ -44,10 +44,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             })
         .state("userSettings",
             {
-                templateUrl: "partials/usersettings/userSettings.html",
+                templateUrl: "partials/settings/userSettings.html",
                 controller: "userSettingsController",
                 controllerAs: "vm",
-                url: "/usersettings"
+                url: "/settings"
             })
         .state("userProfile",
             {

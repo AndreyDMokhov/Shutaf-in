@@ -20,38 +20,32 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("/usersettings")
+@RequestMapping("/users/settings")
 
 public class UserAccountSettingsController {
 
     @Autowired
-    UserAccountSettingsService userAccountSettingsService;
+    private UserAccountSettingsService userAccountSettingsService;
 
     @Autowired
-    SessionManagementService sessionManagementService;
+    private SessionManagementService sessionManagementService;
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserAccountSettingsWeb getCurrentAccountSettingsWeb(HttpServletRequest request) {
+
+    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateAccountSettings(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb, HttpServletRequest request, BindingResult result) {
         String sessionId = request.getHeader("session_id");
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }
         User user = sessionManagementService.findUserWithValidSession(sessionId);
-        UserAccountSettingsWeb userAccountSettingsWeb = userAccountSettingsService.getCurrentAccountSettings(user);
-        return userAccountSettingsWeb;
-    }
-
-    @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveNewAccountSettingsWeb(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb, HttpServletRequest request, BindingResult result) {
-        String sessionId = request.getHeader("session_id");
-        if (StringUtils.isBlank(sessionId)) {
+        if (user == null) {
             throw new AuthenticationException();
         }
+
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        User user = sessionManagementService.findUserWithValidSession(sessionId);
-        userAccountSettingsService.saveNewAccountSettings(userAccountSettingsWeb, user);
+        userAccountSettingsService.updateAccountSettings(userAccountSettingsWeb, user);
     }
 
 }

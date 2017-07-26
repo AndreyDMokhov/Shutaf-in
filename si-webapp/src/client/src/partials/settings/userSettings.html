@@ -17,7 +17,7 @@
                     required/>
 
             <p class="help-block" ng-if="settingsForm.firstName.$invalid && settingsForm.firstName.$dirty">
-                {{'UserSettings.form.firstNameError' | translate}}
+                {{'UserSettings.form.inputFieldError' | translate : '{ fieldName: "First name", minLength : "3", maxLength: "50"}'}}
             </p>
         </div>
 
@@ -36,25 +36,18 @@
                     required/>
 
             <p class="help-block" ng-if="settingsForm.lastName.$invalid && settingsForm.lastName.$dirty">
-                {{'UserSettings.form.lastNameError' | translate}}
+                {{'UserSettings.form.inputFieldError' | translate: '{ minLength : "3", maxLength: "50"}'}}
             </p>
         </div>
-        <select
-                name="languageSelect"
-                id="languageSelect"
-                ng-options="language.languageNativeName for language in vm.languages"
-                class="form-control"
-                ng-model="vm.languageSelect">
-            <option selected>{{languageSelect.nativeName}}</option>
-        </select>
+
         <br/>
 
         <div class="form-actions">
-            <button ng-click="vm.saveNewUserData()"
+            <button ng-click="vm.submitChanges()"
                     type="submit"
                     ng-disabled="settingsForm.firstName.$invalid || settingsForm.lastName.$invalid"
                     class="btn btn-success pull-right">
-                {{'UserSettings.form.button.save' | translate}}
+                {{'UserSettings.form.button.submit' | translate}}
                 <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
             </button>
         </div>
