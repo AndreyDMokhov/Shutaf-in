@@ -53,6 +53,7 @@ public class BaseSpringTests {
         ApiResponse apiResponse = gson.fromJson(result.getResponse().getContentAsString(), ApiResponse.class);
         apiResponse.setStatus(result.getResponse().getStatus());
 
+
         return apiResponse;
     }
 
