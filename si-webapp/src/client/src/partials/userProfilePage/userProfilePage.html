@@ -1,4 +1,14 @@
 <div class="container" ng-controller="userProfilePage as vm">
+    <!--HERE-->
+    <ul class="gallery gallery1">
+        <li ng-repeat="image in vm.images1">
+            <a ng-click="vm.openLightboxModal($index)">
+                <img ng-src="{{image.url}}" class="img-thumbnail">
+            </a>
+        </li>
+    </ul>
+
+
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad">
             <div class="panel panel-info">
@@ -16,7 +26,7 @@
                                          tooltip-class="customClass">
                                 </label>
                                 <input ng-show="hide" type="file" ng-model="vm.fileInfo" name="filename" id="filename"
-                                       base-sixty-four-input onload="vm.onLoad" maxsize="500" accept="image/*">
+                                       base-sixty-four-input onload="vm.onLoad()" maxsize="500" accept="image/*">
                             </div>
                             <button ng-click="vm.addImage()">ADD</button>
                             <button ng-click="vm.getList()">GET_ALL</button>
