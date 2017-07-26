@@ -92,6 +92,8 @@
   "SecuritySettings.msg.error.emailDuplication": "Электронный адрес уже зарегистрирован",
   "SecuritySettings.msg.error.authentication": "Неверный адрес электронной почты или пароль",
   "SecuritySettings.msg.systemError": "Системная ошибка",
+  "SecuritySettings.msg.isEmailChanged.success": "Email successfully changed",
+  "SecuritySettings.msg.isEmailChanged.fail": "Один адрес электронной почты подтвержден. Ожидается подтверждение от другого адреса",
 
   "SECTION": "USERSETTINGS",
   "UserSettings.title": "Настройки Пользователя",

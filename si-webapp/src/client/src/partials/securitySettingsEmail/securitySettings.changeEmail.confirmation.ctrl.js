@@ -1,11 +1,11 @@
-app.controller('securitySettingsChangeEmailConfirmController', function ($state, $rootScope, securitySettingsChangeEmailModel, notify, $filter, $stateParams) {
+app.controller('securitySettingsChangeEmailConfirmController', function ($state, $rootScope, securitySettingsChangeEmailModel, notify, $filter, $stateParams, emailChangeConfirmationService) {
 
     var vm = this;
 
     vm.dataLoading = false;
     vm.securitySettings = {};
 
-    function changeEmail() {
+    function emailChangeConfirmation() {
         vm.dataLoading = true;
         var urlLink = $stateParams.link;
         if (urlLink === undefined || urlLink === null || urlLink === "") {
@@ -14,8 +14,18 @@ app.controller('securitySettingsChangeEmailConfirmController', function ($state,
         securitySettingsChangeEmailModel.emailChangeConfirmation(urlLink).then(
             function (success) {
                 vm.dataLoading = false;
-                notify.set($filter('translate')("SecuritySettings.msg.success"), {type: 'success'});
-                $state.go("logout");
+                emailChangeConfirmationService.isEmailChanged().then(
+                    function(result){//success
+                        notify.set($filter('translate')("SecuritySettings.msg.isEmailChanged.success"), {type: 'success'});
+                        $state.go("logout");
+                    },
+                    function(err){//fail
+                        console.log(err);
+                        notify.set($filter('translate')("SecuritySettings.msg.isEmailChanged.fail"), {type: 'error'});
+                        $state.go("home");
+                    }
+                )
+
             }, function (error) {
                 vm.dataLoading = false;
                 var status = error.status;
@@ -27,6 +37,6 @@ app.controller('securitySettingsChangeEmailConfirmController', function ($state,
             })
     };
 
-    changeEmail();
+    emailChangeConfirmation();
 
 });

@@ -76,11 +76,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/user/account/change-email-request"
             })
-        /*.state("changeEmailConfirmation",
+        .state("changeEmailConfirmation",
             {
                 controller: "securitySettingsChangeEmailConfirmController",
                 controllerAs: "vm",
                 url: "/user/account/change-email-confirm/{link}"
-            })*/
+            })
     $urlRouterProvider.otherwise("/home");
 });
