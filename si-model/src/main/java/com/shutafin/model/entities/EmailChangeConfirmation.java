@@ -40,7 +40,7 @@ public class EmailChangeConfirmation extends AbstractEntity {
 
     public void setUser(User user) {this.user = user;}
 
-    public Boolean getNewEmail() {return isNewEmail;}
+    public Boolean isNewEmail() {return isNewEmail;}
 
     public void setNewEmail(Boolean newEmail) {isNewEmail = newEmail;}
 
@@ -52,7 +52,7 @@ public class EmailChangeConfirmation extends AbstractEntity {
 
     public void setUrlLink(String urlLink) {this.urlLink = urlLink;}
 
-    public Boolean getConfirmed() {return isConfirmed;}
+    public Boolean isConfirmed() {return isConfirmed;}
 
     public void setConfirmed(Boolean confirmed) {isConfirmed = confirmed;}
 

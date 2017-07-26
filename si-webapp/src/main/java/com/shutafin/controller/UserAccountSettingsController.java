@@ -38,6 +38,11 @@ public class UserAccountSettingsController {
             throw new AuthenticationException();
         }
         User user = sessionManagementService.findUserWithValidSession(sessionId);
+
+        if (user == null) {
+            throw new AuthenticationException();
+        }
+
         UserAccountSettingsWeb userAccountSettingsWeb = userAccountSettingsService.getCurrentAccountSettings(user);
         return userAccountSettingsWeb;
     }
@@ -48,10 +53,15 @@ public class UserAccountSettingsController {
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }
+        User user = sessionManagementService.findUserWithValidSession(sessionId);
+
+        if (user == null) {
+            throw new AuthenticationException();
+        }
+
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        User user = sessionManagementService.findUserWithValidSession(sessionId);
         userAccountSettingsService.saveNewAccountSettings(userAccountSettingsWeb, user);
     }
 
