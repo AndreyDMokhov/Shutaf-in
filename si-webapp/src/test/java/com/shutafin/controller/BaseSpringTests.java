@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
-
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.shutafin.App;
 import com.shutafin.model.web.APIWebResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,12 @@ class BaseSpringTests {
                 .andDo(print())
                 .andReturn();
 
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer());
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
 
-
-        APIWebResponse apiResponse = gson.fromJson(result.getResponse().getContentAsString(), APIWebResponse.class);
+        String json = result.getResponse().getContentAsString();
+        APIWebResponse apiResponse = gson.fromJson(json, APIWebResponse.class);
 
         if (apiResponse == null) {
             apiResponse = new APIWebResponse();
