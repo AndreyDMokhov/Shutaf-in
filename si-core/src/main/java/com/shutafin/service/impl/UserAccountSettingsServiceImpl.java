@@ -43,8 +43,12 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
     @Override
     @Transactional
     public void updateUserAccountImage(UserImageWeb userImageWeb, User user) {
-        UserImage userImage = userImageRepository.findById(userImageWeb.getId());
+        UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+
+        if (userImageWeb.getId() != null) {
+            userImage = userImageRepository.findById(userImageWeb.getId());
+        }
 
         if (userImage == null) {
             userImage = userImageService.addUserImage(userImageWeb, user);
