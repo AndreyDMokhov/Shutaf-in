@@ -41,4 +41,5 @@ public class Error {
     public void setErrors(List<String> errors) {
         this.errors = errors;
     }
+
 }

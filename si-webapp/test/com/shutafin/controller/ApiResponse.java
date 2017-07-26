@@ -38,4 +38,5 @@ public class ApiResponse {
     public void setData(String data) {
         this.data = data;
     }
+
 }
