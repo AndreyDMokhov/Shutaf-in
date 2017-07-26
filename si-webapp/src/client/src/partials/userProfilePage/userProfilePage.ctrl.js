@@ -30,7 +30,7 @@ app.controller('userProfilePage', function ($timeout, $q,$state, $filter, sessio
         userProfileModel.addImage(imageB64).then(
             function (success) {
                 // var imId = {imageId: success.data.id}
-                // vm.avatarImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
+                vm.avatarImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
                 // localStorage.setItem(CACHED_USER_IMAGE_ID, JSON.stringify(imId));
                 // vm.userProfile.imageID = success.data.id
 
