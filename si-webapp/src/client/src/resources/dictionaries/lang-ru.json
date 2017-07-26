@@ -67,6 +67,15 @@
   "SECTION": "PROFILE",
   "Profile.title" : "Профиль",
   "Profile.birthday" : "Дата рождения",
-  "Profile.city" : "Город"
+  "Profile.city" : "Город",
+  "Logout.button": "Выход",
 
+  "SECTION": "USER_SETTINGS",
+  "UserSettings.title": "Настройки пользователя",
+  "UserSettings.form.firstName":"Имя",
+  "UserSettings.form.lastName":"Фамилия",
+  "UserSettings.form.button.submit":"Применить",
+  "UserSettings.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
+  "UserSettings.message.save.success":"Пользователь успешно сохранен",
+  "UserSettings.message.save.fail":"Ошибка при попытке сохранения пользователя"
 }

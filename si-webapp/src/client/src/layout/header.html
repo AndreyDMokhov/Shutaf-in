@@ -40,7 +40,13 @@
                         {{'Login.title' | translate}}
                     </a>
                 </li>
-
+                <li ng-show="vm.sessionService.isAuthenticated()"
+                    ng-class="{active : ('userSettings' | includedByState)}">
+                    <a ui-sref="userSettings">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'UserSettings.title' | translate}}
+                    </a>
+                </li>
                 <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>
