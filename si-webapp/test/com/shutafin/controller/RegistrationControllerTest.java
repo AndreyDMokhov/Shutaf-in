@@ -42,11 +42,8 @@ public class RegistrationControllerTest {
     @InjectMocks
     private RegistrationController registrationController;
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
 //    @Rule
-//    public ExternalResource externalResource;
+//    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -79,8 +76,6 @@ public class RegistrationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json))
                 .andReturn();
-
-        System.out.println("TEST!!!!\n" + exception.toString());
     }
 
     @Test
