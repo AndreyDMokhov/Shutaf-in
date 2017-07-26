@@ -70,8 +70,8 @@
   "Profile.city" : "Город",
   "Logout.button": "Выход",
 
-  "SECTION": "USERSETTINGS",
-  "UserSettings.title": "Настройки Пользователя",
+  "SECTION": "USER_SETTINGS",
+  "UserSettings.title": "Настройки пользователя",
   "UserSettings.form.firstName":"Имя",
   "UserSettings.form.lastName":"Фамилия",
   "UserSettings.form.button.submit":"Применить",

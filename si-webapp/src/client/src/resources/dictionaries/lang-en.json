@@ -72,8 +72,8 @@
 
   "Logout.button": "Logout",
 
-  "SECTION": "USERSETTINGS",
-  "UserSettings.title": "User Settings",
+  "SECTION": "USER_SETTINGS",
+  "UserSettings.title": "User settings",
   "UserSettings.form.firstName":"First name",
   "UserSettings.form.lastName":"Last name",
   "UserSettings.form.button.submit":"Submit",
