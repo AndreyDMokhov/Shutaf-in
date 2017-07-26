@@ -36,11 +36,9 @@
     "angular-translate-interpolation-messageformat": "^2.15.1",
     "angular-translate-loader-static-files": "^2.15.1",
     "components-font-awesome": "^4.7.0",
-    "angular-base64-upload": "^0.1.22",
-    "angular-bootstrap-lightbox": "^0.12.0"
+    "angular-base64-upload": "^0.1.22"
   },
   "resolutions": {
-    "angular": "1.5.9",
-    "angular-bootstrap": "^2.4.0"
+    "angular": "1.5.9"
   }
 }

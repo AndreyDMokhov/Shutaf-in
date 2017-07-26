@@ -23,3 +23,6 @@
 .tooltip.customClass .tooltip-arrow {
     display: none;
 }
+.buttonSizeFont{
+    font-size: 12px
+}

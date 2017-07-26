@@ -68,9 +68,14 @@
   "Profile.title" : "Profile",
   "Profile.birthday" : "Birthday",
   "Profile.city" : "Current city",
-
-
-  "Logout.button": "Logout",
+  "Profile.button.setImage" : "Save image",
+  "Profile.button.deleteImage" : "Delete image",
+  "Profile.click.image" : "Click to choose image",
+  "Profile.message.imageSaved" : "The image was saved",
+  "Profile.message.errorSave" : "Error: The image wasn't saved",
+  "Profile.message.imageDeleted" : "Image was deleted",
+  "Profile.message.errorDelete" : "Error: Image wasn't deleted",
+  "Profile.message.confirmDelete" : "Are you sure you want to delete?",
 
   "SECTION": "USER_SETTINGS",
   "UserSettings.title": "User settings",
@@ -80,5 +85,4 @@
   "UserSettings.form.inputFieldError": "This field may contain {{minLength}} to {{maxLength}} characters",
   "UserSettings.message.save.success":"Has been successfully saved",
   "UserSettings.message.save.fail":"An error occurred on user save"
-
 }

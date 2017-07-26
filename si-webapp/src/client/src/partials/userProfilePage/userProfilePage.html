@@ -1,14 +1,4 @@
 <div class="container" ng-controller="userProfilePage as vm">
-    <!--HERE-->
-    <!--<ul class="gallery gallery1">-->
-        <!--<li ng-repeat="image in vm.images1">-->
-            <!--<a ng-click="vm.openLightboxModal($index)">-->
-                <!--<img ng-src="{{image.url}}" class="img-thumbnail">-->
-            <!--</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-
-
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad">
             <div class="panel panel-info">
@@ -17,26 +7,28 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3 col-lg-3 " align="center">
+                        <div class="col-md-4 col-lg-4 " align="center">
                             <div class="input-group">
                                 <label for="filename">
-                                    <img src="{{vm.avatarImage}}" alt="" class="img-responsive"
+                                    <img ng-src="{{vm.avatarImage}}" height="225px" width="225px"
                                          onmouseover="style='cursor: pointer ' " onmouseout=" style='cursor: auto '"
-                                         uib-tooltip="Click to change image!" tooltip-placement="bottom"
+                                         uib-tooltip={{'Profile.click.image'|translate}} tooltip-placement="bottom"
                                          tooltip-class="customClass">
                                 </label>
                                 <input ng-show="hide" type="file" ng-model="vm.fileInfo" name="filename" id="filename"
                                        base-sixty-four-input onload="vm.onLoad()" maxsize="500" accept="image/*">
                             </div>
-                            <button ng-click="vm.addImage()">ADD</button>
-                            <!--<button ng-click="vm.getList()">GET_ALL</button>-->
-                            <button>DELETE</button>
+                            <button class="btn btn-primary buttonSizeFont" ng-click="vm.addImage()"
+                                    ng-disabled="vm.addButton">{{'Profile.button.setImage'|translate}}
+                            </button>
+                            <button ng-click="vm.deleteImage()" class="btn btn-primary buttonSizeFont"
+                                    ng-disabled="vm.deleteButton">{{'Profile.button.deleteImage'|translate}}
+                            </button>
                         </div>
 
-                        <div class=" col-md-8 col-lg-8 " style="margin-left: 30px">
+                        <div class=" col-md-7 col-lg-7 " style="margin-left: 30px">
                             <table class="table table-user-information">
                                 <tbody>
-
                                 <tr>
                                     <td>{{'Profile.birthday' | translate}}</td>
                                     <td>to be implemented</td>
