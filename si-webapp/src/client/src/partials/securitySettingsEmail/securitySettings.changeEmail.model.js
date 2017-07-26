@@ -10,7 +10,7 @@ app.factory('securitySettingsChangeEmailModel', function (Restangular) {
     }
     function emailChangeConfirmation(urlLink) {
         rest.setDefaultHeaders({'session_id':localStorage.getItem('session_id')});
-        return  rest.one('/change-email-confirm/'+urlLink).customGET()
+        return  rest.one('/change-email-confirmation/'+urlLink).customGET()
     }
 
     return{
