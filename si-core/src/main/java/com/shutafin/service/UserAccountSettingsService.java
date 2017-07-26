@@ -11,5 +11,6 @@ public interface UserAccountSettingsService {
     void updateAccountSettings(UserAccountSettingsWeb userAccountSettingsWeb, User user);
     void updateUserAccountImage(UserImageWeb userImageWeb, User user);
     UserImage findUserAccountImage(User user);
+    void removeUserAccountImage(User user);
 
 }
