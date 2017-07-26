@@ -1,7 +1,8 @@
 app.controller('userProfilePage', function ($timeout, $q,$state, $filter, sessionService, $scope, userProfileModel, CACHED_USER_IMAGE_ID, Lightbox, $templateCache) {
     var vm = this;
     vm.userProfile = JSON.parse(sessionStorage.getItem('userProfile'));
-    if (userProfileModel.getDataImage() === null) {
+    console.log(vm.userProfile);
+    if (vm.userProfile.userImageId === null) {
         vm.avatarImage = '../../images/default_avatar.png'
     }
     else {
@@ -28,13 +29,15 @@ app.controller('userProfilePage', function ($timeout, $q,$state, $filter, sessio
         }
         userProfileModel.addImage(imageB64).then(
             function (success) {
-                var imId = {imageId: success.data.id}
-                vm.avatarImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
+                // var imId = {imageId: success.data.id}
+                // vm.avatarImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
                 // localStorage.setItem(CACHED_USER_IMAGE_ID, JSON.stringify(imId));
                 // vm.userProfile.imageID = success.data.id
 
             },
             function (error) {
+                console.log(imageB64)
+                console.log(error)
                 alert("error")
 
             }

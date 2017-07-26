@@ -2,18 +2,18 @@ app.factory('userProfileModel', function (Restangular, CACHED_USER_IMAGE_ID, $q)
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
-        RestangularProvider.setBaseUrl('/api/images');
+        RestangularProvider.setBaseUrl('/api/users/settings');
     });
 
-    function getImage(params) {
+    function getImage() {
         rest.setDefaultHeaders({'session_id': localStorage.getItem('session_id')});
-        return rest.one('/').customGET(params);
+        return rest.one('/image').customGET();
 
     }
 
     function addImage(params) {
         rest.setDefaultHeaders({'session_id': localStorage.getItem('session_id')});
-        return rest.one('/').customPOST(params)
+        return rest.one('/image').customPUT(params)
     }
     function getImages(params) {
         rest.setDefaultHeaders({'session_id': localStorage.getItem('session_id')});
