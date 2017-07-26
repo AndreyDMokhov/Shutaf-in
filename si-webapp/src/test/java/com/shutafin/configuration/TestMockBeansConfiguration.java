@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Primary;
  * 26 / Jul / 2017
  */
 @Configuration
-@ComponentScan
 public class TestMockBeansConfiguration {
 
     @Bean
