@@ -21,7 +21,7 @@ import javax.validation.Valid;
  */
 
 @RestController
-@RequestMapping("/user/account")
+@RequestMapping("/api/user/account")
 public class EmailChangeConfirmationController {
 
     @Autowired
