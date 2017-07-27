@@ -26,6 +26,20 @@ public enum ErrorType {
     public Integer getHttpCode() {
         return httpCode;
     }
+
+    public static ErrorType getById(String errorCodeName) {
+        if (errorCodeName == null) {
+            throw new IllegalArgumentException("Error code cannot be null");
+        }
+
+        for (ErrorType errorType : values()) {
+            if (errorType.getErrorCodeType().equals(errorCodeName)) {
+                return errorType;
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("Error type with error code %s does not exist", errorCodeName));
+    }
 }
 
 
