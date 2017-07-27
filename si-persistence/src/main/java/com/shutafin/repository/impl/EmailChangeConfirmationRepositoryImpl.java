@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
-/**
- * Created by usera on 7/19/2017.
- */
 @Repository
 public class EmailChangeConfirmationRepositoryImpl extends AbstractEntityDao<EmailChangeConfirmation> implements EmailChangeConfirmationRepository {
     @Override
@@ -22,9 +19,6 @@ public class EmailChangeConfirmationRepositoryImpl extends AbstractEntityDao<Ema
                        .setParameter("urlLink", urlLink)
                        .setParameter("currentDate", currentDate)
                        .uniqueResult();
-
-
-
     }
 
     @Override

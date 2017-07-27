@@ -16,12 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-/**
- * Created by usera on 7/16/2017.
- */
-
 @RestController
-@RequestMapping("/user/account")
+@RequestMapping("/users/account")
 public class EmailChangeConfirmationController {
 
     @Autowired
@@ -37,10 +33,16 @@ public class EmailChangeConfirmationController {
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }
+        User user = sessionManagementService.findUserWithValidSession(sessionId);
+        if (user == null) {
+            throw new AuthenticationException();
+        }
+
+
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        User user = sessionManagementService.findUserWithValidSession(sessionId);
+
         emailChangeConfirmationService.emailChangeRequest(user, emailChangeConfirmationWeb);
     }
 
