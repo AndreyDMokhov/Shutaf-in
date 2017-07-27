@@ -17,7 +17,7 @@ app.controller('securitySettingsPasswordController', function ($rootScope, secur
                 notify.set($filter('translate')("SecuritySettings.msg.success"), {type: 'success'});
             }, function (error) {
                 vm.dataLoading = false;
-                notify.set($filter('translate')("SecuritySettings.msg.fail"), {type: 'error'});
+                notify.set($filter('translate')("SecuritySettings.common.failure"), {type: 'error'});
             });
     }
 

@@ -12,14 +12,15 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+//@RequestMapping("/users")
+@Deprecated
 public class UserController {
 
     @Autowired
     private UserService userService;
 
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+//    @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void save(@RequestBody @Valid UserInfoWeb user, BindingResult result) {
             if (result.hasErrors()) {
                 throw new InputValidationException(result);
@@ -29,7 +30,7 @@ public class UserController {
 
 
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+//    @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void update(@RequestBody @Valid UserInfoWeb user, BindingResult result) {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
@@ -37,18 +38,18 @@ public class UserController {
         userService.update(user);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserInfoWeb getUserById(@PathVariable("id") Long userId) {
         return userService.findByUserId(userId);
     }
 
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserInfoWeb> getUsers() {
         return userService.findAll();
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUser(userId);
     }
