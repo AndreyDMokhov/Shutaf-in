@@ -22,11 +22,13 @@ public class TestMockBeansConfiguration {
         return Mockito.mock(LoginService.class);
     }
 
+    @Primary
     @Bean
     public RegistrationService registrationService() {
         return Mockito.mock(RegistrationService.class);
     }
 
+    @Primary
     @Bean
     public LogoutService logoutService() {
         return Mockito.mock(LogoutService.class);
