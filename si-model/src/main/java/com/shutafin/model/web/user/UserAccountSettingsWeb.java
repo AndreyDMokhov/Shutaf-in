@@ -14,16 +14,13 @@ public class UserAccountSettingsWeb implements DataResponse {
     @Length(min=3, max=50)
     private String lastName;
 
-    @NotBlank
-    private Integer languageId;
 
     public UserAccountSettingsWeb() {
     }
 
-    public UserAccountSettingsWeb(String firstName, String lastName, Integer languageId) {
+    public UserAccountSettingsWeb(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.languageId = languageId;
     }
 
     public String getFirstName() {
@@ -41,8 +38,4 @@ public class UserAccountSettingsWeb implements DataResponse {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-    public Integer getLanguageId() {return languageId;}
-
-    public void setLanguageId(Integer languageId) {this.languageId = languageId;}
 }

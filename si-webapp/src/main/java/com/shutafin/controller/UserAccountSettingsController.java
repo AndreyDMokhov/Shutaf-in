@@ -20,41 +20,24 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("/usersettings")
+@RequestMapping("/users/settings")
 
 public class UserAccountSettingsController {
 
     @Autowired
-    UserAccountSettingsService userAccountSettingsService;
+    private UserAccountSettingsService userAccountSettingsService;
 
     @Autowired
-    SessionManagementService sessionManagementService;
+    private SessionManagementService sessionManagementService;
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserAccountSettingsWeb getCurrentAccountSettingsWeb(HttpServletRequest request) {
-        String sessionId = request.getHeader("session_id");
-        System.out.println(sessionId);
-        if (StringUtils.isBlank(sessionId)) {
-            throw new AuthenticationException();
-        }
-        User user = sessionManagementService.findUserWithValidSession(sessionId);
 
-        if (user == null) {
-            throw new AuthenticationException();
-        }
-
-        UserAccountSettingsWeb userAccountSettingsWeb = userAccountSettingsService.getCurrentAccountSettings(user);
-        return userAccountSettingsWeb;
-    }
-
-    @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveNewAccountSettingsWeb(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb, HttpServletRequest request, BindingResult result) {
+    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateAccountSettings(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb, HttpServletRequest request, BindingResult result) {
         String sessionId = request.getHeader("session_id");
         if (StringUtils.isBlank(sessionId)) {
             throw new AuthenticationException();
         }
         User user = sessionManagementService.findUserWithValidSession(sessionId);
-
         if (user == null) {
             throw new AuthenticationException();
         }
@@ -62,7 +45,7 @@ public class UserAccountSettingsController {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        userAccountSettingsService.saveNewAccountSettings(userAccountSettingsWeb, user);
+        userAccountSettingsService.updateAccountSettings(userAccountSettingsWeb, user);
     }
 
 }

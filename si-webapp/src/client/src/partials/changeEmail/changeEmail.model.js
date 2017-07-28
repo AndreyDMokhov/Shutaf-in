@@ -1,7 +1,7 @@
 app.factory('securitySettingsChangeEmailModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
-        RestangularProvider.setBaseUrl('/api/user/account');
+        RestangularProvider.setBaseUrl('/api/users/account');
     });
 
     function emailChangeRequest(params) {

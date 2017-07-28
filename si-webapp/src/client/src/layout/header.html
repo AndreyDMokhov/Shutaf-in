@@ -47,6 +47,13 @@
                         {{'UserSettings.title' | translate}}
                     </a>
                 </li>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('emailChangeRequest' | includedByState)}">
+                    <a ui-sref="emailChangeRequest">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'SecuritySettingsEmail.button' | translate}}
+                    </a>
+                </li>
+
                 <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>
@@ -54,12 +61,6 @@
                     </a>
                 </li>
 
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('emailChangeReguest' | includedByState)}">
-                    <a ui-sref="emailChangeReguest">
-                        <span class="glyphicon glyphicon-cog"></span>
-                        {{'SecuritySettingsEmail.button' | translate}}
-                    </a>
-                </li>
 
                 <li class="divider-vertical"></li>
                 <li uib-dropdown>
