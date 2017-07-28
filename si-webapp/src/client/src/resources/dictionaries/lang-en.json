@@ -105,5 +105,7 @@
   "SecuritySettings.msg.successRequest": "The request was sent successfully",
   "SecuritySettings.msg.error.emailDuplication": "Email already exists",
   "SecuritySettings.msg.error.authentication": "Incorrect email or password",
-  "SecuritySettings.msg.systemError": "System error"
+  "SecuritySettings.msg.systemError": "System error",
+  "SecuritySettings.msg.isEmailChanged.success": "Email successfully changed",
+  "SecuritySettings.msg.isEmailChanged.fail": "One of the email is confirmed and the confirmation from the other email is expected"
 }
