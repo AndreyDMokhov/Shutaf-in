@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 public class LoginControllerTest extends BaseTestImpl{
 
     private static final String LOGIN_REQUEST_URL = "/login/";
-//    private static final String CORRECT_SESSION_ID = "b0f45f61-5a14-48c6-a86f-f793a5023441";
     private static final String INP_EMAIL_NOT_BLANK = "INP.email.NotBlank";
     private static final String INP_EMAIL_LENGTH = "INP.email.Length";
     private static final String INP_EMAIL_EMAIL = "INP.email.Email";
@@ -32,7 +31,7 @@ public class LoginControllerTest extends BaseTestImpl{
 
     @Before
     public void SetUp(){
-        Mockito.when(loginService.getSessionIdByEmail(any(LoginWebModel.class))).thenReturn("");
+        Mockito.when(loginService.getSessionIdByEmail(any(LoginWebModel.class))).thenReturn("b0f45f61-5a14-48c6-a86f-f793a5023441");
     }
 
     @Test
@@ -40,15 +39,13 @@ public class LoginControllerTest extends BaseTestImpl{
         LoginWebModel loginWebModel = new LoginWebModel();
         loginWebModel.setEmail("email@site.com");
         loginWebModel.setPassword("12345678");
-
         APIWebResponse response = getResponse(LOGIN_REQUEST_URL, loginWebModel, HttpMethod.POST);
-
         Assert.assertNull(response.getError());
     }
 
     @Test
     public void LoginRequestJson_EmailNull(){
-        String loginWebModelJson = "{\"email\":\"\",\"password\":\"111111Zz\"}";
+        String loginWebModelJson = "{\"email\":null,\"password\":\"111111Zz\"}";
         testLoginWebModel(loginWebModelJson, INP_EMAIL_NOT_BLANK);
     }
 
@@ -66,7 +63,7 @@ public class LoginControllerTest extends BaseTestImpl{
 
     @Test
     public void LoginRequestJson_PasswordNull(){
-        String loginWebModelJson = "{\"email\":\"psw@gmail.com\",\"password\":\"\"}";
+        String loginWebModelJson = "{\"email\":\"psw@gmail.com\",\"password\":null}";
         testLoginWebModel(loginWebModelJson, INP_PASSWORD_NOT_BLANK);
     }
 
@@ -82,10 +79,12 @@ public class LoginControllerTest extends BaseTestImpl{
         testLoginWebModel(loginWebModelJson, INP_PASSWORD_LENGTH);
     }
 
-    private void testLoginWebModel(String json, String error_description){
+    private void testLoginWebModel(String json, String errorDescription){
         APIWebResponse response = getResponse(LOGIN_REQUEST_URL, json, HttpMethod.POST);
-        Assert.assertNotNull(response);
-        InputValidationError error = (InputValidationError) response.getError();
-        Assert.assertEquals(error.getErrors().get(0), error_description);
+        Assert.assertNotNull(response.getError());
+        InputValidationError inputValidationError = (InputValidationError) response.getError();
+        for (String error: inputValidationError.getErrors()){
+            Assert.assertEquals(error, errorDescription);
+        }
     }
 }
