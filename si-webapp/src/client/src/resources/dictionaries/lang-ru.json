@@ -77,6 +77,7 @@
   "SecuritySettings.form.email": "Электронная почта",
   "SecuritySettings.form.wrongEmail": "Проверьте адрес электронной почты",
   "SecuritySettings.form.password": "Пароль",
+  "SecuritySettings.form.newEmail": "Введите новый электронный адрес",
   "SecuritySettings.form.errorPassword": "Длина пароля должна быть от 8 до 25 символов:",
   "SecuritySettings.form.requiredEmail": "Обязательное поле",
   "SecuritySettings.form.btn.saveChanges": "Сохранить",
