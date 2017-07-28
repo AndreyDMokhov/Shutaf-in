@@ -1,5 +1,6 @@
 package com.shutafin.controller;
 
+import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
@@ -28,13 +29,15 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 public class UserImageControllerTest extends BaseTestImpl {
 
-    public static final String SESSION_ID_HEADER_NAME = "session_id";
-    public static final String ADD_IMAGE_VALID_JSON_BODY = "{\"image\": \"some image in base64\"}";
+    private static final String SESSION_ID_HEADER_NAME = "session_id";
+    private static final String ADD_IMAGE_VALID_JSON_BODY = "{\"image\": \"some image in base64\"}";
     private static final String USER_IMAGE_REQUEST_URL = "/images/";
     private static final String VALID_SESSION_ID = "validsessionid";
     private static final String INVALID_SESSION_ID = "invalidsessionid";
     private static final Long VALID_USER_IMAGE_ID = 1L;
-    public static final String VALID_IMAGE_IN_BASE64 = "valid image in base64";
+    private static final Long INVALID_USER_IMAGE_ID = 99L;
+    private static final String VALID_IMAGE_IN_BASE64 = "valid image in base64";
+
 
     private User validUser;
     private UserImage validUserImage;
@@ -48,10 +51,16 @@ public class UserImageControllerTest extends BaseTestImpl {
     public void setUp() {
         validUser = createUser();
         validUserImage = createUserImage();
+        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
         Mockito.doNothing().when(userImageService)
                 .addUserImage(Mockito.any(UserImageWeb.class), Mockito.any(User.class));
-        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID)).thenReturn(validUserImage);
-        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
+        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
+                .thenReturn(validUserImage);
+        Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
+                .thenThrow(new ResourceNotFoundException());
+        Mockito.doNothing().when(userImageService).deleteUserImage(validUser, VALID_USER_IMAGE_ID);
+        Mockito.doThrow(new ResourceNotFoundException())
+                .when(userImageService).deleteUserImage(validUser, INVALID_USER_IMAGE_ID);
 
     }
 
@@ -104,6 +113,7 @@ public class UserImageControllerTest extends BaseTestImpl {
     }
 
     @Test
+    // TODO: Test fails due to APIWebResponseDeserializer error
     public void getUserImage_Positive() {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
@@ -114,6 +124,66 @@ public class UserImageControllerTest extends BaseTestImpl {
         Assert.assertNull(apiResponse.getError());
         Assert.assertEquals(VALID_IMAGE_IN_BASE64, ((UserImageWeb) apiResponse.getData()).getImage());
     }
+
+    @Test
+    public void getUserImage_IncorrectUserImageId() {
+        List<HttpHeaders> sessionHeaders = new ArrayList<>();
+        sessionHeaders.add(new HttpHeaders());
+        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID,
+                HttpMethod.GET, sessionHeaders);
+
+        Assert.assertNotNull(apiResponse.getError());
+        Assert.assertEquals(ErrorType.RESOURCE_NOT_FOUND_ERROR.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
+    }
+
+    @Test
+    public void getUserImage_IncorrectSessionId() {
+        List<HttpHeaders> sessionHeaders = new ArrayList<>();
+        sessionHeaders.add(new HttpHeaders());
+        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
+        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID,
+                HttpMethod.GET, sessionHeaders);
+
+        Assert.assertNotNull(apiResponse.getError());
+        Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
+    }
+
+    @Test
+    public void deleteUserImage_Positive() {
+        List<HttpHeaders> sessionHeaders = new ArrayList<>();
+        sessionHeaders.add(new HttpHeaders());
+        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID,
+                HttpMethod.DELETE, sessionHeaders);
+
+        Assert.assertNull(apiResponse.getError());
+    }
+
+    @Test
+    public void deleteUserImage_IncorrectUserImageId() {
+        List<HttpHeaders> sessionHeaders = new ArrayList<>();
+        sessionHeaders.add(new HttpHeaders());
+        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID,
+                HttpMethod.DELETE, sessionHeaders);
+
+        Assert.assertNotNull(apiResponse.getError());
+        Assert.assertEquals(ErrorType.RESOURCE_NOT_FOUND_ERROR.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
+    }
+
+    @Test
+    public void deleteUserImage_IncorrectSessionId() {
+        List<HttpHeaders> sessionHeaders = new ArrayList<>();
+        sessionHeaders.add(new HttpHeaders());
+        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
+        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID,
+                HttpMethod.DELETE, sessionHeaders);
+
+        Assert.assertNotNull(apiResponse.getError());
+        Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
+    }
+
 
     private User createUser() {
         User user = new User();
