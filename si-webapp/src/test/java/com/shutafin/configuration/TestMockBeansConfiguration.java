@@ -2,6 +2,7 @@ package com.shutafin.configuration;
 
 import com.shutafin.service.LoginService;
 import com.shutafin.service.RegistrationService;
+import com.shutafin.service.UserLanguageService;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,5 +25,11 @@ public class TestMockBeansConfiguration {
     @Bean
     public RegistrationService registrationService() {
         return Mockito.mock(RegistrationService.class);
+    }
+
+    @Bean
+    @Primary
+    public UserLanguageService userLanguageService() {
+        return Mockito.mock(UserLanguageService.class);
     }
 }
