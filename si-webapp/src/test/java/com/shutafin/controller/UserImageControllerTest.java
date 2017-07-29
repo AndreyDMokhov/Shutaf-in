@@ -14,7 +14,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -113,7 +112,6 @@ public class UserImageControllerTest extends BaseTestImpl {
     }
 
     @Test
-    // TODO: Test fails due to APIWebResponseDeserializer error
     public void getUserImage_Positive() {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
