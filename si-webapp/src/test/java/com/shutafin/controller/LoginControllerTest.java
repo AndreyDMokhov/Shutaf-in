@@ -14,12 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 public class LoginControllerTest extends BaseTestImpl{
 
     private static final String LOGIN_REQUEST_URL = "/login/";
+
     private static final String INP_EMAIL_NOT_BLANK = "INP.email.NotBlank";
     private static final String INP_EMAIL_LENGTH = "INP.email.Length";
     private static final String INP_EMAIL_EMAIL = "INP.email.Email";
@@ -44,47 +49,46 @@ public class LoginControllerTest extends BaseTestImpl{
     }
 
     @Test
-    public void LoginRequestJson_EmailNull(){
-        String loginWebModelJson = "{\"email\":null,\"password\":\"111111Zz\"}";
-        testLoginWebModel(loginWebModelJson, INP_EMAIL_NOT_BLANK);
-    }
-
-    @Test
-    public void LoginRequestJson_EmailLengthMore50(){
-        String loginWebModelJson = "{\"email\":\"aaaaaaaaaalllllllllleeeeeeeeeexxxxxxxxxx@gmailx.com\",\"password\":\"111111Zz\"}";
-        testLoginWebModel(loginWebModelJson, INP_EMAIL_LENGTH);
-    }
-
-    @Test
     public void LoginRequestJson_IncorrectEmail(){
         String loginWebModelJson = "{\"email\":\"gmail.com\",\"password\":\"111111Zz\"}";
-        testLoginWebModel(loginWebModelJson, INP_EMAIL_EMAIL);
+        List<String> errorList = new ArrayList<>();
+        errorList.add(INP_EMAIL_EMAIL);
+        testLoginWebModel(loginWebModelJson, errorList);
     }
 
     @Test
-    public void LoginRequestJson_PasswordNull(){
-        String loginWebModelJson = "{\"email\":\"psw@gmail.com\",\"password\":null}";
-        testLoginWebModel(loginWebModelJson, INP_PASSWORD_NOT_BLANK);
+    public void LoginRequestJson_EmailNull_PasswordNull(){
+        String loginWebModelJson = "{\"email\":null,\"password\":null}";
+        List<String> errorList = new ArrayList<>();
+        errorList.add(INP_EMAIL_NOT_BLANK);
+        errorList.add(INP_PASSWORD_NOT_BLANK);
+        testLoginWebModel(loginWebModelJson, errorList);
     }
 
     @Test
-    public void LoginRequestJson_PasswordLengthMore25(){
-        String loginWebModelJson = "{\"email\":\"psw@gmail.com\",\"password\":\"11111222223333344444555556\"}";
-        testLoginWebModel(loginWebModelJson, INP_PASSWORD_LENGTH);
+    public void LoginRequestJson_EmailLengthMore50_PasswordLengthMore25(){
+        String loginWebModelJson = "{\"email\":\"aaaaaaaaaalllllllllleeeeeeeeeexxxxxxxxxx@gmailx.com\"," +
+                "\"password\":\"11111222223333344444555556\"}";
+        List<String> errorList = new ArrayList<>();
+        errorList.add(INP_EMAIL_LENGTH);
+        errorList.add(INP_PASSWORD_LENGTH);
+        testLoginWebModel(loginWebModelJson, errorList);
     }
 
     @Test
     public void LoginRequestJson_PasswordLengthLess8(){
         String loginWebModelJson = "{\"email\":\"psw@gmail.com\",\"password\":\"1234567\"}";
-        testLoginWebModel(loginWebModelJson, INP_PASSWORD_LENGTH);
+        List<String> errorList = new ArrayList<>();
+        errorList.add(INP_PASSWORD_LENGTH);
+        testLoginWebModel(loginWebModelJson, errorList);
     }
 
-    private void testLoginWebModel(String json, String errorDescription){
+    private void testLoginWebModel(String json, List<String> errorList){
         APIWebResponse response = getResponse(LOGIN_REQUEST_URL, json, HttpMethod.POST);
         Assert.assertNotNull(response.getError());
         InputValidationError inputValidationError = (InputValidationError) response.getError();
-        for (String error: inputValidationError.getErrors()){
-            Assert.assertEquals(error, errorDescription);
-        }
+        Collections.sort(errorList);
+        Collections.sort(inputValidationError.getErrors());
+        Assert.assertEquals(errorList, inputValidationError.getErrors());
     }
 }
