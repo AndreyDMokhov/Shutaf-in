@@ -1,8 +1,8 @@
-app.factory('userSettingsModel', function (Restangular) {
+app.factory('userSettingsModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('/api/users/settings');
-        RestangularProvider.setDefaultHeaders({'session_id':localStorage.getItem('session_id')});
+        RestangularProvider.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
     });
 
     function submitChanges(params) {
