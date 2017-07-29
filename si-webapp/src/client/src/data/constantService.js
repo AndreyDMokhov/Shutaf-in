@@ -1,4 +1,4 @@
-app.factory('constantService', function (Restangular, $q) {
+app.factory('constantService', function (Restangular, $q, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (Configurer) {
         Configurer.setBaseUrl('/api/initialization');
@@ -7,8 +7,7 @@ app.factory('constantService', function (Restangular, $q) {
     var data = [];
 
     function getLanguages() {
-        data.languages = data.languages || JSON.parse(sessionStorage.getItem("languages")) || rest.all('languages').getList().$object;
-
+        data.languages = data.languages || $sessionStorage.languages || rest.all('languages').getList().$object;
         return data.languages;
     }
 
@@ -18,7 +17,7 @@ app.factory('constantService', function (Restangular, $q) {
         data.get().then(
             function success(success) {
                 data.languages = success.languages;
-                sessionStorage.setItem("languages", JSON.stringify(data.languages));
+                $sessionStorage.languages = data.languages;
 
                 deferred.resolve(data);
             },

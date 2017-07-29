@@ -1,4 +1,4 @@
-app.controller('userRegistration', function (registrationModel, notify, $state, $filter, CACHED_LANGUAGE_ID) {
+app.controller('userRegistration', function (registrationModel, notify, $state, $filter, CACHED_LANGUAGE_ID, $sessionStorage) {
 
     var vm = this;
     vm.registrationData = {};
@@ -10,7 +10,7 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
         console.log(vm.registrationData);
         vm.dataLoading = true;
 
-        vm.registrationData.userLanguageId = localStorage.getItem(CACHED_LANGUAGE_ID);
+        vm.registrationData.userLanguageId = $sessionStorage.currentLanguage.id;
         registrationModel.registerUser(vm.registrationData).then(
             function (success) {
                 vm.dataLoading = false;

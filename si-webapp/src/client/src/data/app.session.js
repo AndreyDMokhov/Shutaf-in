@@ -1,8 +1,8 @@
-app.factory('sessionService', function () {
+app.factory('sessionService', function ($sessionStorage) {
 
 
     function isAuthenticated() {
-        var sessionId = localStorage.getItem('session_id');
+        var sessionId = $sessionStorage.sessionId;
         return sessionId !== undefined && sessionId !== null && sessionId !== '';
     }
 

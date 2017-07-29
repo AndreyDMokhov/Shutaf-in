@@ -1,4 +1,4 @@
-app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService) {
+app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, $sessionStorage) {
 
     var vm = this;
 
@@ -11,7 +11,7 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
         loginModel.login(vm.loginData).then(
             function (success) {
                 vm.dataLoading = false;
-                localStorage.setItem("session_id", success.headers('session_id'));
+                $sessionStorage.sessionId = success.headers('session_id');
                 userInitService.init();
                 $state.go('home');
 
