@@ -24,6 +24,10 @@ app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionSt
                 deferred.resolve(data);
             },
             function (error) {
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                if (error.data.error.errorTypeCode === 'AUT') {
+                    $state.go('logout');
+                }
                 return deferred.reject();
             }
         );

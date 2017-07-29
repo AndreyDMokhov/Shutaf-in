@@ -26,18 +26,16 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                     },
                     function(err){//fail
                         console.log(err);
-                        notify.set($filter('translate')("Error.unexpected.server.error"), {type: 'error'});
+                        notify.set($filter('translate')("Error.SYS"), {type: 'error'});
                     }
                 );
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
                 $state.go("home");
             }, function (error) {
                 vm.dataLoading = false;
-                var status = error.status;
-                if (status!==undefined && status!==null && status!==""){
-                    $state.go("error", {'code' : status});
-                } else {
-                    notify.set($filter('translate')("Registration.form.msg.registrationFail"), {type: 'error'});
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                if (error.data.error.errorCodeType === 'RNF') {
+                    $state.go("error", {'code' : '404'});
                 }
             })
     };

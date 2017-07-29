@@ -18,18 +18,10 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
             }, function (error) {
                 vm.dataLoading = false;
 
-                if (error.data.error.errorTypeCode === 'EDE') {
-
-                    notify.set($filter('translate')("Registration.form.msg.emailDuplication"), {type: 'error'});
-                } else {
-
-                    notify.set($filter('translate')("Registration.form.msg.registrationFail"), {type: 'error'});
-                }
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             })
     };
 
     vm.registerUser = registerUser;
 
 });
-
-

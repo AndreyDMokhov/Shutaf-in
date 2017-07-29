@@ -29,7 +29,7 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
             }, function (error) {
 
                 vm.dataLoading = false;
-                notify.set($filter('translate')('Login.message.fail'), {type: 'error'});
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
     vm.login = login;

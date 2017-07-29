@@ -34,8 +34,8 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         String header = properties.getProperty(prefix + HEADER_SUFFIX);
 
         String section = properties
-                            .getProperty(prefix + SECTION_SUFFIX)
-                            .replace("${link}", link);
+                .getProperty(prefix + SECTION_SUFFIX)
+                .replace("${link}", link);
 
         String signature = properties.getProperty("common.signature");
 

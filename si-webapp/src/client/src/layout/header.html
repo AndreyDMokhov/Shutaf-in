@@ -41,18 +41,34 @@
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('userSettings' | includedByState)}">
-                    <a ui-sref="userSettings">
+                    ng-class="{active : ('settings' | includedByState)}">
+                    <a ui-sref="settings">
                         <span class="glyphicon glyphicon-cog"></span>
-                        {{'UserSettings.title' | translate}}
+                        {{'Settings.personal.title' | translate}}
                     </a>
                 </li>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('emailChangeRequest' | includedByState)}">
+                    <a ui-sref="changeEmailRequest">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'Settings.security.email.title' | translate}}
+                    </a>
+                </li>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('changePassword' | includedByState)}">
+                    <a ui-sref="changePassword">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'Settings.security.password.title' | translate}}
+                    </a>
+                </li>
+
+
                 <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>
                         {{'Logout.button' | translate}}
                     </a>
                 </li>
+
+
                 <li class="divider-vertical"></li>
                 <li uib-dropdown>
                     <a href="#" uib-dropdown-toggle>|
