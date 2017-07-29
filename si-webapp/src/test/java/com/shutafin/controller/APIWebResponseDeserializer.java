@@ -21,10 +21,13 @@ public class APIWebResponseDeserializer implements JsonDeserializer<APIWebRespon
 
     @Override
     public APIWebResponse deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-        DataResponse data = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("data"),
-                getClassName(jsonElement));
-        ErrorResponse errorResponse = null;
+        DataResponse data = null;
+        if (jsonElement.getAsJsonObject().get("data").isJsonObject()) {
+            data = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("data"),
+                    getClassName(jsonElement));
+        }
 
+        ErrorResponse errorResponse = null;
         if (jsonElement.getAsJsonObject().get("error").isJsonObject()) {
             JsonObject error = jsonElement.getAsJsonObject().get("error").getAsJsonObject();
             String errorTypeCode = error.getAsJsonObject().get("errorTypeCode").getAsString();
@@ -41,6 +44,7 @@ public class APIWebResponseDeserializer implements JsonDeserializer<APIWebRespon
     }
 
     private <T extends DataResponse> Class<T> getClassName(JsonElement jsonElement) {
+
         List<Class<T>> classNames = getClassesNames();
 
         HashSet<String> jsonKeys = new HashSet<>();
