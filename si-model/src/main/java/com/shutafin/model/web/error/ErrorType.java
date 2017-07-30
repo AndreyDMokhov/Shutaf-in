@@ -9,7 +9,8 @@ public enum ErrorType {
     EMAIL_SEND_ERROR(503, ErrorCode.ESE),
     EMAIL_CONFIGURATION_ERROR(500, ErrorCode.ECE),
     EMAIL_DUPLICATION_EXCEPTION(400, ErrorCode.EDE),
-    RESOURCE_NOT_FOUND_ERROR(404, ErrorCode.RNF);
+    RESOURCE_NOT_FOUND_ERROR(404, ErrorCode.RNF),
+    INCORRECT_PASSWORD_ERROR(401, ErrorCode.IPE);
 
     private Integer httpCode;
     private ErrorCode errorCodeType;
@@ -30,5 +31,5 @@ public enum ErrorType {
 
 
 enum ErrorCode {
-    INP, SYS, AUT, ESE, ECE, EDE, RNF;
+    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE;
 }

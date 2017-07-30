@@ -8,6 +8,7 @@ public interface Dao<T> {
 
     List<T> findAll();
     T findById(Serializable id);
+    void evict(T object);
 
 
 }

@@ -1,27 +1,33 @@
-app.controller('changeEmailRequestController', function ($state, $rootScope, changeEmailModel, notify, $filter) {
+app.controller('changePasswordController', function ($rootScope, changePasswordModel, notify, $filter, $state) {
 
     var vm = this;
-    vm.dataLoading = false;
+
     vm.isOpen = true;
+
+    vm.dataLoading = false;
+
     vm.securitySettings = {};
 
-    function changeEmailRequest() {
-        vm.dataLoading = true;
 
-        changeEmailModel.emailChangeRequest(vm.securitySettings).then(
+    function changePassword() {
+        vm.dataLoading=true;
+
+        changePasswordModel.changePassword(vm.securitySettings).then(
             function (success) {
                 vm.dataLoading = false;
-                notify.set($filter('translate')("Settings.security.msg.successRequest"), {type: 'success'});
-                $state.go("home");
+                notify.set($filter('translate')("Settings.security.msg.success"), {type: 'success'});
+                $state.go('settings');
             }, function (error) {
                 vm.dataLoading = false;
+
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 if (error.data.error.errorTypeCode === 'AUT') {
                     $state.go('logout');
                 }
-
             });
     }
 
-    vm.changeEmailRequest = changeEmailRequest;
+
+    vm.changePassword = changePassword;
+
 });

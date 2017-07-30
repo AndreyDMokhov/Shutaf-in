@@ -1,4 +1,4 @@
-app.factory('securitySettingsPasswordModel', function (Restangular) {
+app.factory('changePasswordModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('/api/users/password');

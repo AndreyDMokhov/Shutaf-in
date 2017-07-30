@@ -42,10 +42,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/users"
             })
-        .state("userSettings",
+        .state("settings",
             {
-                templateUrl: "partials/settings/userSettings.html",
-                controller: "userSettingsController",
+                templateUrl: "partials/settings/settings.html",
+                controller: "settingsController",
                 controllerAs: "vm",
                 url: "/settings"
             })
@@ -69,7 +69,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "logoutController",
                 url: "/logout"
             })
-        .state("emailChangeRequest",
+        .state("changeEmailRequest",
             {
                 templateUrl: "partials/changeEmail/changeEmail.html",
                 controller: "changeEmailRequestController",
@@ -81,6 +81,14 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "changeEmailConfirmationController",
                 controllerAs: "vm",
                 url: "/settings/change-email/confirmation/{link}"
-            });
+            })
+        .state("changePassword",
+            {
+                templateUrl:'partials/changePassword/changePassword.html',
+                controller: "changePasswordController",
+                controllerAs: "vm",
+                url: "/settings/change-password"
+            })
+    ;
     $urlRouterProvider.otherwise("/home");
 });

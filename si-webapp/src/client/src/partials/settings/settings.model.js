@@ -1,4 +1,4 @@
-app.factory('userSettingsModel', function (Restangular) {
+app.factory('settingsModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('/api/users/settings');

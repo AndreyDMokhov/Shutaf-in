@@ -1,4 +1,4 @@
-app.controller('changeEmailConfirmationController', function ($state, $rootScope, securitySettingsChangeEmailModel, notify, $filter, $stateParams) {
+app.controller('changeEmailConfirmationController', function ($state, $rootScope, changeEmailModel, notify, $filter, $stateParams) {
 
     var vm = this;
 
@@ -11,27 +11,28 @@ app.controller('changeEmailConfirmationController', function ($state, $rootScope
         if (urlLink === undefined || urlLink === null || urlLink === "") {
             $state.go("error", {'code': '404'});
         }
-        securitySettingsChangeEmailModel.emailChangeConfirmation(urlLink).then(
+        changeEmailModel.emailChangeConfirmation(urlLink).then(
             function (success) {
                 vm.dataLoading = false;
                 if (success.emailChanged === false) {
 
-                    notify.set($filter('translate')("SecuritySettings.firstEmailConfirmed.success"), {type: 'success'});
+                    notify.set($filter('translate')("Settings.security.firstEmailConfirmed.success"), {type: 'success'});
                     $state.go('home');
                 }
 
                 if (success.emailChanged === true) {
 
-                    notify.set($filter('translate')("SecuritySettings.secondEmailConfirmed.success"), {type: 'success'});
+                    notify.set($filter('translate')("Settings.security.secondEmailConfirmed.success"), {type: 'success'});
                     $state.go("logout");
                 }
             }, function (error) {
                 vm.dataLoading = false;
 
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+
                 if (error.data.error.errorTypeCode === 'RNF') {
-                    $state.go("error", {'code': status});
-                } else {
-                    notify.set($filter('translate')("SecuritySettings.common.failure"), {type: 'error'})
+
+                    $state.go("error", {'code': '404'});
                 }
             })
     };
