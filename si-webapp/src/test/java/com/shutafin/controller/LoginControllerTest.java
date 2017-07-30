@@ -25,11 +25,11 @@ public class LoginControllerTest extends BaseTestImpl{
 
     private static final String LOGIN_REQUEST_URL = "/login/";
 
-    private static final String INP_EMAIL_NOT_BLANK = "INP.email.NotBlank";
+    private static final String INP_EMAIL_NOT_EMPTY = "INP.email.NotEmpty";
     private static final String INP_EMAIL_LENGTH = "INP.email.Length";
     private static final String INP_EMAIL_EMAIL = "INP.email.Email";
-    private static final String INP_PASSWORD_NOT_BLANK = "INP.password.NotBlank";
     private static final String INP_PASSWORD_LENGTH = "INP.password.Length";
+    private static final String INP_PASSWORD_NOT_NULL = "INP.password.NotNull";
 
     @Autowired
     private LoginService loginService;
@@ -57,11 +57,29 @@ public class LoginControllerTest extends BaseTestImpl{
     }
 
     @Test
-    public void LoginRequestJson_EmailNull_PasswordNull(){
+    public void LoginRequestJson_Null(){
         String loginWebModelJson = "{\"email\":null,\"password\":null}";
         List<String> errorList = new ArrayList<>();
-        errorList.add(INP_EMAIL_NOT_BLANK);
-        errorList.add(INP_PASSWORD_NOT_BLANK);
+        errorList.add(INP_EMAIL_NOT_EMPTY);
+        errorList.add(INP_PASSWORD_NOT_NULL);
+        testLoginWebModel(loginWebModelJson, errorList);
+    }
+
+    @Test
+    public void LoginRequestJson_Empty(){
+        String loginWebModelJson = "{\"email\":\"\",\"password\":\"\"}";
+        List<String> errorList = new ArrayList<>();
+        errorList.add(INP_EMAIL_NOT_EMPTY);
+        errorList.add(INP_PASSWORD_LENGTH);
+        testLoginWebModel(loginWebModelJson, errorList);
+    }
+
+    @Test
+    public void LoginRequestJson_Blank(){
+        String loginWebModelJson = "{\"email\":\" \",\"password\":\" \"}";
+        List<String> errorList = new ArrayList<>();
+        errorList.add(INP_EMAIL_EMAIL);
+        errorList.add(INP_PASSWORD_LENGTH);
         testLoginWebModel(loginWebModelJson, errorList);
     }
 
