@@ -28,7 +28,7 @@ import java.util.UUID;
 public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmationService {
 
     @Autowired
-    private PasswordServiceImpl passwordService;
+    private PasswordService passwordService;
 
     @Autowired
     private EnvironmentConfigurationService environmentConfigurationService;
