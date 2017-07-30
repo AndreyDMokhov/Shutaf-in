@@ -20,10 +20,8 @@ public abstract class ValidationException extends AbstractAPIException {
     public ValidationException() {
     }
 
-    @Override
-    public ErrorType getErrorType() {
-        return ErrorType.INPUT;
-    }
+
+    public abstract ErrorType getErrorType();
 
     @Override
     public InputValidationError getErrorResponse() {
@@ -35,10 +33,10 @@ public abstract class ValidationException extends AbstractAPIException {
         for (Map.Entry<String, String> map : getFieldErrors().entrySet()) {
             String builder =
                     getErrorType().getErrorCodeType() +
-                    DOT_SEPARATOR +
-                    map.getKey() +
-                    DOT_SEPARATOR +
-                    map.getValue();
+                            DOT_SEPARATOR +
+                            map.getKey() +
+                            DOT_SEPARATOR +
+                            map.getValue();
 
             violatedConstraints.add(builder);
         }

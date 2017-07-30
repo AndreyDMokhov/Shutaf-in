@@ -1,6 +1,8 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
+import com.shutafin.model.entities.UserSession;
+import com.shutafin.repository.UserSessionRepository;
 import com.shutafin.service.LogoutService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,10 @@ public class LogoutController {
     @Autowired
     private LogoutService logoutService;
 
+    @Autowired
+    private
+    UserSessionRepository userSessionRepository;
+
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void logout(HttpServletRequest request) {
@@ -25,6 +31,11 @@ public class LogoutController {
         if (StringUtils.isBlank(sessionId) || sessionId.length() < MIN_LENGTH_SESSION_ID) {
             throw new AuthenticationException();
         }
-        logoutService.logout(sessionId);
+
+        UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
+        if (userSession == null) {
+            throw new AuthenticationException();
+        }
+        logoutService.logout(userSession);
     }
 }

@@ -1,11 +1,11 @@
-app.factory('logoutModel', function (Restangular) {
+app.factory('logoutModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('/api/logout');
     });
 
     function logout(params) {
-        rest.setDefaultHeaders({'session_id':localStorage.getItem('session_id')});
+        rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
         return  rest.one('/').customPOST(params);
     }
 

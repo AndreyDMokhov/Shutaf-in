@@ -23,4 +23,9 @@ public abstract class AbstractConstEntityDao<T extends AbstractConstEntity> exte
     public T findById(Serializable id) {
         return getSession().get(getEntityClass(), id);
     }
+
+    @Override
+    public void evict(T object) {
+        getSession().evict(object);
+    }
 }

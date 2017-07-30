@@ -34,8 +34,8 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         String header = properties.getProperty(prefix + HEADER_SUFFIX);
 
         String section = properties
-                            .getProperty(prefix + SECTION_SUFFIX)
-                            .replace("${link}", link);
+                .getProperty(prefix + SECTION_SUFFIX)
+                .replace("${link}", link);
 
         String signature = properties.getProperty("common.signature");
 
@@ -49,10 +49,10 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         notNull(language);
         notBlank(link);
 
-        return new EmailMessage(user, getTemplate(
-                                            emailReason,
-                                            language,
-                                            link
+        return new EmailMessage(user.getEmail(), getTemplate(
+                emailReason,
+                language,
+                link
         ));
     }
 
@@ -78,5 +78,12 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
     }
 
 
-
+    @Override
+    public EmailMessage getEmailMessage(String emailTo, EmailReason emailReason, Language language, String link) {
+        return new EmailMessage(emailTo, getTemplate(
+                emailReason,
+                language,
+                link
+        ));
+    }
 }
