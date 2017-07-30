@@ -6,10 +6,7 @@ app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionSt
     var data = {};
 
     function getUserProfile() {
-        data.userProfile = data.userProfile || $sessionStorage.userProfile || rest.all('userProfile').get().$object;
-        //relevant?
-        console.log(data.userProfile);
-        return data.userProfile;
+        return data.userProfile || $sessionStorage.userProfile || rest.all('userProfile').get().$object;
     }
 
     function init() {

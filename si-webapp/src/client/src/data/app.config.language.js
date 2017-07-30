@@ -26,7 +26,7 @@ app.factory('languageService', function ($translate, Restangular, $sessionStorag
 
     function _setLanguage(code) {
         if (code === undefined || code === null) {
-            setDefaultLanguage()
+            setDefaultLanguage();
             return;
         }
         $translate.use(code);
