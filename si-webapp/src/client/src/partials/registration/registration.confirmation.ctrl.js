@@ -1,7 +1,7 @@
 /**
  * Created by evgeny on 7/10/2017.
  */
-app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService) {
+app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage) {
 
     var vm = this;
 
@@ -18,7 +18,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
             function (success) {
                 vm.dataLoading = false;
                 var session_id = success.headers('session_id');
-                localStorage.setItem("session_id", session_id);
+                $sessionStorage.sessionId = session_id;
                 userInitService.init();
                 languageService.getUserLanguage().then(
                     function(result){//success
