@@ -24,6 +24,7 @@ public class InitializationController {
             put("genders", initializationService.findAllGendersByLanguage(languageId));
             put("countries", initializationService.findAllCountriesByLanguage(languageId));
             put("cities", initializationService.findAllCitiesByLanguage(languageId));
+            put("languages", initializationService.findAllLanguages());
         }};
 
     }
