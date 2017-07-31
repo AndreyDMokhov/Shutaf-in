@@ -2,7 +2,6 @@ package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.UserSession;
-import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.LogoutService;
 import com.shutafin.service.SessionManagementService;
 import org.apache.commons.lang3.StringUtils;

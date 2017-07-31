@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -43,10 +44,10 @@ public class RegistrationControllerTest extends BaseTestImpl {
 
     private List<String> errorList;
 
-    @Autowired
+    @MockBean
     private RegistrationService registrationService;
 
-    @Autowired
+    @MockBean
     private SessionManagementService sessionManagementService;
 
     @Before
@@ -82,7 +83,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationRequestJson_AllFieldNULL() throws Exception {
+    public void registrationRequestJson_AllFieldsNull() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":null,\"lastName\":null,\"email\":null,\"password\":null,\"userLanguageId\":null}";
         errorList.add(INP_FIRST_NAME_NOT_NULL);
         errorList.add(INP_LAST_NAME_NOT_NULL);
@@ -93,7 +94,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationRequestJson_AllFieldEmpty() throws Exception {
+    public void registrationRequestJson_AllEmptyFields() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"\",\"lastName\":\"\",\"email\":\"\",\"password\":\"\",\"userLanguageId\":\"\"}";
         errorList.add(INP_FIRST_NAME_LENGTH);
         errorList.add(INP_LAST_NAME_LENGTH);
@@ -104,7 +105,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationRequestJson_AllFieldBlank() throws Exception {
+    public void registrationRequestJson_AllWhitespaceFields() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\" \",\"lastName\":\" \",\"email\":\" \",\"password\":\" \",\"userLanguageId\":\" \"}";
         errorList.add(INP_FIRST_NAME_LENGTH);
         errorList.add(INP_LAST_NAME_LENGTH);
@@ -115,7 +116,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationRequestJson_LengthMore() throws Exception {
+    public void registrationRequestJson_ExceededMaxLength() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrroooooooooov\"," +
                 "\"lastName\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrroooooooooov\"," +
                 "\"email\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrr@gmailx.com\"," +
@@ -128,7 +129,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationRequestJson_LengthLess() throws Exception {
+    public void registrationRequestJson_ExceededMinLength() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"pp\",\"lastName\":\"pp\",\"email\":\"pp@gmail.com\",\"password\":\"1234567\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_FIRST_NAME_LENGTH);
         errorList.add(INP_LAST_NAME_LENGTH);
@@ -137,14 +138,14 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationRequestJson_IncorrectEmail() throws Exception {
+    public void registrationRequestJson_IllegalEmail() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"gmail\",\"password\":\"12345678\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_EMAIL_EMAIL);
         testRegistrationRequestWeb(registrationRequestWebJson, errorList);
     }
 
     @Test
-    public void registrationRequestJson_UserLanguageIdEqual0() throws Exception {
+    public void registrationRequestJson_IllegalUserLanguageId() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"0\"}";
         errorList.add(INP_USER_LANGUAGE_ID_MIN);
         testRegistrationRequestWeb(registrationRequestWebJson, errorList);
