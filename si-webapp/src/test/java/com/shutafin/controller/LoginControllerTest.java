@@ -50,7 +50,7 @@ public class LoginControllerTest extends BaseTestImpl{
     }
 
     @Test
-    public void LoginRequestJson_IncorrectEmail(){
+    public void LoginRequestJson_IllegalEmail(){
         String loginWebModelJson = "{\"email\":\"gmail.com\",\"password\":\"111111Zz\"}";
         List<String> errorList = new ArrayList<>();
         errorList.add(INP_EMAIL_EMAIL);
@@ -77,7 +77,7 @@ public class LoginControllerTest extends BaseTestImpl{
     }
 
     @Test
-    public void LoginRequestJson_Blank(){
+    public void LoginRequestJson_Whitespace(){
         String loginWebModelJson = "{\"email\":\" \",\"password\":\" \"}";
         List<String> errorList = new ArrayList<>();
         errorList.add(INP_EMAIL_NOT_BLANK);
@@ -88,7 +88,7 @@ public class LoginControllerTest extends BaseTestImpl{
     }
 
     @Test
-    public void LoginRequestJson_EmailLengthMore50_PasswordLengthMore25(){
+    public void LoginRequestJson_ExceededMaxLength(){
         String loginWebModelJson = "{\"email\":\"aaaaaaaaaalllllllllleeeeeeeeeexxxxxxxxxx@gmailx.com\"," +
                 "\"password\":\"11111222223333344444555556\"}";
         List<String> errorList = new ArrayList<>();
@@ -98,7 +98,7 @@ public class LoginControllerTest extends BaseTestImpl{
     }
 
     @Test
-    public void LoginRequestJson_PasswordLengthLess8(){
+    public void LoginRequestJson_ExceededMinLength(){
         String loginWebModelJson = "{\"email\":\"psw@gmail.com\",\"password\":\"1234567\"}";
         List<String> errorList = new ArrayList<>();
         errorList.add(INP_PASSWORD_LENGTH);
