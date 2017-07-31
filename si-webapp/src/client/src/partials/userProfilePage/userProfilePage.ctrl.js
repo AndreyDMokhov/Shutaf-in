@@ -1,6 +1,6 @@
-app.controller('userProfilePage', function (notify, $timeout, $state, $filter, sessionService, userProfileModel) {
+app.controller('userProfilePage', function ($state, $filter, sessionService, userProfileModel, $sessionStorage) {
     var vm = this;
-    vm.userProfile = JSON.parse(sessionStorage.getItem('userProfile'));
+    vm.userProfile = $sessionStorage.userProfile;
 
     if (vm.userProfile.userImageId === null) {
         vm.avatarImage = '../../images/default_avatar.png'

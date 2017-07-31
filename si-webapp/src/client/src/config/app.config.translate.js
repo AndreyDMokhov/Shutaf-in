@@ -1,4 +1,4 @@
-app.config(function ($translateProvider, CACHED_LANGUAGE, CACHED_LANGUAGE_ID) {
+app.config(function ($translateProvider, $sessionStorageProvider) {
 
     $translateProvider.useStaticFilesLoader({
         prefix: 'resources/dictionaries/lang-',
@@ -6,16 +6,15 @@ app.config(function ($translateProvider, CACHED_LANGUAGE, CACHED_LANGUAGE_ID) {
     });
 
     function _defineLanguage() {
-        var currentLanguage = localStorage.getItem(CACHED_LANGUAGE);
-        var currentLanguageId = localStorage.getItem(CACHED_LANGUAGE_ID);
+        var currentLanguage = $sessionStorageProvider.get('currentLanguage');
 
-        if (_isUndefinedOrNull(currentLanguage) || _isUndefinedOrNull(currentLanguageId)) {
-            localStorage.setItem(CACHED_LANGUAGE, 'en');
-            localStorage.setItem(CACHED_LANGUAGE_ID, '1');
-            currentLanguage = 'en';
+        if (_isUndefinedOrNull(currentLanguage)) {
+
+            var currentLanguage = {"id":1, "description":"en"};
+            $sessionStorageProvider.set('currentLanguage', currentLanguage);
         }
 
-        return currentLanguage;
+        return currentLanguage.description;
     }
 
     function _isUndefinedOrNull(value) {

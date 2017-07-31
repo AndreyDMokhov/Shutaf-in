@@ -4,6 +4,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.user.UserAccountSettingsWeb;
+import com.shutafin.repository.common.UserRepository;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.repository.UserAccountRepository;
 import com.shutafin.repository.UserImageRepository;

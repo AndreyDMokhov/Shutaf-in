@@ -11,6 +11,11 @@ public class APIWebResponse {
     public APIWebResponse() {
     }
 
+    public APIWebResponse(ErrorResponse error, DataResponse data) {
+        this.error = error;
+        this.data = data;
+    }
+
     public ErrorResponse getError() {
         return error;
     }

@@ -1,4 +1,4 @@
-app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService) {
+app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, constantService, $sessionStorage) {
 
     var vm = this;
 
@@ -11,8 +11,9 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
         loginModel.login(vm.loginData).then(
             function (success) {
                 vm.dataLoading = false;
-                localStorage.setItem("session_id", success.headers('session_id'));
+                $sessionStorage.sessionId = success.headers('session_id');
                 userInitService.init();
+                constantService.init();
                 $state.go('home');
 
                 languageService.getUserLanguage().then(
@@ -29,7 +30,7 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
             }, function (error) {
 
                 vm.dataLoading = false;
-                notify.set($filter('translate')('Login.message.fail'), {type: 'error'});
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
     vm.login = login;
