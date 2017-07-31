@@ -14,15 +14,7 @@ public interface BaseTest {
 
     APIWebResponse getResponse(MvcResult mvcResult);
 
-    APIWebResponse getResponse(String url, HttpMethod httpMethod);
-    APIWebResponse getResponse(String url, HttpMethod httpMethod, List<HttpHeaders> headers);
+    APIWebResponse getResponse(TestRequest request);
 
-    APIWebResponse getResponse(String url, String jsonContent, HttpMethod httpMethod);
-    APIWebResponse getResponse(String url, String jsonContent, HttpMethod httpMethod, List<HttpHeaders> headers);
-
-    APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod);
-    APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod, List<HttpHeaders> headers);
-
-    void setResponseClassName(Class className);
 
 }

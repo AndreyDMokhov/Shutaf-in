@@ -36,7 +36,6 @@ public class BaseTestImpl implements BaseTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @Override
     public APIWebResponse getResponse(MvcResult mvcResult) {
         try {
@@ -56,30 +55,28 @@ public class BaseTestImpl implements BaseTest {
     }
 
     @Override
-    public APIWebResponse getResponse(String url, HttpMethod httpMethod) {
-        return getResponse(url, "", httpMethod, null);
-    }
-
-    @Override
-    public APIWebResponse getResponse(String url, HttpMethod httpMethod, List<HttpHeaders> headers) {
-        return getResponse(url, "", httpMethod, headers);
-    }
-
-    @Override
-    public APIWebResponse getResponse(String url, String jsonContent, HttpMethod httpMethod) {
-        return getResponse(url, jsonContent, httpMethod, null);
-    }
-
-    @Override
     @SneakyThrows
-    public APIWebResponse getResponse(String url, String jsonContent, HttpMethod httpMethod, List<HttpHeaders> headers) {
-
-        MockHttpServletRequestBuilder builder = getHttpMethodSenderType(url, httpMethod)
+    public APIWebResponse getResponse(TestRequest request) {
+        MockHttpServletRequestBuilder builder = getHttpMethodSenderType(request.getUrl(), request.getHttpMethod())
                 .contentType(MediaType.APPLICATION_JSON_VALUE);
+
+        Class responseClass = request.getResponseClass();
+        if (responseClass != null) {
+            gson = new GsonBuilder()
+                    .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer(responseClass))
+                    .create();
+        }
+
+        String jsonContent = request.getJsonContent();
+        Object requestObject = request.getRequestObject();
+        if (requestObject != null) {
+            jsonContent = gson.toJson(requestObject);
+        }
         if (jsonContent != null && !jsonContent.trim().isEmpty()) {
             builder.content(jsonContent);
         }
 
+        List<HttpHeaders> headers = request.getHeaders();
         if (headers != null && !headers.isEmpty()) {
             for (HttpHeaders httpHeaders : headers) {
                 builder.headers(httpHeaders);
@@ -92,24 +89,6 @@ public class BaseTestImpl implements BaseTest {
                 .andReturn();
 
         return getResponse(result);
-    }
-
-    @Override
-    public APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod) {
-        return getResponse(url, object, httpMethod, null);
-    }
-
-    @Override
-    @SneakyThrows
-    public APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod, List<HttpHeaders> headers) {
-        return getResponse(url, gson.toJson(object), httpMethod, headers);
-    }
-
-    @Override
-    public void setResponseClassName(Class className) {
-        gson = new GsonBuilder()
-                .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer(className))
-                .create();
     }
 
     private MockHttpServletRequestBuilder getHttpMethodSenderType(String url, HttpMethod httpMethod) {

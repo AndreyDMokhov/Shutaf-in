@@ -5,6 +5,7 @@ import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.system.BaseTestImpl;
+import com.shutafin.system.TestRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,12 @@ public class RegistrationControllerTest extends BaseTestImpl {
 
         String bodyJSON = "{\"firstName\":\"cc\",\"lastName\":\"ccc\",\"email\":\"ccc@ccc\",\"password\":\"111111Zz\",\"userLanguageId\":\"1\"}";
 
-        APIWebResponse apiResponse = getResponse(REGISTRATION_REQUEST_URL, bodyJSON, HttpMethod.POST);
+        TestRequest request = TestRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(bodyJSON)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(apiResponse.getError().getErrorTypeCode(), ErrorType.INPUT.getErrorCodeType());
     }
@@ -52,11 +58,13 @@ public class RegistrationControllerTest extends BaseTestImpl {
         registrationRequestWeb.setPassword("12345678");
         registrationRequestWeb.setUserLanguageId(1);
 
-        APIWebResponse response = getResponse(
-                                REGISTRATION_REQUEST_URL,
-                                registrationRequestWeb,
-                                HttpMethod.POST);
+        TestRequest request = TestRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setRequestObject(registrationRequestWeb)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
-        Assert.assertNull(response.getError());
+        Assert.assertNull(apiResponse.getError());
     }
 }

@@ -10,6 +10,7 @@ import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserImageService;
 import com.shutafin.system.BaseTestImpl;
+import com.shutafin.system.TestRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,8 +70,13 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL, ADD_IMAGE_VALID_JSON_BODY,
-                HttpMethod.POST, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNull(apiResponse.getError());
     }
@@ -80,8 +86,13 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL, ADD_IMAGE_VALID_JSON_BODY,
-                HttpMethod.POST, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
@@ -92,8 +103,13 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set("sesion", VALID_SESSION_ID);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL, ADD_IMAGE_VALID_JSON_BODY,
-                HttpMethod.POST, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
@@ -105,7 +121,13 @@ public class UserImageControllerTest extends BaseTestImpl {
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
         String jsonBody = "{}";
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL, jsonBody, HttpMethod.POST, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(jsonBody)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.INPUT.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
@@ -116,9 +138,13 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        setResponseClassName(UserImageWeb.class);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID,
-                HttpMethod.GET, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(sessionHeaders)
+                .setResponseClass(UserImageWeb.class)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNull(apiResponse.getError());
         Assert.assertEquals(VALID_IMAGE_IN_BASE64, ((UserImageWeb) apiResponse.getData()).getImage());
@@ -129,8 +155,13 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID,
-                HttpMethod.GET, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(sessionHeaders)
+                .setResponseClass(UserImageWeb.class)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.RESOURCE_NOT_FOUND_ERROR.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
@@ -141,8 +172,13 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID,
-                HttpMethod.GET, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(sessionHeaders)
+                .setResponseClass(UserImageWeb.class)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
@@ -153,8 +189,12 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID,
-                HttpMethod.DELETE, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
+                .setHttpMethod(HttpMethod.DELETE)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNull(apiResponse.getError());
     }
@@ -164,8 +204,12 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID,
-                HttpMethod.DELETE, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID)
+                .setHttpMethod(HttpMethod.DELETE)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.RESOURCE_NOT_FOUND_ERROR.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
@@ -176,8 +220,12 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
-        APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID,
-                HttpMethod.DELETE, sessionHeaders);
+        TestRequest request = TestRequest.builder()
+                .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
+                .setHttpMethod(HttpMethod.DELETE)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
