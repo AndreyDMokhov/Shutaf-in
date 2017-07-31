@@ -11,8 +11,10 @@ import com.shutafin.repository.base.PersistentDao;
 public interface UserAccountRepository extends PersistentDao<UserAccount> {
     Language findUserLanguage(User user);
     void updateUserLanguage(LanguageEnum language, User user);
+
     UserAccount findUserAccountByUser(User user);
     void updateUserAccountImage(UserImage userImage, User user);
+
     UserImage findUserAccountImage(User user);
     void removeUserAccountImage(User user);
 }

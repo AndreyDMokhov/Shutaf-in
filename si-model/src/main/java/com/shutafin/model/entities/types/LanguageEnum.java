@@ -1,10 +1,15 @@
 package com.shutafin.model.entities.types;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonFormat(shape = JsonFormat.Shape.NUMBER)
 public enum LanguageEnum implements IdentifiableType<Integer> {
     ENGLISH(1, "en"),
     RUSSIAN(2, "ru");
 
+    @JsonProperty(value = "languageId")
     private Integer id;
 
     private String languageCode;
