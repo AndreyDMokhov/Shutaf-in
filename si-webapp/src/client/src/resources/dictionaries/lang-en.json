@@ -40,6 +40,7 @@
   "Registration.form.btn.cancel":"Cancel",
   "Registration.form.btn.registration":"Register",
   "Registration.form.msg.registrationOK":"Registration is ok",
+  "Registration.request.success":"It is necessary to confirm your email address in order to active your account",
 
   "SECTION": "LOGIN",
   "Login.title": "Login",

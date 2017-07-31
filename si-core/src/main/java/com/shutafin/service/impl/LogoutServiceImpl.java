@@ -1,7 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.UserSession;
-import com.shutafin.repository.UserSessionRepository;
+import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.LogoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

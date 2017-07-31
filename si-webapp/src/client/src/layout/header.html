@@ -17,9 +17,6 @@
                         <span class="fa fa-book header-icon-size"></span>
                     </a>
                 </li>
-                <li ng-hide="true" ng-class="{active : ('users' | includedByState)}">
-                    <a ui-sref="users">{{'Users.title' | translate}}</a>
-                </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userProfile' | includedByState)}">
                     <a ui-sref="userProfile">{{'Profile.title' | translate}}</a>

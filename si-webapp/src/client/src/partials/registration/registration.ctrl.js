@@ -14,6 +14,7 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
         registrationModel.registerUser(vm.registrationData).then(
             function (success) {
                 vm.dataLoading = false;
+                notify.set($filter('translate')('Registration.request.success'));
                 $state.go("home");
             }, function (error) {
                 vm.dataLoading = false;

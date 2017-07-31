@@ -3,24 +3,12 @@ package com.shutafin.model;
 import javax.persistence.*;
 
 @MappedSuperclass
-public abstract class AbstractConstEntity {
-
-    @Id
-    @Column(name = "ID")
-    private Integer id;
+public abstract class AbstractConstEntity extends AbstractKeyConstEntity {
 
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
     public AbstractConstEntity() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getDescription() {
