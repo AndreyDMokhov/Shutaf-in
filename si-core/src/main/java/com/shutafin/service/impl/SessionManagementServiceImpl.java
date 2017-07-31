@@ -3,7 +3,7 @@ package com.shutafin.service.impl;
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
-import com.shutafin.repository.UserSessionRepository;
+import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.SessionManagementService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-app.factory('languageService', function ($translate, CACHED_LANGUAGE, CACHED_LANGUAGE_ID, Restangular) {
+app.factory('languageService', function ($translate, Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
@@ -6,19 +6,18 @@ app.factory('languageService', function ($translate, CACHED_LANGUAGE, CACHED_LAN
     });
 
     function getUserLanguage() {
-        rest.setDefaultHeaders({"session_id" : localStorage.getItem("session_id")});
+        rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
         return rest.one('/language').customGET();
     }
 
     function updateUserLanguage(params) {
-        localStorage.setItem(CACHED_LANGUAGE_ID, params.id);
-        localStorage.setItem(CACHED_LANGUAGE, params.description);
-
+        $sessionStorage.currentLanguage = params;
         _setLanguage(params.description);
 
 
-        var sessionId = localStorage.getItem("session_id");
+        var sessionId = $sessionStorage.sessionId;
         if (sessionId === undefined || sessionId === null){
+
             return;
         }
         rest.setDefaultHeaders({"session_id" : sessionId});
@@ -27,18 +26,16 @@ app.factory('languageService', function ($translate, CACHED_LANGUAGE, CACHED_LAN
 
     function _setLanguage(code) {
         if (code === undefined || code === null) {
-            localStorage.setItem(CACHED_LANGUAGE, 'en');
-            $translate.use(localStorage.getItem(CACHED_LANGUAGE));
+            setDefaultLanguage();
             return;
         }
-
         $translate.use(code);
     }
 
     function setDefaultLanguage() {
         var defaultLanguageCode = 'en';
-        localStorage.setItem(CACHED_LANGUAGE, defaultLanguageCode);
-        localStorage.removeItem(CACHED_LANGUAGE_ID);
+        delete $sessionStorage.currentLanguage;
+        $sessionStorage.currentLanguage={id:1, decription:"en"}
         $translate.use(defaultLanguageCode);
     }
 
