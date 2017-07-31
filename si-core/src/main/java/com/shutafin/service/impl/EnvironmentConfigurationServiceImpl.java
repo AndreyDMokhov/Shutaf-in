@@ -25,16 +25,16 @@ public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigura
     @Override
     public String getServerAddress() {
         String serverAddress = "";
-        if ( ! port.isEmpty()){
-            port = ":" + port;
-        }
+
         try {
             InetAddress ip = InetAddress.getLocalHost();
             serverAddress = ip.getHostAddress();
         } catch (UnknownHostException e) {
             throw new SystemException(e.getMessage() + ":\n" + e.getStackTrace());
         }
-        return "http://" + serverAddress + port;
+
+        String suffix = port.isEmpty() ? "" : String.format(":%s", port);
+        return "http://" + serverAddress + suffix;
     }
 
     @Override

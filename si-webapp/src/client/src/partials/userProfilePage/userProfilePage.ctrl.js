@@ -1,4 +1,4 @@
-app.controller('userProfilePage', function ($state, $filter, sessionService) {
+app.controller('userProfilePage', function ($state, $filter, sessionService, $sessionStorage) {
     var vm = this;
-    vm.userProfile = JSON.parse(sessionStorage.getItem('userProfile'));
+    vm.userProfile = $sessionStorage.userProfile;
 });
