@@ -8,6 +8,7 @@ app.factory('constantService', function (Restangular, $q, $sessionStorage, $loca
 
     function getLanguages() {
         data.languages = data.languages || $sessionStorage.languages || rest.all('languages').getList().$object;
+        $sessionStorage.languages = data.languages;
         return data.languages;
     }
 
