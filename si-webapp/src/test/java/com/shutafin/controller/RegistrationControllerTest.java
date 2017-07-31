@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,9 +26,10 @@ public class RegistrationControllerTest extends BaseTestImpl {
     private static final String REGISTRATION_REQUEST_URL = "/users/registration/request";
     private static final String CONFIRM_REGISTRATION_REQUEST_URL = "/users/registration/confirmation/";
 
-    private static final String INP_FIRST_NAME_NOT_NULL = "INP.firstName.NotNull";
-    private static final String INP_LAST_NAME_NOT_NULL = "INP.lastName.NotNull";
-    private static final String INP_PASSWORD_NOT_NULL = "INP.password.NotNull";
+    private static final String INP_FIRST_NAME_NOT_BLANK = "INP.firstName.NotBlank";
+    private static final String INP_LAST_NAME_NOT_BLANK = "INP.lastName.NotBlank";
+    private static final String INP_EMAIL_NOT_BLANK = "INP.email.NotBlank";
+    private static final String INP_PASSWORD_NOT_BLANK = "INP.password.NotBlank";
     private static final String INP_USER_LANGUAGE_ID_NOT_NULL = "INP.userLanguageId.NotNull";
 
     private static final String INP_FIRST_NAME_LENGTH = "INP.firstName.Length";
@@ -37,7 +37,6 @@ public class RegistrationControllerTest extends BaseTestImpl {
     private static final String INP_EMAIL_LENGTH = "INP.email.Length";
     private static final String INP_PASSWORD_LENGTH = "INP.password.Length";
 
-    private static final String INP_EMAIL_NOT_EMPTY = "INP.email.NotEmpty";
     private static final String INP_EMAIL_EMAIL = "INP.email.Email";
 
     private static final String INP_USER_LANGUAGE_ID_MIN = "INP.userLanguageId.Min";
@@ -85,10 +84,10 @@ public class RegistrationControllerTest extends BaseTestImpl {
     @Test
     public void registrationRequestJson_AllFieldsNull() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":null,\"lastName\":null,\"email\":null,\"password\":null,\"userLanguageId\":null}";
-        errorList.add(INP_FIRST_NAME_NOT_NULL);
-        errorList.add(INP_LAST_NAME_NOT_NULL);
-        errorList.add(INP_EMAIL_NOT_EMPTY);
-        errorList.add(INP_PASSWORD_NOT_NULL);
+        errorList.add(INP_FIRST_NAME_NOT_BLANK);
+        errorList.add(INP_LAST_NAME_NOT_BLANK);
+        errorList.add(INP_EMAIL_NOT_BLANK);
+        errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
         testRegistrationRequestWeb(registrationRequestWebJson, errorList);
     }
@@ -96,9 +95,12 @@ public class RegistrationControllerTest extends BaseTestImpl {
     @Test
     public void registrationRequestJson_AllEmptyFields() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"\",\"lastName\":\"\",\"email\":\"\",\"password\":\"\",\"userLanguageId\":\"\"}";
+        errorList.add(INP_FIRST_NAME_NOT_BLANK);
         errorList.add(INP_FIRST_NAME_LENGTH);
+        errorList.add(INP_LAST_NAME_NOT_BLANK);
         errorList.add(INP_LAST_NAME_LENGTH);
-        errorList.add(INP_EMAIL_NOT_EMPTY);
+        errorList.add(INP_EMAIL_NOT_BLANK);
+        errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
         testRegistrationRequestWeb(registrationRequestWebJson, errorList);
@@ -107,9 +109,13 @@ public class RegistrationControllerTest extends BaseTestImpl {
     @Test
     public void registrationRequestJson_AllWhitespaceFields() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\" \",\"lastName\":\" \",\"email\":\" \",\"password\":\" \",\"userLanguageId\":\" \"}";
+        errorList.add(INP_FIRST_NAME_NOT_BLANK);
         errorList.add(INP_FIRST_NAME_LENGTH);
+        errorList.add(INP_LAST_NAME_NOT_BLANK);
         errorList.add(INP_LAST_NAME_LENGTH);
+        errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_EMAIL_EMAIL);
+        errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
         testRegistrationRequestWeb(registrationRequestWebJson, errorList);

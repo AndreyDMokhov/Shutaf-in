@@ -3,27 +3,27 @@ package com.shutafin.model.web.user;
 import com.shutafin.model.web.DataResponse;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class RegistrationRequestWeb implements DataResponse {
 
-    @NotNull
+    @NotBlank
     @Length(min=3, max=50)
     private String firstName;
 
-    @NotNull
+    @NotBlank
     @Length(min=3, max=50)
     private String lastName;
 
-    @NotEmpty
+    @NotBlank
     @Email
     @Length(max=50)
     private String email;
 
-    @NotNull
+    @NotBlank
     @Length(min=8, max=25)
     private String password;
 
