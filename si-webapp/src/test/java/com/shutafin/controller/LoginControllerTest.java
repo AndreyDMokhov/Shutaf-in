@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -25,13 +25,14 @@ public class LoginControllerTest extends BaseTestImpl{
 
     private static final String LOGIN_REQUEST_URL = "/login/";
 
-    private static final String INP_EMAIL_NOT_EMPTY = "INP.email.NotEmpty";
+    private static final String INP_EMAIL_NOT_BLANK = "INP.email.NotBlank";
     private static final String INP_EMAIL_LENGTH = "INP.email.Length";
     private static final String INP_EMAIL_EMAIL = "INP.email.Email";
-    private static final String INP_PASSWORD_LENGTH = "INP.password.Length";
-    private static final String INP_PASSWORD_NOT_NULL = "INP.password.NotNull";
 
-    @Autowired
+    private static final String INP_PASSWORD_NOT_BLANK = "INP.password.NotBlank";
+    private static final String INP_PASSWORD_LENGTH = "INP.password.Length";
+
+    @MockBean
     private LoginService loginService;
 
     @Before
@@ -60,8 +61,8 @@ public class LoginControllerTest extends BaseTestImpl{
     public void LoginRequestJson_Null(){
         String loginWebModelJson = "{\"email\":null,\"password\":null}";
         List<String> errorList = new ArrayList<>();
-        errorList.add(INP_EMAIL_NOT_EMPTY);
-        errorList.add(INP_PASSWORD_NOT_NULL);
+        errorList.add(INP_EMAIL_NOT_BLANK);
+        errorList.add(INP_PASSWORD_NOT_BLANK);
         testLoginWebModel(loginWebModelJson, errorList);
     }
 
@@ -69,7 +70,8 @@ public class LoginControllerTest extends BaseTestImpl{
     public void LoginRequestJson_Empty(){
         String loginWebModelJson = "{\"email\":\"\",\"password\":\"\"}";
         List<String> errorList = new ArrayList<>();
-        errorList.add(INP_EMAIL_NOT_EMPTY);
+        errorList.add(INP_EMAIL_NOT_BLANK);
+        errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         testLoginWebModel(loginWebModelJson, errorList);
     }
@@ -78,7 +80,9 @@ public class LoginControllerTest extends BaseTestImpl{
     public void LoginRequestJson_Blank(){
         String loginWebModelJson = "{\"email\":\" \",\"password\":\" \"}";
         List<String> errorList = new ArrayList<>();
+        errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_EMAIL_EMAIL);
+        errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         testLoginWebModel(loginWebModelJson, errorList);
     }

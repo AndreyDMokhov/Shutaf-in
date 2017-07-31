@@ -2,9 +2,8 @@ package com.shutafin.model.web;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
 
 
 /**
@@ -12,12 +11,12 @@ import javax.validation.constraints.NotNull;
  */
 public class LoginWebModel implements DataResponse {
 
-    @NotEmpty
     @Email
     @Length(max = 50)
+    @NotBlank
     private String email;
 
-    @NotNull
+    @NotBlank
     @Length(min = 8, max = 25)
     private String password;
 
