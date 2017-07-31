@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @EnableAutoConfiguration
 public class BaseTestImpl implements BaseTest {
 
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer())
+    private Gson gson = new GsonBuilder()
+            .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer(null))
             .create();
 
     @Autowired
@@ -103,6 +103,13 @@ public class BaseTestImpl implements BaseTest {
     @SneakyThrows
     public APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod, List<HttpHeaders> headers) {
         return getResponse(url, gson.toJson(object), httpMethod, headers);
+    }
+
+    @Override
+    public void setResponseClassName(Class className) {
+        gson = new GsonBuilder()
+                .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer(className))
+                .create();
     }
 
     private MockHttpServletRequestBuilder getHttpMethodSenderType(String url, HttpMethod httpMethod) {

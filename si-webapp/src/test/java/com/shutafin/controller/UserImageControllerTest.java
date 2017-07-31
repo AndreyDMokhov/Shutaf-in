@@ -116,6 +116,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        setResponseClassName(UserImageWeb.class);
         APIWebResponse apiResponse = getResponse(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID,
                 HttpMethod.GET, sessionHeaders);
 

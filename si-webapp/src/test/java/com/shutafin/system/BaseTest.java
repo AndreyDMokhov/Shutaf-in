@@ -23,4 +23,6 @@ public interface BaseTest {
     APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod);
     APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod, List<HttpHeaders> headers);
 
+    void setResponseClassName(Class className);
+
 }
