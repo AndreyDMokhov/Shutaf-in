@@ -1,13 +1,11 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.repository.LanguageRepository;
+import com.shutafin.model.entities.types.LanguageEnum;
+import com.shutafin.repository.initialization.LanguageRepository;
 import com.shutafin.service.InitializationService;
-import com.shutafin.repository.CityRepository;
-import com.shutafin.repository.CountryRepository;
-import com.shutafin.repository.GenderRepository;
-import com.shutafin.repository.LanguageRepository;
-import com.shutafin.service.InitializationService;
+import com.shutafin.repository.initialization.locale.CityRepository;
+import com.shutafin.repository.initialization.locale.CountryRepository;
+import com.shutafin.repository.initialization.locale.GenderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,21 +39,17 @@ public class InitializationServiceImpl implements InitializationService {
 
     @Override
     public List findAllGendersByLanguage(Integer languageId) {
-        Language language = languageRepository.findById(languageId);
-        return genderRepository.getWebData(language);
+        return genderRepository.getLocaleGenders(LanguageEnum.getById(languageId));
     }
 
     @Override
     public List findAllCountriesByLanguage(Integer languageId) {
-        Language language = languageRepository.findById(languageId);
-        return countryRepository.getWebData(language);
+        return countryRepository.getLocaleCountries(LanguageEnum.getById(languageId));
     }
 
     @Override
     public List findAllCitiesByLanguage(Integer languageId) {
-        Language language = languageRepository.findById(languageId);
-        return cityRepository.getWebData(language);
+        return cityRepository.getLocaleCities(LanguageEnum.getById(languageId));
     }
-
 
 }

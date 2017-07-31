@@ -5,16 +5,15 @@ import com.shutafin.exception.exceptions.validation.EmailNotUniqueValidationExce
 import com.shutafin.model.entities.RegistrationConfirmation;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.AccountStatus;
 import com.shutafin.model.entities.types.AccountType;
 import com.shutafin.model.entities.types.EmailReason;
+import com.shutafin.model.entities.types.LanguageEnum;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.repository.RegistrationConfirmationRepository;
-import com.shutafin.repository.UserAccountRepository;
-import com.shutafin.repository.UserRepository;
-import com.shutafin.repository.LanguageRepository;
+import com.shutafin.repository.account.RegistrationConfirmationRepository;
+import com.shutafin.repository.account.UserAccountRepository;
+import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,9 +32,6 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
-    private LanguageRepository languageRepository;
 
     @Autowired
     private EmailNotificationSenderService mailSenderService;
@@ -106,10 +102,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         userAccount.setAccountStatus(AccountStatus.NEW);
         userAccount.setAccountType(AccountType.REGULAR);
 
-        Language language = languageRepository.findById(registrationRequestWeb.getUserLanguageId());
-        if (language == null){
-            language = languageRepository.findById(LANGUAGE_ID);
-        }
+        LanguageEnum language = LanguageEnum.getById(registrationRequestWeb.getUserLanguageId());
         userAccount.setLanguage(language);
         userAccountRepository.save(userAccount);
         return userAccount;
