@@ -1,31 +1,27 @@
-app.controller('changeEmailRequestController', function ($state, $rootScope, securitySettingsChangeEmailModel, notify, $filter) {
+app.controller('changeEmailRequestController', function ($state, $rootScope, changeEmailModel, notify, $filter) {
 
     var vm = this;
     vm.dataLoading = false;
+    vm.isOpen = true;
     vm.securitySettings = {};
 
-    function emailChangeRequest() {
+    function changeEmailRequest() {
         vm.dataLoading = true;
 
-        securitySettingsChangeEmailModel.emailChangeRequest(vm.securitySettings).then(
+        changeEmailModel.emailChangeRequest(vm.securitySettings).then(
             function (success) {
                 vm.dataLoading = false;
-                notify.set($filter('translate')("SecuritySettings.msg.successRequest"), {type: 'success'});
+                notify.set($filter('translate')("Settings.security.msg.successRequest"), {type: 'success'});
                 $state.go("home");
             }, function (error) {
                 vm.dataLoading = false;
-                if (error.data.error.errorTypeCode === 'EDE') {
-
-                    notify.set($filter('translate')("SecuritySettings.msg.error.emailDuplication"), {type: 'error'});
-                } else if (error.data.error.errorTypeCode === 'AUT') {
-
-                    notify.set($filter('translate')("SecuritySettings.msg.error.authentication"), {type: 'error'});
-                } else {
-
-                    notify.set($filter('translate')("SecuritySettings.msg.systemError"), {type: 'error'});
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                if (error.data.error.errorTypeCode === 'AUT') {
+                    $state.go('logout');
                 }
+
             });
     }
 
-    vm.emailChangeRequest = emailChangeRequest;
+    vm.changeEmailRequest = changeEmailRequest;
 });

@@ -17,9 +17,6 @@
                         <span class="fa fa-book header-icon-size"></span>
                     </a>
                 </li>
-                <li ng-hide="true" ng-class="{active : ('users' | includedByState)}">
-                    <a ui-sref="users">{{'Users.title' | translate}}</a>
-                </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userProfile' | includedByState)}">
                     <a ui-sref="userProfile">{{'Profile.title' | translate}}</a>
@@ -41,18 +38,25 @@
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('userSettings' | includedByState)}">
-                    <a ui-sref="userSettings">
+                    ng-class="{active : ('settings' | includedByState)}">
+                    <a ui-sref="settings">
                         <span class="glyphicon glyphicon-cog"></span>
-                        {{'UserSettings.title' | translate}}
+                        {{'Settings.personal.title' | translate}}
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('emailChangeRequest' | includedByState)}">
-                    <a ui-sref="emailChangeRequest">
+                    <a ui-sref="changeEmailRequest">
                         <span class="glyphicon glyphicon-cog"></span>
-                        {{'SecuritySettingsEmail.button' | translate}}
+                        {{'Settings.security.email.title' | translate}}
                     </a>
                 </li>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('changePassword' | includedByState)}">
+                    <a ui-sref="changePassword">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'Settings.security.password.title' | translate}}
+                    </a>
+                </li>
+
 
                 <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
