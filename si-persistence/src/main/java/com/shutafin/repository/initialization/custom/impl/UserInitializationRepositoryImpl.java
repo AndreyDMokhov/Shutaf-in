@@ -19,10 +19,13 @@ public class UserInitializationRepositoryImpl extends AbstractEntityDao implemen
         hql.append(" ( ");
         hql.append(" ua.user.firstName, ");
         hql.append(" ua.user.lastName, ");
-        hql.append(" ua.language ");
+        hql.append(" l.id as languageId");
         hql.append(" ) ");
-        hql.append(" from UserAccount ua ");
-        hql.append(" where ua.user.id =:id ");
+        hql.append(" from UserAccount ua, Language l ");
+        hql.append(" where ");
+        hql.append(" ua.user.id =:id ");
+        hql.append(" and ");
+        hql.append(" l.id = ua.language ");
 
         return (UserInit) getSession()
                             .createQuery(hql.toString())
