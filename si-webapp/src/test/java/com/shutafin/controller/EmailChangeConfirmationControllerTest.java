@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 
 
@@ -25,10 +26,10 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl{
 
     private static final String EMAIL_CHANGE_REQUEST_URL = "/users/account/change-email-request";
 
-    @Autowired
+    @MockBean
     private SessionManagementService sessionManagementService;
 
-    @Autowired
+    @MockBean
     private EmailChangeConfirmationService emailChangeConfirmationService;
 
     @Before
