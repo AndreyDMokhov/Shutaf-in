@@ -1,4 +1,4 @@
-app.controller('userProfilePage', function ($state, $filter, sessionService, userProfileModel, $sessionStorage) {
+app.controller('userProfilePage', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout ) {
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
 
