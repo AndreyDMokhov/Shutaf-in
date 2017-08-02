@@ -66,10 +66,10 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
     }
 
     @Override
-    public void removeUserAccountImage(User user) {
+    public void deleteUserAccountImage(User user) {
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         userAccount.setUserImage(null);
-        userAccountRepository.removeUserAccountImage(user);
+        userAccountRepository.deleteUserAccountImage(user);
     }
 
     private void updateFirstLastNames(User user, UserAccountSettingsWeb userAccountSettingsWeb) {

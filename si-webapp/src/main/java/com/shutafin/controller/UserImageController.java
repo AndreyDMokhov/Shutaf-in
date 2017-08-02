@@ -33,7 +33,7 @@ public class UserImageController {
         }
         UserImage image = userImageService.getUserImage(user, userImageId);
         return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().toString());
+                image.getCreatedDate().getTime());
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -47,7 +47,7 @@ public class UserImageController {
         }
         UserImage userImage = userImageService.addUserImage(image, user);
 
-        return new UserImageWeb(userImage.getId(), null, userImage.getCreatedDate().toString());
+        return new UserImageWeb(userImage.getId(), null, userImage.getCreatedDate().getTime());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -69,7 +69,7 @@ public class UserImageController {
         List<UserImageWeb> userImages = new ArrayList<>();
         for (UserImage userImage : userImageService.getAllUserImages(user)) {
             userImages.add(new UserImageWeb(userImage.getId(), userImage.getImageStorage().getImageEncoded(),
-                    userImage.getCreatedDate().toString()));
+                    userImage.getCreatedDate().getTime()));
         }
         return userImages;
     }

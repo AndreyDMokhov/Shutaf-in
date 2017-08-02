@@ -59,7 +59,7 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
     }
 
     @Override
-    public void removeUserAccountImage(User user) {
+    public void deleteUserAccountImage(User user) {
         getSession()
                 .createQuery("UPDATE UserAccount SET userImage.id = null WHERE user.id = :userId")
                 .setParameter("userId", user.getId())

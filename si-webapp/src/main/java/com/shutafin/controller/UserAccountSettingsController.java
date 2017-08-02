@@ -71,7 +71,7 @@ public class UserAccountSettingsController {
             return null;
         }
         return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().toString());
+                image.getCreatedDate().getTime());
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -81,7 +81,7 @@ public class UserAccountSettingsController {
             throw new AuthenticationException();
         }
 
-        userAccountSettingsService.removeUserAccountImage(user);
+        userAccountSettingsService.deleteUserAccountImage(user);
     }
 
 }
