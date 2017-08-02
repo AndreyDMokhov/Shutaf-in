@@ -2,6 +2,7 @@ package com.shutafin.controller;
 
 
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.user.EmailChangeConfirmationWeb;
@@ -21,6 +22,9 @@ import org.springframework.http.HttpMethod;
 
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+
 @RunWith(SpringRunner.class)
 public class EmailChangeConfirmationControllerTest extends BaseTestImpl{
 
@@ -34,11 +38,17 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl{
 
     @Before
     public void setUp() {
-        Mockito.when(sessionManagementService.findUserWithValidSession(Mockito.anyString())).thenReturn(Mockito.any(User.class));
-        Mockito.doNothing().when(emailChangeConfirmationService).emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
+        Mockito.doNothing().when(emailChangeConfirmationService).emailChangeRequest(any(User.class), any(EmailChangeConfirmationWeb.class));
+        Mockito.when(sessionManagementService.findUserWithValidSession(anyString())).thenReturn(new User());
     }
 
-//    @Test
+    @Test
+    public void emailChangeRequest_Positive(){
+        APIWebResponse response = getResponse(EMAIL_CHANGE_REQUEST_URL, HttpMethod.POST);
+        Assert.assertNull(response.getError());
+    }
+
+    @Test
     public void emailChangeRequestJson_IncorrectPassword() throws Exception{
         String bodyJSON = "{\"userPassword\":\"222\",\"newEmail\":\"ccc@site.com\"}";
         APIWebResponse apiResponse = getResponse(EMAIL_CHANGE_REQUEST_URL, bodyJSON, HttpMethod.POST);
@@ -46,7 +56,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl{
         Assert.assertEquals(apiResponse.getError().getErrorTypeCode(), ErrorType.INPUT.getErrorCodeType());
     }
 
-  //  @Test
+    @Test
     public void setEmailChangeRequestObject_Positive(){
         EmailChangeConfirmationWeb emailChangeConfirmationWeb = new EmailChangeConfirmationWeb();
         emailChangeConfirmationWeb.setUserPassword("22222222");
