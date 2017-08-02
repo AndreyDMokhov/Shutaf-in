@@ -6,7 +6,7 @@ import org.springframework.http.HttpMethod;
 
 import java.util.List;
 
-public class TestRequest {
+public class ControllerRequest {
 
     private final String url;
     private final String jsonContent;
@@ -16,7 +16,7 @@ public class TestRequest {
     private final Class responseClass;
 
 
-    public TestRequest(TestRequestBuilder builder) {
+    private ControllerRequest(ControllerRequestBuilder builder) {
         this.url = builder.url;
         this.jsonContent = builder.jsonContent;
         this.requestObject = builder.requestObject;
@@ -49,49 +49,49 @@ public class TestRequest {
         return responseClass;
     }
 
-    public static TestRequestBuilder builder() {
-        return new TestRequestBuilder();
+    public static ControllerRequestBuilder builder() {
+        return new ControllerRequestBuilder();
     }
 
-    public static class TestRequestBuilder {
+    public static class ControllerRequestBuilder {
 
         private String url = null;
-        private String jsonContent = "";
+        private String jsonContent = null;
         private Object requestObject = null;
         private HttpMethod httpMethod = null;
         private List<HttpHeaders> headers = null;
         private Class responseClass = null;
 
-        public TestRequest build() {
-            return new TestRequest(this);
+        public ControllerRequest build() {
+            return new ControllerRequest(this);
         }
 
-        public TestRequestBuilder setUrl(String url) {
+        public ControllerRequestBuilder setUrl(String url) {
             this.url = url;
             return this;
         }
 
-        public TestRequestBuilder setJsonContext(String jsonContent) {
+        public ControllerRequestBuilder setJsonContext(String jsonContent) {
             this.jsonContent = jsonContent;
             return this;
         }
 
-        public TestRequestBuilder setRequestObject(Object requestObject) {
+        public ControllerRequestBuilder setRequestObject(Object requestObject) {
             this.requestObject = requestObject;
             return this;
         }
 
-        public TestRequestBuilder setHttpMethod(HttpMethod httpMethod) {
+        public ControllerRequestBuilder setHttpMethod(HttpMethod httpMethod) {
             this.httpMethod = httpMethod;
             return this;
         }
 
-        public TestRequestBuilder setHeaders(List<HttpHeaders> headers) {
+        public ControllerRequestBuilder setHeaders(List<HttpHeaders> headers) {
             this.headers = headers;
             return this;
         }
 
-        public TestRequestBuilder setResponseClass(Class responseClass) {
+        public ControllerRequestBuilder setResponseClass(Class responseClass) {
             this.responseClass = responseClass;
             return this;
         }

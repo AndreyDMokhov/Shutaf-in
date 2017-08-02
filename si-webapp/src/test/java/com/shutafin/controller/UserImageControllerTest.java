@@ -10,13 +10,13 @@ import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserImageService;
 import com.shutafin.system.BaseTestImpl;
-import com.shutafin.system.TestRequest;
+import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -42,10 +42,10 @@ public class UserImageControllerTest extends BaseTestImpl {
     private User validUser;
     private UserImage validUserImage;
 
-    @Autowired
-    private UserImageService userImageService;
-    @Autowired
-    private SessionManagementService sessionManagementService;
+    @MockBean
+    public UserImageService userImageService;
+    @MockBean
+    public SessionManagementService sessionManagementService;
 
     @Before
     public void setUp() {
@@ -70,7 +70,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
@@ -86,7 +86,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
@@ -103,7 +103,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set("sesion", VALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
@@ -121,7 +121,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
         String jsonBody = "{}";
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(jsonBody)
@@ -138,7 +138,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(sessionHeaders)
@@ -155,7 +155,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(sessionHeaders)
@@ -172,7 +172,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(sessionHeaders)
@@ -189,7 +189,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.DELETE)
                 .setHeaders(sessionHeaders)
@@ -204,7 +204,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.DELETE)
                 .setHeaders(sessionHeaders)
@@ -220,7 +220,7 @@ public class UserImageControllerTest extends BaseTestImpl {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
-        TestRequest request = TestRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.DELETE)
                 .setHeaders(sessionHeaders)

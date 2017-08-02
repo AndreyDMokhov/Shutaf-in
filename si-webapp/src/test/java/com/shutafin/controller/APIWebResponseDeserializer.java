@@ -18,10 +18,6 @@ public class APIWebResponseDeserializer implements JsonDeserializer<APIWebRespon
         this.className = className;
     }
 
-    public void setClassName(Class className) {
-        this.className = className;
-    }
-
     @Override
     public APIWebResponse deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         DataResponse data = null;

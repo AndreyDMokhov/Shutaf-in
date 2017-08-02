@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -38,9 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 })
 public class BaseTestImpl implements BaseTest {
 
-    private Gson gson = new GsonBuilder()
-            .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer(null))
-            .create();
+    private Gson gson;
 
     @Autowired
     private MockMvc mockMvc;
@@ -65,16 +64,12 @@ public class BaseTestImpl implements BaseTest {
 
     @Override
     @SneakyThrows
-    public APIWebResponse getResponse(TestRequest request) {
+    public APIWebResponse getResponse(ControllerRequest request) {
         MockHttpServletRequestBuilder builder = getHttpMethodSenderType(request.getUrl(), request.getHttpMethod())
                 .contentType(MediaType.APPLICATION_JSON_VALUE);
 
         Class responseClass = request.getResponseClass();
-        if (responseClass != null) {
-            gson = new GsonBuilder()
-                    .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer(responseClass))
-                    .create();
-        }
+        gson = getGsonForResponseClass(responseClass);
 
         String jsonContent = request.getJsonContent();
         Object requestObject = request.getRequestObject();
@@ -86,7 +81,7 @@ public class BaseTestImpl implements BaseTest {
         }
 
         List<HttpHeaders> headers = request.getHeaders();
-        if (headers != null && !headers.isEmpty()) {
+        if (headers != null && !CollectionUtils.isEmpty(headers)) {
             for (HttpHeaders httpHeaders : headers) {
                 builder.headers(httpHeaders);
             }
@@ -98,6 +93,12 @@ public class BaseTestImpl implements BaseTest {
                 .andReturn();
 
         return getResponse(result);
+    }
+
+    private Gson getGsonForResponseClass(Class responseClass) {
+        return new GsonBuilder()
+                .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer(responseClass))
+                .create();
     }
 
     private MockHttpServletRequestBuilder getHttpMethodSenderType(String url, HttpMethod httpMethod) {
