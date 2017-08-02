@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad">
+        <div class="col-md-12 col-md-offset-0 toppad">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{vm.userProfile.firstName}} {{vm.userProfile.lastName}} </h3>
@@ -18,9 +18,6 @@
                                 <input ng-show="hide" type="file" ng-model="vm.fileInfo" name="filename" id="filename"
                                        base-sixty-four-input onload="vm.onLoad()" maxsize="500" accept="image/*">
                             </div>
-                            <button class="btn btn-primary buttonSizeFont" ng-click="vm.addImage()"
-                                    ng-disabled="vm.addButton">{{'Profile.button.setImage'|translate}}
-                            </button>
                             <button ng-click="vm.deleteImage()" class="btn btn-primary buttonSizeFont"
                                     ng-disabled="vm.deleteButton">{{'Profile.button.deleteImage'|translate}}
                             </button>
