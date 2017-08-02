@@ -35,6 +35,7 @@ app.factory('languageService', function ($translate, Restangular, $sessionStorag
     function setDefaultLanguage() {
         var defaultLanguageCode = 'en';
         delete $sessionStorage.currentLanguage;
+        $sessionStorage.currentLanguage={id:1, decription:"en"}
         $translate.use(defaultLanguageCode);
     }
 

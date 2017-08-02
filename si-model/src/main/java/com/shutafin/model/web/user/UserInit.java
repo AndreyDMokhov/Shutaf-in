@@ -1,17 +1,20 @@
 package com.shutafin.model.web.user;
 
-import com.shutafin.model.entities.types.LanguageEnum;
 import com.shutafin.model.web.DataResponse;
 
 public class UserInit implements DataResponse {
 
     private String firstName;
     private String lastName;
-    private LanguageEnum languageId;
+    private Integer languageId;
     private Long userImageId;
     private String userImage;
 
-    public UserInit(String firstName, String lastName, LanguageEnum languageId, Long userImageId, String userImage) {
+    public UserInit() {
+    }
+
+    public UserInit(String firstName, String lastName, Integer languageId) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.languageId = languageId;
@@ -36,11 +39,11 @@ public class UserInit implements DataResponse {
         this.lastName = lastName;
     }
 
-    public LanguageEnum getLanguageId() {
+    public Integer getLanguageId() {
         return languageId;
     }
 
-    public void setLanguageId(LanguageEnum languageId) {
+    public void setLanguageId(Integer languageId) {
         this.languageId = languageId;
     }
 
