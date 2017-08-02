@@ -3,6 +3,7 @@ package com.shutafin.system;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.shutafin.App;
+import com.shutafin.configuration.*;
 import com.shutafin.controller.APIWebResponseDeserializer;
 import com.shutafin.model.web.APIWebResponse;
 import lombok.SneakyThrows;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -27,6 +29,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @WebMvcTest(value = App.class)
 @EnableAutoConfiguration
+@ContextConfiguration(classes = {
+        ApplicationContextConfiguration.class,
+        DatabaseConnectivityContextConfiguration.class,
+        MessageConverterConfigurer.class,
+        RoutingConfigurer.class,
+        SMTPContextConfiguration.class
+})
 public class BaseTestImpl implements BaseTest {
 
     private Gson gson = new GsonBuilder()

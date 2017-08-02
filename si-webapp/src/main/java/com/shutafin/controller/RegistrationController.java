@@ -3,7 +3,6 @@ package com.shutafin.controller;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.repository.UserRepository;
 import com.shutafin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

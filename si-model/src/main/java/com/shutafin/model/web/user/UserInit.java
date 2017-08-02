@@ -3,9 +3,20 @@ package com.shutafin.model.web.user;
 import com.shutafin.model.web.DataResponse;
 
 public class UserInit implements DataResponse {
+
     private String firstName;
     private String lastName;
-    private int languageId;
+    private Integer languageId;
+
+    public UserInit() {
+    }
+
+    public UserInit(String firstName, String lastName, Integer languageId) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.languageId = languageId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -23,21 +34,11 @@ public class UserInit implements DataResponse {
         this.lastName = lastName;
     }
 
-    public int getLanguageId() {
+    public Integer getLanguageId() {
         return languageId;
     }
 
-    public void setLanguageId(int languageId) {
-        this.languageId = languageId;
-    }
-
-    public UserInit() {
-    }
-
-    public UserInit(String firstName, String lastName, int languageId) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public void setLanguageId(Integer languageId) {
         this.languageId = languageId;
     }
 }
