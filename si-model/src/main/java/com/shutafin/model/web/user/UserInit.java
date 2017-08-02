@@ -18,6 +18,13 @@ public class UserInit implements DataResponse {
         this.firstName = firstName;
         this.lastName = lastName;
         this.languageId = languageId;
+    }
+
+    public UserInit(String firstName, String lastName, Integer languageId, Long userImageId, String userImage) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.languageId = languageId;
         this.userImageId = userImageId;
         this.userImage = userImage;
     }
