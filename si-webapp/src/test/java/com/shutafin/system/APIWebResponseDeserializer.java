@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.system;
 
 import com.google.gson.*;
 import com.shutafin.model.web.APIWebResponse;

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.shutafin.App;
 import com.shutafin.configuration.*;
-import com.shutafin.controller.APIWebResponseDeserializer;
 import com.shutafin.model.web.APIWebResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
