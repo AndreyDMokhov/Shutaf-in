@@ -75,7 +75,7 @@ public class UserAccountSettingsController {
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void removeUserAccountImage(@RequestHeader(value = "session_id") String sessionId) {
+    public void deleteUserAccountImage(@RequestHeader(value = "session_id") String sessionId) {
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
             throw new AuthenticationException();
