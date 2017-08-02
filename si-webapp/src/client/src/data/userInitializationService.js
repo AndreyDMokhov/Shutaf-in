@@ -1,4 +1,4 @@
-app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionStorage) {
+app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionStorage,notify,$filter) {
     var rest = Restangular.withConfig(function (Configurer) {
         Configurer.setBaseUrl('/api/userInitialization');
     });

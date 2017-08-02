@@ -1,4 +1,4 @@
-app.controller('userProfilePage', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout) {
+app.controller('userProfilePage', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout ) {
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
 
@@ -44,6 +44,9 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, use
             },
             function (error) {
                 notify.set($filter('translate')('Profile.message.errorSave'), {type: 'error'});
+                // if (error.data.error.errorTypeCode === 'GWT') {
+                // notify.set($filter('translate')('Error.SYS'), {type: 'error'});
+                // }
             }
         )
     };
