@@ -1,16 +1,21 @@
-app.controller('userProfilePage', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout ) {
+app.controller('userProfilePage', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout) {
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
 
-    if (vm.userProfile.userImageId === null) {
-        vm.avatarImage = '../../images/default_avatar.png'
-        vm.deleteButton = true;
-        vm.addButton = true;
+    function setCurrentAvatar() {
+        if (vm.userProfile.userImageId === null) {
+            vm.avatarImage = '../../images/default_avatar.png'
+            vm.deleteButton = true;
+            vm.addButton = true;
+        }
+        else {
+            vm.avatarImage = 'data:image/jpeg;base64,' + vm.userProfile.userImage
+            vm.addButton = true;
+        }
     }
-    else {
-        vm.avatarImage = 'data:image/jpeg;base64,' + vm.userProfile.userImage
-        vm.addButton = true;
-    }
+
+    setCurrentAvatar();
+
     vm.fileInfo = {};
 
     function onLoad(e, reader, file, fileList, fileOjects, fileObj) {
@@ -31,7 +36,8 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, use
                 var userProfile = vm.userProfile;
                 userProfile.userImage = vm.fileInfo.base64;
                 userProfile.userImageId = -1;
-                sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
+                // sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
+                $sessionStorage.userProfile = userProfile;
                 vm.deleteButton = false;
                 vm.addButton = true;
                 notify.set($filter('translate')('Profile.message.imageSaved'), {type: 'success'});
@@ -44,28 +50,26 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, use
 
     function deleteImage() {
         {
-            var x = confirm($filter('translate')('Profile.message.confirmDelete'));
-            if (x) {
-                userProfileModel.deleteImage().then(
-                    function (success) {
-                        var userProfile = vm.userProfile;
-                        userProfile.userImage = '../../images/default_avatar.png';
-                        userProfile.userImageId = null
-                        sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
-                        vm.avatarImage = '../../images/default_avatar.png';
-                        vm.deleteButton = true;
-                        vm.addButton = true;
-                        notify.set($filter('translate')('Profile.message.imageDeleted'), {type: 'success'});
-                    },
-                    function (error) {
-                        notify.set($filter('translate')('Profile.message.errorDelete'), {type: 'error'});
-
-                    }
-                )
-                return true;
-            }
-            else
+            var confirmDeleting = confirm($filter('translate')('Profile.message.confirmDelete'));
+            if (!confirmDeleting) {
                 return false;
+            }
+            userProfileModel.deleteImage().then(
+                function (success) {
+                    var userProfile = vm.userProfile;
+                    userProfile.userImage = '../../images/default_avatar.png';
+                    userProfile.userImageId = null
+                    // sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
+                    $sessionStorage.userProfile = userProfile;
+                    vm.avatarImage = '../../images/default_avatar.png';
+                    vm.deleteButton = true;
+                    vm.addButton = true;
+                    notify.set($filter('translate')('Profile.message.imageDeleted'), {type: 'success'});
+                },
+                function (error) {
+                    notify.set($filter('translate')('Profile.message.errorDelete'), {type: 'error'});
+
+                });
         }
     }
 
