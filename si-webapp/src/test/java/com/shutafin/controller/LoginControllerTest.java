@@ -32,12 +32,15 @@ public class LoginControllerTest extends BaseTestImpl{
     private static final String INP_PASSWORD_NOT_BLANK = "INP.password.NotBlank";
     private static final String INP_PASSWORD_LENGTH = "INP.password.Length";
 
+    private List<String> errorList;
+
     @MockBean
     private LoginService loginService;
 
     @Before
     public void SetUp(){
         Mockito.when(loginService.getSessionIdByEmail(any(LoginWebModel.class))).thenReturn("b0f45f61-5a14-48c6-a86f-f793a5023441");
+        errorList = new ArrayList<>();
     }
 
     @Test
@@ -52,7 +55,6 @@ public class LoginControllerTest extends BaseTestImpl{
     @Test
     public void LoginRequestJson_IllegalEmail(){
         String loginWebModelJson = "{\"email\":\"gmail.com\",\"password\":\"111111Zz\"}";
-        List<String> errorList = new ArrayList<>();
         errorList.add(INP_EMAIL_EMAIL);
         testLoginWebModel(loginWebModelJson, errorList);
     }
@@ -60,7 +62,6 @@ public class LoginControllerTest extends BaseTestImpl{
     @Test
     public void LoginRequestJson_Null(){
         String loginWebModelJson = "{\"email\":null,\"password\":null}";
-        List<String> errorList = new ArrayList<>();
         errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_PASSWORD_NOT_BLANK);
         testLoginWebModel(loginWebModelJson, errorList);
@@ -69,7 +70,6 @@ public class LoginControllerTest extends BaseTestImpl{
     @Test
     public void LoginRequestJson_Empty(){
         String loginWebModelJson = "{\"email\":\"\",\"password\":\"\"}";
-        List<String> errorList = new ArrayList<>();
         errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
@@ -79,7 +79,6 @@ public class LoginControllerTest extends BaseTestImpl{
     @Test
     public void LoginRequestJson_Whitespace(){
         String loginWebModelJson = "{\"email\":\" \",\"password\":\" \"}";
-        List<String> errorList = new ArrayList<>();
         errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_EMAIL_EMAIL);
         errorList.add(INP_PASSWORD_NOT_BLANK);
@@ -91,7 +90,6 @@ public class LoginControllerTest extends BaseTestImpl{
     public void LoginRequestJson_ExceededMaxLength(){
         String loginWebModelJson = "{\"email\":\"aaaaaaaaaalllllllllleeeeeeeeeexxxxxxxxxx@gmailx.com\"," +
                 "\"password\":\"11111222223333344444555556\"}";
-        List<String> errorList = new ArrayList<>();
         errorList.add(INP_EMAIL_LENGTH);
         errorList.add(INP_PASSWORD_LENGTH);
         testLoginWebModel(loginWebModelJson, errorList);
@@ -100,7 +98,6 @@ public class LoginControllerTest extends BaseTestImpl{
     @Test
     public void LoginRequestJson_ExceededMinLength(){
         String loginWebModelJson = "{\"email\":\"psw@gmail.com\",\"password\":\"1234567\"}";
-        List<String> errorList = new ArrayList<>();
         errorList.add(INP_PASSWORD_LENGTH);
         testLoginWebModel(loginWebModelJson, errorList);
     }
