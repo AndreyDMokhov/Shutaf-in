@@ -11,14 +11,13 @@
                             <div class="input-group">
                                 <label for="filename">
                                     <img ng-src="{{vm.avatarImage}}" height="225px" width="225px"
-                                         onmouseover="style='cursor: pointer ' " onmouseout=" style='cursor: auto '"
                                          uib-tooltip={{'Profile.click.image'|translate}} tooltip-placement="bottom"
-                                         tooltip-class="customClass">
+                                         tooltip-class="custom-class">
                                 </label>
                                 <input ng-show="hide" type="file" ng-model="vm.fileInfo" name="filename" id="filename"
-                                       base-sixty-four-input onload="vm.onLoad()" maxsize="500" accept="image/*">
+                                       base-sixty-four-input onload="vm.onLoad()" maxsize="500" accept="image/jpeg">
                             </div>
-                            <button ng-click="vm.deleteImage()" class="btn btn-primary buttonSizeFont"
+                            <button ng-click="vm.deleteImage()" class="btn btn-primary button-size-font"
                                     ng-disabled="vm.deleteButton">{{'Profile.button.deleteImage'|translate}}
                             </button>
                         </div>

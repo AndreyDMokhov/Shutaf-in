@@ -64,7 +64,6 @@
   "Profile.message.imageSaved" : "The image was saved",
   "Profile.message.errorSave" : "Error: The image wasn't saved",
   "Profile.message.imageDeleted" : "Image was deleted",
-  "Profile.message.errorDelete" : "Error: Image wasn't deleted",
   "Profile.message.confirmDelete" : "Are you sure you want to delete?",
 
   "SECTION": "USER_SETTINGS",

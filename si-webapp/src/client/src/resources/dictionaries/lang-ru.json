@@ -63,7 +63,6 @@
   "Profile.message.imageSaved" : "Изображение сохранено",
   "Profile.message.errorSave" : "Ошибка: Изображение не было сохранено",
   "Profile.message.imageDeleted" : "Изображение было удалено",
-  "Profile.message.errorDelete" : "Ошибка: Изображение не было удалено",
   "Profile.message.confirmDelete" : "Вы уверены, что хотите удалить?",
 
   "SECTION": "SECURITY SETTINGS",

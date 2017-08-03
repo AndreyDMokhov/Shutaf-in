@@ -4,12 +4,12 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, use
 
     function setCurrentAvatar() {
         if (vm.userProfile.userImageId === null) {
-            vm.avatarImage = '../../images/default_avatar.png'
+            vm.avatarImage = '../../images/default_avatar.png';
             vm.deleteButton = true;
             vm.addButton = true;
         }
         else {
-            vm.avatarImage = 'data:image/jpeg;base64,' + vm.userProfile.userImage
+            vm.avatarImage = 'data:image/jpeg;base64,' + vm.userProfile.userImage;
             vm.addButton = true;
         }
     }
@@ -26,12 +26,11 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, use
             saveImage();
         }, 0);
 
-    };
-
+    }
     function saveImage() {
         var imageB64 = {
             image: vm.fileInfo.base64
-        }
+        };
         userProfileModel.addImage(imageB64).then(
             function (success) {
                 var userProfile = vm.userProfile;
@@ -43,14 +42,10 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, use
                 notify.set($filter('translate')('Profile.message.imageSaved'), {type: 'success'});
             },
             function (error) {
-                notify.set($filter('translate')('Profile.message.errorSave'), {type: 'error'});
-                // if (error.data.error.errorTypeCode === 'GWT') {
-                // notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                // }
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             }
         )
-    };
-
+    }
     function deleteImage() {
         var confirmDeleting = confirm($filter('translate')('Profile.message.confirmDelete'));
         if (!confirmDeleting) {
@@ -60,7 +55,7 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, use
             function (success) {
                 var userProfile = vm.userProfile;
                 userProfile.userImage = '../../images/default_avatar.png';
-                userProfile.userImageId = null
+                userProfile.userImageId = null;
                 $sessionStorage.userProfile = userProfile;
                 vm.avatarImage = '../../images/default_avatar.png';
                 vm.deleteButton = true;
@@ -68,11 +63,11 @@ app.controller('userProfilePage', function ($state, $filter, sessionService, use
                 notify.set($filter('translate')('Profile.message.imageDeleted'), {type: 'success'});
             },
             function (error) {
-                notify.set($filter('translate')('Profile.message.errorDelete'), {type: 'error'});
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
 
     vm.onLoad = onLoad;
     vm.saveImage = saveImage;
-    vm.deleteImage = deleteImage
+    vm.deleteImage = deleteImage;
 });

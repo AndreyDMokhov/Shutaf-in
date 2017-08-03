@@ -19,4 +19,4 @@ app.factory('userProfileModel', function (Restangular,$sessionStorage) {
         addImage: addImage,
         deleteImage: deleteImage
     }
-})
+});
