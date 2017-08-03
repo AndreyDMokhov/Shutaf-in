@@ -1,0 +1,38 @@
+<div class="col-md-8 col-md-offset-2">
+    <div class="col-md-8 col-md-offset-2">
+        <h2>POST registration HARDCODE</h2>
+    </div>
+    <div class="row">
+        <form name="preSetting" novalidate role="form">
+            <div class=" row form-group has-success">
+                <div class="col-md-4 col-md-offset-4"> Gender
+                    <select class="form-control" ng-model="vm.preSettings.gender">
+                        <option ng-repeat="g in vm.gender">{{g.description}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class=" row form-group has-success">
+                <div class="col-md-6"> Country
+                    <select class="form-control" ng-model="vm.preSettings.country">
+                        <option ng-repeat="k in vm.country">{{k.description}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6"> City
+                    <select class="form-control" ng-model="vm.preSettings.city">
+                        <option ng-repeat="c in vm.cities">{{c.description}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button ng-click="vm.submitChanges()"
+                        type="submit"
+                        ng-disabled="settingsForm.firstName.$invalid || settingsForm.lastName.$invalid"
+                        class="btn btn-success pull-right">
+                    {{'Settings.personal.form.button.submit' | translate}}
+                    <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>

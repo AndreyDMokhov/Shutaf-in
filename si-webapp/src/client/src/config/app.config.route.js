@@ -92,8 +92,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state("postReg",
             {
                 templateUrl:'partials/postRegistration/postReg.html',
-                // controller: "",
-                // controllerAs: "",
+                controller: "preSettingsController",
+                controllerAs: "vm",
                 url: "/postRegistration"
             })
     ;
