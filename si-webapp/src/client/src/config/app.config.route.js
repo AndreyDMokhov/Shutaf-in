@@ -89,6 +89,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/settings/change-password"
             })
+        .state("postReg",
+            {
+                templateUrl:'partials/postRegistration/postReg.html',
+                // controller: "",
+                // controllerAs: "",
+                url: "/postRegistration"
+            })
     ;
     $urlRouterProvider.otherwise("/home");
 });
