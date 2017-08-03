@@ -10,12 +10,12 @@ public class UserImageWeb implements DataResponse {
     @NotBlank
     private String image;
 
-    private String createdDate;
+    private Long createdDate;
 
     public UserImageWeb() {
     }
 
-    public UserImageWeb(Long id, String image, String createdDate) {
+    public UserImageWeb(Long id, String image, Long createdDate) {
         this.id = id;
         this.image = image;
         this.createdDate = createdDate;
@@ -37,11 +37,11 @@ public class UserImageWeb implements DataResponse {
         this.image = image;
     }
 
-    public String getCreatedDate() {
+    public Long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
     }
 }
