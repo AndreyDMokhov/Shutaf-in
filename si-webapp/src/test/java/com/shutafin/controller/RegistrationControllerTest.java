@@ -7,6 +7,7 @@ import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.system.BaseTestImpl;
+import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,8 +60,11 @@ public class RegistrationControllerTest extends BaseTestImpl {
 
     @Test
     public void confirmRegistration_Positive(){
-        APIWebResponse response = getResponse(CONFIRM_REGISTRATION_REQUEST_URL+"1a424de3-3671-420f-a8e2-ee97158f9ea2",
-                HttpMethod.GET);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL+"1a424de3-3671-420f-a8e2-ee97158f9ea2")
+                .setHttpMethod(HttpMethod.GET)
+                .build();
+        APIWebResponse response = getResponse(request);
         Assert.assertNull(response.getError());
     }
 
@@ -73,11 +77,13 @@ public class RegistrationControllerTest extends BaseTestImpl {
         registrationRequestWeb.setPassword("12345678");
         registrationRequestWeb.setUserLanguageId(1);
 
-        APIWebResponse response = getResponse(
-                REGISTRATION_REQUEST_URL,
-                registrationRequestWeb,
-                HttpMethod.POST);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setRequestObject(registrationRequestWeb)
+                .build();
 
+        APIWebResponse response = getResponse(request);
         Assert.assertNull(response.getError());
     }
 
@@ -151,7 +157,12 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     private void testRegistrationRequestWeb(String json, List<String> errorList){
-        APIWebResponse response = getResponse(REGISTRATION_REQUEST_URL, json, HttpMethod.POST);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(json)
+                .build();
+        APIWebResponse response = getResponse(request);
         Assert.assertNotNull(response.getError());
         InputValidationError inputValidationError = (InputValidationError) response.getError();
         Collections.sort(errorList);
