@@ -1,26 +1,25 @@
 package com.shutafin.model;
 
 
-import com.shutafin.model.entities.types.LanguageEnum;
-import com.shutafin.model.entities.types.LanguageEnumConverter;
+import com.shutafin.model.entities.infrastructure.Language;
 
 import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class AbstractLocalizedConstEntity extends AbstractConstEntity {
 
-    @Convert(converter = LanguageEnumConverter.class)
-    @Column(name = "LANGUAGE_ID", nullable = false)
-    private LanguageEnum language;
+    @JoinColumn(name = "LANGUAGE_ID", nullable = false)
+    @ManyToOne
+    private Language language;
 
     public AbstractLocalizedConstEntity() {
     }
 
-    public LanguageEnum getLanguage() {
+    public Language getLanguage() {
         return language;
     }
 
-    public void setLanguage(LanguageEnum language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 }

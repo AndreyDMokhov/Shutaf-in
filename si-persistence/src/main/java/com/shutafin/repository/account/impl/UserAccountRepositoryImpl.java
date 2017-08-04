@@ -3,7 +3,6 @@ package com.shutafin.repository.account.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.types.LanguageEnum;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.base.AbstractEntityDao;
 import org.springframework.stereotype.Repository;
@@ -29,11 +28,11 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
     }
 
     @Override
-    public void updateUserLanguage(LanguageEnum language, User user) {
+    public void updateUserLanguage(Integer languageId, User user) {
         getSession()
-                .createQuery("UPDATE UserAccount SET language = :language WHERE user = :userId")
-                .setParameter("language", language)
-                .setParameter("userId", user)
+                .createQuery("UPDATE UserAccount SET language.id = :languageId WHERE user.id = :userId")
+                .setParameter("languageId", languageId)
+                .setParameter("userId", user.getId())
         .executeUpdate();
     }
     @Override

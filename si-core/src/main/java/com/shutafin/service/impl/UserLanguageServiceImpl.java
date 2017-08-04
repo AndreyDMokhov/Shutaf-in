@@ -2,7 +2,6 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.types.LanguageEnum;
 import com.shutafin.model.web.account.UserLanguageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.service.UserLanguageService;
@@ -33,7 +32,7 @@ public class UserLanguageServiceImpl implements UserLanguageService {
     @Override
     @Transactional
     public void updateUserLanguage(UserLanguageWeb userLanguageWeb, User user) {
-        userAccountRepository.updateUserLanguage(LanguageEnum.getById(userLanguageWeb.getId()), user);
+        userAccountRepository.updateUserLanguage(userLanguageWeb.getId(), user);
     }
 
 }
