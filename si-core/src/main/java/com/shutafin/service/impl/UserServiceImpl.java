@@ -1,7 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.UserInfoWeb;
+import com.shutafin.model.web.user.UserPersonalInfoWeb;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(UserInfoWeb userInfoWeb) {
+    public void save(UserPersonalInfoWeb userPersonalInfoWeb) {
         User user = new User();
-        user.setId(userInfoWeb.getUserId());
-        user.setFirstName(userInfoWeb.getFirstName());
-        user.setLastName(userInfoWeb.getLastName());
-        user.setEmail(userInfoWeb.getEmail());
+        user.setId(userPersonalInfoWeb.getUserId());
+        user.setFirstName(userPersonalInfoWeb.getFirstName());
+        user.setLastName(userPersonalInfoWeb.getLastName());
+        user.setEmail(userPersonalInfoWeb.getEmail());
 
         Long userId = (Long) userRepository.save(user);
         user.setId(userId);
@@ -33,37 +33,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void update(UserInfoWeb userInfo) {
+    public void update(UserPersonalInfoWeb userInfo) {
 
     }
 
     @Override
     @Transactional
-    public UserInfoWeb findByUserId(Long userId) {
+    public UserPersonalInfoWeb findByUserId(Long userId) {
         return null;
     }
 
-    private UserInfoWeb getUserInfoWeb(User userInfo) {
-        UserInfoWeb userInfoWeb = new UserInfoWeb();
-        userInfoWeb.setUserId(userInfo.getId());
-        userInfoWeb.setFirstName(userInfo.getFirstName());
-        userInfoWeb.setLastName(userInfo.getLastName());
-        userInfoWeb.setEmail(userInfo.getEmail());
+    private UserPersonalInfoWeb getUserInfoWeb(User userInfo) {
+        UserPersonalInfoWeb userPersonalInfoWeb = new UserPersonalInfoWeb();
+        userPersonalInfoWeb.setUserId(userInfo.getId());
+        userPersonalInfoWeb.setFirstName(userInfo.getFirstName());
+        userPersonalInfoWeb.setLastName(userInfo.getLastName());
+        userPersonalInfoWeb.setEmail(userInfo.getEmail());
 
-        return userInfoWeb;
+        return userPersonalInfoWeb;
     }
 
     @Override
     @Transactional
-    public List<UserInfoWeb> findAll() {
+    public List<UserPersonalInfoWeb> findAll() {
         List<User> userInfoList = userRepository.findAll();
-        List<UserInfoWeb> userInfoWebList = new ArrayList<>();
+        List<UserPersonalInfoWeb> userPersonalInfoWebList = new ArrayList<>();
 
         for (User user : userInfoList) {
-            userInfoWebList.add(getUserInfoWeb(user));
+            userPersonalInfoWebList.add(getUserInfoWeb(user));
         }
 
-        return userInfoWebList;
+        return userPersonalInfoWebList;
     }
 
     @Override
