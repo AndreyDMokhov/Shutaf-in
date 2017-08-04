@@ -1,8 +1,10 @@
 app
-.controller("preSettingsController", function ($localStorage) {
+.controller("preSettingsController", function ($localStorage, $scope) {
 
     var vm = this;
     vm.dataLoading = false;
+    vm.isCollapsed = true;
+
     vm.preSettings={};
     vm.country = $localStorage.countries;
     vm.cities = $localStorage.cities;
@@ -34,6 +36,7 @@ app
     }
 
     vm.submitChanges = submitChanges;
+
 
 
 
