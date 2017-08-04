@@ -10,6 +10,7 @@ import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserLanguageService;
 import com.shutafin.system.BaseTestImpl;
+import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,9 +35,10 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     private static final String LANG_ID_NULL = "{\"id\":\"\"}";
     private static final String VALID_SESSION = "40042cd8-51d0-4282-b431-36ee7f6dcaef";
     private static final String INVALID_SESSION = "";
+    private static final String SESSION_ID_HEADER_NAME = "session_id";
 
 
-    private Language language;
+    private Language language = new Language();
     private ArrayList<String> expectedError;
 
     @MockBean
@@ -55,12 +57,13 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     @Test
     public void updateRequestJson_Positive(){
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
-
-        APIWebResponse response = getResponse(
-                REGISTRATION_REQUEST_URL,
-                VALID_JSON,
-                HttpMethod.PUT,
-                headers);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.PUT)
+                .setHeaders(headers)
+                .setJsonContext(VALID_JSON)
+                .build();
+        APIWebResponse response = getResponse(request);
 
         Assert.assertNull(response.getError());
     }
@@ -68,12 +71,13 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     @Test
     public void updateRequestJson_LangId_0(){
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
-
-        APIWebResponse response = getResponse(
-                REGISTRATION_REQUEST_URL,
-                LANG_ID_0,
-                HttpMethod.PUT,
-                headers);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.PUT)
+                .setHeaders(headers)
+                .setJsonContext(LANG_ID_0)
+                .build();
+        APIWebResponse response = getResponse(request);
 
         Assert.assertNotNull(response.getError());
         InputValidationError inputValidationError = (InputValidationError) response.getError();
@@ -84,12 +88,13 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     @Test
     public void updateRequestJson_LangIdIsNull(){
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
-
-        APIWebResponse response = getResponse(
-                REGISTRATION_REQUEST_URL,
-                LANG_ID_NULL,
-                HttpMethod.PUT,
-                headers);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.PUT)
+                .setHeaders(headers)
+                .setJsonContext(LANG_ID_NULL)
+                .build();
+        APIWebResponse response = getResponse(request);
 
         Assert.assertNotNull(response.getError());
         InputValidationError inputValidationError = (InputValidationError) response.getError();
@@ -100,12 +105,13 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     @Test
     public void updateRequestJson_WrongSession(){
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
-
-        APIWebResponse response = getResponse(
-                REGISTRATION_REQUEST_URL,
-                VALID_JSON,
-                HttpMethod.PUT,
-                headers);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.PUT)
+                .setHeaders(headers)
+                .setJsonContext(VALID_JSON)
+                .build();
+        APIWebResponse response = getResponse(request);
 
         Assert.assertNotNull(response.getError());
         Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
@@ -114,11 +120,12 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     @Test
     public void getRequestJson_Positive(){
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
-
-        APIWebResponse response = getResponse(
-                REGISTRATION_REQUEST_URL,
-                HttpMethod.GET,
-                headers);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(headers)
+                .build();
+        APIWebResponse response = getResponse(request);
 
         Assert.assertNull(response.getError());
         Assert.assertEquals(language, response.getData());
@@ -127,11 +134,12 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     @Test
     public void getRequestJson_Wrong_Session(){
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
-
-        APIWebResponse response = getResponse(
-                REGISTRATION_REQUEST_URL,
-                HttpMethod.GET,
-                headers);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(headers)
+                .build();
+        APIWebResponse response = getResponse(request);
 
         Assert.assertNotNull(response.getError());
         Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
@@ -140,7 +148,7 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     public List<HttpHeaders> addSessionIdToHeader(String sessionId){
         List<HttpHeaders> headers = new ArrayList<>();
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("session_id", sessionId);
+        httpHeaders.add(SESSION_ID_HEADER_NAME, sessionId);
         headers.add(httpHeaders);
         return headers;
     }
