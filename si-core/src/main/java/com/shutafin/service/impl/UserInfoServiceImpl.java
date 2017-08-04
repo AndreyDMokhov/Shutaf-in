@@ -37,12 +37,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void updateUserInfo(UserInfoWeb userInfoWeb, User user) {
-        UserInfo userInfo = convertToUserInfo(userInfoWeb, user);
-        if (findUserInfo(user) == null) {
+        UserInfo userInfo = findUserInfo(user);
+        if (userInfo == null) {
             addUserInfo(userInfoWeb, user);
         } else {
-            // TODO: fix update
-            userInfo.setId(findUserInfo(user).getId());
+            setUserInfoFields(userInfoWeb, userInfo);
             userInfoRepository.update(userInfo);
         }
     }
@@ -50,12 +49,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfo convertToUserInfo(UserInfoWeb userInfoWeb, User user) {
         UserInfo userInfo = new UserInfo();
         userInfo.setUser(user);
+        setUserInfoFields(userInfoWeb, userInfo);
+        return userInfo;
+    }
+
+    private void setUserInfoFields(UserInfoWeb userInfoWeb, UserInfo userInfo) {
         userInfo.setCurrentCity(cityRepository.findById(userInfoWeb.getCityId()));
         userInfo.setGender(genderRepository.findById(userInfoWeb.getGenderId()));
         userInfo.setFacebookLink(userInfoWeb.getFacebookLink());
         userInfo.setCompany(userInfoWeb.getCompany());
         userInfo.setProfession(userInfoWeb.getProfession());
         userInfo.setPhoneNumber(userInfoWeb.getPhoneNumber());
-        return userInfo;
     }
 }
