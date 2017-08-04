@@ -7,6 +7,10 @@ app
     vm.country = $localStorage.countries;
     vm.cities = $localStorage.cities;
     vm.gender = $localStorage.genders;
+
+
+    vm.preSettings.country=vm.country[0].description
+
     // console.log(vm.country)
 
     function submitChanges() {
