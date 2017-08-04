@@ -18,7 +18,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 
-
 @RestController
 @RequestMapping("/images")
 public class UserImageController {
@@ -38,14 +37,14 @@ public class UserImageController {
         }
         UserImage image = userImageService.getUserImage(user, userImageId);
         APIWebResponse apiWebResponse = new APIWebResponse();
-        apiWebResponse.setData(new UserImageWeb(image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().toString()));
+        apiWebResponse.setData(new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().getTime()));
         return apiWebResponse;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb addUserImage(@RequestHeader(value = "session_id", required = false) String sessionId,
+    public APIWebResponse addUserImage(@RequestHeader(value = "session_id", required = false) String sessionId,
                                      @RequestBody @Valid UserImageWeb image, BindingResult result) {
 
         User user = sessionManagementService.findUserWithValidSession(sessionId);
@@ -56,11 +55,11 @@ public class UserImageController {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        
-        UserImage userImage = userImageService.addUserImage(image, user);
-        return new UserImageWeb(userImage.getId(), null, userImage.getCreatedDate().getTime());
-        }
 
+        UserImage userImage = userImageService.addUserImage(image, user);
+        APIWebResponse apiWebResponse = new APIWebResponse();
+        apiWebResponse.setData(new UserImageWeb(userImage.getId(), null, userImage.getCreatedDate().getTime()));
+        return apiWebResponse;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
