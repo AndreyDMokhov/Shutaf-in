@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USER_LOGIN_LOG")
 public class UserLoginLog extends AbstractEntity {
-    @JoinColumn(name = "USER_ID", nullable = false, unique = true)
+    @JoinColumn(name = "USER_ID", nullable = false)
     @OneToOne
     private User user;
 
-    @Column(name = "IS_LOGIN_SUCCESS", nullable = false)
+    @Column(name = "IS_LOGIN_SUCCESS")
     private Boolean isLoginSuccess;
 
     public UserLoginLog() {

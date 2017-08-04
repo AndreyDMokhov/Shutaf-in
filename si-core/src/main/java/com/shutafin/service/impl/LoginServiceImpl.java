@@ -4,10 +4,12 @@ package com.shutafin.service.impl;
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
+import com.shutafin.model.entities.UserLoginLog;
 import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.entities.types.AccountStatus;
 import com.shutafin.model.web.LoginWebModel;
 import com.shutafin.repository.account.UserAccountRepository;
+import com.shutafin.repository.account.UserLoginLogRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.LoginService;
@@ -40,6 +42,9 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private UserAccountRepository userAccountRepository;
 
+    @Autowired
+    private UserLoginLogRepository userLoginLogRepository;
+
     public String getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
 
@@ -64,9 +69,17 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void checkUserPassword(LoginWebModel loginWeb, User user) {
+        UserLoginLog userLoginLog = new UserLoginLog();
+        userLoginLog.setUser(user);
+        userLoginLog.setLoginSuccess(Boolean.FALSE);
+        Long id = (Long)userLoginLogRepository.save(userLoginLog);
+        System.out.println(id);
+       userLoginLogRepository.findAll().stream().forEach(e->System.out.println(e.getId()+" "+e.getUser()));
         if (! passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
             throw new AuthenticationException();
         }
+        userLoginLog.setLoginSuccess(true);
+        userLoginLogRepository.save(userLoginLog);
     }
 
     private User findUserByEmail(LoginWebModel loginWeb) {
