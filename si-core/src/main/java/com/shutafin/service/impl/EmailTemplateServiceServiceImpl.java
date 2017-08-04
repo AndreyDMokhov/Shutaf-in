@@ -1,8 +1,8 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.EmailReason;
+import com.shutafin.model.entities.types.LanguageEnum;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.service.EmailTemplateService;
@@ -22,7 +22,7 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
     private static final String SECTION_SUFFIX = ".section";
 
     @Override
-    public BaseTemplate getTemplate(EmailReason emailReason, Language language, String link) {
+    public BaseTemplate getTemplate(EmailReason emailReason, LanguageEnum language, String link) {
         notNull(emailReason);
         notNull(language);
         notBlank(link);
@@ -34,8 +34,8 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         String header = properties.getProperty(prefix + HEADER_SUFFIX);
 
         String section = properties
-                            .getProperty(prefix + SECTION_SUFFIX)
-                            .replace("${link}", link);
+                .getProperty(prefix + SECTION_SUFFIX)
+                .replace("${link}", link);
 
         String signature = properties.getProperty("common.signature");
 
@@ -43,7 +43,7 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
     }
 
     @Override
-    public EmailMessage getEmailMessage(User user, EmailReason emailReason, Language language, String link) {
+    public EmailMessage getEmailMessage(User user, EmailReason emailReason, LanguageEnum language, String link) {
         notNull(user);
         notNull(emailReason);
         notNull(language);
@@ -56,13 +56,13 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         ));
     }
 
-    private Properties getProperties(Language language) {
+    private Properties getProperties(LanguageEnum language) {
         Properties properties = new Properties();
         InputStream is = null;
 
         StringBuilder builder = new StringBuilder();
         builder.append("smtp.");
-        builder.append(language.getDescription());
+        builder.append(language.getLanguageCode());
         builder.append("-template.properties");
         is = getClass().getClassLoader().getResourceAsStream(builder.toString());
 
@@ -79,7 +79,7 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
 
 
     @Override
-    public EmailMessage getEmailMessage(String emailTo, EmailReason emailReason, Language language, String link) {
+    public EmailMessage getEmailMessage(String emailTo, EmailReason emailReason, LanguageEnum language, String link) {
         return new EmailMessage(emailTo, getTemplate(
                 emailReason,
                 language,

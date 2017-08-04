@@ -1,7 +1,7 @@
 /**
  * Created by evgeny on 7/10/2017.
  */
-app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage) {
+app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage, constantService) {
 
     var vm = this;
 
@@ -20,24 +20,23 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                 var session_id = success.headers('session_id');
                 $sessionStorage.sessionId = session_id;
                 userInitService.init();
+                constantService.init();
                 languageService.getUserLanguage().then(
                     function(result){//success
                         languageService.updateUserLanguage(result.data);
                     },
                     function(err){//fail
                         console.log(err);
-                        notify.set($filter('translate')("Error.unexpected.server.error"), {type: 'error'});
+                        notify.set($filter('translate')("Error.SYS"), {type: 'error'});
                     }
                 );
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
                 $state.go("home");
             }, function (error) {
                 vm.dataLoading = false;
-                var status = error.status;
-                if (status!==undefined && status!==null && status!==""){
-                    $state.go("error", {'code' : status});
-                } else {
-                    notify.set($filter('translate')("Registration.form.msg.registrationFail"), {type: 'error'});
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                if (error.data.error.errorCodeType === 'RNF') {
+                    $state.go("error", {'code' : '404'});
                 }
             })
     };

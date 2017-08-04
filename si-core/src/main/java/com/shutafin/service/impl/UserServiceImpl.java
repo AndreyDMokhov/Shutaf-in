@@ -2,7 +2,7 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserInfoWeb;
-import com.shutafin.repository.UserRepository;
+import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

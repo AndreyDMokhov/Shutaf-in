@@ -8,7 +8,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.repository.EmailNotificationLogRepository;
+import com.shutafin.repository.common.EmailNotificationLogRepository;
 import com.shutafin.service.EmailNotificationSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -46,10 +46,10 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
 
         EmailNotificationLog emailNotificationLog = getEmailNotificationLog(
-                                                                        messageContent,
-                                                                        emailTo,
-                                                                        emailMessage.getUser(),
-                                                                        emailReason);
+                messageContent,
+                emailTo,
+                emailMessage.getUser(),
+                emailReason);
 
         try {
             mailSender.send(getMimeMessage(emailTo, messageContent, baseTemplate.getEmailHeader()));
