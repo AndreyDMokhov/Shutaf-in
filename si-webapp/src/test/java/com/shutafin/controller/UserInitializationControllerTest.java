@@ -8,6 +8,7 @@ import com.shutafin.model.web.user.UserInit;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserInitializationService;
 import com.shutafin.system.BaseTestImpl;
+import com.shutafin.system.ControllerRequest;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -46,7 +47,12 @@ public class UserInitializationControllerTest extends BaseTestImpl {
     public void userSessionUnexists(){
         Mockito.when(sessionManagementService.findValidUserSession(INVALID_SESSION)).thenReturn(null);
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
-        APIWebResponse response = getResponse(INITIALIZATION_REQUEST_URL, HttpMethod.GET, headers);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(INITIALIZATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(headers)
+                .build();
+        APIWebResponse response = getResponse(request);
         Assert.assertNotNull(response.getError());
         Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
     }
@@ -70,7 +76,12 @@ public class UserInitializationControllerTest extends BaseTestImpl {
         Mockito.when(sessionManagementService.findValidUserSession(VALID_SESSION)).thenReturn(userSession);
         Mockito.when(userInitializationService.getUserInitData(userSession.getUser())).thenReturn(userInit);
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
-        APIWebResponse response = getResponse(INITIALIZATION_REQUEST_URL, HttpMethod.GET, headers);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(INITIALIZATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(headers)
+                .build();
+        APIWebResponse response = getResponse(request);
         Assert.assertNull(response.getError());
         Assert.assertNotNull(response.getData());
     }
