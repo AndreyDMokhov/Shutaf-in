@@ -38,11 +38,9 @@ public class EmailChangeConfirmationController {
             throw new AuthenticationException();
         }
 
-
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-
         emailChangeConfirmationService.emailChangeRequest(user, emailChangeConfirmationWeb);
     }
 
