@@ -38,7 +38,8 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     private static final String SESSION_ID_HEADER_NAME = "session_id";
 
 
-    private Language language = new Language();
+    private Language language;
+    private User user;
     private ArrayList<String> expectedError;
 
     @MockBean
@@ -49,8 +50,10 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
 
     @Before
     public void setUp() {
+        language = new Language();
+        user = new User();
         Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(UserLanguageWeb.class), Mockito.any(User.class));
-        Mockito.when(userLanguageService.findUserLanguage(Mockito.any(User.class))).thenReturn(language);
+        Mockito.when(userLanguageService.findUserLanguage(user)).thenReturn(language);
         expectedError = new ArrayList<>();
     }
 
@@ -124,6 +127,7 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
                 .setUrl(REGISTRATION_REQUEST_URL)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(headers)
+                .setResponseClass(Language.class)
                 .build();
         APIWebResponse response = getResponse(request);
 
