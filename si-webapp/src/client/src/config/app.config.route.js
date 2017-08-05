@@ -89,6 +89,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/settings/change-password"
             })
+        .state("questCarousel",
+            {
+                templateUrl:'partials/questionsCarousel/quesCar.html',
+                // controller: "quesCar",
+                // controllerAs: "vm",
+                url: "/questions"
+            })
     ;
     $urlRouterProvider.otherwise("/home");
 });
