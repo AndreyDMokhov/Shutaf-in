@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
+import static java.lang.Thread.sleep;
+
 @Service
 @Transactional
 public class LoginServiceImpl implements LoginService {
@@ -29,6 +31,7 @@ public class LoginServiceImpl implements LoginService {
     private static final Boolean IS_VALID = true;
     private static final int NUMBER_DAYS_EXPIRATION = 30;
     private static final Boolean IS_EXPIRABLE = false;
+    private static final int N_MAX_TRIES = 10;
 
     @Autowired
     private UserSessionRepository userSessionRepository;
@@ -45,11 +48,12 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private UserLoginLogRepository userLoginLogRepository;
 
+    @Transactional(noRollbackFor = AuthenticationException.class)
     public String getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
 
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
-        if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED){
+        if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED) {
             throw new AuthenticationException();
         }
 
@@ -68,18 +72,26 @@ public class LoginServiceImpl implements LoginService {
         return userSession.getSessionId();
     }
 
-    private void checkUserPassword(LoginWebModel loginWeb, User user) {
+    @Transactional(noRollbackFor = AuthenticationException.class)
+    private void checkUserPassword(LoginWebModel loginWeb, User user) throws AuthenticationException {
         UserLoginLog userLoginLog = new UserLoginLog();
         userLoginLog.setUser(user);
-        userLoginLog.setLoginSuccess(Boolean.FALSE);
-        Long id = (Long)userLoginLogRepository.save(userLoginLog);
-        System.out.println(id);
-       userLoginLogRepository.findAll().stream().forEach(e->System.out.println(e.getId()+" "+e.getUser()));
-        if (! passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
+        if (!passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
+            userLoginLog.setLoginSuccess(false);
+            userLoginLogRepository.save(userLoginLog);
+            countFailsByLoginAndBlockAccount(userLoginLog);
             throw new AuthenticationException();
         }
         userLoginLog.setLoginSuccess(true);
         userLoginLogRepository.save(userLoginLog);
+    }
+
+    private void countFailsByLoginAndBlockAccount(UserLoginLog userLoginLog) {
+        if(userLoginLogRepository.countLoginTries(userLoginLog).intValue()>=N_MAX_TRIES){
+            UserAccount userAccount = userAccountRepository.findUserAccountByUser(userLoginLog.getUser());
+            userAccount.setAccountStatus(AccountStatus.BLOCKED);
+            userAccountRepository.update(userAccount);
+        }
     }
 
     private User findUserByEmail(LoginWebModel loginWeb) {

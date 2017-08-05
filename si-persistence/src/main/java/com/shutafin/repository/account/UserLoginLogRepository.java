@@ -7,4 +7,5 @@ import com.shutafin.repository.base.PersistentDao;
  * Created by evgeny on 6/20/2017.
  */
 public interface UserLoginLogRepository extends PersistentDao<UserLoginLog> {
+    Long countLoginTries(UserLoginLog userLoginLog);
 }
