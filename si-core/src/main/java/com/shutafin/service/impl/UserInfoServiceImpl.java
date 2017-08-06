@@ -41,7 +41,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfo == null) {
             addUserInfo(userInfoWeb, user);
         } else {
-            setUserInfoFields(userInfoWeb, userInfo);
+            userInfo = setUserInfoFields(userInfoWeb, userInfo);
             userInfoRepository.update(userInfo);
         }
     }
@@ -49,16 +49,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfo convertToUserInfo(UserInfoWeb userInfoWeb, User user) {
         UserInfo userInfo = new UserInfo();
         userInfo.setUser(user);
-        setUserInfoFields(userInfoWeb, userInfo);
+        userInfo = setUserInfoFields(userInfoWeb, userInfo);
         return userInfo;
     }
 
-    private void setUserInfoFields(UserInfoWeb userInfoWeb, UserInfo userInfo) {
+    private UserInfo setUserInfoFields(UserInfoWeb userInfoWeb, UserInfo userInfo) {
         userInfo.setCurrentCity(cityRepository.findById(userInfoWeb.getCityId()));
         userInfo.setGender(genderRepository.findById(userInfoWeb.getGenderId()));
         userInfo.setFacebookLink(userInfoWeb.getFacebookLink());
         userInfo.setCompany(userInfoWeb.getCompany());
         userInfo.setProfession(userInfoWeb.getProfession());
         userInfo.setPhoneNumber(userInfoWeb.getPhoneNumber());
+        return userInfo;
     }
 }

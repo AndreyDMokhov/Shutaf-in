@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/userInfo")
+@RequestMapping("/users/info")
 public class UserInfoController {
 
     @Autowired
@@ -48,7 +48,7 @@ public class UserInfoController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void updateUserInfo(@RequestHeader(value = "session_id") String sessionId,
-                                         @RequestBody UserInfoWeb userInfoWeb) {
+                               @RequestBody UserInfoWeb userInfoWeb) {
 
         User user = sessionManagementService.findUserWithValidSession(sessionId);
         if (user == null) {
