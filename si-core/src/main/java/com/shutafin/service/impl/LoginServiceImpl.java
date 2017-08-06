@@ -1,6 +1,8 @@
 package com.shutafin.service.impl;
 
 
+import com.shutafin.exception.exceptions.AccountBlockedException;
+import com.shutafin.exception.exceptions.AccountNotValidatedException;
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
@@ -51,14 +53,23 @@ public class LoginServiceImpl implements LoginService {
     @Transactional(noRollbackFor = AuthenticationException.class)
     public String getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
-
-        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
-        if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED) {
-            throw new AuthenticationException();
-        }
-
+        checkUserAccountStatus(user);
         checkUserPassword(loginWeb, user);
         return generateSession(user);
+    }
+
+    private void checkUserAccountStatus(User user) {
+        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+        if (userAccount == null ) {
+            throw new AuthenticationException();
+        }
+        AccountStatus accountStatus = userAccount.getAccountStatus();
+        if (accountStatus == AccountStatus.BLOCKED){
+            throw new AccountBlockedException();
+        }
+        if (accountStatus == AccountStatus.NEW){
+            throw new AccountNotValidatedException();
+        }
     }
 
     private String generateSession(User user) {
@@ -72,23 +83,25 @@ public class LoginServiceImpl implements LoginService {
         return userSession.getSessionId();
     }
 
-    @Transactional(noRollbackFor = AuthenticationException.class)
     private void checkUserPassword(LoginWebModel loginWeb, User user) throws AuthenticationException {
-        UserLoginLog userLoginLog = new UserLoginLog();
-        userLoginLog.setUser(user);
         if (!passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
-            userLoginLog.setLoginSuccess(false);
-            userLoginLogRepository.save(userLoginLog);
-            countFailsByLoginAndBlockAccount(userLoginLog);
+            saveUserLoginLogEntry(user, false);
+            countLoginFailsAndBlockAccountIfMoreThanMax(user);
             throw new AuthenticationException();
         }
-        userLoginLog.setLoginSuccess(true);
+        saveUserLoginLogEntry(user, true);
+    }
+
+    private void saveUserLoginLogEntry(User user, boolean isSuccess){
+        UserLoginLog userLoginLog = new UserLoginLog();
+        userLoginLog.setUser(user);
+        userLoginLog.setLoginSuccess(isSuccess);
         userLoginLogRepository.save(userLoginLog);
     }
 
-    private void countFailsByLoginAndBlockAccount(UserLoginLog userLoginLog) {
-        if(userLoginLogRepository.countLoginTries(userLoginLog).intValue()>=N_MAX_TRIES){
-            UserAccount userAccount = userAccountRepository.findUserAccountByUser(userLoginLog.getUser());
+    private void countLoginFailsAndBlockAccountIfMoreThanMax(User user) {
+        if(userLoginLogRepository.countLoginFails(user).intValue()>=N_MAX_TRIES){
+            UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
             userAccount.setAccountStatus(AccountStatus.BLOCKED);
             userAccountRepository.update(userAccount);
         }
