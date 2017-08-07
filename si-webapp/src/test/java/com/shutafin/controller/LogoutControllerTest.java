@@ -1,5 +1,6 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorType;
@@ -12,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -36,8 +36,8 @@ public class LogoutControllerTest extends BaseTestImpl{
 
     @Before
     public void setUp(){
-        Mockito.doNothing().when(logoutService).logout(any(UserSession.class));
-        Mockito.when(sessionManagementService.findValidUserSession(anyString())).thenReturn(new UserSession());
+        Mockito.doNothing().when(logoutService).logout(anyString(), any(User.class));
+        Mockito.when(sessionManagementService.findUserWithValidSession(anyString())).thenReturn(new User());
     }
 
     @Test
