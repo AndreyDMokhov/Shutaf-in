@@ -6,6 +6,8 @@ import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.base.AbstractEntityDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public class UserRepositoryImpl extends AbstractEntityDao<User> implements UserRepository {
@@ -24,5 +26,24 @@ public class UserRepositoryImpl extends AbstractEntityDao<User> implements UserR
                 .setParameter("email", email)
                 .uniqueResult();
         return results > 0;
+    }
+
+    @Override
+    public List<User> findUsersByFirstAndLastName(String firstName, String lastName) {
+        return getSession()
+                .createQuery("SELECT u from " + getEntityClass().getName() +
+                        " u WHERE (u.firstName =:firstName AND u.lastName =:lastName)" +
+                        " OR (u.firstName =:lastName AND u.lastName =:firstName) order by u.createdDate")
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName)
+                .list();
+    }
+    @Override
+    public List<User> findUsersByName(String name) {
+        return getSession()
+                .createQuery("SELECT u from " + getEntityClass().getName() +
+                        " u WHERE u.firstName =:name OR u.lastName =:name) order by u.createdDate")
+                .setParameter("name", name)
+                .list();
     }
 }

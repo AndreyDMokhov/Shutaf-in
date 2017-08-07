@@ -56,8 +56,13 @@
                         {{'Settings.security.password.title' | translate}}
                     </a>
                 </li>
-
-
+                <li ng-show="vm.sessionService.isAuthenticated()">
+                    <a href="#">
+                        <input type="text" class="search-query" ng-model="vm.userQuery"
+                               ng-keyup="$event.keyCode == 13 && vm.userSearch(vm.userQuery)" placeholder="{{'Search.button' | translate}}">
+                        <span class="glyphicon glyphicon-search" ng-click="$state.go('userSearch')"></span>
+                    </a>
+                </li>
                 <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>
@@ -78,6 +83,7 @@
                     </ul>
                 </li>
             </ul>
+
         </div>
     </nav>
 </div>

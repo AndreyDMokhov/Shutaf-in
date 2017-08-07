@@ -86,5 +86,8 @@
   "Settings.personal.form.lastName":"Фамилия",
   "Settings.personal.form.button.submit":"Применить",
   "Settings.personal.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
-  "Settings.personal.message.save.success":"Пользователь успешно сохранен"
+  "Settings.personal.message.save.success":"Пользователь успешно сохранен",
+
+  "SECTION": "USER SEARCH",
+  "Search.button": "Поиск"
 }

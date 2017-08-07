@@ -89,6 +89,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/settings/change-password"
             })
+        .state("userSearch",
+            {
+                templateUrl: "partials/userSearch/userSearch.html",
+                controller: "userSearchController",
+                controllerAs: "vm",
+                url: "users/search"
+            })
     ;
     $urlRouterProvider.otherwise("/home");
 });
