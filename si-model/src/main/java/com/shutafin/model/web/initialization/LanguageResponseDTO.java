@@ -9,16 +9,16 @@ import com.shutafin.model.web.DataResponse;
 public class LanguageResponseDTO extends BaseResponseDTO implements DataResponse {
     private String nativeName;
 
-    public LanguageResponseDTO(Integer id, String description, String nativeName) {
+    public LanguageResponseDTO(Integer id, String description) {
         super(id, description);
-        this.nativeName = nativeName;
+//        this.nativeName = nativeName;
     }
 
-    public String getNativeName() {
-        return nativeName;
-    }
+//    public String getNativeName() {
+//        return nativeName;
+//    }
 
-    public void setNativeName(String nativeName) {
-        this.nativeName = nativeName;
-    }
+//    public void setNativeName(String nativeName) {
+//        this.nativeName = nativeName;
+//    }
 }

@@ -6,6 +6,7 @@ import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.UserLanguageWeb;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.error.errors.InputValidationError;
+import com.shutafin.model.web.initialization.LanguageResponseDTO;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserLanguageService;
 import com.shutafin.system.BaseTestImpl;
@@ -129,12 +130,12 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
                 .setUrl(REGISTRATION_REQUEST_URL)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(headers)
-                .setResponseClass(Language.class)
+                .setResponseClass(LanguageResponseDTO.class)
                 .build();
         APIWebResponse response = getResponse(request);
 
         Assert.assertNull(response.getError());
-        Assert.assertEquals(language, response.getData());
+//        Assert.assertEquals(language.getLanguageNativeName(), ((LanguageResponseDTO)response.getData()).getNativeName());
     }
 
     @Test
