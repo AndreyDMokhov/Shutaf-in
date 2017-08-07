@@ -135,7 +135,7 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
         APIWebResponse response = getResponse(request);
 
         Assert.assertNull(response.getError());
-//        Assert.assertEquals(language.getLanguageNativeName(), ((LanguageResponseDTO)response.getData()).getNativeName());
+        Assert.assertEquals(language.getDescription(), ((LanguageResponseDTO)response.getData()).getDescription());
     }
 
     @Test
