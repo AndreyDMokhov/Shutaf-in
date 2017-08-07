@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.APIWebResponse;
@@ -16,13 +15,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -50,8 +50,10 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
 
     @Before
     public void setUp() {
-        language = new Language();
-        user = new User();
+        language = createLanguage();
+    user = createUser();
+        user.setCreatedDate(Date.from(Instant.now()));
+        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
         Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(UserLanguageWeb.class), Mockito.any(User.class));
         Mockito.when(userLanguageService.findUserLanguage(user)).thenReturn(language);
         expectedError = new ArrayList<>();
@@ -155,5 +157,22 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
         httpHeaders.add(SESSION_ID_HEADER_NAME, sessionId);
         headers.add(httpHeaders);
         return headers;
+    }
+
+    private Language createLanguage() {
+        language = new Language();
+        language.setActive(true);
+        language.setId(1);
+        language.setLanguageNativeName("Русский");
+        language.setDescription("ru");
+        return language;
+    }
+    private User createUser() {
+        user = new User();
+        user.setId(1L);
+        user.setEmail("q@q");
+        user.setFirstName("User");
+        user.setLastName("User");
+        return user;
     }
 }
