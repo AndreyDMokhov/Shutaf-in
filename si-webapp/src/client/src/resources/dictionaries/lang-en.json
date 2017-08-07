@@ -20,7 +20,7 @@
   "Error.EDE":"Such email is already taken",
   "Error.IPE":"Incorrect password",
   "Error.ABL":"Your account was blocked",
-  "Error.ANV":"Account not activated, please confirm your Email",
+  "Error.ANC":"Account not activated, please confirm your Email",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",

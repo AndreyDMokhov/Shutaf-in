@@ -11,7 +11,7 @@ public enum ErrorType {
     EMAIL_DUPLICATION_EXCEPTION(400, ErrorCode.EDE),
     RESOURCE_NOT_FOUND_ERROR(404, ErrorCode.RNF),
     INCORRECT_PASSWORD_ERROR(401, ErrorCode.IPE),
-    ACCOUNT_NOT_VALIDATED(403, ErrorCode.ANV),
+    ACCOUNT_NOT_CONFIRMED(403, ErrorCode.ANC),
     ACCOUNT_BLOCKED(403, ErrorCode.ABL);
 
 
@@ -48,5 +48,5 @@ public enum ErrorType {
 
 
 enum ErrorCode {
-    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANV, ABL;
+    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANC, ABL;
 }

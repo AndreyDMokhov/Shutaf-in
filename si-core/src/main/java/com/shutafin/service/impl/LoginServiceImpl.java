@@ -2,7 +2,7 @@ package com.shutafin.service.impl;
 
 
 import com.shutafin.exception.exceptions.AccountBlockedException;
-import com.shutafin.exception.exceptions.AccountNotValidatedException;
+import com.shutafin.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
@@ -34,6 +34,7 @@ public class LoginServiceImpl implements LoginService {
     private static final int NUMBER_DAYS_EXPIRATION = 30;
     private static final Boolean IS_EXPIRABLE = false;
     private static final int N_MAX_TRIES = 10;
+    private static final int TIME_FOR_TRIES_IN_MIN = 10;
 
     @Autowired
     private UserSessionRepository userSessionRepository;
@@ -68,7 +69,7 @@ public class LoginServiceImpl implements LoginService {
             throw new AccountBlockedException();
         }
         if (accountStatus == AccountStatus.NEW){
-            throw new AccountNotValidatedException();
+            throw new AccountNotConfirmedException();
         }
     }
 
@@ -100,7 +101,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void countLoginFailsAndBlockAccountIfMoreThanMax(User user) {
-        if(userLoginLogRepository.countLoginFails(user).intValue()>=N_MAX_TRIES){
+        if(userLoginLogRepository.isLoginFailsMoreThanTries(user, N_MAX_TRIES, TIME_FOR_TRIES_IN_MIN)){
             UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
             userAccount.setAccountStatus(AccountStatus.BLOCKED);
             userAccountRepository.update(userAccount);

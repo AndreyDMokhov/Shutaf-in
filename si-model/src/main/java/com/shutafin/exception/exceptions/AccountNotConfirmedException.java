@@ -6,10 +6,10 @@ import com.shutafin.model.web.error.ErrorType;
 /**
  * Created by Rogov on 06.08.2017.
  */
-public class AccountNotValidatedException extends AbstractAPIException {
+public class AccountNotConfirmedException extends AbstractAPIException {
 
     @Override
     public ErrorType getErrorType() {
-        return ErrorType.ACCOUNT_NOT_VALIDATED;
+        return ErrorType.ACCOUNT_NOT_CONFIRMED;
     }
 }
