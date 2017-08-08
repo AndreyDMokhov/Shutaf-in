@@ -56,14 +56,18 @@
                         {{'Settings.security.password.title' | translate}}
                     </a>
                 </li>
-                <li ng-show="vm.sessionService.isAuthenticated()">
-                    <a href="#">
+
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userSearch' | includedByState)}">
+
+                     <form action="http://localhost:7000/?#/users/search" style="padding: 12px">
                         <input type="text" class="search-query" ng-model="vm.userQuery"
-                               ng-keyup="$event.keyCode == 13 && vm.userSearch(vm.userQuery)" placeholder="{{'Search.button' | translate}}">
-                        <span class="glyphicon glyphicon-search" ng-click="$state.go('userSearch')"></span>
-                    </a>
+                               placeholder="{{'Search.button' | translate}}" style="border-radius: 5px">
+                         <button type="submit" class="glyphicon glyphicon-search" style="background-color: inherit; border:none"></button>
+                     </form>
+
                 </li>
-                <li ng-show="vm.sessionService.isAuthenticated()">
+
+                <li>
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>
                         {{'Logout.button' | translate}}
