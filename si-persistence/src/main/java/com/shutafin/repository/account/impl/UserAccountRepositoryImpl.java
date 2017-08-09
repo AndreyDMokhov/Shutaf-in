@@ -59,6 +59,13 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
     }
 
     @Override
+    public Long findUserAccountImageId(User user) {
+        return (Long) getSession()
+                .createQuery("SELECT e.userImage.id FROM UserAccount e where e.user = :user")
+                .setParameter("user", user).uniqueResult();
+    }
+
+    @Override
     public void deleteUserAccountImage(User user) {
         getSession()
                 .createQuery("UPDATE UserAccount SET userImage.id = null WHERE user.id = :userId")

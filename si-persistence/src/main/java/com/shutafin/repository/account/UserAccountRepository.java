@@ -16,5 +16,6 @@ public interface UserAccountRepository extends PersistentDao<UserAccount> {
     void updateUserAccountImage(UserImage userImage, User user);
 
     UserImage findUserAccountImage(User user);
+    Long findUserAccountImageId(User user);
     void deleteUserAccountImage(User user);
 }

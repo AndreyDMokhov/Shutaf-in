@@ -1,5 +1,6 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
@@ -47,7 +48,9 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
 
         if (userImageWeb.getId() != null) {
-            userImage = userImageRepository.findById(userImageWeb.getId());
+           try {
+               userImage = userImageService.getUserImage(user, userImageWeb.getId());
+           } catch (ResourceNotFoundException exp) {}
         }
 
         if (userImage == null) {
@@ -62,7 +65,8 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
 
     @Override
     public UserImage findUserAccountImage(User user) {
-        return userAccountRepository.findUserAccountImage(user);
+        Long userImageId = userAccountRepository.findUserAccountImageId(user);
+        return userImageService.getUserImage(user, userImageId);
     }
 
     @Override

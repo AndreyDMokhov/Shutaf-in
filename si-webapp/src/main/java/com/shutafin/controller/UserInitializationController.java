@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.entities.UserSession;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserInit;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserInitializationService;
@@ -27,13 +27,14 @@ public class UserInitializationController {
     @RequestMapping(value = "/init", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<String, UserInit> getAll(@RequestHeader(value = "session_id") String sessionId) {
 
-        UserSession userSession = sessionManagementService.findValidUserSession(sessionId);
-
-        if (userSession == null) {
+        User user = sessionManagementService.findUserWithValidSession(sessionId);
+        if (user == null) {
             throw new AuthenticationException();
         }
+
+        UserInit userInit = userInitializationService.getUserInitData(user);
         return new HashMap<String, UserInit>() {{
-            put("userProfile", userInitializationService.getUserInitData(userSession.getUser()));
+            put("userProfile", userInit);
         }};
     }
 }
