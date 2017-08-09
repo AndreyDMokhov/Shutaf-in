@@ -8,6 +8,6 @@ import com.shutafin.repository.base.PersistentDao;
 
 public interface UserAccountRepository extends PersistentDao<UserAccount> {
     Language findUserLanguage(User user);
-    void updateUserLanguage(Integer languageId, User user);
+    void updateUserLanguage(Language language, User user);
     UserAccount findUserAccountByUser(User user);
 }

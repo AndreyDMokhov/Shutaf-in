@@ -28,11 +28,11 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
     }
 
     @Override
-    public void updateUserLanguage(Integer languageId, User user) {
+    public void updateUserLanguage(Language language, User user) {
         getSession()
-                .createQuery("UPDATE UserAccount SET language.id = :languageId WHERE user.id = :userId")
-                .setParameter("languageId", languageId)
-                .setParameter("userId", user.getId())
+                .createQuery("UPDATE UserAccount SET language = :language WHERE user = :user")
+                .setParameter("language", language)
+                .setParameter("user", user)
         .executeUpdate();
     }
     @Override
