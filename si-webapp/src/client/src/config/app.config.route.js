@@ -92,8 +92,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state("questCarousel",
             {
                 templateUrl:'partials/questionsCarousel/quesCar.html',
-                // controller: "quesCar",
-                // controllerAs: "vm",
+                controller: "CarouselCtrl",
+                controllerAs: "vm",
                 url: "/questions"
             })
     ;

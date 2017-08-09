@@ -36,7 +36,9 @@
     "angular-translate-interpolation-messageformat": "^2.15.1",
     "angular-translate-loader-static-files": "^2.15.1",
     "components-font-awesome": "^4.7.0",
-    "ngstorage": "^0.3.11"
+    "ngstorage": "^0.3.11",
+    "angular-ui-carousel": "^0.1.10"
+//    "angular-carousel": "lifely-angular-carousel#^1.2.0"
   },
   "resolutions": {
     "angular": "1.5.9"
