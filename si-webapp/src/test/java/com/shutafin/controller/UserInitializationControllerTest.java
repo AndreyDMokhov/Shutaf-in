@@ -15,10 +15,8 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -44,7 +42,7 @@ public class UserInitializationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void userSessionUnexists(){
+    public void userSessionDoesNotExist(){
         Mockito.when(sessionManagementService.findValidUserSession(INVALID_SESSION)).thenReturn(null);
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
@@ -73,8 +71,9 @@ public class UserInitializationControllerTest extends BaseTestImpl {
         UserSession userSession = new UserSession();
         userSession.setUser(user);
 
-        Mockito.when(sessionManagementService.findValidUserSession(VALID_SESSION)).thenReturn(userSession);
-        Mockito.when(userInitializationService.getUserInitData(userSession.getUser())).thenReturn(userInit);
+        when(sessionManagementService.findValidUserSession(VALID_SESSION)).thenReturn(userSession);
+        when(userInitializationService.getUserInitData(userSession.getUser())).thenReturn(userInit);
+
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(INITIALIZATION_REQUEST_URL)
@@ -86,16 +85,4 @@ public class UserInitializationControllerTest extends BaseTestImpl {
         Assert.assertNotNull(response.getData());
     }
 
-    private List<HttpHeaders> addSessionIdToHeader(String sessionId){
-        List<HttpHeaders> headers = new ArrayList<>();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("session_id", sessionId);
-        headers.add(httpHeaders);
-        return headers;
-    }
-
-    @After
-    public void tearDown(){
-
-    }
 }
