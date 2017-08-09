@@ -2,35 +2,30 @@ package com.shutafin.model.web.user;
 
 
 import com.shutafin.model.web.DataResponse;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+public class UserInfoWeb implements DataResponse{
 
-public class UserInfoWeb implements DataResponse {
-
-    @Min(value = 1)
     private Long userId;
 
-    @NotBlank
-    private String firstName;
+    private int cityId;
+    private int genderId;
 
-    @NotBlank
-    private String lastName;
-
-    @NotBlank
-    @Email
-    private String email;
+    private String facebookLink;
+    private String profession;
+    private String company;
+    private String phoneNumber;
 
     public UserInfoWeb() {
     }
 
-    public UserInfoWeb(Long userId, String firstName, String lastName, String email) {
+    public UserInfoWeb(Long userId, int cityId, int genderId, String facebookLink, String profession, String company, String phoneNumber) {
         this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+        this.cityId = cityId;
+        this.genderId = genderId;
+        this.facebookLink = facebookLink;
+        this.profession = profession;
+        this.company = company;
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getUserId() {
@@ -41,27 +36,51 @@ public class UserInfoWeb implements DataResponse {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
-    public String getLastName() {
-        return lastName;
+    public int getGenderId() {
+        return genderId;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setGenderId(int genderId) {
+        this.genderId = genderId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFacebookLink() {
+        return facebookLink;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFacebookLink(String facebookLink) {
+        this.facebookLink = facebookLink;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
