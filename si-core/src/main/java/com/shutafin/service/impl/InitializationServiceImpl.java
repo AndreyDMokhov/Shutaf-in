@@ -1,6 +1,5 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.types.LanguageEnum;
 import com.shutafin.repository.initialization.LanguageRepository;
 import com.shutafin.service.InitializationService;
 import com.shutafin.repository.initialization.locale.CityRepository;
@@ -39,17 +38,17 @@ public class InitializationServiceImpl implements InitializationService {
 
     @Override
     public List findAllGendersByLanguage(Integer languageId) {
-        return genderRepository.getLocaleGenders(LanguageEnum.getById(languageId));
+        return genderRepository.getLocaleGenders(languageRepository.findById(languageId));
     }
 
     @Override
     public List findAllCountriesByLanguage(Integer languageId) {
-        return countryRepository.getLocaleCountries(LanguageEnum.getById(languageId));
+        return countryRepository.getLocaleCountries(languageRepository.findById(languageId));
     }
 
     @Override
     public List findAllCitiesByLanguage(Integer languageId) {
-        return cityRepository.getLocaleCities(LanguageEnum.getById(languageId));
+        return cityRepository.getLocaleCities(languageRepository.findById(languageId));
     }
 
 }
