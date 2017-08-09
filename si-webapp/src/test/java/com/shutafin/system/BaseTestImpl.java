@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -92,6 +93,14 @@ public class BaseTestImpl implements BaseTest {
                 .andReturn();
 
         return getResponse(result);
+    }
+
+    protected List<HttpHeaders> addSessionIdToHeader(String sessionId) {
+        List<HttpHeaders> headers = new ArrayList<>();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("session_id", sessionId);
+        headers.add(httpHeaders);
+        return headers;
     }
 
     private Gson getGsonForResponseClass(Class responseClass) {

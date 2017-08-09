@@ -1,7 +1,7 @@
 package com.shutafin.repository.initialization.locale.impl;
 
 import com.shutafin.model.entities.infrastructure.Country;
-import com.shutafin.model.entities.types.LanguageEnum;
+import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.initialization.CountryResponseDTO;
 import com.shutafin.repository.initialization.locale.CountryRepository;
 import com.shutafin.repository.base.AbstractConstEntityDao;
@@ -13,7 +13,7 @@ import java.util.List;
 public class CountryRepositoryImpl extends AbstractConstEntityDao<Country> implements CountryRepository {
 
     @Override
-    public List<CountryResponseDTO> getLocaleCountries(LanguageEnum language) {
+    public List<CountryResponseDTO> getLocaleCountries(Language language) {
 
         StringBuilder hql = new StringBuilder();
         hql.append("select new com.shutafin.model.web.initialization.CountryResponseDTO ");
