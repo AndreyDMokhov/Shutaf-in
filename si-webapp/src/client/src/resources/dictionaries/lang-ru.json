@@ -72,8 +72,6 @@
   "Settings.security.form.newPassword": "Новый пароль",
   "Settings.security.form.confirmPassword": "Подтверждение пароля",
   "Settings.security.form.confirmErrorPassword": "Пароли не совпадают. Введите новый пароль и подтвердите его",
-
-
   "Settings.security.form.btn.loading": "Загрузка данных",
   "Settings.security.msg.success": "Изменения сохранены",
   "Settings.security.firstEmailConfirmed.success": "Электронный адрес подтвержден. Ожидается подтверждение со второго электронного адреса",
@@ -86,5 +84,23 @@
   "Settings.personal.form.lastName":"Фамилия",
   "Settings.personal.form.button.submit":"Применить",
   "Settings.personal.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
-  "Settings.personal.message.save.success":"Пользователь успешно сохранен"
+  "Settings.personal.message.save.success":"Пользователь успешно сохранен",
+
+  "SECTION" : "POST REGISTRATION",
+  "PostRegistration.form.gender": "Пол",
+  "PostRegistration.form.country": "Страна",
+  "PostRegistration.form.city": "Город",
+  "PostRegistration.form.facebook": "Facebook",
+  "PostRegistration.form.profession": "Профессия",
+  "PostRegistration.form.company": "Компания",
+  "PostRegistration.form.phoneNumber": "Номер телефона",
+  "PostRegistration.btn.addSettings": "Дополнительная информация",
+  "PostRegistration.title": "Личная информация",
+  "PostRegistration.btn.submit":  "Сохранить",
+  "PostRegistration.message.save.success": "Данные успешно сохранены"
+
+
+
+
+
 }

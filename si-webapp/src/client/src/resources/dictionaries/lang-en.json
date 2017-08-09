@@ -88,5 +88,18 @@
   "Settings.security.msg.success": "Changes saved",
   "Settings.security.firstEmailConfirmed.success": "Email confirmed. Expecting confirmation from the other email address",
   "Settings.security.secondEmailConfirmed.success": "Email confirmed. Email has been successfully changed",
-  "Settings.security.msg.successRequest": "The request was sent successfully"
+  "Settings.security.msg.successRequest": "The request was sent successfully",
+
+  "SECTION" : "POST REGISTRATION",
+  "PostRegistration.form.gender": "Gender",
+  "PostRegistration.form.country": "Country",
+  "PostRegistration.form.city": "City",
+  "PostRegistration.form.facebook": "Facebook",
+  "PostRegistration.form.profession": "Profession",
+  "PostRegistration.form.company": "Company",
+  "PostRegistration.form.phoneNumber": "Phone number ",
+  "PostRegistration.btn.addSettings": "Show additional settings",
+  "PostRegistration.title": "User settings",
+  "PostRegistration.btn.submit":  "Submit",
+  "PostRegistration.message.save.success": "Has been successfully saved"
 }
