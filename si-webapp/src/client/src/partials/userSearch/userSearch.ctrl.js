@@ -1,31 +1,41 @@
-app.controller("userSearchController", function($state, $sessionStorage, $event, sessionService, userSearchModel, $stateParams){
+app.controller("userSearchController", function($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter){
     var vm = this;
 
-    vm.userQuery = {};
-    vm.listUsersByQuery = {};
+    vm.fullName;
+    vm.userSearchList = {};
+    
+    function activate() {
+        userSearch();
+    }
 
     function userSearch() {
-        vm.dataLoading = true;
-        var urlLink = $stateParams.link;
-        if (urlLink === undefined || urlLink === null || urlLink === "") {
-            $state.go("error", {'code': '404'});
-        }
-        if(vm.userRequest === null)
-            return alert("Enter search query");
-        userSearchModel.userSearch(vm.userQuery).then(
+
+        if(vm.fullName === null)
+            notify.set($filter('translate')("Search.noRequest"), {type: 'error'});
+
+        userSearchModel.userSearch(vm.fullName).then(
 
             function (success) {
-                for(user in vm.listUsersByQuery){
 
-                }
-
+                vm.userSearchList=success;
+                // if(vm.userSearchList.toString() == "")
+                //     notify.set($filter('translate')("Search.notFound"), {type: 'error'});
 
             }, function (error) {
-
+                    notify.set($filter('translate')("Search.notFound"), {type: 'error'});
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
 
+                if (error.data.error.errorTypeCode === 'AUT') {
+
+                    $state.go("error", {'code': '401'});
+                } else {
+
+                    notify.set($filter('translate')("Search.notFound"), {type: 'error'});
+                }
             })
     };
 
-    userSearch();
+    activate();
+
+    vm.userSearch=userSearch;
 })

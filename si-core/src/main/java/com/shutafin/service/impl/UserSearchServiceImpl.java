@@ -1,7 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserSearch;
+import com.shutafin.repository.common.UserImageRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.UserSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ public class UserSearchServiceImpl implements UserSearchService{
     UserSearchService userSearchService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserImageRepository userImageRepository;
 
     @Override
     @Transactional
@@ -33,7 +35,7 @@ public class UserSearchServiceImpl implements UserSearchService{
         }
         List<UserSearchWeb> userSearchWebList = new ArrayList<>();
         for (User u : users) {
-            userSearchWebList.add(new UserSearchWeb(u.getFirstName(), u.getLastName()));
+            userSearchWebList.add(new UserSearchWeb(u.getFirstName(), u.getLastName(), userImageRepository.findUserImage(u).getLocalPath()));
         }
         return userSearchWebList;
     };

@@ -13,8 +13,8 @@ public class UserSearchWeb implements DataResponse {
     public UserSearchWeb() {
     }
 
-    public UserSearchWeb(String firstName, String lastName/*, String image*/) {
-    //    this.image = image;
+    public UserSearchWeb(String firstName, String lastName, String image) {
+        this.image = image;
         this.firstName = firstName;
         this.lastName = lastName;
     }
