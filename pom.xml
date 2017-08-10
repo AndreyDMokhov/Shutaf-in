@@ -274,6 +274,13 @@
     </properties>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+        </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -285,9 +292,32 @@
                         <target>1.8</target>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>2.17</version>
+                    <executions>
+                        <execution>
+                            <id>checkstyle</id>
+                            <phase>validate</phase>
+                            <configuration>
+                                <configLocation>si-common/src/main/resource/checkstyle/ruleset.xml</configLocation>
+                                <encoding>UTF-8</encoding>
+                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                                <consoleOutput>true</consoleOutput>
+                                <failsOnError>true</failsOnError>
+                                <failsOnViolation>true</failsOnViolation>
+                                <linkXRef>false</linkXRef>
+                            </configuration>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
-
 
 </project>
