@@ -26,8 +26,8 @@ public class ChatMessage extends AbstractEntity {
     @Convert(converter = ChatMessageTypeConverter.class)
     private ChatMessageType messageType;
 
-    @Column(name = "PERMITED_USERS", length = 200)
-    private String permitedUsers;
+    @Column(name = "PERMITTED_USERS", length = 200)
+    private String permittedUsers;
 
     public ChatMessage() {
     }
@@ -64,11 +64,11 @@ public class ChatMessage extends AbstractEntity {
         this.messageType = messageType;
     }
 
-    public String getPermitedUsers() {
-        return permitedUsers;
+    public String getPermittedUsers() {
+        return permittedUsers;
     }
 
-    public void setPermitedUsers(String permitedUsers) {
-        this.permitedUsers = permitedUsers;
+    public void setPermittedUsers(String permittedUsers) {
+        this.permittedUsers = permittedUsers;
     }
 }

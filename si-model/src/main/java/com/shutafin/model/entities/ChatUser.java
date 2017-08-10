@@ -25,6 +25,7 @@ public class ChatUser extends AbstractEntity {
     private Date joinDate;
 
     @Column(name = "EXIT_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date exitDate;
 
     public ChatUser() {

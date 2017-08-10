@@ -16,7 +16,7 @@ public enum ChatMessageType {
 
     public static ChatMessageType getById(Integer id) {
         if (id == null) {
-            throw new IllegalArgumentException("Message type ID cannot be null");
+            return null;
         }
 
         for (ChatMessageType chatMessageType : values()) {
