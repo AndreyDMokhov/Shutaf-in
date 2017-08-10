@@ -61,13 +61,4 @@ public class LogoutControllerTest extends BaseTestImpl{
         Assert.assertNotNull(response.getError());
         Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
     }
-
-
-    public List<HttpHeaders> addSessionIdToHeader(String sessionId){
-        List<HttpHeaders> headers = new ArrayList<>();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("session_id", sessionId);
-        headers.add(httpHeaders);
-        return headers;
-    }
 }
