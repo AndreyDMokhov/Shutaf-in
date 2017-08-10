@@ -12,21 +12,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class LogoutControllerTest extends BaseTestImpl{
 
-    public static final String LOGOUT_REQUEST_URL = "/logout/";
+    private static final String LOGOUT_REQUEST_URL = "/logout/";
 
     @MockBean
     private LogoutService logoutService;
@@ -61,14 +60,5 @@ public class LogoutControllerTest extends BaseTestImpl{
         APIWebResponse response = getResponse(request);
         Assert.assertNotNull(response.getError());
         Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
-    }
-
-
-    public List<HttpHeaders> addSessionIdToHeader(String sessionId){
-        List<HttpHeaders> headers = new ArrayList<>();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("session_id", sessionId);
-        headers.add(httpHeaders);
-        return headers;
     }
 }
