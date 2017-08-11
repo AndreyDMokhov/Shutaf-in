@@ -24,6 +24,7 @@ public class EmailChangeController {
     private EmailChangeConfirmationService emailChangeConfirmationService;
 
     @RequestMapping(value = "/change-email-request", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @SessionResponse
     public void emailChangeRequest (@RequestBody @Valid EmailChangeConfirmationWeb emailChangeConfirmationWeb,
                                     BindingResult result,
                                     @AuthenticatedUser User user) {
