@@ -13,31 +13,23 @@ import com.shutafin.model.web.LoginWebModel;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserLoginLogRepository;
 import com.shutafin.repository.common.UserRepository;
-import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.LoginService;
 import com.shutafin.service.PasswordService;
-import org.apache.commons.lang3.time.DateUtils;
+import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.UUID;
-
-import static java.lang.Thread.sleep;
 
 @Service
 @Transactional
 public class LoginServiceImpl implements LoginService {
 
-    private static final Boolean IS_VALID = true;
-    private static final int NUMBER_DAYS_EXPIRATION = 30;
-    private static final Boolean IS_EXPIRABLE = false;
     private static final int N_MAX_TRIES = 10;
     private static final int TIME_FOR_TRIES_IN_MIN = 10;
 
     @Autowired
-    private UserSessionRepository userSessionRepository;
+    private SessionManagementService sessionManagementService;
 
     @Autowired
     private UserRepository userPersistence;
@@ -56,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
         User user = findUserByEmail(loginWeb);
         checkUserAccountStatus(user);
         checkUserPassword(loginWeb, user);
-        return generateSession(user);
+        return sessionManagementService.generateNewSession(user);
     }
 
     private void checkUserAccountStatus(User user) {
@@ -71,17 +63,6 @@ public class LoginServiceImpl implements LoginService {
         if (accountStatus == AccountStatus.NEW){
             throw new AccountNotConfirmedException();
         }
-    }
-
-    private String generateSession(User user) {
-        UserSession userSession = new UserSession();
-        userSession.setUser(user);
-        userSession.setValid(IS_VALID);
-        userSession.setSessionId(UUID.randomUUID().toString());
-        userSession.setExpirationDate(DateUtils.addDays(new Date(), (NUMBER_DAYS_EXPIRATION)));
-        userSession.setExpirable(IS_EXPIRABLE);
-        userSessionRepository.save(userSession);
-        return userSession.getSessionId();
     }
 
     private void checkUserPassword(LoginWebModel loginWeb, User user) throws AuthenticationException {
