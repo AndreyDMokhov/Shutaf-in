@@ -11,14 +11,14 @@ public class LanguageResponseDTO extends BaseResponseDTO implements DataResponse
 
     public LanguageResponseDTO(Integer id, String description) {
         super(id, description);
-//        this.nativeName = nativeName;
+        this.nativeName = nativeName;
     }
 
-//    public String getNativeName() {
-//        return nativeName;
-//    }
+    public String getNativeName() {
+        return nativeName;
+    }
 
-//    public void setNativeName(String nativeName) {
-//        this.nativeName = nativeName;
-//    }
+    public void setNativeName(String nativeName) {
+        this.nativeName = nativeName;
+    }
 }

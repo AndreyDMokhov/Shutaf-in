@@ -7,8 +7,6 @@ import com.shutafin.repository.base.AbstractEntityDao;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 

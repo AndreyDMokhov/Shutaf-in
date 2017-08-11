@@ -14,7 +14,7 @@ public class UserLoginLog extends AbstractEntity {
     @OneToOne
     private User user;
 
-    @Column(name = "IS_LOGIN_SUCCESS")
+    @Column(name = "IS_LOGIN_SUCCESS", nullable = false)
     private Boolean isLoginSuccess;
 
     public UserLoginLog() {
