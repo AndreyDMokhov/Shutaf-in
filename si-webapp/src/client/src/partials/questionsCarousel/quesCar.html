@@ -1,299 +1,36 @@
-<!--hello-->
+<!--<div class="col-md-6 col-md-offset-3">-->
 
-<!--<div ng-carousel ng-carousel-name="example-carousel1">-->
-<!--<slidecontainer class="carousel-slides">-->
-<!--<slide class="carousel-example">Slide 1</slide>-->
-<!--<slide class="carousel-example">Slide 2</slide>-->
-<!--<slide class="carousel-example">Slide 3</slide>-->
-<!--<slide class="carousel-example">Slide 4</slide>-->
-<!--<slide class="carousel-example">Slide 5</slide>-->
-<!--<slide class="carousel-example">Slide 6</slide>-->
-<!--</slidecontainer>-->
+    <!--<ui-carousel-->
+            <!--slides="vm.slides"-->
+            <!--slides-to-show="1"-->
+            <!--slides-to-scroll="1"-->
+            <!--initial-slide="1"-->
+            <!--autoplay="false"-->
+            <!--dots="true">-->
+
+        <!--<carousel-item>-->
+            <!--<h3 >{{ item.firstName}}</h3>-->
+            <!--&lt;!&ndash;<div class="card">{{item.firstName}}</div>&ndash;&gt;-->
+        <!--</carousel-item>-->
+
+
+        <!--&lt;!&ndash; For customize carousel next, previous button &ndash;&gt;-->
+        <!--<carousel-prev>-->
+            <!--&lt;!&ndash; placed your previous button here &ndash;&gt;-->
+            <!--<button>Prev</button>-->
+            <!--&lt;!&ndash; end &ndash;&gt;-->
+        <!--</carousel-prev>-->
+
+        <!--<carousel-next>-->
+            <!--&lt;!&ndash; placed your next button here &ndash;&gt;-->
+            <!--<button>Next</button>-->
+            <!--&lt;!&ndash; end &ndash;&gt;-->
+        <!--</carousel-next>-->
+
+    <!--</ui-carousel>-->
 <!--</div>-->
-<!--<div class="carousel-arrow carousel-arrow-left">-->
-<!--<button ng-click="Carousel.get('example-carousel2').previous()">back</button>-->
-<!--</div>-->
-<!--<div class="carousel-arrow carousel-arrow-right">-->
-<!--<button ng-click="Carousel.get('example-carousel2').next()">forth</button>-->
-<!--</div>-->
 
-<div ></div>
-
-<div class="col-md-6 col-md-offset-3">
-
-    <ui-carousel
-            slides="vm.slides"
-            slides-to-show="1"
-            slides-to-scroll="1"
-            initial-slide="1"
-            autoplay="false"
-            dots="true">
-
-        <carousel-item>
-            <h3 >{{ item.firstName}}</h3>
-            <!--<div class="card">{{item.firstName}}</div>-->
-        </carousel-item>
-
-
-        <!-- For customize carousel next, previous button -->
-        <carousel-prev>
-            <!-- placed your previous button here -->
-            <button>Prev</button>
-            <!-- end -->
-        </carousel-prev>
-
-        <carousel-next>
-            <!-- placed your next button here -->
-            <button>Next</button>
-            <!-- end -->
-        </carousel-next>
-
-    </ui-carousel>
+<div >
+    <h1 style="text-align: center" class="title">Questions</h1>
+    <quiz/>
 </div>
-
-
-<!--<div ng-controller="CarouselCtrl">-->
-<!--<div style="height: 305px">-->
-<!--<div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">-->
-<!--<div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">-->
-<!--<img ng-src="{{slide.image}}" style="margin:auto;">-->
-<!--<div class="carousel-caption">-->
-<!--<h4>Slide {{slide.id}}</h4>-->
-<!--<p>{{slide.text}}</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--<a role="button" href="" class="right carousel-control" ng-click="next()" ng-class="{ disabled: isNextDisabled() }" ng-show="slides.length > 1">-->
-<!--<span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>-->
-<!--<span class="sr-only">next</span>-->
-<!--</a>-->
-<!--<button role="button" href="" class="carousel-control" ng-click="next()" ng-class="{ disabled: isNextDisabled() }" ng-show="slides.length > 1">-->
-<!--&gt; nxt</button>-->
-<!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="col-md-6">&ndash;&gt;-->
-<!--&lt;!&ndash;<button type="button" class="btn btn-info" ng-click="addSlide()">Add Slide</button>&ndash;&gt;-->
-<!--&lt;!&ndash;<button type="button" class="btn btn-info" ng-click="randomize()">Randomize slides</button>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="checkbox">&ndash;&gt;-->
-<!--&lt;!&ndash;<label>&ndash;&gt;-->
-<!--&lt;!&ndash;<input type="checkbox" ng-model="noWrapSlides">&ndash;&gt;-->
-<!--&lt;!&ndash;Disable Slide Looping&ndash;&gt;-->
-<!--&lt;!&ndash;</label>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="col-md-6">&ndash;&gt;-->
-<!--&lt;!&ndash;Interval, in milliseconds: <input type="number" class="form-control" ng-model="myInterval">&ndash;&gt;-->
-<!--&lt;!&ndash;<br />Enter a negative number or 0 to stop the interval.&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--</div>-->
-
-
-<!--<!DOCTYPE html>-->
-<!--<html >-->
-
-<!--<head>-->
-<!--<script data-require="angular-route@*" data-semver="1.4.8" src="https://code.angularjs.org/1.4.8/angular-route.js"></script>-->
-<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>-->
-<!--<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.2.1.js"></script>-->
-<!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />-->
-<!--</head>-->
-
-<!--<body>-->
-<!--<div>-->
-
-<!--Write your name here       <input type="text" ng-model="name" />-->
-
-<!--Hi {{name}} Those are your photos:-->
-<!--<div ng-controller="CarouselDemoCtrl" id="slides_control">-->
-<!--<div>-->
-<!--<uib-carousel interval="myInterval">-->
-<!--<uib-slide ng-repeat="slide in slides" active="active" index="$index">-->
-<!--&lt;!&ndash;<span>{{x}}</span>&ndash;&gt;-->
-<!--<img ng-src="{{slide.image}}" style="margin:auto;" />-->
-
-<!--<div class="carousel-caption">-->
-<!--<h4>Slide {{$index+1}}</h4>-->
-<!--</div>-->
-<!--</uib-slide>-->
-<!--</uib-carousel>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--</div>-->
-<!--</body>-->
-
-<!--</html>-->
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" ng-app='myApp'>-->
-<!--<head>-->
-<!--<meta charset="UTF-8">-->
-<!--<title>Title</title>-->
-<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">-->
-<!--<script src="bower_components/angular/angular.min.js"></script>-->
-<!--<script src="bower_components/angular-base64-upload/src/angular-base64-upload.js"></script>-->
-<!--<script src="bower_components/angular-file-upload/dist/angular-file-upload.js"></script>-->
-<!--<script src="bower_components/angular-carousel/dist/angular-carousel.min.js"> </script>-->
-<!--<script src="bower_components/angular-touch/angular-touch.min.js"> </script>-->
-<!--<link href="bower_components/angular-carousel/dist/angular-carousel.css" rel="stylesheet" type="text/css" />-->
-<!--<script src="script.js"></script>-->
-<!--<style>-->
-<!--body{padding-bottom: 50px;}-->
-<!--.alert{margin-top: 15px;}-->
-<!--</style>-->
-<!--</head>-->
-<!--&lt;!&ndash;<body>&ndash;&gt;-->
-<!--&lt;!&ndash;<div ng-app="app">&ndash;&gt;-->
-<!--&lt;!&ndash;<div ng-controller="AppController">&ndash;&gt;-->
-<!--&lt;!&ndash;<input type="file" nv-file-select uploader="uploader"/><br/>&ndash;&gt;-->
-<!--&lt;!&ndash;<ul>&ndash;&gt;-->
-<!--&lt;!&ndash;<li ng-repeat="item in uploader.queue">&ndash;&gt;-->
-<!--&lt;!&ndash;Name: <span ng-bind="item.file.name"></span><br/>&ndash;&gt;-->
-<!--&lt;!&ndash;<button ng-click="item.upload()">upload</button>&ndash;&gt;-->
-<!--&lt;!&ndash;</li>&ndash;&gt;-->
-<!--&lt;!&ndash;</ul>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-
-<!--&lt;!&ndash;<script>&ndash;&gt;-->
-<!--&lt;!&ndash;angular&ndash;&gt;-->
-<!--&lt;!&ndash;.module('app', ['angularFileUpload'])&ndash;&gt;-->
-<!--&lt;!&ndash;.controller('AppController', function($scope, FileUploader) {&ndash;&gt;-->
-<!--&lt;!&ndash;$scope.uploader = new FileUploader();&ndash;&gt;-->
-<!--&lt;!&ndash;});&ndash;&gt;-->
-<!--&lt;!&ndash;</script>&ndash;&gt;-->
-
-
-<!--&lt;!&ndash;</body>&ndash;&gt;-->
-
-
-<!--<body ng-controller="ctrl as vm">-->
-<!--Hello!-->
-<!--<ul>-->
-<!--<li ng-repeat="x in vm.user">{{x}}</li>-->
-<!--</ul>-->
-<!--&lt;!&ndash;<img src="flower1.jpg" alt="">&ndash;&gt;-->
-
-<!--&lt;!&ndash;<ul rn-carousel class="image">&ndash;&gt;-->
-<!--&lt;!&ndash;<li><img ng-src="flower1.jpg" alt=""></li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li><img ng-src="flower2.jpg" alt=""></li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li>slide #3</li>&ndash;&gt;-->
-<!--&lt;!&ndash;</ul>&ndash;&gt;-->
-<!--<ul rn-carousel class="image">-->
-<!--<li ng-repeat="image in vm.slides">-->
-<!--<div class="layer">{{ image.image }}</div>-->
-<!--</li>-->
-<!--</ul>-->
-
-
-<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
-<!--&lt;!&ndash;<form name="form">&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="input-group">&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<label for="file">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<img src="{{vm.avatarImage}}" alt="" class="img-responsive"&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;onmouseover="style='cursor: pointer ' " onmouseout=" style='cursor: auto '"&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;uib-tooltip="Click to change image!" tooltip-placement="bottom"&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;tooltip-class="customClass">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;</label>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;<input ng-hide="false" id="file" type="file" ng-model="file" name="file"&ndash;&gt;-->
-<!--&lt;!&ndash;base-sixty-four-input onload="vm.onLoad()" maxsize="500"&ndash;&gt;-->
-<!--&lt;!&ndash;accept="image/*">&ndash;&gt;-->
-<!--&lt;!&ndash;<button ng-click="vm.onLoad()">push</button>&ndash;&gt;-->
-<!--&lt;!&ndash;<input  ng-click="vm.onLoad()" type="text">&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<span>{{file.base64.substring(0, 30)}}...</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</form>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<div class="alert" ng-class="{'alert-danger': form.file.$invalid, 'alert-success': form.file.$valid}">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;form.file.$error:&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;{{form.file.$error}}&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;<table class="table table-bordered table-striped">&ndash;&gt;-->
-<!--&lt;!&ndash;<tr>&ndash;&gt;-->
-<!--&lt;!&ndash;<th>filename</th>&ndash;&gt;-->
-<!--&lt;!&ndash;<th>filetype</th>&ndash;&gt;-->
-<!--&lt;!&ndash;<th>filesize (<i><small>KB</small></i>)</th>&ndash;&gt;-->
-<!--&lt;!&ndash;<th>base64</th>&ndash;&gt;-->
-<!--&lt;!&ndash;</tr>&ndash;&gt;-->
-<!--&lt;!&ndash;<tr ng-show="file">&ndash;&gt;-->
-<!--&lt;!&ndash;<td>{{file.filename}}</td>&ndash;&gt;-->
-<!--&lt;!&ndash;<td>{{file.filetype}}</td>&ndash;&gt;-->
-<!--&lt;!&ndash;<td>{{file.filesize / 1000}}</td>&ndash;&gt;-->
-<!--&lt;!&ndash;<td>{{file.base64.substring(0, 30)}}...</td>&ndash;&gt;-->
-<!--&lt;!&ndash;</tr>&ndash;&gt;-->
-<!--&lt;!&ndash;<tr>&ndash;&gt;-->
-<!--&lt;!&ndash;<td colspan="4" ng-show="!file">&ndash;&gt;-->
-<!--&lt;!&ndash;<small><i>No file selected.</i></small>&ndash;&gt;-->
-<!--&lt;!&ndash;</td>&ndash;&gt;-->
-<!--&lt;!&ndash;</tr>&ndash;&gt;-->
-<!--&lt;!&ndash;</table>&ndash;&gt;-->
-<!--&lt;!&ndash;<hr>&ndash;&gt;-->
-<!--&lt;!&ndash;</form>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
-<!--&lt;!&ndash;<form name="form" type='file' ng-model='yourModel' base-sixty-four-input >&ndash;&gt;-->
-<!--&lt;!&ndash;<h3>Single File Selection</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="input-group">&ndash;&gt;-->
-<!--&lt;!&ndash;<label for="file">Select File&ndash;&gt;-->
-<!--&lt;!&ndash;<img src="webapp/default_avatar.png" alt="" style="width: 100px;max-height: 100px"&ndash;&gt;-->
-<!--&lt;!&ndash;onmouseover="style='cursor: pointer ; width: 110px ;max-height: 110px' " onmouseout=" style='cursor: auto ; width: 100px ;max-height: 100px'  "&ndash;&gt;-->
-
-
-<!--&lt;!&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;</label>&ndash;&gt;-->
-<!--&lt;!&ndash;<input ng-hide="false" id="file" type="file"  ng-model="file" name="file" base-sixty-four-input required onload="vm.onLoad12()"&ndash;&gt;-->
-<!--&lt;!&ndash;maxsize="500" accept="image/*">&ndash;&gt;-->
-<!--&lt;!&ndash;<span class="help-block">&ndash;&gt;-->
-<!--&lt;!&ndash;<ul>&ndash;&gt;-->
-<!--&lt;!&ndash;<li>required</li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li>maxsize = 500</li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li>accept = image/*</li>&ndash;&gt;-->
-<!--&lt;!&ndash;</ul>&ndash;&gt;-->
-<!--&lt;!&ndash;</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="alert" ng-class="{'alert-danger': form.file.$invalid, 'alert-success': form.file.$valid}">&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;form.file.$error:&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;{{form.file.$error}}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<b>Model Value:</b>&ndash;&gt;-->
-<!--&lt;!&ndash;<table class="table table-bordered table-striped">&ndash;&gt;-->
-<!--&lt;!&ndash;<tr>&ndash;&gt;-->
-<!--&lt;!&ndash;<th>filename</th>&ndash;&gt;-->
-<!--&lt;!&ndash;<th>filetype</th>&ndash;&gt;-->
-<!--&lt;!&ndash;<th>filesize (<i><small>KB</small></i>)</th>&ndash;&gt;-->
-<!--&lt;!&ndash;<th>base64</th>&ndash;&gt;-->
-<!--&lt;!&ndash;</tr>&ndash;&gt;-->
-<!--&lt;!&ndash;<tr ng-show="file">&ndash;&gt;-->
-<!--&lt;!&ndash;<td>{{file.filename}}</td>&ndash;&gt;-->
-<!--&lt;!&ndash;<td>{{file.filetype}}</td>&ndash;&gt;-->
-<!--&lt;!&ndash;<td>{{file.filesize / 1000}}</td>&ndash;&gt;-->
-<!--&lt;!&ndash;<td>{{file.base64.substring(0, 30)}}...</td>&ndash;&gt;-->
-<!--&lt;!&ndash;</tr>&ndash;&gt;-->
-<!--&lt;!&ndash;<tr>&ndash;&gt;-->
-<!--&lt;!&ndash;<td colspan="4" ng-show="!file">&ndash;&gt;-->
-<!--&lt;!&ndash;<small><i>No file selected.</i></small>&ndash;&gt;-->
-<!--&lt;!&ndash;</td>&ndash;&gt;-->
-<!--&lt;!&ndash;</tr>&ndash;&gt;-->
-<!--&lt;!&ndash;</table>&ndash;&gt;-->
-<!--&lt;!&ndash;<hr>&ndash;&gt;-->
-<!--&lt;!&ndash;<h3>Multiple Files Selection</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;</form>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--</body>-->
-<!--</html>-->
-
-
-<!--<div>-->
-<!--<uib-carousel interval="myInterval">-->
-<!--<uib-slide ng-repeat="slide in slides" active="active" index="$index">-->
-<!--&lt;!&ndash;<span>{{x}}</span>&ndash;&gt;-->
-<!--<img ng-src="{{slide.image}}" style="margin:auto;" />-->
-
-<!--<div class="carousel-caption">-->
-<!--<h4>Slide {{$index+1}}</h4>-->
-<!--</div>-->
-<!--</uib-slide>-->
-<!--</uib-carousel>-->
-<!--</div>-->
