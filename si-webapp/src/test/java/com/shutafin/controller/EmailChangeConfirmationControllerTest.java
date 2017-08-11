@@ -37,51 +37,111 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     private static final String EMAIL_CHANGE_REQUEST_URL = "/users/account/change-email-request/";
+    private static final String VALID_SESSION_ID = "validsessionid";
+    private static final String SESSION_ID_HEADER_NAME = "session_id";
+    private static final String ADD_IMAGE_VALID_JSON_BODY = "{\"userPassword\": \"11111111\", \"newEmail\": \"aaa@aaaa\"}";
+    private static final String INVALID_SESSION_ID = "invalidsessionid";
 
     private static final String INP_PASSWORD_NOT_NULL = "INP.password.NotNull";
     private static final String INP_NEW_EMAIL_NOT_NULL = "INP.newEmail.NotNull";
     private List<String> errorList;
 
+    private User validUser;
+
     @MockBean
     private SessionManagementService sessionManagementService;
-
     @MockBean
     private EmailChangeConfirmationService emailChangeConfirmationService;
 
     @Before
     public void setUp() {
-        Mockito.when(sessionManagementService.findUserWithValidSession(anyString())).thenReturn(new User());
-        Mockito.doNothing().when(emailChangeConfirmationService).emailChangeRequest(any(User.class),
-                                                                any(EmailChangeConfirmationWeb.class));
+        validUser = createUser();
+        Mockito.when(sessionManagementService.findUserWithValidSession(Mockito.anyString())).thenReturn(validUser);
+        Mockito.doNothing().when(emailChangeConfirmationService)
+                .emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
+    }
+    @Test
+    public void emailChangeRequest_Positive() {
+        List<HttpHeaders> sessionHeaders = new ArrayList<>();
+        sessionHeaders.add(new HttpHeaders());
+        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        ControllerRequest request = ControllerRequest.builder()
+                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
+                .setHttpMethod(HttpMethod.POST)
+                .setUrl(EMAIL_CHANGE_REQUEST_URL)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
 
+        Assert.assertNull(apiResponse.getError());
     }
 
     @Test
-    public void emailChangeRequest_Positive() {
-        EmailChangeConfirmationWeb emailChangeConfirmationWeb = new EmailChangeConfirmationWeb();
-        emailChangeConfirmationWeb.setNewEmail("aaa@site.com");
-        emailChangeConfirmationWeb.setUserPassword("11111111");
-
+    public void emailChangeRequest_IncorrectSessionId(){
+        List<HttpHeaders> sessionHeaders = new ArrayList<>();
+        sessionHeaders.add(new HttpHeaders());
+        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(EMAIL_CHANGE_REQUEST_URL)
+                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
                 .setHttpMethod(HttpMethod.POST)
-                .setRequestObject(emailChangeConfirmationWeb)
+                .setUrl(EMAIL_CHANGE_REQUEST_URL)
+                .setHeaders(sessionHeaders)
                 .build();
+        APIWebResponse apiResponse = getResponse(request);
 
-        APIWebResponse response = getResponse(request);
-        Assert.assertNull(response.getError());
+        Assert.assertNotNull(apiResponse.getError());
+        Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
     }
 
-    /*private void testEmailChangeConfirmationWeb(String json, List<String> errorList) {
-        APIWebResponse response = getResponse(EMAIL_CHANGE_REQUEST_URL, json, HttpMethod.POST);
-        Assert.assertNotNull(response.getError());
-        InputValidationError inputValidationError = (InputValidationError) response.getError();
+    @Test
+    public void emailChangeRequest_IncorrectHeader(){
+        List<HttpHeaders> sessionHeaders = new ArrayList<>();
+        sessionHeaders.add(new HttpHeaders());
+        sessionHeaders.get(0).set("sesion", VALID_SESSION_ID);
+        ControllerRequest request = ControllerRequest.builder()
+                .setHttpMethod(HttpMethod.POST)
+                .setUrl(EMAIL_CHANGE_REQUEST_URL)
+                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
+
+        Assert.assertNotNull(apiResponse.getError());
+        Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
+    }
+
+    @Test
+    public void emailChangeRequest_AllFieldsNull(){
+        String emailChangeRequestRequestWebJson = "{\"userPassword\":null,\"newEmail\":null}";
+        errorList.add(INP_NEW_EMAIL_NOT_NULL);
+        errorList.add(INP_PASSWORD_NOT_NULL);
+        testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
+    }
+
+
+    private User createUser() {
+        User user = new User();
+        user.setFirstName("Alexander");
+        user.setLastName("Matsievsky");
+        user.setEmail("matsievsky@gmail.com");
+        return user;
+    }
+
+    private void testEmailChangeConfirmationWeb(String json, List<String> errorList) {
+        ControllerRequest request = ControllerRequest.builder()
+                .setHttpMethod(HttpMethod.POST)
+                .setUrl(EMAIL_CHANGE_REQUEST_URL)
+                .setJsonContext(json)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
+        Assert.assertNotNull(apiResponse.getError());
+        InputValidationError inputValidationError = (InputValidationError) apiResponse.getError();
         Collections.sort(errorList);
         Collections.sort(inputValidationError.getErrors());
         Assert.assertEquals(errorList, inputValidationError.getErrors());
-    }*/
+    }
 }
