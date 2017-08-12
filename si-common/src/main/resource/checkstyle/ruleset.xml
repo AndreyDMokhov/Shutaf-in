@@ -69,6 +69,8 @@
 
     <module name="TreeWalker">
 
+        <property name="severity" value="warning"/>
+
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <!--<module name="JavadocMethod"/>-->
@@ -83,6 +85,7 @@
         <module name="LocalVariableName"/>
         <module name="MemberName"/>
         <module name="MethodName"/>
+
         <module name="PackageName"/>
         <module name="ParameterName"/>
         <module name="StaticVariableName"/>
@@ -93,9 +96,7 @@
         <module name="AvoidStarImport"/>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
-        <module name="UnusedImports">
-            <property name="processJavadoc" value="false"/>
-        </module>
+
 
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
@@ -157,6 +158,14 @@
         <!--<module name="TodoComment"/>-->
         <!--<module name="UpperEll"/>-->
 
+    </module>
+
+    <module name="TreeWalker">
+        <property name="severity" value="error"/>
+
+        <module name="UnusedImports">
+            <property name="processJavadoc" value="false"/>
+        </module>
     </module>
 
 </module>
