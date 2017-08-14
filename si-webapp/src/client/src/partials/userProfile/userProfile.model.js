@@ -1,9 +1,9 @@
-app.factory('userProfileModel', function (Restangular,$sessionStorage) {
+app.factory('userProfileModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
         RestangularProvider.setBaseUrl('/api/users/settings');
-        RestangularProvider.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
+        RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
     });
 
     function addImage(params) {

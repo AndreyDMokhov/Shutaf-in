@@ -3,7 +3,6 @@ package com.shutafin.controller;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserImageService;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 
@@ -28,17 +28,18 @@ public class UserImageController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public APIWebResponse getUserImage(@AuthenticatedUser User user, @PathVariable(value = "id") Long userImageId) {
+    public UserImageWeb getUserImage(@AuthenticatedUser User user, @PathVariable(value = "id") Long userImageId) {
 
         UserImage image = userImageService.getUserImage(user, userImageId);
-        APIWebResponse apiWebResponse = new APIWebResponse();
-        apiWebResponse.setData(new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime()));
-        return apiWebResponse;
+
+        return new UserImageWeb(
+                        image.getId(),
+                        image.getImageStorage().getImageEncoded(),
+                        image.getCreatedDate().getTime());
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public APIWebResponse addUserImage(@AuthenticatedUser User user,
+    public UserImageWeb addUserImage(@AuthenticatedUser User user,
                              @RequestBody @Valid UserImageWeb image, BindingResult result) {
 
         if (result.hasErrors()) {
@@ -48,9 +49,10 @@ public class UserImageController {
         }
 
         UserImage userImage = userImageService.addUserImage(image, user);
-        APIWebResponse apiWebResponse = new APIWebResponse();
-        apiWebResponse.setData(new UserImageWeb(userImage.getId(), null, userImage.getCreatedDate().getTime()));
-        return apiWebResponse;
+        return new UserImageWeb(
+                        userImage.getId(),
+                        null,
+                        userImage.getCreatedDate().getTime());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -63,11 +65,15 @@ public class UserImageController {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserImageWeb> getAllUserImages(@AuthenticatedUser User user) {
 
-        List<UserImageWeb> userImages = new ArrayList<>();
-        for (UserImage userImage : userImageService.getAllUserImages(user)) {
-            userImages.add(new UserImageWeb(userImage.getId(), userImage.getImageStorage().getImageEncoded(),
-                    userImage.getCreatedDate().getTime()));
-        }
-        return userImages;
+
+        List<UserImage> allUserImages = userImageService.getAllUserImages(user);
+
+        return allUserImages
+                .stream()
+                .map(x -> new UserImageWeb(
+                                            x.getId(),
+                                            x.getImageStorage().getImageEncoded(),
+                                            x.getCreatedDate().getTime()))
+                .collect(Collectors.toList());
     }
 }

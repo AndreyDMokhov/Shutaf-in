@@ -50,7 +50,9 @@ public class UserAccountSettingsServiceImpl implements UserAccountSettingsServic
         if (userImageWeb.getId() != null) {
            try {
                userImage = userImageService.getUserImage(user, userImageWeb.getId());
-           } catch (ResourceNotFoundException exp) {}
+           } catch (ResourceNotFoundException exp) {
+               //Simply skip. Security does not apply
+           }
         }
 
         if (userImage == null) {

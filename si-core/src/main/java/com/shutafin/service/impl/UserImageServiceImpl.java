@@ -43,9 +43,10 @@ public class UserImageServiceImpl implements UserImageService {
         UserImage userImage = new UserImage();
         String imageEncoded = image.getImage();
         userImage.setUser(user);
-        Long userImageId = (Long) userImageRepository.save(userImage);
-        userImage.setId(userImageId);
-        String imageLocalPath = getUserDirectoryPath(user) + String.valueOf(userImageId) + IMAGE_EXTENSION;
+
+        userImageRepository.save(userImage);
+
+        String imageLocalPath = getUserDirectoryPath(user) + String.valueOf(userImage.getId()) + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         saveUserImageToFileSystem(imageEncoded, userImage);
         ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);

@@ -36,12 +36,9 @@ public class UserAccountSettingsController {
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateUserAccountImage(@RequestHeader(value = "session_id") String sessionId,
-                                       @RequestBody @Valid UserImageWeb userImageWeb, BindingResult result) {
-        User user = sessionManagementService.findUserWithValidSession(sessionId);
-        if (user == null) {
-            throw new AuthenticationException();
-        }
+    public void updateUserAccountImage(@AuthenticatedUser User user,
+                                       @RequestBody @Valid UserImageWeb userImageWeb,
+                                       BindingResult result) {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
@@ -49,11 +46,8 @@ public class UserAccountSettingsController {
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb getUserAccountImage(@RequestHeader(value = "session_id") String sessionId) {
-        User user = sessionManagementService.findUserWithValidSession(sessionId);
-        if (user == null) {
-            throw new AuthenticationException();
-        }
+    public UserImageWeb getUserAccountImage(@AuthenticatedUser User user) {
+
         UserImage image = userAccountSettingsService.findUserAccountImage(user);
         if (image == null) {
             return null;
@@ -63,11 +57,7 @@ public class UserAccountSettingsController {
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserAccountImage(@RequestHeader(value = "session_id") String sessionId) {
-        User user = sessionManagementService.findUserWithValidSession(sessionId);
-        if (user == null) {
-            throw new AuthenticationException();
-        }
+    public void deleteUserAccountImage(@AuthenticatedUser User user) {
 
         userAccountSettingsService.deleteUserAccountImage(user);
     }
