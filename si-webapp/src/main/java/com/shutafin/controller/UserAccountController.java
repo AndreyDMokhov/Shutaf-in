@@ -34,7 +34,7 @@ public class UserAccountController {
         userAccountService.updateAccountSettings(userAccountSettingsWeb, user);
     }
 
-    @RequestMapping(value = "/image", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void updateUserAccountProfileImage(@AuthenticatedUser User user,
                                               @RequestBody @Valid UserImageWeb userImageWeb,
                                               BindingResult result) {

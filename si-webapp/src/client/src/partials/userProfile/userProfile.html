@@ -11,14 +11,14 @@
                             <div class="input-group">
                                 <label for="filename">
                                     <img ng-src="{{vm.image}}" height="225px" width="225px"
-                                         uib-tooltip={{'Profile.click.image'|translate}} tooltip-placement="bottom"
+                                         uib-tooltip={{'UserProfile.click.image'|translate}} tooltip-placement="bottom"
                                          tooltip-class="custom-class">
                                 </label>
                                 <input ng-show="hide" type="file" ng-model="vm.fileInfo" name="filename" id="filename"
                                        base-sixty-four-input onload="vm.onLoad()" maxsize="500" accept="image/jpeg">
                             </div>
                             <button ng-click="vm.deleteImage()" class="btn btn-primary button-size-font"
-                                    ng-disabled="vm.deleteButton">{{'Profile.button.deleteImage'|translate}}
+                                    ng-disabled="vm.deleteButton">{{'UserProfile.button.deleteImage'|translate}}
                             </button>
                         </div>
 
@@ -26,11 +26,11 @@
                             <table class="table table-user-information">
                                 <tbody>
                                 <tr>
-                                    <td>{{'Profile.birthday' | translate}}</td>
+                                    <td>{{'UserProfile.birthday' | translate}}</td>
                                     <td>to be implemented</td>
                                 </tr>
                                 <tr>
-                                    <td>{{'Profile.city' | translate}}</td>
+                                    <td>{{'UserProfile.city' | translate}}</td>
                                     <td>to be implemented</td>
                                 </tr>
                                 </tbody>

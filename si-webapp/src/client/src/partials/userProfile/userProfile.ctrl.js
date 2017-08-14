@@ -6,14 +6,12 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
 
 
     function setProfileImage() {
-        if (vm.userProfile.userImageId === null) {
+        if (vm.userProfile.hasProfileImage === null) {
             vm.image = '../../images/default_avatar.png';
             vm.deleteButton = true;
-            vm.addButton = true;
         }
         else {
             vm.image = 'data:image/jpeg;base64,' + vm.userProfile.userImage;
-            vm.addButton = true;
         }
 
     }
@@ -22,7 +20,6 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
 
         $timeout(function () {
             vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
-            vm.addButton = false;
             vm.deleteButton = true;
             saveImage();
         }, 0);
@@ -30,15 +27,14 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
 
     function saveImage() {
 
-        userProfileModel.addImage({image: vm.fileInfo.base64}).then(
+        userProfileModel.addOrUpdateImage({image: vm.fileInfo.base64}).then(
             function (success) {
                 var userProfile = vm.userProfile;
                 userProfile.userImage = vm.fileInfo.base64;
-                userProfile.userImageId = -1;
+                userProfile.hasProfileImage = true;
                 $sessionStorage.userProfile = userProfile;
                 vm.deleteButton = false;
-                vm.addButton = true;
-                notify.set($filter('translate')('Profile.message.imageSaved'), {type: 'success'});
+                notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
             },
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -46,7 +42,7 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
         )
     }
     function deleteImage() {
-        var confirmDeleting = confirm($filter('translate')('Profile.message.confirmDelete'));
+        var confirmDeleting = confirm($filter('translate')('UserProfile.message.confirmDelete'));
         if (!confirmDeleting) {
             return;
         }
@@ -54,12 +50,11 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
             function (success) {
                 var userProfile = vm.userProfile;
                 userProfile.userImage = '../../images/default_avatar.png';
-                userProfile.userImageId = null;
+                userProfile.hasProfileImage = false;
                 $sessionStorage.userProfile = userProfile;
                 vm.image = '../../images/default_avatar.png';
                 vm.deleteButton = true;
-                vm.addButton = true;
-                notify.set($filter('translate')('Profile.message.imageDeleted'), {type: 'success'});
+                notify.set($filter('translate')('UserProfile.message.imageDeleted'), {type: 'success'});
             },
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

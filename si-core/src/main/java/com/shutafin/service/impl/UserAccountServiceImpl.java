@@ -71,7 +71,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void deleteUserAccountProfileImage(User user) {
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         userAccount.setUserImage(null);
-        userAccountRepository.deleteUserAccountImage(user);
+        userAccountRepository.update(userAccount);
     }
 
     private void updateFirstLastNames(User user, UserAccountSettingsWeb userAccountSettingsWeb) {

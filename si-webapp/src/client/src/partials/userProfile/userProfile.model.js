@@ -6,8 +6,8 @@ app.factory('userProfileModel', function (Restangular, $sessionStorage) {
         RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
     });
 
-    function addImage(params) {
-        return rest.one('/image').customPUT(params)
+    function addOrUpdateImage(params) {
+        return rest.one('/image').customPOST(params)
     }
 
     function deleteImage() {
@@ -16,7 +16,7 @@ app.factory('userProfileModel', function (Restangular, $sessionStorage) {
 
 
     return {
-        addImage: addImage,
+        addOrUpdateImage: addOrUpdateImage,
         deleteImage: deleteImage
     }
 });

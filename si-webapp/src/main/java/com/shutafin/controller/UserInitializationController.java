@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/userInitialization")
+@RequestMapping("/initialization/user")
 public class UserInitializationController {
 
     @Autowired
@@ -22,7 +22,6 @@ public class UserInitializationController {
 
     @RequestMapping(value = "/init", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<String, UserInit> getAll(@AuthenticatedUser User user) {
-
 
         return new HashMap<String, UserInit>() {{
             put("userProfile", userInitializationService.getUserInitData(user));
