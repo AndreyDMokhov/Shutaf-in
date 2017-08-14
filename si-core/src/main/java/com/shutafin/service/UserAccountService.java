@@ -6,11 +6,11 @@ import com.shutafin.model.web.user.UserAccountSettingsWeb;
 import com.shutafin.model.web.user.UserImageWeb;
 
 
-public interface UserAccountSettingsService {
+public interface UserAccountService {
 
     void updateAccountSettings(UserAccountSettingsWeb userAccountSettingsWeb, User user);
-    void updateUserAccountImage(UserImageWeb userImageWeb, User user);
-    UserImage findUserAccountImage(User user);
-    void deleteUserAccountImage(User user);
+    void updateProfileImage(UserImageWeb userImageWeb, User user);
+    UserImage findUserAccountProfileImage(User user);
+    void deleteUserAccountProfileImage(User user);
 
 }

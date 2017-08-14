@@ -6,8 +6,7 @@ import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.user.UserAccountSettingsWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.model.web.user.UserImageWeb;
-import com.shutafin.service.SessionManagementService;
-import com.shutafin.service.UserAccountSettingsService;
+import com.shutafin.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -18,10 +17,10 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users/settings")
-public class UserAccountSettingsController {
+public class UserAccountController {
 
     @Autowired
-    private UserAccountSettingsService userAccountSettingsService;
+    private UserAccountService userAccountService;
 
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -32,23 +31,23 @@ public class UserAccountSettingsController {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        userAccountSettingsService.updateAccountSettings(userAccountSettingsWeb, user);
+        userAccountService.updateAccountSettings(userAccountSettingsWeb, user);
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateUserAccountImage(@AuthenticatedUser User user,
-                                       @RequestBody @Valid UserImageWeb userImageWeb,
-                                       BindingResult result) {
+    public void updateUserAccountProfileImage(@AuthenticatedUser User user,
+                                              @RequestBody @Valid UserImageWeb userImageWeb,
+                                              BindingResult result) {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        userAccountSettingsService.updateUserAccountImage(userImageWeb, user);
+        userAccountService.updateProfileImage(userImageWeb, user);
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb getUserAccountImage(@AuthenticatedUser User user) {
+    public UserImageWeb getUserAccountProfileImage(@AuthenticatedUser User user) {
 
-        UserImage image = userAccountSettingsService.findUserAccountImage(user);
+        UserImage image = userAccountService.findUserAccountProfileImage(user);
         if (image == null) {
             return null;
         }
@@ -57,9 +56,9 @@ public class UserAccountSettingsController {
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserAccountImage(@AuthenticatedUser User user) {
+    public void deleteUserAccountProfileImage(@AuthenticatedUser User user) {
 
-        userAccountSettingsService.deleteUserAccountImage(user);
+        userAccountService.deleteUserAccountProfileImage(user);
     }
 
 }

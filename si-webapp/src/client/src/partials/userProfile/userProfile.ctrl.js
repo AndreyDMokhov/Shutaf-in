@@ -2,36 +2,35 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
 
-    function setCurrentAvatar() {
+    vm.fileInfo = {};
+
+
+    function setProfileImage() {
         if (vm.userProfile.userImageId === null) {
-            vm.avatarImage = '../../images/default_avatar.png';
+            vm.image = '../../images/default_avatar.png';
             vm.deleteButton = true;
             vm.addButton = true;
         }
         else {
-            vm.avatarImage = 'data:image/jpeg;base64,' + vm.userProfile.userImage;
+            vm.image = 'data:image/jpeg;base64,' + vm.userProfile.userImage;
             vm.addButton = true;
         }
+
     }
 
-    setCurrentAvatar();
-
-    vm.fileInfo = {};
-
     function onLoad(e, reader, file, fileList, fileOjects, fileObj) {
+
         $timeout(function () {
-            vm.avatarImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
+            vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
             vm.addButton = false;
             vm.deleteButton = true;
             saveImage();
         }, 0);
-
     }
+
     function saveImage() {
-        var imageB64 = {
-            image: vm.fileInfo.base64
-        };
-        userProfileModel.addImage(imageB64).then(
+
+        userProfileModel.addImage({image: vm.fileInfo.base64}).then(
             function (success) {
                 var userProfile = vm.userProfile;
                 userProfile.userImage = vm.fileInfo.base64;
@@ -49,7 +48,7 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
     function deleteImage() {
         var confirmDeleting = confirm($filter('translate')('Profile.message.confirmDelete'));
         if (!confirmDeleting) {
-            return null;
+            return;
         }
         userProfileModel.deleteImage().then(
             function (success) {
@@ -57,7 +56,7 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
                 userProfile.userImage = '../../images/default_avatar.png';
                 userProfile.userImageId = null;
                 $sessionStorage.userProfile = userProfile;
-                vm.avatarImage = '../../images/default_avatar.png';
+                vm.image = '../../images/default_avatar.png';
                 vm.deleteButton = true;
                 vm.addButton = true;
                 notify.set($filter('translate')('Profile.message.imageDeleted'), {type: 'success'});
@@ -66,6 +65,11 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
+
+
+    setProfileImage();
+
+
 
     vm.onLoad = onLoad;
     vm.saveImage = saveImage;
