@@ -63,6 +63,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         Mockito.when(sessionManagementService.findUserWithValidSession(Mockito.anyString())).thenReturn(validUser);
         Mockito.doNothing().when(emailChangeConfirmationService)
                 .emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
+        errorList = new ArrayList<>();
     }
     @Test
     public void emailChangeRequest_Positive() {
@@ -117,8 +118,8 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     @Test
     public void emailChangeRequest_AllFieldsNull(){
         String emailChangeRequestRequestWebJson = "{\"userPassword\":null,\"newEmail\":null}";
-        errorList.add(INP_NEW_EMAIL_NOT_NULL);
         errorList.add(INP_PASSWORD_NOT_NULL);
+        errorList.add(INP_NEW_EMAIL_NOT_NULL);
         testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
     }
 
@@ -139,6 +140,9 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
                 .build();
         APIWebResponse apiResponse = getResponse(request);
         Assert.assertNotNull(apiResponse.getError());
+//        System.out.println("''''''''''''''''''''''''''''");
+//        System.out.println(apiResponse.getError());
+//        System.out.println("''''''''''''''''''''''''''''");
         InputValidationError inputValidationError = (InputValidationError) apiResponse.getError();
         Collections.sort(errorList);
         Collections.sort(inputValidationError.getErrors());
