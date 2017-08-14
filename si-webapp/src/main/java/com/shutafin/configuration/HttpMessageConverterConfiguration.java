@@ -14,7 +14,7 @@ import java.util.List;
 
 @Configuration
 @AutoConfigureAfter(DispatcherServletAutoConfiguration.class)
-public class MessageConverterConfigurer extends WebMvcConfigurerAdapter {
+public class HttpMessageConverterConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {

@@ -4,7 +4,9 @@ import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
+import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,7 +18,10 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
+@NoAuthentication
+@Slf4j
 public class RegistrationController {
+
 
     @Autowired
     private RegistrationService registrationService;
@@ -28,6 +33,8 @@ public class RegistrationController {
     public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
                                        BindingResult result){
         if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
             throw new InputValidationException(result);
         }
         registrationService.save(registrationRequestWeb);
