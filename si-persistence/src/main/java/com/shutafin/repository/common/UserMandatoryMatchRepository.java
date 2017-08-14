@@ -10,5 +10,5 @@ import java.util.List;
  * Created by evgeny on 8/10/2017.
  */
 public interface UserMandatoryMatchRepository extends PersistentDao<UserMandatoryMatchResult> {
-    List<User> findPartners(UserMandatoryMatchResult userMandatoryMatchResult);
+    List<User> findPartners(User user);
 }

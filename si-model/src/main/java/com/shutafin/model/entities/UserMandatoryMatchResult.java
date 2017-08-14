@@ -3,6 +3,7 @@ package com.shutafin.model.entities;
 import com.shutafin.model.AbstractEntity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by evgeny on 8/10/2017.
@@ -12,24 +13,13 @@ import javax.persistence.*;
 public class UserMandatoryMatchResult extends AbstractEntity {
 
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
-    @OneToOne
-    private User user;
+    @ManyToOne
+    private Set<User> users;
 
     @Column(name = "USER_MATCH_EXPRESSION", nullable = false, length = 1024)
     private String userMatchExpression;
 
-    @Column(name = "MATCH_REGEX", nullable = false, length = 1024)
-    private String matchRegExp;
-
     public UserMandatoryMatchResult() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getUserMatchExpression() {
@@ -40,11 +30,11 @@ public class UserMandatoryMatchResult extends AbstractEntity {
         this.userMatchExpression = userMatchExpression;
     }
 
-    public String getMatchRegExp() {
-        return matchRegExp;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setMatchRegExp(String matchRegExp) {
-        this.matchRegExp = matchRegExp;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

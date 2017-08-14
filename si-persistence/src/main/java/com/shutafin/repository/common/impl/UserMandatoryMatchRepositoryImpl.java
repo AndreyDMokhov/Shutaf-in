@@ -6,6 +6,7 @@ import com.shutafin.repository.base.AbstractEntityDao;
 import com.shutafin.repository.common.UserMandatoryMatchRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,11 +15,21 @@ import java.util.List;
 @Repository
 public class UserMandatoryMatchRepositoryImpl extends AbstractEntityDao<UserMandatoryMatchResult> implements UserMandatoryMatchRepository {
     @Override
-    public List<User> findPartners(UserMandatoryMatchResult userMandatoryMatchResult) {
+    public List<User> findPartners(User user) {
+
+        String userMatchRegExp =  (String) getSession()
+                .createQuery("SELECT ummr.matchRegExp FROM UserMandatoryMatchResult ummr where ummr.user = :user")
+                .setParameter("user", user)
+                .getSingleResult();
+
+        if (userMatchRegExp == null || userMatchRegExp.isEmpty()){
+            return new ArrayList<User>();
+        }
 
         return (List<User>) getSession()
-                .createQuery("SELECT s FROM User s where s.userMatchExpression REGEXP :matchRegExp")
-                .setParameter("matchRegExp", userMandatoryMatchResult.getMatchRegExp())
+                .createQuery("SELECT ummr.user FROM UserMandatoryMatchResult ummr where ummr.matchRegExp = ':matchRegExp' and ummr.user <> :user")
+                .setParameter("matchRegExp", userMatchRegExp)
+                .setParameter("user", user)
                 .getResultList();
     }
 }

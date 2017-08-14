@@ -19,28 +19,16 @@ public class AnswerLocale extends AbstractLocalizedConstEntity {
 
     @JoinColumn(name = "ANSWER_ID", nullable = false)
     @ManyToOne
-    private AbstractLocalizedConstEntity answer;
-
-    @JoinColumn(name = "QUESTION_ID", nullable = false)
-    @ManyToOne
-    private Question question;
+    private Answer answer;
 
     public AnswerLocale() {
     }
 
-    public AbstractLocalizedConstEntity getAnswer() {
+    public Answer getAnswer() {
         return answer;
     }
 
-    public void setAnswer(AbstractLocalizedConstEntity answer) {
+    public void setAnswer(Answer answer) {
         this.answer = answer;
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
     }
 }

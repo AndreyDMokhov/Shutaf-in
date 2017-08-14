@@ -16,18 +16,14 @@ CREATE TABLE `I_QUESTION_LOCALE` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(1,1,1,'I''m looking for');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(2,2,1,'Pets');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(3,3,1,'Attitude to pets');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(4,4,1,'Neighbor gender');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(5,5,1,'Number of neighbors');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(6,6,1,'Age');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(7,7,1,'Payment limits');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(1,1,'Inactive question for standard answers');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(2,1,'I''m looking for');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(3,1,'Attitude to pets');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(4,1,'Age range');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(5,1,'Payment limits');
 
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(8,1,2,'я ищу');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(9,2,2,'Домашние животные');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(10,3,2,'Отножение к домашним животным');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(11,4,2,'Предпочтительный пол');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(12,5,2,'Количество соседей');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(13,6,2,'Возраст');
-INSERT INTO `i_question_locale`(`ID`,`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(14,7,2,'Мой денежный лимит в месяц');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(1,2,'Неактивный вопрос для стандартных ответов');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(2,2,'я ищу');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(3,2,'Отножение к домашним животным');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(4,2,'Возрастной диапазон');
+INSERT INTO `i_question_locale`(`QUESTION_ID`,`LANGUAGE_ID`,`DESCRIPTION`)VALUES(5,2,'Мой денежный лимит в месяц');
