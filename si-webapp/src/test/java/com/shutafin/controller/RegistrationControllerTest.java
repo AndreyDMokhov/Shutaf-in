@@ -72,9 +72,9 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationConfirmation_UrlPlusWhitespace() {
+    public void registrationConfirmation_UrlWithAWhitespace() {
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL+" ")
+                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL + " ")
                 .setHttpMethod(HttpMethod.GET)
                 .build();
         APIWebResponse response = getResponse(request);
@@ -178,7 +178,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationRequestObject_LanguageIdWithStringValue() throws Exception {
+    public void registrationRequestObject_LanguageIdWithAStringValue() {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"a\"}";
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
@@ -190,7 +190,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         ErrorResponse errorResponse = response.getError();
         Assert.assertEquals(SYS_TYPE_ERROR, errorResponse.getErrorTypeCode());
     }
-    
+
     private void sendRegistrationWebRequest(String json, List<String> errorList) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
