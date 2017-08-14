@@ -6,6 +6,8 @@ import com.shutafin.repository.common.UserImageRepository;
 import com.shutafin.repository.base.AbstractEntityDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserImageRepositoryImpl extends AbstractEntityDao<UserImage> implements UserImageRepository {
 
@@ -14,5 +16,12 @@ public class UserImageRepositoryImpl extends AbstractEntityDao<UserImage> implem
         return (UserImage) getSession()
                 .createQuery("from UserImage ui where ui.user.id = :userId")
                 .setParameter("userId", user.getId()).uniqueResult();
+    }
+
+    @Override
+    public List<UserImage> findAllUserImages(User user) {
+        return getSession()
+                .createQuery("from UserImage ui where ui.user.id = :userId")
+                .setParameter("userId", user.getId()).list();
     }
 }
