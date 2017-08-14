@@ -16,11 +16,11 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
 @PropertySource(value = "classpath:database.config.properties")
-public class DatabaseConnectivityContextConfiguration {
+public class PersistenceContextConfiguration {
 
     private Environment environment;
 
-    public DatabaseConnectivityContextConfiguration(Environment environment) {
+    public PersistenceContextConfiguration(Environment environment) {
         this.environment = environment;
     }
 

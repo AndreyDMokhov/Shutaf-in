@@ -1,7 +1,7 @@
 package com.shutafin.repository.initialization.locale.impl;
 
 import com.shutafin.model.entities.infrastructure.Gender;
-import com.shutafin.model.entities.types.LanguageEnum;
+import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.initialization.GenderResponseDTO;
 import com.shutafin.repository.initialization.locale.GenderRepository;
 import com.shutafin.repository.base.AbstractConstEntityDao;
@@ -13,7 +13,7 @@ import java.util.List;
 public class GenderRepositoryImpl extends AbstractConstEntityDao<Gender> implements GenderRepository {
 
     @Override
-    public List<GenderResponseDTO> getLocaleGenders(LanguageEnum language) {
+    public List<GenderResponseDTO> getLocaleGenders(Language language) {
 
         StringBuilder hql = new StringBuilder();
         hql.append("select new com.shutafin.model.web.initialization.GenderResponseDTO ");
@@ -21,12 +21,12 @@ public class GenderRepositoryImpl extends AbstractConstEntityDao<Gender> impleme
         hql.append(" gl.gender.id, ");
         hql.append(" gl.description ");
         hql.append(" )");
-        hql.append(" from GenderLocale gl where gl.language = :languageId");
+        hql.append(" from GenderLocale gl where gl.language = :language");
 
         return getSession()
                 .createQuery(hql.toString())
                 .setCacheable(true)
-                .setParameter("languageId", language)
+                .setParameter("language", language)
                 .getResultList();
     }
 
