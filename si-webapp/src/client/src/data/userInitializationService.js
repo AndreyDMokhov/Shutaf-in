@@ -1,4 +1,4 @@
-app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionStorage,notify,$filter) {
+app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionStorage, notify, $filter) {
     var rest = Restangular.withConfig(function (Configurer) {
         Configurer.setBaseUrl('/api/userInitialization');
     });
@@ -12,13 +12,13 @@ app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionSt
     function init() {
 
         var deferred = $q.defer();
-        rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
+        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         data = rest.one("init").withHttpConfig({timeout: 10000});
         data.get().then(
             function (success) {
                 data.userProfile = success.userProfile;
                 $sessionStorage.userProfile = data.userProfile;
-                $rootScope.brand = success.userProfile.firstName +" " + success.userProfile.lastName;
+                $rootScope.brand = success.userProfile.firstName + " " + success.userProfile.lastName;
 
 
                 deferred.resolve(data);
