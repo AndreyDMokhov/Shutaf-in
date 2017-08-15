@@ -3,7 +3,6 @@ package com.shutafin.controller;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserImageService;
@@ -13,6 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 
@@ -26,17 +28,18 @@ public class UserImageController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public APIWebResponse getUserImage(@AuthenticatedUser User user, @PathVariable(value = "id") Long userImageId) {
+    public UserImageWeb getUserImage(@AuthenticatedUser User user, @PathVariable(value = "id") Long userImageId) {
 
         UserImage image = userImageService.getUserImage(user, userImageId);
-        APIWebResponse apiWebResponse = new APIWebResponse();
-        apiWebResponse.setData(new UserImageWeb(image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().toString()));
-        return apiWebResponse;
+
+        return new UserImageWeb(
+                        image.getId(),
+                        image.getImageStorage().getImageEncoded(),
+                        image.getCreatedDate().getTime());
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void addUserImage(@AuthenticatedUser User user,
+    public UserImageWeb addUserImage(@AuthenticatedUser User user,
                              @RequestBody @Valid UserImageWeb image, BindingResult result) {
 
         if (result.hasErrors()) {
@@ -45,7 +48,11 @@ public class UserImageController {
             throw new InputValidationException(result);
         }
 
-        userImageService.addUserImage(image, user);
+        UserImage userImage = userImageService.addUserImage(image, user);
+        return new UserImageWeb(
+                        userImage.getId(),
+                        null,
+                        userImage.getCreatedDate().getTime());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -53,5 +60,20 @@ public class UserImageController {
                                 @PathVariable(value = "id") Long userImageId) {
 
         userImageService.deleteUserImage(user, userImageId);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<UserImageWeb> getAllUserImages(@AuthenticatedUser User user) {
+
+
+        List<UserImage> allUserImages = userImageService.getAllUserImages(user);
+
+        return allUserImages
+                .stream()
+                .map(x -> new UserImageWeb(
+                                            x.getId(),
+                                            x.getImageStorage().getImageEncoded(),
+                                            x.getCreatedDate().getTime()))
+                .collect(Collectors.toList());
     }
 }

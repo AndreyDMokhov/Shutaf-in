@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/userInitialization")
+@RequestMapping("/initialization/user")
 public class UserInitializationController {
 
     @Autowired

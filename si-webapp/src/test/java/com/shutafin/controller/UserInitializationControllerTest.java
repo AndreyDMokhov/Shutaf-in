@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(SpringRunner.class)
 public class UserInitializationControllerTest extends BaseTestImpl {
-    private static final String INITIALIZATION_REQUEST_URL = "/userInitialization/init";
+    private static final String INITIALIZATION_REQUEST_URL = "/initialization/user/init";
     private static final String VALID_SESSION = "e382d6ec-0e97-4c32-a1a2-8280160cd179";
     private static final String INVALID_SESSION = "";
 
@@ -43,7 +43,7 @@ public class UserInitializationControllerTest extends BaseTestImpl {
 
     @Test
     public void userSessionDoesNotExist(){
-        Mockito.when(sessionManagementService.findValidUserSession(INVALID_SESSION)).thenReturn(null);
+        Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION)).thenReturn(null);
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(INITIALIZATION_REQUEST_URL)
