@@ -1,11 +1,7 @@
-app.controller('userProfileController', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout ) {
+app.controller('userProfileController', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout) {
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
-    console.log(vm.userProfile)
-
-
     vm.fileInfo = {};
-
 
     function setProfileImage() {
         if (!vm.userProfile.userImageId) {
@@ -15,7 +11,6 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
         else {
             vm.image = 'data:image/jpeg;base64,' + vm.userProfile.userImage;
         }
-
     }
 
     function onLoad(e, reader, file, fileList, fileOjects, fileObj) {
@@ -31,7 +26,6 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
 
         userProfileModel.addOrUpdateImage({image: vm.fileInfo.base64}).then(
             function (success) {
-                console.log(success)
                 vm.userProfile.userImage = success.data.image;
                 vm.userProfile.userImageId = success.data.id;
                 vm.userProfile.createdDate = success.data.createdDate;
@@ -44,6 +38,7 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
             }
         )
     }
+
     function deleteImage() {
         var confirmDeleting = confirm($filter('translate')('UserProfile.message.confirmDelete'));
         if (!confirmDeleting) {
@@ -65,7 +60,6 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
 
 
     setProfileImage();
-
 
 
     vm.onLoad = onLoad;
