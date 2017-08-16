@@ -13,5 +13,18 @@
 .toppad
 {margin-top:20px;
     margin-left: -20px;
-
+}
+.tooltip.custom-class .tooltip-inner {
+    color: #880000;
+    background-color: #D9EDF7;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.tooltip.custom-class .tooltip-arrow {
+    display: none;
+}
+.button-size-font{
+    font-size: 12px
+}
+img:hover{
+    cursor: pointer
 }

@@ -32,9 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @EnableAutoConfiguration
 @ContextConfiguration(classes = {
         ApplicationContextConfiguration.class,
-        DatabaseConnectivityContextConfiguration.class,
-        MessageConverterConfigurer.class,
-        RoutingConfigurer.class,
+        PersistenceContextConfiguration.class,
+        HttpMessageConverterConfiguration.class,
+        WebContextConfiguration.class,
         SMTPContextConfiguration.class
 })
 public class BaseTestImpl implements BaseTest {
