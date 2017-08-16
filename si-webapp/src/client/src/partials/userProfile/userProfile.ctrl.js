@@ -1,12 +1,14 @@
 app.controller('userProfileController', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout ) {
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
+    console.log(vm.userProfile)
+
 
     vm.fileInfo = {};
 
 
     function setProfileImage() {
-        if (vm.userProfile.hasProfileImage === null) {
+        if (!vm.userProfile.userImageId) {
             vm.image = '../../images/default_avatar.png';
             vm.deleteButton = true;
         }
@@ -29,10 +31,11 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
 
         userProfileModel.addOrUpdateImage({image: vm.fileInfo.base64}).then(
             function (success) {
-                var userProfile = vm.userProfile;
-                userProfile.userImage = vm.fileInfo.base64;
-                userProfile.hasProfileImage = true;
-                $sessionStorage.userProfile = userProfile;
+                console.log(success)
+                vm.userProfile.userImage = success.data.image;
+                vm.userProfile.userImageId = success.data.id;
+                vm.userProfile.createdDate = success.data.createdDate;
+                $sessionStorage.userProfile = vm.userProfile;
                 vm.deleteButton = false;
                 notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
             },
@@ -48,10 +51,9 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
         }
         userProfileModel.deleteImage().then(
             function (success) {
-                var userProfile = vm.userProfile;
-                userProfile.userImage = '../../images/default_avatar.png';
-                userProfile.hasProfileImage = false;
-                $sessionStorage.userProfile = userProfile;
+                vm.userProfile.userImage = '../../images/default_avatar.png';
+                vm.userProfile.userImageId = null;
+                $sessionStorage.userProfile = vm.userProfile;
                 vm.image = '../../images/default_avatar.png';
                 vm.deleteButton = true;
                 notify.set($filter('translate')('UserProfile.message.imageDeleted'), {type: 'success'});

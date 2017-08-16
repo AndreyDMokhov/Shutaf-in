@@ -7,7 +7,6 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
 
 
     function registerUser() {
-        console.log(vm.registrationData);
         vm.dataLoading = true;
 
         vm.registrationData.userLanguageId = $sessionStorage.currentLanguage.id;
