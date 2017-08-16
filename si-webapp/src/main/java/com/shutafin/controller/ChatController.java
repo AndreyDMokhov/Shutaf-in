@@ -8,24 +8,17 @@ import com.shutafin.model.web.chat.ChatMessageInputWeb;
 import com.shutafin.model.web.chat.ChatMessageOutputWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.ChatManagementService;
-import com.shutafin.service.SessionManagementService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
-
-    @Autowired
-    private SessionManagementService sessionManagementService;
 
     @Autowired
     private ChatManagementService chatManagementService;
