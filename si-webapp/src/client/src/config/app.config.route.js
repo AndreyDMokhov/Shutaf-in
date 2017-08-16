@@ -89,10 +89,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/settings/change-password"
             })
-        .state("questCarousel",
+        .state("questions",
             {
-                templateUrl:'partials/questionsCarousel/quesCar.html',
-                controller: "CarouselCtrl",
+                templateUrl:'partials/questions/questions.html',
+                controller: "QuestionsCtrl",
                 controllerAs: "vm",
                 url: "/questions"
             })

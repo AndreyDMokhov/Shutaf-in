@@ -1,0 +1,21 @@
+<div class="quiz-area card " ng-show="inProgress">
+    <div class="container123">
+    <div>
+        <h2 style="text-align: center" >{{currentQuestion.question}}</h2>
+
+
+        <div class="radio" ng-repeat="option in currentQuestion.options" >
+            <label>
+                <input type="radio" name="options"
+                       ng-model="$parent.currentAnswer"
+                       ng-value="option"
+                    >
+                {{option}}
+            </label>
+        </div>
+        <br>
+        <button type="submit" ng-click="nextQuestion()" class="btn btn-default" ng-disabled="!currentAnswer">Next</button>
+
+        </div>
+    </div>
+</div>
