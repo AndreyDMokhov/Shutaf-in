@@ -4,6 +4,7 @@ import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
+import com.shutafin.processors.annotations.authentication.SessionResponse;
 import com.shutafin.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/users")
 @NoAuthentication
+//@SessionResponse
 @Slf4j
 public class RegistrationController {
 
@@ -38,9 +40,12 @@ public class RegistrationController {
         registrationService.save(registrationRequestWeb);
     }
 
+    @SessionResponse
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
-    public void confirmRegistration(@PathVariable String link, HttpServletResponse response){
+    public void confirmRegistration(@SessionResponse @PathVariable String link/*, HttpServletResponse response*/){
         User user = registrationService.confirmRegistration(link);
-        response.setHeader("session_id", sessionManagementService.generateNewSession(user));
+        String value = sessionManagementService.generateNewSession(user);
+
+//        response.setHeader("session_id", sessionManagementService.generateNewSession(user));
     }
 }
