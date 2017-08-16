@@ -11,7 +11,7 @@ app.controller('errorsController', function ($filter, $stateParams) {
             code = 404;
         }
         vm.errorData.code = code;
-        vm.errorData.description = $filter('translate')('Error.'+code+'.description');
+        vm.errorData.description = $filter('translate')('Error.RNF');
     }
 
     showError();

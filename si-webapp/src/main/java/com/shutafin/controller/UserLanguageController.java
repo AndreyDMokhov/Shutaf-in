@@ -1,10 +1,12 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.account.UserLanguageWeb;
-import com.shutafin.service.SessionManagementService;
+import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserLanguageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -17,22 +19,27 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/user/account")
+@Slf4j
 public class UserLanguageController {
+
     @Autowired
     private UserLanguageService userLanguageService;
-    @Autowired
-    private SessionManagementService sessionManagementService;
 
     @RequestMapping(value = "/language", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void update(@RequestBody @Valid UserLanguageWeb userLanguageWeb, @RequestHeader(value = "session_id") String sessionId, BindingResult result){
+    public void update(@RequestBody @Valid UserLanguageWeb userLanguageWeb,
+                       BindingResult result,
+                       @AuthenticatedUser User user){
+
         if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        userLanguageService.updateUserLanguage(userLanguageWeb, sessionManagementService.findUserWithValidSession(sessionId));
+        userLanguageService.updateUserLanguage(userLanguageWeb, user);
     }
 
     @RequestMapping(value = "/language", method = RequestMethod.GET)
-    public Language get(@RequestHeader(value = "session_id") String sessionId){
-        return userLanguageService.findUserLanguage(sessionManagementService.findUserWithValidSession(sessionId));
+    public Language get(@AuthenticatedUser User user){
+        return userLanguageService.findUserLanguage(user);
     }
 }

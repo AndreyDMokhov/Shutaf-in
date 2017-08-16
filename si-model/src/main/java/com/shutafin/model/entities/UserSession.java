@@ -12,11 +12,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "USER_SESSION")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Cacheable
 public class UserSession extends AbstractEntity {
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     @Column(name = "IS_VALID", nullable = false)
@@ -25,7 +25,7 @@ public class UserSession extends AbstractEntity {
     @Column(name = "SESSION_ID", nullable = false, unique = true)
     private String sessionId;
 
-    @Column(name = "IS_EXPIRABLE ", nullable = false)
+    @Column(name = "IS_EXPIRABLE", nullable = false)
     private Boolean isExpirable;
 
 

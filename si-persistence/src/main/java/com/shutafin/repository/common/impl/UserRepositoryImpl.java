@@ -16,6 +16,7 @@ public class UserRepositoryImpl extends AbstractEntityDao<User> implements UserR
         return (User) getSession()
                 .createQuery("SELECT e FROM User e where e.email = :email")
                 .setParameter("email", email)
+                .setCacheable(true)
                 .uniqueResult();
         }
 
