@@ -40,10 +40,10 @@ import static org.mockito.Matchers.anyString;
 @RunWith(SpringRunner.class)
 public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
+    private static final String SESSION_ID_HEADER_NAME = "session_id";
     private static final String EMAIL_CHANGE_REQUEST_URL = "/users/account/change-email-request/";
     private static final String VALID_SESSION_ID = "validsessionid";
-    private static final String SESSION_ID_HEADER_NAME = "session_id";
-    private static final String ADD_IMAGE_VALID_JSON_BODY = "{\"userPassword\": \"11111111\", \"newEmail\": \"aaa@aaaa\"}";
+    private static final String EMAIL_CHANGE_VALID_JSON_BODY = "{\"userPassword\": \"11111111\", \"newEmail\": \"aaa@aaaa\"}";
     private static final String INVALID_SESSION_ID = "invalidsessionid";
 
     private static final String INP_PASSWORD_NOT_NULL = "INP.password.NotNull";
@@ -71,7 +71,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
-                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
+                .setJsonContext(EMAIL_CHANGE_VALID_JSON_BODY)
                 .setHttpMethod(HttpMethod.POST)
                 .setUrl(EMAIL_CHANGE_REQUEST_URL)
                 .setHeaders(sessionHeaders)
@@ -87,13 +87,13 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
-                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
+                .setJsonContext(EMAIL_CHANGE_VALID_JSON_BODY)
                 .setHttpMethod(HttpMethod.POST)
                 .setUrl(EMAIL_CHANGE_REQUEST_URL)
                 .setHeaders(sessionHeaders)
                 .build();
         APIWebResponse apiResponse = getResponse(request);
-
+        System.out.println(apiResponse.getError());
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
     }
@@ -106,7 +106,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         ControllerRequest request = ControllerRequest.builder()
                 .setHttpMethod(HttpMethod.POST)
                 .setUrl(EMAIL_CHANGE_REQUEST_URL)
-                .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
+                .setJsonContext(EMAIL_CHANGE_VALID_JSON_BODY)
                 .setHeaders(sessionHeaders)
                 .build();
         APIWebResponse apiResponse = getResponse(request);
