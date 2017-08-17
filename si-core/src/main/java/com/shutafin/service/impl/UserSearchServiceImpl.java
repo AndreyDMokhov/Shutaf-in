@@ -35,7 +35,8 @@ public class UserSearchServiceImpl implements UserSearchService{
         }
         List<UserSearchResponse> userSearchWebList = new ArrayList<>();
         for (User u : users) {
-            userSearchWebList.add(new UserSearchResponse(u.getFirstName(), u.getLastName()/*, userAccountService.findUserAccountProfileImage(u)*/));
+            String image = userAccountService.findUserAccountProfileImage(u).getImageStorage().getImageEncoded();
+            userSearchWebList.add(new UserSearchResponse(u.getFirstName(), u.getLastName(), image));
         }
         return userSearchWebList;
     };

@@ -9,24 +9,24 @@ public class UserSearchResponse implements DataResponse {
 
     private String lastName;
 
-  //  private UserImage image;
+    private String image;
 
     public UserSearchResponse() {
     }
 
-    public UserSearchResponse(String firstName, String lastName/*, UserImage image*/) {
-   //     this.image = image;
+    public UserSearchResponse(String firstName, String lastName, String image) {
+        this.image = image;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    /*public UserImage getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(UserImage image) {
+    public void setImage(String image) {
         this.image = image;
-    }*/
+    }
 
     public String getFirstName() {
         return firstName;
