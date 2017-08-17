@@ -94,18 +94,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: "partials/userSearch/userSearch.html",
                 controller: "userSearchController",
                 controllerAs: "vm",
-                url: "/users/search"
+                url: "/users/search?{name}"
             })
-        // .state("userSearch",
-        //     {
-        //         templateUrl: "partials/userSearch/userSearch.html",
-        //         controller: "userSearchController",
-        //         controllerAs: "vw",
-        //         url: "/users/search/",
-        //         params: {
-        //             name: null
-        //         }
-        //     })
     ;
     $urlRouterProvider.otherwise("/home");
 });

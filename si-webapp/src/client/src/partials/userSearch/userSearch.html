@@ -1,23 +1,36 @@
 <div class="container">
     <div class="row">
+        <div class="col-md-12 col-md-offset-0 toppad">
+            <div class="row">
+                <div class="col-md-3 col-lg-3"></div>
 
-        <div class="form-group">
-            <form>
-                <label class="required" for="fullName">{{"Search.request" | translate}}</label>
-                <input class="form-control"
-                       id="fullName"
-                       ng-model="vm.fullName"
-                       ng-maxlength="50"
-                       required/>
-                <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary button-size-font">{{"Search.button" | translate}}</button>
-            </form>
+                    <div class=" col-md-6 col-lg-6 ">
+                        <div class="form-group">
+                            <form class="search">
+                                <input type="search"
+                                    id="fullName"
+                                    ng-model="vm.fullName"
+                                    ng-maxlength="50"
+                                       placeholder="{{'Search.request' | translate}}"
+                                    required/>
+                                <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary button-size-font">{{"Search.button" | translate}}</button>
+                            </form>
+
+                        </div>
+                        <h3>{{'Search.results'|translate}} {{vm.userSearchList.length}}</h3>
+                        <div class="search-results" ng-repeat="user in vm.userSearchList">
+                            <div style=" width: 100px; height: 100px " align="left"><img ng-src="{{vm.image}}"></div>
+                            <h4 style="margin: 0">{{ user.firstName }} {{ user.lastName }}</h4>
+                        </div>
+                    </div>
+
+                    <!--<div class="col-md-4 col-lg-4 " align="center">-->
+                        <!--<div class="input-group" style="border: solid 1px lightblue">-->
+                            <!--Search by filters-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                </div>
         </div>
-
-        <div class="search" ng-repeat="user in vm.userSearchList">
-            <h3>{{ user.firstName }} {{ user.lastName }}</h3>
-        </div>
-
-
-
     </div>
 </div>
