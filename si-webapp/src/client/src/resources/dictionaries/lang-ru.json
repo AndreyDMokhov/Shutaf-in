@@ -95,5 +95,11 @@
   "Settings.personal.message.save.success":"Пользователь успешно сохранен",
 
   "SECTION": "USER SEARCH",
-  "Search.button": "Поиск"
+  "Search.button": "Поиск",
+  "Search.notFound" : "По Вашему запросу пользователи не найдены",
+  "Search.request" : "Пожалуйста, введите Ваш запрос для поиска",
+  "Search.results" : "Результатов:",
+  "Search.form.firstName" : "Имя",
+  "Search.form.lastName" : "Фамилия"
+
 }
