@@ -5,7 +5,7 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
 
     function userSearch(fullName) {
         rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
-        return  rest.one('/search?fullName='+fullName).customGET();
+        return  rest.one('/search?name='+fullName).customGET();
     }
 
     return {

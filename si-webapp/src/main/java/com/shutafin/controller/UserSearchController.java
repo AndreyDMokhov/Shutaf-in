@@ -20,7 +20,7 @@ public class UserSearchController {
     private UserSearchService userSearchService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<UserSearchResponse> userSearch(@AuthenticatedUser User user, @RequestParam("fullName") String fullName) {
+    public List<UserSearchResponse> userSearch(@AuthenticatedUser User user, @RequestParam("name") String fullName) {
 
         return userSearchService.userSearch(fullName);
     }

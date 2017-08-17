@@ -10,16 +10,15 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
 
     function userSearch() {
 
-        if (vm.fullName === "")
-            notify.set($filter('translate')("Search.noRequest"), {type: 'error'});
-
         userSearchModel.userSearch(vm.fullName).then(
             function (success) {
 
                 vm.userSearchList = success;
 
-                if (vm.userSearchList.length() > 0) {
-
+                if (vm.userSearchList.length > 0) {
+                    return;
+                }else {
+                    alert("Users not found");
                 }
 
 
