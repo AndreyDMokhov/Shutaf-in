@@ -12,7 +12,8 @@
                                     ng-model="vm.fullName"
                                     ng-maxlength="50"
                                        placeholder="{{'Search.request' | translate}}"
-                                    required/>
+                                    required
+                                onclick="this.select()"/>
                                 <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary button-size-font">{{"Search.button" | translate}}</button>
                             </form>
 
@@ -23,12 +24,6 @@
                             <h4 style="margin: 0">{{ user.firstName }} {{ user.lastName }}</h4>
                         </div>
                     </div>
-
-                    <!--<div class="col-md-4 col-lg-4 " align="center">-->
-                        <!--<div class="input-group" style="border: solid 1px lightblue">-->
-                            <!--Search by filters-->
-                        <!--</div>-->
-                    <!--</div>-->
 
                 </div>
         </div>
