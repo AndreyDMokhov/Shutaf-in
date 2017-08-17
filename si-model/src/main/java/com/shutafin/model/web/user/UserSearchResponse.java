@@ -1,31 +1,32 @@
 package com.shutafin.model.web.user;
 
+import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.DataResponse;
 
-public class UserSearchWeb implements DataResponse {
+public class UserSearchResponse implements DataResponse {
 
     private String firstName;
 
     private String lastName;
 
-    private String image;
+  //  private UserImage image;
 
-    public UserSearchWeb() {
+    public UserSearchResponse() {
     }
 
-    public UserSearchWeb(String firstName, String lastName, String image) {
-        this.image = image;
+    public UserSearchResponse(String firstName, String lastName/*, UserImage image*/) {
+   //     this.image = image;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public String getImage() {
+    /*public UserImage getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(UserImage image) {
         this.image = image;
-    }
+    }*/
 
     public String getFirstName() {
         return firstName;

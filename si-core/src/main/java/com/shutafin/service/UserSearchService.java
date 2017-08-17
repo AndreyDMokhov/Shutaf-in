@@ -1,9 +1,9 @@
 package com.shutafin.service;
 
-import com.shutafin.model.web.user.UserSearchWeb;
+import com.shutafin.model.web.user.UserSearchResponse;
 
 import java.util.List;
 
 public interface UserSearchService {
-    List<UserSearchWeb> userSearch(String fullName);
+    List<UserSearchResponse> userSearch(String fullName);
 }

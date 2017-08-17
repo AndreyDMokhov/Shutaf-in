@@ -1,18 +1,23 @@
-<div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
+<div class="container">
+    <div class="row">
+
         <div class="form-group">
-            <label class="required" for="userQuery">ENTER FULL NAME</label>
-            <input ng-keyup="$event.keyCode == 13 && userSearch()"
-                   class="form-control"
-                   id="userQuery"
-                   ng-model="vm.userQuery"
-                   ng-maxlength="50"
-                   required/>
+            <form>
+                <label class="required" for="fullName">{{"Search.request" | translate}}</label>
+                <input class="form-control"
+                       id="fullName"
+                       ng-model="vm.fullName"
+                       ng-maxlength="50"
+                       required/>
+                <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary button-size-font">{{"Search.button" | translate}}</button>
+            </form>
         </div>
-        <div class="repo" ng-repeat="repo in repos" ng-click="openRepo(repo.full_name)">
-            <strong>{{ repo.full_name }}</strong>
-            <p>{{ repo.description }}</p>
+
+        <div class="search" ng-repeat="user in vm.userSearchList">
+            <h3>{{ user.firstName }} {{ user.lastName }}</h3>
         </div>
+
+
+
     </div>
 </div>

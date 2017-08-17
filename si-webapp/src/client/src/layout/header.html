@@ -56,15 +56,19 @@
                         {{'Settings.security.password.title' | translate}}
                     </a>
                 </li>
+                <!--<li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userSearch' | includedByState)}">-->
+                    <!--<a ui-sref="'userSearch', ({name: vm.fullName})">-->
+                        <!--<form name="userSearchForm" id="userSearchForm">-->
+                            <!--<input type="text" id="search-query" ng-model="vm.fullName" placeholder="{{'Search.button' | translate}}" style="border-radius: 5px">-->
+                            <!--<button type="submit" class="glyphicon glyphicon-search" style="background-color: inherit; border:none"></button>-->
+                        <!--</form>-->
+                    <!--</a>-->
+                <!--</li>-->
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userSearch' | includedByState)}">
-
-                     <form action="http://localhost:7000/?#/users/search" style="padding: 12px">
-                        <input type="text" class="search-query" ng-model="vm.userQuery"
-                               placeholder="{{'Search.button' | translate}}" style="border-radius: 5px">
-                         <button type="submit" class="glyphicon glyphicon-search" style="background-color: inherit; border:none"></button>
-                     </form>
-
+                    <a ui-sref="userSearch">
+                        <span>{{'Search.button' | translate}}</span>
+                    </a>
                 </li>
 
                 <li>
