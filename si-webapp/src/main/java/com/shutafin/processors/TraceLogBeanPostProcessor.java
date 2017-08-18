@@ -2,6 +2,7 @@ package com.shutafin.processors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -53,11 +54,7 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
 
 
                         ObjectMapper mapper = new ObjectMapper();
-//                        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-//                        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.PROTECTED_AND_PUBLIC);
-//                        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.PUBLIC_ONLY);
-//                        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//                        mapper.disable(SerializationFeature.FAIL_ON_SELF_REFERENCES);
+                        mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
                         try {
                             System.out.println("Parameter value: " + mapper.writeValueAsString(args[i]));
