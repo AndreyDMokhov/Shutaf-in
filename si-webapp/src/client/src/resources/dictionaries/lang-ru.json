@@ -54,9 +54,15 @@
   "Logout.button": "Выход",
 
   "SECTION": "PROFILE",
-  "Profile.title" : "Профиль",
-  "Profile.birthday" : "Дата рождения",
-  "Profile.city" : "Город",
+  "UserProfile.title" : "Профиль",
+  "UserProfile.birthday" : "Дата рождения",
+  "UserProfile.city" : "Город",
+  "UserProfile.button.setImage" : "Сохранить изображение",
+  "UserProfile.button.deleteImage" : "Удалить изображение",
+  "UserProfile.click.image" : "Выбрать изображение",
+  "UserProfile.message.imageSaved" : "Изображение сохранено",
+  "UserProfile.message.imageDeleted" : "Изображение было удалено",
+  "UserProfile.message.confirmDelete" : "Вы уверены, что хотите удалить?",
 
   "SECTION": "SECURITY SETTINGS",
   "Settings.security.email.title": "Изменить адрес электронной почты",
