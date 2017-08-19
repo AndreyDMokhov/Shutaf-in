@@ -2,15 +2,9 @@ package com.shutafin.processors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutafin.exception.AbstractAPIException;
-import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.DataResponse;
 import com.shutafin.model.web.error.ErrorResponse;
 import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
-import com.shutafin.processors.annotations.authentication.AuthenticatedUserType;
-import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cglib.proxy.Enhancer;
@@ -20,11 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,14 +24,14 @@ import java.util.Map;
  * Created by evgeny on 8/14/2017.
  */
 public class ControllerResponseBeanPostProcessor implements BeanPostProcessor {
-    private Map<String, Object> requiredProxyBeans = new HashMap<>();
+    private Map<String, Class> requiredProxyBeans = new HashMap<>();
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         Class clazz = bean.getClass();
 
         if (clazz.getAnnotation(RestController.class) != null) {
-            requiredProxyBeans.put(beanName, bean);
+            requiredProxyBeans.put(beanName, clazz);
         }
 
         return bean;
@@ -48,11 +40,12 @@ public class ControllerResponseBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 
-        if (requiredProxyBeans.get(beanName) == null) {
+        Class clazz = requiredProxyBeans.get(beanName);
+
+        if (clazz == null) {
             return bean;
         }
 
-        Class clazz = bean.getClass();
 
         return Enhancer.create(clazz, new InvocationHandler() {
             @Override
@@ -63,6 +56,8 @@ public class ControllerResponseBeanPostProcessor implements BeanPostProcessor {
                 }
 
                 APIWebResponse apiWebResponse = new APIWebResponse();
+                HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+
                 try{
                     Object obj = executeMethod(method, bean, args);
                     apiWebResponse.setData(obj);
@@ -78,13 +73,14 @@ public class ControllerResponseBeanPostProcessor implements BeanPostProcessor {
                         ErrorResponse responseError = new ErrorResponse(e.getMessage(), errorType);
                         apiWebResponse.setError(responseError);
                     }
-                    return null;
+
+                    response.setStatus(apiWebResponse.getError().getErrorType().getHttpCode());
+                    throw e;
 
                 } finally {
-                    HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+
                     new ObjectMapper().writeValue(response.getOutputStream(), apiWebResponse);
                 }
-
             }
         });
     }

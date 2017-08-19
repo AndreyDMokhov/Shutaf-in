@@ -28,6 +28,7 @@ public class ApplicationContextConfiguration {
     }
 
     @Bean
+    @DependsOn("authenticationHandlerArgumentResolverProcessor")
     public ControllerResponseBeanPostProcessor controllerResponseHandlerBeanPostProcessor(){
         return new ControllerResponseBeanPostProcessor();
     }
