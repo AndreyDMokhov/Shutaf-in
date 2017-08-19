@@ -1,6 +1,9 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import com.shutafin.model.entities.infrastructure.Answer;
+import com.shutafin.model.entities.infrastructure.Question;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,31 +13,22 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "USER_MANDATORY_MATCH_RESULT")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UserMandatoryMatchResult extends AbstractEntity {
 
-    @JoinColumn(name = "USER_ID", nullable = false, unique = true)
+    @JoinColumn(name = "USER_ID", nullable = false)
     @ManyToOne
-    private Set<User> users;
+    private User users;
 
-    @Column(name = "USER_MATCH_EXPRESSION", nullable = false, length = 1024)
-    private String userMatchExpression;
+    @JoinColumn(name = "QUESTION_ID", nullable = false)
+    @ManyToOne
+    private Question questions;
 
-    public UserMandatoryMatchResult() {
-    }
+    @JoinColumn(name = "ANSWER_ID", nullable = false)
+    @ManyToOne
+    private Answer answers;
 
-    public String getUserMatchExpression() {
-        return userMatchExpression;
-    }
-
-    public void setUserMatchExpression(String userMatchExpression) {
-        this.userMatchExpression = userMatchExpression;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
 }
