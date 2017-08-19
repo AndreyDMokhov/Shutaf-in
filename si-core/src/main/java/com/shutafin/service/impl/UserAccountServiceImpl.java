@@ -39,7 +39,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     @Transactional
-    public void updateProfileImage(UserImageWeb userImageWeb, User user) {
+    public UserImage updateProfileImage(UserImageWeb userImageWeb, User user) {
         UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
 
@@ -59,6 +59,7 @@ public class UserAccountServiceImpl implements UserAccountService {
             userAccount.setUserImage(userImage);
             userAccountRepository.updateUserAccountImage(userImage, user);
         }
+        return userImage;
     }
 
     @Override
