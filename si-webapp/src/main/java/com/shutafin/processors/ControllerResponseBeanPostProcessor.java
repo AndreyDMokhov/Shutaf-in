@@ -1,5 +1,6 @@
 package com.shutafin.processors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutafin.exception.AbstractAPIException;
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -55,40 +57,43 @@ public class ControllerResponseBeanPostProcessor implements BeanPostProcessor {
         return Enhancer.create(clazz, new InvocationHandler() {
             @Override
             public Object invoke(Object o, Method method, Object[] args) throws Throwable {
-                return executeMethod(method, bean, args);
+
+                if (method.getAnnotation(RequestMapping.class) == null) {
+                    return executeMethod(method, bean, args);
+                }
+
+                APIWebResponse apiWebResponse = new APIWebResponse();
+                try{
+                    Object obj = executeMethod(method, bean, args);
+                    apiWebResponse.setData(obj);
+                    return obj;
+                } catch (Throwable e) {
+
+                    apiWebResponse.setData(null);
+
+                    if (e instanceof AbstractAPIException){
+                        apiWebResponse.setError(((AbstractAPIException)e).getErrorResponse());
+                    } else if(e instanceof Exception){
+                        ErrorType errorType = ErrorType.SYSTEM;
+                        ErrorResponse responseError = new ErrorResponse(e.getMessage(), errorType);
+                        apiWebResponse.setError(responseError);
+                    }
+                    return null;
+
+                } finally {
+                    HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+                    new ObjectMapper().writeValue(response.getOutputStream(), apiWebResponse);
+                }
+
             }
         });
     }
 
     private Object executeMethod(Method method, Object bean, Object ... args) throws Throwable {
-        APIWebResponse apiWebResponse = new APIWebResponse();
         try {
-
-            Object invoke = method.invoke(bean, args);
-            apiWebResponse.setData(new DataResponse() {
-                public Object getData() {
-                    return invoke;
-                }
-            });
-            apiWebResponse.setError(null);
-            return apiWebResponse;
-
+            return method.invoke(bean, args);
         } catch (InvocationTargetException e) {
-
-            Throwable exception = e.getCause();
-            apiWebResponse.setData(null);
-            exception.printStackTrace();
-
-            if (exception instanceof AbstractAPIException){
-                apiWebResponse.setError(((AbstractAPIException)exception).getErrorResponse());
-            } else if(exception instanceof Exception){
-                ErrorType errorType = ErrorType.SYSTEM;
-                ErrorResponse responseError = new ErrorResponse(exception.getMessage(), errorType);
-                apiWebResponse.setError(responseError);
-            }
-            return apiWebResponse;
-
-            //throw e.getCause();
+            throw e.getCause();
         }
     }
 }
