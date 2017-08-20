@@ -59,16 +59,15 @@
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userSearch' | includedByState)}">
                     <form class="search-header" id="userSearchForm" style="margin-top: 12px">
                         <input type="text" id="search-query" ng-model="vm.fullName" placeholder="{{'Search.button' | translate}}" style="border-radius: 5px">
-                        <button ui-sref="userSearch({name: vm.fullName})" type="submit" class="glyphicon glyphicon-search" style="background-color: inherit; border:none"></button>
+                        <button ui-sref="userSearch({name: vm.fullName})" type="submit" onclick="this.form.reset()" class="glyphicon glyphicon-search" style="background-color: inherit; border:none"></button>
                     </form>
                 </li>
-                <li>
+                <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>
                         {{'Logout.button' | translate}}
                     </a>
                 </li>
-
 
                 <li class="divider-vertical"></li>
                 <li uib-dropdown>
