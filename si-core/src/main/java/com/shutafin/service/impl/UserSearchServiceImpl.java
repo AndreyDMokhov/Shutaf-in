@@ -48,10 +48,10 @@ public class UserSearchServiceImpl implements UserSearchService{
     }
 
     private List<User> findUsers(List<String> names) {
-        List<User> users = new ArrayList<>();
+        List<User> users;
         if(names.size() == 1){
             users = userRepository.findUsersByName(names);
-        }else if(names.size() == 2){
+        }else {
             users = userRepository.findUsersByFirstAndLastName(names);
         }
         return users;
