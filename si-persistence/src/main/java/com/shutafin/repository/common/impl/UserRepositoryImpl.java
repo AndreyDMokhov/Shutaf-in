@@ -41,13 +41,12 @@ public class UserRepositoryImpl extends AbstractEntityDao<User> implements UserR
     }
 
     @Override
-    public List<User> findUsersByName(List<String> names) {
+    public List<User> findUsersByFirstOrLastName(String name) {
         return getSession()
-                .createQuery("SELECT u FROM " + getEntityClass().getName() +
-                        " u WHERE u.firstName in (:names) " +
-                        " OR u.lastName in (:names) " +
-                        " order by u.createdDate")
-                .setParameter("names", names)
+                .createQuery("SELECT u from " + getEntityClass().getName() +
+                        " u WHERE u.firstName =:name OR u.lastName =:name) order by u.createdDate")
+                .setParameter("name", name)
                 .list();
     }
+
 }
