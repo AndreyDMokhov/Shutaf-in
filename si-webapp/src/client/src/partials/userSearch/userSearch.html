@@ -1,10 +1,8 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-12 col-md-offset-0 toppad">
-            <div class="row">
-                <div class="col-md-3 col-lg-3"></div>
+        <div class="col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3 toppad" style="margin-left: 270px">
+            <div class="search-results">
 
-                    <div class=" col-md-6 col-lg-6 ">
                         <div class="form-group">
                             <form class="search">
                                 <input type="search"
@@ -16,16 +14,42 @@
                                 onclick="this.select()"/>
                                 <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary button-size-font">{{"Search.button" | translate}}</button>
                             </form>
-
                         </div>
-                        <h3>{{'Search.results'|translate}} {{vm.userSearchList.length}}</h3>
-                        <div class="search-results" ng-repeat="user in vm.userSearchList">
-                            <div style=" width: 100px; height: 100px " align="left"><img ng-src="{{vm.image}}"></div>
-                            <h4 style="margin: 0">{{ user.firstName }} {{ user.lastName }}</h4>
-                        </div>
-                    </div>
 
-                </div>
+                        <h3> {{'Search.results'|translate}} {{vm.userSearchList.length}} </h3>
+                        <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
+
+                        <div class="panel panel-info" ng-repeat="user in vm.userSearchList">
+                            <div class="panel-heading">
+                                <a href="#" class="panel-title">{{ user.firstName }} {{ user.lastName }}</a><span>Compatibility, %</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-3 col-lg-3 " align="center"> <img ng-src="data:image/jpeg;base64,{{user.image}}" width="100px" height="150px" class="img-circle img-responsive">
+                                    </div>
+                                    <div class=" col-md-9 col-lg-9 ">
+                                        <table class="table table-user-information">
+                                            <tbody>
+                                            <tr>
+                                                <td>Date of Birth</td>
+                                                <td>to be implemented</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Gender</td>
+                                                <td>to be implemented</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Current city</td>
+                                                <td>to be implemented</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
         </div>
     </div>
 </div>

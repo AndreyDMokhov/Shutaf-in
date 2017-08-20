@@ -96,8 +96,6 @@
   "SECTION": "USER SEARCH",
   "Search.button": "Search",
   "Search.notFound" : "No users found on your request",
-  "Search.request" : "Please enter your request",
-  "Search.results" : "Results:",
-  "Search.form.firstName" : "First name",
-  "Search.form.lastName" : "Last name"
+  "Search.request" : "Enter your request",
+  "Search.results" : "Results:"
 }

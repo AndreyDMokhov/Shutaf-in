@@ -1,6 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.UserImage;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.UserAccountService;
 import com.shutafin.service.UserSearchService;
@@ -14,10 +15,13 @@ import java.util.*;
 @Service
 @Transactional
 public class UserSearchServiceImpl implements UserSearchService{
+
     @Autowired
     UserSearchService userSearchService;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private UserAccountService userAccountService;
 
@@ -25,21 +29,32 @@ public class UserSearchServiceImpl implements UserSearchService{
     @Transactional
     public List<UserSearchResponse> userSearch(String fullName){
 
-        String[] firstLastName = fullName.split(" ");
+        List<String> names = Arrays.asList(fullName.split(" "));
 
-        List<User> users = new ArrayList<>();
-        if(firstLastName.length == 2) {
-            users = userRepository.findUsersByFirstAndLastName(firstLastName[0], firstLastName[1]);
-        }else if(firstLastName.length == 1){
-            users = userRepository.findUsersByName(firstLastName[0]);
-        }
+        List<User> users = findUsers(names);
+
         List<UserSearchResponse> userSearchWebList = new ArrayList<>();
+
         for (User u : users) {
-            String image = userAccountService.findUserAccountProfileImage(u).getImageStorage().getImageEncoded();
+            UserImage userImage = userAccountService.findUserAccountProfileImage(u);
+            String image = null;
+            if (userImage != null) {
+                image = userImage.getImageStorage().getImageEncoded();
+            }
+
             userSearchWebList.add(new UserSearchResponse(u.getFirstName(), u.getLastName(), image));
         }
         return userSearchWebList;
-    };
+    }
 
+    private List<User> findUsers(List<String> names) {
+        List<User> users = new ArrayList<>();
+        if(names.size() == 1){
+            users = userRepository.findUsersByName(names);
+        }else if(names.size() == 2){
+            users = userRepository.findUsersByFirstAndLastName(names);
+        }
+        return users;
+    }
 
 }
