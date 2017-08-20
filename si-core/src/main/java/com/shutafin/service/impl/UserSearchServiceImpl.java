@@ -17,9 +17,6 @@ import java.util.*;
 public class UserSearchServiceImpl implements UserSearchService{
 
     @Autowired
-    UserSearchService userSearchService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -29,9 +26,7 @@ public class UserSearchServiceImpl implements UserSearchService{
     @Transactional
     public List<UserSearchResponse> userSearch(String fullName){
 
-        List<String> names = Arrays.asList(fullName.split(" "));
-
-        List<User> users = findUsers(names);
+        List<User> users = findUsers(fullName);
 
         List<UserSearchResponse> userSearchWebList = new ArrayList<>();
 
@@ -47,13 +42,18 @@ public class UserSearchServiceImpl implements UserSearchService{
         return userSearchWebList;
     }
 
-    private List<User> findUsers(List<String> names) {
+    private List<User> findUsers(String fullName) {
+
+        List<String> names = Arrays.asList(fullName.split(" "));
+
         List<User> users;
+
         if(names.size() == 1){
-            users = userRepository.findUsersByName(names);
+            users = userRepository.findUsersByFirstOrLastName(fullName);
         }else {
             users = userRepository.findUsersByFirstAndLastName(names);
         }
+
         return users;
     }
 
