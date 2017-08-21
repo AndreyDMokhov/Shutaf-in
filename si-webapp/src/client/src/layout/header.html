@@ -21,6 +21,9 @@
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userProfile' | includedByState)}">
                     <a ui-sref="userProfile">{{'UserProfile.title' | translate}}</a>
                 </li>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('chat' | includedByState)}">
+                    <a ui-sref="chat">{{'Chat.title' | translate}}</a>
+                </li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">

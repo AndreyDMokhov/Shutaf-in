@@ -1,0 +1,103 @@
+<div class=row>
+    <div class="col-md-4 col-lg-4 " align="left">
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="chatName">Add new Chat</label>
+                <input type="text" id="chatName" ng-model="vm.chatName" class="form-control"
+                       placeholder="Type name here ">
+            </div>
+            <button id="addChat" ng-click="vm.addChat()" ng-disabled="vm.dataLoading" class="btn btn-default" type="submit">Add</button>
+        </form>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Chats</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="chat in vm.listOfChats track by $index">
+                <td>{{chat.chatTitle}}</td>
+                <td align="right">
+
+                    <button class="btn btn-sm btn-danger" ng-disabled="!vm.isConnected" ng-show="chat.id==vm.currentChat.id" ng-click="vm.exitChat()">Exit</button>
+                    &nbsp;
+                    <button class="btn btn-sm btn-danger" ng-disabled="!vm.isConnected" ng-click="vm.deleteChat(chat.id)">Delete</button>
+                    &nbsp;
+                    <button class="btn btn-sm btn-primary" ng-disabled="vm.dataLoading" ng-click="vm.joinChat(chat)">Join</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Users</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th></th>
+            </tr>
+            <tbody>
+            <tr ng-repeat="user in vm.users track by $index">
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" ng-disabled="(vm.currentChat | json) == '{}'" ng-click="vm.addUserToChat(user.userId)">Add</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="col-md-4 col-lg-4" align="center">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Messages in chat {{vm.currentChat.chatTitle}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="message in vm.messages track by $index">
+                <td> {{message.message}} :{{message.lastName}} {{message.firstName}} {{message.createDate | date: 'HH:mm:ss, dd.MM'}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form id="messageInput" ng-show="(vm.currentChat | json) != '{}'"  class="form-inline">
+            <div class="form-group">
+                <label for="message">Your Message</label>
+                <input type="text" name="message" id="message" ng-model="vm.outMessage.message" class="form-control"
+                       placeholder="Type your message ">
+            </div>
+            <button id="send" class="btn btn-default" ng-click="vm.sendMessage()" type="submit">Send</button>
+        </form>
+    </div>
+
+
+    <div class="col-md-4 col-lg-4 " align="right">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Users in chat {{vm.currentChat.chatTitle}}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in vm.usersInChat track by $index">
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger" ng-disabled="!vm.isConnected" ng-click="vm.removeUserFromChat(user.id)">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

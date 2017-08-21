@@ -89,6 +89,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/settings/change-password"
             })
+        .state("chat",
+            {
+                templateUrl:'partials/chat/chat.html',
+                controller: "chatController",
+                controllerAs: "vm",
+                url: "/chat"
+            })
     ;
     $urlRouterProvider.otherwise("/home");
 });

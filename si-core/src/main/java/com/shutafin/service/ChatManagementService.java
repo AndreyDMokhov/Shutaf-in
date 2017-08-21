@@ -15,8 +15,8 @@ public interface ChatManagementService {
     void addChatUserToChat(Long userId, Chat chat);
     Chat findAuthorizedChat(Long chatId, User user);
     void removeChatUserFromChat(Long userId, Chat chat);
-    Map<Long,String> getMapChats(User user);
+    List<Chat> getMapChats(User user);
     ChatMessage saveChatMessage(Long chatId, ChatMessageInputWeb message);
-    Map<Long,String> getMapUsers(Chat chat);
+    List<User> getListUsersByChatId(Chat chat);
     List<ChatMessage> getListMessages(Chat chat, User user);
 }

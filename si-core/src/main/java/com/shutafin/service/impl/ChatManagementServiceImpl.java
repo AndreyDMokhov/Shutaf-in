@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -81,13 +82,13 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<Long, String> getMapChats(User user) {
+    public List<Chat> getMapChats(User user) {
         List<Chat> chats = chatUserRepository.findChatsByActiveChatUser(user);
-        Map<Long, String> mapChat = new HashMap<>();
-        for (Chat chat: chats) {
-            mapChat.put(chat.getId(), chat.getChatTitle());
-        }
-        return mapChat;
+//        Map<Long, String> mapChat = new HashMap<>();
+//        for (Chat chat: chats) {
+//            mapChat.put(chat.getId(), chat.getChatTitle());
+//        }
+        return chats;
     }
 
     @Override
@@ -126,14 +127,9 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<Long, String> getMapUsers(Chat chat) {
+    public List<User> getListUsersByChatId(Chat chat) {
         List<ChatUser> chatUsers = chatUserRepository.findActiveChatUsersByChat(chat);
-        Map<Long, String> mapUsers = new HashMap<>();
-        for (ChatUser chatUser: chatUsers) {
-            User user = chatUser.getUser();
-            mapUsers.put(user.getId(), user.getFirstName() + " " + user.getLastName());
-        }
-        return mapUsers;
+        return chatUsers.stream().map(ChatUser::getUser).collect(Collectors.toList());
     }
 
     @Override

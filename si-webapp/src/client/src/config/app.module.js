@@ -13,5 +13,6 @@ var app = angular.module("app", [
     'restangular',
     'pascalprecht.translate',
     'naif.base64',
-    'ngStorage'
+    'ngStorage',
+    'ngStomp'
 ]);
