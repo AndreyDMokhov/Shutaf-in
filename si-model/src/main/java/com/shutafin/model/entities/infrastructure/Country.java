@@ -17,4 +17,9 @@ public class Country extends AbstractKeyConstEntity {
     public Country() {
     }
 
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
 }

@@ -17,4 +17,9 @@ public class Gender extends AbstractKeyConstEntity {
     public Gender() {
     }
 
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
 }

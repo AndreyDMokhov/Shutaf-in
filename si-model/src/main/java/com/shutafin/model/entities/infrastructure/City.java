@@ -26,4 +26,10 @@ public class City extends AbstractKeyConstEntity {
     public void setCountry(Country country) {
         this.country = country;
     }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
 }

@@ -21,9 +21,6 @@ public class Question extends AbstractKeyConstEntity {
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive = true;
 
-    @Column(name = "IS_MUST", nullable = false)
-    private Boolean isMust = true;
-
     public Question() {
     }
 
@@ -35,11 +32,13 @@ public class Question extends AbstractKeyConstEntity {
         isActive = active;
     }
 
-    public Boolean getMust() {
-        return isMust;
+    @Override
+    public int hashCode() {
+        return getId();
     }
 
-    public void setMust(Boolean must) {
-        isMust = must;
+    @Override
+    public boolean equals(Object obj) {
+        return getId()==((Question)obj).getId();
     }
 }

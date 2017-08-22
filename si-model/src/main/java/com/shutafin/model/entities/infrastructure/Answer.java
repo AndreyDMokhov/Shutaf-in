@@ -15,6 +15,9 @@ import javax.persistence.*;
 @Cacheable
 public class Answer extends AbstractKeyConstEntity {
 
+    @Column(name = "IS_UNIVERSAL", nullable = false)
+    private Boolean isUniversal = false;
+
     @JoinColumn(name = "QUESTION_ID", nullable = false)
     @ManyToOne
     private Question question;
@@ -28,5 +31,15 @@ public class Answer extends AbstractKeyConstEntity {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return isUniversal || ((Answer)obj).isUniversal ||  getId()==((Answer)obj).getId();
     }
 }
