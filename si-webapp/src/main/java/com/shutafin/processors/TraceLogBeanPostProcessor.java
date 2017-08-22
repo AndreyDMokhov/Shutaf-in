@@ -10,6 +10,7 @@ import org.springframework.cglib.proxy.Proxy;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class TraceLogBeanPostProcessor implements BeanPostProcessor {
 
     private Map<String, Class> requiredProxyBeans = new HashMap<>();
+    HttpServletResponse response;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -48,15 +50,16 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
                 Gson gson = new Gson();
                 String methodName = method.getName();
 
+log.trace("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ");
                 System.out.println("Class name: " + beanClass.getName());
-                System.out.println("Method name: " + methodName);
+                System.out.println("Method name: \t" + methodName);
 
                 Parameter[] parameters = method.getParameters();
                 for (int i = 0; i < parameters.length; i++) {
-                    System.out.println(methodName + " parameter name: " + parameters[i].getName());
-                    System.out.println(methodName + " parameter type: " + parameters[i].getType().getTypeName());
-                    System.out.println(methodName + " parameter value: " + gson.toJson(args[i]));
+                    log.trace("\t\t{}:{} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), gson.toJson(args[i]));
+                    //type:name = value
                 }
+
 
                 Object methodResult = executeMethod(method, bean, args);
                 if (!method.getReturnType().getName().equals("void")){
@@ -83,10 +86,12 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
                     for (int i = 0; i < parameters.length; i++) {
                         System.out.println(methodName + " parameter name: " + parameters[i].getName());
                         System.out.println(methodName + " parameter type: " + parameters[i].getType().getTypeName());
-                        if (!parameters[i].getType().getTypeName().equals("javax.servlet.http.HttpServletResponse")){
+                        if (parameters[i].getType() != HttpServletResponse.class){
                             System.out.println(methodName + " parameter value: " + gson.toJson(args[i]));
                         }else{
-                            System.out.println(methodName + " pParameter value: " + args[i]);
+                            System.out.println(methodName + " Parameter value: " + parameters[i].getType().getInterfaces());
+                            System.out.println(methodName + " Parameter value: " + args[i]);
+                            response = (HttpServletResponse) args[i];
                         }
                     }
 
@@ -96,7 +101,6 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
                     }else {
                         System.out.println("Method " + methodName + " result: "+ method.getReturnType().getName());
                     }
-
                     System.out.println("-------------");
                     return methodResult;
                 }

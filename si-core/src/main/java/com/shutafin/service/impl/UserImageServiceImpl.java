@@ -34,9 +34,6 @@ public class UserImageServiceImpl implements UserImageService {
     @Autowired
     private EnvironmentConfigurationService environmentConfigurationService;
 
-    @Autowired
-    private UserImageService userImageService;
-
     @Override
     @Transactional
     public UserImage addUserImage(UserImageWeb image, User user) {
@@ -71,9 +68,9 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
+    @Transactional
     public void deleteUserImage(User user, Long userImageId) {
-
-        UserImage userImage = userImageService.getUserImage(user, userImageId);
+        UserImage userImage = this.getUserImage(user, userImageId);
         deleteLocalImage(userImage);
         imageStorageRepository.delete(userImage.getImageStorage());
         userImageRepository.delete(userImage);
