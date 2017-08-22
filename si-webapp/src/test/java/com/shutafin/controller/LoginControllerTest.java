@@ -3,6 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.LoginWebModel;
 import com.shutafin.service.LoginService;
+import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +46,12 @@ public class LoginControllerTest extends HelperTest{
         LoginWebModel loginWebModel = new LoginWebModel();
         loginWebModel.setEmail("email@site.com");
         loginWebModel.setPassword("12345678");
-        APIWebResponse response = getResponse(LOGIN_REQUEST_URL, loginWebModel, HttpMethod.POST);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(LOGIN_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setRequestObject(loginWebModel)
+                .build();
+        APIWebResponse response = getResponse(request);
         Assert.assertNull(response.getError());
     }
 

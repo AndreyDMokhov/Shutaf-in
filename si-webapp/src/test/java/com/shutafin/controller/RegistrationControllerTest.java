@@ -4,11 +4,9 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorResponse;
 import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
-import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,12 +17,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class RegistrationControllerTest extends BaseTestImpl {
+public class RegistrationControllerTest extends HelperTest {
 
     private static final String REGISTRATION_REQUEST_URL = "/users/registration/request";
     private static final String CONFIRM_REGISTRATION_REQUEST_URL = "/users/registration/confirmation/";
@@ -109,7 +109,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -138,7 +138,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -151,7 +151,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_LAST_NAME_LENGTH);
         errorList.add(INP_EMAIL_LENGTH);
         errorList.add(INP_PASSWORD_LENGTH);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -160,21 +160,21 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_FIRST_NAME_LENGTH);
         errorList.add(INP_LAST_NAME_LENGTH);
         errorList.add(INP_PASSWORD_LENGTH);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
     public void registrationRequestJson_IllegalEmail() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"gmail\",\"password\":\"12345678\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_EMAIL_EMAIL);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
     public void registrationRequestJson_IllegalUserLanguageId() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"0\"}";
         errorList.add(INP_USER_LANGUAGE_ID_MIN);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -191,17 +191,4 @@ public class RegistrationControllerTest extends BaseTestImpl {
         Assert.assertEquals(SYS_TYPE_ERROR, errorResponse.getErrorTypeCode());
     }
 
-    private void sendRegistrationWebRequest(String json, List<String> errorList) {
-        ControllerRequest request = ControllerRequest.builder()
-                .setUrl(REGISTRATION_REQUEST_URL)
-                .setHttpMethod(HttpMethod.POST)
-                .setJsonContext(json)
-                .build();
-        APIWebResponse response = getResponse(request);
-        Assert.assertNotNull(response.getError());
-        InputValidationError inputValidationError = (InputValidationError) response.getError();
-        Collections.sort(errorList);
-        Collections.sort(inputValidationError.getErrors());
-        Assert.assertEquals(errorList, inputValidationError.getErrors());
-    }
 }
