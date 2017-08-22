@@ -2,9 +2,7 @@ package com.shutafin.controller;
 
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.LoginWebModel;
-import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.service.LoginService;
-import com.shutafin.system.BaseTestImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +13,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
 
 @RunWith(SpringRunner.class)
-public class LoginControllerTest extends BaseTestImpl{
+public class LoginControllerTest extends HelperTest{
 
     private static final String LOGIN_REQUEST_URL = "/login/";
 
@@ -56,7 +53,7 @@ public class LoginControllerTest extends BaseTestImpl{
     public void LoginRequestJson_IllegalEmail(){
         String loginWebModelJson = "{\"email\":\"gmail.com\",\"password\":\"111111Zz\"}";
         errorList.add(INP_EMAIL_EMAIL);
-        testLoginWebModel(loginWebModelJson, errorList);
+        testControllerInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
     }
 
     @Test
@@ -64,7 +61,7 @@ public class LoginControllerTest extends BaseTestImpl{
         String loginWebModelJson = "{\"email\":null,\"password\":null}";
         errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_PASSWORD_NOT_BLANK);
-        testLoginWebModel(loginWebModelJson, errorList);
+        testControllerInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
     }
 
     @Test
@@ -73,7 +70,7 @@ public class LoginControllerTest extends BaseTestImpl{
         errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
-        testLoginWebModel(loginWebModelJson, errorList);
+        testControllerInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
     }
 
     @Test
@@ -83,7 +80,7 @@ public class LoginControllerTest extends BaseTestImpl{
         errorList.add(INP_EMAIL_EMAIL);
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
-        testLoginWebModel(loginWebModelJson, errorList);
+        testControllerInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
     }
 
     @Test
@@ -92,22 +89,14 @@ public class LoginControllerTest extends BaseTestImpl{
                 "\"password\":\"11111222223333344444555556\"}";
         errorList.add(INP_EMAIL_LENGTH);
         errorList.add(INP_PASSWORD_LENGTH);
-        testLoginWebModel(loginWebModelJson, errorList);
+        testControllerInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
     }
 
     @Test
     public void LoginRequestJson_ExceededMinLength(){
         String loginWebModelJson = "{\"email\":\"psw@gmail.com\",\"password\":\"1234567\"}";
         errorList.add(INP_PASSWORD_LENGTH);
-        testLoginWebModel(loginWebModelJson, errorList);
+        testControllerInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
     }
 
-    private void testLoginWebModel(String json, List<String> errorList){
-        APIWebResponse response = getResponse(LOGIN_REQUEST_URL, json, HttpMethod.POST);
-        Assert.assertNotNull(response.getError());
-        InputValidationError inputValidationError = (InputValidationError) response.getError();
-        Collections.sort(errorList);
-        Collections.sort(inputValidationError.getErrors());
-        Assert.assertEquals(errorList, inputValidationError.getErrors());
-    }
 }
