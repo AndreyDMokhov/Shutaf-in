@@ -3,7 +3,7 @@ package com.shutafin.system;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.shutafin.App;
-import com.shutafin.controller.APIWebResponseDeserializer;
+import com.shutafin.configuration.*;
 import com.shutafin.model.web.APIWebResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +12,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -27,15 +30,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @WebMvcTest(value = App.class)
 @EnableAutoConfiguration
+@ContextConfiguration(classes = {
+        ApplicationContextConfiguration.class,
+        PersistenceContextConfiguration.class,
+        HttpMessageConverterConfiguration.class,
+        WebContextConfiguration.class,
+        SMTPContextConfiguration.class
+})
 public class BaseTestImpl implements BaseTest {
 
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer())
-            .create();
+    private Gson gson;
 
     @Autowired
     private MockMvc mockMvc;
-
 
     @Override
     public APIWebResponse getResponse(MvcResult mvcResult) {
@@ -56,31 +63,25 @@ public class BaseTestImpl implements BaseTest {
     }
 
     @Override
-    public APIWebResponse getResponse(String url, HttpMethod httpMethod) {
-        return getResponse(url, "", httpMethod, null);
-    }
-
-    @Override
-    public APIWebResponse getResponse(String url, HttpMethod httpMethod, List<HttpHeaders> headers) {
-        return getResponse(url, "", httpMethod, headers);
-    }
-
-    @Override
-    public APIWebResponse getResponse(String url, String jsonContent, HttpMethod httpMethod) {
-        return getResponse(url, jsonContent, httpMethod, null);
-    }
-
-    @Override
     @SneakyThrows
-    public APIWebResponse getResponse(String url, String jsonContent, HttpMethod httpMethod, List<HttpHeaders> headers) {
-
-        MockHttpServletRequestBuilder builder = getHttpMethodSenderType(url, httpMethod)
+    public APIWebResponse getResponse(ControllerRequest request) {
+        MockHttpServletRequestBuilder builder = getHttpMethodSenderType(request.getUrl(), request.getHttpMethod())
                 .contentType(MediaType.APPLICATION_JSON_VALUE);
+
+        Class responseClass = request.getResponseClass();
+        gson = getGsonForResponseClass(responseClass);
+
+        String jsonContent = request.getJsonContent();
+        Object requestObject = request.getRequestObject();
+        if (requestObject != null) {
+            jsonContent = gson.toJson(requestObject);
+        }
         if (jsonContent != null && !jsonContent.trim().isEmpty()) {
             builder.content(jsonContent);
         }
 
-        if (headers != null && !headers.isEmpty()) {
+        List<HttpHeaders> headers = request.getHeaders();
+        if (headers != null && !CollectionUtils.isEmpty(headers)) {
             for (HttpHeaders httpHeaders : headers) {
                 builder.headers(httpHeaders);
             }
@@ -94,15 +95,18 @@ public class BaseTestImpl implements BaseTest {
         return getResponse(result);
     }
 
-    @Override
-    public APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod) {
-        return getResponse(url, object, httpMethod, null);
+    protected List<HttpHeaders> addSessionIdToHeader(String sessionId) {
+        List<HttpHeaders> headers = new ArrayList<>();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("session_id", sessionId);
+        headers.add(httpHeaders);
+        return headers;
     }
 
-    @Override
-    @SneakyThrows
-    public APIWebResponse getResponse(String url, Object object, HttpMethod httpMethod, List<HttpHeaders> headers) {
-        return getResponse(url, gson.toJson(object), httpMethod, headers);
+    private Gson getGsonForResponseClass(Class responseClass) {
+        return new GsonBuilder()
+                .registerTypeAdapter(APIWebResponse.class, new APIWebResponseDeserializer(responseClass))
+                .create();
     }
 
     private MockHttpServletRequestBuilder getHttpMethodSenderType(String url, HttpMethod httpMethod) {

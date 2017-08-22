@@ -19,7 +19,7 @@
                 </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userProfile' | includedByState)}">
-                    <a ui-sref="userProfile">{{'Profile.title' | translate}}</a>
+                    <a ui-sref="userProfile">{{'UserProfile.title' | translate}}</a>
                 </li>
 
             </ul>
@@ -74,7 +74,7 @@
                         <b class="caret"></b>
                     </a>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                        <li role="menuitem" ng-repeat="lang in vm.initialization.languages"><a class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a></li>
+                        <li role="menuitem" ng-repeat="lang in vm.initialization.languages | filter : {active : 'true'}"><a class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a></li>
                     </ul>
                 </li>
             </ul>
