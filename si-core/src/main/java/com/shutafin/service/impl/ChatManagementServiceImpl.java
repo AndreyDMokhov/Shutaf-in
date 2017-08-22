@@ -82,12 +82,8 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Chat> getMapChats(User user) {
+    public List<Chat> getListChats(User user) {
         List<Chat> chats = chatUserRepository.findChatsByActiveChatUser(user);
-//        Map<Long, String> mapChat = new HashMap<>();
-//        for (Chat chat: chats) {
-//            mapChat.put(chat.getId(), chat.getChatTitle());
-//        }
         return chats;
     }
 

@@ -13,11 +13,11 @@ import com.shutafin.service.ChatManagementService;
 import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.*;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,13 +55,13 @@ public class ChatController {
     @RequestMapping(value = "/get/chats", method = RequestMethod.GET)
     public List<Chat> getChats(@AuthenticatedUser User user, HttpServletResponse response) {
         response.setHeader("user_id", String.valueOf(user.getId()));
-        return chatManagementService.getMapChats(user);
+        return chatManagementService.getListChats(user);
     }
 
     @NoAuthentication
     @MessageMapping("/chat/{chat_id}/message")
     @SendTo("/subscribe/chat/{chat_id}")
-    public ChatMessageOutputWeb send(@DestinationVariable("chat_id") Long chatId, ChatMessageInputWeb message) {
+    public ChatMessageOutputWeb send(@DestinationVariable("chat_id") Long chatId,ChatMessageInputWeb message) {
         ChatMessage chatMessage = chatManagementService.saveChatMessage(chatId, message);
         return createChatMessageOutputWeb(chatMessage);
     }

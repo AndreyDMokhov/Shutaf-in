@@ -76,7 +76,7 @@
                 <input type="text" name="message" id="message" ng-model="vm.outMessage.message" class="form-control"
                        placeholder="Type your message ">
             </div>
-            <button id="send" class="btn btn-default" ng-click="vm.sendMessage()" type="submit">Send</button>
+            <button id="send" class="btn btn-default" ng-disabled="!vm.outMessage.message || vm.outMessage.message === ''" ng-click="vm.sendMessage()" type="submit">Send</button>
         </form>
     </div>
 

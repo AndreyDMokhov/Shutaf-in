@@ -11,7 +11,6 @@ app.controller('chatController', function (chatModel, $sessionStorage, $stomp, $
         vm.usersInChat = {};
         vm.isConnected = false;
         vm.subscription = null;
-        vm.stompClient = null;
         function activate() {
             getUserData();
             getChats();
@@ -30,17 +29,6 @@ app.controller('chatController', function (chatModel, $sessionStorage, $stomp, $
 
 
         function connect() {
-            // vm.isConnected = false;
-            // var socket = new SockJS('/api/gs-guide-websocket');
-            // vm.stompClient = Stomp.over(socket);
-            // vm.stompClient.connect({}, function (frame) {
-            //     vm.isConnected = true;
-            //     vm.dataLoading = false;
-            //     console.log('Connected: ' + frame);
-            //     vm.stompClient.subscribe('/subscribe/chat/' + vm.currentChat.id, function (message) {
-            //         vm.messages.push(JSON.parse(message.body));
-            //     });
-            // });
 
             return $q(function (resolve, reject) {
 
@@ -48,11 +36,11 @@ app.controller('chatController', function (chatModel, $sessionStorage, $stomp, $
                     console.log(args);
                 });
                 $stomp
-                    .connect('/api/gs-guide-websocket', {'session_id': $sessionStorage.sessionId})
+                    .connect('/api/chatsocket', {'session_id': $sessionStorage.sessionId})
                     .then(function (frame) {
                         vm.isConnected = true;
                         vm.dataLoading = false;
-                         resolve(console.log('Connected: ' + frame));
+                        resolve(console.log('Connected: ' + frame));
                     }, function (err) {
                         reject(console.log(err));
                         $stomp.disconnect();
@@ -80,8 +68,9 @@ app.controller('chatController', function (chatModel, $sessionStorage, $stomp, $
         function _doSubscribe() {
             vm.subscription = $stomp.subscribe('/subscribe/chat/' + vm.currentChat.id,
                 function (payload) {
-                    vm.messages.push(payload);
-                    $scope.$apply();
+                    $scope.$apply(function () {
+                        vm.messages.push(payload)
+                    });
                 }, {'session_id': $sessionStorage.sessionId});
         }
 
@@ -90,7 +79,7 @@ app.controller('chatController', function (chatModel, $sessionStorage, $stomp, $
             vm.currentChat.id = 0;
             chatModel.addChat(vm.chatName).then(
                 function (success) {
-                    joinChat({"id":success.headers('chat_id'), "chatTitle":vm.chatName});
+                    joinChat({"id": success.headers('chat_id'), "chatTitle": vm.chatName});
                     getChats();
                     vm.chatName = "";
                 }, function (error) {
@@ -109,12 +98,6 @@ app.controller('chatController', function (chatModel, $sessionStorage, $stomp, $
         }
 
         function disconnect() {
-
-            // if (vm.stompClient !== null) {
-            //     vm.stompClient.disconnect();
-            // }
-            // vm.isConnected = false;
-            // console.log("Disconnected");
 
             return $q(function (resolve, reject) {
                 if (vm.isConnected) {
@@ -141,6 +124,9 @@ app.controller('chatController', function (chatModel, $sessionStorage, $stomp, $
         }
 
         function joinChat(chat) {
+            if(vm.currentChat.id===chat.id){
+                return;
+            }
             vm.currentChat = chat;
             unSubscribe();
             subscribe();
@@ -158,11 +144,12 @@ app.controller('chatController', function (chatModel, $sessionStorage, $stomp, $
         }
 
         function sendMessage() {
+            if (!vm.outMessage.message || vm.outMessage.message === '') {
+                return;
+            }
             vm.outMessage.userId = $sessionStorage.userProfile.id;
             vm.outMessage.messageType = 1;
             vm.adress = '/chat/' + vm.currentChat.id + '/message';
-
-            // vm.stompClient.send(vm.adress, {}, JSON.stringify(vm.message));
 
             $stomp.send(vm.adress, vm.outMessage, {'session_id': $sessionStorage.sessionId});
             vm.outMessage.message = "";
