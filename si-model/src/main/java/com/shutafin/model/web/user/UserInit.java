@@ -7,6 +7,8 @@ public class UserInit implements DataResponse {
     private String firstName;
     private String lastName;
     private Integer languageId;
+    private Long userImageId;
+    private String userImage;
 
     public UserInit() {
     }
@@ -17,6 +19,16 @@ public class UserInit implements DataResponse {
         this.lastName = lastName;
         this.languageId = languageId;
     }
+
+    public UserInit(String firstName, String lastName, Integer languageId, Long userImageId, String userImage) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.languageId = languageId;
+        this.userImageId = userImageId;
+        this.userImage = userImage;
+    }
+
 
     public String getFirstName() {
         return firstName;
@@ -41,6 +53,24 @@ public class UserInit implements DataResponse {
     public void setLanguageId(Integer languageId) {
         this.languageId = languageId;
     }
+
+    public Long getUserImageId() {
+        return userImageId;
+    }
+
+    public void setUserImageId(Long userImageId) {
+        this.userImageId = userImageId;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
+    }
+
+
 }
 
 
