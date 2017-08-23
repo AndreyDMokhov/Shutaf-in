@@ -10,8 +10,10 @@ import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.ChatManagementService;
 import com.shutafin.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/chat")
+@Slf4j
 public class ChatController {
 
     @Autowired
@@ -67,6 +70,12 @@ public class ChatController {
     public ChatMessageOutputWeb send(@DestinationVariable("chat_id") Long chatId,ChatMessageInputWeb message) {
         ChatMessage chatMessage = chatManagementService.saveChatMessage(chatId, message);
         return createChatMessageOutputWeb(chatMessage);
+    }
+
+    @MessageExceptionHandler
+    public String handleException(Throwable exception) {
+        log.warn(exception.getMessage());
+        return exception.getMessage();
     }
 
     @RequestMapping(value = "/{chat_id}/get/users", method = RequestMethod.GET)
