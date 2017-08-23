@@ -3,6 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.matching.QuestionAnswer;
+import com.shutafin.model.web.QuestionWeb;
 import com.shutafin.model.web.initialization.AnswerResponseDTO;
 import com.shutafin.model.web.initialization.QuestionResponseDTO;
 import com.shutafin.model.web.user.UserQuestionAnswerWeb;
@@ -41,11 +42,9 @@ public class UserMatchController {
         userMatchService.saveQuestionsAnswers(sessionManagementService.findUserWithValidSession(sessionId), userQuestionsAnswers);
     }
 
-/*
     @RequestMapping(value = "/template", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<QuestionResponseDTO, List<AnswerResponseDTO>> getUserMatchExamTemplate(@RequestHeader(value = "session_id") String sessionId) {
-        return userMatchService.getUserMatchExamTemplate(sessionManagementService.findUserWithValidSession(sessionId));
+    public List<QuestionWeb> getUserMatchExamTemplate(@RequestHeader(value = "session_id") String sessionId) {
+        return userMatchService.getUserQuestionsAnswers(sessionManagementService.findUserWithValidSession(sessionId));
     }
-*/
 
 }

@@ -2,6 +2,7 @@ package com.shutafin.repository.initialization.locale;
 
 import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.Language;
+import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.web.initialization.AnswerResponseDTO;
 import com.shutafin.repository.base.Dao;
 
@@ -12,4 +13,5 @@ import java.util.List;
  */
 public interface AnswerRepository extends Dao<Answer> {
     List<AnswerResponseDTO> getLocaleAnswers(Language language);
+    List<AnswerResponseDTO> getQuestionLocaleAnswers(Language language, Question question);
 }

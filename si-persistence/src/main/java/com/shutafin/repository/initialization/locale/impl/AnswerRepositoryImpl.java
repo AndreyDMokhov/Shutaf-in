@@ -2,6 +2,7 @@ package com.shutafin.repository.initialization.locale.impl;
 
 import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.Language;
+import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.web.initialization.AnswerResponseDTO;
 import com.shutafin.repository.base.AbstractConstEntityDao;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
@@ -21,7 +22,7 @@ public class AnswerRepositoryImpl extends AbstractConstEntityDao<Answer> impleme
         hql.append(" ( ");
         hql.append(" cl.answer.id, ");
         hql.append(" cl.description, ");
-        hql.append(" cl.answer.question.id as questionId ");
+        hql.append(" cl.answer.isUniversal as isUniversal ");
         hql.append(" )");
         hql.append(" from AnswerLocale cl where cl.language = :language ");
 
@@ -29,6 +30,26 @@ public class AnswerRepositoryImpl extends AbstractConstEntityDao<Answer> impleme
                 .createQuery(hql.toString())
                 .setCacheable(true)
                 .setParameter("language", language)
+                .getResultList();
+    }
+
+    @Override
+    public List<AnswerResponseDTO> getQuestionLocaleAnswers(Language language, Question question) {
+        StringBuilder hql = new StringBuilder();
+        hql.append("select new com.shutafin.model.web.initialization.AnswerResponseDTO ");
+        hql.append(" ( ");
+        hql.append(" cl.answer.id, ");
+        hql.append(" cl.description, ");
+        hql.append(" cl.answer.isUniversal as isUniversal ");
+        hql.append(" )");
+        hql.append(" from AnswerLocale cl where cl.language = :language ");
+        hql.append(" and cl.answer.question = :question ");
+
+        return getSession()
+                .createQuery(hql.toString())
+                .setCacheable(true)
+                .setParameter("language", language)
+                .setParameter("question", question)
                 .getResultList();
     }
 }

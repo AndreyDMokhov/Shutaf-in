@@ -6,12 +6,13 @@ import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.matching.QuestionAnswer;
+import com.shutafin.model.web.AnswerWeb;
+import com.shutafin.model.web.QuestionWeb;
 import com.shutafin.model.web.initialization.AnswerResponseDTO;
 import com.shutafin.model.web.initialization.QuestionResponseDTO;
 import com.shutafin.model.web.user.UserQuestionAnswerWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
-import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
 import com.shutafin.service.UserMatchService;
@@ -78,16 +79,48 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public Map<QuestionResponseDTO, List<AnswerResponseDTO>> getUserMatchExamTemplate(User user){
-        Map<QuestionResponseDTO, List<AnswerResponseDTO>> template = new HashMap<>();
+    public List<QuestionWeb> getUserQuestionsAnswers(User user){
+        List<QuestionWeb> questionsWebList = new ArrayList<>();
         Language language = userAccountRepository.findUserLanguage(user);
+
         List<QuestionResponseDTO> questions = questionRepository.getLocaleQuestions(language);
         for (QuestionResponseDTO questionResponseDTO : questions) {
-            List<AnswerResponseDTO> answers = answerRepository.getLocaleAnswers(language);
-            template.put(questionResponseDTO, answers);
+            QuestionWeb questionWeb = convertQuestionDtoToWeb(questionResponseDTO);
+
+            List<AnswerResponseDTO> answers = answerRepository.getQuestionLocaleAnswers(language, questionRepository.findById(questionResponseDTO.getId()));
+            questionWeb.setAnswers(convertAnswerDtoListToWebList(answers));
+
+            List<UserQuestionAnswer> currentQuestionSelectedAnswers = userQuestionAnswerRepository.getUserQuestionAnswer(user, questionRepository.findById(questionResponseDTO.getId()));
+            questionWeb.setSelectedAnswersIds(getIdsFromAnswers(currentQuestionSelectedAnswers));
+
+            questionsWebList.add(questionWeb);
         }
 
-        return template;
+        return questionsWebList;
+    }
+
+    private List<Integer> getIdsFromAnswers(List<UserQuestionAnswer> questionSelectedAnswers){
+        List<Integer> ids = new ArrayList<>();
+        for (UserQuestionAnswer userQuestionAnswer : questionSelectedAnswers) {
+            ids.add(userQuestionAnswer.getAnswer().getId());
+        }
+        return ids;
+    }
+
+    private List<AnswerWeb> convertAnswerDtoListToWebList(List<AnswerResponseDTO> answers){
+        List<AnswerWeb> answerWebList = new ArrayList<>();
+        for (AnswerResponseDTO answerResponseDTO : answers) {
+            answerWebList.add(convertAnswerDtoToWeb(answerResponseDTO));
+        }
+        return answerWebList;
+    }
+
+    private AnswerWeb convertAnswerDtoToWeb(AnswerResponseDTO answerResponseDTO){
+        return new AnswerWeb(answerResponseDTO.getId(), answerResponseDTO.getDescription(), answerResponseDTO.getUniversal());
+    }
+
+    private QuestionWeb convertQuestionDtoToWeb(QuestionResponseDTO questionResponseDTO){
+        return new QuestionWeb(questionResponseDTO.getId(), questionResponseDTO.getDescription(), questionResponseDTO.getActive(),null,null);
     }
 
     private void initUsersMatchMap(){
