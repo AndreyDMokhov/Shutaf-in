@@ -75,7 +75,7 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
             @Override
             public Object invoke(Object o, Method method, Object[] args) throws Throwable {
                 if (!method.isAnnotationPresent(SessionResponse.class)) {
-                    return method.invoke(bean, args);
+                    return executeMethod(method, bean, args);
                 }
 
                 Object retVal = executeMethod(method, bean, args);
