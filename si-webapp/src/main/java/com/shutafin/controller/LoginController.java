@@ -1,8 +1,10 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.web.LoginWebModel;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
+import com.shutafin.processors.annotations.sessionResponse.SessionResponse;
 import com.shutafin.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +28,15 @@ public class LoginController {
     @Autowired
     private LoginService loginWebService;
 
+    @SessionResponse
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void login(@RequestBody @Valid LoginWebModel loginWeb, BindingResult result, HttpServletResponse response) {
+    public User login(@RequestBody @Valid LoginWebModel loginWeb, BindingResult result) {
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-
-        String session = loginWebService.getSessionIdByEmail(loginWeb);
-        response.addHeader("session_id", session);
+        return loginWebService.getSessionIdByEmail(loginWeb);
     }
 
 
