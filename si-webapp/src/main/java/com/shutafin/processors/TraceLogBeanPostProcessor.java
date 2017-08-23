@@ -21,7 +21,6 @@ import java.util.Map;
 public class TraceLogBeanPostProcessor implements BeanPostProcessor {
 
     private Map<String, Class> requiredProxyBeans = new HashMap<>();
-    HttpServletResponse response;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -46,66 +45,48 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
             ClassLoader beanClassClassLoader = beanClass.getClassLoader();
 
             return Proxy.newProxyInstance(beanClassClassLoader, beanClass.getInterfaces(), (proxy, method, args) -> {
-
-                Gson gson = new Gson();
-                String methodName = method.getName();
-
-log.trace("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ");
-                System.out.println("Class name: " + beanClass.getName());
-                System.out.println("Method name: \t" + methodName);
-
-                Parameter[] parameters = method.getParameters();
-                for (int i = 0; i < parameters.length; i++) {
-                    log.trace("\t\t{}:{} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), gson.toJson(args[i]));
-                    //type:name = value
-                }
-
-
-                Object methodResult = executeMethod(method, bean, args);
-                if (!method.getReturnType().getName().equals("void")){
-                    System.out.println("Method " + methodName + " result: " + gson.toJson(methodResult, method.getReturnType()));
-                }else {
-                    System.out.println("Method " + methodName + " result: "+ method.getReturnType().getName());
-                }
-
-                return methodResult;
+                log.trace("\n\r \n\r * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\r");
+                Object result = helperInvoke(beanClass, bean, method, args);
+                log.trace("\n\r \n\r * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\r");
+                return result;
             });
         }else{
             return Enhancer.create(beanClass, new InvocationHandler() {
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-                    Gson gson = new Gson();
-                    String methodName = method.getName();
-
-                    System.out.println("-------------");
-                    System.out.println("Class name: " + beanClass.getName());
-                    System.out.println("Method name: " + methodName);
-
-                    Parameter[] parameters = method.getParameters();
-                    for (int i = 0; i < parameters.length; i++) {
-                        System.out.println(methodName + " parameter name: " + parameters[i].getName());
-                        System.out.println(methodName + " parameter type: " + parameters[i].getType().getTypeName());
-                        if (parameters[i].getType() != HttpServletResponse.class){
-                            System.out.println(methodName + " parameter value: " + gson.toJson(args[i]));
-                        }else{
-                            System.out.println(methodName + " Parameter value: " + parameters[i].getType().getInterfaces());
-                            System.out.println(methodName + " Parameter value: " + args[i]);
-                            response = (HttpServletResponse) args[i];
-                        }
-                    }
-
-                    Object methodResult = executeMethod(method, bean, args);
-                    if (!method.getReturnType().getName().equals("void")){
-                        System.out.println("Method " + methodName + " result: " + gson.toJson(methodResult, method.getReturnType()));
-                    }else {
-                        System.out.println("Method " + methodName + " result: "+ method.getReturnType().getName());
-                    }
-                    System.out.println("-------------");
-                    return methodResult;
+                    log.trace("\n\r \n\r + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + \n\r");
+                    Object result = helperInvoke(beanClass, bean, method, args);
+                    log.trace("\n\r \n\r + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + \n\r");
+                    return result;
                 }
             });
         }
+    }
+
+    private Object helperInvoke(Class beanClass, Object bean, Method method, Object[] args) throws Throwable {
+        Gson gson = new Gson();
+        String methodName = method.getName();
+
+        log.trace("Class name: {}", beanClass.getName());
+        log.trace("Method name: \t{}", methodName);
+
+        Parameter[] parameters = method.getParameters();
+        for (int i = 0; i < parameters.length; i++) {
+            if (parameters[i].getType() != HttpServletResponse.class){
+                log.trace("\t\t{} : {} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), gson.toJson(args[i]));
+            }else{
+                log.trace("\t\t{} : {} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), args[i]);
+            }
+        }
+
+        Object methodResult = executeMethod(method, bean, args);
+        if (!method.getReturnType().getName().equals("void")){
+            log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, gson.toJson(methodResult, method.getReturnType()));
+        }else {
+            log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, method.getReturnType().getName());
+        }
+
+        return methodResult;
     }
 
     private Object executeMethod(Method method, Object bean, Object ... args) throws Throwable {
