@@ -70,7 +70,11 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Transactional(readOnly = true)
     public Chat findAuthorizedChat(Long chatId, User user) {
         ChatUser chatUser = chatUserRepository.findActiveChatUserByChatIdAndUserId(chatId, user.getId());
-        return chatUser == null ? null : chatUser.getChat();
+        Chat chat = chatUser.getChat();
+        if (chat == null) {
+            throw new AuthenticationException();
+        }
+        return chat;
     }
 
     @Override

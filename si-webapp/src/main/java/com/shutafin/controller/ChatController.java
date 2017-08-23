@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
 import com.shutafin.model.entities.User;
@@ -12,9 +11,13 @@ import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.ChatManagementService;
 import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.*;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -41,14 +44,14 @@ public class ChatController {
     @RequestMapping(value = "/{chat_id}/add/user/{user_id}", method = RequestMethod.GET)
     public void addChatUser(@PathVariable("chat_id") Long chatId, @PathVariable("user_id") Long userId,
                             @AuthenticatedUser User user) {
-        Chat chat = getChatByUser(user, chatId);
+        Chat chat = chatManagementService.findAuthorizedChat(chatId, user);
         chatManagementService.addChatUserToChat(userId, chat);
     }
 
     @RequestMapping(value = "/{chat_id}/remove/user/{user_id}", method = RequestMethod.GET)
     public void removeChatUser(@PathVariable("chat_id") Long chatId, @PathVariable("user_id") Long userId,
                                @AuthenticatedUser User user) {
-        Chat chat = getChatByUser(user, chatId);
+        Chat chat = chatManagementService.findAuthorizedChat(chatId, user);
         chatManagementService.removeChatUserFromChat(userId, chat);
     }
 
@@ -68,13 +71,13 @@ public class ChatController {
 
     @RequestMapping(value = "/{chat_id}/get/users", method = RequestMethod.GET)
     public List<User> getUsers(@PathVariable("chat_id") Long chatId, @AuthenticatedUser User user) {
-        Chat chat = getChatByUser(user, chatId);
+        Chat chat = chatManagementService.findAuthorizedChat(chatId, user);
         return chatManagementService.getListUsersByChatId(chat);
     }
 
     @RequestMapping(value = "/{chat_id}/get/messages", method = RequestMethod.GET)
     public List<ChatMessageOutputWeb> getMessages(@PathVariable("chat_id") Long chatId, @AuthenticatedUser User user) {
-        Chat chat = getChatByUser(user, chatId);
+        Chat chat = chatManagementService.findAuthorizedChat(chatId, user);
         List<ChatMessage> chatMessages = chatManagementService.getListMessages(chat, user);
         return createListChatMessageOutputWeb(chatMessages);
     }
@@ -99,14 +102,6 @@ public class ChatController {
         chatMessageOutputWeb.setMessage(chatMessage.getMessage());
         chatMessageOutputWeb.setMessageType(chatMessage.getMessageType().getId());
         return chatMessageOutputWeb;
-    }
-
-    private Chat getChatByUser(User user, Long chatId) {
-        Chat chat = chatManagementService.findAuthorizedChat(chatId, user);
-        if (chat == null) {
-            throw new AuthenticationException();
-        }
-        return chat;
     }
 
 }
