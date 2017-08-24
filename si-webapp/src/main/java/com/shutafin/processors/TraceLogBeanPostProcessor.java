@@ -26,6 +26,7 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         Class beanClass = bean.getClass();
         if (beanClass.getName().contains("com.shutafin") && log.isTraceEnabled() &&
+                !beanClass.getName().contains("com.shutafin.configuration") &&
                 AnnotationUtils.findAnnotation(beanClass, Configuration.class) == null) {
             requiredProxyBeans.put(beanName, beanClass);
         }
@@ -80,7 +81,7 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
         }
 
         Object methodResult = executeMethod(method, bean, args);
-        if (!method.getReturnType().getName().equals("void")){
+        if (method.getReturnType() != Void.TYPE){
             log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, gson.toJson(methodResult, method.getReturnType()));
         }else {
             log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, method.getReturnType().getName());
