@@ -31,4 +31,22 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
                 .setParameter("language", language)
                 .getResultList();
     }
+
+    @Override
+    public List<QuestionResponseDTO> getLocaleActiveQuestions(Language language) {
+        StringBuilder hql = new StringBuilder();
+        hql.append("select new com.shutafin.model.web.initialization.QuestionResponseDTO ");
+        hql.append(" ( ");
+        hql.append(" cl.question.id, ");
+        hql.append(" cl.description, ");
+        hql.append(" cl.question.isActive ");
+        hql.append(" )");
+        hql.append(" from QuestionLocale cl where cl.language = :language AND cl.question.isActive = 1");
+
+        return getSession()
+                .createQuery(hql.toString())
+                .setCacheable(true)
+                .setParameter("language", language)
+                .getResultList();
+    }
 }

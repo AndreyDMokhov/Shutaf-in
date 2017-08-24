@@ -83,7 +83,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         List<QuestionWeb> questionsWebList = new ArrayList<>();
         Language language = userAccountRepository.findUserLanguage(user);
 
-        List<QuestionResponseDTO> questions = questionRepository.getLocaleQuestions(language);
+        List<QuestionResponseDTO> questions = questionRepository.getLocaleActiveQuestions(language);
         for (QuestionResponseDTO questionResponseDTO : questions) {
             QuestionWeb questionWeb = convertQuestionDtoToWeb(questionResponseDTO);
 

@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface QuestionRepository extends Dao<Question> {
     List<QuestionResponseDTO> getLocaleQuestions(Language language);
+    List<QuestionResponseDTO> getLocaleActiveQuestions(Language language);
 }
