@@ -59,7 +59,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         Set<Map.Entry<User,Set<QuestionAnswer>>> set = usersQuestionsAnswersMap.entrySet();
         for(Map.Entry<User,Set<QuestionAnswer>> entry : set){
             if (!user.equals(entry.getKey())){
-                if (userQuestionAnswersSet.containsAll(entry.getValue()))
+                if (userQuestionAnswersSet!=null && userQuestionAnswersSet.containsAll(entry.getValue()))
                     result.add(entry.getKey());
             }
         }
@@ -74,6 +74,8 @@ public class UserMatchServiceImpl implements UserMatchService {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
+
+            updateUsersQuestionsAnswersMap(user, question, answer);
         }
     }
 
@@ -97,6 +99,16 @@ public class UserMatchServiceImpl implements UserMatchService {
         }
 
         return questionsWebList;
+    }
+
+    private void updateUsersQuestionsAnswersMap(User user, Question question, Answer answer){
+        if (usersQuestionsAnswersMap == null){
+            usersQuestionsAnswersMap = new HashMap<>();
+        }
+        if (usersQuestionsAnswersMap.get(user) == null){
+            usersQuestionsAnswersMap.put(user, new HashSet<QuestionAnswer>());
+        }
+        usersQuestionsAnswersMap.get(user).add(new QuestionAnswer(question, answer));
     }
 
     private List<Integer> getIdsFromAnswers(List<UserQuestionAnswer> questionSelectedAnswers){
