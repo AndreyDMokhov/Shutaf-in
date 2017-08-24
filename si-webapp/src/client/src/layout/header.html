@@ -17,12 +17,9 @@
                         <span class="fa fa-book header-icon-size"></span>
                     </a>
                 </li>
-                <li ng-hide="true" ng-class="{active : ('users' | includedByState)}">
-                    <a ui-sref="users">{{'Users.title' | translate}}</a>
-                </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userProfile' | includedByState)}">
-                    <a ui-sref="userProfile">{{'Profile.title' | translate}}</a>
+                    <a ui-sref="userProfile">{{'UserProfile.title' | translate}}</a>
                 </li>
 
             </ul>
@@ -40,18 +37,35 @@
                         {{'Login.title' | translate}}
                     </a>
                 </li>
-                <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('resetPassword' | includedByState)}">
-                    <a ui-sref="resetPassword">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        {{'ResetPassword.title' |translate}}
+                <li ng-show="vm.sessionService.isAuthenticated()"
+                    ng-class="{active : ('settings' | includedByState)}">
+                    <a ui-sref="settings">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'Settings.personal.title' | translate}}
                     </a>
                 </li>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('emailChangeRequest' | includedByState)}">
+                    <a ui-sref="changeEmailRequest">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'Settings.security.email.title' | translate}}
+                    </a>
+                </li>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('changePassword' | includedByState)}">
+                    <a ui-sref="changePassword">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{'Settings.security.password.title' | translate}}
+                    </a>
+                </li>
+
+
                 <li ng-show="vm.sessionService.isAuthenticated()">
                     <a ui-sref="logout">
                         <span class="glyphicon glyphicon-log-out"></span>
                         {{'Logout.button' | translate}}
                     </a>
                 </li>
+
+
                 <li class="divider-vertical"></li>
                 <li uib-dropdown>
                     <a href="#" uib-dropdown-toggle>|
@@ -60,7 +74,7 @@
                         <b class="caret"></b>
                     </a>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                        <li role="menuitem" ng-repeat="lang in vm.initialization.languages"><a class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a></li>
+                        <li role="menuitem" ng-repeat="lang in vm.initialization.languages | filter : {active : 'true'}"><a class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a></li>
                     </ul>
                 </li>
             </ul>

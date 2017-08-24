@@ -9,7 +9,8 @@ public enum ErrorType {
     EMAIL_SEND_ERROR(503, ErrorCode.ESE),
     EMAIL_CONFIGURATION_ERROR(500, ErrorCode.ECE),
     EMAIL_DUPLICATION_EXCEPTION(400, ErrorCode.EDE),
-    RESOURCE_NOT_FOUND(404, ErrorCode.RNF);
+    RESOURCE_NOT_FOUND_ERROR(404, ErrorCode.RNF),
+    INCORRECT_PASSWORD_ERROR(401, ErrorCode.IPE);
 
     private Integer httpCode;
     private ErrorCode errorCodeType;
@@ -26,9 +27,23 @@ public enum ErrorType {
     public Integer getHttpCode() {
         return httpCode;
     }
+
+    public static ErrorType getById(String errorCodeName) {
+        if (errorCodeName == null) {
+            throw new IllegalArgumentException("Error code cannot be null");
+        }
+
+        for (ErrorType errorType : values()) {
+            if (errorType.getErrorCodeType().equals(errorCodeName)) {
+                return errorType;
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("Error type with error code %s does not exist", errorCodeName));
+    }
 }
 
 
 enum ErrorCode {
-    INP, SYS, AUT, ESE, ECE, EDE, RNF
+    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE;
 }

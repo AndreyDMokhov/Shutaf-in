@@ -2,10 +2,7 @@ package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
 import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.types.AccountStatus;
-import com.shutafin.model.entities.types.AccountStatusConverter;
-import com.shutafin.model.entities.types.AccountType;
-import com.shutafin.model.entities.types.AccountTypeConverter;
+import com.shutafin.model.entities.types.*;
 
 import javax.persistence.*;
 
@@ -30,6 +27,10 @@ public class UserAccount extends AbstractBaseEntity {
     @JoinColumn(name = "LANGUAGE_ID", nullable = false)
     @OneToOne
     private Language language;
+
+    @JoinColumn(name = "USER_IMAGE_ID")
+    @OneToOne
+    private UserImage userImage;
 
     public UserAccount() {
     }
@@ -64,5 +65,13 @@ public class UserAccount extends AbstractBaseEntity {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public UserImage getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(UserImage userImage) {
+        this.userImage = userImage;
     }
 }

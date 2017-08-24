@@ -3,8 +3,8 @@ package com.shutafin.exception.exceptions.validation;
 import com.shutafin.exception.exceptions.ValidationException;
 import com.shutafin.model.web.error.ErrorType;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmailNotUniqueValidationException extends ValidationException {
 
@@ -19,9 +19,9 @@ public class EmailNotUniqueValidationException extends ValidationException {
     }
 
     @Override
-    protected Map<String, String> getFieldErrors() {
-        return new HashMap<String, String>() {{
-            put(FIELD_NAME, CODE);
+    protected List<String> getFieldErrors() {
+        return new ArrayList<String>() {{
+            add(FIELD_NAME + "." + CODE);
         }};
     }
 

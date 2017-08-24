@@ -1,4 +1,4 @@
-app.controller('logoutController', function ($rootScope, logoutModel, $window, $state,$filter, languageService) {
+app.controller('logoutController', function ($rootScope, logoutModel, $window, $state,$filter, languageService, $sessionStorage) {
 
     function logout() {
         logoutModel.logout().then(function (success) {
@@ -6,9 +6,9 @@ app.controller('logoutController', function ($rootScope, logoutModel, $window, $
         setTimeout(function(){
             $state.go('home');
         });
-        localStorage.removeItem('session_id');
+        delete $sessionStorage.sessionId;
         languageService.setDefaultLanguage();  //set default GUI language
-        sessionStorage.removeItem('userProfile');
+        delete $sessionStorage.userProfile;
     $rootScope.brand = ($filter('translate')('Header.brand'));
     }
 

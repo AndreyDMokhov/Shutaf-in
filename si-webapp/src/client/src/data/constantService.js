@@ -1,4 +1,4 @@
-app.factory('constantService', function (Restangular, $q) {
+app.factory('constantService', function (Restangular, $q, $sessionStorage, $localStorage) {
 
     var rest = Restangular.withConfig(function (Configurer) {
         Configurer.setBaseUrl('/api/initialization');
@@ -6,19 +6,16 @@ app.factory('constantService', function (Restangular, $q) {
 
     var data = [];
 
-    function getLanguages() {
-        data.languages = data.languages || JSON.parse(sessionStorage.getItem("languages")) || rest.all('languages').getList().$object;
-
-        return data.languages;
-    }
-
     function init() {
         var deferred = $q.defer();
-        data = rest.one("all").withHttpConfig({timeout: 10000});
+        data = rest.one("all/" + $sessionStorage.currentLanguage.id).withHttpConfig({timeout: 10000});
         data.get().then(
             function success(success) {
-                data.languages = success.languages;
-                sessionStorage.setItem("languages", JSON.stringify(data.languages));
+                data.languages = success.data.languages;
+                $sessionStorage.languages = success.data.languages;
+                $localStorage.cities = success.data.cities;
+                $localStorage.countries = success.data.countries;
+                $localStorage.genders = success.data.genders;
 
                 deferred.resolve(data);
             },
@@ -30,7 +27,6 @@ app.factory('constantService', function (Restangular, $q) {
     }
 
     return {
-        init:init,
-        getLanguages:getLanguages
+        init:init
     }
 });

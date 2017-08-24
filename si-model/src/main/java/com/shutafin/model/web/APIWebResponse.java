@@ -6,9 +6,14 @@ import com.shutafin.model.web.error.ErrorResponse;
 public class APIWebResponse {
 
     private ErrorResponse error;
-    private DataResponse data;
+    private Object data;
 
     public APIWebResponse() {
+    }
+
+    public APIWebResponse(ErrorResponse error, Object data) {
+        this.error = error;
+        this.data = data;
     }
 
     public ErrorResponse getError() {
@@ -19,11 +24,11 @@ public class APIWebResponse {
         this.error = error;
     }
 
-    public DataResponse getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(DataResponse data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

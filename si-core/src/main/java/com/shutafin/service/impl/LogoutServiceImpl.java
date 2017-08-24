@@ -1,9 +1,11 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
-import com.shutafin.repository.UserSessionRepository;
+import com.shutafin.repository.account.UserSessionRepository;
+import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.LogoutService;
+import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,16 +16,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class LogoutServiceImpl implements LogoutService {
 
     @Autowired
-    private
-    UserSessionRepository userSessionRepository;
+    private SessionManagementService sessionManagementService;
+
+    @Autowired
+    private UserSessionRepository userSessionRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    public void logout(String sessionId) {
+    public void logout(String sessionId, User user) {
+
         UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
-        if (userSession == null) {
-            throw new AuthenticationException();
-        }
-        userSession.setValid(false);
+
         userSessionRepository.update(userSession);
+        userSessionRepository.evict(userSession);
+
+        userRepository.evict(user);
+
+        sessionManagementService.invalidateUserSession(sessionId);
     }
 }

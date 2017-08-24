@@ -20,7 +20,20 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: "partials/registration/registration.html",
                 controller: "userRegistration",
                 controllerAs: "vm",
-                url: "/registration"
+                url: "/registration/request"
+            })
+        .state("registrationConfirmation",
+            {
+                controller: "registrationConfirmation",
+                controllerAs: "vm",
+                url: "/users/registration/confirmation/{link}"
+            })
+        .state("error",
+            {
+                templateUrl: "partials/errors/errors.html",
+                controller: "errorsController",
+                controllerAs: "vm",
+                url: "/error/{code}"
             })
         .state("users",
             {
@@ -29,10 +42,17 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/users"
             })
+        .state("settings",
+            {
+                templateUrl: "partials/settings/settings.html",
+                controller: "settingsController",
+                controllerAs: "vm",
+                url: "/settings"
+            })
         .state("userProfile",
             {
-                templateUrl: "partials/userProfilePage/userProfilePage.html",
-                controller: "userProfilePage",
+                templateUrl: "partials/userProfile/userProfile.html",
+                controller: "userProfileController",
                 controllerAs: "vm",
                 url: "/userProfile"
             })
@@ -49,6 +69,26 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "logoutController",
                 url: "/logout"
             })
+        .state("changeEmailRequest",
+            {
+                templateUrl: "partials/changeEmail/changeEmail.html",
+                controller: "changeEmailRequestController",
+                controllerAs: "vm",
+                url: "/settings/change-email/request"
+            })
+        .state("changeEmailConfirmation",
+            {
+                controller: "changeEmailConfirmationController",
+                controllerAs: "vm",
+                url: "/settings/change-email/confirmation/{link}"
+            })
+        .state("changePassword",
+            {
+                templateUrl:'partials/changePassword/changePassword.html',
+                controller: "changePasswordController",
+                controllerAs: "vm",
+                url: "/settings/change-password"
+            })
         .state("resetPassword",
             {
                 templateUrl: "partials/resetPassword/resetPasswordInputEmail.html",
@@ -56,18 +96,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/resetPassword"
             })
-        .state("error404",
-            {
-                templateUrl: 'partials/resetPassword/page404.html',
-                controller: 'error404Controller',
-                controllerAs: "vm"
-            })
         .state('inputNewPassword', {
             url: "/reset-password/confirmation/{link}",
             templateUrl: 'partials/resetPassword/resetPasswordInputNewPassword.html',
             controller: 'resetPasswordConfirmation',
             controllerAs: "vm"
-        });
-
+        })
+    ;
     $urlRouterProvider.otherwise("/home");
 });

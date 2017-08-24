@@ -1,44 +1,45 @@
-app.factory('languageService', function ($translate, CACHED_LANGUAGE, CACHED_LANGUAGE_ID, Restangular) {
+app.factory('languageService', function ($translate, Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
-        RestangularProvider.setBaseUrl('/api/user/account');
+        RestangularProvider.setBaseUrl('/api/users/settings');
     });
 
     function getUserLanguage() {
-        rest.setDefaultHeaders({"session_id" : localStorage.getItem("session_id")});
+        rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
         return rest.one('/language').customGET();
     }
 
     function updateUserLanguage(params) {
-        localStorage.setItem(CACHED_LANGUAGE_ID, params.id);
-        localStorage.setItem(CACHED_LANGUAGE, params.description);
-
         _setLanguage(params.description);
+        var sessionId = $sessionStorage.sessionId;
 
 
-        var sessionId = localStorage.getItem("session_id");
         if (sessionId === undefined || sessionId === null){
             return;
+
         }
         rest.setDefaultHeaders({"session_id" : sessionId});
-        return rest.one('/language').customPUT(params.id);
+
+        if ($sessionStorage.currentLanguage !== params.id) {
+
+            return rest.one('/language').customPUT({id:params.id});
+        }
+        $sessionStorage.currentLanguage = params;
     }
 
     function _setLanguage(code) {
         if (code === undefined || code === null) {
-            localStorage.setItem(CACHED_LANGUAGE, 'en');
-            $translate.use(localStorage.getItem(CACHED_LANGUAGE));
+            setDefaultLanguage();
             return;
         }
-
         $translate.use(code);
     }
 
     function setDefaultLanguage() {
         var defaultLanguageCode = 'en';
-        localStorage.setItem(CACHED_LANGUAGE, defaultLanguageCode);
-        localStorage.removeItem(CACHED_LANGUAGE_ID);
+        delete $sessionStorage.currentLanguage;
+        $sessionStorage.currentLanguage={id:1, description:"en"}
         $translate.use(defaultLanguageCode);
     }
 

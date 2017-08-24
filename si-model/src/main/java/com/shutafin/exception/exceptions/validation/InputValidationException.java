@@ -6,25 +6,33 @@ import com.shutafin.model.web.error.ErrorType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InputValidationException extends ValidationException {
+
+    private static final String DOT_SEPARATOR = ".";
+
     private BindingResult result;
 
     public InputValidationException(BindingResult result) {
-        super(result.getFieldErrors().toString());
         this.result = result;
     }
 
     @Override
-    protected Map<String, String> getFieldErrors() {
-        Map<String, String> map = new HashMap<>();
+    protected List<String> getFieldErrors() {
+        List<String> list = new ArrayList<>();
 
         for (FieldError fieldError : this.result.getFieldErrors()) {
-            map.put(fieldError.getField(), fieldError.getCode());
+            String builder =
+                    getErrorType().getErrorCodeType() +
+                            DOT_SEPARATOR +
+                            fieldError.getField() +
+                            DOT_SEPARATOR +
+                            fieldError.getCode();
+            list.add(builder);
         }
-        return map;
+        return list;
     }
 
     @Override

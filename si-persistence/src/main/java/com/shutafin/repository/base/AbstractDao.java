@@ -45,4 +45,9 @@ public abstract class AbstractDao<T> implements Dao<T> {
     public T findById(Serializable id) {
         return getSession().get(getEntityClass(), id);
     }
+
+    @Override
+    public void evict(T object) {
+        getSession().evict(object);
+    }
 }
