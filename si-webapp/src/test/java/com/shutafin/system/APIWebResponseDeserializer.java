@@ -2,7 +2,6 @@ package com.shutafin.system;
 
 import com.google.gson.*;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.DataResponse;
 import com.shutafin.model.web.error.ErrorResponse;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.error.errors.InputValidationError;
@@ -20,7 +19,7 @@ public class APIWebResponseDeserializer implements JsonDeserializer<APIWebRespon
 
     @Override
     public APIWebResponse deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-        DataResponse data = null;
+        Object data = null;
         if (jsonElement.getAsJsonObject().get("data").isJsonObject() && className != null) {
             data = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("data"), className);
         }
