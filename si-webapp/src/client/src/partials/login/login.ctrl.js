@@ -18,7 +18,7 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
 
                 languageService.getUserLanguage().then(
                     function(result){//success
-                        languageService.updateUserLanguage(result.data);
+                        languageService.updateUserLanguage(result.data.data);
                         notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                     },
                     function(err){//fail

@@ -1,12 +1,12 @@
 package com.shutafin.model.web.initialization;
 
 import com.shutafin.model.web.BaseResponseDTO;
-import com.shutafin.model.web.DataResponse;
+import lombok.Getter;
+import lombok.Setter;
 
-/**
- * Created by evgeny on 6/23/2017.
- */
-public class LanguageResponseDTO extends BaseResponseDTO implements DataResponse {
+@Setter
+@Getter
+public class LanguageResponseDTO extends BaseResponseDTO {
     private String nativeName;
 
     public LanguageResponseDTO(Integer id, String description, String nativeName) {
@@ -14,11 +14,4 @@ public class LanguageResponseDTO extends BaseResponseDTO implements DataResponse
         this.nativeName = nativeName;
     }
 
-    public String getNativeName() {
-        return nativeName;
-    }
-
-    public void setNativeName(String nativeName) {
-        this.nativeName = nativeName;
-    }
 }

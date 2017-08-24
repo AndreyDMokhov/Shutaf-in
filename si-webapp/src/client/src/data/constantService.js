@@ -6,22 +6,16 @@ app.factory('constantService', function (Restangular, $q, $sessionStorage, $loca
 
     var data = [];
 
-    function getLanguages() {
-        data.languages = data.languages || $sessionStorage.languages || rest.all('languages').getList().$object;
-        $sessionStorage.languages = data.languages;
-        return data.languages;
-    }
-
     function init() {
         var deferred = $q.defer();
         data = rest.one("all/" + $sessionStorage.currentLanguage.id).withHttpConfig({timeout: 10000});
         data.get().then(
             function success(success) {
-                data.languages = success.languages;
-                $sessionStorage.languages = success.languages;
-                $localStorage.cities = success.cities;
-                $localStorage.countries = success.countries;
-                $localStorage.genders = success.genders;
+                data.languages = success.data.languages;
+                $sessionStorage.languages = success.data.languages;
+                $localStorage.cities = success.data.cities;
+                $localStorage.countries = success.data.countries;
+                $localStorage.genders = success.data.genders;
 
                 deferred.resolve(data);
             },
@@ -33,7 +27,6 @@ app.factory('constantService', function (Restangular, $q, $sessionStorage, $loca
     }
 
     return {
-        init:init,
-        getLanguages:getLanguages
+        init:init
     }
 });

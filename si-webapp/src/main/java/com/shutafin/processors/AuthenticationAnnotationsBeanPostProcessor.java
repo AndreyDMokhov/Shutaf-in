@@ -46,7 +46,6 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class clazz = requiredProxyBeans.get(beanName);
-
         if (clazz == null) {
             return bean;
         }

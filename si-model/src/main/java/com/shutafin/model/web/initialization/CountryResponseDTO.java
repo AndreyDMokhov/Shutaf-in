@@ -1,9 +1,12 @@
 package com.shutafin.model.web.initialization;
 
 import com.shutafin.model.web.BaseResponseDTO;
-import com.shutafin.model.web.DataResponse;
+import lombok.Getter;
+import lombok.Setter;
 
-public class CountryResponseDTO extends BaseResponseDTO implements DataResponse {
+@Setter
+@Getter
+public class CountryResponseDTO extends BaseResponseDTO {
 
     public CountryResponseDTO(Integer id, String description) {
         super(id, description);
