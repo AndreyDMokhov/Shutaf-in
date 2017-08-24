@@ -1,9 +1,12 @@
 package com.shutafin.model.web.initialization;
 
 import com.shutafin.model.web.BaseResponseDTO;
-import com.shutafin.model.web.DataResponse;
+import lombok.Getter;
+import lombok.Setter;
 
-public class GenderResponseDTO extends BaseResponseDTO implements DataResponse {
+@Getter
+@Setter
+public class GenderResponseDTO extends BaseResponseDTO {
 
     public GenderResponseDTO(Integer id, String description) {
         super(id, description);

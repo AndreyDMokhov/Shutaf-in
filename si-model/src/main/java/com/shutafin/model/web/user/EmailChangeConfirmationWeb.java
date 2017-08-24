@@ -1,11 +1,18 @@
 package com.shutafin.model.web.user;
 
-import com.shutafin.model.web.DataResponse;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-public class EmailChangeConfirmationWeb implements DataResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+public class EmailChangeConfirmationWeb {
 
     @NotBlank
     @Length(max=50)
@@ -16,27 +23,4 @@ public class EmailChangeConfirmationWeb implements DataResponse {
     @Length(max=50)
     private String newEmail;
 
-    public EmailChangeConfirmationWeb() {
-    }
-
-    public EmailChangeConfirmationWeb(String userPassword, String newEmail) {
-        this.userPassword = userPassword;
-        this.newEmail = newEmail;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
-
-    public String getNewEmail() {
-        return newEmail;
-    }
-
-    public void setNewEmail(String newEmail) {
-        this.newEmail = newEmail;
-    }
 }
