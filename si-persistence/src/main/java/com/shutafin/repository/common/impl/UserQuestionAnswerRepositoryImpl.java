@@ -2,6 +2,7 @@ package com.shutafin.repository.common.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
+import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.repository.base.AbstractEntityDao;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
@@ -21,5 +22,15 @@ public class UserQuestionAnswerRepositoryImpl extends AbstractEntityDao<UserQues
                 .setParameter("userId", user.getId())
                 .setParameter("questionId", question.getId())
                 .list();
+    }
+
+    @Override
+    public void geleteUserQuestionAnswer(User user, Question question, Answer answer) {
+        getSession()
+                .createQuery("DELETE UserQuestionAnswer uqa where uqa.user.id = :userId AND uqa.question.id = :questionId AND uqa.answer.id = :answerId")
+                .setParameter("userId", user.getId())
+                .setParameter("questionId", question.getId())
+                .setParameter("answerId", answer.getId())
+                .executeUpdate();
     }
 }
