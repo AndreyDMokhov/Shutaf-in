@@ -35,7 +35,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
             }, function (error) {
                 vm.dataLoading = false;
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                if (error.data.error.errorCodeType === 'RNF') {
+                if (error.data.error.errorTypeCode === 'RNF') {
                     $state.go("error", {'code' : '404'});
                 }
             })

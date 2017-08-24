@@ -66,7 +66,6 @@ public class UserImageControllerTest extends BaseTestImpl {
     }
 
 
-    @Ignore(value = "Remove after ApiWebResponse BPP is done")
     @Test
     public void addUserImage_Positive() {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
@@ -118,7 +117,6 @@ public class UserImageControllerTest extends BaseTestImpl {
         Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
     }
 
-    @Ignore(value = "Remove after ApiWebResponse BPP is done")
     @Test
     public void addUserImage_IncorrectInput() {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
@@ -137,7 +135,6 @@ public class UserImageControllerTest extends BaseTestImpl {
         Assert.assertEquals(ErrorType.INPUT.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
     }
 
-    @Ignore(value = "Remove after ApiWebResponse BPP is done")
     @Test
     public void getUserImage_Positive() {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
