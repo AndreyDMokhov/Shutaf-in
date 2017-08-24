@@ -3,6 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.user.EmailWeb;
 import com.shutafin.model.web.user.PasswordWeb;
+import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.ResetPasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("reset-password")
+@NoAuthentication
 public class ResetPasswordController {
 
     @Autowired

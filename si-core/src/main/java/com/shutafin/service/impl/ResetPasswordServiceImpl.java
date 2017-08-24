@@ -26,51 +26,47 @@ import java.util.UUID;
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private static final int LINK_HOURS_EXPIRATION = 24;
-    private static final String reset_password_confirmation_url = "/#/reset-password/confirmation/";
+    private static final String RESET_PASSWORD_CONFIRMATION_URL = "/#/reset-password/confirmation/";
 
-    @Autowired
+
     private UserRepository userRepository;
-
-    @Autowired
     private ResetPasswordConfirmationRepository resetPasswordConfirmationRepository;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
     private EmailTemplateService emailTemplateService;
-
-    @Autowired
     private EmailNotificationSenderService mailSenderService;
-
-    @Autowired
     private EnvironmentConfigurationService environmentConfigurationService;
+    private PasswordService passwordService;
 
     @Autowired
-    private PasswordService passwordService;
+    public ResetPasswordServiceImpl(
+            UserRepository userRepository,
+            ResetPasswordConfirmationRepository resetPasswordConfirmationRepository,
+            UserAccountRepository userAccountRepository,
+            EmailTemplateService emailTemplateService,
+            EmailNotificationSenderService mailSenderService,
+            EnvironmentConfigurationService environmentConfigurationService,
+            PasswordService passwordService) {
+        this.userRepository = userRepository;
+        this.resetPasswordConfirmationRepository = resetPasswordConfirmationRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.emailTemplateService = emailTemplateService;
+        this.mailSenderService = mailSenderService;
+        this.environmentConfigurationService = environmentConfigurationService;
+        this.passwordService = passwordService;
+    }
 
     @Transactional
     @Override
     public void resetPasswordRequest(EmailWeb emailWeb) {
         User user = userRepository.findUserByEmail(emailWeb.getEmail());
-        if (user != null){
+        if (user != null) {
             ResetPasswordConfirmation resetPasswordConfirmation = saveResetPasswordConfirmation(user);
-            UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
-            sendMessage(user, userAccount.getLanguage(), resetPasswordConfirmation.getUrlLink());
+            Language userLanguage = userAccountRepository.findUserLanguage(user);
+            sendMessage(user, userLanguage, resetPasswordConfirmation.getUrlLink());
         }
     }
 
-    private void sendMessage(User user, Language language, String uuid) {
-        String link = createLink(uuid);
-        EmailMessage emailMessage = emailTemplateService.getEmailMessage(user, EmailReason.RESET_PASSWORD, language, link);
-        mailSenderService.sendEmail(emailMessage, EmailReason.RESET_PASSWORD);
-    }
-
-    private String createLink(String uuid) {
-        return environmentConfigurationService.getServerAddress() + reset_password_confirmation_url + uuid;
-    }
-
-    private ResetPasswordConfirmation saveResetPasswordConfirmation(User user){
+    private ResetPasswordConfirmation saveResetPasswordConfirmation(User user) {
         ResetPasswordConfirmation resetPasswordConfirmation = new ResetPasswordConfirmation();
         resetPasswordConfirmation.setUser(user);
         resetPasswordConfirmation.setUrlLink(UUID.randomUUID().toString());
@@ -80,10 +76,20 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         return resetPasswordConfirmation;
     }
 
+    private void sendMessage(User user, Language language, String uuid) {
+        String link = createLink(uuid);
+        EmailMessage emailMessage = emailTemplateService.getEmailMessage(user, EmailReason.RESET_PASSWORD, language, link);
+        mailSenderService.sendEmail(emailMessage, EmailReason.RESET_PASSWORD);
+    }
+
+    private String createLink(String uuid) {
+        return environmentConfigurationService.getServerAddress() + RESET_PASSWORD_CONFIRMATION_URL + uuid;
+    }
+
     @Transactional(readOnly = true)
     @Override
     public void resetPasswordValidation(String link) {
-        if (resetPasswordConfirmationRepository.findValidUrlLink(link) == null){
+        if (resetPasswordConfirmationRepository.findValidUrlLink(link) == null) {
             throw new ResourceNotFoundException();
         }
     }
@@ -92,9 +98,12 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Override
     public void passwordChange(PasswordWeb passwordWeb, String link) {
         ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findValidUrlLink(link);
-        if (resetPasswordConfirmation == null){
+        if (resetPasswordConfirmation == null) {
             throw new ResourceNotFoundException();
         }
+        resetPasswordConfirmation.setConfirmed(Boolean.TRUE);
+        resetPasswordConfirmationRepository.update(resetPasswordConfirmation);
+
         passwordService.updateUserPasswordInDb(resetPasswordConfirmation.getUser(), passwordWeb.getNewPassword());
     }
 

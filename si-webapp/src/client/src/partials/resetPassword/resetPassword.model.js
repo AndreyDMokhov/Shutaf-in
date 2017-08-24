@@ -1,4 +1,4 @@
-app.factory('resetPassword', function (Restangular) {
+app.factory('resetPasswordModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
