@@ -88,7 +88,7 @@
   "ResetPassword.form.btn.save":"Save",
   "ResetPassword.form.msg.requiredPassword":"Password is required",
   "ResetPassword.form.msg.shortPassword":"8 characters or longer",
-  "ResetPassword.form.confirmPassword":"Confirm password"
+  "ResetPassword.form.confirmPassword":"Confirm password",
 
   "SECTION": "SECURITY SETTINGS",
   "Settings.security.email.title": "Change email",
