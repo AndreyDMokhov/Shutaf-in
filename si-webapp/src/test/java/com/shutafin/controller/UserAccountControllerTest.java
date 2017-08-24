@@ -28,9 +28,9 @@ import java.util.List;
 
 
 @RunWith(SpringRunner.class)
-public class UserLanguageControllerTest extends BaseTestImpl  {
+public class UserAccountControllerTest extends BaseTestImpl {
 
-    private static final String REGISTRATION_REQUEST_URL = "/user/account/language";
+    private static final String REGISTRATION_REQUEST_URL = "/users/settings/language";
     private static final String VALID_JSON = "{\"id\":\"1\"}";
     private static final String LANG_ID_0 = "{\"id\":\"0\"}";
     private static final String LANG_ID_NULL = "{\"id\":\"\"}";
@@ -52,8 +52,8 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     @Before
     public void setUp() {
         language = createLanguage();
-    user = createUser();
-        user.setCreatedDate(Date.from(Instant.now()));
+        user = createUser();
+
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
         Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(UserLanguageWeb.class), Mockito.any(User.class));
         Mockito.when(userLanguageService.findUserLanguage(user)).thenReturn(language);
@@ -61,7 +61,7 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     }
 
     @Test
-    public void updateRequestJson_Positive(){
+    public void updateRequestJson_Positive() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
@@ -75,13 +75,13 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     }
 
     @Test
-    public void updateRequestJson_LangId_0(){
+    public void updateRequestJson_LangId_0() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
                 .setHttpMethod(HttpMethod.PUT)
                 .setHeaders(headers)
-                .setJsonContext(LANG_ID_0)
+                .setRequestObject(new UserLanguageWeb(0))
                 .build();
         APIWebResponse response = getResponse(request);
 
@@ -92,7 +92,7 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     }
 
     @Test
-    public void updateRequestJson_LangIdIsNull(){
+    public void updateRequestJson_LangIdIsNull() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
@@ -109,7 +109,7 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     }
 
     @Test
-    public void updateRequestJson_WrongSession(){
+    public void updateRequestJson_WrongSession() {
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
@@ -124,7 +124,7 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     }
 
     @Test
-    public void getRequestJson_Positive(){
+    public void getRequestJson_Positive() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
@@ -135,11 +135,11 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
         APIWebResponse response = getResponse(request);
 
         Assert.assertNull(response.getError());
-        Assert.assertEquals(language.getDescription(), ((LanguageResponseDTO)response.getData()).getDescription());
+        Assert.assertEquals(language.getDescription(), ((LanguageResponseDTO) response.getData()).getDescription());
     }
 
     @Test
-    public void getRequestJson_Wrong_Session(){
+    public void getRequestJson_Wrong_Session() {
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
@@ -152,7 +152,7 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
         Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
     }
 
-    public List<HttpHeaders> addSessionIdToHeader(String sessionId){
+    public List<HttpHeaders> addSessionIdToHeader(String sessionId) {
         List<HttpHeaders> headers = new ArrayList<>();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(SESSION_ID_HEADER_NAME, sessionId);
@@ -161,19 +161,21 @@ public class UserLanguageControllerTest extends BaseTestImpl  {
     }
 
     private Language createLanguage() {
-        language = new Language();
+        Language language = new Language();
         language.setActive(true);
         language.setId(1);
         language.setLanguageNativeName("Русский");
         language.setDescription("ru");
         return language;
     }
+
     private User createUser() {
-        user = new User();
+        User user = new User();
         user.setId(1L);
         user.setEmail("q@q");
         user.setFirstName("User");
         user.setLastName("User");
+        user.setCreatedDate(Date.from(Instant.now()));
         return user;
     }
 }
