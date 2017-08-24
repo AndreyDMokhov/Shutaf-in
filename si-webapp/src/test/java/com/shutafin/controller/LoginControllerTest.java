@@ -37,7 +37,7 @@ public class LoginControllerTest extends HelperTest{
 
     @Before
     public void SetUp(){
-        Mockito.when(loginService.getSessionIdByEmail(any(LoginWebModel.class))).thenReturn("b0f45f61-5a14-48c6-a86f-f793a5023441");
+        Mockito.when(loginService.getSessionIdByEmail(any(LoginWebModel.class))).thenReturn(createUser());
         errorList = new ArrayList<>();
     }
 

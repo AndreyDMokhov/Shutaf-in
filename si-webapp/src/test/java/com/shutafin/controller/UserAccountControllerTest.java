@@ -9,7 +9,6 @@ import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.model.web.initialization.LanguageResponseDTO;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserLanguageService;
-import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,14 +20,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
 @RunWith(SpringRunner.class)
-public class UserAccountControllerTest extends BaseTestImpl {
+public class UserAccountControllerTest extends HelperTest {
 
     private static final String REGISTRATION_REQUEST_URL = "/users/settings/language";
     private static final String VALID_JSON = "{\"id\":\"1\"}";
@@ -169,13 +166,4 @@ public class UserAccountControllerTest extends BaseTestImpl {
         return language;
     }
 
-    private User createUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("q@q");
-        user.setFirstName("User");
-        user.setLastName("User");
-        user.setCreatedDate(Date.from(Instant.now()));
-        return user;
-    }
 }
