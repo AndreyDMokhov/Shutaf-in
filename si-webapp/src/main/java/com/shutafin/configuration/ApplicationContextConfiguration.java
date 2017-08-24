@@ -1,7 +1,7 @@
 package com.shutafin.configuration;
 
 import com.shutafin.processors.AuthenticationAnnotationsBeanPostProcessor;
-import com.shutafin.processors.ControllerResponseBeanPostProcessor;
+import com.shutafin.processors.SessionResponseAnnotationBeanPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -28,9 +28,8 @@ public class ApplicationContextConfiguration {
     }
 
     @Bean
-    @DependsOn("authenticationHandlerArgumentResolverProcessor")
-    public ControllerResponseBeanPostProcessor controllerResponseHandlerBeanPostProcessor(){
-        return new ControllerResponseBeanPostProcessor();
+    public SessionResponseAnnotationBeanPostProcessor sessionAnnotationsResponseBeanPostProcessor(){
+        return new SessionResponseAnnotationBeanPostProcessor();
     }
 
 }

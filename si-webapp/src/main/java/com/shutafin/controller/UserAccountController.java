@@ -35,13 +35,15 @@ public class UserAccountController {
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateUserAccountProfileImage(@AuthenticatedUser User user,
+    public UserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
                                               @RequestBody @Valid UserImageWeb userImageWeb,
                                               BindingResult result) {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
-        userAccountService.updateProfileImage(userImageWeb, user);
+        UserImage image = userAccountService.updateProfileImage(userImageWeb, user);
+        return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().getTime());
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
