@@ -70,11 +70,13 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Override
     @Transactional
     public void saveQuestionsAnswers(User user, List<UserQuestionAnswerWeb> userQuestionsAnswers) {
+
+        usersQuestionsAnswersMap.get(user).clear();
+
         for (UserQuestionAnswerWeb questionAnswer : userQuestionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
             if (userQuestionAnswerRepository.getUserQuestionAnswer(user, question).size() != 0){
-                usersQuestionsAnswersMap.get(user).remove(new QuestionAnswer(question, answer));
                 userQuestionAnswerRepository.geleteUserQuestionAnswer(user, question, answer);
             }
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
