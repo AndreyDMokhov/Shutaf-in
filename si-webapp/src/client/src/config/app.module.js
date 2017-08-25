@@ -12,6 +12,6 @@ var app = angular.module("app", [
     'ui.router',
     'restangular',
     'pascalprecht.translate',
-    'ngStorage',
-    'ui.carousel'
+    'ngStorage'
+    // ,    'ui.carousel'
 ]);
