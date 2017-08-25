@@ -71,6 +71,10 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Transactional
     public void saveQuestionsAnswers(User user, List<UserQuestionAnswerWeb> userQuestionsAnswers) {
 
+        if (usersQuestionsAnswersMap == null){
+            initUsersMatchMap();
+        }
+
         usersQuestionsAnswersMap.get(user).clear();
 
         for (UserQuestionAnswerWeb questionAnswer : userQuestionsAnswers) {
@@ -108,9 +112,6 @@ public class UserMatchServiceImpl implements UserMatchService {
     }
 
     private void updateUsersQuestionsAnswersMap(User user, Question question, Answer answer){
-        if (usersQuestionsAnswersMap == null){
-            usersQuestionsAnswersMap = new HashMap<>();
-        }
         if (usersQuestionsAnswersMap.get(user) == null){
             usersQuestionsAnswersMap.put(user, new HashSet<QuestionAnswer>());
         }
