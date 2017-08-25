@@ -117,6 +117,11 @@ gulp.task('delete-empty-directories', function () {
     deleteEmpty.sync('dist/');
 });
 
+gulp.task('start', function (callback) {
+    // runSequence('copy', 'build-html-template','preprocessing','babel', 'html', 'copyData', 'copyComponents', 'del', 'delete-empty-directories', 'newConnect', callback);
+    runSequence('copy', 'build-html-template','preprocessing','babel', 'html', 'copyData', 'copyComponents', 'newConnect', callback);
+});
+
 // to run new server
 gulp.task('newConnect', function () {
     connect.server({
