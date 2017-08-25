@@ -21,13 +21,6 @@ var deleteEmpty = require('delete-empty');
 var preprocess = require('gulp-preprocess');
 
 
-var configPath = {
-    srcTemplates: [
-        '.tmp/**/*.html',
-        '!.tmp/index.html'
-    ]
-};
-
 // Checking for errors in scripts
 gulp.task('jshint', function () {
     return gulp.src(['.tmp/**/*.js', '!.tmp/**/*.min.js', '!.tmp/bower_components/**'])
@@ -45,7 +38,7 @@ gulp.task('copy', function () {
 });
 
 gulp.task('babel', function () {
-    gulp.src([
+    return gulp.src([
         '.tmp/**/*.js',
         '!./.tmp/bower_components/lodash/vendor/firebug-lite/src/firebug-lite-debug.js',
         '!./.tmp/bower_components/ng-dialog/**',
@@ -89,18 +82,6 @@ gulp.task('copyComponents', function () {
         .pipe(gulp.dest('dist'))
 });
 
-
-// async building
-gulp.task('build', function (callback) {
-    runSequence('babel', 'html', 'copyData', 'copyComponents', 'del', 'delete-empty-directories', callback);
-});
-
-// gulp.task('newhtml', function () {
-//     return gulp.src('tmp111/partials/**/*.html')
-//         .pipe(angularTemplates())
-//         .pipe(gulp.dest('build/'));
-// });
-
 gulp.task('build-html-template', function () {
     return gulp.src([
         '.tmp/**/*.html',
@@ -110,29 +91,31 @@ gulp.task('build-html-template', function () {
         .pipe(gulp.dest('.tmp/build'));
 });
 
-gulp.task('build-template', function (callback) {
-    runSequence('copy', 'build-html-template','templateCache', callback);
-});
-
-gulp.task('start', function (callback) {
-    runSequence('copy', 'build-html-template','templateCache','babel', 'html', 'copyData', 'copyComponents', 'del', 'delete-empty-directories', 'newConnect', callback);
-});
-
 // This task removes all .html in the specified folder
 gulp.task('del', function () {
-    // The glob pattern ** matches all children and the parent.
-    // return del('tmp111/layout/**')
-    // return del('tmp111/layout/**/*.js')
     return del([
         'dist/partials/**/*.html',
         'dist/layout/**/*.html'
     ])
 });
+
+gulp.task('preprocessing', function () {
+    gulp.src(['./.tmp/**/*.html',
+        './.tmp/**/*.js',
+        '!.tmp/bower_components/**/'
+    ])
+        .pipe(preprocess({
+            context: {
+                templateCache: ' <script src="build/templates.js"></script>'
+            }
+        }))
+        .pipe(gulp.dest('./.tmp'))
+});
+
 //This task removes all empty folders in the specified folder
 gulp.task('delete-empty-directories', function () {
     deleteEmpty.sync('dist/');
 });
-
 
 // to run new server
 gulp.task('newConnect', function () {
@@ -161,24 +144,5 @@ gulp.task('connect', function () {
     });
 });
 
-// how it's build?
-// gulp copy
-// gulp build-html-template
-// in package .tmp : in index.html uncomment <script src="build/templates.js"></script>
-// gulp build
-// gulp newConnect
 
-gulp.task('templateCache', function () {
-    gulp.src(['./.tmp/**/*.html',
-        './.tmp/**/*.js',
-        '!.tmp/bower_components/**/'
-    ])
-        .pipe(preprocess({
-            context: {
-                templateCache: ' <script src="build/templates.js"></script>'
-
-            }
-        }))
-        .pipe(gulp.dest('./.tmp'))
-});
 
