@@ -1,12 +1,14 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name = "USER")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 public class User extends AbstractEntity {
 
     @Column(name = "FIRST_NAME", nullable = false, length = 50)

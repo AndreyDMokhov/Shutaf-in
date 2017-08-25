@@ -16,7 +16,6 @@ public class InputValidationException extends ValidationException {
     private BindingResult result;
 
     public InputValidationException(BindingResult result) {
-        super(result.getFieldErrors().toString());
         this.result = result;
     }
 

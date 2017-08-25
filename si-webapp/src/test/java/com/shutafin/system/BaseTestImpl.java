@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -31,9 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @EnableAutoConfiguration
 @ContextConfiguration(classes = {
         ApplicationContextConfiguration.class,
-        DatabaseConnectivityContextConfiguration.class,
-        MessageConverterConfigurer.class,
-        RoutingConfigurer.class,
+        PersistenceContextConfiguration.class,
+        HttpMessageConverterConfiguration.class,
+        WebContextConfiguration.class,
         SMTPContextConfiguration.class
 })
 public class BaseTestImpl implements BaseTest {
@@ -92,6 +93,14 @@ public class BaseTestImpl implements BaseTest {
                 .andReturn();
 
         return getResponse(result);
+    }
+
+    protected List<HttpHeaders> addSessionIdToHeader(String sessionId) {
+        List<HttpHeaders> headers = new ArrayList<>();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("session_id", sessionId);
+        headers.add(httpHeaders);
+        return headers;
     }
 
     private Gson getGsonForResponseClass(Class responseClass) {

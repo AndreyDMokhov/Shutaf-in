@@ -1,6 +1,7 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
+import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.*;
 
 import javax.persistence.*;
@@ -23,9 +24,13 @@ public class UserAccount extends AbstractBaseEntity {
     @Convert(converter = AccountTypeConverter.class)
     private AccountType accountType;
 
-    @Convert(converter = LanguageEnumConverter.class)
-    @Column(name = "LANGUAGE_ID", nullable = false)
-    private LanguageEnum language;
+    @JoinColumn(name = "LANGUAGE_ID", nullable = false)
+    @OneToOne
+    private Language language;
+
+    @JoinColumn(name = "USER_IMAGE_ID")
+    @OneToOne
+    private UserImage userImage;
 
     public UserAccount() {
     }
@@ -54,11 +59,19 @@ public class UserAccount extends AbstractBaseEntity {
         this.accountType = accountType;
     }
 
-    public LanguageEnum getLanguage() {
+    public Language getLanguage() {
         return language;
     }
 
-    public void setLanguage(LanguageEnum language) {
+    public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public UserImage getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(UserImage userImage) {
+        this.userImage = userImage;
     }
 }

@@ -1,5 +1,7 @@
 package com.shutafin.configuration;
 
+import com.shutafin.processors.AuthenticationAnnotationsBeanPostProcessor;
+import com.shutafin.processors.SessionResponseAnnotationBeanPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -18,6 +20,16 @@ public class ApplicationContextConfiguration {
     @Bean
     public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
+    public AuthenticationAnnotationsBeanPostProcessor authenticationHandlerArgumentResolverProcessor() {
+        return new AuthenticationAnnotationsBeanPostProcessor();
+    }
+
+    @Bean
+    public SessionResponseAnnotationBeanPostProcessor sessionAnnotationsResponseBeanPostProcessor(){
+        return new SessionResponseAnnotationBeanPostProcessor();
     }
 
 }
