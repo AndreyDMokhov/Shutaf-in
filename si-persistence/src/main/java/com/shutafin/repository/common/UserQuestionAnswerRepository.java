@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface UserQuestionAnswerRepository extends PersistentDao<UserQuestionAnswer> {
     List<UserQuestionAnswer> getUserQuestionAnswer(User user, Question question);
+    List<UserQuestionAnswer> getAllUserQuestionAnswers(User user);
 }

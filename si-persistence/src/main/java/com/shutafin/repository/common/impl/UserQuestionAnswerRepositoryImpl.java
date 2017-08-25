@@ -22,4 +22,12 @@ public class UserQuestionAnswerRepositoryImpl extends AbstractEntityDao<UserQues
                 .setParameter("questionId", question.getId())
                 .list();
     }
+
+    @Override
+    public List<UserQuestionAnswer> getAllUserQuestionAnswers(User user) {
+        return getSession()
+                .createQuery("SELECT uqa FROM UserQuestionAnswer uqa where uqa.user.id = :userId")
+                .setParameter("userId", user.getId())
+                .list();
+    }
 }

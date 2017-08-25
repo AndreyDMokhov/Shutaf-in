@@ -6,6 +6,8 @@ import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.base.AbstractEntityDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public class UserRepositoryImpl extends AbstractEntityDao<User> implements UserRepository {
@@ -25,5 +27,12 @@ public class UserRepositoryImpl extends AbstractEntityDao<User> implements UserR
                 .setParameter("email", email)
                 .uniqueResult();
         return results > 0;
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return getSession()
+                .createQuery("SELECT u FROM User")
+                .list();
     }
 }

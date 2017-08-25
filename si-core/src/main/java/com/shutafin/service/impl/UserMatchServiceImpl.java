@@ -5,7 +5,7 @@ import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
-import com.shutafin.model.matching.QuestionAnswer;
+import com.shutafin.model.entities.matching.QuestionAnswer;
 import com.shutafin.model.web.AnswerWeb;
 import com.shutafin.model.web.QuestionWeb;
 import com.shutafin.model.web.initialization.AnswerResponseDTO;

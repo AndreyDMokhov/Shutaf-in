@@ -1,11 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserQuestionAnswer;
-import com.shutafin.model.matching.QuestionAnswer;
 import com.shutafin.model.web.QuestionWeb;
-import com.shutafin.model.web.initialization.AnswerResponseDTO;
-import com.shutafin.model.web.initialization.QuestionResponseDTO;
 import com.shutafin.model.web.user.UserQuestionAnswerWeb;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserMatchService;
@@ -14,15 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by evgeny on 8/12/2017.
  */
 @RestController
-@RequestMapping("/user/match")
+@RequestMapping("/user/matching")
 public class UserMatchController {
 
     @Autowired

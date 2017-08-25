@@ -1,4 +1,4 @@
-package com.shutafin.model.matching;
+package com.shutafin.model.entities.matching;
 
 import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.Question;
