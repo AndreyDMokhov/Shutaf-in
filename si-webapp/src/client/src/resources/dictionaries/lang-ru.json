@@ -110,17 +110,17 @@
   "Settings.personal.message.save.success":"Пользователь успешно сохранен",
 
   "SECTION" : "POST REGISTRATION",
-  "PostRegistration.form.gender": "Пол",
-  "PostRegistration.form.country": "Страна",
-  "PostRegistration.form.city": "Город",
-  "PostRegistration.form.facebook": "Facebook",
-  "PostRegistration.form.profession": "Профессия",
-  "PostRegistration.form.company": "Компания",
-  "PostRegistration.form.phoneNumber": "Номер телефона",
-  "PostRegistration.btn.addSettings": "Дополнительная информация",
-  "PostRegistration.title": "Личная информация",
-  "PostRegistration.btn.submit":  "Сохранить",
-  "PostRegistration.message.save.success": "Данные успешно сохранены"
+  "UserInfo.form.gender": "Пол",
+  "UserInfo.form.country": "Страна",
+  "UserInfo.form.city": "Город",
+  "UserInfo.form.facebook": "Facebook",
+  "UserInfo.form.profession": "Профессия",
+  "UserInfo.form.company": "Компания",
+  "UserInfo.form.phoneNumber": "Номер телефона",
+  "UserInfo.btn.addSettings": "Дополнительная информация",
+  "UserInfo.title": "Личная информация",
+  "UserInfo.btn.submit":  "Сохранить",
+  "UserInfo.message.save.success": "Данные успешно сохранены"
 
 
 

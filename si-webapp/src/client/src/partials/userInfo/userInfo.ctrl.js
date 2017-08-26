@@ -1,5 +1,5 @@
 app
-    .controller("preSettingsController", function ($localStorage, postRegistrationModel, notify, $filter, $state) {
+    .controller("preSettingsController", function ($localStorage, userInfoModel, notify, $filter, $state) {
 
         var vm = this;
         vm.dataLoading = false;
@@ -18,9 +18,9 @@ app
             vm.preSettings.genderId = findIdByDescription(vm.gender, vm.preSettings.genderId);
             vm.preSettings.cityId = findIdByDescription(vm.cities, vm.preSettings.cityId);
             vm.dataLoading = true;
-            postRegistrationModel.saveDataPostRegistration(vm.preSettings).then(
+            userInfoModel.saveDataPostRegistration(vm.preSettings).then(
                 function (success) {
-                    notify.set($filter('translate')('PostRegistration.message.save.success'), {type: 'success'});
+                    notify.set($filter('translate')('UserInfo.message.save.success'), {type: 'success'});
                     vm.dataLoading = false;
                     $state.go('home');
                 }, function (error) {

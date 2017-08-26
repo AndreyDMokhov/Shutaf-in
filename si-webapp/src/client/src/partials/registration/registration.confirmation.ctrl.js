@@ -31,7 +31,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                     }
                 );
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
-                $state.go("postReg");
+                $state.go("userInfo");
             }, function (error) {
                 vm.dataLoading = false;
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

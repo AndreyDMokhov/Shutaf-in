@@ -1,6 +1,6 @@
 <div class="col-md-6 col-md-offset-3">
     <div style="text-align: center">
-        <h2>{{"PostRegistration.title"|translate}}</h2>
+        <h2>{{"UserInfo.title"|translate}}</h2>
     </div>
     <form name="preSetting">
         <div class="row form-group"
@@ -8,7 +8,7 @@
                     'has-error': preSetting.gender.$pristine ,
                     'has-success': preSetting.gender.$dirty }">
             <div class="col-md-4 col-md-offset-4">
-                <label class="required" for="gender">{{"PostRegistration.form.gender"|translate}}</label>
+                <label class="required" for="gender">{{"UserInfo.form.gender"|translate}}</label>
                 <select class="form-control has-error" id="gender" name="gender" ng-model="vm.preSettings.genderId">
                     <option ng-repeat="g in vm.gender">{{g.description}}</option>
                 </select>
@@ -21,7 +21,7 @@
                 <!--ng-class="{-->
                 <!--'has-error': preSetting.country.$pristine ,-->
                 <!--'has-success': preSetting.country.$dirty }" >-->
-                <label class="required" for="country">{{"PostRegistration.form.country"|translate}}</label>
+                <label class="required" for="country">{{"UserInfo.form.country"|translate}}</label>
                 <select class="form-control" id="country" name="country" ng-model="vm.currCoutry">
                     <option ng-repeat="k in vm.country">{{k.description}}</option>
                 </select>
@@ -29,7 +29,7 @@
             <div class="col-md-6" ng-class="{
                     'has-error': preSetting.city.$pristine ,
                     'has-success': preSetting.city.$dirty }">
-                <label class="required" for="city">{{"PostRegistration.form.city"|translate}}</label>
+                <label class="required" for="city">{{"UserInfo.form.city"|translate}}</label>
                 <select class="form-control" id="city" name="city" ng-model="vm.preSettings.cityId">
                     <option ng-repeat="c in vm.cities">{{c.description}}</option>
                 </select>
@@ -39,12 +39,12 @@
         <div>
             <div class="form-group">
                 <button type="button" class="btn btn-default center-block" ng-click="vm.isCollapsed = !vm.isCollapsed">
-                    {{"PostRegistration.btn.addSettings"|translate}}
+                    {{"UserInfo.btn.addSettings"|translate}}
                 </button>
             </div>
             <div class="row" uib-collapse="vm.isCollapsed">
                 <div class="form-group form-inline col-md-8 col-md-offset-2">
-                    <label class="col-md-6" for="facebook">{{"PostRegistration.form.facebook"|translate}}</label>
+                    <label class="col-md-6" for="facebook">{{"UserInfo.form.facebook"|translate}}</label>
                     <div class="col-md-6">
                         <input type="text"
                                name="facebook"
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="form-group form-inline col-md-8 col-md-offset-2">
-                    <label class="col-md-6" for="profession">{{"PostRegistration.form.profession"|translate}}</label>
+                    <label class="col-md-6" for="profession">{{"UserInfo.form.profession"|translate}}</label>
                     <div class="col-md-6">
                         <input type="text"
                                name="profession"
@@ -67,7 +67,7 @@
 
                 <div class="form-group form-inline col-md-8 col-md-offset-2">
 
-                    <label class="col-md-6" for="company">{{"PostRegistration.form.company"|translate}}</label>
+                    <label class="col-md-6" for="company">{{"UserInfo.form.company"|translate}}</label>
                     <div class="col-md-6">
                         <input type="text"
                                name="company"
@@ -79,7 +79,7 @@
 
                 <div class="form-group form-inline col-md-8 col-md-offset-2">
 
-                    <label class="col-md-6" for="phoneNumber">{{"PostRegistration.form.phoneNumber"|translate}}</label>
+                    <label class="col-md-6" for="phoneNumber">{{"UserInfo.form.phoneNumber"|translate}}</label>
                     <div class="col-md-6">
                         <input type="text"
                                name="phoneNumber"
@@ -96,7 +96,7 @@
                     type="submit"
                     ng-disabled="preSetting.gender.$pristine || preSetting.city.$pristine"
                     class="btn btn-success pull-right">
-                {{"PostRegistration.btn.submit" | translate}}
+                {{"UserInfo.btn.submit" | translate}}
                 <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
             </button>
         </div>
