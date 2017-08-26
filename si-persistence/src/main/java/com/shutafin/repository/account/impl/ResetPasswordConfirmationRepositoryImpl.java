@@ -1,8 +1,7 @@
-package com.shutafin.repository.impl;
+package com.shutafin.repository.account.impl;
 
 import com.shutafin.model.entities.ResetPasswordConfirmation;
-import com.shutafin.model.entities.User;
-import com.shutafin.repository.ResetPasswordConfirmationRepository;
+import com.shutafin.repository.account.ResetPasswordConfirmationRepository;
 import com.shutafin.repository.base.AbstractEntityDao;
 import org.springframework.stereotype.Repository;
 
