@@ -94,8 +94,8 @@ gulp.task('build-html-template', function () {
 // This task removes all .html in the specified folder
 gulp.task('del', function () {
     return del([
-        'dist/partials/**/*.html',
-        'dist/layout/**/*.html'
+        'dist/**/*.html',
+        '!dist/index.html'
     ])
 });
 
@@ -115,6 +115,10 @@ gulp.task('preprocessing', function () {
 //This task removes all empty folders in the specified folder
 gulp.task('delete-empty-directories', function () {
     deleteEmpty.sync('dist/');
+});
+
+gulp.task('start', function (callback) {
+    runSequence('copy', 'build-html-template','preprocessing','babel', 'html', 'copyData', 'copyComponents', 'newConnect','del','delete-empty-directories', callback);
 });
 
 // to run new server
