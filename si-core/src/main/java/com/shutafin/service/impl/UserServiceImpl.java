@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -22,7 +19,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(UserPersonalInfoWeb userPersonalInfoWeb) {
         User user = new User();
-        user.setId(userPersonalInfoWeb.getUserId());
         user.setFirstName(userPersonalInfoWeb.getFirstName());
         user.setLastName(userPersonalInfoWeb.getLastName());
         user.setEmail(userPersonalInfoWeb.getEmail());
@@ -37,40 +33,13 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
-    @Transactional
-    public UserPersonalInfoWeb findByUserId(Long userId) {
-        return null;
-    }
-
     private UserPersonalInfoWeb getUserInfoWeb(User userInfo) {
         UserPersonalInfoWeb userPersonalInfoWeb = new UserPersonalInfoWeb();
-        userPersonalInfoWeb.setUserId(userInfo.getId());
         userPersonalInfoWeb.setFirstName(userInfo.getFirstName());
         userPersonalInfoWeb.setLastName(userInfo.getLastName());
         userPersonalInfoWeb.setEmail(userInfo.getEmail());
 
         return userPersonalInfoWeb;
     }
-
-    @Override
-    @Transactional
-    public List<UserPersonalInfoWeb> findAll() {
-        List<User> userInfoList = userRepository.findAll();
-        List<UserPersonalInfoWeb> userPersonalInfoWebList = new ArrayList<>();
-
-        for (User user : userInfoList) {
-            userPersonalInfoWebList.add(getUserInfoWeb(user));
-        }
-
-        return userPersonalInfoWebList;
-    }
-
-    @Override
-    @Transactional
-    public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
-    }
-
 
 }
