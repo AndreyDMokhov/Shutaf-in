@@ -1,10 +1,9 @@
 package com.shutafin.service;
 
-import com.shutafin.model.web.user.UserPersonalInfoWeb;
+import com.shutafin.model.web.user.UserInfoWeb;
 
-import java.util.List;
-
+@Deprecated
 public interface UserService {
-    void save(UserPersonalInfoWeb user);
-    void update(UserPersonalInfoWeb user);
+    void save(UserInfoWeb user);
+    void update(UserInfoWeb user);
 }

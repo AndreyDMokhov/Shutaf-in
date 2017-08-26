@@ -23,22 +23,22 @@ public class UserInfoController {
     private SessionManagementService sessionManagementService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public APIWebResponse getUserInfo(@AuthenticatedUser User user) {
+    public UserInfoWeb getUserInfo(@AuthenticatedUser User user) {
 
         UserInfo userInfo = userInfoService.findUserInfo(user);
         if (userInfo == null) {
             return null;
         }
 
-        APIWebResponse apiWebResponse = new APIWebResponse();
-        apiWebResponse.setData(new UserInfoWeb(userInfo.getCurrentCity().getId(),
+        return new UserInfoWeb(user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                userInfo.getCurrentCity().getId(),
                 userInfo.getGender().getId(),
                 userInfo.getFacebookLink(),
                 userInfo.getProfession(),
                 userInfo.getCompany(),
-                userInfo.getPhoneNumber()));
-
-        return apiWebResponse;
+                userInfo.getPhoneNumber());
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})

@@ -8,21 +8,12 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Min;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserInfoWeb implements DataResponse {
+public class UserInfoWeb {
 
-    private int cityId;
-    private int genderId;
-
-    private String facebookLink;
-    private String profession;
-    private String company;
-    private String phoneNumber;
     @NotBlank
     private String firstName;
 
@@ -32,5 +23,14 @@ public class UserInfoWeb implements DataResponse {
     @NotBlank
     @Email
     private String email;
+
+    private int cityId;
+    private int genderId;
+
+    private String facebookLink;
+    private String profession;
+    private String company;
+    private String phoneNumber;
+
 
 }

@@ -1,13 +1,14 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.UserPersonalInfoWeb;
+import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Deprecated
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -17,11 +18,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(UserPersonalInfoWeb userPersonalInfoWeb) {
+    public void save(UserInfoWeb userInfoWeb) {
         User user = new User();
-        user.setFirstName(userPersonalInfoWeb.getFirstName());
-        user.setLastName(userPersonalInfoWeb.getLastName());
-        user.setEmail(userPersonalInfoWeb.getEmail());
+        user.setFirstName(userInfoWeb.getFirstName());
+        user.setLastName(userInfoWeb.getLastName());
+        user.setEmail(userInfoWeb.getEmail());
 
         Long userId = (Long) userRepository.save(user);
         user.setId(userId);
@@ -29,17 +30,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void update(UserPersonalInfoWeb userInfo) {
+    public void update(UserInfoWeb userInfo) {
 
     }
 
-    private UserPersonalInfoWeb getUserInfoWeb(User userInfo) {
-        UserPersonalInfoWeb userPersonalInfoWeb = new UserPersonalInfoWeb();
-        userPersonalInfoWeb.setFirstName(userInfo.getFirstName());
-        userPersonalInfoWeb.setLastName(userInfo.getLastName());
-        userPersonalInfoWeb.setEmail(userInfo.getEmail());
+    private UserInfoWeb getUserInfoWeb(User userInfo) {
+        UserInfoWeb userInfoWeb = new UserInfoWeb();
+        userInfoWeb.setFirstName(userInfo.getFirstName());
+        userInfoWeb.setLastName(userInfo.getLastName());
+        userInfoWeb.setEmail(userInfo.getEmail());
 
-        return userPersonalInfoWeb;
+        return userInfoWeb;
     }
 
 }
