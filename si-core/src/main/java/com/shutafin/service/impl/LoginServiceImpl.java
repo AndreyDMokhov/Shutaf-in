@@ -33,16 +33,15 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private UserAccountRepository userAccountRepository;
 
-    public String getSessionIdByEmail(LoginWebModel loginWeb) {
+    public User getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
 
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED){
             throw new AuthenticationException();
         }
-
         checkUserPassword(loginWeb, user);
-        return sessionManagementService.generateNewSession(user);
+        return user;
     }
 
 

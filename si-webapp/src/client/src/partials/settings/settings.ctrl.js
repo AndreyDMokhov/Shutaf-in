@@ -1,8 +1,8 @@
-app.controller('settingsController', function (settingsModel, userInitService, languageService, constantService, $filter, notify) {
+app.controller('settingsController', function (settingsModel, userInitService, languageService, constantService, $filter, notify, $sessionStorage) {
     var vm = this;
     vm.dataLoading = false;
 
-    vm.accountSettings = userInitService.getUserProfile();
+    vm.accountSettings = $sessionStorage.userProfile;
 
 
     function submitChanges() {
