@@ -1,6 +1,9 @@
 package com.shutafin.model.entities.infrastructure;
 
 import com.shutafin.model.AbstractKeyConstEntity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -13,6 +16,9 @@ import javax.persistence.*;
 @Table(name = "I_ANSWER")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
+@NoArgsConstructor
+@Getter
+@Setter
 public class Answer extends AbstractKeyConstEntity {
 
     @Column(name = "IS_UNIVERSAL", nullable = false)
@@ -22,17 +28,6 @@ public class Answer extends AbstractKeyConstEntity {
     @ManyToOne
     private Question question;
 
-    public Answer() {
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
     @Override
     public int hashCode() {
         return getId();
@@ -40,6 +35,6 @@ public class Answer extends AbstractKeyConstEntity {
 
     @Override
     public boolean equals(Object obj) {
-        return isUniversal || ((Answer)obj).isUniversal ||  getId()==((Answer)obj).getId();
+        return isUniversal || ((Answer)obj).isUniversal ||  getId().equals( ((Answer)obj).getId() );
     }
 }

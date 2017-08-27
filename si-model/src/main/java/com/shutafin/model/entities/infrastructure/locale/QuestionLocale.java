@@ -2,6 +2,10 @@ package com.shutafin.model.entities.infrastructure.locale;
 
 import com.shutafin.model.AbstractLocalizedConstEntity;
 import com.shutafin.model.entities.infrastructure.Question;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,19 +18,12 @@ import javax.persistence.*;
 @Table(name = "I_QUESTION_LOCALE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
+@NoArgsConstructor
+@Getter
+@Setter
 public class QuestionLocale extends AbstractLocalizedConstEntity {
     @JoinColumn(name = "QUESTION_ID", nullable = false)
     @ManyToOne
     private Question question;
 
-    public QuestionLocale() {
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
 }
