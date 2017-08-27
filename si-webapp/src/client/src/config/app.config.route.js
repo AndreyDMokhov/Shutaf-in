@@ -51,8 +51,8 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             })
         .state("userProfile",
             {
-                templateUrl: "partials/userProfilePage/userProfilePage.html",
-                controller: "userProfilePage",
+                templateUrl: "partials/userProfile/userProfile.html",
+                controller: "userProfileController",
                 controllerAs: "vm",
                 url: "/userProfile"
             })
@@ -84,10 +84,24 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             })
         .state("changePassword",
             {
-                templateUrl:'partials/changePassword/changePassword.html',
+                templateUrl: 'partials/changePassword/changePassword.html',
                 controller: "changePasswordController",
                 controllerAs: "vm",
                 url: "/settings/change-password"
+            })
+        .state("resetPasswordRequest",
+            {
+                templateUrl: "partials/resetPassword/resetPassword.request.html",
+                controller: "resetPasswordRequestController",
+                controllerAs: "vm",
+                url: "/reset-password/request"
+            })
+        .state('resetPasswordNewPassword',
+            {
+                url: "/reset-password/confirmation/{link}",
+                templateUrl: 'partials/resetPassword/resetPassword.confirmation.html',
+                controller: 'resetPasswordConfirmation',
+                controllerAs: "vm"
             })
     ;
     $urlRouterProvider.otherwise("/home");

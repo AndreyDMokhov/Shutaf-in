@@ -3,6 +3,7 @@ package com.shutafin.system;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -17,6 +18,13 @@ public class ControllerRequest {
 
 
     private ControllerRequest(ControllerRequestBuilder builder) {
+        Assert.notNull(builder, "builder cannot be null");
+        Assert.notNull(builder.url, "Request url cannot be null");
+
+        if (builder.responseClass == null) {
+            builder.responseClass = Void.class;
+        }
+
         this.url = builder.url;
         this.jsonContent = builder.jsonContent;
         this.requestObject = builder.requestObject;

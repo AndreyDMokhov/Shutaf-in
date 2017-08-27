@@ -5,6 +5,7 @@ import com.shutafin.model.entities.UserSession;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.LogoutService;
+import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class LogoutServiceImpl implements LogoutService {
+
+    @Autowired
+    private SessionManagementService sessionManagementService;
 
     @Autowired
     private UserSessionRepository userSessionRepository;
@@ -25,10 +29,11 @@ public class LogoutServiceImpl implements LogoutService {
 
         UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
 
-        userSession.setValid(false);
         userSessionRepository.update(userSession);
         userSessionRepository.evict(userSession);
 
         userRepository.evict(user);
+
+        sessionManagementService.invalidateUserSession(sessionId);
     }
 }
