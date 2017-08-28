@@ -103,12 +103,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'resetPasswordConfirmation',
                 controllerAs: "vm"
             })
-        .state("postReg",
+        .state("userInfo",
             {
-                templateUrl:'partials/postRegistration/postReg.html',
+                templateUrl:'partials/userInfo/userInfo.html',
                 controller: "preSettingsController",
                 controllerAs: "vm",
-                url: "/postRegistration"
+                url: "/userInfo"
             })
     ;
     $urlRouterProvider.otherwise("/home");

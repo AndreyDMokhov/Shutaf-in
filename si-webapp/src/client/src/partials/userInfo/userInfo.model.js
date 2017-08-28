@@ -1,4 +1,4 @@
-app.factory("postRegistrationModel", function (Restangular, $sessionStorage) {
+app.factory("userInfoModel", function (Restangular, $sessionStorage) {
   var rest = Restangular.withConfig(function (RestangularProvider) {
       RestangularProvider.setFullResponse(true);
       RestangularProvider.setBaseUrl("/api/users/info");
