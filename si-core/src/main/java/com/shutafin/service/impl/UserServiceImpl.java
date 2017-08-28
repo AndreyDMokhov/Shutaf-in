@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(UserInfoWeb userInfoWeb) {
         User user = new User();
-        user.setId(userInfoWeb.getUserId());
         user.setFirstName(userInfoWeb.getFirstName());
         user.setLastName(userInfoWeb.getLastName());
         user.setEmail(userInfoWeb.getEmail());

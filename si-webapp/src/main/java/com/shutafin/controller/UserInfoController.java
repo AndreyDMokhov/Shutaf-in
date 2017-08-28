@@ -1,16 +1,16 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserInfo;
-import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
-import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users/info")
@@ -18,9 +18,6 @@ public class UserInfoController {
 
     @Autowired
     private UserInfoService userInfoService;
-
-    @Autowired
-    private SessionManagementService sessionManagementService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserInfoWeb getUserInfo(@AuthenticatedUser User user) {
