@@ -78,7 +78,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new ResourceNotFoundException();
         }
 
-        registrationConfirmation.setConfirmed(true);
+        registrationConfirmation.setIsConfirmed(true);
         registrationConfirmationRepository.update(registrationConfirmation);
 
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(registrationConfirmation.getUser());
@@ -91,7 +91,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private void sendConfirmRegistrationEmail(User user, UserAccount userAccount) {
         RegistrationConfirmation registrationConfirmation = new RegistrationConfirmation();
         registrationConfirmation.setUser(user);
-        registrationConfirmation.setConfirmed(false);
+        registrationConfirmation.setIsConfirmed(false);
         registrationConfirmation.setUrlLink(UUID.randomUUID().toString());
         registrationConfirmationRepository.save(registrationConfirmation);
 

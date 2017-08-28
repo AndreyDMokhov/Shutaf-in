@@ -12,11 +12,11 @@ public class AccountStatusConverter implements AttributeConverter<AccountStatus,
 
     @Override
     public Integer convertToDatabaseColumn(AccountStatus attribute) {
-        return attribute != null ? attribute.getCode() : null;
+        return attribute == null ? null : attribute.getCode();
     }
 
     @Override
     public AccountStatus convertToEntityAttribute(Integer dbData) {
-        return dbData != null ? AccountStatus.getById(dbData) : null;
+        return dbData == null ? null : AccountStatus.getById(dbData);
     }
 }

@@ -15,13 +15,13 @@ public class GenderRepositoryImpl extends AbstractConstEntityDao<Gender> impleme
     @Override
     public List<GenderResponseDTO> getLocaleGenders(Language language) {
 
-        StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.GenderResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" gl.gender.id, ");
-        hql.append(" gl.description ");
-        hql.append(" )");
-        hql.append(" from GenderLocale gl where gl.language = :language");
+        StringBuilder hql = new StringBuilder(200)
+        .append("select new com.shutafin.model.web.initialization.GenderResponseDTO ")
+        .append(" ( ")
+        .append(" gl.gender.id, ")
+        .append(" gl.description ")
+        .append(" )")
+        .append(" from GenderLocale gl where gl.language = :language");
 
         return getSession()
                 .createQuery(hql.toString())

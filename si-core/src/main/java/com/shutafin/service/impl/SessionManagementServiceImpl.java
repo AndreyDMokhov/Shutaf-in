@@ -5,7 +5,6 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.SessionManagementService;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.UUID;
 
 @Service
 @Transactional
-@Slf4j
 public class SessionManagementServiceImpl implements SessionManagementService {
 
     private static final int NUMBER_DAYS_EXPIRATION = 30;
@@ -43,12 +41,10 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Transactional
     public void validate(String sessionId) throws AuthenticationException {
         UserSession userSession = findValidUserSession(sessionId);
-        if (userSession == null) {
-            log.warn("Authentication exception:");
-            log.warn("SessionId {} was not found", sessionId);
+        if (userSession == null){
             throw new AuthenticationException();
         }
-        userSession.setExpirationDate(DateUtils.addDays(new Date(), (NUMBER_DAYS_EXPIRATION)));
+        userSession.setExpirationDate(DateUtils.addDays(new Date(), NUMBER_DAYS_EXPIRATION));
         userSessionRepository.update(userSession);
     }
 
@@ -57,9 +53,9 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     public String generateNewSession(User user) {
         UserSession userSession = new UserSession();
         userSession.setUser(user);
-        userSession.setValid(IS_TRUE);
+        userSession.setIsValid(IS_TRUE);
         userSession.setSessionId(UUID.randomUUID().toString());
-        userSession.setExpirable(IS_FALSE);
+        userSession.setIsExpirable(IS_FALSE);
         userSession.setExpirationDate(DateUtils.addDays(new Date(), NUMBER_DAYS_EXPIRATION));
         userSessionRepository.save(userSession);
         return userSession.getSessionId();
@@ -69,8 +65,8 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Transactional
     public void invalidateUserSession(String sessionId) {
         UserSession userSession = userSessionRepository.findSessionBySessionIdAndIsValid(sessionId, IS_TRUE);
-        if (userSession != null) {
-            userSession.setValid(IS_FALSE);
+        if (userSession != null){
+            userSession.setIsValid(IS_FALSE);
             userSessionRepository.update(userSession);
         }
     }
