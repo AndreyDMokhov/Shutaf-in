@@ -1,4 +1,4 @@
-package com.shutafin.repository;
+package com.shutafin.repository.account;
 
 import com.shutafin.model.entities.ResetPasswordConfirmation;
 import com.shutafin.repository.base.PersistentDao;

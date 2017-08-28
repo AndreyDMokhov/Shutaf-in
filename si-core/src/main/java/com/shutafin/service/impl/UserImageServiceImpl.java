@@ -43,7 +43,7 @@ public class UserImageServiceImpl implements UserImageService {
 
         userImageRepository.save(userImage);
 
-        String imageLocalPath = getUserDirectoryPath(user) + String.valueOf(userImage.getId()) + IMAGE_EXTENSION;
+        String imageLocalPath = getUserDirectoryPath(user) + userImage.getId() + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         saveUserImageToFileSystem(imageEncoded, userImage);
         ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
@@ -96,9 +96,8 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     private String getUserDirectoryPath(User user) {
-        String userDirPath = environmentConfigurationService.getLocalImagePath() + String.valueOf(user.getId())
+        return environmentConfigurationService.getLocalImagePath() + user.getId()
                 + File.separator;
-        return userDirPath;
     }
 
     private void saveUserImageToFileSystem(String image, UserImage userImage) {
@@ -125,7 +124,7 @@ public class UserImageServiceImpl implements UserImageService {
         userImage.setId(userImageId);
         userImage.setUser(user);
         userImage.setImageStorage(new ImageStorage());
-        String imageLocalPath = getUserDirectoryPath(user) + String.valueOf(userImageId) + IMAGE_EXTENSION;
+        String imageLocalPath = getUserDirectoryPath(user) + userImageId + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         File imageFile = new File(imageLocalPath);
         try {

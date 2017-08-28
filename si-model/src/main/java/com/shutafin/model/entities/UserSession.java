@@ -1,6 +1,10 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 
@@ -14,6 +18,10 @@ import java.util.Date;
 @Table(name = "USER_SESSION")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Cacheable
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserSession extends AbstractEntity {
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
     @ManyToOne(fetch = FetchType.EAGER)
@@ -33,46 +41,4 @@ public class UserSession extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date expirationDate;
 
-    public UserSession() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Boolean getValid() {
-        return isValid;
-    }
-
-    public void setValid(Boolean valid) {
-        isValid = valid;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public Boolean getExpirable() {
-        return isExpirable;
-    }
-
-    public void setExpirable(Boolean expirable) {
-        isExpirable = expirable;
-    }
-
-    public Date getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
-    }
 }
