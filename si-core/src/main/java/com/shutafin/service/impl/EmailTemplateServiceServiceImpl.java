@@ -60,10 +60,11 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         Properties properties = new Properties();
         InputStream is = null;
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("smtp.");
-        builder.append(language.getDescription());
-        builder.append("-template.properties");
+        StringBuilder builder = new StringBuilder()
+                .append("smtp.")
+                .append(language.getDescription())
+                .append("-template.properties");
+
         is = getClass().getClassLoader().getResourceAsStream(builder.toString());
 
 

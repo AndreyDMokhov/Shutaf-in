@@ -3,6 +3,10 @@ package com.shutafin.model.entities;
 import com.shutafin.model.AbstractBaseEntity;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -11,6 +15,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "USER_ACCOUNT")
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class UserAccount extends AbstractBaseEntity {
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
     @OneToOne
@@ -32,46 +40,4 @@ public class UserAccount extends AbstractBaseEntity {
     @OneToOne
     private UserImage userImage;
 
-    public UserAccount() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public AccountStatus getAccountStatus() {
-        return accountStatus;
-    }
-
-    public void setAccountStatus(AccountStatus accountStatus) {
-        this.accountStatus = accountStatus;
-    }
-
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(AccountType accountType) {
-        this.accountType = accountType;
-    }
-
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
-
-    public UserImage getUserImage() {
-        return userImage;
-    }
-
-    public void setUserImage(UserImage userImage) {
-        this.userImage = userImage;
-    }
 }

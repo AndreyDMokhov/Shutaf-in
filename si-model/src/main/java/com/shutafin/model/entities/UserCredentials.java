@@ -1,6 +1,10 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,6 +13,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "USER_CREDENTIALS")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UserCredentials extends AbstractEntity {
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
     @OneToOne
@@ -22,30 +30,4 @@ public class UserCredentials extends AbstractEntity {
     @Lob
     private String passwordSalt;
 
-    public UserCredentials() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public String getPasswordSalt() {
-        return passwordSalt;
-    }
-
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
-    }
 }

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Deprecated
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -20,27 +20,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(UserInfoWeb userInfoWeb) {
         User user = new User();
+        user.setId(userInfoWeb.getUserId());
         user.setFirstName(userInfoWeb.getFirstName());
         user.setLastName(userInfoWeb.getLastName());
         user.setEmail(userInfoWeb.getEmail());
 
         Long userId = (Long) userRepository.save(user);
         user.setId(userId);
-    }
-
-    @Override
-    @Transactional
-    public void update(UserInfoWeb userInfo) {
-
-    }
-
-    private UserInfoWeb getUserInfoWeb(User userInfo) {
-        UserInfoWeb userInfoWeb = new UserInfoWeb();
-        userInfoWeb.setFirstName(userInfo.getFirstName());
-        userInfoWeb.setLastName(userInfo.getLastName());
-        userInfoWeb.setEmail(userInfo.getEmail());
-
-        return userInfoWeb;
     }
 
 }

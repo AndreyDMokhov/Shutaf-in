@@ -67,14 +67,12 @@ public class PasswordServiceImpl implements PasswordService {
 
     private String generateHash(String salt, String password) {
         Argon2 argon2 = Argon2Factory.create();
-        String hash = argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password + SALT + salt);
-        return hash;
+        return argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password + SALT + salt);
     }
 
     private String generateSalt() {
         byte[] bytes = new byte[SALT_LEN];
         secureRandom.nextBytes(bytes);
-        String salt = Base64.getEncoder().encodeToString(bytes);
-        return salt;
+        return Base64.getEncoder().encodeToString(bytes);
     }
 }
