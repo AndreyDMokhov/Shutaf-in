@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProcessor {
 
-    private Map<String, Object> requiredProxyBeans = new HashMap<>();
+    private Map<String, Class> requiredProxyBeans = new HashMap<>();
 
     @Autowired
     private SessionManagementService sessionManagementService;
@@ -33,7 +33,7 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
         Class clazz = bean.getClass();
 
         if (clazz.getAnnotation(RestController.class) != null && clazz.getAnnotation(NoAuthentication.class) == null) {
-            requiredProxyBeans.put(beanName, bean);
+            requiredProxyBeans.put(beanName, clazz);
         }
 
         return bean;
@@ -41,11 +41,11 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (requiredProxyBeans.get(beanName) == null) {
+        Class clazz = requiredProxyBeans.get(beanName);
+        if (clazz == null) {
             return bean;
         }
 
-        Class clazz = bean.getClass();
 
         return Enhancer.create(clazz, new InvocationHandler() {
             @Override
@@ -74,6 +74,7 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
                         continue;
                     }
 
+
                     AuthenticatedUserType type = authenticatedUser.value();
 
                     if (type == AuthenticatedUserType.USER &&
@@ -94,7 +95,7 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
 
     }
 
-    private Object executeMethod(Method method, Object bean, Object... args) throws Throwable {
+    private Object executeMethod(Method method, Object bean, Object ... args) throws Throwable {
         try {
             return method.invoke(bean, args);
         } catch (InvocationTargetException e) {

@@ -13,13 +13,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> implements UserAccountRepository {
+
     @Override
     public Language findUserLanguage(User user) {
-        StringBuilder hql = new StringBuilder();
-        hql.append("select l from UserAccount u, Language l ");
-        hql.append(" where u.language = l.id ");
-        hql.append(" and ");
-        hql.append(" u.user = :user ");
+        StringBuilder hql = new StringBuilder()
+        .append("select l from UserAccount u, Language l ")
+        .append(" where u.language = l.id ")
+        .append(" and ")
+        .append(" u.user = :user ");
         return (Language) getSession()
                 .createQuery(hql.toString())
                 .setParameter("user", user)

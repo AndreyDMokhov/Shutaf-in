@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
@@ -17,6 +18,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 
 
@@ -28,7 +30,7 @@ public class AutoScriptExecutor {
             " (`SCRIPT_ID` INT);";
     private final static String INSERT_BASIC_VAL_SCRIPT = "INSERT INTO `DB_UPDATE`(`SCRIPT_ID`) VALUES (0);";
 
-    private TreeMap<Integer, Resource> sqlScripts = new TreeMap<>();
+    private NavigableMap<Integer, Resource> sqlScripts = new TreeMap<>();
     private Integer lastExecutedSqlScript;
 
     @Autowired
@@ -102,8 +104,7 @@ public class AutoScriptExecutor {
             return -1;
         }
         try {
-            Integer fileNumber = Integer.parseInt(file.getFilename().split("\\.")[0]);
-            return fileNumber;
+            return Integer.parseInt(file.getFilename().split("\\.")[0]);
         } catch (NumberFormatException exp) {
             System.out.println("failed to parse number");
         }
@@ -113,7 +114,7 @@ public class AutoScriptExecutor {
     private void executeQuery(String query) {
         try {
             jdbcTemplate.execute(query);
-        } catch (Exception exp) {
+        } catch (DataAccessException exp) {
             System.out.println("Error while executing query with JDBC Template");
             System.out.println("Query: " + query);
             System.out.println(exp.getCause());

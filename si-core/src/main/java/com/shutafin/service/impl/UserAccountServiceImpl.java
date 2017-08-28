@@ -21,15 +21,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserAccountServiceImpl implements UserAccountService {
 
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
     private UserImageService userImageService;
 
+    @Autowired
+    public UserAccountServiceImpl(
+            UserRepository userRepository,
+            UserAccountRepository userAccountRepository,
+            UserImageService userImageService) {
+        this.userRepository = userRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.userImageService = userImageService;
+    }
 
     @Override
     @Transactional
@@ -39,7 +43,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     @Transactional
-    public void updateProfileImage(UserImageWeb userImageWeb, User user) {
+    public UserImage updateProfileImage(UserImageWeb userImageWeb, User user) {
         UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
 
@@ -47,7 +51,7 @@ public class UserAccountServiceImpl implements UserAccountService {
            try {
                userImage = userImageService.getUserImage(user, userImageWeb.getId());
            } catch (ResourceNotFoundException exp) {
-               //Simply skip. Security does not apply
+               userImage = null;
            }
         }
 
@@ -59,6 +63,7 @@ public class UserAccountServiceImpl implements UserAccountService {
             userAccount.setUserImage(userImage);
             userAccountRepository.updateUserAccountImage(userImage, user);
         }
+        return userImage;
     }
 
     @Override
