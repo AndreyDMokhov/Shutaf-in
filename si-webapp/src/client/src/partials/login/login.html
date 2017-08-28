@@ -1,4 +1,4 @@
-<div class="col-md-6 col-md-offset-3" ng-controller="loginController">
+<div class="col-md-6 col-md-offset-3">
     <h2>{{'Login.title' | translate}}</h2>
 
     <form name="loginForm" novalidate role="form">
@@ -47,6 +47,7 @@
                 {{'Login.title' | translate}}
                 <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
             </button>
+            <span class="btn btn-warning pull-left" ui-sref="resetPasswordRequest">{{'ResetPassword.title' | translate}}</span>
         </div>
     </form>
 </div>
