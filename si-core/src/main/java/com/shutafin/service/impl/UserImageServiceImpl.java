@@ -9,6 +9,7 @@ import com.shutafin.repository.common.ImageStorageRepository;
 import com.shutafin.repository.common.UserImageRepository;
 import com.shutafin.service.EnvironmentConfigurationService;
 import com.shutafin.service.UserImageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class UserImageServiceImpl implements UserImageService {
 
     private static final String IMAGE_EXTENSION = ".jpg";
@@ -64,6 +66,8 @@ public class UserImageServiceImpl implements UserImageService {
         }
         userImage = userImageRepository.findById(userImageId);
         if (userImage == null || !user.getId().equals(userImage.getUser().getId())) {
+            log.warn("Resource not found exception:");
+            log.warn("User Image with ID {} was not found", userImageId);
             throw new ResourceNotFoundException(String.format("User Image with ID %d was not found", userImageId));
         }
         saveUserImageToFileSystem(userImage.getImageStorage().getImageEncoded(), userImage);
@@ -72,7 +76,6 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     public void deleteUserImage(User user, Long userImageId) {
-
         UserImage userImage = userImageService.getUserImage(user, userImageId);
         deleteLocalImage(userImage);
         imageStorageRepository.delete(userImage.getImageStorage());
@@ -115,11 +118,11 @@ public class UserImageServiceImpl implements UserImageService {
                 outputStream.close();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File not found\n" + e);
+            log.error("File not found exception:");
+            log.error("File not found\n", e);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error while saving image to file\n" + e);
+            log.error("Input output exception:");
+            log.error("Error while saving image to file\n", e);
         }
     }
 
@@ -142,11 +145,11 @@ public class UserImageServiceImpl implements UserImageService {
                 return userImage;
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File not found\n" + e);
+            log.error("File not found exception:");
+            log.error("File not found\n", e);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error while reading image from file system\n" + e);
+            log.error("Input output exception:");
+            log.error("Error while reading image from file system\n", e);
         }
         return null;
     }

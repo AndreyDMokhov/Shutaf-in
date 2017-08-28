@@ -19,26 +19,24 @@ import javax.validation.Valid;
 @Slf4j
 public class EmailChangeController {
 
-
     @Autowired
     private EmailChangeConfirmationService emailChangeConfirmationService;
 
     @RequestMapping(value = "/change-email-request", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void emailChangeRequest (@RequestBody @Valid EmailChangeConfirmationWeb emailChangeConfirmationWeb,
-                                    BindingResult result,
-                                    @AuthenticatedUser User user) {
-
+    public void emailChangeRequest(@RequestBody @Valid EmailChangeConfirmationWeb emailChangeConfirmationWeb,
+                                   BindingResult result, @AuthenticatedUser User user) {
+        log.debug("/users/account/change-email-request");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-
         emailChangeConfirmationService.emailChangeRequest(user, emailChangeConfirmationWeb);
     }
 
     @RequestMapping(value = "/change-email-confirmation/{link}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public EmailChangedWeb emailChangeConfirmation (@PathVariable("link") String link) {
+    public EmailChangedWeb emailChangeConfirmation(@PathVariable("link") String link) {
+        log.debug("/users/account/change-email-confirmation/{link}");
         EmailChangedWeb emailChangedWeb = emailChangeConfirmationService.emailChangeConfirmation(link);
         return emailChangedWeb;
     }

@@ -14,6 +14,7 @@ import com.shutafin.repository.account.EmailChangeConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@Slf4j
 public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmationService {
 
     @Autowired
@@ -48,15 +50,18 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     @Autowired
     private UserRepository userRepository;
 
-
     @Override
     @Transactional
     public void emailChangeRequest(User user, EmailChangeConfirmationWeb emailChangeConfirmationWeb) {
         if (!passwordService.isPasswordCorrect(user, emailChangeConfirmationWeb.getUserPassword())) {
+            log.warn("Authentication exception:");
+            log.warn("UserId {} has incorrect password", user.getId());
             throw new AuthenticationException();
         }
 
         if (userRepository.isEmailExists(emailChangeConfirmationWeb.getNewEmail())) {
+            log.warn("Email not unique validation exception:");
+            log.warn("Such email already exists");
             throw new EmailNotUniqueValidationException("Such email already exists");
         }
 
@@ -65,18 +70,18 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         Date expirationTime = DateUtils.addDays(new Date(), 1);
         EmailChangeConfirmation oldEmailObject = saveToBD(
-                                                        user,
-                                                        false,
-                                                        null,
-                                                        null,
-                                                        expirationTime);
+                user,
+                false,
+                null,
+                null,
+                expirationTime);
 
         EmailChangeConfirmation newEmailObject = saveToBD(
-                                                        user,
-                                                        true,
-                                                        emailChangeConfirmationWeb.getNewEmail(),
-                                                        oldEmailObject,
-                                                        expirationTime);
+                user,
+                true,
+                emailChangeConfirmationWeb.getNewEmail(),
+                oldEmailObject,
+                expirationTime);
 
         oldEmailObject.setConnectedId(newEmailObject);
         emailChangeConfirmationRepository.update(oldEmailObject);
@@ -95,6 +100,8 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
         EmailChangeConfirmation emailChangeConfirmation = emailChangeConfirmationRepository.getEmailChangeConfirmationByUrlLink(link, new Date());
 
         if (emailChangeConfirmation == null) {
+            log.warn("Resource not found exception:");
+            log.warn("UrlLink {} was not found", link);
             throw new ResourceNotFoundException();
         }
 
@@ -104,7 +111,6 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
                 emailChangeConfirmation.getUser(),
                 getNewEmail(emailChangeConfirmation)
         );
-
 
 
         return (emailChangeConfirmation.getConnectedId().isConfirmed()) ?
@@ -118,6 +124,8 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
             user.setEmail(newEmail);
             userRepository.update(user);
         } catch (ConstraintViolationException e) {
+            log.warn("Email not unique validation exception:");
+            log.warn("Such email already exists");
             throw new EmailNotUniqueValidationException("Such email already exist");
         }
     }
@@ -134,28 +142,28 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
         EmailMessage emailMessage;
         if (emailChangeConfirmation.isNewEmail()) {
             emailMessage = emailTemplateService.getEmailMessage(
-                                                        emailChangeConfirmation.getUpdateEmailAddress(),
-                                                        EmailReason.CHANGE_EMAIL,
-                                                        userAccount.getLanguage(),
-                                                        link);
+                    emailChangeConfirmation.getUpdateEmailAddress(),
+                    EmailReason.CHANGE_EMAIL,
+                    userAccount.getLanguage(),
+                    link);
 
         } else {
             emailMessage = emailTemplateService.getEmailMessage(
-                                                        emailChangeConfirmation.getUser(),
-                                                        EmailReason.CHANGE_EMAIL,
-                                                        userAccount.getLanguage(),
-                                                        link);
+                    emailChangeConfirmation.getUser(),
+                    EmailReason.CHANGE_EMAIL,
+                    userAccount.getLanguage(),
+                    link);
         }
         mailSenderService.sendEmail(emailMessage, EmailReason.CHANGE_EMAIL);
 
     }
 
     private EmailChangeConfirmation saveToBD(
-                                        User user,
-                                        boolean isNewEmail,
-                                        String updateEmailAddress,
-                                        EmailChangeConfirmation connectedId,
-                                        Date expiresAt) {
+            User user,
+            boolean isNewEmail,
+            String updateEmailAddress,
+            EmailChangeConfirmation connectedId,
+            Date expiresAt) {
 
         EmailChangeConfirmation emailChangeConfirmation = new EmailChangeConfirmation();
         emailChangeConfirmation.setUser(user);

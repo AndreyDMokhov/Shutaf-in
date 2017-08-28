@@ -2,9 +2,10 @@ package com.shutafin.processors;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
-import com.shutafin.processors.annotations.sessionResponse.SessionResponseType;
 import com.shutafin.processors.annotations.sessionResponse.SessionResponse;
+import com.shutafin.processors.annotations.sessionResponse.SessionResponseType;
 import com.shutafin.service.SessionManagementService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProcessor {
 
     private Map<String, Class> requiredProxyBeans = new HashMap<>();
@@ -58,13 +60,13 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
 
         Method[] methods = clazz.getDeclaredMethods();
 
-        for(Method method : methods){
-            if (!method.isAnnotationPresent(RequestMapping.class)){
+        for (Method method : methods) {
+            if (!method.isAnnotationPresent(RequestMapping.class)) {
                 continue;
             }
             SessionResponse annotation = method.getAnnotation(SessionResponse.class);
-            if (annotation != null){
-                if (annotation.value() == SessionResponseType.NEW_SESSION && !method.getReturnType().equals(User.class)){
+            if (annotation != null) {
+                if (annotation.value() == SessionResponseType.NEW_SESSION && !method.getReturnType().equals(User.class)) {
 
                     throw new RuntimeException("The SessionResponseType parameter is set to False or the returned class is not User.");
                 }
@@ -94,10 +96,11 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
         });
     }
 
-    private Object executeMethod(Method method, Object bean, Object ... args) throws Throwable {
+    private Object executeMethod(Method method, Object bean, Object... args) throws Throwable {
         try {
             return method.invoke(bean, args);
         } catch (InvocationTargetException e) {
+            log.warn("Invocation target exception. ", e);
             throw e.getCause();
         }
     }

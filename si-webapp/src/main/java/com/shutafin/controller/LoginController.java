@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -24,20 +23,19 @@ import javax.validation.Valid;
 @Slf4j
 public class LoginController {
 
-
     @Autowired
     private LoginService loginWebService;
 
     @SessionResponse
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public User login(@RequestBody @Valid LoginWebModel loginWeb, BindingResult result) {
+        log.debug("/login/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        return loginWebService.getSessionIdByEmail(loginWeb);
+        return loginWebService.getUserByEmail(loginWeb);
     }
-
 
 }
