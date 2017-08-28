@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuestionResponse implements DataResponse {
+public class QuestionResponse {
     private Integer questionId;
     private String description;
     private Boolean isActive;

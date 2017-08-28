@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AnswerResponse implements DataResponse {
+public class AnswerResponse {
     private Integer answerId;
     private String description;
     private Boolean isUniversal;

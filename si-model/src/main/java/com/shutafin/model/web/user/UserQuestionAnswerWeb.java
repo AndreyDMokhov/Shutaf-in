@@ -1,6 +1,5 @@
 package com.shutafin.model.web.user;
 
-import com.shutafin.model.web.DataResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserQuestionAnswerWeb implements DataResponse {
+public class UserQuestionAnswerWeb {
     @Min(value = 1)
     @NotNull
     private Long userId;
