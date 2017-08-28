@@ -3,11 +3,19 @@ package com.shutafin.model.entities;
 import com.shutafin.model.AbstractEntity;
 import com.shutafin.model.entities.types.ChatMessageType;
 import com.shutafin.model.entities.types.ChatMessageTypeConverter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "CHAT_MESSAGE")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ChatMessage extends AbstractEntity {
 
     @JoinColumn(name = "CHAT_ID", nullable = false)
@@ -29,46 +37,4 @@ public class ChatMessage extends AbstractEntity {
     @Column(name = "PERMITTED_USERS", length = 200)
     private String permittedUsers;
 
-    public ChatMessage() {
-    }
-
-    public Chat getChat() {
-        return chat;
-    }
-
-    public void setChat(Chat chat) {
-        this.chat = chat;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public ChatMessageType getMessageType() {
-        return messageType;
-    }
-
-    public void setMessageType(ChatMessageType messageType) {
-        this.messageType = messageType;
-    }
-
-    public String getPermittedUsers() {
-        return permittedUsers;
-    }
-
-    public void setPermittedUsers(String permittedUsers) {
-        this.permittedUsers = permittedUsers;
-    }
 }

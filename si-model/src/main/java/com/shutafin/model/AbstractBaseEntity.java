@@ -1,22 +1,24 @@
 package com.shutafin.model;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 
 @MappedSuperclass
-public abstract class AbstractBaseEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+public class AbstractBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 }
