@@ -69,8 +69,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         ResetPasswordConfirmation resetPasswordConfirmation = new ResetPasswordConfirmation();
         resetPasswordConfirmation.setUser(user);
         resetPasswordConfirmation.setUrlLink(UUID.randomUUID().toString());
-        resetPasswordConfirmation.setConfirmed(false);
-        resetPasswordConfirmation.setExpiresAt(DateUtils.addHours(new Date(), (LINK_HOURS_EXPIRATION)));
+        resetPasswordConfirmation.setIsConfirmed(false);
+        resetPasswordConfirmation.setExpiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION));
         resetPasswordConfirmationRepository.save(resetPasswordConfirmation);
         return resetPasswordConfirmation;
     }
@@ -100,7 +100,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         if (resetPasswordConfirmation == null) {
             throw new ResourceNotFoundException();
         }
-        resetPasswordConfirmation.setConfirmed(Boolean.TRUE);
+        resetPasswordConfirmation.setIsConfirmed(Boolean.TRUE);
         resetPasswordConfirmationRepository.update(resetPasswordConfirmation);
 
         passwordService.updateUserPasswordInDb(resetPasswordConfirmation.getUser(), passwordWeb.getNewPassword());

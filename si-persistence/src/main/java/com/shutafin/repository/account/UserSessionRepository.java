@@ -5,7 +5,6 @@ import com.shutafin.model.entities.UserSession;
 import com.shutafin.repository.base.PersistentDao;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by evgeny on 6/20/2017.

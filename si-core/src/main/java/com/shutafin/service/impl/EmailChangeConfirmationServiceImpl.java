@@ -9,7 +9,7 @@ import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.EmailChangeConfirmationWeb;
-import com.shutafin.model.web.user.EmailChangedWeb;
+import com.shutafin.model.web.user.EmailChangedResponse;
 import com.shutafin.repository.account.EmailChangeConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
@@ -27,27 +27,31 @@ import java.util.UUID;
 @Transactional
 public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmationService {
 
-    @Autowired
     private PasswordService passwordService;
-
-    @Autowired
     private EnvironmentConfigurationService environmentConfigurationService;
-
-    @Autowired
     private EmailTemplateService emailTemplateService;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
     private EmailNotificationSenderService mailSenderService;
-
-    @Autowired
     private EmailChangeConfirmationRepository emailChangeConfirmationRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    public EmailChangeConfirmationServiceImpl(
+            PasswordService passwordService,
+            EnvironmentConfigurationService environmentConfigurationService,
+            EmailTemplateService emailTemplateService,
+            UserAccountRepository userAccountRepository,
+            EmailNotificationSenderService mailSenderService,
+            EmailChangeConfirmationRepository emailChangeConfirmationRepository,
+            UserRepository userRepository) {
+        this.passwordService = passwordService;
+        this.environmentConfigurationService = environmentConfigurationService;
+        this.emailTemplateService = emailTemplateService;
+        this.userAccountRepository = userAccountRepository;
+        this.mailSenderService = mailSenderService;
+        this.emailChangeConfirmationRepository = emailChangeConfirmationRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Transactional
@@ -91,14 +95,14 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
 
     @Override
     @Transactional
-    public EmailChangedWeb emailChangeConfirmation(String link) {
+    public EmailChangedResponse emailChangeConfirmation(String link) {
         EmailChangeConfirmation emailChangeConfirmation = emailChangeConfirmationRepository.getEmailChangeConfirmationByUrlLink(link, new Date());
 
         if (emailChangeConfirmation == null) {
             throw new ResourceNotFoundException();
         }
 
-        emailChangeConfirmation.setConfirmed(true);
+        emailChangeConfirmation.setIsConfirmed(true);
 
         updateUserEmail(
                 emailChangeConfirmation.getUser(),
@@ -107,10 +111,10 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
 
 
 
-        return (emailChangeConfirmation.getConnectedId().isConfirmed()) ?
-                new EmailChangedWeb(true)
+        return emailChangeConfirmation.getConnectedId().getIsConfirmed() ?
+                new EmailChangedResponse(true)
                 :
-                new EmailChangedWeb(false);
+                new EmailChangedResponse(false);
     }
 
     private void updateUserEmail(User user, String newEmail) {
@@ -123,7 +127,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     }
 
     private String getNewEmail(EmailChangeConfirmation emailChangeConfirmation) {
-        if (emailChangeConfirmation.isNewEmail()) {
+        if (emailChangeConfirmation.getIsNewEmail()) {
             return emailChangeConfirmation.getUpdateEmailAddress();
         }
         return emailChangeConfirmation.getConnectedId().getUpdateEmailAddress();
@@ -132,7 +136,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     private void sendChangeEmailNotification(EmailChangeConfirmation emailChangeConfirmation, UserAccount userAccount) {
         String link = environmentConfigurationService.getServerAddress() + "/#/settings/change-email/confirmation/" + emailChangeConfirmation.getUrlLink();
         EmailMessage emailMessage;
-        if (emailChangeConfirmation.isNewEmail()) {
+        if (emailChangeConfirmation.getIsNewEmail()) {
             emailMessage = emailTemplateService.getEmailMessage(
                                                         emailChangeConfirmation.getUpdateEmailAddress(),
                                                         EmailReason.CHANGE_EMAIL,
@@ -159,10 +163,10 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
 
         EmailChangeConfirmation emailChangeConfirmation = new EmailChangeConfirmation();
         emailChangeConfirmation.setUser(user);
-        emailChangeConfirmation.setNewEmail(isNewEmail);
+        emailChangeConfirmation.setIsNewEmail(isNewEmail);
         emailChangeConfirmation.setUpdateEmailAddress(updateEmailAddress);
         emailChangeConfirmation.setUrlLink(UUID.randomUUID().toString());
-        emailChangeConfirmation.setConfirmed(Boolean.FALSE);
+        emailChangeConfirmation.setIsConfirmed(Boolean.FALSE);
         emailChangeConfirmation.setConnectedId(connectedId);
         emailChangeConfirmation.setExpiresAt(expiresAt);
         emailChangeConfirmationRepository.save(emailChangeConfirmation);

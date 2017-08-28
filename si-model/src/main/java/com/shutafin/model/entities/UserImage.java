@@ -1,11 +1,19 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "USER_IMAGE")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserImage extends AbstractEntity {
 
     @JoinColumn(name = "USER_ID")
@@ -19,30 +27,4 @@ public class UserImage extends AbstractEntity {
     @Column(name = "LOCAL_PATH", unique = true, length = 200)
     private String localPath;
 
-    public UserImage() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public ImageStorage getImageStorage() {
-        return imageStorage;
-    }
-
-    public void setImageStorage(ImageStorage imageStorage) {
-        this.imageStorage = imageStorage;
-    }
-
-    public String getLocalPath() {
-        return localPath;
-    }
-
-    public void setLocalPath(String localPath) {
-        this.localPath = localPath;
-    }
 }

@@ -162,7 +162,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
 
     private Language createLanguage() {
         Language language = new Language();
-        language.setActive(true);
+        language.setIsActive(true);
         language.setId(1);
         language.setLanguageNativeName("Русский");
         language.setDescription("ru");
