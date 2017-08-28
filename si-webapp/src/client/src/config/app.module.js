@@ -14,5 +14,4 @@ var app = angular.module("app", [
     'pascalprecht.translate',
     'naif.base64',
     'ngStorage',
-    'ngStomp'
 ]);

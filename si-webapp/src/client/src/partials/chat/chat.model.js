@@ -20,13 +20,13 @@ app.factory('chatModel', function (Restangular, $sessionStorage) {
     }
 
     function getAllMessages(chatId) {
-        return rest.all('/' + chatId + '/get/messages').customGET();
+        return rest.all('/' + chatId + '/get/messages').customGETLIST();
     }
     function removeUserFromChat(chatId, userId) {
         return rest.one('/' + chatId + '/remove/user/'+userId).customGET();
     }
     function getActiveUsersInChat(chatId) {
-        return rest.all('/' + chatId + '/get/users').customGET();
+        return rest.all('/' + chatId + '/get/users').customGETLIST();
     }
     function addUserToChat(chatId, userId){
         return rest.one('/' + chatId + '/add/user/'+userId).customGET();

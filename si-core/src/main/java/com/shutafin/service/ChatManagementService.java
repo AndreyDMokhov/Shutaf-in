@@ -6,7 +6,6 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.web.chat.ChatMessageInputWeb;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ChatManagementService {
 
@@ -16,7 +15,7 @@ public interface ChatManagementService {
     Chat findAuthorizedChat(Long chatId, User user);
     void removeChatUserFromChat(Long userId, Chat chat);
     List<Chat> getListChats(User user);
-    ChatMessage saveChatMessage(Long chatId, ChatMessageInputWeb message);
+    ChatMessage saveChatMessage(Long chatId, ChatMessageInputWeb message, User user);
     List<User> getListUsersByChatId(Chat chat);
     List<ChatMessage> getListMessages(Chat chat, User user);
 }

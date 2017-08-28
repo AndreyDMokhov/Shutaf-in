@@ -93,8 +93,8 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     @Transactional
-    public ChatMessage saveChatMessage(Long chatId, ChatMessageInputWeb message) {
-        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chatId, message.getUserId());
+    public ChatMessage saveChatMessage(Long chatId, ChatMessageInputWeb message, User user) {
+        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chatId, user.getId());
         if (chatUser == null) {
             throw new AuthenticationException();
         }

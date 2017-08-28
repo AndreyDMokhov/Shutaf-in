@@ -39,8 +39,7 @@
     "ngstorage": "^0.3.11",
     "angular-base64-upload": "^0.1.22",
     "stomp-websocket": "2.3.4",
-    "sockjs-client": "^1.1.4",
-    "ng-stomp": "^0.4.0"
+    "sockjs-client": "^1.1.4"
   },
   "resolutions": {
     "angular": "1.5.9"

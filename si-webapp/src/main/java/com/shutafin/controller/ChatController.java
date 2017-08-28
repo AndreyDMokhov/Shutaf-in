@@ -7,13 +7,13 @@ import com.shutafin.model.web.chat.ChatMessageInputWeb;
 import com.shutafin.model.web.chat.ChatMessageOutputWeb;
 import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
-import com.shutafin.processors.annotations.authentication.NoAuthentication;
+import com.shutafin.processors.annotations.authentication.WebSocketAuthentication;
 import com.shutafin.service.ChatManagementService;
 import com.shutafin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +41,6 @@ public class ChatController {
         Chat chat = chatManagementService.getNewChat(chatTitle);
         chatManagementService.addChatUserToChat(user, chat);
         response.setHeader("chat_id", String.valueOf(chat.getId()));
-        response.setHeader("user_id", String.valueOf(user.getId()));
     }
 
     @RequestMapping(value = "/{chat_id}/add/user/{user_id}", method = RequestMethod.GET)
@@ -64,18 +63,14 @@ public class ChatController {
         return chatManagementService.getListChats(user);
     }
 
-    @NoAuthentication
+    @WebSocketAuthentication
     @MessageMapping("/chat/{chat_id}/message")
     @SendTo("/subscribe/chat/{chat_id}")
-    public ChatMessageOutputWeb send(@DestinationVariable("chat_id") Long chatId,ChatMessageInputWeb message) {
-        ChatMessage chatMessage = chatManagementService.saveChatMessage(chatId, message);
+    public ChatMessageOutputWeb send(@DestinationVariable("chat_id") Long chatId,
+                                     Message<ChatMessageInputWeb> message, @AuthenticatedUser User user) {
+        ChatMessageInputWeb chatMessageInputWeb = message.getPayload();
+        ChatMessage chatMessage = chatManagementService.saveChatMessage(chatId, chatMessageInputWeb, user);
         return createChatMessageOutputWeb(chatMessage);
-    }
-
-    @MessageExceptionHandler
-    public String handleException(Throwable exception) {
-        log.warn(exception.getMessage());
-        return exception.getMessage();
     }
 
     @RequestMapping(value = "/{chat_id}/get/users", method = RequestMethod.GET)

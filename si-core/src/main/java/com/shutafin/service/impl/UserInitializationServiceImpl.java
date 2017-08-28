@@ -31,7 +31,6 @@ public class UserInitializationServiceImpl implements UserInitializationService 
     public UserInit getUserInitData(User user) {
 
         UserInit userInit = userInitializationRepository.getUserInitializationData(user);
-        userInit.setId(user.getId());
         Long userImageId = userAccountRepository.findUserAccountImageId(user);
         if (userImageId != null) {
             UserImage userImage = userImageService.getUserImage(user, userImageId);
