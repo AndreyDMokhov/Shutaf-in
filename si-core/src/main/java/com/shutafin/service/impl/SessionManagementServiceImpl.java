@@ -44,7 +44,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
         if (userSession == null){
             throw new AuthenticationException();
         }
-        userSession.setExpirationDate(DateUtils.addDays(new Date(), (NUMBER_DAYS_EXPIRATION)));
+        userSession.setExpirationDate(DateUtils.addDays(new Date(), NUMBER_DAYS_EXPIRATION));
         userSessionRepository.update(userSession);
     }
 
@@ -53,9 +53,9 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     public String generateNewSession(User user) {
         UserSession userSession = new UserSession();
         userSession.setUser(user);
-        userSession.setValid(IS_TRUE);
+        userSession.setIsValid(IS_TRUE);
         userSession.setSessionId(UUID.randomUUID().toString());
-        userSession.setExpirable(IS_FALSE);
+        userSession.setIsExpirable(IS_FALSE);
         userSession.setExpirationDate(DateUtils.addDays(new Date(), NUMBER_DAYS_EXPIRATION));
         userSessionRepository.save(userSession);
         return userSession.getSessionId();
@@ -66,7 +66,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     public void invalidateUserSession(String sessionId) {
         UserSession userSession = userSessionRepository.findSessionBySessionIdAndIsValid(sessionId, IS_TRUE);
         if (userSession != null){
-            userSession.setValid(IS_FALSE);
+            userSession.setIsValid(IS_FALSE);
             userSessionRepository.update(userSession);
         }
     }

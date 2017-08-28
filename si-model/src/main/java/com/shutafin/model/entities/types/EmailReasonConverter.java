@@ -12,11 +12,11 @@ public class EmailReasonConverter implements AttributeConverter<EmailReason, Int
 
     @Override
     public Integer convertToDatabaseColumn(EmailReason attribute) {
-        return attribute != null ? attribute.getId() : null;
+        return attribute == null ? null : attribute.getId();
     }
 
     @Override
     public EmailReason convertToEntityAttribute(Integer dbData) {
-        return dbData != null ? EmailReason.getById(dbData) : null;
+        return dbData == null ? null : EmailReason.getById(dbData);
     }
 }

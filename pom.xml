@@ -271,30 +271,14 @@
     <properties>
         <spring.version>4.3.8.RELEASE</spring.version>
         <spring.boot.version>1.5.2.RELEASE</spring.boot.version>
+        <main.basedir>${project.basedir}</main.basedir>
     </properties>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.8</version>
-                <executions>
-                    <execution>
-                        <id>pmd</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <printFailingErrors>true</printFailingErrors>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
 
@@ -309,25 +293,23 @@
                         <target>1.8</target>
                     </configuration>
                 </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>2.17</version>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>3.8</version>
                     <executions>
                         <execution>
-                            <id>checkstyle</id>
+                            <id>pmd</id>
                             <phase>validate</phase>
-                            <configuration>
-                                <configLocation>si-common/src/main/resource/checkstyle/ruleset.xml</configLocation>
-                                <encoding>UTF-8</encoding>
-                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                                <consoleOutput>true</consoleOutput>
-                                <failsOnError>true</failsOnError>
-                            </configuration>
                             <goals>
                                 <goal>check</goal>
                             </goals>
+                            <configuration>
+                                <printFailingErrors>true</printFailingErrors>
+                                <rulesets>
+                                    <ruleset>${main.basedir}\pmd\ruleset.xml</ruleset>
+                                </rulesets>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
