@@ -3,8 +3,10 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.entities.infrastructure.Question;
+import com.shutafin.model.entities.infrastructure.QuestionExtended;
 import com.shutafin.model.entities.matching.AnswerSimilarity;
 import com.shutafin.model.entities.matching.UserMatchingScore;
+import com.shutafin.model.entities.matching.UserQuestionExtendedAnswer;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.matching.UserMatchingScoreRepository;
 import com.shutafin.service.*;
@@ -22,7 +24,7 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     private AnswerSimilarityService answerSimilarityService;
 
     @Autowired
-    private UserQuestionAnswerService userQuestionAnswerService;
+    private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
     @Autowired
     private UserMatchService userMatchService;
@@ -35,45 +37,45 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
 
     @Override
     public UserMatchingScore evaluateUserMatchingScore(User userOrigin, User userToMatch) {
-        UserMatchingScore matchingScore = userMatchingScoreRepository.getUserMatchingScore(userOrigin, userToMatch);
-        if (matchingScore != null) {
-            return matchingScore;
-        }
 
         Double totalScore = 0.;
         Double crossScore = 0.;
         Double maxPossibleScoreOrigin = 0.;
         Double maxPossibleScoreToMatch = 0.;
 
-        Map<Question, UserQuestionAnswer> userOriginAnswers = userQuestionAnswerService.getAllUserQuestionAnswers(userOrigin);
-        Map<Question, UserQuestionAnswer> userToMatchAnswers = userQuestionAnswerService.getAllUserQuestionAnswers(userToMatch);
+        Map<QuestionExtended, UserQuestionExtendedAnswer> userOriginAnswers =
+                userQuestionExtendedAnswerService.getAllUserQuestionAnswers(userOrigin);
+        Map<QuestionExtended, UserQuestionExtendedAnswer> userToMatchAnswers =
+                userQuestionExtendedAnswerService.getAllUserQuestionAnswers(userToMatch);
 
-        Integer maxAnswerSimilarityScore = answerSimilarityService.getAnswerSimilarity(
-                userOriginAnswers.get(0).getAnswer(),
-                userOriginAnswers.get(0).getAnswer())
-                .getSimilarityScore();
 
-        for (Question question : userOriginAnswers.keySet()) {
+
+        for (QuestionExtended question : userOriginAnswers.keySet()) {
             AnswerSimilarity answerSimilarity = answerSimilarityService.getAnswerSimilarity(
                     userOriginAnswers.get(question).getAnswer(),
                     userToMatchAnswers.get(question).getAnswer());
 
-            totalScore += userOriginAnswers.get(question).getQuestionImportance().getWeight() *
+            Integer maxAnswerSimilarityScore = answerSimilarityService.getAnswerSimilarity(
+                    userOriginAnswers.get(question).getAnswer(),
+                    userOriginAnswers.get(question).getAnswer())
+                    .getSimilarityScore();
+
+            totalScore += userOriginAnswers.get(question).getImportance().getWeight() *
                     answerSimilarity.getSimilarityScore();
 
-            crossScore += userToMatchAnswers.get(question).getQuestionImportance().getWeight() *
+            crossScore += userToMatchAnswers.get(question).getImportance().getWeight() *
                     answerSimilarity.getSimilarityScore();
 
-            maxPossibleScoreOrigin += userOriginAnswers.get(question).getQuestionImportance().getWeight() *
+            maxPossibleScoreOrigin += userOriginAnswers.get(question).getImportance().getWeight() *
                     maxAnswerSimilarityScore;
 
-            maxPossibleScoreToMatch += userToMatchAnswers.get(question).getQuestionImportance().getWeight() *
+            maxPossibleScoreToMatch += userToMatchAnswers.get(question).getImportance().getWeight() *
                     maxAnswerSimilarityScore;
 
         }
 
         Double resultScore = Math.sqrt(totalScore/maxPossibleScoreOrigin * crossScore/maxPossibleScoreToMatch) * 100;
-        matchingScore = new UserMatchingScore(userOrigin, userToMatch, resultScore.intValue());
+        UserMatchingScore matchingScore = new UserMatchingScore(userOrigin, userToMatch, resultScore.intValue());
         userMatchingScoreRepository.save(matchingScore);
         return matchingScore;
 

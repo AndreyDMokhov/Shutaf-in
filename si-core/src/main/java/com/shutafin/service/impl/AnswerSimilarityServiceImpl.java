@@ -1,6 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.infrastructure.Answer;
+import com.shutafin.model.entities.infrastructure.AnswerExtended;
 import com.shutafin.model.entities.matching.AnswerSimilarity;
 import com.shutafin.repository.matching.AnswerSimilarityRepository;
 import com.shutafin.service.AnswerSimilarityService;
@@ -16,7 +17,7 @@ public class AnswerSimilarityServiceImpl implements AnswerSimilarityService {
     private AnswerSimilarityRepository answerSimilarityRepository;
 
     @Override
-    public AnswerSimilarity getAnswerSimilarity(Answer answer, Answer answerToCompare) {
+    public AnswerSimilarity getAnswerSimilarity(AnswerExtended answer, AnswerExtended answerToCompare) {
         return answerSimilarityRepository.getAnswerSimilarity(answer, answerToCompare);
     }
 }

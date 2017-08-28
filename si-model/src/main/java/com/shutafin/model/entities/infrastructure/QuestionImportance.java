@@ -1,6 +1,6 @@
-package com.shutafin.model.entities.matching;
+package com.shutafin.model.entities.infrastructure;
 
-import com.shutafin.model.AbstractConstEntity;
+import com.shutafin.model.AbstractKeyConstEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,10 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "QUESTION_IMPORTANCE")
+@Table(name = "I_QUESTION_IMPORTANCE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
-public class QuestionImportance extends AbstractConstEntity {
+public class QuestionImportance extends AbstractKeyConstEntity {
 
     @Column(name = "WEIGHT", nullable = false)
     private Integer weight;
