@@ -3,7 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.EmailChangeConfirmationWeb;
-import com.shutafin.model.web.user.EmailChangedWeb;
+import com.shutafin.model.web.user.EmailChangedResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.EmailChangeConfirmationService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +35,8 @@ public class EmailChangeController {
     }
 
     @RequestMapping(value = "/change-email-confirmation/{link}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public EmailChangedWeb emailChangeConfirmation(@PathVariable("link") String link) {
+    public EmailChangedResponse emailChangeConfirmation(@PathVariable("link") String link) {
         log.debug("/users/account/change-email-confirmation/{link}");
-        EmailChangedWeb emailChangedWeb = emailChangeConfirmationService.emailChangeConfirmation(link);
-        return emailChangedWeb;
+        return emailChangeConfirmationService.emailChangeConfirmation(link);
     }
 }

@@ -10,15 +10,15 @@ import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.LoginService;
 import com.shutafin.service.PasswordService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 @Transactional
+@Slf4j
 public class LoginServiceImpl implements LoginService {
-
 
     private UserRepository userPersistence;
     private PasswordService passwordService;
@@ -34,11 +34,13 @@ public class LoginServiceImpl implements LoginService {
         this.userAccountRepository = userAccountRepository;
     }
 
-    public User getSessionIdByEmail(LoginWebModel loginWeb) {
+    public User getUserByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
 
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
-        if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED){
+        if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED) {
+            log.warn("Authentication exception:");
+            log.warn("UserId {} has null userAccount or status not equal CONFIRMED", user.getId());
             throw new AuthenticationException();
         }
         checkUserPassword(loginWeb, user);
@@ -47,7 +49,9 @@ public class LoginServiceImpl implements LoginService {
 
 
     private void checkUserPassword(LoginWebModel loginWeb, User user) {
-        if (! passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
+        if (!passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
+            log.warn("Authentication exception:");
+            log.warn("UserId {} has incorrect password", user.getId());
             throw new AuthenticationException();
         }
     }
@@ -55,6 +59,8 @@ public class LoginServiceImpl implements LoginService {
     private User findUserByEmail(LoginWebModel loginWeb) {
         User user = userPersistence.findUserByEmail(loginWeb.getEmail());
         if (user == null) {
+            log.warn("Authentication exception:");
+            log.warn("Users was not found by email {}", loginWeb.getEmail());
             throw new AuthenticationException();
         }
         return user;

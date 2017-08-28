@@ -2,9 +2,10 @@ package com.shutafin.processors;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
-import com.shutafin.processors.annotations.response.SessionResponseType;
 import com.shutafin.processors.annotations.response.SessionResponse;
+import com.shutafin.processors.annotations.response.SessionResponseType;
 import com.shutafin.service.SessionManagementService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -17,8 +18,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+@Slf4j
 public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProcessor {
 
     private Map<String, Class> requiredProxyBeans = new HashMap<>();
@@ -97,6 +102,7 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
         try {
             return method.invoke(bean, args);
         } catch (InvocationTargetException e) {
+            log.warn("Invocation target exception. ", e);
             throw e.getCause();
         }
     }
