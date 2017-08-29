@@ -14,7 +14,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 public class WebSocketEndpointBrokerAndInterceptorConfigurer extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Autowired
-    private ChannelInterceptor ChannelInterceptor;
+    private ChannelInterceptor channelInterceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -31,6 +31,6 @@ public class WebSocketEndpointBrokerAndInterceptorConfigurer extends AbstractWeb
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.setInterceptors(ChannelInterceptor);
+        registration.setInterceptors(channelInterceptor);
     }
 }
