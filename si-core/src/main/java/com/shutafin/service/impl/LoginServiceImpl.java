@@ -28,18 +28,21 @@ public class LoginServiceImpl implements LoginService {
     private static final int N_MAX_TRIES = 10;
     private static final int TIME_FOR_TRIES_IN_MIN = 10;
 
-    @Autowired
-    private SessionManagementService sessionManagementService;
-
-    @Autowired
     private UserRepository userPersistence;
-
-    @Autowired
     private PasswordService passwordService;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
 
+    @Autowired
+    public LoginServiceImpl(
+            UserRepository userPersistence,
+            PasswordService passwordService,
+            UserAccountRepository userAccountRepository) {
+        this.userPersistence = userPersistence;
+        this.passwordService = passwordService;
+        this.userAccountRepository = userAccountRepository;
+    }
+
+    public User getSessionIdByEmail(LoginWebModel loginWeb) {
     @Autowired
     private UserLoginLogRepository userLoginLogRepository;
 
@@ -48,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
         User user = findUserByEmail(loginWeb);
         checkUserAccountStatus(user);
         checkUserPassword(loginWeb, user);
-        return sessionManagementService.generateNewSession(user);
+        return user;
     }
 
     private void checkUserAccountStatus(User user) {

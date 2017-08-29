@@ -3,6 +3,10 @@ package com.shutafin.model.entities;
 import com.shutafin.model.AbstractEntity;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.entities.types.EmailReasonConverter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -12,6 +16,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "EMAIL_NOTIFICATION_LOG")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class EmailNotificationLog extends AbstractEntity {
 
     @JoinColumn(name = "USER_ID", nullable = true)
@@ -32,46 +40,4 @@ public class EmailNotificationLog extends AbstractEntity {
     @Convert(converter = EmailReasonConverter.class)
     private EmailReason emailReason;
 
-    public EmailNotificationLog() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getEmailTo() {
-        return emailTo;
-    }
-
-    public void setEmailTo(String emailTo) {
-        this.emailTo = emailTo;
-    }
-
-    public Boolean getSendFailed() {
-        return isSendFailed;
-    }
-
-    public void setSendFailed(Boolean sendFailed) {
-        isSendFailed = sendFailed;
-    }
-
-    public String getEmailContent() {
-        return emailContent;
-    }
-
-    public void setEmailContent(String emailContent) {
-        this.emailContent = emailContent;
-    }
-
-    public EmailReason getEmailReason() {
-        return emailReason;
-    }
-
-    public void setEmailReason(EmailReason emailReason) {
-        this.emailReason = emailReason;
-    }
 }

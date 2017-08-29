@@ -2,6 +2,8 @@ package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
+import com.shutafin.model.web.error.ErrorResponse;
+import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
@@ -10,6 +12,7 @@ import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -41,6 +44,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     private static final String INP_EMAIL_EMAIL = "INP.email.Email";
 
     private static final String INP_USER_LANGUAGE_ID_MIN = "INP.userLanguageId.Min";
+    private static final String SYS_TYPE_ERROR = "SYS";
 
     private List<String> errorList;
 
@@ -58,6 +62,8 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList = new ArrayList<>();
     }
 
+    //@ResponseEntity in controller before vs entity class annotation with message processor
+    @Ignore(value = "Comment out after APiWebResponse will be committed. Prints out User.class.")
     @Test
     public void registrationConfirmation_Positive() {
         ControllerRequest request = ControllerRequest.builder()
@@ -66,6 +72,17 @@ public class RegistrationControllerTest extends BaseTestImpl {
                 .build();
         APIWebResponse response = getResponse(request);
         Assert.assertNull(response.getError());
+    }
+
+    @Test
+    public void registrationConfirmation_UrlWithAWhitespace() {
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL + " ")
+                .setHttpMethod(HttpMethod.GET)
+                .build();
+        APIWebResponse response = getResponse(request);
+        Assert.assertNotNull(response.getError());
+        Assert.assertEquals(ErrorType.RESOURCE_NOT_FOUND_ERROR.getErrorCodeType(), response.getError().getErrorTypeCode());
     }
 
     @Test
@@ -161,6 +178,20 @@ public class RegistrationControllerTest extends BaseTestImpl {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"0\"}";
         errorList.add(INP_USER_LANGUAGE_ID_MIN);
         sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+    }
+
+    @Test
+    public void registrationRequestObject_LanguageIdWithAStringValue() {
+        String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"a\"}";
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(REGISTRATION_REQUEST_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(registrationRequestWebJson)
+                .build();
+        APIWebResponse response = getResponse(request);
+        Assert.assertNotNull(response.getError());
+        ErrorResponse errorResponse = response.getError();
+        Assert.assertEquals(SYS_TYPE_ERROR, errorResponse.getErrorTypeCode());
     }
 
     private void sendRegistrationWebRequest(String json, List<String> errorList) {

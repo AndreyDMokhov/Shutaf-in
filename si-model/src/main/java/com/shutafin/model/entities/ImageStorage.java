@@ -1,11 +1,19 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "IMAGE_STORAGE")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ImageStorage extends AbstractBaseEntity{
 
     @JoinColumn(name = "USER_IMAGE_ID")
@@ -16,22 +24,4 @@ public class ImageStorage extends AbstractBaseEntity{
     @Lob
     private String imageEncoded;
 
-    public ImageStorage() {
-    }
-
-    public UserImage getUserImage() {
-        return userImage;
-    }
-
-    public void setUserImage(UserImage userImage) {
-        this.userImage = userImage;
-    }
-
-    public String getImageEncoded() {
-        return imageEncoded;
-    }
-
-    public void setImageEncoded(String imageEncoded) {
-        this.imageEncoded = imageEncoded;
-    }
 }

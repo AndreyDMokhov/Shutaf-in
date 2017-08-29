@@ -1,6 +1,10 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,6 +13,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "USER_LOGIN_LOG")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UserLoginLog extends AbstractEntity {
     @JoinColumn(name = "USER_ID", nullable = false)
     @OneToOne
@@ -17,22 +25,4 @@ public class UserLoginLog extends AbstractEntity {
     @Column(name = "IS_LOGIN_SUCCESS", nullable = false)
     private Boolean isLoginSuccess;
 
-    public UserLoginLog() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Boolean getLoginSuccess() {
-        return isLoginSuccess;
-    }
-
-    public void setLoginSuccess(Boolean loginSuccess) {
-        isLoginSuccess = loginSuccess;
-    }
 }
