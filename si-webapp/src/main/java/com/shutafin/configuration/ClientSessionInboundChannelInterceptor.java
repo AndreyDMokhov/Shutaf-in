@@ -1,6 +1,6 @@
 package com.shutafin.configuration;
 
-import com.shutafin.service.impl.SessionManagementServiceImpl;
+import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -13,7 +13,7 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 public class ClientSessionInboundChannelInterceptor extends ChannelInterceptorAdapter {
 
     @Autowired
-    SessionManagementServiceImpl sessionManagementService;
+    private SessionManagementService sessionManagementService;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {

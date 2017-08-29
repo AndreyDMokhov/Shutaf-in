@@ -7,11 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public class HttpProtocolHandler extends AbstractAuthenticationProtocolTypeResolver {
 
-    Object[] parameters;
-
-    public HttpProtocolHandler(Object[] parameters) {
-        this.parameters = parameters;
-    }
 
     @Override
     protected String getSessionId() {

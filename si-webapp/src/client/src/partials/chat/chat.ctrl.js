@@ -21,7 +21,7 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
         function getUserData() {
             chatModel.getUsers().then(
                 function (success) {
-                    vm.users = success.data;
+                    vm.users = success.data.data;
                 });
         }
 
@@ -71,10 +71,10 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
 
         function addChat() {
             vm.dataLoading = true;
-            vm.currentChat.id = 0;
+            vm.currentChat.id = null;
             chatModel.addChat(vm.chatName).then(
                 function (success) {
-                    joinChat({"id": success.headers('chat_id'), "chatTitle": vm.chatName});
+                    joinChat(success.data.data);
                     getChats();
                     vm.chatName = "";
                 }, function (error) {
@@ -85,7 +85,7 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
         function getChats() {
             chatModel.getChats().then(
                 function (success) {
-                    vm.listOfChats = success.data;
+                    vm.listOfChats = success.data.data;
                 })
         }
 
@@ -103,7 +103,7 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
         function getAllMessages() {
             chatModel.getAllMessages(vm.currentChat.id).then(
                 function (success) {
-                    vm.messages = success.data;
+                    vm.messages = success.data.data;
                 });
         }
 
@@ -124,15 +124,16 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
                 });
         }
 
+
         function getActiveUsersInChat() {
             chatModel.getActiveUsersInChat(vm.currentChat.id).then(
                 function (success) {
-                    vm.usersInChat = success.data;
+                    vm.usersInChat = success.data.data;
                 });
         }
 
-        function deleteChat(chatId) {
-            chatModel.removeUserFromChat(chatId, $sessionStorage.userProfile.id).then(
+        function removeChat(chatId) {
+            chatModel.removeChat(chatId).then(
                 function (success) {
                     if (vm.currentChat.id === chatId) {
                         unSubscribe();
@@ -170,7 +171,7 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
         vm.sendMessage = sendMessage;
         vm.removeUserFromChat = removeUserFromChat;
         vm.getActiveUsersInChat = getActiveUsersInChat;
-        vm.deleteChat = deleteChat;
+        vm.removeChat = removeChat;
         vm.addUserToChat = addUserToChat;
         vm.exitChat = exitChat;
     }

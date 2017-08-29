@@ -1,7 +1,5 @@
 package com.shutafin.processors.annotations.authentication;
 
-import org.springframework.context.annotation.Import;
-import org.springframework.web.socket.config.annotation.DelegatingWebSocketMessageBrokerConfiguration;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

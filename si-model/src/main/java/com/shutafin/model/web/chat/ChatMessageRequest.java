@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ChatMessageInputWeb {
+public class ChatMessageRequest {
 
     private String message;
     private Integer messageType;

@@ -7,7 +7,7 @@ import com.shutafin.model.entities.ChatMessage;
 import com.shutafin.model.entities.ChatUser;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.types.ChatMessageType;
-import com.shutafin.model.web.chat.ChatMessageInputWeb;
+import com.shutafin.model.web.chat.ChatMessageRequest;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatRepository;
 import com.shutafin.repository.common.ChatUserRepository;
@@ -49,11 +49,11 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Transactional
     public void addChatUserToChat(User user, Chat chat) {
         ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chat.getId(), user.getId());
-        if(chatUser == null){
+        if (chatUser == null) {
             chatUser = createChatUser(user, chat);
             chatUserRepository.save(chatUser);
-        }else if (!chatUser.getActiveUser()){
-            chatUser.setActiveUser(true);
+        } else if (!chatUser.getIsActiveUser()) {
+            chatUser.setIsActiveUser(true);
             chatUser.setJoinDate(new Date());
             chatUserRepository.update(chatUser);
         }
@@ -87,13 +87,12 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Override
     @Transactional(readOnly = true)
     public List<Chat> getListChats(User user) {
-        List<Chat> chats = chatUserRepository.findChatsByActiveChatUser(user);
-        return chats;
+        return chatUserRepository.findChatsByActiveChatUser(user);
     }
 
     @Override
     @Transactional
-    public ChatMessage saveChatMessage(Long chatId, ChatMessageInputWeb message, User user) {
+    public ChatMessage saveChatMessage(Long chatId, ChatMessageRequest message, User user) {
         ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chatId, user.getId());
         if (chatUser == null) {
             throw new AuthenticationException();
@@ -101,13 +100,13 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         return createChatMessage(chatUser, message);
     }
 
-    private ChatMessage createChatMessage(ChatUser chatUser, ChatMessageInputWeb message) {
+    private ChatMessage createChatMessage(ChatUser chatUser, ChatMessageRequest message) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setChat(chatUser.getChat());
         chatMessage.setUser(chatUser.getUser());
         chatMessage.setMessage(message.getMessage());
         ChatMessageType chatMessageType = ChatMessageType.getById(message.getMessageType());
-        if (chatMessageType == null){
+        if (chatMessageType == null) {
             chatMessageType = ChatMessageType.TEXT;
         }
         chatMessage.setMessageType(chatMessageType);
@@ -119,8 +118,10 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     private String getPermittedUsers(Chat chat) {
         List<ChatUser> chatUsers = chatUserRepository.findActiveChatUsersByChat(chat);
         StringBuilder permittedUsers = new StringBuilder(",");
-        for (ChatUser chatUser: chatUsers) {
-            permittedUsers.append(chatUser.getUser().getId()).append(",");
+        for (ChatUser chatUser : chatUsers) {
+            permittedUsers
+                    .append(chatUser.getUser().getId())
+                    .append(',');
         }
         return permittedUsers.toString();
     }
@@ -140,17 +141,17 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     private User getUserById(Long userId) {
         User user = userRepository.findById(userId);
-        if (user == null){
+        if (user == null) {
             throw new ResourceNotFoundException();
         }
         return user;
     }
 
-    private ChatUser createChatUser(User user, Chat chat){
+    private ChatUser createChatUser(User user, Chat chat) {
         ChatUser chatUser = new ChatUser();
         chatUser.setChat(chat);
         chatUser.setUser(user);
-        chatUser.setActiveUser(true);
+        chatUser.setIsActiveUser(true);
         chatUser.setJoinDate(new Date());
         return chatUser;
     }

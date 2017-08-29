@@ -15,7 +15,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
                     setConnected(true);
                     resolve();
                 }, function (err) {
-                    if(!sessionService.isAuthenticated()){
+                    if (!sessionService.isAuthenticated()) {
                         return;
                     }
 

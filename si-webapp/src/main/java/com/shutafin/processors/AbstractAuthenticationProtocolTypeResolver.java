@@ -7,11 +7,9 @@ public abstract class AbstractAuthenticationProtocolTypeResolver {
 
     protected static final String SESSION_ID_HEADER_TOKEN = "session_id";
 
-    protected AbstractAuthenticationProtocolTypeResolver() {};
-
     protected abstract String getSessionId();
 
-    protected String getSessionIdFromProtocol() {
+    public String getSessionIdFromProtocol() {
 
         String sessionId = getSessionId();
         if (sessionId == null) {
@@ -21,13 +19,13 @@ public abstract class AbstractAuthenticationProtocolTypeResolver {
         return sessionId;
     }
 
-    protected static AbstractAuthenticationProtocolTypeResolver getProtocolTypeResolver(WebSocketAuthentication webSocketAuthentication, Object[] parameters) {
+    public static AbstractAuthenticationProtocolTypeResolver getProtocolTypeResolver(WebSocketAuthentication webSocketAuthentication, Object... parameters) {
 
-        if (webSocketAuthentication != null) {
-            return new WebSocketProtocolHandler(parameters);
+        if (webSocketAuthentication == null) {
 
+            return new HttpProtocolHandler();
         } else {
-            return new HttpProtocolHandler(parameters);
+            return new WebSocketProtocolHandler(parameters);
         }
     }
 

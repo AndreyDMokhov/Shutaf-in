@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ChatMessageOutputWeb {
+public class ChatMessageResponse {
 
     private String firstName;
     private String lastName;

@@ -7,9 +7,9 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 
 public class WebSocketProtocolHandler extends AbstractAuthenticationProtocolTypeResolver {
 
-    Object[] parameters;
+    private Object[] parameters;
 
-    protected WebSocketProtocolHandler(Object[] parameters) {
+    WebSocketProtocolHandler(Object... parameters) {
         this.parameters = parameters;
     }
 
