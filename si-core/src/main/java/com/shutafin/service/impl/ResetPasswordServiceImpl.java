@@ -3,13 +3,12 @@ package com.shutafin.service.impl;
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ResetPasswordConfirmation;
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.EmailWeb;
 import com.shutafin.model.web.user.PasswordWeb;
-import com.shutafin.repository.ResetPasswordConfirmationRepository;
+import com.shutafin.repository.account.ResetPasswordConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.*;
@@ -70,8 +69,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         ResetPasswordConfirmation resetPasswordConfirmation = new ResetPasswordConfirmation();
         resetPasswordConfirmation.setUser(user);
         resetPasswordConfirmation.setUrlLink(UUID.randomUUID().toString());
-        resetPasswordConfirmation.setConfirmed(false);
-        resetPasswordConfirmation.setExpiresAt(DateUtils.addHours(new Date(), (LINK_HOURS_EXPIRATION)));
+        resetPasswordConfirmation.setIsConfirmed(false);
+        resetPasswordConfirmation.setExpiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION));
         resetPasswordConfirmationRepository.save(resetPasswordConfirmation);
         return resetPasswordConfirmation;
     }
@@ -101,7 +100,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         if (resetPasswordConfirmation == null) {
             throw new ResourceNotFoundException();
         }
-        resetPasswordConfirmation.setConfirmed(Boolean.TRUE);
+        resetPasswordConfirmation.setIsConfirmed(Boolean.TRUE);
         resetPasswordConfirmationRepository.update(resetPasswordConfirmation);
 
         passwordService.updateUserPasswordInDb(resetPasswordConfirmation.getUser(), passwordWeb.getNewPassword());

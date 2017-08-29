@@ -15,13 +15,13 @@ public class CountryRepositoryImpl extends AbstractConstEntityDao<Country> imple
     @Override
     public List<CountryResponseDTO> getLocaleCountries(Language language) {
 
-        StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.CountryResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" cl.country.id, ");
-        hql.append(" cl.description ");
-        hql.append(" )");
-        hql.append(" from CountryLocale cl where cl.language = :language ");
+        StringBuilder hql = new StringBuilder()
+        .append("select new com.shutafin.model.web.initialization.CountryResponseDTO ")
+        .append(" ( ")
+        .append(" cl.country.id, ")
+        .append(" cl.description ")
+        .append(" )")
+        .append(" from CountryLocale cl where cl.language = :language ");
 
         return getSession()
                 .createQuery(hql.toString())

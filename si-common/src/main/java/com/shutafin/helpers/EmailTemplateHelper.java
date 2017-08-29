@@ -10,10 +10,8 @@ import java.util.Map;
 public class EmailTemplateHelper {
 
 
-
     private static final String TOKEN_MATCHER_PREFIX = "${";
     private static final String TOKEN_MATCHER_SUFFIX = "}";
-
 
 
     public String getMessageContent(Map<String, String> tokens, String htmlTemplate) {
@@ -27,15 +25,12 @@ public class EmailTemplateHelper {
         for (Map.Entry<String, String> map : tokens.entrySet()) {
             String parametrizedToken = TOKEN_MATCHER_PREFIX + map.getKey() + TOKEN_MATCHER_SUFFIX;
 
-            String value = map.getValue() != null ? map.getValue() : "";
+            String value = map.getValue() == null ? "" : map.getValue();
             finalHtmlTemplate = finalHtmlTemplate.replace(parametrizedToken, value);
         }
 
         return finalHtmlTemplate;
     }
-
-
-
 
 
 }

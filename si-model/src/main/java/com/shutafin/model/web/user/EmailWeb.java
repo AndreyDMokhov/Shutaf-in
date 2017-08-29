@@ -1,9 +1,17 @@
 package com.shutafin.model.web.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class EmailWeb {
 
     @NotBlank
@@ -11,18 +19,5 @@ public class EmailWeb {
     @Length(max=50)
     private String email;
 
-    public EmailWeb() {
-    }
 
-    public EmailWeb(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
