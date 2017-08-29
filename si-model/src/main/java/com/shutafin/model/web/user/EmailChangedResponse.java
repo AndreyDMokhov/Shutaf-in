@@ -1,7 +1,6 @@
-package com.shutafin.model.web;
+package com.shutafin.model.web.user;
 
 
-import com.shutafin.model.web.error.ErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class APIWebResponse {
+public class EmailChangedResponse {
 
-    private ErrorResponse error;
-    private Object data;
+    private Boolean isEmailChanged;
 
 }

@@ -51,7 +51,7 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
                 log.trace("\n\r \n\r * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\r");
                 return result;
             });
-        }else{
+        } else {
             return Enhancer.create(beanClass, new InvocationHandler() {
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -64,7 +64,7 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
         }
     }
 
-    private Object helperInvoke(Class beanClass, Object bean, Method method, Object[] args) throws Throwable {
+    private Object helperInvoke(Class beanClass, Object bean, Method method, Object...args) throws Throwable {
         Gson gson = new Gson();
         String methodName = method.getName();
 
@@ -73,24 +73,24 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
 
         Parameter[] parameters = method.getParameters();
         for (int i = 0; i < parameters.length; i++) {
-            if (parameters[i].getType() != HttpServletResponse.class){
-                log.trace("\t\t{} : {} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), gson.toJson(args[i]));
-            }else{
+            if (parameters[i].getType() == HttpServletResponse.class) {
                 log.trace("\t\t{} : {} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), args[i]);
+            } else {
+                log.trace("\t\t{} : {} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), gson.toJson(args[i]));
             }
         }
 
         Object methodResult = executeMethod(method, bean, args);
-        if (method.getReturnType() != Void.TYPE){
-            log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, gson.toJson(methodResult, method.getReturnType()));
-        }else {
+        if (method.getReturnType() == Void.TYPE) {
             log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, method.getReturnType().getName());
+        } else {
+            log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, gson.toJson(methodResult, method.getReturnType()));
         }
 
         return methodResult;
     }
 
-    private Object executeMethod(Method method, Object bean, Object ... args) throws Throwable {
+    private Object executeMethod(Method method, Object bean, Object... args) throws Throwable {
         try {
             return method.invoke(bean, args);
         } catch (InvocationTargetException e) {

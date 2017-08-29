@@ -1,12 +1,20 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "RESET_PASSWORD_CONFIRMATION")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ResetPasswordConfirmation extends AbstractEntity {
 
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -22,38 +30,4 @@ public class ResetPasswordConfirmation extends AbstractEntity {
     @Column(name = "EXPIRES_AT", nullable = false)
     private Date expiresAt;
 
-    public ResetPasswordConfirmation() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getUrlLink() {
-        return urlLink;
-    }
-
-    public void setUrlLink(String urlLink) {
-        this.urlLink = urlLink;
-    }
-
-    public Boolean getConfirmed() {
-        return isConfirmed;
-    }
-
-    public void setConfirmed(Boolean confirmed) {
-        isConfirmed = confirmed;
-    }
-
-    public Date getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(Date expiresAt) {
-        this.expiresAt = expiresAt;
-    }
 }

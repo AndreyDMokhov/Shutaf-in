@@ -271,9 +271,17 @@
     <properties>
         <spring.version>4.3.8.RELEASE</spring.version>
         <spring.boot.version>1.5.2.RELEASE</spring.boot.version>
+        <main.basedir>${project.basedir}</main.basedir>
     </properties>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+            </plugin>
+        </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -288,9 +296,28 @@
                         <target>1.8</target>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>3.8</version>
+                    <executions>
+                        <execution>
+                            <id>pmd</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <printFailingErrors>true</printFailingErrors>
+                                <rulesets>
+                                    <ruleset>${main.basedir}\pmd\ruleset.xml</ruleset>
+                                </rulesets>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
-
 
 </project>
