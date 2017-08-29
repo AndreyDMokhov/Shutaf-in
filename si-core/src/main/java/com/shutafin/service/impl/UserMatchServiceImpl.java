@@ -29,7 +29,7 @@ import java.util.*;
 @Transactional
 public class UserMatchServiceImpl implements UserMatchService {
 
-    private static HashMap<User, Set<QuestionAnswer>> usersQuestionsAnswersMap = null;
+    private static Map<User, Set<QuestionAnswer>> usersQuestionsAnswersMap;
 
     @Autowired
     private UserQuestionAnswerRepository userQuestionAnswerRepository;
@@ -48,8 +48,9 @@ public class UserMatchServiceImpl implements UserMatchService {
     public List<User> findPartners(User user) {
         List<User> result = new ArrayList<User>();
 
-        if (user == null)
+        if (user == null) {
             return result;
+        }
 
         if (usersQuestionsAnswersMap == null){
             initUsersMatchMap();
@@ -58,9 +59,8 @@ public class UserMatchServiceImpl implements UserMatchService {
         Set<QuestionAnswer> userQuestionAnswersSet = usersQuestionsAnswersMap.get(user);
         Set<Map.Entry<User,Set<QuestionAnswer>>> set = usersQuestionsAnswersMap.entrySet();
         for(Map.Entry<User,Set<QuestionAnswer>> entry : set){
-            if (!user.equals(entry.getKey())){
-                if (userQuestionAnswersSet!=null && userQuestionAnswersSet.containsAll(entry.getValue()))
-                    result.add(entry.getKey());
+            if (!user.equals(entry.getKey()) && userQuestionAnswersSet!=null && userQuestionAnswersSet.containsAll(entry.getValue())){
+                result.add(entry.getKey());
             }
         }
 

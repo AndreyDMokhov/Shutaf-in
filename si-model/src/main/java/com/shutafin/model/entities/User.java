@@ -1,6 +1,7 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Table(name = "USER")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
+@NoArgsConstructor
 public class User extends AbstractEntity {
 
     @Column(name = "FIRST_NAME", nullable = false, length = 50)
@@ -19,9 +21,6 @@ public class User extends AbstractEntity {
 
     @Column(name = "EMAIL", nullable = false, length = 50, unique = true)
     private String email;
-
-    public User() {
-    }
 
     public String getEmail() {
         return email;

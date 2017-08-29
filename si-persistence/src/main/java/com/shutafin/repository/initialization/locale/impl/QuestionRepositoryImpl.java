@@ -16,14 +16,14 @@ import java.util.List;
 public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> implements QuestionRepository {
     @Override
     public List<QuestionResponseDTO> getLocaleQuestions(Language language) {
-        StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.QuestionResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" cl.question.id, ");
-        hql.append(" cl.description, ");
-        hql.append(" cl.question.isActive ");
-        hql.append(" )");
-        hql.append(" from QuestionLocale cl where cl.language = :language ");
+        StringBuilder hql = new StringBuilder()
+        .append("select new com.shutafin.model.web.initialization.QuestionResponseDTO ")
+        .append(" ( ")
+        .append(" cl.question.id, ")
+        .append(" cl.description, ")
+        .append(" cl.question.isActive ")
+        .append(" )")
+        .append(" from QuestionLocale cl where cl.language = :language ");
 
         return getSession()
                 .createQuery(hql.toString())
@@ -34,14 +34,14 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
 
     @Override
     public List<QuestionResponseDTO> getLocaleActiveQuestions(Language language) {
-        StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.QuestionResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" cl.question.id, ");
-        hql.append(" cl.description, ");
-        hql.append(" cl.question.isActive ");
-        hql.append(" )");
-        hql.append(" from QuestionLocale cl where cl.language = :language AND cl.question.isActive = 1");
+        StringBuilder hql = new StringBuilder()
+        .append("select new com.shutafin.model.web.initialization.QuestionResponseDTO ")
+        .append(" ( ")
+        .append(" cl.question.id, ")
+        .append(" cl.description, ")
+        .append(" cl.question.isActive ")
+        .append(" )")
+        .append(" from QuestionLocale cl where cl.language = :language AND cl.question.isActive = 1");
 
         return getSession()
                 .createQuery(hql.toString())
