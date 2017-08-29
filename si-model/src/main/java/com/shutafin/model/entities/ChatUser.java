@@ -1,12 +1,20 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "CHAT_USER")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ChatUser extends AbstractEntity {
 
     @JoinColumn(name = "CHAT_ID", nullable = false)
@@ -28,46 +36,4 @@ public class ChatUser extends AbstractEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date exitDate;
 
-    public ChatUser() {
-    }
-
-    public Chat getChat() {
-        return chat;
-    }
-
-    public void setChat(Chat chat) {
-        this.chat = chat;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Boolean getActiveUser() {
-        return isActiveUser;
-    }
-
-    public void setActiveUser(Boolean activeUser) {
-        isActiveUser = activeUser;
-    }
-
-    public Date getJoinDate() {
-        return joinDate;
-    }
-
-    public void setJoinDate(Date joinDate) {
-        this.joinDate = joinDate;
-    }
-
-    public Date getExitDate() {
-        return exitDate;
-    }
-
-    public void setExitDate(Date exitDate) {
-        this.exitDate = exitDate;
-    }
 }

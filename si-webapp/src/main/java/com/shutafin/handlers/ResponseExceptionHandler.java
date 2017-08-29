@@ -1,7 +1,6 @@
 package com.shutafin.handlers;
 
 import com.shutafin.exception.AbstractAPIException;
-import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorResponse;
 import com.shutafin.model.web.error.ErrorType;
 import org.springframework.http.HttpStatus;
@@ -29,9 +28,7 @@ public class ResponseExceptionHandler {
 
         ErrorType errorType = ErrorType.SYSTEM;
 
-
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), errorType);
-
 
         HttpStatus httpStatus = HttpStatus.valueOf(errorType.getHttpCode());
 
