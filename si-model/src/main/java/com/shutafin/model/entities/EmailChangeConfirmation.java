@@ -1,12 +1,20 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "EMAIL_CHANGE_CONFIRMATION")
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public class EmailChangeConfirmation extends AbstractEntity {
 
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -32,36 +40,5 @@ public class EmailChangeConfirmation extends AbstractEntity {
     @JoinColumn(name = "CONNECTED_ID", nullable = true)
     @OneToOne
     private EmailChangeConfirmation connectedId;
-
-    public EmailChangeConfirmation() {
-    }
-
-    public User getUser() {return user;}
-
-    public void setUser(User user) {this.user = user;}
-
-    public Boolean isNewEmail() {return isNewEmail;}
-
-    public void setNewEmail(Boolean newEmail) {isNewEmail = newEmail;}
-
-    public String getUpdateEmailAddress() {return updateEmailAddress;}
-
-    public void setUpdateEmailAddress(String updateEmailAddress) {this.updateEmailAddress = updateEmailAddress;}
-
-    public String getUrlLink() {return urlLink;}
-
-    public void setUrlLink(String urlLink) {this.urlLink = urlLink;}
-
-    public Boolean isConfirmed() {return isConfirmed;}
-
-    public void setConfirmed(Boolean confirmed) {isConfirmed = confirmed;}
-
-    public EmailChangeConfirmation getConnectedId() {return connectedId;}
-
-    public void setConnectedId(EmailChangeConfirmation connectedId) {this.connectedId = connectedId;}
-
-    public Date getExpiresAt() {return expiresAt;}
-
-    public void setExpiresAt(Date expiresAt) {this.expiresAt = expiresAt;}
 
 }

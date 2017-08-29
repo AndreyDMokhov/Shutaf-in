@@ -5,7 +5,7 @@ import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
-import com.shutafin.processors.annotations.sessionResponse.SessionResponse;
+import com.shutafin.processors.annotations.response.SessionResponse;
 import com.shutafin.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 
 @Service
@@ -30,7 +31,7 @@ public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigura
             InetAddress ip = InetAddress.getLocalHost();
             serverAddress = ip.getHostAddress();
         } catch (UnknownHostException e) {
-            throw new SystemException(e.getMessage() + ":\n" + e.getStackTrace());
+            throw new SystemException(e.getMessage() + ":\n" + Arrays.toString(e.getStackTrace()));
         }
 
         String suffix = port.isEmpty() ? "" : String.format(":%s", port);

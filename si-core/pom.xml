@@ -8,6 +8,10 @@
         <version>0.1</version>
     </parent>
 
+    <properties>
+        <main.basedir>${project.parent.basedir}</main.basedir>
+    </properties>
+
     <artifactId>si-core</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>

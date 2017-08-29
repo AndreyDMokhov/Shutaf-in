@@ -1,6 +1,10 @@
 package com.shutafin.model.entities.infrastructure;
 
 import com.shutafin.model.AbstractConstEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -16,6 +20,10 @@ import javax.persistence.Table;
 @Table(name = "I_LANGUAGE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Language extends AbstractConstEntity {
     @Column(name = "LANGUAGE_NATIVE_NAME", nullable = false, length = 100)
     private String languageNativeName;
@@ -23,22 +31,4 @@ public class Language extends AbstractConstEntity {
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive = true;
 
-    public Language() {
-    }
-
-    public String getLanguageNativeName() {
-        return languageNativeName;
-    }
-
-    public void setLanguageNativeName(String languageNativeName) {
-        this.languageNativeName = languageNativeName;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
 }

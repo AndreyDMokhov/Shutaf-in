@@ -1,5 +1,9 @@
 package com.shutafin.model;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -10,7 +14,10 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 @MappedSuperclass
-public abstract class AbstractEntity extends AbstractBaseEntity {
+@Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class AbstractEntity extends AbstractBaseEntity {
 
     @CreationTimestamp
     @Column(name = "CREATED_DATE", nullable = false, updatable = false)
@@ -22,22 +29,4 @@ public abstract class AbstractEntity extends AbstractBaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
-    public AbstractEntity() {
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
 }
