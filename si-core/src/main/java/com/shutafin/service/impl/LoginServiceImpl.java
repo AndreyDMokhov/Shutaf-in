@@ -7,7 +7,6 @@ import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserLoginLog;
-import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.entities.types.AccountStatus;
 import com.shutafin.model.web.LoginWebModel;
 import com.shutafin.repository.account.UserAccountRepository;
@@ -15,7 +14,6 @@ import com.shutafin.repository.account.UserLoginLogRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.LoginService;
 import com.shutafin.service.PasswordService;
-import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,23 +29,21 @@ public class LoginServiceImpl implements LoginService {
     private UserRepository userPersistence;
     private PasswordService passwordService;
     private UserAccountRepository userAccountRepository;
+    private UserLoginLogRepository userLoginLogRepository;
 
     @Autowired
     public LoginServiceImpl(
+            UserLoginLogRepository userLoginLogRepository,
             UserRepository userPersistence,
             PasswordService passwordService,
             UserAccountRepository userAccountRepository) {
+        this.userLoginLogRepository = userLoginLogRepository;
         this.userPersistence = userPersistence;
         this.passwordService = passwordService;
         this.userAccountRepository = userAccountRepository;
     }
-
-    public User getSessionIdByEmail(LoginWebModel loginWeb) {
-    @Autowired
-    private UserLoginLogRepository userLoginLogRepository;
-
     @Transactional(noRollbackFor = AuthenticationException.class)
-    public String getSessionIdByEmail(LoginWebModel loginWeb) {
+    public User getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
         checkUserAccountStatus(user);
         checkUserPassword(loginWeb, user);
@@ -80,7 +76,7 @@ public class LoginServiceImpl implements LoginService {
     private void saveUserLoginLogEntry(User user, boolean isSuccess){
         UserLoginLog userLoginLog = new UserLoginLog();
         userLoginLog.setUser(user);
-        userLoginLog.setLoginSuccess(isSuccess);
+        userLoginLog.setIsLoginSuccess(isSuccess);
         userLoginLogRepository.save(userLoginLog);
     }
 
