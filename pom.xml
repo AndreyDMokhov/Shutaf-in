@@ -307,7 +307,7 @@
                             <configuration>
                                 <printFailingErrors>true</printFailingErrors>
                                 <rulesets>
-                                    <ruleset>${main.basedir}\pmd\ruleset.xml</ruleset>
+                                    <ruleset>${main.basedir}${file.separator}pmd${file.separator}ruleset.xml</ruleset>
                                 </rulesets>
                             </configuration>
                         </execution>
