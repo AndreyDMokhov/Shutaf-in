@@ -31,9 +31,9 @@ public class UserInfoWeb {
     private String email;
 
     @Min(value = 1)
-    private int cityId;
+    private Integer cityId;
     @Min(value = 1)
-    private int genderId;
+    private Integer genderId;
 
     @Length(max = 255)
     private String facebookLink;

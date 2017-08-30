@@ -54,8 +54,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     private UserInfo setUserInfoFields(UserInfoWeb userInfoWeb, UserInfo userInfo) {
-        userInfo.setCurrentCity(cityRepository.findById(userInfoWeb.getCityId()));
-        userInfo.setGender(genderRepository.findById(userInfoWeb.getGenderId()));
+        if (userInfoWeb.getCityId() != null) {
+            userInfo.setCurrentCity(cityRepository.findById(userInfoWeb.getCityId()));
+        }
+        if (userInfoWeb.getGenderId() != null) {
+            userInfo.setGender(genderRepository.findById(userInfoWeb.getGenderId()));
+        }
         userInfo.setFacebookLink(userInfoWeb.getFacebookLink());
         userInfo.setCompany(userInfoWeb.getCompany());
         userInfo.setProfession(userInfoWeb.getProfession());
