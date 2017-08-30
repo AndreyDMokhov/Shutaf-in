@@ -12,11 +12,11 @@ public class AccountTypeConverter implements AttributeConverter<AccountType, Int
 
     @Override
     public Integer convertToDatabaseColumn(AccountType attribute) {
-        return attribute != null ? attribute.getId() : null;
+        return attribute == null ? null : attribute.getId();
     }
 
     @Override
     public AccountType convertToEntityAttribute(Integer dbData) {
-        return dbData != null ? AccountType.getById(dbData) : null;
+        return dbData == null ? null : AccountType.getById(dbData);
     }
 }

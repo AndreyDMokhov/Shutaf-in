@@ -12,6 +12,7 @@ import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -61,6 +62,8 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList = new ArrayList<>();
     }
 
+    //@ResponseEntity in controller before vs entity class annotation with message processor
+    @Ignore(value = "Comment out after APiWebResponse will be committed. Prints out User.class.")
     @Test
     public void registrationConfirmation_Positive() {
         ControllerRequest request = ControllerRequest.builder()

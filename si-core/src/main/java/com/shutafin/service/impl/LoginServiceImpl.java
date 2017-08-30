@@ -10,7 +10,6 @@ import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.LoginService;
 import com.shutafin.service.PasswordService;
-import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,28 +20,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class LoginServiceImpl implements LoginService {
 
 
-    @Autowired
-    private SessionManagementService sessionManagementService;
-
-    @Autowired
     private UserRepository userPersistence;
-
-    @Autowired
     private PasswordService passwordService;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
 
-    public String getSessionIdByEmail(LoginWebModel loginWeb) {
+    @Autowired
+    public LoginServiceImpl(
+            UserRepository userPersistence,
+            PasswordService passwordService,
+            UserAccountRepository userAccountRepository) {
+        this.userPersistence = userPersistence;
+        this.passwordService = passwordService;
+        this.userAccountRepository = userAccountRepository;
+    }
+
+    public User getSessionIdByEmail(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
 
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         if (userAccount == null || userAccount.getAccountStatus() != AccountStatus.CONFIRMED){
             throw new AuthenticationException();
         }
-
         checkUserPassword(loginWeb, user);
-        return sessionManagementService.generateNewSession(user);
+        return user;
     }
 
 
