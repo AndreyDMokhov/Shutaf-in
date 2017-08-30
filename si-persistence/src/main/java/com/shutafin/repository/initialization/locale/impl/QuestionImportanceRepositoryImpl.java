@@ -26,12 +26,12 @@ public class QuestionImportanceRepositoryImpl extends AbstractConstEntityDao<Que
     @Override
     public List<QuestionImportanceDTO> getAllQuestionImportanceLocale(Language language) {
         StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.QuestionImportanceDTO ");
-        hql.append(" ( ");
-        hql.append(" qi.questionImportance.id, ");
-        hql.append(" qi.description ");
-        hql.append(" )");
-        hql.append(" from QuestionImportanceLocale qi where qi.language = :language ");
+        hql.append("select new com.shutafin.model.web.initialization.QuestionImportanceDTO ")
+                .append(" ( ")
+                .append(" qi.questionImportance.id, ")
+                .append(" qi.description ")
+                .append(" )")
+                .append(" from QuestionImportanceLocale qi where qi.language = :language ");
 
         return getSession()
                 .createQuery(hql.toString())

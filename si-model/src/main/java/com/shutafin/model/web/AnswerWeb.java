@@ -7,7 +7,7 @@ import javax.validation.constraints.Min;
 /**
  * Created by evgeny on 8/23/2017.
  */
-public class AnswerWeb implements DataResponse {
+public class AnswerWeb {
     @Min(value = 1)
     private Integer answerId;
 

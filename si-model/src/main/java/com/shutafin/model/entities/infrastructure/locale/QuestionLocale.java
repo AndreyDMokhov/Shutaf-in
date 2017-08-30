@@ -19,9 +19,6 @@ public class QuestionLocale extends AbstractLocalizedConstEntity {
     @ManyToOne
     private Question question;
 
-    public QuestionLocale() {
-    }
-
     public Question getQuestion() {
         return question;
     }

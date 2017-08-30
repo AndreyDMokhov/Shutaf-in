@@ -1,14 +1,11 @@
 package com.shutafin.model.web.user;
 
-import com.shutafin.model.web.DataResponse;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
  * Created by evgeny on 8/22/2017.
  */
-public class UserQuestionAnswerWeb implements DataResponse {
+public class UserQuestionAnswerWeb {
     @NotNull
     private Long userId;
     @NotNull

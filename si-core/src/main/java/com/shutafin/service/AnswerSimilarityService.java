@@ -1,7 +1,6 @@
 package com.shutafin.service;
 
 
-import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.AnswerExtended;
 import com.shutafin.model.entities.matching.AnswerSimilarity;
 

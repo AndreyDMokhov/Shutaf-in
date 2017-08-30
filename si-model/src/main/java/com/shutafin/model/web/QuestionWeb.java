@@ -1,6 +1,5 @@
 package com.shutafin.model.web;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
@@ -9,7 +8,7 @@ import java.util.List;
 /**
  * Created by evgeny on 8/23/2017.
  */
-public class QuestionWeb implements DataResponse {
+public class QuestionWeb {
     @Min(value = 1)
     private Integer questionId;
 

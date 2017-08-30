@@ -17,13 +17,13 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
     @Override
     public List<QuestionResponseDTO> getLocaleQuestions(Language language) {
         StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.QuestionResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" cl.question.id, ");
-        hql.append(" cl.description, ");
-        hql.append(" cl.question.isActive ");
-        hql.append(" )");
-        hql.append(" from QuestionLocale cl where cl.language = :language ");
+        hql.append("select new com.shutafin.model.web.initialization.QuestionResponseDTO ")
+                .append(" ( ")
+                .append(" cl.question.id, ")
+                .append(" cl.description, ")
+                .append(" cl.question.isActive ")
+                .append(" )")
+                .append(" from QuestionLocale cl where cl.language = :language ");
 
         return getSession()
                 .createQuery(hql.toString())

@@ -22,9 +22,6 @@ public class Answer extends AbstractKeyConstEntity {
     @ManyToOne
     private Question question;
 
-    public Answer() {
-    }
-
     public Question getQuestion() {
         return question;
     }

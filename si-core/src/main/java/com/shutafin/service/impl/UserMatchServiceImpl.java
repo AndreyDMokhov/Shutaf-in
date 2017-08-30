@@ -29,7 +29,7 @@ import java.util.*;
 @Transactional
 public class UserMatchServiceImpl implements UserMatchService {
 
-    private static HashMap<User, Set<QuestionAnswer>> usersQuestionsAnswersMap = null;
+    private static Map<User, Set<QuestionAnswer>> usersQuestionsAnswersMap;
 
     @Autowired
     private UserQuestionAnswerRepository userQuestionAnswerRepository;
@@ -48,19 +48,19 @@ public class UserMatchServiceImpl implements UserMatchService {
     public List<User> findPartners(User user) {
         List<User> result = new ArrayList<User>();
 
-        if (user == null)
+        if (user == null) {
             return result;
+        }
 
-        if (usersQuestionsAnswersMap == null){
+        if (usersQuestionsAnswersMap == null) {
             initUsersMatchMap();
         }
 
         Set<QuestionAnswer> userQuestionAnswersSet = usersQuestionsAnswersMap.get(user);
-        Set<Map.Entry<User,Set<QuestionAnswer>>> set = usersQuestionsAnswersMap.entrySet();
-        for(Map.Entry<User,Set<QuestionAnswer>> entry : set){
-            if (!user.equals(entry.getKey())){
-                if (userQuestionAnswersSet.containsAll(entry.getValue()))
-                    result.add(entry.getKey());
+        Set<Map.Entry<User, Set<QuestionAnswer>>> set = usersQuestionsAnswersMap.entrySet();
+        for (Map.Entry<User, Set<QuestionAnswer>> entry : set) {
+            if (!user.equals(entry.getKey()) && userQuestionAnswersSet.containsAll(entry.getValue())) {
+                result.add(entry.getKey());
             }
         }
 
@@ -79,7 +79,7 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionWeb> getUserQuestionsAnswers(User user){
+    public List<QuestionWeb> getUserQuestionsAnswers(User user) {
         List<QuestionWeb> questionsWebList = new ArrayList<>();
         Language language = userAccountRepository.findUserLanguage(user);
 
@@ -99,7 +99,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         return questionsWebList;
     }
 
-    private List<Integer> getIdsFromAnswers(List<UserQuestionAnswer> questionSelectedAnswers){
+    private List<Integer> getIdsFromAnswers(List<UserQuestionAnswer> questionSelectedAnswers) {
         List<Integer> ids = new ArrayList<>();
         for (UserQuestionAnswer userQuestionAnswer : questionSelectedAnswers) {
             ids.add(userQuestionAnswer.getAnswer().getId());
@@ -107,7 +107,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         return ids;
     }
 
-    private List<AnswerWeb> convertAnswerDtoListToWebList(List<AnswerResponseDTO> answers){
+    private List<AnswerWeb> convertAnswerDtoListToWebList(List<AnswerResponseDTO> answers) {
         List<AnswerWeb> answerWebList = new ArrayList<>();
         for (AnswerResponseDTO answerResponseDTO : answers) {
             answerWebList.add(convertAnswerDtoToWeb(answerResponseDTO));
@@ -115,20 +115,20 @@ public class UserMatchServiceImpl implements UserMatchService {
         return answerWebList;
     }
 
-    private AnswerWeb convertAnswerDtoToWeb(AnswerResponseDTO answerResponseDTO){
+    private AnswerWeb convertAnswerDtoToWeb(AnswerResponseDTO answerResponseDTO) {
         return new AnswerWeb(answerResponseDTO.getId(), answerResponseDTO.getDescription(), answerResponseDTO.getUniversal());
     }
 
-    private QuestionWeb convertQuestionDtoToWeb(QuestionResponseDTO questionResponseDTO){
-        return new QuestionWeb(questionResponseDTO.getId(), questionResponseDTO.getDescription(), questionResponseDTO.getActive(),null,null);
+    private QuestionWeb convertQuestionDtoToWeb(QuestionResponseDTO questionResponseDTO) {
+        return new QuestionWeb(questionResponseDTO.getId(), questionResponseDTO.getDescription(), questionResponseDTO.getActive(), null, null);
     }
 
-    private void initUsersMatchMap(){
+    private void initUsersMatchMap() {
         usersQuestionsAnswersMap = new HashMap<>();
         List<UserQuestionAnswer> usersQuestionsAnswers = userQuestionAnswerRepository.findAll();
-        for (int i = 0 ; i < usersQuestionsAnswers.size(); i++){
+        for (int i = 0; i < usersQuestionsAnswers.size(); i++) {
             User user = usersQuestionsAnswers.get(i).getUser();
-            if (usersQuestionsAnswersMap.get(user) == null){
+            if (usersQuestionsAnswersMap.get(user) == null) {
                 usersQuestionsAnswersMap.put(user, new HashSet<QuestionAnswer>());
             }
             Question question = usersQuestionsAnswers.get(i).getQuestion();

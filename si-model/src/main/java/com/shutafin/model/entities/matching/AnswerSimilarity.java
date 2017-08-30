@@ -1,8 +1,6 @@
 package com.shutafin.model.entities.matching;
 
-import com.shutafin.model.AbstractConstEntity;
 import com.shutafin.model.AbstractKeyConstEntity;
-import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.AnswerExtended;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;

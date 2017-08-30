@@ -10,7 +10,6 @@ import com.shutafin.repository.initialization.locale.AnswerExtendedRepository;
 import com.shutafin.repository.initialization.locale.QuestionExtendedRepository;
 import com.shutafin.repository.initialization.locale.QuestionImportanceRepository;
 import com.shutafin.repository.matching.UserQuestionExtendedAnswerRepository;
-import com.shutafin.service.QuestionExtendedService;
 import com.shutafin.service.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

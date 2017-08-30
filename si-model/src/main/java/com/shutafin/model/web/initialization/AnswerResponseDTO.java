@@ -1,12 +1,11 @@
 package com.shutafin.model.web.initialization;
 
 import com.shutafin.model.web.BaseResponseDTO;
-import com.shutafin.model.web.DataResponse;
 
 /**
  * Created by evgeny on 8/22/2017.
  */
-public class AnswerResponseDTO extends BaseResponseDTO implements DataResponse {
+public class AnswerResponseDTO extends BaseResponseDTO {
     private Boolean isUniversal;
 
     public AnswerResponseDTO(Integer id, String description, Boolean isUniversal) {

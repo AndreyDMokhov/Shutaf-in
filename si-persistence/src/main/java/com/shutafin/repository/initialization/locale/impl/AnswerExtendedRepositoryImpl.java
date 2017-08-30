@@ -25,15 +25,15 @@ public class AnswerExtendedRepositoryImpl extends AbstractConstEntityDao<AnswerE
     @Override
     public List<AnswerExtendedResponseDTO> getLocaleAnswerExtended(Language language, Integer questionId) {
         StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.AnswerExtendedResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" ansl.answer.id, ");
-        hql.append(" ansl.description ");
-        hql.append(" )");
-        hql.append(" from AnswerExtendedLocale ansl, AnswerExtended ans ");
-        hql.append(" where ansl.language = :language ");
-        hql.append(" and ansl.answer.id = ans.id ");
-        hql.append(" and ans.question.id = :questionId ");
+        hql.append("select new com.shutafin.model.web.initialization.AnswerExtendedResponseDTO ")
+                .append(" ( ")
+                .append(" ansl.answer.id, ")
+                .append(" ansl.description ")
+                .append(" )")
+                .append(" from AnswerExtendedLocale ansl, AnswerExtended ans ")
+                .append(" where ansl.language = :language ")
+                .append(" and ansl.answer.id = ans.id ")
+                .append(" and ans.question.id = :questionId ");
 
         return getSession()
                 .createQuery(hql.toString())

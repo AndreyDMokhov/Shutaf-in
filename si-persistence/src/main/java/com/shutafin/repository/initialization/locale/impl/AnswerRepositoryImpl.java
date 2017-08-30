@@ -18,13 +18,13 @@ public class AnswerRepositoryImpl extends AbstractConstEntityDao<Answer> impleme
     @Override
     public List<AnswerResponseDTO> getLocaleAnswers(Language language) {
         StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.AnswerResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" cl.answer.id, ");
-        hql.append(" cl.description, ");
-        hql.append(" cl.answer.isUniversal as isUniversal ");
-        hql.append(" )");
-        hql.append(" from AnswerLocale cl where cl.language = :language ");
+        hql.append("select new com.shutafin.model.web.initialization.AnswerResponseDTO ")
+                .append(" ( ")
+                .append(" cl.answer.id, ")
+                .append(" cl.description, ")
+                .append(" cl.answer.isUniversal as isUniversal ")
+                .append(" )")
+                .append(" from AnswerLocale cl where cl.language = :language ");
 
         return getSession()
                 .createQuery(hql.toString())
@@ -36,14 +36,14 @@ public class AnswerRepositoryImpl extends AbstractConstEntityDao<Answer> impleme
     @Override
     public List<AnswerResponseDTO> getQuestionLocaleAnswers(Language language, Question question) {
         StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.AnswerResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" cl.answer.id, ");
-        hql.append(" cl.description, ");
-        hql.append(" cl.answer.isUniversal as isUniversal ");
-        hql.append(" )");
-        hql.append(" from AnswerLocale cl where cl.language = :language ");
-        hql.append(" and cl.answer.question = :question ");
+        hql.append("select new com.shutafin.model.web.initialization.AnswerResponseDTO ")
+                .append(" ( ")
+                .append(" cl.answer.id, ")
+                .append(" cl.description, ")
+                .append(" cl.answer.isUniversal as isUniversal ")
+                .append(" )")
+                .append(" from AnswerLocale cl where cl.language = :language ")
+                .append(" and cl.answer.question = :question ");
 
         return getSession()
                 .createQuery(hql.toString())

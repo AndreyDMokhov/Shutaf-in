@@ -9,7 +9,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
-public class QuestionExtendedWithAnswersLocaleWeb implements DataResponse {
+public class QuestionExtendedWithAnswersLocaleWeb {
 
     private Integer questionId;
     private String questionDescription;

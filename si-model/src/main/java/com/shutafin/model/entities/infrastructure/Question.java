@@ -21,9 +21,6 @@ public class Question extends AbstractKeyConstEntity {
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive = true;
 
-    public Question() {
-    }
-
     public Boolean getActive() {
         return isActive;
     }

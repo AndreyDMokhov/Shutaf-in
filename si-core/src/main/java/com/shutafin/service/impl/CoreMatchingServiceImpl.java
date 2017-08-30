@@ -1,15 +1,15 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserQuestionAnswer;
-import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.entities.infrastructure.QuestionExtended;
-import com.shutafin.model.entities.matching.AnswerSimilarity;
 import com.shutafin.model.entities.matching.UserMatchingScore;
 import com.shutafin.model.entities.matching.UserQuestionExtendedAnswer;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.matching.UserMatchingScoreRepository;
-import com.shutafin.service.*;
+import com.shutafin.service.AnswerSimilarityService;
+import com.shutafin.service.CoreMatchingService;
+import com.shutafin.service.UserMatchService;
+import com.shutafin.service.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
