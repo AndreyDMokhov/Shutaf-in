@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,22 +39,38 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
 
     @Override
     public void addUserQuestionAnswer(UserQuestionExtendedAnswer userQuestionExtendedAnswer) {
-        userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
+        List<UserQuestionExtendedAnswer> oldAnswers =
+                userQuestionExtendedAnswerRepository.getUserQuestionExtendedAnswer(
+                        userQuestionExtendedAnswer.getUser(), userQuestionExtendedAnswer.getQuestion());
+        if (oldAnswers == null) {
+            userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
+        } else {
+            updateUserQuestionAnswer(userQuestionExtendedAnswer);
+        }
     }
 
     @Override
-    public Map<QuestionExtended, UserQuestionExtendedAnswer> getAllUserQuestionAnswers(User user) {
-        Map<QuestionExtended, UserQuestionExtendedAnswer> userQuestionExtendedAnswerMap = new HashMap<>();
+    public Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionAnswers(User user) {
+        Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userQuestionExtendedAnswerMap = new HashMap<>();
         for (UserQuestionExtendedAnswer userAnswer :
                 userQuestionExtendedAnswerRepository.getAllUserQuestionExtendedAnswers(user)) {
 
-            userQuestionExtendedAnswerMap.put(userAnswer.getQuestion(), userAnswer);
+            if (userQuestionExtendedAnswerMap.get(userAnswer.getQuestion()) == null) {
+                userQuestionExtendedAnswerMap.put(userAnswer.getQuestion(), new ArrayList<>());
+            }
+            userQuestionExtendedAnswerMap.get(userAnswer.getQuestion()).add(userAnswer);
         }
         return userQuestionExtendedAnswerMap;
     }
 
     @Override
     public void updateUserQuestionAnswer(UserQuestionExtendedAnswer userQuestionExtendedAnswer) {
+        List<UserQuestionExtendedAnswer> oldAnswers =
+                userQuestionExtendedAnswerRepository.getUserQuestionExtendedAnswer(
+                        userQuestionExtendedAnswer.getUser(), userQuestionExtendedAnswer.getQuestion());
+        for (UserQuestionExtendedAnswer answer : oldAnswers) {
+            userQuestionExtendedAnswerRepository.delete(answer);
+        }
         userQuestionExtendedAnswerRepository.update(userQuestionExtendedAnswer);
     }
 

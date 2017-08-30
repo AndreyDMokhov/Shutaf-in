@@ -12,7 +12,7 @@ import java.util.Map;
 public interface UserQuestionExtendedAnswerService {
 
     void addUserQuestionAnswer(UserQuestionExtendedAnswer userQuestionExtendedAnswer);
-    Map<QuestionExtended, UserQuestionExtendedAnswer> getAllUserQuestionAnswers(User user);
+    Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionAnswers(User user);
     void updateUserQuestionAnswer(UserQuestionExtendedAnswer userQuestionExtendedAnswer);
     void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList, User user);
 }

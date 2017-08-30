@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -38,46 +39,78 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     @Override
     public UserMatchingScore evaluateUserMatchingScore(User userOrigin, User userToMatch) {
 
+        Double resultScore = calculateMatchingScore(userOrigin, userToMatch);
+        UserMatchingScore matchingScore = userMatchingScoreRepository.getUserMatchingScore(userOrigin, userToMatch);
+        if (matchingScore == null) {
+            matchingScore = new UserMatchingScore(userOrigin, userToMatch, resultScore.intValue());
+            userMatchingScoreRepository.save(matchingScore);
+        } else {
+            matchingScore.setScore(resultScore.intValue());
+            userMatchingScoreRepository.update(matchingScore);
+        }
+        return matchingScore;
+
+    }
+
+    private Double calculateMatchingScore(User userOrigin, User userToMatch) {
         Double totalScore = 0.;
         Double crossScore = 0.;
         Double maxPossibleScoreOrigin = 0.;
         Double maxPossibleScoreToMatch = 0.;
 
-        Map<QuestionExtended, UserQuestionExtendedAnswer> userOriginAnswers =
+        Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers =
                 userQuestionExtendedAnswerService.getAllUserQuestionAnswers(userOrigin);
-        Map<QuestionExtended, UserQuestionExtendedAnswer> userToMatchAnswers =
+        Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers =
                 userQuestionExtendedAnswerService.getAllUserQuestionAnswers(userToMatch);
 
 
-
         for (QuestionExtended question : userOriginAnswers.keySet()) {
-            AnswerSimilarity answerSimilarity = answerSimilarityService.getAnswerSimilarity(
-                    userOriginAnswers.get(question).getAnswer(),
-                    userToMatchAnswers.get(question).getAnswer());
+            Integer answerSimilarityScore = getAnswerSimilarityScore(userOriginAnswers, userToMatchAnswers, question);
 
-            Integer maxAnswerSimilarityScore = answerSimilarityService.getAnswerSimilarity(
-                    userOriginAnswers.get(question).getAnswer(),
-                    userOriginAnswers.get(question).getAnswer())
-                    .getSimilarityScore();
+            Integer maxAnswerSimilarityScore = getAnswerSimilarityScore(userOriginAnswers, userOriginAnswers, question);
 
-            totalScore += userOriginAnswers.get(question).getImportance().getWeight() *
-                    answerSimilarity.getSimilarityScore();
+            totalScore += userOriginAnswers.get(question).get(0).getImportance().getWeight() *
+                    answerSimilarityScore;
 
-            crossScore += userToMatchAnswers.get(question).getImportance().getWeight() *
-                    answerSimilarity.getSimilarityScore();
-
-            maxPossibleScoreOrigin += userOriginAnswers.get(question).getImportance().getWeight() *
+            maxPossibleScoreOrigin += userOriginAnswers.get(question).get(0).getImportance().getWeight() *
                     maxAnswerSimilarityScore;
 
-            maxPossibleScoreToMatch += userToMatchAnswers.get(question).getImportance().getWeight() *
-                    maxAnswerSimilarityScore;
+            if (userToMatchAnswers.get(question) != null) {
+                crossScore += userToMatchAnswers.get(question).get(0).getImportance().getWeight() *
+                        answerSimilarityScore;
+                maxPossibleScoreToMatch += userToMatchAnswers.get(question).get(0).getImportance().getWeight() *
+                        maxAnswerSimilarityScore;
+            }
 
         }
 
-        Double resultScore = Math.sqrt(totalScore/maxPossibleScoreOrigin * crossScore/maxPossibleScoreToMatch) * 100;
-        UserMatchingScore matchingScore = new UserMatchingScore(userOrigin, userToMatch, resultScore.intValue());
-        userMatchingScoreRepository.save(matchingScore);
-        return matchingScore;
+        if (maxPossibleScoreToMatch == 0 || maxPossibleScoreOrigin == 0) {
+            return 0.;
+        }
+
+        return Math.sqrt(totalScore / maxPossibleScoreOrigin * crossScore / maxPossibleScoreToMatch) * 100;
+    }
+
+    private Integer getAnswerSimilarityScore(Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers,
+                                             Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers,
+                                             QuestionExtended question) {
+
+        if (userToMatchAnswers.get(question) == null) {
+            return 0;
+        }
+
+        Integer maxAnswerSimilarityScore = 0;
+        Integer currentSimilarityScore;
+        for (UserQuestionExtendedAnswer answer: userOriginAnswers.get(question)) {
+            for (UserQuestionExtendedAnswer answerToMatch : userToMatchAnswers.get(question)) {
+                currentSimilarityScore = answerSimilarityService.getAnswerSimilarity(answer.getAnswer(),
+                        answerToMatch.getAnswer()).getSimilarityScore();
+                if (currentSimilarityScore > maxAnswerSimilarityScore) {
+                    maxAnswerSimilarityScore = currentSimilarityScore;
+                }
+            }
+        }
+        return maxAnswerSimilarityScore;
 
     }
 

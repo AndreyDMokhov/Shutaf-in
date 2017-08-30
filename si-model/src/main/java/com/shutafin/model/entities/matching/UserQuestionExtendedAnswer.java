@@ -28,7 +28,7 @@ public class UserQuestionExtendedAnswer extends AbstractBaseEntity {
     @ManyToOne
     private QuestionExtended question;
 
-    @JoinColumn(name = "ANSWER_ID", nullable = false)
+    @JoinColumn(name = "ANSWER_ID")
     @ManyToOne
     private AnswerExtended answer;
 
