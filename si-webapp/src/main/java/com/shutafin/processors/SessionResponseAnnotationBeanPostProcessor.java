@@ -2,8 +2,8 @@ package com.shutafin.processors;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
-import com.shutafin.processors.annotations.sessionResponse.SessionResponseType;
-import com.shutafin.processors.annotations.sessionResponse.SessionResponse;
+import com.shutafin.processors.annotations.response.SessionResponseType;
+import com.shutafin.processors.annotations.response.SessionResponse;
 import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProcessor {
 
@@ -58,17 +55,19 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
 
         Method[] methods = clazz.getDeclaredMethods();
 
-        for(Method method : methods){
-            if (!method.isAnnotationPresent(RequestMapping.class)){
+        for (Method method : methods) {
+            if (!method.isAnnotationPresent(RequestMapping.class)) {
                 continue;
             }
             SessionResponse annotation = method.getAnnotation(SessionResponse.class);
-            if (annotation != null){
-                if (annotation.value() == SessionResponseType.NEW_SESSION && !method.getReturnType().equals(User.class)){
-
-                    throw new RuntimeException("The SessionResponseType parameter is set to False or the returned class is not User.");
-                }
+            if (annotation == null) {
+                continue;
             }
+
+            if (annotation.value() == SessionResponseType.NEW_SESSION && !method.getReturnType().equals(User.class)) {
+                throw new IllegalArgumentException("The SessionResponseType parameter is set to False or the returned class is not User.");
+            }
+
         }
 
         return Enhancer.create(clazz, new InvocationHandler() {
@@ -94,7 +93,7 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
         });
     }
 
-    private Object executeMethod(Method method, Object bean, Object ... args) throws Throwable {
+    private Object executeMethod(Method method, Object bean, Object... args) throws Throwable {
         try {
             return method.invoke(bean, args);
         } catch (InvocationTargetException e) {

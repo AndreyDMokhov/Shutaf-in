@@ -1,4 +1,4 @@
-package com.shutafin.processors.annotations.sessionResponse;
+package com.shutafin.processors.annotations.response;
 
 
 import java.lang.annotation.ElementType;

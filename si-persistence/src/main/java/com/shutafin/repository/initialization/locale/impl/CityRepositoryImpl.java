@@ -14,14 +14,14 @@ public class CityRepositoryImpl extends AbstractConstEntityDao<City> implements 
 
     @Override
     public List<CityResponseDTO> getLocaleCities(Language language) {
-        StringBuilder hql = new StringBuilder();
-        hql.append("select new com.shutafin.model.web.initialization.CityResponseDTO ");
-        hql.append(" ( ");
-        hql.append(" cl.city.id, ");
-        hql.append(" cl.description, ");
-        hql.append(" cl.city.country.id as countryId ");
-        hql.append(" )");
-        hql.append(" from CityLocale cl where cl.language = :language ");
+        StringBuilder hql = new StringBuilder()
+        .append("select new com.shutafin.model.web.initialization.CityResponseDTO ")
+        .append(" ( ")
+        .append(" cl.city.id, ")
+        .append(" cl.description, ")
+        .append(" cl.city.country.id as countryId ")
+        .append(" )")
+        .append(" from CityLocale cl where cl.language = :language ");
 
         return getSession()
                 .createQuery(hql.toString())
