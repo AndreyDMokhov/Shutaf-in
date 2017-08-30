@@ -31,7 +31,6 @@ public class UserAccountController {
     private UserLanguageService userLanguageService;
 
 
-
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void updateAccountSettings(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb,
                                       BindingResult result,
@@ -43,10 +42,11 @@ public class UserAccountController {
         userAccountService.updateAccountSettings(userAccountSettingsWeb, user);
     }
 
+
     @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
-                                              @RequestBody @Valid UserImageWeb userImageWeb,
-                                              BindingResult result) {
+                                                      @RequestBody @Valid UserImageWeb userImageWeb,
+                                                      BindingResult result) {
         if (result.hasErrors()) {
             throw new InputValidationException(result);
         }
@@ -55,16 +55,6 @@ public class UserAccountController {
                 image.getCreatedDate().getTime());
     }
 
-    @RequestMapping(value = "/image", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb getUserAccountProfileImage(@AuthenticatedUser User user) {
-
-        UserImage image = userAccountService.findUserAccountProfileImage(user);
-        if (image == null) {
-            return null;
-        }
-        return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
-    }
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserAccountProfileImage(@AuthenticatedUser User user) {
@@ -85,6 +75,7 @@ public class UserAccountController {
         }
         userLanguageService.updateUserLanguage(userLanguageWeb, user);
     }
+
 
     @RequestMapping(value = "/language", method = RequestMethod.GET)
     public Language get(@AuthenticatedUser User user) {
