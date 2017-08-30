@@ -74,17 +74,27 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     }
 
     @Override
-    public void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList, User user) {
+    public void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList,
+                                          User user) {
+
         for (UserQuestionExtendedAnswersWeb questionExtendedAnswersWeb : userQuestionExtendedAnswersWebList) {
+            UserQuestionExtendedAnswer userQuestionExtendedAnswer;
             QuestionExtended question = questionExtendedRepository
                     .findById(questionExtendedAnswersWeb.getQuestionId());
-            AnswerExtended answer = answerExtendedRepository
-                    .findById(questionExtendedAnswersWeb.getAnswersId().get(0));
             QuestionImportance importance = questionImportanceRepository
                     .findById(questionExtendedAnswersWeb.getQuestionImportanceId());
-            UserQuestionExtendedAnswer userQuestionExtendedAnswer =
-                    new UserQuestionExtendedAnswer(user, question, answer, importance);
-            userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
+            if (questionExtendedAnswersWeb.getAnswersId() == null) {
+                userQuestionExtendedAnswer = new UserQuestionExtendedAnswer(user, question, null, importance);
+                userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
+            } else {
+                AnswerExtended answer = null;
+                for (Integer answerId : questionExtendedAnswersWeb.getAnswersId()) {
+                    answer = answerExtendedRepository.findById(answerId);
+                    userQuestionExtendedAnswer = new UserQuestionExtendedAnswer(user, question, answer, importance);
+                    userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
+                }
+            }
+
         }
     }
 }

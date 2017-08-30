@@ -2,6 +2,10 @@ package com.shutafin.model.entities.matching;
 
 import com.shutafin.model.AbstractEntity;
 import com.shutafin.model.entities.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -11,6 +15,10 @@ import javax.persistence.*;
 @Table(name = "USER_MATCHING_SCORE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UserMatchingScore extends AbstractEntity {
 
     @JoinColumn(name = "USER_ORIGIN_ID", nullable = false)
@@ -24,36 +32,4 @@ public class UserMatchingScore extends AbstractEntity {
     @Column(name = "SCORE", nullable = false)
     private Integer score;
 
-    public UserMatchingScore() {
-    }
-
-    public UserMatchingScore(User userOrigin, User userToMatch, Integer score) {
-        this.userOrigin = userOrigin;
-        this.userToMatch = userToMatch;
-        this.score = score;
-    }
-
-    public User getUserOrigin() {
-        return userOrigin;
-    }
-
-    public void setUserOrigin(User userOrigin) {
-        this.userOrigin = userOrigin;
-    }
-
-    public User getUserToMatch() {
-        return userToMatch;
-    }
-
-    public void setUserToMatch(User userToMatch) {
-        this.userToMatch = userToMatch;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
 }
