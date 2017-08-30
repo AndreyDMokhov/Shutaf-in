@@ -15,18 +15,19 @@ public class UserInitializationRepositoryImpl extends AbstractEntityDao implemen
     @Override
     public UserInitializationData getUserInitializationData(User user) {
         StringBuilder hql = new StringBuilder()
-        .append("select ")
-        .append(" new com.shutafin.model.web.user.UserInitializationData ")
-        .append(" ( ")
-        .append(" ua.user.firstName, ")
-        .append(" ua.user.lastName, ")
-        .append(" l.id as languageId")
-        .append(" ) ")
-        .append(" from UserAccount ua, Language l ")
-        .append(" where ")
-        .append(" ua.user.id =:id ")
-        .append(" and ")
-        .append(" l.id = ua.language ");
+                .append("select ")
+                .append(" new com.shutafin.model.web.user.UserInitializationData ")
+                .append(" ( ")
+                .append(" ua.user.firstName, ")
+                .append(" ua.user.lastName, ")
+                .append(" ua.user.email, ")
+                .append(" l.id as languageId")
+                .append(" ) ")
+                .append(" from UserAccount ua, Language l ")
+                .append(" where ")
+                .append(" ua.user.id =:id ")
+                .append(" and ")
+                .append(" l.id = ua.language ");
 
         return (UserInitializationData) getSession()
                 .createQuery(hql.toString())
