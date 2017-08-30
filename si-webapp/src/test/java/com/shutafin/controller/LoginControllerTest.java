@@ -63,6 +63,21 @@ public class LoginControllerTest extends HelperTest{
     }
 
     @Test
+    public void LoginRequestJson_IllegalPassword(){
+        String loginWebModelJson = "{\"email\":\"email@site.com\",\"password\":\"1111111\"}";
+        errorList.add(INP_PASSWORD_LENGTH);
+        testControllerInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
+    }
+
+    @Test
+    public void LoginRequestJson_IllegalEmailAndPassword(){
+        String loginWebModelJson = "{\"email\":\"site.com\",\"password\":\"1111111\"}";
+        errorList.add(INP_EMAIL_EMAIL);
+        errorList.add(INP_PASSWORD_LENGTH);
+        testControllerInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
+    }
+
+    @Test
     public void LoginRequestJson_Null(){
         String loginWebModelJson = "{\"email\":null,\"password\":null}";
         errorList.add(INP_EMAIL_NOT_BLANK);

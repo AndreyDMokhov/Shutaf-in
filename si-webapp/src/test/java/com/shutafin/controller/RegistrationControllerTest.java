@@ -95,7 +95,7 @@ public class RegistrationControllerTest extends HelperTest {
         registrationRequestWeb.setUserLanguageId(1);
 
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL)
+                .setUrl(REGISTRATION_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setRequestObject(registrationRequestWeb)
                 .build();
