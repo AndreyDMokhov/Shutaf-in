@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserInitializationData {
+public class UserInfoResponse {
 
     private String firstName;
     private String lastName;
@@ -30,7 +30,7 @@ public class UserInitializationData {
     private String phoneNumber;
 
 
-    public UserInitializationData(String firstName, String lastName, String email, Integer languageId) {
+    public UserInfoResponse(String firstName, String lastName, String email, Integer languageId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

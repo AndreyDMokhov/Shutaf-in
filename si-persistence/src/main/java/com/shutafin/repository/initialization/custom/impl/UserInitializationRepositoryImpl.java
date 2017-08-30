@@ -1,7 +1,7 @@
 package com.shutafin.repository.initialization.custom.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.UserInitializationData;
+import com.shutafin.model.web.user.UserInfoResponse;
 import com.shutafin.repository.base.AbstractEntityDao;
 import com.shutafin.repository.initialization.custom.UserInitializationRepository;
 import org.springframework.stereotype.Repository;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Repository;
 public class UserInitializationRepositoryImpl extends AbstractEntityDao implements UserInitializationRepository {
 
     @Override
-    public UserInitializationData getUserInitializationData(User user) {
+    public UserInfoResponse getUserInitializationData(User user) {
         StringBuilder hql = new StringBuilder()
                 .append("select ")
-                .append(" new com.shutafin.model.web.user.UserInitializationData ")
+                .append(" new com.shutafin.model.web.user.UserInfoResponse ")
                 .append(" ( ")
                 .append(" ua.user.firstName, ")
                 .append(" ua.user.lastName, ")
@@ -29,7 +29,7 @@ public class UserInitializationRepositoryImpl extends AbstractEntityDao implemen
                 .append(" and ")
                 .append(" l.id = ua.language ");
 
-        return (UserInitializationData) getSession()
+        return (UserInfoResponse) getSession()
                 .createQuery(hql.toString())
                 .setParameter("id", user.getId())
                 .uniqueResult();

@@ -3,7 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.user.UserInitializationData;
+import com.shutafin.model.web.user.UserInfoResponse;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserInitializationService;
 import com.shutafin.system.BaseTestImpl;
@@ -21,7 +21,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Mockito.*;
 
@@ -66,14 +65,14 @@ public class UserInitializationControllerTest extends BaseTestImpl {
         user.setLastName("bbb");
         user.setEmail("1@1.com");
 
-        UserInitializationData userInitializationData = new UserInitializationData();
-        userInitializationData.setFirstName("aaa");
-        userInitializationData.setLastName("bbb");
-        userInitializationData.setLanguageId(1);
+        UserInfoResponse userInfoResponse = new UserInfoResponse();
+        userInfoResponse.setFirstName("aaa");
+        userInfoResponse.setLastName("bbb");
+        userInfoResponse.setLanguageId(1);
 
 
         when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
-        when(userInitializationService.getUserInitializationData(user)).thenReturn(userInitializationData);
+        when(userInitializationService.getUserInitializationData(user)).thenReturn(userInfoResponse);
 
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
@@ -94,5 +93,5 @@ public class UserInitializationControllerTest extends BaseTestImpl {
 @Getter
 @Setter
 class UserInitializationDataWrapper {
-    private UserInitializationData userProfile;
+    private UserInfoResponse userProfile;
 }

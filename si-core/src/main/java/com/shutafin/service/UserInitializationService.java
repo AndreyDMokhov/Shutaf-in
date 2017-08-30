@@ -2,9 +2,9 @@ package com.shutafin.service;
 
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.UserInitializationData;
+import com.shutafin.model.web.user.UserInfoResponse;
 
 public interface UserInitializationService {
-    UserInitializationData getUserInitializationData(User user);
+    UserInfoResponse getUserInitializationData(User user);
 
 }

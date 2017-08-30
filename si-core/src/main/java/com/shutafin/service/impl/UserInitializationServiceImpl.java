@@ -3,7 +3,7 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.UserInfo;
-import com.shutafin.model.web.user.UserInitializationData;
+import com.shutafin.model.web.user.UserInfoResponse;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.initialization.custom.UserInitializationRepository;
 import com.shutafin.service.UserImageService;
@@ -33,19 +33,19 @@ public class UserInitializationServiceImpl implements UserInitializationService 
 
     @Override
     @Transactional
-    public UserInitializationData getUserInitializationData(User user) {
+    public UserInfoResponse getUserInitializationData(User user) {
 
-        UserInitializationData userInitializationData = userInitializationRepository.getUserInitializationData(user);
+        UserInfoResponse userInfoResponse = userInitializationRepository.getUserInitializationData(user);
         Long userImageId = userAccountRepository.findUserAccountImageId(user);
         if (userImageId != null) {
             UserImage userImage = userImageService.getUserImage(user, userImageId);
-            userInitializationData.addUserImage(userImage);
+            userInfoResponse.addUserImage(userImage);
         }
         UserInfo userInfo = userInfoService.findUserInfo(user);
         if (userInfo != null) {
-            userInitializationData.addUserInfo(userInfo);
+            userInfoResponse.addUserInfo(userInfo);
         }
 
-        return userInitializationData;
+        return userInfoResponse;
     }
 }

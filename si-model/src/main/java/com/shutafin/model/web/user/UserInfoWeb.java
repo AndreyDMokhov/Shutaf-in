@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Min;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,21 +18,30 @@ import org.hibernate.validator.constraints.NotBlank;
 public class UserInfoWeb {
 
     @NotBlank
+    @Length(min=3, max=50)
     private String firstName;
 
     @NotBlank
+    @Length(min=3, max=50)
     private String lastName;
 
     @NotBlank
     @Email
+    @Length(max=50)
     private String email;
 
+    @Min(value = 1)
     private int cityId;
+    @Min(value = 1)
     private int genderId;
 
+    @Length(max = 255)
     private String facebookLink;
+    @Length(max = 255)
     private String profession;
+    @Length(max = 255)
     private String company;
+    @Length(max = 255)
     private String phoneNumber;
 
 
