@@ -15,10 +15,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserQuestionAnswerWeb {
-    @Min(value = 1)
-    @NotNull
-    private Long userId;
+public class QuestionAnswerWeb {
     @NotNull
     private Integer questionId;
     @NotNull

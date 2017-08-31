@@ -2,7 +2,7 @@ package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.QuestionResponse;
-import com.shutafin.model.web.user.UserQuestionAnswerWeb;
+import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class UserMatchController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserQuestionsAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<UserQuestionAnswerWeb> userQuestionsAnswers) {
-        userMatchService.saveQuestionsAnswers(user, userQuestionsAnswers);
+    public void saveUserQuestionsAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerWeb> questionsAnswers) {
+        userMatchService.saveQuestionsAnswers(user, questionsAnswers);
     }
 
     @RequestMapping(value = "/template", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})

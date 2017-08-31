@@ -10,12 +10,13 @@ import com.shutafin.model.web.AnswerResponse;
 import com.shutafin.model.web.QuestionResponse;
 import com.shutafin.model.web.initialization.AnswerResponseDTO;
 import com.shutafin.model.web.initialization.QuestionResponseDTO;
-import com.shutafin.model.web.user.UserQuestionAnswerWeb;
+import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
 import com.shutafin.service.UserMatchService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.*;
  */
 @Service
 @Transactional
+@Slf4j
 public class UserMatchServiceImpl implements UserMatchService {
 
     private static Map<User, Set<QuestionAnswer>> usersQuestionsAnswersMap;
@@ -69,20 +71,20 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public void saveQuestionsAnswers(User user, List<UserQuestionAnswerWeb> userQuestionsAnswers) {
+    public void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers) {
 
         if (usersQuestionsAnswersMap == null){
             initUsersMatchMap();
         }
 
-        usersQuestionsAnswersMap.get(user).clear();
+        if (usersQuestionsAnswersMap.get(user) != null) {
+            userQuestionAnswerRepository.deleteUserAnswers(user);
+            usersQuestionsAnswersMap.get(user).clear();
+        }
 
-        for (UserQuestionAnswerWeb questionAnswer : userQuestionsAnswers) {
+        for (QuestionAnswerWeb questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
-            if (userQuestionAnswerRepository.getUserQuestionAnswer(user, question).size() != 0){
-                userQuestionAnswerRepository.deleteUserQuestionAnswer(user, question, answer);
-            }
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
 
             updateUsersQuestionsAnswersMap(user, question, answer);
@@ -143,6 +145,9 @@ public class UserMatchServiceImpl implements UserMatchService {
     }
 
     private void initUsersMatchMap(){
+
+        log.info(">>>>>>>>>>>>>>>>>>>initUsersMatchMap>>>>>>>>>>>>>>>>>>>");
+
         usersQuestionsAnswersMap = new HashMap<>();
         List<UserQuestionAnswer> usersQuestionsAnswers = userQuestionAnswerRepository.findAll();
         for (int i = 0 ; i < usersQuestionsAnswers.size(); i++){
