@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginService {
         this.userAccountRepository = userAccountRepository;
     }
     @Transactional(noRollbackFor = AuthenticationException.class)
-    public User getSessionIdByEmail(LoginWebModel loginWeb) {
+    public User getUserByLoginWebModel(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
         checkUserAccountStatus(user);
         checkUserPassword(loginWeb, user);
