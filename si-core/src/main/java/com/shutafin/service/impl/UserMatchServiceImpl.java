@@ -10,7 +10,7 @@ import com.shutafin.model.web.AnswerResponse;
 import com.shutafin.model.web.QuestionResponse;
 import com.shutafin.model.web.initialization.AnswerResponseDTO;
 import com.shutafin.model.web.initialization.QuestionResponseDTO;
-import com.shutafin.model.web.user.UserQuestionAnswerWeb;
+import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
@@ -71,7 +71,7 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public void saveQuestionsAnswers(User user, List<UserQuestionAnswerWeb> userQuestionsAnswers) {
+    public void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers) {
 
         if (usersQuestionsAnswersMap == null){
             initUsersMatchMap();
@@ -82,7 +82,7 @@ public class UserMatchServiceImpl implements UserMatchService {
             usersQuestionsAnswersMap.get(user).clear();
         }
 
-        for (UserQuestionAnswerWeb questionAnswer : userQuestionsAnswers) {
+        for (QuestionAnswerWeb questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
