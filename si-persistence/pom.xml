@@ -20,8 +20,6 @@
     <name>si-persistence</name>
 
     <dependencies>
-
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
