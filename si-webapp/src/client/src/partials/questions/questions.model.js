@@ -9,7 +9,6 @@ app.factory('quizFactory', function (Restangular, $q, $sessionStorage) {
     //10 000 SHEKEL
     function get123() {
         // return rest.one('/template').customGET();
-
         //Сделка. Нужно подождать, я вернусь с ответом
         //$q.defer()
         var deferred = $q.defer();
@@ -27,13 +26,18 @@ app.factory('quizFactory', function (Restangular, $q, $sessionStorage) {
             }
         );
         return deferred.promise; // -> Я обещаю, что я вернусь!!
-
-
     }
+
+    function sendAnswers(params) {
+        console.log(params);
+        return rest.one('/save').customPUT(params);
+    }
+
 
     return {
 
-        get123: get123
+        get123: get123,
+        sendAnswers: sendAnswers
 
 
     };

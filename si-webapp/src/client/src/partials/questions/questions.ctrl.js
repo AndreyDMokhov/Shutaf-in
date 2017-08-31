@@ -44,12 +44,12 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory) {
 });
 
 
-app.directive('quiz', function () {
+app.directive('quiz', function (quizFactory) {
     return {
         scope: {
             questionsToDirective: '=',
             answerToDirective: '=',
-            backD:'&',
+            backD: '&',
             returnAnswer: '='
         },
         restrict: 'AE',
@@ -70,7 +70,7 @@ app.directive('quiz', function () {
                 var result = {"idQ": scope.currentQuestion.id, "idA": scope.currentAnswer};
                 answer.push(result.idA);
                 scope.id++;
-                scope.currentQuestion =getQuestion1(scope.id);
+                scope.currentQuestion = getQuestion1(scope.id);
                 if (!scope.currentQuestion) {
                     scope.inProgress = false;
                     console.log(answer);
@@ -85,6 +85,32 @@ app.directive('quiz', function () {
                 } else {
                     return false;
                 }
+            }
+
+            scope.sendData = function () {
+                var send = [
+                    {
+                        "userId" : "1",
+                        "questionId": "1",
+                        "answerId": "3"
+                    },
+                    {
+                        "userId" : "1",
+                        "questionId": "2",
+                        "answerId": "4"
+                    },
+
+                ]
+                quizFactory.sendAnswers(send).then(
+                    function (success) {
+                        console.log(success);
+                    },
+                    function (error) {
+                        console.log(error);
+                    }
+                );
+
+
             }
         }
     }
