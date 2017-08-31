@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class UserLoginLog extends AbstractEntity {
-    @JoinColumn(name = "USER_ID", nullable = false, unique = true)
+    @JoinColumn(name = "USER_ID", nullable = false)
     @OneToOne
     private User user;
 

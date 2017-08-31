@@ -35,7 +35,7 @@ public class LoginController {
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        return loginWebService.getUserByEmail(loginWeb);
+        return loginWebService.getUserByLoginWebModel(loginWeb);
     }
 
 }

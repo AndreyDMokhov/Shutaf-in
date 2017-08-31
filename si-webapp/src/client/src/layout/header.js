@@ -7,11 +7,12 @@ app.controller("headerController", function ($rootScope, languageService, sessio
     vm.initialization = {};
 
     function init() {
-        constantService.init();
-        vm.initialization.languages = $sessionStorage.languages;
+        constantService.init().then(function () {
+
+            vm.initialization.languages = $sessionStorage.languages;
+        });
         if (vm.sessionService.isAuthenticated()) {
             userInitService.init();
-
         }
     }
 

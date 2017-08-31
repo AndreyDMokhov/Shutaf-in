@@ -45,34 +45,26 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
                 break;
             }
         }
-
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class clazz = requiredProxyBeans.get(beanName);
-
         if (clazz == null) {
             return bean;
         }
 
-
         Method[] methods = clazz.getDeclaredMethods();
-
         for (Method method : methods) {
             if (!method.isAnnotationPresent(RequestMapping.class)) {
                 continue;
             }
             SessionResponse annotation = method.getAnnotation(SessionResponse.class);
-            if (annotation == null) {
-                continue;
-            }
-
+            if (annotation == null) {continue;}
             if (annotation.value() == SessionResponseType.NEW_SESSION && !method.getReturnType().equals(User.class)) {
                 throw new IllegalArgumentException("The SessionResponseType parameter is set to False or the returned class is not User.");
             }
-
         }
 
         return Enhancer.create(clazz, new InvocationHandler() {
@@ -81,14 +73,11 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
                 if (!method.isAnnotationPresent(SessionResponse.class)) {
                     return executeMethod(method, bean, args);
                 }
-
                 Object retVal = executeMethod(method, bean, args);
-
                 User user = (User) retVal;
                 if (user == null) {
                     throw new AuthenticationException();
                 }
-
                 String sessionId = sessionManagementService.generateNewSession(user);
 
                 HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
