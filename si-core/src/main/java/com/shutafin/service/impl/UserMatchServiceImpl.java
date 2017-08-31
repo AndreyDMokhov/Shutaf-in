@@ -16,6 +16,7 @@ import com.shutafin.repository.common.UserQuestionAnswerRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
 import com.shutafin.service.UserMatchService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.*;
  */
 @Service
 @Transactional
+@Slf4j
 public class UserMatchServiceImpl implements UserMatchService {
 
     private static Map<User, Set<QuestionAnswer>> usersQuestionsAnswersMap;
@@ -75,7 +77,9 @@ public class UserMatchServiceImpl implements UserMatchService {
             initUsersMatchMap();
         }
 
-        usersQuestionsAnswersMap.get(user).clear();
+        if (usersQuestionsAnswersMap.get(user) != null) {
+            usersQuestionsAnswersMap.get(user).clear();
+        }
 
         for (UserQuestionAnswerWeb questionAnswer : userQuestionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
@@ -143,6 +147,9 @@ public class UserMatchServiceImpl implements UserMatchService {
     }
 
     private void initUsersMatchMap(){
+
+        log.info(">>>>>>>>>>>>>>>>>>>initUsersMatchMap>>>>>>>>>>>>>>>>>>>");
+
         usersQuestionsAnswersMap = new HashMap<>();
         List<UserQuestionAnswer> usersQuestionsAnswers = userQuestionAnswerRepository.findAll();
         for (int i = 0 ; i < usersQuestionsAnswers.size(); i++){
