@@ -7,16 +7,17 @@ import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
+import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +25,12 @@ import java.util.List;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class RegistrationControllerTest extends HelperTest {
+@RunWith(SpringRunner.class)
+public class RegistrationControllerTest extends BaseTestImpl {
 
     private static final String REGISTRATION_REQUEST_URL = "/users/registration/request";
     private static final String CONFIRM_REGISTRATION_REQUEST_URL = "/users/registration/confirmation/";
+    private static final String SESSION_ID = "bce54f17-624d-4b59-a627-ff5cf42c9078";
 
     private static final String INP_FIRST_NAME_NOT_BLANK = "INP.firstName.NotBlank";
     private static final String INP_LAST_NAME_NOT_BLANK = "INP.lastName.NotBlank";
@@ -58,24 +60,24 @@ public class RegistrationControllerTest extends HelperTest {
     public void setUp() {
         Mockito.doNothing().when(registrationService).save(any(RegistrationRequestWeb.class));
         Mockito.when(registrationService.confirmRegistration(anyString())).thenReturn(new User());
-        Mockito.when(sessionManagementService.generateNewSession(any(User.class))).thenReturn("648c208e-bfc8-49a7-9206-dfca5a8d9759");
+        Mockito.when(sessionManagementService.generateNewSession(any(User.class))).thenReturn(SESSION_ID);
         errorList = new ArrayList<>();
     }
 
-    //@ResponseEntity in controller before vs entity class annotation with message processor
-    @Ignore(value = "Comment out after APiWebResponse will be committed. Prints out User.class.")
     @Test
-    public void registrationConfirmation_Positive() {
+    public void confirmRegistration_Positive() {
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL + "1a424de3-3671-420f-a8e2-ee97158f9ea2")
+                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL + "da1b10db-5727-4474-8700-db6cb6f26cf7")
                 .setHttpMethod(HttpMethod.GET)
                 .build();
-        APIWebResponse response = getResponse(request);
+        MockHttpServletResponse mockHttpServletResponse = getServletResponse(request);
+        APIWebResponse response = getResponse(mockHttpServletResponse);
         Assert.assertNull(response.getError());
+        Assert.assertEquals(mockHttpServletResponse.getHeader("session_id"), SESSION_ID);
     }
 
     @Test
-    public void registrationConfirmation_UrlWithAWhitespace() {
+    public void confirmRegistration_UrlWithAWhitespace() {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(CONFIRM_REGISTRATION_REQUEST_URL + " ")
                 .setHttpMethod(HttpMethod.GET)
@@ -86,7 +88,7 @@ public class RegistrationControllerTest extends HelperTest {
     }
 
     @Test
-    public void registrationRequestObject_Positive() {
+    public void registrationObject_Positive() {
         RegistrationRequestWeb registrationRequestWeb = new RegistrationRequestWeb();
         registrationRequestWeb.setEmail("email@site.com");
         registrationRequestWeb.setFirstName("Peter");
@@ -105,7 +107,7 @@ public class RegistrationControllerTest extends HelperTest {
     }
 
     @Test
-    public void registrationRequestJson_AllFieldsNull() throws Exception {
+    public void registrationJson_AllFieldsNull() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":null,\"lastName\":null,\"email\":null,\"password\":null,\"userLanguageId\":null}";
         errorList.add(INP_FIRST_NAME_NOT_BLANK);
         errorList.add(INP_LAST_NAME_NOT_BLANK);
@@ -116,7 +118,7 @@ public class RegistrationControllerTest extends HelperTest {
     }
 
     @Test
-    public void registrationRequestJson_AllEmptyFields() throws Exception {
+    public void registrationJson_AllEmptyFields() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"\",\"lastName\":\"\",\"email\":\"\",\"password\":\"\",\"userLanguageId\":\"\"}";
         errorList.add(INP_FIRST_NAME_NOT_BLANK);
         errorList.add(INP_FIRST_NAME_LENGTH);
@@ -130,7 +132,7 @@ public class RegistrationControllerTest extends HelperTest {
     }
 
     @Test
-    public void registrationRequestJson_AllWhitespaceFields() throws Exception {
+    public void registrationJson_AllWhitespaceFields() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\" \",\"lastName\":\" \",\"email\":\" \",\"password\":\" \",\"userLanguageId\":\" \"}";
         errorList.add(INP_FIRST_NAME_NOT_BLANK);
         errorList.add(INP_FIRST_NAME_LENGTH);
@@ -145,7 +147,7 @@ public class RegistrationControllerTest extends HelperTest {
     }
 
     @Test
-    public void registrationRequestJson_ExceededMaxLength() throws Exception {
+    public void registrationJson_ExceededMaxLength() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrroooooooooov\"," +
                 "\"lastName\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrroooooooooov\"," +
                 "\"email\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrr@gmailx.com\"," +
@@ -158,7 +160,7 @@ public class RegistrationControllerTest extends HelperTest {
     }
 
     @Test
-    public void registrationRequestJson_ExceededMinLength() throws Exception {
+    public void registrationJson_ExceededMinLength() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"pp\",\"lastName\":\"pp\",\"email\":\"pp@gmail.com\",\"password\":\"1234567\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_FIRST_NAME_LENGTH);
         errorList.add(INP_LAST_NAME_LENGTH);
@@ -167,21 +169,21 @@ public class RegistrationControllerTest extends HelperTest {
     }
 
     @Test
-    public void registrationRequestJson_IllegalEmail() throws Exception {
+    public void registrationJson_IllegalEmail() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"gmail\",\"password\":\"12345678\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_EMAIL_EMAIL);
         testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
-    public void registrationRequestJson_IllegalUserLanguageId() throws Exception {
+    public void registrationJson_IllegalUserLanguageId() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"0\"}";
         errorList.add(INP_USER_LANGUAGE_ID_MIN);
         testControllerInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
-    public void registrationRequestObject_LanguageIdWithAStringValue() {
+    public void registrationObject_LanguageIdWithAStringValue() {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"a\"}";
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)
