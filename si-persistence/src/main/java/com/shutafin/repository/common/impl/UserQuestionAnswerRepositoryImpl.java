@@ -33,4 +33,12 @@ public class UserQuestionAnswerRepositoryImpl extends AbstractEntityDao<UserQues
                 .setParameter("answerId", answer.getId())
                 .executeUpdate();
     }
+
+    @Override
+    public void deleteUserAnswers(User user) {
+        getSession()
+                .createQuery("DELETE UserQuestionAnswer uqa where uqa.user.id = :userId")
+                .setParameter("userId", user.getId())
+                .executeUpdate();
+    }
 }

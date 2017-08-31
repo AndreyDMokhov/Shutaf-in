@@ -78,15 +78,13 @@ public class UserMatchServiceImpl implements UserMatchService {
         }
 
         if (usersQuestionsAnswersMap.get(user) != null) {
+            userQuestionAnswerRepository.deleteUserAnswers(user);
             usersQuestionsAnswersMap.get(user).clear();
         }
 
         for (UserQuestionAnswerWeb questionAnswer : userQuestionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
-            if (userQuestionAnswerRepository.getUserQuestionAnswer(user, question).size() != 0){
-                userQuestionAnswerRepository.deleteUserQuestionAnswer(user, question, answer);
-            }
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
 
             updateUsersQuestionsAnswersMap(user, question, answer);
