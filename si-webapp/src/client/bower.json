@@ -38,9 +38,7 @@
     "components-font-awesome": "^4.7.0",
     "ngstorage": "^0.3.11",
     "angular-base64-upload": "^0.1.22",
-    "ngstorage": "^0.3.11",
     "angular-ui-carousel": "^0.1.10"
-//    "angular-carousel": "lifely-angular-carousel#^1.2.0"
   },
   "resolutions": {
     "angular": "1.5.9"

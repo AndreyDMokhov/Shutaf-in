@@ -1,4 +1,10 @@
-<div >
+<div ng-if="isReady">
     <h1 style="text-align: center" class="title">Questions</h1>
-    <quiz/>
+    <quiz questions-to-directive="questionsFromController"
+          answer-to-directive="answersFromController" back-d="back(data)" return-answer="coooo(data)"></quiz>
+    <!--<quiz></quiz>-->
 </div>
+
+<!--<div >-->
+<!--<div my-customer></div>-->
+<!--</div>-->

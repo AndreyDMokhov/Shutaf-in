@@ -1,21 +1,30 @@
 <div class="quiz-area card " ng-show="inProgress">
-    <div class="container123">
-    <div>
-        <h2 style="text-align: center" >{{currentQuestion.question}}</h2>
-
-
-        <div class="radio" ng-repeat="option in currentQuestion.options" >
+    <!--{{questions}}-->
+    <!--<div class="container123">-->
+    <!--<div ng-repeat="q in questionsToDirective">-->
+    <!--{{q.description}}-->
+    <!--<div ng-repeat="a in q.answers">-->
+    <!--<label>{{$index + 1 }} {{a.description}}</label>-->
+    <!--<input type="radio" />-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="cardContainer" >
+        <h2 style="text-align: center">{{currentQuestion.description}}</h2>
+        <div class="radio" ng-repeat="answer in currentQuestion.answers">
+            <div ></div>
             <label>
-                <input type="radio" name="options"
+                <input type="radio" name="answer.description"
                        ng-model="$parent.currentAnswer"
-                       ng-value="option"
-                    >
-                {{option}}
+                       ng-value="answer.description"
+                >
+                {{answer.description}}
             </label>
         </div>
         <br>
-        <button type="submit" ng-click="nextQuestion()" class="btn btn-default" ng-disabled="!currentAnswer">Next</button>
+        <button type="submit" ng-click="nextQuestion()" class="btn btn-default" ng-disabled="!currentAnswer">Next
+        </button>
+        <!--<button ng-click="backD({data:{r:123, d:658}})">back</button>-->
 
-        </div>
     </div>
+</div>
 </div>
