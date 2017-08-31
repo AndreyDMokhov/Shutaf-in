@@ -6,39 +6,29 @@ app.factory('quizFactory', function (Restangular, $q, $sessionStorage) {
     });
     var data = {};
 
-    //10 000 SHEKEL
-    function get123() {
-        // return rest.one('/template').customGET();
-        //Сделка. Нужно подождать, я вернусь с ответом
-        //$q.defer()
+    function getQuestions() {
         var deferred = $q.defer();
         data = rest.one("/template").withHttpConfig({timeout: 10000});
-
         data.get().then(
             function (success) {
                 data.questionAnswers = success.data.data;
-                //deferred.resolve -> конверт
-                //data.questionAnswers -> деньги
-                return deferred.resolve(data.questionAnswers); // -> конверт с деньгами внутри
+                //todo
+                return deferred.resolve(data.questionAnswers);
             },
             function (error) {
-                return deferred.reject(); // нет денег
+                //todo
+                return deferred.reject();
             }
         );
-        return deferred.promise; // -> Я обещаю, что я вернусь!!
+        return deferred.promise;
     }
 
     function sendAnswers(params) {
-        console.log(params);
         return rest.one('/save').customPUT(params);
     }
 
-
     return {
-
-        get123: get123,
+        getQuestions: getQuestions,
         sendAnswers: sendAnswers
-
-
     };
 });
