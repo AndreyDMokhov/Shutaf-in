@@ -103,6 +103,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'resetPasswordConfirmation',
                 controllerAs: "vm"
             })
+        .state("questions",
+            {
+                templateUrl:'partials/questions/questions.html',
+                controller: "QuestionsCtrl",
+                controllerAs: "vm",
+                url: "/questions"
+            })
     ;
     $urlRouterProvider.otherwise("/home");
 });
