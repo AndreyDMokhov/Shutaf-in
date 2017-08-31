@@ -23,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoginServiceImpl implements LoginService {
 
-    private static final int N_MAX_TRIES = 10;
-    private static final int TIME_FOR_TRIES_IN_MIN = 10;
+    private static final int AMOUNT_OF_ALLOWED_MAX_TRIES = 10;
+    private static final int MAX_TRIES_FOR_MINUTES = 10;
 
     private UserRepository userPersistence;
     private PasswordService passwordService;
@@ -91,7 +91,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void countLoginFailsAndBlockAccountIfMoreThanMax(User user, UserAccount userAccount) {
-        if(userLoginLogRepository.isLoginFailsMoreThanTries(user, N_MAX_TRIES, TIME_FOR_TRIES_IN_MIN)){
+        if(userLoginLogRepository.hasExceededMaxLoginTries(user, AMOUNT_OF_ALLOWED_MAX_TRIES, MAX_TRIES_FOR_MINUTES)){
             userAccount.setAccountStatus(AccountStatus.BLOCKED);
             userAccountRepository.update(userAccount);
         }

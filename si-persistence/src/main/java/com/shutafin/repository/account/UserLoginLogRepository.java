@@ -8,5 +8,5 @@ import com.shutafin.repository.base.PersistentDao;
  * Created by evgeny on 6/20/2017.
  */
 public interface UserLoginLogRepository extends PersistentDao<UserLoginLog> {
-    boolean isLoginFailsMoreThanTries(User user, int nMaxTries, int timeForTriesInMin);
+    boolean hasExceededMaxLoginTries(User user, int nMaxTries, int timeForTriesInMin);
 }

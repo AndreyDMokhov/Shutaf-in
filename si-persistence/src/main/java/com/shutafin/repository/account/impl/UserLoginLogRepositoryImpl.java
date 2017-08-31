@@ -14,9 +14,9 @@ import java.util.Date;
 public class UserLoginLogRepositoryImpl extends AbstractEntityDao<UserLoginLog> implements UserLoginLogRepository {
 
     @Override
-    public boolean isLoginFailsMoreThanTries(User user, int nMaxTries, int timeForTriesInMin) {
+    public boolean hasExceededMaxLoginTries(User user, int amountOfAllowedMaxTries, int maxTimeForMinutes) {
         Date timeNow = DateTime.now().toDate();
-        Date timeDelay = DateTime.now().minusMinutes(timeForTriesInMin).toDate();
+        Date timeDelay = DateTime.now().minusMinutes(maxTimeForMinutes).toDate();
         Long countTries = (Long) getSession()
                 .createQuery("SELECT COUNT(isLoginSuccess) FROM UserLoginLog WHERE user = :user " +
                         "AND id > COALESCE((SELECT MAX(id) FROM UserLoginLog  WHERE user = :user AND isLoginSuccess = TRUE),0) " +
@@ -25,7 +25,7 @@ public class UserLoginLogRepositoryImpl extends AbstractEntityDao<UserLoginLog> 
                 .setParameter("timeFrom", timeDelay)
                 .setParameter("user", user)
                 .uniqueResult();
-        return countTries >= nMaxTries ? true : false;
+        return countTries >= amountOfAllowedMaxTries;
     }
 }
 
