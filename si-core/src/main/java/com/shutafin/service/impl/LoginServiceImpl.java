@@ -45,12 +45,20 @@ public class LoginServiceImpl implements LoginService {
     @Transactional(noRollbackFor = AuthenticationException.class)
     public User getUserByLoginWebModel(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
-        checkUserAccountStatus(user);
-        checkUserPassword(loginWeb, user);
+        UserAccount userAccount = checkUserAccountStatus(user);
+        checkUserPassword(loginWeb, userAccount, user);
         return user;
     }
 
-    private void checkUserAccountStatus(User user) {
+    private User findUserByEmail(LoginWebModel loginWeb) {
+        User user = userPersistence.findUserByEmail(loginWeb.getEmail());
+        if (user == null) {
+            throw new AuthenticationException();
+        }
+        return user;
+    }
+
+    private UserAccount checkUserAccountStatus(User user) {
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         if (userAccount == null ) {
             throw new AuthenticationException();
@@ -62,12 +70,14 @@ public class LoginServiceImpl implements LoginService {
         if (accountStatus == AccountStatus.NEW){
             throw new AccountNotConfirmedException();
         }
+
+        return userAccount;
     }
 
-    private void checkUserPassword(LoginWebModel loginWeb, User user) throws AuthenticationException {
+    private void checkUserPassword(LoginWebModel loginWeb, UserAccount userAccount, User user) {
         if (!passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
             saveUserLoginLogEntry(user, false);
-            countLoginFailsAndBlockAccountIfMoreThanMax(user);
+            countLoginFailsAndBlockAccountIfMoreThanMax(user, userAccount);
             throw new AuthenticationException();
         }
         saveUserLoginLogEntry(user, true);
@@ -80,20 +90,11 @@ public class LoginServiceImpl implements LoginService {
         userLoginLogRepository.save(userLoginLog);
     }
 
-    private void countLoginFailsAndBlockAccountIfMoreThanMax(User user) {
+    private void countLoginFailsAndBlockAccountIfMoreThanMax(User user, UserAccount userAccount) {
         if(userLoginLogRepository.isLoginFailsMoreThanTries(user, N_MAX_TRIES, TIME_FOR_TRIES_IN_MIN)){
-            UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
             userAccount.setAccountStatus(AccountStatus.BLOCKED);
             userAccountRepository.update(userAccount);
         }
-    }
-
-    private User findUserByEmail(LoginWebModel loginWeb) {
-        User user = userPersistence.findUserByEmail(loginWeb.getEmail());
-        if (user == null) {
-            throw new AuthenticationException();
-        }
-        return user;
     }
 
 }
