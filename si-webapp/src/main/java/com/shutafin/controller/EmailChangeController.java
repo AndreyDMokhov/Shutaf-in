@@ -43,6 +43,7 @@ public class EmailChangeController {
     public EmailChangedResponse emailChangeConfirmation (@PathVariable("link") String link) {
         log.debug("/users/account/change-email-confirmation/{link}");
         if (StringUtils.isBlank(link)){
+            log.warn("Link is blank or empty");
             throw new ResourceNotFoundException();
         }
         return emailChangeConfirmationService.emailChangeConfirmation(link);
