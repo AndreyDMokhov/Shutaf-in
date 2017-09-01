@@ -26,9 +26,9 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
 
         userProfileModel.addOrUpdateImage({image: vm.fileInfo.base64}).then(
             function (success) {
-                vm.userProfile.userImage = success.data.image;
-                vm.userProfile.userImageId = success.data.id;
-                vm.userProfile.createdDate = success.data.createdDate;
+                vm.userProfile.userImage = success.data.data.image;
+                vm.userProfile.userImageId = success.data.data.id;
+                vm.userProfile.createdDate = success.data.data.createdDate;
                 $sessionStorage.userProfile = vm.userProfile;
                 vm.deleteButton = false;
                 notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
