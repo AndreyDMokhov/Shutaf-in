@@ -1,4 +1,4 @@
-app.controller('QuestionsCtrl', function ($scope, $state, quizFactory) {
+app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify, $filter) {
     $scope.questionsFromController = [];
     $scope.back = function (data) {
         sendData(data);
@@ -10,10 +10,10 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory) {
     function sendData(send) {
         quizFactory.sendAnswers(send).then(
             function (success) {
-                //todo
+                notify.set($filter('translate')('Questions.confirm'),{type: 'success'})
             },
             function (error) {
-                //todo
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             }
         );
     }
@@ -23,10 +23,9 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory) {
             function (success) {
                 $scope.questionsFromController = success;
                 $scope.isReady = true;
-                //todo
             },
             function (error) {
-                //todo
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
 

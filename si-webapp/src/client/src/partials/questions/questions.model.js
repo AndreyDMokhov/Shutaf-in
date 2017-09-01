@@ -1,4 +1,4 @@
-app.factory('quizFactory', function (Restangular, $q, $sessionStorage) {
+app.factory('quizFactory', function (Restangular, $q, $sessionStorage, notify) {
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
         RestangularProvider.setBaseUrl('/api/user/match');
@@ -12,11 +12,10 @@ app.factory('quizFactory', function (Restangular, $q, $sessionStorage) {
         data.get().then(
             function (success) {
                 data.questionAnswers = success.data.data;
-                //todo
                 return deferred.resolve(data.questionAnswers);
             },
             function (error) {
-                //todo
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 return deferred.reject();
             }
         );

@@ -107,5 +107,14 @@
   "Settings.security.msg.success": "Changes saved",
   "Settings.security.firstEmailConfirmed.success": "Email confirmed. Expecting confirmation from the other email address",
   "Settings.security.secondEmailConfirmed.success": "Email confirmed. Email has been successfully changed",
-  "Settings.security.msg.successRequest": "The request was sent successfully"
+  "Settings.security.msg.successRequest": "The request was sent successfully",
+
+
+  "SECTION" : "Questions",
+  "Questions.title" : "Questions",
+  "Questions.button.next" : "Next",
+  "Questions.confirm" : "Answers were saved"
+
+
+
 }
