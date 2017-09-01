@@ -92,9 +92,8 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     @Test
     public void emailChangeRequest_Positive() {
-        List<HttpHeaders> sessionHeaders = new ArrayList<>();
-        sessionHeaders.add(new HttpHeaders());
-        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
+
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(EMAIL_CHANGE_REQUEST_URL)
                 .setJsonContext(EMAIL_CHANGE_VALID_JSON_BODY)
@@ -108,9 +107,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     @Test
     public void emailChangeRequest_IncorrectSessionId(){
-        List<HttpHeaders> sessionHeaders = new ArrayList<>();
-        sessionHeaders.add(new HttpHeaders());
-        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, INVALID_SESSION_ID);
+        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(INVALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
                 .setJsonContext(EMAIL_CHANGE_VALID_JSON_BODY)
                 .setHttpMethod(HttpMethod.POST)
@@ -124,7 +121,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void emailChangeRequest_IncorrectHeader(){
+    public void emailChangeRequest_IncorrectHeaderName(){
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set("sesion", VALID_SESSION_ID);
@@ -191,9 +188,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     private void testEmailChangeConfirmationWeb(String json, List<String> errorList) {
-        List<HttpHeaders> sessionHeaders = new ArrayList<>();
-        sessionHeaders.add(new HttpHeaders());
-        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
                 .setHttpMethod(HttpMethod.POST)
                 .setUrl(EMAIL_CHANGE_REQUEST_URL)

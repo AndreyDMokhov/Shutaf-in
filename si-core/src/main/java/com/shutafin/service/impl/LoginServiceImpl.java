@@ -4,6 +4,7 @@ package com.shutafin.service.impl;
 import com.shutafin.exception.exceptions.AccountBlockedException;
 import com.shutafin.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.exception.exceptions.AuthenticationException;
+import com.shutafin.exception.exceptions.SystemException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserLoginLog;
@@ -14,13 +15,14 @@ import com.shutafin.repository.account.UserLoginLogRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.LoginService;
 import com.shutafin.service.PasswordService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 @Transactional
+@Slf4j
 public class LoginServiceImpl implements LoginService {
 
     private static final int AMOUNT_OF_ALLOWED_MAX_TRIES = 10;
@@ -53,6 +55,7 @@ public class LoginServiceImpl implements LoginService {
     private User findUserByEmail(LoginWebModel loginWeb) {
         User user = userPersistence.findUserByEmail(loginWeb.getEmail());
         if (user == null) {
+            log.warn("Users was not found by email {}", loginWeb.getEmail());
             throw new AuthenticationException();
         }
         return user;
@@ -61,13 +64,17 @@ public class LoginServiceImpl implements LoginService {
     private UserAccount checkUserAccountStatus(User user) {
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         if (userAccount == null ) {
-            throw new AuthenticationException();
+            String message = String.format("UserAccount for user with ID %s does not exist", user.getId());
+            log.error(message, user.getId());
+            throw new SystemException(message);
         }
         AccountStatus accountStatus = userAccount.getAccountStatus();
         if (accountStatus == AccountStatus.BLOCKED){
+            log.warn("UserAccount for userId {} is BLOCKED", user.getId());
             throw new AccountBlockedException();
         }
         if (accountStatus == AccountStatus.NEW){
+            log.warn("UserAccount for userId {} is not CONFIRMED", user.getId());
             throw new AccountNotConfirmedException();
         }
 

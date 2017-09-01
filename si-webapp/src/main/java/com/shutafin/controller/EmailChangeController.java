@@ -22,7 +22,6 @@ import javax.validation.Valid;
 @Slf4j
 public class EmailChangeController {
 
-
     @Autowired
     private EmailChangeConfirmationService emailChangeConfirmationService;
 
@@ -30,6 +29,7 @@ public class EmailChangeController {
     public void emailChangeRequest (@RequestBody @Valid EmailChangeConfirmationWeb emailChangeConfirmationWeb,
                                     BindingResult result,
                                     @AuthenticatedUser User user) {
+        log.debug("/users/account/change-email-request");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
@@ -41,6 +41,7 @@ public class EmailChangeController {
     @NoAuthentication
     @RequestMapping(value = "/change-email-confirmation/{link}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public EmailChangedResponse emailChangeConfirmation (@PathVariable("link") String link) {
+        log.debug("/users/account/change-email-confirmation/{link}");
         if (StringUtils.isBlank(link)){
             throw new ResourceNotFoundException();
         }
