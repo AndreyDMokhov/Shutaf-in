@@ -32,7 +32,7 @@ public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigura
             InetAddress ip = InetAddress.getLocalHost();
             serverAddress = ip.getHostAddress();
         } catch (UnknownHostException e) {
-            log.error("System exception:");
+            log.error("Host cannot be resolved:");
             log.error(e.getMessage(), e);
             throw new SystemException(e.getMessage() + ":\n" + Arrays.toString(e.getStackTrace()));
         }

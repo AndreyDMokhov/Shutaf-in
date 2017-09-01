@@ -85,7 +85,7 @@ public class UserAccountController {
         return userLanguageService.findUserLanguage(user);
     }
 
-    private static void checkBindingResult(BindingResult result) {
+    private void checkBindingResult(BindingResult result) {
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());

@@ -118,10 +118,10 @@ public class UserImageServiceImpl implements UserImageService {
             }
         } catch (FileNotFoundException e) {
             log.error("File not found exception:");
-            log.error("File not found\n", e);
+            log.error("File not found", e);
         } catch (IOException e) {
             log.error("Input output exception:");
-            log.error("Error while saving image to file\n", e);
+            log.error("Error while saving image to file", e);
         }
     }
 
@@ -145,10 +145,10 @@ public class UserImageServiceImpl implements UserImageService {
             }
         } catch (FileNotFoundException e) {
             log.error("File not found exception:");
-            log.error("File not found\n", e);
+            log.error("File not found", e);
         } catch (IOException e) {
             log.error("Input output exception:");
-            log.error("Error while reading image from file system\n", e);
+            log.error("Error while reading image from file system", e);
         }
         return null;
     }

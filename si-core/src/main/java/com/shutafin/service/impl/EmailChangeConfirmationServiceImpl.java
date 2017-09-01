@@ -60,7 +60,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     public void emailChangeRequest(User user, EmailChangeConfirmationWeb emailChangeConfirmationWeb) {
         if (!passwordService.isPasswordCorrect(user, emailChangeConfirmationWeb.getUserPassword())) {
             log.warn("Authentication exception:");
-            log.warn("UserId {} has incorrect password", user.getId());
+            log.warn("User password with ID {} is incorrect", user.getId());
             throw new AuthenticationException();
         }
 
@@ -130,7 +130,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
             userRepository.update(user);
         } catch (ConstraintViolationException e) {
             log.warn("Email not unique validation exception:");
-            log.warn("Such email already exists");
+            log.warn("Such email {} already exists", newEmail);
             throw new EmailNotUniqueValidationException("Such email already exist");
         }
     }

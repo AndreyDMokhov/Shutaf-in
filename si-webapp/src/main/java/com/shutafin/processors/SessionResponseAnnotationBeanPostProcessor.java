@@ -91,7 +91,7 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
         try {
             return method.invoke(bean, args);
         } catch (InvocationTargetException e) {
-            log.warn("Invocation target exception. ", e);
+            log.warn("Error occurred: ", e);
             throw e.getCause();
         }
     }

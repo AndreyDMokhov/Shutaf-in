@@ -73,7 +73,6 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         try {
             properties.load(is);
         } catch (IOException e) {
-            log.error("Illegal state exception:");
             log.error("Unexpected error occurred: ", e);
             throw new IllegalStateException("Unexpected error occurred");
         }

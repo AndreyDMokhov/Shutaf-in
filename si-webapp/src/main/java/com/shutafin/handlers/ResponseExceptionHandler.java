@@ -27,7 +27,7 @@ public class ResponseExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> getSystemExceptionResponse(Exception exception) {
 
-        log.error("Exception: ", exception);
+        log.error("Internal error: ", exception);
 
         ErrorType errorType = ErrorType.SYSTEM;
 

@@ -60,8 +60,7 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         try {
             mailSender.send(getMimeMessage(emailTo, messageContent, baseTemplate.getEmailHeader()));
         } catch (MailException e) {
-            log.error("Email send exception:");
-            log.error("Exception: ", e);
+            log.error("Error sending email notification:", e);
             emailNotificationLog.setIsSendFailed(Boolean.TRUE);
             emailNotificationLogRepository.update(emailNotificationLog);
             throw new EmailSendException();
@@ -80,8 +79,8 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
             return mimeMessage;
 
         } catch (MessagingException e) {
-            log.error("Email notification processing exception:");
-            log.error("Exception: ", e);
+            log.error("Error occurred on MimeMessage creation!");
+            log.error("MessagingException: ", e);
             throw new EmailNotificationProcessingException();
         }
     }

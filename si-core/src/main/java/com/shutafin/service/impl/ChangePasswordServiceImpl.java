@@ -23,7 +23,7 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
     public void changePassword(ChangePasswordWeb changePasswordWeb, User user) {
         if (!passwordService.isPasswordCorrect(user, changePasswordWeb.getOldPassword())) {
             log.warn("Authentication exception:");
-            log.warn("UserId {} has incorrect password", user.getId());
+            log.warn("User password with ID {} is incorrect", user.getId());
             throw new IncorrectPasswordException();
         }
         passwordService.updateUserPasswordInDb(user, changePasswordWeb.getNewPassword());

@@ -58,7 +58,7 @@ public class BaseTestImpl implements BaseTest {
             return apiResponse;
 
         } catch (UnsupportedEncodingException e) {
-            log.error("Illegal state exception. ", e);
+            log.error("Error occurred: ", e);
             throw new IllegalStateException(e);
         }
     }
