@@ -52,23 +52,11 @@ public class UserAccountController {
                 image.getCreatedDate().getTime());
     }
 
-    @RequestMapping(value = "/image", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb getUserAccountProfileImage(@AuthenticatedUser User user) {
-        log.debug("/users/settings/image");
-        UserImage image = userAccountService.findUserAccountProfileImage(user);
-        if (image == null) {
-            return null;
-        }
-        return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
-    }
-
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserAccountProfileImage(@AuthenticatedUser User user) {
         log.debug("/users/settings/image");
         userAccountService.deleteUserAccountProfileImage(user);
     }
-
 
     @RequestMapping(value = "/language", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void update(@RequestBody @Valid UserLanguageWeb userLanguageWeb,
