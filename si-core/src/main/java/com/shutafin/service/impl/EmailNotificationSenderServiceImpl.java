@@ -10,6 +10,7 @@ import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.repository.common.EmailNotificationLogRepository;
 import com.shutafin.service.EmailNotificationSenderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,6 +26,7 @@ import javax.mail.internet.MimeMessage;
  * 03 / Jul / 2017
  */
 @Service
+@Slf4j
 public class EmailNotificationSenderServiceImpl implements EmailNotificationSenderService {
 
     private JavaMailSender mailSender;
@@ -58,14 +60,12 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         try {
             mailSender.send(getMimeMessage(emailTo, messageContent, baseTemplate.getEmailHeader()));
         } catch (MailException e) {
-            e.printStackTrace();
+            log.error("Error sending email notification:", e);
             emailNotificationLog.setIsSendFailed(Boolean.TRUE);
             emailNotificationLogRepository.update(emailNotificationLog);
             throw new EmailSendException();
         }
     }
-
-
 
     private MimeMessage getMimeMessage(String email, String html, String header) {
 
@@ -79,7 +79,8 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
             return mimeMessage;
 
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error("Error occurred on MimeMessage creation!");
+            log.error("MessagingException: ", e);
             throw new EmailNotificationProcessingException();
         }
     }

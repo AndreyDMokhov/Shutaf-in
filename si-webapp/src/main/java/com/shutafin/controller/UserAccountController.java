@@ -14,7 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -30,35 +33,39 @@ public class UserAccountController {
     @Autowired
     private UserLanguageService userLanguageService;
 
-
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void updateAccountSettings(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb,
-                                      BindingResult result,
-                                      @AuthenticatedUser User user) {
-
-        if (result.hasErrors()) {
-            throw new InputValidationException(result);
-        }
+                                      BindingResult result, @AuthenticatedUser User user) {
+        log.debug("/users/settings/update");
+        checkBindingResult(result);
         userAccountService.updateAccountSettings(userAccountSettingsWeb, user);
     }
-
 
     @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
                                                       @RequestBody @Valid UserImageWeb userImageWeb,
                                                       BindingResult result) {
-        if (result.hasErrors()) {
-            throw new InputValidationException(result);
-        }
+        log.debug("/users/settings/image");
+        checkBindingResult(result);
         UserImage image = userAccountService.updateProfileImage(userImageWeb, user);
         return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
                 image.getCreatedDate().getTime());
     }
 
+    @RequestMapping(value = "/image", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserImageWeb getUserAccountProfileImage(@AuthenticatedUser User user) {
+        log.debug("/users/settings/image");
+        UserImage image = userAccountService.findUserAccountProfileImage(user);
+        if (image == null) {
+            return null;
+        }
+        return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().getTime());
+    }
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserAccountProfileImage(@AuthenticatedUser User user) {
-
+        log.debug("/users/settings/image");
         userAccountService.deleteUserAccountProfileImage(user);
     }
 
@@ -67,19 +74,23 @@ public class UserAccountController {
     public void update(@RequestBody @Valid UserLanguageWeb userLanguageWeb,
                        BindingResult result,
                        @AuthenticatedUser User user) {
+        log.debug("/users/settings/language");
+        checkBindingResult(result);
+        userLanguageService.updateUserLanguage(userLanguageWeb, user);
+    }
 
+    @RequestMapping(value = "/language", method = RequestMethod.GET)
+    public Language get(@AuthenticatedUser User user) {
+        log.debug("/users/settings/language");
+        return userLanguageService.findUserLanguage(user);
+    }
+
+    private void checkBindingResult(BindingResult result) {
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        userLanguageService.updateUserLanguage(userLanguageWeb, user);
-    }
-
-
-    @RequestMapping(value = "/language", method = RequestMethod.GET)
-    public Language get(@AuthenticatedUser User user) {
-        return userLanguageService.findUserLanguage(user);
     }
 
 }
