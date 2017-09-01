@@ -61,7 +61,9 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
                 continue;
             }
             SessionResponse annotation = method.getAnnotation(SessionResponse.class);
-            if (annotation == null) {continue;}
+            if (annotation == null) {
+                continue;
+            }
             if (annotation.value() == SessionResponseType.NEW_SESSION && !method.getReturnType().equals(User.class)) {
                 throw new IllegalArgumentException("The SessionResponseType parameter is set to False or the returned class is not User.");
             }
