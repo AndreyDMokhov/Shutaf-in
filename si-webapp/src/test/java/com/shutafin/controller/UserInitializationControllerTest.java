@@ -5,7 +5,7 @@ import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.user.UserInfoResponse;
 import com.shutafin.service.SessionManagementService;
-import com.shutafin.service.UserInitializationService;
+import com.shutafin.service.UserInfoService;
 import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import lombok.AllArgsConstructor;
@@ -34,7 +34,7 @@ public class UserInitializationControllerTest extends BaseTestImpl {
     private static final String INVALID_SESSION = "";
 
     @MockBean
-    private UserInitializationService userInitializationService;
+    private UserInfoService userInfoService;
 
     @MockBean
     private SessionManagementService sessionManagementService;
@@ -72,7 +72,7 @@ public class UserInitializationControllerTest extends BaseTestImpl {
 
 
         when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
-        when(userInitializationService.getUserInitializationData(user)).thenReturn(userInfoResponse);
+        when(userInfoService.getUserInfo(user)).thenReturn(userInfoResponse);
 
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()

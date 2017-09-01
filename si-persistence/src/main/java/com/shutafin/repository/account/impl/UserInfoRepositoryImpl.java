@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public class UserInfoRepositoryImpl extends AbstractEntityDao<UserInfo> implements UserInfoRepository {
 
     @Override
-    public UserInfo findUserInfo(User user) {
+    public UserInfo getUserInfo(User user) {
         return (UserInfo) getSession()
                 .createQuery("from UserInfo ui where ui.user.id = :userId")
                 .setParameter("userId", user.getId()).uniqueResult();

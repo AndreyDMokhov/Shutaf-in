@@ -6,6 +6,6 @@ import com.shutafin.repository.base.PersistentDao;
 
 public interface UserInfoRepository extends PersistentDao<UserInfo> {
 
-    UserInfo findUserInfo(User user);
+    UserInfo getUserInfo(User user);
 
 }
