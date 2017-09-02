@@ -18,12 +18,10 @@ app.controller("userSettingsController", function ($localStorage, $sessionStorag
     vm.userProfile.genderId=vm.userProfile.genderId.toString();
     vm.userProfile.cityId=vm.userProfile.cityId.toString();
 
-    console.log( vm.userProfile);
 
     function submitChanges() {
         vm.dataLoading = true;
 
-        console.log(vm.userProfile);
         userSettingsModel.saveDataPostRegistration(vm.userProfile).then(
             function (success) {
                 notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
