@@ -14,7 +14,11 @@ app.controller("userSettingsController", function ($localStorage, $sessionStorag
     // if number of countries more than one, delete next line
     vm.userProfile.countryId = 1;
 
-    console.log( vm.currGender);
+    vm.userProfile.countryId = vm.userProfile.countryId.toString();
+    vm.userProfile.genderId=vm.userProfile.genderId.toString();
+    vm.userProfile.cityId=vm.userProfile.cityId.toString();
+
+    console.log( vm.userProfile);
 
     function submitChanges() {
         vm.dataLoading = true;
