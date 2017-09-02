@@ -1,9 +1,15 @@
 package com.shutafin.model.web.user;
 
-import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.web.DataResponse;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class UserSearchResponse implements DataResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class UserSearchResponse {
 
     private String firstName;
 
@@ -11,36 +17,4 @@ public class UserSearchResponse implements DataResponse {
 
     private String image;
 
-    public UserSearchResponse() {
-    }
-
-    public UserSearchResponse(String firstName, String lastName, String image) {
-        this.image = image;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }
