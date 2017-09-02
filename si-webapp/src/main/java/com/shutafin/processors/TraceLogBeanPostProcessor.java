@@ -46,45 +46,42 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
             ClassLoader beanClassClassLoader = beanClass.getClassLoader();
 
             return Proxy.newProxyInstance(beanClassClassLoader, beanClass.getInterfaces(), (proxy, method, args) -> {
-                log.trace("\n\r \n\r * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\r");
+                log.trace("\t\t * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ");
                 Object result = helperInvoke(beanClass, bean, method, args);
-                log.trace("\n\r \n\r * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\r");
+                log.trace("\t\t * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ");
                 return result;
             });
         } else {
-            return Enhancer.create(beanClass, new InvocationHandler() {
-                @Override
-                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    log.trace("\n\r \n\r + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + \n\r");
-                    Object result = helperInvoke(beanClass, bean, method, args);
-                    log.trace("\n\r \n\r + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + \n\r");
-                    return result;
-                }
+            return Enhancer.create(beanClass, (InvocationHandler) (proxy, method, args) -> {
+                log.trace("\t\t * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ");
+                Object result = helperInvoke(beanClass, bean, method, args);
+                log.trace("\t\t * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ");
+                return result;
+
             });
         }
     }
 
-    private Object helperInvoke(Class beanClass, Object bean, Method method, Object...args) throws Throwable {
+    private Object helperInvoke(Class beanClass, Object bean, Method method, Object... args) throws Throwable {
         Gson gson = new Gson();
         String methodName = method.getName();
-
-        log.trace("Class name: {}", beanClass.getName());
-        log.trace("Method name: \t{}", methodName);
+        log.trace("\t\tCLASS NAME ----> {}", beanClass.getSimpleName());
+        log.trace("\t\t\tMETHOD ENTRY ----> {}:{} ", method.getReturnType(), methodName);
 
         Parameter[] parameters = method.getParameters();
         for (int i = 0; i < parameters.length; i++) {
             if (parameters[i].getType() == HttpServletResponse.class) {
-                log.trace("\t\t{} : {} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), args[i]);
+                log.trace("\t\t\t\tPARAMETER #{}. {} : {} = {}", i + 1, parameters[i].getType().getTypeName(), parameters[i].getName(), args[i]);
             } else {
-                log.trace("\t\t{} : {} = {}", parameters[i].getType().getTypeName(), parameters[i].getName(), gson.toJson(args[i]));
+                log.trace("\t\t\t\tPARAMETER #{}. {} : {} = {}", i + 1, parameters[i].getType().getTypeName(), parameters[i].getName(), gson.toJson(args[i]));
             }
         }
 
         Object methodResult = executeMethod(method, bean, args);
         if (method.getReturnType() == Void.TYPE) {
-            log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, method.getReturnType().getName());
+            log.trace("\t\t\tMETHOD EXIT ----> {}:{};  RETURNED ----> {}", method.getReturnType().getName(), methodName, "no data");
         } else {
-            log.trace("\n\r\n\rMethod {} result: {}\n\r", methodName, gson.toJson(methodResult, method.getReturnType()));
+            log.trace("\t\t\tMETHOD EXIT ----> {}:{};  RETURNED ----> {}", method.getReturnType().getName(), methodName, gson.toJson(methodResult));
         }
 
         return methodResult;
@@ -98,5 +95,4 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
         }
     }
 }
-
 
