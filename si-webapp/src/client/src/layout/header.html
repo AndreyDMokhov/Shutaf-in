@@ -40,9 +40,9 @@
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : ('settings' | includedByState)}">
-                    <a ui-sref="settings">
+                    <a ui-sref="userSettings">
                         <span class="glyphicon glyphicon-cog"></span>
-                        {{'Settings.personal.title' | translate}}
+                        {{'UserSettings.personal.title' | translate}}
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
@@ -52,6 +52,8 @@
                         {{'Settings.security.email.title' | translate}}
                     </a>
                 </li>
+
+
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : ('changePassword' | includedByState)}">
                     <a ui-sref="changePassword">

@@ -42,12 +42,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/users"
             })
-        .state("settings",
+        .state("userSettings",
             {
-                templateUrl: "partials/settings/settings.html",
-                controller: "settingsController",
+                templateUrl: "partials/userSettings/userSettings.html",
+                controller: "userSettingsController",
                 controllerAs: "vm",
-                url: "/settings"
+                url: "/userSettings"
             })
         .state("userProfile",
             {
@@ -103,13 +103,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'resetPasswordConfirmation',
                 controllerAs: "vm"
             })
-        .state("userInfo",
-            {
-                templateUrl:'partials/userInfo/userInfo.html',
-                controller: "preSettingsController",
-                controllerAs: "vm",
-                url: "/userInfo"
-            })
+
     ;
     $urlRouterProvider.otherwise("/home");
 });
