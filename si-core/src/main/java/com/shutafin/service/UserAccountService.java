@@ -9,7 +9,7 @@ import com.shutafin.model.web.user.UserImageWeb;
 public interface UserAccountService {
 
     void updateAccountSettings(UserAccountSettingsWeb userAccountSettingsWeb, User user);
-    void updateProfileImage(UserImageWeb userImageWeb, User user);
+    UserImage updateProfileImage(UserImageWeb userImageWeb, User user);
     UserImage findUserAccountProfileImage(User user);
     void deleteUserAccountProfileImage(User user);
 

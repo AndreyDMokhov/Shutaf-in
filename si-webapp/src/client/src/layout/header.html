@@ -18,7 +18,8 @@
                     </a>
                 </li>
 
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('userProfile' | includedByState)}">
+                <li ng-show="vm.sessionService.isAuthenticated()"
+                    ng-class="{active : ('userProfile' | includedByState)}">
                     <a ui-sref="userProfile">{{'UserProfile.title' | translate}}</a>
                 </li>
 
@@ -44,13 +45,15 @@
                         {{'Settings.personal.title' | translate}}
                     </a>
                 </li>
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('emailChangeRequest' | includedByState)}">
+                <li ng-show="vm.sessionService.isAuthenticated()"
+                    ng-class="{active : ('emailChangeRequest' | includedByState)}">
                     <a ui-sref="changeEmailRequest">
                         <span class="glyphicon glyphicon-cog"></span>
                         {{'Settings.security.email.title' | translate}}
                     </a>
                 </li>
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('changePassword' | includedByState)}">
+                <li ng-show="vm.sessionService.isAuthenticated()"
+                    ng-class="{active : ('changePassword' | includedByState)}">
                     <a ui-sref="changePassword">
                         <span class="glyphicon glyphicon-cog"></span>
                         {{'Settings.security.password.title' | translate}}
@@ -77,7 +80,10 @@
                         <b class="caret"></b>
                     </a>
                     <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                        <li role="menuitem" ng-repeat="lang in vm.initialization.languages | filter : {active : 'true'}"><a class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a></li>
+                        <li role="menuitem"
+                            ng-repeat="lang in vm.initialization.languages | filter : {isActive : true}"><a
+                                class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a>
+                        </li>
                     </ul>
                 </li>
             </ul>

@@ -6,16 +6,18 @@ import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.service.EmailTemplateService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static org.apache.commons.lang3.Validate.*;
-
+import static org.apache.commons.lang3.Validate.notBlank;
+import static org.apache.commons.lang3.Validate.notNull;
 
 @Service
+@Slf4j
 public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
 
     private static final String HEADER_SUFFIX = ".header";
@@ -60,23 +62,23 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         Properties properties = new Properties();
         InputStream is = null;
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("smtp.");
-        builder.append(language.getDescription());
-        builder.append("-template.properties");
+        StringBuilder builder = new StringBuilder()
+                .append("smtp.")
+                .append(language.getDescription())
+                .append("-template.properties");
+
         is = getClass().getClassLoader().getResourceAsStream(builder.toString());
 
 
         try {
             properties.load(is);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Unexpected error occurred: ", e);
             throw new IllegalStateException("Unexpected error occurred");
         }
 
         return properties;
     }
-
 
     @Override
     public EmailMessage getEmailMessage(String emailTo, EmailReason emailReason, Language language, String link) {

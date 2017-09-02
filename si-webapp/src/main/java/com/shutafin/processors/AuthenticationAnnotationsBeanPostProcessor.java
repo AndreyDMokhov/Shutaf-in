@@ -26,7 +26,7 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
 
     private static final String SESSION_ID_HEADER_TOKEN = "session_id";
 
-    private Map<String, Object> requiredProxyBeans = new HashMap<>();
+    private Map<String, Class> requiredProxyBeans = new HashMap<>();
 
     @Autowired
     private SessionManagementService sessionManagementService;
@@ -37,7 +37,7 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
         Class clazz = bean.getClass();
 
         if (clazz.getAnnotation(RestController.class) != null && clazz.getAnnotation(NoAuthentication.class) == null) {
-            requiredProxyBeans.put(beanName, bean);
+            requiredProxyBeans.put(beanName, clazz);
         }
 
         return bean;
@@ -45,18 +45,18 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (requiredProxyBeans.get(beanName) == null) {
+        Class clazz = requiredProxyBeans.get(beanName);
+        if (clazz == null) {
             return bean;
         }
 
-        Class clazz = bean.getClass();
 
         return Enhancer.create(clazz, new InvocationHandler() {
             @Override
             public Object invoke(Object o, Method method, Object[] args) throws Throwable {
 
                 if (method.getAnnotation(NoAuthentication.class) != null) {
-                    return method.invoke(bean, args);
+                    return executeMethod(method, bean, args);
                 }
 
 

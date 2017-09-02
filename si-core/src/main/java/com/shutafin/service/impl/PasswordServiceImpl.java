@@ -7,6 +7,7 @@ import com.shutafin.repository.account.UserCredentialsRepository;
 import com.shutafin.service.PasswordService;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.Base64;
 
 @Service
 @Transactional
+@Slf4j
 public class PasswordServiceImpl implements PasswordService {
 
     private static final int SALT_LEN = 16;
@@ -41,6 +43,8 @@ public class PasswordServiceImpl implements PasswordService {
     public void updateUserPasswordInDb(User user, String password) {
         UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
         if (userCredentials == null) {
+            log.error("System exception:");
+            log.error("UserCredentials for user with ID {} does not exist", user.getId());
             throw new SystemException("UserCredentials for user with ID {" + user.getId() + "} does not exist");
         }
         userCredentialsRepository.update(populateWithSaltAndHash(userCredentials, password));
@@ -67,14 +71,12 @@ public class PasswordServiceImpl implements PasswordService {
 
     private String generateHash(String salt, String password) {
         Argon2 argon2 = Argon2Factory.create();
-        String hash = argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password + SALT + salt);
-        return hash;
+        return argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password + SALT + salt);
     }
 
     private String generateSalt() {
         byte[] bytes = new byte[SALT_LEN];
         secureRandom.nextBytes(bytes);
-        String salt = Base64.getEncoder().encodeToString(bytes);
-        return salt;
+        return Base64.getEncoder().encodeToString(bytes);
     }
 }

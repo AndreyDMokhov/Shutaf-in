@@ -1,12 +1,15 @@
 package com.shutafin.controller;
 
+import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.EmailChangeConfirmationWeb;
-import com.shutafin.model.web.user.EmailChangedWeb;
+import com.shutafin.model.web.user.EmailChangedResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
+import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.EmailChangeConfirmationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -19,7 +22,6 @@ import javax.validation.Valid;
 @Slf4j
 public class EmailChangeController {
 
-
     @Autowired
     private EmailChangeConfirmationService emailChangeConfirmationService;
 
@@ -27,19 +29,23 @@ public class EmailChangeController {
     public void emailChangeRequest (@RequestBody @Valid EmailChangeConfirmationWeb emailChangeConfirmationWeb,
                                     BindingResult result,
                                     @AuthenticatedUser User user) {
-
+        log.debug("/users/account/change-email-request");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-
         emailChangeConfirmationService.emailChangeRequest(user, emailChangeConfirmationWeb);
     }
 
+    @NoAuthentication
     @RequestMapping(value = "/change-email-confirmation/{link}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public EmailChangedWeb emailChangeConfirmation (@PathVariable("link") String link) {
-        EmailChangedWeb emailChangedWeb = emailChangeConfirmationService.emailChangeConfirmation(link);
-        return emailChangedWeb;
+    public EmailChangedResponse emailChangeConfirmation (@PathVariable("link") String link) {
+        log.debug("/users/account/change-email-confirmation/{link}");
+        if (StringUtils.isBlank(link)){
+            log.warn("Link is blank or empty");
+            throw new ResourceNotFoundException();
+        }
+        return emailChangeConfirmationService.emailChangeConfirmation(link);
     }
 }

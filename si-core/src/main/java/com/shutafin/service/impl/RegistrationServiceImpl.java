@@ -16,6 +16,7 @@ import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.initialization.LanguageRepository;
 import com.shutafin.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,8 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class RegistrationServiceImpl implements RegistrationService{
+@Slf4j
+public class RegistrationServiceImpl implements RegistrationService {
 
     private static final int LANGUAGE_ID = 1;
 
@@ -70,11 +72,13 @@ public class RegistrationServiceImpl implements RegistrationService{
     public User confirmRegistration(String link) {
         RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.getRegistrationConfirmationByUrlLink(link);
 
-        if (registrationConfirmation == null){
+        if (registrationConfirmation == null) {
+            log.warn("Resource not found exception:");
+            log.warn("UrlLink {} was not found", link);
             throw new ResourceNotFoundException();
         }
 
-        registrationConfirmation.setConfirmed(true);
+        registrationConfirmation.setIsConfirmed(true);
         registrationConfirmationRepository.update(registrationConfirmation);
 
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(registrationConfirmation.getUser());
@@ -87,7 +91,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     private void sendConfirmRegistrationEmail(User user, UserAccount userAccount) {
         RegistrationConfirmation registrationConfirmation = new RegistrationConfirmation();
         registrationConfirmation.setUser(user);
-        registrationConfirmation.setConfirmed(false);
+        registrationConfirmation.setIsConfirmed(false);
         registrationConfirmation.setUrlLink(UUID.randomUUID().toString());
         registrationConfirmationRepository.save(registrationConfirmation);
 
@@ -96,18 +100,18 @@ public class RegistrationServiceImpl implements RegistrationService{
         mailSenderService.sendEmail(emailMessage, EmailReason.REGISTRATION_CONFIRMATION);
     }
 
-    private void saveUserCredentials(User user, String password){
+    private void saveUserCredentials(User user, String password) {
         passwordService.createAndSaveUserPassword(user, password);
     }
 
-    private UserAccount saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb){
+    private UserAccount saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUser(user);
         userAccount.setAccountStatus(AccountStatus.NEW);
         userAccount.setAccountType(AccountType.REGULAR);
 
         Language language = languageRepository.findById(registrationRequestWeb.getUserLanguageId());
-        if (language == null){
+        if (language == null) {
             language = languageRepository.findById(LANGUAGE_ID);
         }
         userAccount.setLanguage(language);
@@ -120,7 +124,9 @@ public class RegistrationServiceImpl implements RegistrationService{
         user.setFirstName(registrationRequestWeb.getFirstName());
         user.setLastName(registrationRequestWeb.getLastName());
         String email = registrationRequestWeb.getEmail();
-        if (userRepository.findUserByEmail(email) != null){
+        if (userRepository.findUserByEmail(email) != null) {
+            log.warn("Email not unique validation exception:");
+            log.warn("Email already exists");
             throw new EmailNotUniqueValidationException("Email " + email + " already exists");
         }
         user.setEmail(email);

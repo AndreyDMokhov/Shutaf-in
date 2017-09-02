@@ -8,11 +8,11 @@ public class ChatMessageTypeConverter implements AttributeConverter<ChatMessageT
 
     @Override
     public Integer convertToDatabaseColumn(ChatMessageType attribute) {
-        return attribute != null ? attribute.getId() : null;
+        return attribute == null ? null : attribute.getId();
     }
 
     @Override
     public ChatMessageType convertToEntityAttribute(Integer dbData) {
-        return dbData != null ? ChatMessageType.getById(dbData) : null;
+        return dbData == null ? null : ChatMessageType.getById(dbData);
     }
 }

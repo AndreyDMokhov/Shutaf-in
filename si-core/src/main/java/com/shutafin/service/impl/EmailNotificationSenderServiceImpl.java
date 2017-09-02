@@ -10,7 +10,9 @@ import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.repository.common.EmailNotificationLogRepository;
 import com.shutafin.service.EmailNotificationSenderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -24,15 +26,19 @@ import javax.mail.internet.MimeMessage;
  * 03 / Jul / 2017
  */
 @Service
+@Slf4j
 public class EmailNotificationSenderServiceImpl implements EmailNotificationSenderService {
 
-    @Autowired
     private JavaMailSender mailSender;
-
-    @Autowired
     private EmailNotificationLogRepository emailNotificationLogRepository;
 
-
+    @Autowired
+    public EmailNotificationSenderServiceImpl(
+            JavaMailSender mailSender,
+            EmailNotificationLogRepository emailNotificationLogRepository) {
+        this.mailSender = mailSender;
+        this.emailNotificationLogRepository = emailNotificationLogRepository;
+    }
 
     @Override
     @Transactional
@@ -53,15 +59,13 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
         try {
             mailSender.send(getMimeMessage(emailTo, messageContent, baseTemplate.getEmailHeader()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            emailNotificationLog.setSendFailed(Boolean.TRUE);
+        } catch (MailException e) {
+            log.error("Error sending email notification:", e);
+            emailNotificationLog.setIsSendFailed(Boolean.TRUE);
             emailNotificationLogRepository.update(emailNotificationLog);
             throw new EmailSendException();
         }
     }
-
-
 
     private MimeMessage getMimeMessage(String email, String html, String header) {
 
@@ -75,7 +79,8 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
             return mimeMessage;
 
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error("Error occurred on MimeMessage creation!");
+            log.error("MessagingException: ", e);
             throw new EmailNotificationProcessingException();
         }
     }
@@ -87,7 +92,7 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         emailNotificationLog.setEmailContent(html);
 
         emailNotificationLog.setEmailReason(emailReason);
-        emailNotificationLog.setSendFailed(Boolean.FALSE);
+        emailNotificationLog.setIsSendFailed(Boolean.FALSE);
 
         emailNotificationLog.setEmailTo(emailTo);
 

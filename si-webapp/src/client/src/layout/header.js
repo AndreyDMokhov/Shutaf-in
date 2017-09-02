@@ -1,4 +1,4 @@
-app.controller("headerController", function ($state, $rootScope, languageService, sessionService, constantService, userInitService, $filter) {
+app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state) {
 
     var vm = this;
 
@@ -7,10 +7,12 @@ app.controller("headerController", function ($state, $rootScope, languageService
     vm.initialization = {};
 
     function init() {
-        vm.initialization.languages = constantService.getLanguages();
+        constantService.init().then(function () {
+
+            vm.initialization.languages = $sessionStorage.languages;
+        });
         if (vm.sessionService.isAuthenticated()) {
             userInitService.init();
-            constantService.init();
         }
     }
 
