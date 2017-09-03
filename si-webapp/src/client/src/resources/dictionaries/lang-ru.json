@@ -113,9 +113,16 @@
   "Settings.personal.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
   "Settings.personal.message.save.success":"Пользователь успешно сохранен",
 
+  "SECTION": "USER SEARCH",
+  "Search.button": "Поиск",
+  "Search.notFound" : "По Вашему запросу пользователи не найдены",
+  "Search.request" : "Введите Ваш запрос для поиска",
+  "Search.results" : "Результатов:",
+
   "SECTION" : "Questions",
   "Questions.title" : "Вопросы",
   "Questions.button.next" : "Дальше",
   "Questions.confirm" : "Ответы успешно сохранены"
+
 }
 
