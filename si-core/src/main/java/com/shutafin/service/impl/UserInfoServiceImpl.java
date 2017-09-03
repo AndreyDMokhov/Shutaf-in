@@ -47,6 +47,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfoResponse getUserInfo(User user) {
         UserInfoResponse userInfoResponse = userInitializationRepository.getUserInitializationData(user);
+        userInfoResponse.setEmail(uglifyEmail(userInfoResponse.getEmail()));
         Long userImageId = userAccountRepository.findUserAccountImageId(user);
         if (userImageId != null) {
             UserImage userImage = userImageService.getUserImage(user, userImageId);
@@ -90,5 +91,34 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setProfession(userInfoWeb.getProfession());
         userInfo.setPhoneNumber(userInfoWeb.getPhoneNumber());
         return userInfo;
+    }
+
+    private String uglifyEmail(String email) {
+        String[] splitted = email.split("@");
+        String emailName = splitted[0];
+        if (emailName.length() > 1) {
+            emailName = emailName.charAt(0) +
+                    emailName.substring(1, emailName.length()).replaceAll("\\S", "*");
+        }
+        String emailDomain = splitted[1];
+        String rootDomain = "";
+        if (emailDomain.contains(".")) {
+            String[] emailDomainSplitted = emailDomain.split("\\.");
+            emailDomain = emailDomainSplitted[0];
+            for (int idx = 1; idx < emailDomainSplitted.length; idx++) {
+                rootDomain += "." + emailDomainSplitted[idx];
+            }
+        }
+        if (emailDomain.length() > 1) {
+            emailDomain = emailDomain.charAt(0) +
+                    emailDomain.substring(1, emailDomain.length()).replaceAll("\\S", "*");
+        }
+
+        StringBuilder uglifiedEmail = new StringBuilder();
+        uglifiedEmail.append(emailName)
+                .append("@")
+                .append(emailDomain)
+                .append(rootDomain);
+        return uglifiedEmail.toString();
     }
 }

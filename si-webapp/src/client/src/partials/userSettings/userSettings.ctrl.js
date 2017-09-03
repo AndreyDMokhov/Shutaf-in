@@ -14,9 +14,15 @@ app.controller("userSettingsController", function ($localStorage, $sessionStorag
     // if number of countries more than one, delete next line
     vm.userProfile.countryId = 1;
 
-    vm.userProfile.countryId = vm.userProfile.countryId.toString();
-    vm.userProfile.genderId=vm.userProfile.genderId.toString();
-    vm.userProfile.cityId=vm.userProfile.cityId.toString();
+    if (vm.userProfile.countryId !== null) {
+        vm.userProfile.countryId = vm.userProfile.countryId.toString();
+    }
+    if (vm.userProfile.genderId !== null) {
+        vm.userProfile.genderId=vm.userProfile.genderId.toString();
+    }
+    if (vm.userProfile.cityId !== null) {
+        vm.userProfile.cityId=vm.userProfile.cityId.toString();
+    }
 
 
     function submitChanges() {
