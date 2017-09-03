@@ -1,8 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserSearchResponse;
-import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserSearchService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,9 +22,9 @@ public class UserSearchController {
     private UserSearchService userSearchService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<UserSearchResponse> userSearch(@AuthenticatedUser User user, @RequestParam("name") String fullName) {
+    public List<UserSearchResponse> userSearch(@RequestParam("name") String fullName) {
         if (StringUtils.isBlank(fullName)){
-            return null;
+            return new ArrayList<>();
         }
         return userSearchService.userSearch(fullName);
     }

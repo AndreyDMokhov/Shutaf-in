@@ -13,7 +13,7 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
         userSearchModel.userSearch(vm.fullName).then(
             function (success) {
 
-                vm.userSearchList = success;
+                vm.userSearchList = success.data;
 
             }, function (error) {
 
@@ -24,9 +24,9 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
 
             })
 
-    };
+    }
 
     activate();
 
     vm.userSearch = userSearch;
-})
+});

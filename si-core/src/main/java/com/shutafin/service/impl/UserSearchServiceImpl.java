@@ -14,7 +14,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class UserSearchServiceImpl implements UserSearchService{
+public class UserSearchServiceImpl implements UserSearchService {
 
     @Autowired
     private UserRepository userRepository;
@@ -24,7 +24,7 @@ public class UserSearchServiceImpl implements UserSearchService{
 
     @Override
     @Transactional
-    public List<UserSearchResponse> userSearch(String fullName){
+    public List<UserSearchResponse> userSearch(String fullName) {
 
         List<User> users = findUsers(fullName);
 
@@ -46,15 +46,7 @@ public class UserSearchServiceImpl implements UserSearchService{
 
         List<String> names = Arrays.asList(fullName.split(" "));
 
-        List<User> users;
-
-        if(names.size() == 1){
-            users = userRepository.findUsersByFirstOrLastName(fullName);
-        }else {
-            users = userRepository.findUsersByFirstAndLastName(names);
-        }
-
-        return users;
+        return userRepository.findUsersByFirstAndLastName(names);
     }
 
 }
