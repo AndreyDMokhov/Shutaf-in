@@ -70,6 +70,9 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public UserImage findUserAccountProfileImage(User user) {
         Long userImageId = userAccountRepository.findUserAccountImageId(user);
+        if (userImageId == null) {
+            return null;
+        }
         return userImageService.getUserImage(user, userImageId);
     }
 
