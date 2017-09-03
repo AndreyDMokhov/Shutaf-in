@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(SpringRunner.class)
 public class UserInitializationControllerTest extends BaseTestImpl {
-    private static final String INITIALIZATION_REQUEST_URL = "/initialization/user/init";
+    private static final String INITIALIZATION_REQUEST_URL = "/users/info/";
     private static final String VALID_SESSION = "e382d6ec-0e97-4c32-a1a2-8280160cd179";
     private static final String INVALID_SESSION = "";
 
