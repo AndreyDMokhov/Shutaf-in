@@ -1,5 +1,6 @@
 package com.shutafin.controller;
 
+import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
@@ -7,6 +8,7 @@ import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.processors.annotations.response.SessionResponse;
 import com.shutafin.service.RegistrationService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -39,6 +41,10 @@ public class RegistrationController {
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
     public User confirmRegistration(@PathVariable String link) {
         log.debug("/users/registration/confirmation/{link}");
+        if (StringUtils.isBlank(link)){
+            log.warn("Link is blank or empty");
+            throw new ResourceNotFoundException();
+        }
         return registrationService.confirmRegistration(link);
     }
 }
