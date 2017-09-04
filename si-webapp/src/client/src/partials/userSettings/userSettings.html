@@ -3,7 +3,6 @@
         <h2>{{"UserSettings.title"|translate}}</h2>
     </div>
 
-
     <form name="userSettings">
 
         <div class="row form-group"
@@ -51,12 +50,14 @@
                     'has-error': userSettings.gender.$invalid,
                     'has-success': userSettings.gender.$valid }">
                 <label class="required" for="gender">{{"UserSettings.form.gender"|translate}}</label>
-                <select class="form-control" id="gender" name="gender" ng-model="vm.userProfile.genderId" required>
-                    <option ng-repeat="gender in vm.gender"
-                            ng-selected="gender.id == vm.userProfile.genderId"
-                            value="{{gender.id}}"
-                    >{{gender.description}}
-                    </option>
+                <select
+                        name="gender"
+                        ng-options="gender.id as gender.description for gender in vm.gender"
+                        id="gender"
+                        class="form-control"
+                        ng-model="vm.userProfile.genderId"
+                        required>
+                    <option value="" selected>{{gender.description}}</option>
                 </select>
             </div>
         </div>
@@ -65,12 +66,14 @@
                     'has-error': userSettings.country.$invalid,
                     'has-success': userSettings.country.$valid }">
                 <label class="required" for="country">{{"UserSettings.form.country"|translate}}</label>
-                <select class="form-control" id="country" name="country" ng-model="vm.userProfile.countryId" required>
-                    <option ng-repeat="country in vm.country"
-                            ng-selected="country.id == vm.userProfile.countryId"
-                            value="{{country.id}}"
-                    >{{country.description}}
-                    </option>
+                <select
+                        name="country"
+                        ng-options="country.id as country.description for country in vm.country"
+                        id="country"
+                        class="form-control"
+                        ng-model="vm.userProfile.countryId"
+                        required>
+                    <option value="" selected>{{country.description}}</option>
                 </select>
             </div>
         </div>
@@ -79,12 +82,14 @@
                     'has-error': userSettings.city.$invalid,
                     'has-success': userSettings.city.$valid }">
                 <label class="required" for="city">{{"UserSettings.form.city"|translate}}</label>
-                <select class="form-control" id="city" name="city" ng-model="vm.userProfile.cityId" required>
-                    <option ng-repeat="city in vm.cities"
-                            ng-selected="city.id == vm.userProfile.cityId"
-                            value="{{city.id}}"
-                    >{{city.description}}
-                    </option>
+                <select
+                        name="city"
+                        ng-options="city.id as city.description for city in vm.cities"
+                        id="city"
+                        class="form-control"
+                        ng-model="vm.userProfile.countryId"
+                        required>
+                    <option value="" selected>{{city.description}}</option>
                 </select>
             </div>
         </div>
