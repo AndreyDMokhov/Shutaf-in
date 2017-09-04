@@ -120,5 +120,11 @@
   "UserSettings.btn.addSettings": "Show additional settings",
   "UserSettings.title": "User settings",
   "UserSettings.btn.submit":  "Submit",
-  "UserSettings.message.save.success": "Has been successfully saved"
+  "UserSettings.message.save.success": "Has been successfully saved",
+
+  "SECTION": "USER SEARCH",
+  "Search.button": "Search",
+  "Search.notFound" : "No users found on your request",
+  "Search.request" : "Enter your request",
+  "Search.results" : "Results:"
 }

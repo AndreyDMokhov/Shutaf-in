@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,7 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         this.emailNotificationLogRepository = emailNotificationLogRepository;
     }
 
+    @Async(value = "threadPoolTaskExecutor")
     @Override
     @Transactional
     public void sendEmail(EmailMessage emailMessage, EmailReason emailReason) {

@@ -5,7 +5,12 @@ import com.shutafin.processors.SessionResponseAnnotationBeanPostProcessor;
 import com.shutafin.processors.TraceLogBeanPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 
 @Configuration
@@ -16,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 })
 @EnableWebMvc
+@EnableAsync
 public class ApplicationContextConfiguration {
 
     @Bean
@@ -36,6 +42,11 @@ public class ApplicationContextConfiguration {
     @Bean
     public TraceLogBeanPostProcessor traceLogBeanPostProcessor() {
         return new TraceLogBeanPostProcessor();
+    }
+
+    @Bean
+    public Executor threadPoolTaskExecutor() {
+        return new ThreadPoolTaskExecutor();
     }
 
 }

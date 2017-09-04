@@ -103,7 +103,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'resetPasswordConfirmation',
                 controllerAs: "vm"
             })
-
+        .state("userSearch",
+            {
+                templateUrl: "partials/userSearch/userSearch.html",
+                controller: "userSearchController",
+                controllerAs: "vm",
+                url: "/users/search?{name}"
+            })
     ;
     $urlRouterProvider.otherwise("/home");
 });
