@@ -28,9 +28,38 @@
                                     <td>{{'UserProfile.birthday' | translate}}</td>
                                     <td>to be implemented</td>
                                 </tr>
-                                <tr>
+                                <tr ng-hide="vm.userProfile.countryId">
+                                    <td>{{'UserSettings.form.country' | translate}}</td>
+                                    <!--<td ng-repeat="country in vm.country"-->
+                                        <!--ng-if="country.id === vm.userProfile.countryId">{{country.description}}</td>-->
+                                    <!--to delete the bottom field when countries are added to SessionStorage/UserProfile-->
+                                    <td><span>Israel</span></td>
+                                </tr>
+                                <tr ng-hide="vm.userProfile.cityId">
                                     <td>{{'UserProfile.city' | translate}}</td>
-                                    <td>to be implemented</td>
+                                    <td ng-repeat="city in vm.cities"
+                                        ng-if="city.id === vm.userProfile.cityId">{{city.description}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{'UserSettings.form.gender' | translate}}</td>
+                                    <td ng-repeat="gender in vm.gender"
+                                        ng-if="gender.id === vm.userProfile.genderId">{{gender.description}}</td>
+                                </tr>
+                                <tr ng-hide="vm.userProfile.facebookLink===''">
+                                    <td>{{'UserSettings.form.facebook' | translate}}</td>
+                                    <td>{{vm.userProfile.facebookLink}}</td>
+                                </tr>
+                                <tr ng-hide="vm.userProfile.profession===''">
+                                    <td>{{'UserSettings.form.profession' | translate}}</td>
+                                    <td>{{vm.userProfile.profession}}</td>
+                                </tr>
+                                <tr ng-hide="vm.userProfile.company===''">
+                                    <td>{{'UserSettings.form.company' | translate}}</td>
+                                    <td>{{vm.userProfile.company}}</td>
+                                </tr>
+                                <tr ng-hide="vm.userProfile.phoneNumber===''">
+                                    <td>{{'UserSettings.form.phoneNumber' | translate}}</td>
+                                    <td>{{vm.userProfile.phoneNumber}}</td>
                                 </tr>
                                 </tbody>
                             </table>
