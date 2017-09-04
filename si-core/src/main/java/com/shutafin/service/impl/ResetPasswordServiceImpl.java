@@ -12,6 +12,7 @@ import com.shutafin.repository.account.ResetPasswordConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@Slf4j
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private static final int LINK_HOURS_EXPIRATION = 24;
@@ -69,8 +71,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         ResetPasswordConfirmation resetPasswordConfirmation = new ResetPasswordConfirmation();
         resetPasswordConfirmation.setUser(user);
         resetPasswordConfirmation.setUrlLink(UUID.randomUUID().toString());
-        resetPasswordConfirmation.setConfirmed(false);
-        resetPasswordConfirmation.setExpiresAt(DateUtils.addHours(new Date(), (LINK_HOURS_EXPIRATION)));
+        resetPasswordConfirmation.setIsConfirmed(false);
+        resetPasswordConfirmation.setExpiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION));
         resetPasswordConfirmationRepository.save(resetPasswordConfirmation);
         return resetPasswordConfirmation;
     }
@@ -89,6 +91,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Override
     public void resetPasswordValidation(String link) {
         if (resetPasswordConfirmationRepository.findValidUrlLink(link) == null) {
+            log.warn("Resource not found exception:");
+            log.warn("UrlLink {} was not found", link);
             throw new ResourceNotFoundException();
         }
     }
@@ -98,9 +102,11 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     public void passwordChange(PasswordWeb passwordWeb, String link) {
         ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findValidUrlLink(link);
         if (resetPasswordConfirmation == null) {
+            log.warn("Resource not found exception:");
+            log.warn("UrlLink {} was not found", link);
             throw new ResourceNotFoundException();
         }
-        resetPasswordConfirmation.setConfirmed(Boolean.TRUE);
+        resetPasswordConfirmation.setIsConfirmed(Boolean.TRUE);
         resetPasswordConfirmationRepository.update(resetPasswordConfirmation);
 
         passwordService.updateUserPasswordInDb(resetPasswordConfirmation.getUser(), passwordWeb.getNewPassword());

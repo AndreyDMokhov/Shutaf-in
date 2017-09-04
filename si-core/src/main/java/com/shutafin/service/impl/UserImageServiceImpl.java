@@ -9,6 +9,7 @@ import com.shutafin.repository.common.ImageStorageRepository;
 import com.shutafin.repository.common.UserImageRepository;
 import com.shutafin.service.EnvironmentConfigurationService;
 import com.shutafin.service.UserImageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class UserImageServiceImpl implements UserImageService {
 
     private static final String IMAGE_EXTENSION = ".jpg";
@@ -34,9 +36,6 @@ public class UserImageServiceImpl implements UserImageService {
     @Autowired
     private EnvironmentConfigurationService environmentConfigurationService;
 
-    @Autowired
-    private UserImageService userImageService;
-
     @Override
     @Transactional
     public UserImage addUserImage(UserImageWeb image, User user) {
@@ -46,7 +45,7 @@ public class UserImageServiceImpl implements UserImageService {
 
         userImageRepository.save(userImage);
 
-        String imageLocalPath = getUserDirectoryPath(user) + String.valueOf(userImage.getId()) + IMAGE_EXTENSION;
+        String imageLocalPath = getUserDirectoryPath(user) + userImage.getId() + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         saveUserImageToFileSystem(imageEncoded, userImage);
         ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
@@ -64,6 +63,8 @@ public class UserImageServiceImpl implements UserImageService {
         }
         userImage = userImageRepository.findById(userImageId);
         if (userImage == null || !user.getId().equals(userImage.getUser().getId())) {
+            log.warn("Resource not found exception:");
+            log.warn("User Image with ID {} was not found", userImageId);
             throw new ResourceNotFoundException(String.format("User Image with ID %d was not found", userImageId));
         }
         saveUserImageToFileSystem(userImage.getImageStorage().getImageEncoded(), userImage);
@@ -71,9 +72,9 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
+    @Transactional
     public void deleteUserImage(User user, Long userImageId) {
-
-        UserImage userImage = userImageService.getUserImage(user, userImageId);
+        UserImage userImage = this.getUserImage(user, userImageId);
         deleteLocalImage(userImage);
         imageStorageRepository.delete(userImage.getImageStorage());
         userImageRepository.delete(userImage);
@@ -99,9 +100,8 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     private String getUserDirectoryPath(User user) {
-        String userDirPath = environmentConfigurationService.getLocalImagePath() + String.valueOf(user.getId())
+        return environmentConfigurationService.getLocalImagePath() + user.getId()
                 + File.separator;
-        return userDirPath;
     }
 
     private void saveUserImageToFileSystem(String image, UserImage userImage) {
@@ -115,11 +115,11 @@ public class UserImageServiceImpl implements UserImageService {
                 outputStream.close();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File not found\n" + e);
+            log.error("File not found exception:");
+            log.error("File not found", e);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error while saving image to file\n" + e);
+            log.error("Input output exception:");
+            log.error("Error while saving image to file", e);
         }
     }
 
@@ -128,7 +128,7 @@ public class UserImageServiceImpl implements UserImageService {
         userImage.setId(userImageId);
         userImage.setUser(user);
         userImage.setImageStorage(new ImageStorage());
-        String imageLocalPath = getUserDirectoryPath(user) + String.valueOf(userImageId) + IMAGE_EXTENSION;
+        String imageLocalPath = getUserDirectoryPath(user) + userImageId + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         File imageFile = new File(imageLocalPath);
         try {
@@ -142,11 +142,11 @@ public class UserImageServiceImpl implements UserImageService {
                 return userImage;
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File not found\n" + e);
+            log.error("File not found exception:");
+            log.error("File not found", e);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error while reading image from file system\n" + e);
+            log.error("Input output exception:");
+            log.error("Error while reading image from file system", e);
         }
         return null;
     }

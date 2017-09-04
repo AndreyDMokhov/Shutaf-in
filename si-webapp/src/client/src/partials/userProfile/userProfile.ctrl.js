@@ -34,6 +34,11 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
                 notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
             },
             function (error) {
+
+                if (error === undefined || error === null) {
+                    notify.set($filter('translate')('Error.SYS'), {type: 'error'});
+                }
+
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             }
         )

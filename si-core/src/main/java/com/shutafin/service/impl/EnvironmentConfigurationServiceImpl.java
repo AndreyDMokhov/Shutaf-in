@@ -2,15 +2,17 @@ package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.SystemException;
 import com.shutafin.service.EnvironmentConfigurationService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
+import java.util.Arrays;
 
 @Service
+@Slf4j
 public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigurationService {
 
     @Value("${external.port}")
@@ -30,7 +32,9 @@ public class EnvironmentConfigurationServiceImpl implements EnvironmentConfigura
             InetAddress ip = InetAddress.getLocalHost();
             serverAddress = ip.getHostAddress();
         } catch (UnknownHostException e) {
-            throw new SystemException(e.getMessage() + ":\n" + e.getStackTrace());
+            log.error("Host cannot be resolved:");
+            log.error(e.getMessage(), e);
+            throw new SystemException(e.getMessage() + ":\n" + Arrays.toString(e.getStackTrace()));
         }
 
         String suffix = port.isEmpty() ? "" : String.format(":%s", port);
