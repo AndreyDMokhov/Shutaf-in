@@ -10,5 +10,6 @@ public interface UserRepository extends PersistentDao<User> {
 
     User findUserByEmail(String email);
     Boolean isEmailExists(String email);
+    List<User> findAllUsers();
     List<User> findUsersByFirstAndLastName(List<String> names);
 }
