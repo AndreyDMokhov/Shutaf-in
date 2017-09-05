@@ -6,6 +6,7 @@ import com.shutafin.App;
 import com.shutafin.configuration.*;
 import com.shutafin.model.web.APIWebResponse;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-
+@Slf4j
 @WebMvcTest(value = App.class)
 @EnableAutoConfiguration
 @ContextConfiguration(classes = {
@@ -57,7 +58,7 @@ public class BaseTestImpl implements BaseTest {
             return apiResponse;
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error("Error occurred: ", e);
             throw new IllegalStateException(e);
         }
     }
@@ -120,7 +121,7 @@ public class BaseTestImpl implements BaseTest {
             case POST:
                 return post(url);
         }
-
+        log.error("HTTP method {} is not supported", httpMethod.name());
         throw new IllegalArgumentException(String.format("HTTP method %s is not supported", httpMethod.name()));
     }
 

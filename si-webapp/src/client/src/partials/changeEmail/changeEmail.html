@@ -4,12 +4,11 @@
         <div>
             <uib-accordion close-others="oneAtATime">
                 <form name="form" novalidate role="form">
-                    <div uib-accordion-group class="panel-default" is-open="vm.isOpen">
+                    <div uib-accordion-group class="panel-default" is-open="vm.isClose">
                         <uib-accordion-heading>
                             {{'Settings.security.email.title' | translate}}
                             <i class="pull-right glyphicon"
-                               ng-class="{'glyphicon-chevron-down': status.open,
-                               'glyphicon-chevron-right': !status.open}">
+                               ng-class="{'glyphicon-chevron-down': !status.open}">
                             </i>
                         </uib-accordion-heading>
                         <div class="form-group"

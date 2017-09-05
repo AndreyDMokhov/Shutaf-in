@@ -56,7 +56,7 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
             public Object invoke(Object o, Method method, Object[] args) throws Throwable {
 
                 if (method.getAnnotation(NoAuthentication.class) != null) {
-                    return method.invoke(bean, args);
+                    return executeMethod(method, bean, args);
                 }
 
 
