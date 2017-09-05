@@ -4,6 +4,8 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
 
+    <!--Uncomment bottom field when countries are added to SessionStorage/UserProfile-->
+    // vm.country = $localStorage.country;
     vm.cities = $localStorage.cities;
     vm.gender = $localStorage.genders;
 
