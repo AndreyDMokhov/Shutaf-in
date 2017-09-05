@@ -115,5 +115,10 @@
   "Search.button": "Search",
   "Search.notFound" : "No users found on your request",
   "Search.request" : "Enter your request",
-  "Search.results" : "Results:"
+  "Search.results" : "Results:",
+
+  "SECTION" : "Questions",
+  "Questions.title" : "Questions",
+  "Questions.button.next" : "Next",
+  "Questions.confirm" : "Answers were saved"
 }

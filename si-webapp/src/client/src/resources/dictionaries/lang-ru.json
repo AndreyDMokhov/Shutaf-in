@@ -117,7 +117,12 @@
   "Search.button": "Поиск",
   "Search.notFound" : "По Вашему запросу пользователи не найдены",
   "Search.request" : "Введите Ваш запрос для поиска",
-  "Search.results" : "Результатов:"
+  "Search.results" : "Результатов:",
+
+  "SECTION" : "Questions",
+  "Questions.title" : "Вопросы",
+  "Questions.button.next" : "Дальше",
+  "Questions.confirm" : "Ответы успешно сохранены"
 
 }
 
