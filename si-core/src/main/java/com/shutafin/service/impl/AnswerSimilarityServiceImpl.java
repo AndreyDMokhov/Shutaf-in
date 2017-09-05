@@ -17,6 +17,9 @@ public class AnswerSimilarityServiceImpl implements AnswerSimilarityService {
 
     @Override
     public AnswerSimilarity getAnswerSimilarity(AnswerExtended answer, AnswerExtended answerToCompare) {
+        if (answer == null || answerToCompare == null) {
+            return new AnswerSimilarity(answer, answerToCompare, 0);
+        }
         return answerSimilarityRepository.getAnswerSimilarity(answer, answerToCompare);
     }
 }

@@ -4,12 +4,15 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.AnswerExtended;
 import com.shutafin.model.entities.infrastructure.QuestionExtended;
 import com.shutafin.model.entities.infrastructure.QuestionImportance;
+import com.shutafin.model.entities.matching.MaxUserMatchingScore;
 import com.shutafin.model.entities.matching.UserQuestionExtendedAnswer;
 import com.shutafin.model.web.UserQuestionExtendedAnswersWeb;
 import com.shutafin.repository.initialization.locale.AnswerExtendedRepository;
 import com.shutafin.repository.initialization.locale.QuestionExtendedRepository;
 import com.shutafin.repository.initialization.locale.QuestionImportanceRepository;
+import com.shutafin.repository.matching.MaxUserMatchingScoreRepository;
 import com.shutafin.repository.matching.UserQuestionExtendedAnswerRepository;
+import com.shutafin.service.AnswerSimilarityService;
 import com.shutafin.service.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,17 +39,12 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     @Autowired
     private QuestionImportanceRepository questionImportanceRepository;
 
-    @Override
-    public void addUserQuestionAnswer(UserQuestionExtendedAnswer userQuestionExtendedAnswer) {
-        List<UserQuestionExtendedAnswer> oldAnswers =
-                userQuestionExtendedAnswerRepository.getUserQuestionExtendedAnswer(
-                        userQuestionExtendedAnswer.getUser(), userQuestionExtendedAnswer.getQuestion());
-        if (oldAnswers == null) {
-            userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
-        } else {
-            updateUserQuestionAnswer(userQuestionExtendedAnswer);
-        }
-    }
+    @Autowired
+    private MaxUserMatchingScoreRepository maxUserMatchingScoreRepository;
+
+    @Autowired
+    private AnswerSimilarityService answerSimilarityService;
+
 
     @Override
     public Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionAnswers(User user) {
@@ -62,39 +60,48 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
         return userQuestionExtendedAnswerMap;
     }
 
-    @Override
-    public void updateUserQuestionAnswer(UserQuestionExtendedAnswer userQuestionExtendedAnswer) {
-        List<UserQuestionExtendedAnswer> oldAnswers =
-                userQuestionExtendedAnswerRepository.getUserQuestionExtendedAnswer(
-                        userQuestionExtendedAnswer.getUser(), userQuestionExtendedAnswer.getQuestion());
-        for (UserQuestionExtendedAnswer answer : oldAnswers) {
-            userQuestionExtendedAnswerRepository.delete(answer);
-        }
-        userQuestionExtendedAnswerRepository.update(userQuestionExtendedAnswer);
-    }
 
     @Override
     public void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList,
                                           User user) {
 
+        deleteUserQuestionAnswers(user);
+        Integer maxScore = 0;
         for (UserQuestionExtendedAnswersWeb questionExtendedAnswersWeb : userQuestionExtendedAnswersWebList) {
-            UserQuestionExtendedAnswer userQuestionExtendedAnswer;
             QuestionExtended question = questionExtendedRepository
                     .findById(questionExtendedAnswersWeb.getQuestionId());
             QuestionImportance importance = questionImportanceRepository
                     .findById(questionExtendedAnswersWeb.getQuestionImportanceId());
-            if (questionExtendedAnswersWeb.getAnswersId() == null) {
-                userQuestionExtendedAnswer = new UserQuestionExtendedAnswer(user, question, null, importance);
-                userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
-            } else {
-                AnswerExtended answer = null;
-                for (Integer answerId : questionExtendedAnswersWeb.getAnswersId()) {
-                    answer = answerExtendedRepository.findById(answerId);
-                    userQuestionExtendedAnswer = new UserQuestionExtendedAnswer(user, question, answer, importance);
-                    userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
-                }
-            }
+            UserQuestionExtendedAnswer userQuestionExtendedAnswer =
+                    new UserQuestionExtendedAnswer(user, question, null, importance);
 
+            AnswerExtended answer = null;
+            for (Integer answerId : questionExtendedAnswersWeb.getAnswersId()) {
+                answer = answerExtendedRepository.findById(answerId);
+                userQuestionExtendedAnswer = new UserQuestionExtendedAnswer(user, question, answer, importance);
+                userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
+            }
+            maxScore += importance.getWeight() * answerSimilarityService.getAnswerSimilarity(answer, answer)
+                    .getSimilarityScore();
+
+        }
+
+        MaxUserMatchingScore maxUserMatchingScore = maxUserMatchingScoreRepository.getUserMaxMatchingScore(user);
+        if (maxUserMatchingScore == null) {
+            maxUserMatchingScore = new MaxUserMatchingScore();
+            maxUserMatchingScore.setUser(user);
+            maxUserMatchingScore.setScore(maxScore);
+            maxUserMatchingScoreRepository.save(maxUserMatchingScore);
+        } else {
+            maxUserMatchingScore.setScore(maxScore);
+            maxUserMatchingScoreRepository.update(maxUserMatchingScore);
+        }
+    }
+
+    private void deleteUserQuestionAnswers(User user) {
+        for (UserQuestionExtendedAnswer userQuestionExtendedAnswer :
+                userQuestionExtendedAnswerRepository.getAllUserQuestionExtendedAnswers(user)) {
+            userQuestionExtendedAnswerRepository.delete(userQuestionExtendedAnswer);
         }
     }
 }

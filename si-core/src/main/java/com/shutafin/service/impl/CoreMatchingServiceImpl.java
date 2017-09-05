@@ -5,6 +5,7 @@ import com.shutafin.model.entities.infrastructure.QuestionExtended;
 import com.shutafin.model.entities.matching.UserMatchingScore;
 import com.shutafin.model.entities.matching.UserQuestionExtendedAnswer;
 import com.shutafin.repository.common.UserRepository;
+import com.shutafin.repository.matching.MaxUserMatchingScoreRepository;
 import com.shutafin.repository.matching.UserMatchingScoreRepository;
 import com.shutafin.service.AnswerSimilarityService;
 import com.shutafin.service.CoreMatchingService;
@@ -36,6 +37,9 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private MaxUserMatchingScoreRepository maxUserMatchingScoreRepository;
+
     @Override
     public UserMatchingScore evaluateUserMatchingScore(User userOrigin, User userToMatch) {
 
@@ -55,33 +59,26 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     private Double calculateMatchingScore(User userOrigin, User userToMatch) {
         Double totalScore = 0.;
         Double crossScore = 0.;
-        Double maxPossibleScoreOrigin = 0.;
-        Double maxPossibleScoreToMatch = 0.;
+        Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.getUserMaxMatchingScore(userOrigin)
+                .getScore().doubleValue();
+        Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.getUserMaxMatchingScore(userOrigin)
+                .getScore().doubleValue();
 
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers =
                 userQuestionExtendedAnswerService.getAllUserQuestionAnswers(userOrigin);
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers =
                 userQuestionExtendedAnswerService.getAllUserQuestionAnswers(userToMatch);
 
-
         for (QuestionExtended question : userOriginAnswers.keySet()) {
             Integer answerSimilarityScore = getAnswerSimilarityScore(userOriginAnswers, userToMatchAnswers, question);
-
-            Integer maxAnswerSimilarityScore = getAnswerSimilarityScore(userOriginAnswers, userOriginAnswers, question);
 
             totalScore += userOriginAnswers.get(question).get(0).getImportance().getWeight() *
                     answerSimilarityScore;
 
-            maxPossibleScoreOrigin += userOriginAnswers.get(question).get(0).getImportance().getWeight() *
-                    maxAnswerSimilarityScore;
-
             if (userToMatchAnswers.get(question) != null) {
                 crossScore += userToMatchAnswers.get(question).get(0).getImportance().getWeight() *
                         answerSimilarityScore;
-                maxPossibleScoreToMatch += userToMatchAnswers.get(question).get(0).getImportance().getWeight() *
-                        maxAnswerSimilarityScore;
             }
-
         }
 
         if (maxPossibleScoreToMatch == 0 || maxPossibleScoreOrigin == 0) {
