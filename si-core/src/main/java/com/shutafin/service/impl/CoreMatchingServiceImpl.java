@@ -61,7 +61,7 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
         Double crossScore = 0.;
         Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.getUserMaxMatchingScore(userOrigin)
                 .getScore().doubleValue();
-        Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.getUserMaxMatchingScore(userOrigin)
+        Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.getUserMaxMatchingScore(userToMatch)
                 .getScore().doubleValue();
 
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers =

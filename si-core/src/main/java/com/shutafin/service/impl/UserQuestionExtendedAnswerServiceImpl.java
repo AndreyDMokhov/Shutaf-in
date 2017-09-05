@@ -72,8 +72,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
                     .findById(questionExtendedAnswersWeb.getQuestionId());
             QuestionImportance importance = questionImportanceRepository
                     .findById(questionExtendedAnswersWeb.getQuestionImportanceId());
-            UserQuestionExtendedAnswer userQuestionExtendedAnswer =
-                    new UserQuestionExtendedAnswer(user, question, null, importance);
+            UserQuestionExtendedAnswer userQuestionExtendedAnswer;
 
             AnswerExtended answer = null;
             for (Integer answerId : questionExtendedAnswersWeb.getAnswersId()) {
