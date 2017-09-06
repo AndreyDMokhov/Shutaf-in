@@ -1,9 +1,11 @@
-app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state) {
+app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout) {
 
     var vm = this;
 
     vm.sessionService = sessionService;
-    $rootScope.brand = ($filter('translate')("Header.brand"));
+    $timeout(function () {
+        $rootScope.brand = ($filter('translate')("Header.brand"));
+    }, 0);
     vm.initialization = {};
 
     function init() {
