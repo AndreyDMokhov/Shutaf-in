@@ -88,7 +88,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationObject_Positive() {
+    public void registrationRequestObject_Positive() {
         RegistrationRequestWeb registrationRequestWeb = new RegistrationRequestWeb();
         registrationRequestWeb.setEmail("email@site.com");
         registrationRequestWeb.setFirstName("Peter");
@@ -107,7 +107,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationJson_AllFieldsNull() throws Exception {
+    public void registrationRequestJson_AllFieldsNull() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":null,\"lastName\":null,\"email\":null,\"password\":null,\"userLanguageId\":null}";
         errorList.add(INP_FIRST_NAME_NOT_BLANK);
         errorList.add(INP_LAST_NAME_NOT_BLANK);
@@ -118,7 +118,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationJson_AllEmptyFields() throws Exception {
+    public void registrationRequestJson_AllEmptyFields() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"\",\"lastName\":\"\",\"email\":\"\",\"password\":\"\",\"userLanguageId\":\"\"}";
         errorList.add(INP_FIRST_NAME_NOT_BLANK);
         errorList.add(INP_FIRST_NAME_LENGTH);
@@ -132,7 +132,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationJson_AllWhitespaceFields() throws Exception {
+    public void registrationRequestJson_AllWhitespaceFields() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\" \",\"lastName\":\" \",\"email\":\" \",\"password\":\" \",\"userLanguageId\":\" \"}";
         errorList.add(INP_FIRST_NAME_NOT_BLANK);
         errorList.add(INP_FIRST_NAME_LENGTH);
@@ -147,7 +147,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationJson_ExceededMaxLength() throws Exception {
+    public void registrationRequestJson_ExceededMaxLength() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrroooooooooov\"," +
                 "\"lastName\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrroooooooooov\"," +
                 "\"email\":\"ppppppppppeeeeeeeeeettttttttttrrrrrrrrrr@gmailx.com\"," +
@@ -160,7 +160,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationJson_ExceededMinLength() throws Exception {
+    public void registrationRequestJson_ExceededMinLength() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"pp\",\"lastName\":\"pp\",\"email\":\"pp@gmail.com\",\"password\":\"1234567\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_FIRST_NAME_LENGTH);
         errorList.add(INP_LAST_NAME_LENGTH);
@@ -169,21 +169,21 @@ public class RegistrationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void registrationJson_IllegalEmail() throws Exception {
+    public void registrationRequestJson_IllegalEmail() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"gmail\",\"password\":\"12345678\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_EMAIL_EMAIL);
         assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
-    public void registrationJson_IllegalUserLanguageId() throws Exception {
+    public void registrationRequestJson_IllegalUserLanguageId() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"0\"}";
         errorList.add(INP_USER_LANGUAGE_ID_MIN);
         assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
-    public void registrationObject_LanguageIdWithAStringValue() {
+    public void registrationRequestObject_LanguageIdWithAStringValue() {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"a\"}";
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(REGISTRATION_REQUEST_URL)

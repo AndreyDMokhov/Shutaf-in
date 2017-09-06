@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @RunWith(SpringRunner.class)
 public class UserAccountControllerTest extends BaseTestImpl {
 
@@ -36,6 +37,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     private static final String VALID_SESSION = "40042cd8-51d0-4282-b431-36ee7f6dcaef";
     private static final String INVALID_SESSION = "";
     private static final String SESSION_ID_HEADER_NAME = "session_id";
+
 
     private Language language;
     private User user;
@@ -176,5 +178,4 @@ public class UserAccountControllerTest extends BaseTestImpl {
         user.setCreatedDate(Date.from(Instant.now()));
         return user;
     }
-
 }
