@@ -7,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
@@ -113,7 +114,7 @@ public class AutoScriptExecutor {
     private void executeQuery(String query) {
         try {
             jdbcTemplate.execute(query);
-        } catch (Exception exp) {
+        } catch (DataAccessException exp) {
             log.error("Error while executing query with JDBC Template");
             log.error("Query: {}", query);
             log.error("Exception: ", exp);

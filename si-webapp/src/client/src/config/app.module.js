@@ -14,4 +14,8 @@ var app = angular.module("app", [
     'pascalprecht.translate',
     'naif.base64',
     'ngStorage'
+    /* @if templateCache **
+     ,'templateCache'
+     /* @endif */
+
 ]);
