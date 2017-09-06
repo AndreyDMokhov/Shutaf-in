@@ -44,6 +44,7 @@ public class LoginServiceImpl implements LoginService {
         this.passwordService = passwordService;
         this.userAccountRepository = userAccountRepository;
     }
+
     @Transactional(noRollbackFor = AuthenticationException.class)
     public User getUserByLoginWebModel(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
@@ -63,17 +64,17 @@ public class LoginServiceImpl implements LoginService {
 
     private UserAccount checkUserAccountStatus(User user) {
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
-        if (userAccount == null ) {
+        if (userAccount == null) {
             String message = String.format("UserAccount for user with ID %s does not exist", user.getId());
             log.error(message, user.getId());
             throw new SystemException(message);
         }
         AccountStatus accountStatus = userAccount.getAccountStatus();
-        if (accountStatus == AccountStatus.BLOCKED){
+        if (accountStatus == AccountStatus.BLOCKED) {
             log.warn("UserAccount for userId {} is BLOCKED", user.getId());
             throw new AccountBlockedException();
         }
-        if (accountStatus == AccountStatus.NEW){
+        if (accountStatus == AccountStatus.NEW) {
             log.warn("UserAccount for userId {} is not CONFIRMED", user.getId());
             throw new AccountNotConfirmedException();
         }
@@ -85,12 +86,13 @@ public class LoginServiceImpl implements LoginService {
         if (!passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
             saveUserLoginLogEntry(user, false);
             countLoginFailsAndBlockAccountIfMoreThanMax(user, userAccount);
+            log.warn("Password for userId {} is not CORRECT", user.getId());
             throw new AuthenticationException();
         }
         saveUserLoginLogEntry(user, true);
     }
 
-    private void saveUserLoginLogEntry(User user, boolean isSuccess){
+    private void saveUserLoginLogEntry(User user, boolean isSuccess) {
         UserLoginLog userLoginLog = new UserLoginLog();
         userLoginLog.setUser(user);
         userLoginLog.setIsLoginSuccess(isSuccess);
@@ -98,7 +100,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void countLoginFailsAndBlockAccountIfMoreThanMax(User user, UserAccount userAccount) {
-        if(userLoginLogRepository.hasExceededMaxLoginTries(user, AMOUNT_OF_ALLOWED_MAX_TRIES, MAX_TRIES_FOR_MINUTES)){
+        if (userLoginLogRepository.hasExceededMaxLoginTries(user, AMOUNT_OF_ALLOWED_MAX_TRIES, MAX_TRIES_FOR_MINUTES)) {
             userAccount.setAccountStatus(AccountStatus.BLOCKED);
             userAccountRepository.update(userAccount);
         }
