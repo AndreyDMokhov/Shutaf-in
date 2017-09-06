@@ -20,15 +20,15 @@ public interface BaseTest {
 
     APIWebResponse getResponse(MockHttpServletResponse mockHttpServletResponse);
 
-    void testControllerInputValidationError(String requestUrl, String jsonContent,
-                                            List<String> errorList);
+    void getAssertInputValidationError(String requestUrl, String jsonContent,
+                                       List<String> errorList);
 
-    void testControllerInputValidationError(String requestUrl, String jsonContent,
-                                            List<String> errorList, List<HttpHeaders> sessionHeaders);
+    void getAssertInputValidationError(String requestUrl, String jsonContent,
+                                       List<String> errorList, List<HttpHeaders> sessionHeaders);
 
-    void testControllerInputValidationError(String requestUrl, Object requestObject,
-                                            List<String> errorList);
+    void getAssertInputValidationError(String requestUrl, Object requestObject,
+                                       List<String> errorList);
 
-    void testControllerInputValidationError(String requestUrl, Object requestObject,
-                                            List<String> errorList, List<HttpHeaders> sessionHeaders);
+    void getAssertInputValidationError(String requestUrl, Object requestObject,
+                                       List<String> errorList, List<HttpHeaders> sessionHeaders);
 }

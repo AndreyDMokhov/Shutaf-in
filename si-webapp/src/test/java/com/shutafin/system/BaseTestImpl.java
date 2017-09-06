@@ -42,7 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         WebContextConfiguration.class,
         SMTPContextConfiguration.class
 })
-
 public class BaseTestImpl implements BaseTest {
 
     private Gson gson;
@@ -113,8 +112,8 @@ public class BaseTestImpl implements BaseTest {
     }
 
     @Override
-    public void testControllerInputValidationError(String requestUrl, String jsonContent,
-                                                   List<String> errorList) {
+    public void getAssertInputValidationError(String requestUrl, String jsonContent,
+                                              List<String> errorList) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(requestUrl)
                 .setHttpMethod(HttpMethod.POST)
@@ -124,8 +123,8 @@ public class BaseTestImpl implements BaseTest {
     }
 
     @Override
-    public void testControllerInputValidationError(String requestUrl, String jsonContent,
-                                                   List<String> errorList, List<HttpHeaders> sessionHeaders) {
+    public void getAssertInputValidationError(String requestUrl, String jsonContent,
+                                              List<String> errorList, List<HttpHeaders> sessionHeaders) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(requestUrl)
                 .setHttpMethod(HttpMethod.POST)
@@ -136,8 +135,8 @@ public class BaseTestImpl implements BaseTest {
     }
 
     @Override
-    public void testControllerInputValidationError(String requestUrl, Object requestObject,
-                                                   List<String> errorList) {
+    public void getAssertInputValidationError(String requestUrl, Object requestObject,
+                                              List<String> errorList) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(requestUrl)
                 .setHttpMethod(HttpMethod.POST)
@@ -147,8 +146,8 @@ public class BaseTestImpl implements BaseTest {
     }
 
     @Override
-    public void testControllerInputValidationError(String requestUrl, Object requestObject,
-                                                   List<String> errorList, List<HttpHeaders> sessionHeaders) {
+    public void getAssertInputValidationError(String requestUrl, Object requestObject,
+                                              List<String> errorList, List<HttpHeaders> sessionHeaders) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(requestUrl)
                 .setHttpMethod(HttpMethod.POST)
@@ -158,7 +157,7 @@ public class BaseTestImpl implements BaseTest {
         getAssertErrorList(request, errorList);
     }
 
-    private void getAssertErrorList(ControllerRequest request, List<String> errorList){
+    private void getAssertErrorList(ControllerRequest request, List<String> errorList) {
         APIWebResponse response = getResponse(request);
         Assert.assertNotNull(response.getError());
         InputValidationError inputValidationError = (InputValidationError) response.getError();

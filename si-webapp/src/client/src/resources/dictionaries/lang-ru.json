@@ -18,6 +18,8 @@
   "Error.ESE":"Ошибка отправления электронного адреса",
   "Error.EDE":"Этот электронный адрес уже занят",
   "Error.IPE":"Неверный пароль",
+  "Error.ABL":"Ваш аккаунт заблокирован",
+  "Error.ANC":"Ваш аккаунт не активирван, пожалуйста подтвердите ваш электронный адрес",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Регистрация",
@@ -109,6 +111,13 @@
   "Settings.personal.form.lastName":"Фамилия",
   "Settings.personal.form.button.submit":"Применить",
   "Settings.personal.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
-  "Settings.personal.message.save.success":"Пользователь успешно сохранен"
+  "Settings.personal.message.save.success":"Пользователь успешно сохранен",
+
+  "SECTION": "USER SEARCH",
+  "Search.button": "Поиск",
+  "Search.notFound" : "По Вашему запросу пользователи не найдены",
+  "Search.request" : "Введите Ваш запрос для поиска",
+  "Search.results" : "Результатов:"
+
 }
 

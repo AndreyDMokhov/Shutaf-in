@@ -3,6 +3,7 @@ package com.shutafin.handlers;
 import com.shutafin.exception.AbstractAPIException;
 import com.shutafin.model.web.error.ErrorResponse;
 import com.shutafin.model.web.error.ErrorType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,13 +11,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice
+@Slf4j
 public class ResponseExceptionHandler {
 
     @ExceptionHandler(AbstractAPIException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponse> getAPIExceptionResponse(AbstractAPIException exception) {
 
-        exception.printStackTrace();
+        log.error("API exception: ", exception);
 
         HttpStatus httpStatus = HttpStatus.valueOf(exception.getErrorType().getHttpCode());
         return new ResponseEntity<>(exception.getErrorResponse(), httpStatus);
@@ -24,7 +26,8 @@ public class ResponseExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> getSystemExceptionResponse(Exception exception) {
-        exception.printStackTrace();
+
+        log.error("Internal error: ", exception);
 
         ErrorType errorType = ErrorType.SYSTEM;
 

@@ -29,9 +29,13 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
+    public RegistrationController() {
+    }
+
     @RequestMapping(value = "/registration/request", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
                              BindingResult result) {
+        log.debug("/users/registration/request");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
@@ -43,9 +47,9 @@ public class RegistrationController {
     @SessionResponse
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
     public User confirmRegistration(@PathVariable String link) {
+        log.debug("/users/registration/confirmation/{link}");
         if (StringUtils.isBlank(link)) {
-            log.warn("Resource not found exception:");
-            log.warn("link is blank");
+            log.warn("Link is blank or empty");
             throw new ResourceNotFoundException();
         }
         return registrationService.confirmRegistration(link);

@@ -1,11 +1,9 @@
 app.factory('settingsModel', function (Restangular, $sessionStorage) {
-
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('/api/users/settings');
-        RestangularProvider.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
     });
-
     function submitChanges(params) {
+        rest.setDefaultHeaders ({'session_id':$sessionStorage.sessionId});
         return  rest.one('/update').customPUT(params);
     }
 
