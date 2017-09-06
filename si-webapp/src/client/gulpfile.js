@@ -16,10 +16,29 @@ var gulpif = require('gulp-if');
 var minifyCss = require('gulp-minify-css');
 var runSequence = require('run-sequence');
 var templateCache = require('gulp-angular-templatecache');
-var del = require('del');
+var deleteFiles = require('del');
 var deleteEmpty = require('delete-empty');
 var preprocess = require('gulp-preprocess');
+var clean = require('gulp-clean');
 
+
+//clean all,
+gulp.task('clean-all', [
+    'clean-tmp',
+    'clean-dist'
+]);
+
+//clean .tmp
+gulp.task('clean-tmp', function () {
+    return gulp.src('.tmp', {read: false})
+        .pipe(clean({force: true}));
+});
+
+//clean dist
+gulp.task('clean-dist', function () {
+    return gulp.src('dist', {read: false})
+        .pipe(clean({force: true}));
+});
 
 // Checking for errors in scripts
 gulp.task('jshint', function () {
@@ -52,7 +71,7 @@ gulp.task('babel', function () {
         .pipe(gulp.dest('.tmp'))
 });
 
-gulp.task('html', function () {
+gulp.task('minify', function () {
     return gulp.src('.tmp/**/*.html')
         .pipe(useref())
         .pipe(gulpif('*.js', ngAnnotate()))
@@ -92,8 +111,8 @@ gulp.task('build-html-template', function () {
 });
 
 // This task removes all .html in the specified folder
-gulp.task('del', function () {
-    return del([
+gulp.task('delete-html', function () {
+    return deleteFiles([
         'dist/**/*.html',
         '!dist/index.html'
     ])
@@ -117,8 +136,19 @@ gulp.task('delete-empty-directories', function () {
     deleteEmpty.sync('dist/');
 });
 
-gulp.task('start', function (callback) {
-    runSequence('copy', 'build-html-template','preprocessing','babel', 'html', 'copyData', 'copyComponents','del','delete-empty-directories', 'newConnect', callback);
+gulp.task('build', function (callback) {
+    runSequence(
+        'clean-all',
+        'copy',
+        'build-html-template',
+        'preprocessing',
+        'babel',
+        'minify',
+        'copyData',
+        'copyComponents',
+        'delete-html',
+        'delete-empty-directories',
+        callback);
 });
 
 // to run new server
@@ -147,6 +177,4 @@ gulp.task('connect', function () {
         }
     });
 });
-
-
 

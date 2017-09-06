@@ -5,7 +5,7 @@
   "main": "index.html",
   "private": true,
   "scripts": {
-    "postinstall": "bower install --save"
+    "postinstall": "bower install --save && gulp build"
   },
   "author": "",
   "license": "ISC",
