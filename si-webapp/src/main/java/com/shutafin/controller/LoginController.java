@@ -23,8 +23,15 @@ import javax.validation.Valid;
 @Slf4j
 public class LoginController {
 
-    @Autowired
     private LoginService loginWebService;
+
+    @Autowired
+    public LoginController(LoginService loginWebService) {
+        this.loginWebService = loginWebService;
+    }
+
+    public LoginController() {
+    }
 
     @SessionResponse
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})

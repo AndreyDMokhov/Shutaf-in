@@ -4,7 +4,6 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorResponse;
 import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
@@ -12,23 +11,26 @@ import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 public class RegistrationControllerTest extends BaseTestImpl {
 
     private static final String REGISTRATION_REQUEST_URL = "/users/registration/request";
     private static final String CONFIRM_REGISTRATION_REQUEST_URL = "/users/registration/confirmation/";
+    private static final String SESSION_ID = "bce54f17-624d-4b59-a627-ff5cf42c9078";
 
     private static final String INP_FIRST_NAME_NOT_BLANK = "INP.firstName.NotBlank";
     private static final String INP_LAST_NAME_NOT_BLANK = "INP.lastName.NotBlank";
@@ -58,24 +60,24 @@ public class RegistrationControllerTest extends BaseTestImpl {
     public void setUp() {
         Mockito.doNothing().when(registrationService).save(any(RegistrationRequestWeb.class));
         Mockito.when(registrationService.confirmRegistration(anyString())).thenReturn(new User());
-        Mockito.when(sessionManagementService.generateNewSession(any(User.class))).thenReturn("648c208e-bfc8-49a7-9206-dfca5a8d9759");
+        Mockito.when(sessionManagementService.generateNewSession(any(User.class))).thenReturn(SESSION_ID);
         errorList = new ArrayList<>();
     }
 
-    //@ResponseEntity in controller before vs entity class annotation with message processor
-    @Ignore(value = "Comment out after APiWebResponse will be committed. Prints out User.class.")
     @Test
-    public void registrationConfirmation_Positive() {
+    public void confirmRegistration_Positive() {
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL + "1a424de3-3671-420f-a8e2-ee97158f9ea2")
+                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL + "da1b10db-5727-4474-8700-db6cb6f26cf7")
                 .setHttpMethod(HttpMethod.GET)
                 .build();
-        APIWebResponse response = getResponse(request);
+        MockHttpServletResponse mockHttpServletResponse = getServletResponse(request);
+        APIWebResponse response = getResponse(mockHttpServletResponse);
         Assert.assertNull(response.getError());
+        Assert.assertEquals(mockHttpServletResponse.getHeader("session_id"), SESSION_ID);
     }
 
     @Test
-    public void registrationConfirmation_UrlWithAWhitespace() {
+    public void confirmRegistration_UrlWithAWhitespace() {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(CONFIRM_REGISTRATION_REQUEST_URL + " ")
                 .setHttpMethod(HttpMethod.GET)
@@ -95,7 +97,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         registrationRequestWeb.setUserLanguageId(1);
 
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(CONFIRM_REGISTRATION_REQUEST_URL)
+                .setUrl(REGISTRATION_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setRequestObject(registrationRequestWeb)
                 .build();
@@ -112,7 +114,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -126,7 +128,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -141,7 +143,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -154,7 +156,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_LAST_NAME_LENGTH);
         errorList.add(INP_EMAIL_LENGTH);
         errorList.add(INP_PASSWORD_LENGTH);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -163,21 +165,21 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_FIRST_NAME_LENGTH);
         errorList.add(INP_LAST_NAME_LENGTH);
         errorList.add(INP_PASSWORD_LENGTH);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
     public void registrationRequestJson_IllegalEmail() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"gmail\",\"password\":\"12345678\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_EMAIL_EMAIL);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
     public void registrationRequestJson_IllegalUserLanguageId() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"0\"}";
         errorList.add(INP_USER_LANGUAGE_ID_MIN);
-        sendRegistrationWebRequest(registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -194,17 +196,4 @@ public class RegistrationControllerTest extends BaseTestImpl {
         Assert.assertEquals(SYS_TYPE_ERROR, errorResponse.getErrorTypeCode());
     }
 
-    private void sendRegistrationWebRequest(String json, List<String> errorList) {
-        ControllerRequest request = ControllerRequest.builder()
-                .setUrl(REGISTRATION_REQUEST_URL)
-                .setHttpMethod(HttpMethod.POST)
-                .setJsonContext(json)
-                .build();
-        APIWebResponse response = getResponse(request);
-        Assert.assertNotNull(response.getError());
-        InputValidationError inputValidationError = (InputValidationError) response.getError();
-        Collections.sort(errorList);
-        Collections.sort(inputValidationError.getErrors());
-        Assert.assertEquals(errorList, inputValidationError.getErrors());
-    }
 }
