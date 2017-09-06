@@ -23,22 +23,19 @@ import javax.validation.Valid;
 @Slf4j
 public class LoginController {
 
-    private LoginService loginWebService;
-
     @Autowired
-    public LoginController(LoginService loginWebService) {
-        this.loginWebService = loginWebService;
-    }
+    private LoginService loginWebService;
 
     @SessionResponse
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public User login(@RequestBody @Valid LoginWebModel loginWeb, BindingResult result) {
+        log.debug("/login/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        return loginWebService.getUserByEmail(loginWeb);
+        return loginWebService.getUserByLoginWebModel(loginWeb);
     }
 
 }

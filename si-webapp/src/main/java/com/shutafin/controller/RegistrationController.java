@@ -22,16 +22,13 @@ import javax.validation.Valid;
 @Slf4j
 public class RegistrationController {
 
-    private RegistrationService registrationService;
-
     @Autowired
-    public RegistrationController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
-    }
+    private RegistrationService registrationService;
 
     @RequestMapping(value = "/registration/request", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
                              BindingResult result) {
+        log.debug("/users/registration/request");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
@@ -43,9 +40,9 @@ public class RegistrationController {
     @SessionResponse
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
     public User confirmRegistration(@PathVariable String link) {
-        if (StringUtils.isBlank(link)) {
-            log.warn("Resource not found exception:");
-            log.warn("link is blank");
+        log.debug("/users/registration/confirmation/{link}");
+        if (StringUtils.isBlank(link)){
+            log.warn("Link is blank or empty");
             throw new ResourceNotFoundException();
         }
         return registrationService.confirmRegistration(link);

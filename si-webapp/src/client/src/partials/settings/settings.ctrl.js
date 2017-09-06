@@ -1,4 +1,4 @@
-app.controller('settingsController', function (settingsModel, userInitService, languageService, constantService, $filter, notify, $sessionStorage) {
+app.controller('settingsController', function ($state, settingsModel, userInitService, languageService, constantService, $filter, notify, $sessionStorage) {
     var vm = this;
     vm.dataLoading = false;
 

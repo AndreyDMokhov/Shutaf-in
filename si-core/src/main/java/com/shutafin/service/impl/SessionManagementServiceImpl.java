@@ -5,6 +5,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.SessionManagementService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@Slf4j
 public class SessionManagementServiceImpl implements SessionManagementService {
 
     private static final int NUMBER_DAYS_EXPIRATION = 30;
@@ -41,7 +43,9 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Transactional
     public void validate(String sessionId) throws AuthenticationException {
         UserSession userSession = findValidUserSession(sessionId);
-        if (userSession == null){
+        if (userSession == null) {
+            log.warn("Authentication exception:");
+            log.warn("SessionId {} was not found", sessionId);
             throw new AuthenticationException();
         }
         userSession.setExpirationDate(DateUtils.addDays(new Date(), NUMBER_DAYS_EXPIRATION));
@@ -65,7 +69,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Transactional
     public void invalidateUserSession(String sessionId) {
         UserSession userSession = userSessionRepository.findSessionBySessionIdAndIsValid(sessionId, IS_TRUE);
-        if (userSession != null){
+        if (userSession != null) {
             userSession.setIsValid(IS_FALSE);
             userSessionRepository.update(userSession);
         }
