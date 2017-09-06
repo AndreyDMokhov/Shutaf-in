@@ -114,7 +114,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_EMAIL_NOT_BLANK);
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        getAssertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -128,7 +128,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        getAssertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_USER_LANGUAGE_ID_NOT_NULL);
-        getAssertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -156,7 +156,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_LAST_NAME_LENGTH);
         errorList.add(INP_EMAIL_LENGTH);
         errorList.add(INP_PASSWORD_LENGTH);
-        getAssertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
@@ -165,21 +165,21 @@ public class RegistrationControllerTest extends BaseTestImpl {
         errorList.add(INP_FIRST_NAME_LENGTH);
         errorList.add(INP_LAST_NAME_LENGTH);
         errorList.add(INP_PASSWORD_LENGTH);
-        getAssertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
     public void registrationJson_IllegalEmail() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"gmail\",\"password\":\"12345678\",\"userLanguageId\":\"2\"}";
         errorList.add(INP_EMAIL_EMAIL);
-        getAssertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test
     public void registrationJson_IllegalUserLanguageId() throws Exception {
         String registrationRequestWebJson = "{\"firstName\":\"petr\",\"lastName\":\"petrovich\",\"email\":\"petr@gmail\",\"password\":\"12345678\",\"userLanguageId\":\"0\"}";
         errorList.add(INP_USER_LANGUAGE_ID_MIN);
-        getAssertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
+        assertInputValidationError(REGISTRATION_REQUEST_URL, registrationRequestWebJson, errorList);
     }
 
     @Test

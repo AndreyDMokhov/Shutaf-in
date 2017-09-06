@@ -112,52 +112,52 @@ public class BaseTestImpl implements BaseTest {
     }
 
     @Override
-    public void getAssertInputValidationError(String requestUrl, String jsonContent,
-                                              List<String> errorList) {
+    public void assertInputValidationError(String requestUrl, String jsonContent,
+                                           List<String> errorList) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(requestUrl)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(jsonContent)
                 .build();
-        getAssertErrorList(request, errorList);
+        assertErrorList(request, errorList);
     }
 
     @Override
-    public void getAssertInputValidationError(String requestUrl, String jsonContent,
-                                              List<String> errorList, List<HttpHeaders> sessionHeaders) {
+    public void assertInputValidationError(String requestUrl, String jsonContent,
+                                           List<String> errorList, List<HttpHeaders> sessionHeaders) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(requestUrl)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(jsonContent)
                 .setHeaders(sessionHeaders)
                 .build();
-        getAssertErrorList(request, errorList);
+        assertErrorList(request, errorList);
     }
 
     @Override
-    public void getAssertInputValidationError(String requestUrl, Object requestObject,
-                                              List<String> errorList) {
+    public void assertInputValidationError(String requestUrl, Object requestObject,
+                                           List<String> errorList) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(requestUrl)
                 .setHttpMethod(HttpMethod.POST)
                 .setRequestObject(requestObject)
                 .build();
-        getAssertErrorList(request, errorList);
+        assertErrorList(request, errorList);
     }
 
     @Override
-    public void getAssertInputValidationError(String requestUrl, Object requestObject,
-                                              List<String> errorList, List<HttpHeaders> sessionHeaders) {
+    public void assertInputValidationError(String requestUrl, Object requestObject,
+                                           List<String> errorList, List<HttpHeaders> sessionHeaders) {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(requestUrl)
                 .setHttpMethod(HttpMethod.POST)
                 .setRequestObject(requestObject)
                 .setHeaders(sessionHeaders)
                 .build();
-        getAssertErrorList(request, errorList);
+        assertErrorList(request, errorList);
     }
 
-    private void getAssertErrorList(ControllerRequest request, List<String> errorList) {
+    private void assertErrorList(ControllerRequest request, List<String> errorList) {
         APIWebResponse response = getResponse(request);
         Assert.assertNotNull(response.getError());
         InputValidationError inputValidationError = (InputValidationError) response.getError();

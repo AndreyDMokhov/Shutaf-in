@@ -86,7 +86,7 @@ public class LoginServiceImpl implements LoginService {
         if (!passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
             saveUserLoginLogEntry(user, false);
             countLoginFailsAndBlockAccountIfMoreThanMax(user, userAccount);
-            log.warn("Password for userId {} is not CORRECT", user.getId());
+            log.warn("Password for userId {} is incorrect", user.getId());
             throw new AuthenticationException();
         }
         saveUserLoginLogEntry(user, true);
