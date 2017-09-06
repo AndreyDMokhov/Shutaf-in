@@ -101,12 +101,13 @@ public class UserInfoServiceImpl implements UserInfoService {
                     emailName.substring(1, emailName.length()).replaceAll("\\S", "*");
         }
         String emailDomain = splitted[1];
-        String rootDomain = "";
+        StringBuilder rootDomain = new StringBuilder();
         if (emailDomain.contains(".")) {
             String[] emailDomainSplitted = emailDomain.split("\\.");
             emailDomain = emailDomainSplitted[0];
             for (int idx = 1; idx < emailDomainSplitted.length; idx++) {
-                rootDomain += "." + emailDomainSplitted[idx];
+                rootDomain.append('.')
+                        .append(emailDomainSplitted[idx]);
             }
         }
         if (emailDomain.length() > 1) {
@@ -116,7 +117,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         StringBuilder uglifiedEmail = new StringBuilder();
         uglifiedEmail.append(emailName)
-                .append("@")
+                .append('@')
                 .append(emailDomain)
                 .append(rootDomain);
         return uglifiedEmail.toString();
