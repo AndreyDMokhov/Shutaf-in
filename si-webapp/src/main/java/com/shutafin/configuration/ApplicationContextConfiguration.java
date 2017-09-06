@@ -5,10 +5,6 @@ import com.shutafin.processors.SessionResponseAnnotationBeanPostProcessor;
 import com.shutafin.processors.TraceLogBeanPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import java.util.concurrent.Executor;
 
 
 @Configuration
@@ -18,7 +14,6 @@ import java.util.concurrent.Executor;
         @PropertySource(value = "classpath:environment.config.properties"),
 
 })
-@EnableAsync
 public class ApplicationContextConfiguration {
 
     @Bean
@@ -39,11 +34,6 @@ public class ApplicationContextConfiguration {
     @Bean
     public TraceLogBeanPostProcessor traceLogBeanPostProcessor() {
         return new TraceLogBeanPostProcessor();
-    }
-
-    @Bean
-    public Executor threadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
     }
 
 }
