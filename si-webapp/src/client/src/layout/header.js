@@ -3,9 +3,7 @@ app.controller("headerController", function ($rootScope, languageService, sessio
     var vm = this;
 
     vm.sessionService = sessionService;
-    $timeout(function () {
-        $rootScope.brand = ($filter('translate')("Header.brand"));
-    }, 0);
+    $rootScope.brand = "Shutaf-In";
     vm.initialization = {};
 
     function init() {
