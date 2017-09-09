@@ -122,6 +122,9 @@
   "SECTION" : "Questions",
   "Questions.title" : "Вопросы",
   "Questions.button.next" : "Дальше",
+  "Questions.button.back" : "Назад",
+  "Questions.button.save" : "Сохранить",
+  "Questions.delimiter": "из",
   "Questions.confirm" : "Ответы успешно сохранены"
 
 }

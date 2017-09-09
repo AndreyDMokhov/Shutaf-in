@@ -120,5 +120,8 @@
   "SECTION" : "Questions",
   "Questions.title" : "Questions",
   "Questions.button.next" : "Next",
+  "Questions.button.back" : "Back",
+  "Questions.button.save" : "Sack",
+  "Questions.delimiter": "from",
   "Questions.confirm" : "Answers were saved"
 }
