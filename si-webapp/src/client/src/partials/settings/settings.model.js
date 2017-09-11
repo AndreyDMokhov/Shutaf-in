@@ -1,3 +1,4 @@
+"use strict";
 app.factory('settingsModel', function (Restangular, $sessionStorage) {
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('/api/users/settings');

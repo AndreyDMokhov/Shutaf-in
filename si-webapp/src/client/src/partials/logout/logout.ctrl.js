@@ -1,3 +1,4 @@
+"use strict";
 app.controller('logoutController', function ($rootScope, logoutModel, $window, $state,$filter, languageService, $sessionStorage) {
 
     function logout() {
@@ -9,7 +10,7 @@ app.controller('logoutController', function ($rootScope, logoutModel, $window, $
         delete $sessionStorage.sessionId;
         languageService.setDefaultLanguage();  //set default GUI language
         delete $sessionStorage.userProfile;
-    $rootScope.brand = ($filter('translate')('Header.brand'));
+        $rootScope.brand = "Shutaf-In";
     }
 
    logout();

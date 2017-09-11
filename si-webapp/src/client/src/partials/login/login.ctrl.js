@@ -1,3 +1,4 @@
+"use strict";
 app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, constantService, $sessionStorage) {
 
     var vm = this;
@@ -22,7 +23,6 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
                         notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                     },
                     function(err){//fail
-                        console.log(err);
                         return err;
                     }
                 );

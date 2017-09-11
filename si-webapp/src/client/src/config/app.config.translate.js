@@ -1,3 +1,4 @@
+"use strict";
 app.config(function ($translateProvider, $sessionStorageProvider) {
 
     $translateProvider.useStaticFilesLoader({
@@ -10,7 +11,7 @@ app.config(function ($translateProvider, $sessionStorageProvider) {
 
         if (_isUndefinedOrNull(currentLanguage)) {
 
-            var currentLanguage = {"id":1, "description":"en"};
+            currentLanguage = {"id":1, "description":"en"};
             $sessionStorageProvider.set('currentLanguage', currentLanguage);
         }
 

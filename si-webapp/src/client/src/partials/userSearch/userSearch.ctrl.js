@@ -1,3 +1,4 @@
+"use strict";
 app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter) {
     var vm = this;
 

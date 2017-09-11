@@ -1,3 +1,4 @@
+"use strict";
 app.factory('changePasswordModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {

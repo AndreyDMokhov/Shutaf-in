@@ -1,3 +1,4 @@
+"use strict";
 app.controller('changeEmailRequestController', function ($state, $rootScope, changeEmailModel, notify, $filter) {
 
     var vm = this;

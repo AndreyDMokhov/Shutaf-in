@@ -1,3 +1,4 @@
+"use strict";
 app.controller('settingsController', function ($state, settingsModel, userInitService, languageService, constantService, $filter, notify, $sessionStorage) {
     var vm = this;
     vm.dataLoading = false;

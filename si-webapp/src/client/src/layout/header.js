@@ -1,11 +1,11 @@
-app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout) {
+"use strict";
+app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage) {
 
     var vm = this;
 
     vm.sessionService = sessionService;
     $rootScope.brand = "Shutaf-In";
     vm.initialization = {};
-
     function init() {
         constantService.init().then(function () {
 

@@ -1,3 +1,4 @@
+"use strict";
 app.factory('changeEmailModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {

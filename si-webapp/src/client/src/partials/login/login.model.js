@@ -1,3 +1,4 @@
+"use strict";
 app.factory('loginModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {

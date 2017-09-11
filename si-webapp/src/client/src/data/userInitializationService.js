@@ -1,3 +1,4 @@
+"use strict";
 app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionStorage, notify, $filter) {
     var rest = Restangular.withConfig(function (Configurer) {
         Configurer.setBaseUrl('/api/initialization/user');
@@ -33,5 +34,5 @@ app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionSt
 
     return {
         init: init
-    }
+    };
 });

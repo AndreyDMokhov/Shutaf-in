@@ -1,3 +1,4 @@
+"use strict";
 app.factory('resetPasswordModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {

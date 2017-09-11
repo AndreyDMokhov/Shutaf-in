@@ -1,3 +1,4 @@
+"use strict";
 app.factory('userSearchModel', function ($sessionStorage, Restangular) {
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setBaseUrl('/api/users');

@@ -1,6 +1,8 @@
 /**
  * Created by evgeny on 7/10/2017.
  */
+"use strict";
+
 app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage, constantService) {
 
     var vm = this;
@@ -26,7 +28,6 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                         languageService.updateUserLanguage(result.data);
                     },
                     function(err){//fail
-                        console.log(err);
                         notify.set($filter('translate')("Error.SYS"), {type: 'error'});
                     }
                 );
@@ -39,7 +40,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                     $state.go("error", {'code' : '404'});
                 }
             })
-    };
+    }
 
     confirmUserRegistration();
 

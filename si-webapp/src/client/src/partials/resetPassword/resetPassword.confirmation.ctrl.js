@@ -1,3 +1,4 @@
+"use strict";
 app.controller('resetPasswordConfirmation', function ($filter, resetPasswordModel, $state, notify, $stateParams) {
     var vm = this;
     var urlLink = $stateParams.link;

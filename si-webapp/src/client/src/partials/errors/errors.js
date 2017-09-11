@@ -1,6 +1,7 @@
 /**
  * Created by evgeny on 7/13/2017.
  */
+"use strict";
 app.controller('errorsController', function ($filter, $stateParams) {
     var vm = this;
     vm.errorData = {};

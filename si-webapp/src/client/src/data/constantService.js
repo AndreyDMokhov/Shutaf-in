@@ -1,3 +1,4 @@
+"use strict";
 app.factory('constantService', function (Restangular, $q, $sessionStorage, $localStorage) {
 
     var rest = Restangular.withConfig(function (Configurer) {
@@ -28,5 +29,5 @@ app.factory('constantService', function (Restangular, $q, $sessionStorage, $loca
 
     return {
         init:init
-    }
+    };
 });

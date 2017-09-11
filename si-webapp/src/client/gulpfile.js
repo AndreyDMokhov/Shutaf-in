@@ -1,4 +1,5 @@
 // gulp
+
 var gulp = require('gulp');
 
 // plugins
@@ -18,6 +19,8 @@ var deleteFiles = require('del');
 var deleteEmpty = require('delete-empty');
 var preprocess = require('gulp-preprocess');
 var clean = require('gulp-clean');
+const eslint = require('gulp-eslint');
+var htmlmin = require('gulp-htmlmin');
 
 //clean all,
 gulp.task('clean-all', [
@@ -44,7 +47,7 @@ gulp.task('jshint', function () {
         .pipe(jshint.reporter('default'));
 });
 
-
+// copy all from src to .tmp
 gulp.task('copy', function () {
     return gulp.src([
         // copy all
@@ -53,6 +56,7 @@ gulp.task('copy', function () {
         .pipe(gulp.dest('.tmp'))
 });
 
+// compiler from ES6 to ES5
 gulp.task('babel', function () {
     return gulp.src([
         '.tmp/**/*.js',
@@ -67,7 +71,7 @@ gulp.task('babel', function () {
         .on('error', console.error.bind(console))
         .pipe(gulp.dest('.tmp'))
 });
-
+// minifies js and css
 gulp.task('minify', function () {
     return gulp.src('.tmp/**/*.html')
         .pipe(useref())
@@ -97,7 +101,7 @@ gulp.task('copyComponents', function () {
     ], {base: '.tmp'})
         .pipe(gulp.dest('dist'))
 });
-
+//builds one js-file from specified html
 gulp.task('build-html-template', function () {
     return gulp.src([
         '.tmp/**/*.html',
@@ -115,6 +119,7 @@ gulp.task('delete-html', function () {
     ])
 });
 
+// inserts script in specified place and remove comments
 gulp.task('preprocessing', function () {
     gulp.src(['./.tmp/**/*.html',
         './.tmp/**/*.js',
@@ -132,11 +137,27 @@ gulp.task('preprocessing', function () {
 gulp.task('delete-empty-directories', function () {
     deleteEmpty.sync('dist/');
 });
+// minifies the style in accordance with the rules
+gulp.task('minifyHtml', function() {
+    return gulp.src(['.tmp/**/*.html','!.tmp/bower_components/**','!.tmp/index.html'])
+        .pipe(htmlmin({
+            collapseWhitespace: true}))
+        .pipe(gulp.dest('.tmp'));
+});
+
+// checks the style in accordance with the rules in .eslintrc
+gulp.task('lint', function() {
+    return gulp.src(['src/**/*.js','!node_modules/**', '!src/bower_components/**'])
+        .pipe(eslint())
+        .pipe(eslint.format('table'))
+        .pipe(eslint.failOnError());
+});
 
 gulp.task('build', function (callback) {
     runSequence(
         'clean-all',
         'copy',
+        'minifyHtml',
         'build-html-template',
         'preprocessing',
         'babel',
@@ -148,9 +169,13 @@ gulp.task('build', function (callback) {
         callback);
 });
 
+
+
+
 // to run new server
 gulp.task('minifiedConnect', function () {
     connect.server({
+        // root: '.tmp/',
         root: 'dist/',
         port: 9000,
         livereload: true,
