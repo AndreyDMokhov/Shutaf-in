@@ -2,6 +2,7 @@ package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.QuestionResponse;
+import com.shutafin.model.web.QuestionSelectedAnswer;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchService;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by evgeny on 8/12/2017.
  */
 @RestController
-@RequestMapping("/user/match")
+@RequestMapping("/users/match")
 public class UserMatchController {
 
     @Autowired
@@ -32,9 +33,14 @@ public class UserMatchController {
         userMatchService.saveQuestionsAnswers(user, questionsAnswers);
     }
 
-    @RequestMapping(value = "/template", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionResponse> getUserMatchExamTemplate(@AuthenticatedUser User user) {
+    @RequestMapping(value = "/questionnaire/initialization", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<QuestionResponse> getUserQuestionsAnswers(@AuthenticatedUser User user) {
         return userMatchService.getUserQuestionsAnswers(user);
+    }
+
+    @RequestMapping(value = "/questionnaire/answers", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(@AuthenticatedUser User user) {
+        return userMatchService.getUserQuestionsSelectedAnswers(user);
     }
 
 }

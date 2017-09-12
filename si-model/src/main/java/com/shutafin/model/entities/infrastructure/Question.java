@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Question extends AbstractKeyConstEntity {
+public class Question extends AbstractKeyConstEntity implements Comparable<Question> {
 
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive = true;
@@ -35,5 +35,10 @@ public class Question extends AbstractKeyConstEntity {
     @Override
     public boolean equals(Object obj) {
         return getId().equals( ((Question)obj).getId() );
+    }
+
+    @Override
+    public int compareTo(Question o) {
+        return getId() - o.getId();
     }
 }

@@ -2,6 +2,7 @@ package com.shutafin.service;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.QuestionResponse;
+import com.shutafin.model.web.QuestionSelectedAnswer;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface UserMatchService {
     List<User> findPartners(User user);
     void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers);
     List<QuestionResponse> getUserQuestionsAnswers(User user);
+    List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(User user);
 }

@@ -17,6 +17,9 @@ public class QuestionResponse {
 
     private List<AnswerResponse> answers;
 
-    private List<Integer> selectedAnswersIds;
-
+    public QuestionResponse(Integer questionId, String description, Boolean isActive) {
+        this.questionId = questionId;
+        this.description = description;
+        this.isActive = isActive;
+    }
 }

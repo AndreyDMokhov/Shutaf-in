@@ -15,24 +15,6 @@ import java.util.List;
  */
 @Repository
 public class UserQuestionAnswerRepositoryImpl extends AbstractEntityDao<UserQuestionAnswer> implements UserQuestionAnswerRepository {
-    @Override
-    public List<UserQuestionAnswer> getUserQuestionAnswer(User user, Question question) {
-        return getSession()
-                .createQuery("SELECT uqa FROM UserQuestionAnswer uqa where uqa.user.id = :userId AND uqa.question.id = :questionId")
-                .setParameter("userId", user.getId())
-                .setParameter("questionId", question.getId())
-                .list();
-    }
-
-    @Override
-    public void deleteUserQuestionAnswer(User user, Question question, Answer answer) {
-        getSession()
-                .createQuery("DELETE UserQuestionAnswer uqa where uqa.user.id = :userId AND uqa.question.id = :questionId AND uqa.answer.id = :answerId")
-                .setParameter("userId", user.getId())
-                .setParameter("questionId", question.getId())
-                .setParameter("answerId", answer.getId())
-                .executeUpdate();
-    }
 
     @Override
     public void deleteUserAnswers(User user) {
@@ -41,4 +23,5 @@ public class UserQuestionAnswerRepositoryImpl extends AbstractEntityDao<UserQues
                 .setParameter("userId", user.getId())
                 .executeUpdate();
     }
+
 }
