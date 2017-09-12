@@ -92,14 +92,14 @@ public class UserMatchServiceImpl implements UserMatchService {
         }
     }
 
-    private List<String> generateExamKey(TreeMap<Question, Answer> sortedQestionsAnswers) {
+    private List<String> generateExamKey(NavigableMap<Question, Answer> sortedQuestionsAnswers) {
         List<String> res = new ArrayList<>();
         StringBuilder sbKey = new StringBuilder();
         StringBuilder sbKeyRegExp = new StringBuilder();
-        for (Map.Entry<Question, Answer> entry : sortedQestionsAnswers.entrySet()) {
+        for (Map.Entry<Question, Answer> entry : sortedQuestionsAnswers.entrySet()) {
             sbKey.append("-Q" + entry.getKey().getId() + "_" + entry.getValue().getId());
 
-            String answer = (entry.getValue().getIsUniversal()) ? "\\d+" : entry.getValue().getId().toString();
+            String answer = entry.getValue().getIsUniversal() ? "\\d+" : entry.getValue().getId().toString();
             sbKeyRegExp.append("-Q" + entry.getKey().getId() + "_" + answer);
         }
         res.add(sbKey.toString());

@@ -2,13 +2,9 @@ package com.shutafin.repository.common.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
-import com.shutafin.model.entities.infrastructure.Answer;
-import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.repository.base.AbstractEntityDao;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * Created by evgeny on 8/10/2017.

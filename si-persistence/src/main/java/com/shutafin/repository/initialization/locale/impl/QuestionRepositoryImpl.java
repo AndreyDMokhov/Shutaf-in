@@ -43,7 +43,7 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
                 .setParameter("language", language)
                 .getResultList();
 
-        StringBuilder hql_2 = new StringBuilder()
+        hql = new StringBuilder()
                 .append("select new com.shutafin.repository.initialization.locale.impl.QuestionRepositoryImpl$QuestionAnswerElement ")
                 .append(" ( ")
                 .append(" cl.answer.question.id, ")
@@ -54,7 +54,7 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
                 .append(" from AnswerLocale cl where cl.language = :language  ");
 
         List<QuestionAnswerElement> answers = getSession()
-                .createQuery(hql_2.toString())
+                .createQuery(hql.toString())
                 .setCacheable(true)
                 .setParameter("language", language)
                 .getResultList();
