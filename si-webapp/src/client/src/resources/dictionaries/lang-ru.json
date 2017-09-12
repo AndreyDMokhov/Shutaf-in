@@ -65,6 +65,7 @@
   "UserProfile.message.imageSaved" : "Изображение сохранено",
   "UserProfile.message.imageDeleted" : "Изображение было удалено",
   "UserProfile.message.confirmDelete" : "Вы уверены, что хотите удалить?",
+  "UserProfile.edit":"Редактировать",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Письмо отправлено на указанный адрес",

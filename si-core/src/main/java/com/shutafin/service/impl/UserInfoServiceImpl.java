@@ -7,6 +7,7 @@ import com.shutafin.model.web.user.UserInfoResponse;
 import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserInfoRepository;
+import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.initialization.custom.UserInitializationRepository;
 import com.shutafin.repository.initialization.locale.CityRepository;
 import com.shutafin.repository.initialization.locale.GenderRepository;
@@ -20,26 +21,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserInfoServiceImpl implements UserInfoService {
 
-    @Autowired
     private UserInfoRepository userInfoRepository;
-
-    @Autowired
+    private UserRepository userRepository;
     private CityRepository cityRepository;
-
-    @Autowired
     private GenderRepository genderRepository;
-
-    @Autowired
     private UserInitializationRepository userInitializationRepository;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
     private UserImageService userImageService;
 
+    @Autowired
+    public UserInfoServiceImpl(
+            UserInfoRepository userInfoRepository,
+            UserRepository userRepository,
+            CityRepository cityRepository,
+            GenderRepository genderRepository,
+            UserInitializationRepository userInitializationRepository,
+            UserAccountRepository userAccountRepository,
+            UserImageService userImageService) {
+        this.userInfoRepository = userInfoRepository;
+        this.userRepository = userRepository;
+        this.cityRepository = cityRepository;
+        this.genderRepository = genderRepository;
+        this.userInitializationRepository = userInitializationRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.userImageService = userImageService;
+    }
+
     @Override
-    public void addUserInfo(UserInfoWeb userInfoWeb, User user) {
+    public void createUserInfo(UserInfoWeb userInfoWeb, User user) {
         UserInfo userInfo = convertToUserInfo(userInfoWeb, user);
         userInfoRepository.save(userInfo);
     }
@@ -64,12 +73,15 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public void updateUserInfo(UserInfoWeb userInfoWeb, User user) {
         UserInfo userInfo = userInfoRepository.getUserInfo(user);
-        if (userInfo == null) {
-            addUserInfo(userInfoWeb, user);
-        } else {
-            userInfo = setUserInfoFields(userInfoWeb, userInfo);
-            userInfoRepository.update(userInfo);
-        }
+        userInfo = setUserInfoFields(userInfoWeb, userInfo);
+        userInfoRepository.update(userInfo);
+
+
+        user = userRepository.findById(user.getId());
+
+        user.setFirstName(userInfoWeb.getFirstName());
+        user.setLastName(userInfoWeb.getLastName());
+        userRepository.update(user);
     }
 
     private UserInfo convertToUserInfo(UserInfoWeb userInfoWeb, User user) {
@@ -94,20 +106,20 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     private String uglifyEmail(String email) {
-        String[] splitted = email.split("@");
-        String emailName = splitted[0];
+        String[] split = email.split("@");
+        String emailName = split[0];
         if (emailName.length() > 1) {
             emailName = emailName.charAt(0) +
                     emailName.substring(1, emailName.length()).replaceAll("\\S", "*");
         }
-        String emailDomain = splitted[1];
+        String emailDomain = split[1];
         StringBuilder rootDomain = new StringBuilder();
         if (emailDomain.contains(".")) {
-            String[] emailDomainSplitted = emailDomain.split("\\.");
-            emailDomain = emailDomainSplitted[0];
-            for (int idx = 1; idx < emailDomainSplitted.length; idx++) {
+            String[] emailDomainSplit = emailDomain.split("\\.");
+            emailDomain = emailDomainSplit[0];
+            for (int idx = 1; idx < emailDomainSplit.length; idx++) {
                 rootDomain.append('.')
-                        .append(emailDomainSplitted[idx]);
+                        .append(emailDomainSplit[idx]);
             }
         }
         if (emailDomain.length() > 1) {

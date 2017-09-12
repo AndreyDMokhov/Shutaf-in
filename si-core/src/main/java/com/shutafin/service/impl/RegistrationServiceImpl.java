@@ -11,6 +11,7 @@ import com.shutafin.model.entities.types.AccountType;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
+import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.repository.account.RegistrationConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
@@ -30,32 +31,39 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private static final int LANGUAGE_ID = 1;
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
     private LanguageRepository languageRepository;
-
-    @Autowired
     private EmailNotificationSenderService mailSenderService;
-
-    @Autowired
     private EmailTemplateService emailTemplateService;
-
-    @Autowired
     private RegistrationConfirmationRepository registrationConfirmationRepository;
-
-    @Autowired
     private EnvironmentConfigurationService environmentConfigurationService;
-
-    @Autowired
     private PasswordService passwordService;
-
-    @Autowired
     private UserImageService userImageService;
+    private UserInfoService userInfoService;
+
+    public RegistrationServiceImpl(
+            UserRepository userRepository,
+            UserAccountRepository userAccountRepository,
+            LanguageRepository languageRepository,
+            EmailNotificationSenderService mailSenderService,
+            EmailTemplateService emailTemplateService,
+            RegistrationConfirmationRepository registrationConfirmationRepository,
+            EnvironmentConfigurationService environmentConfigurationService,
+            PasswordService passwordService,
+            UserImageService userImageService,
+            UserInfoService userInfoService) {
+        this.userRepository = userRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.languageRepository = languageRepository;
+        this.mailSenderService = mailSenderService;
+        this.emailTemplateService = emailTemplateService;
+        this.registrationConfirmationRepository = registrationConfirmationRepository;
+        this.environmentConfigurationService = environmentConfigurationService;
+        this.passwordService = passwordService;
+        this.userImageService = userImageService;
+        this.userInfoService = userInfoService;
+    }
 
     @Override
     @Transactional
@@ -64,6 +72,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         userImageService.createUserImageDirectory(user);
+        userInfoService.createUserInfo(new UserInfoWeb(), user);
         sendConfirmRegistrationEmail(user, userAccount);
     }
 

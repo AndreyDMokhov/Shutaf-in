@@ -7,7 +7,7 @@ import com.shutafin.model.web.user.UserInfoWeb;
 
 public interface UserInfoService {
 
-    void addUserInfo(UserInfoWeb userInfoWeb, User user);
+    void createUserInfo(UserInfoWeb userInfoWeb, User user);
     UserInfoResponse getUserInfo(User user);
     void updateUserInfo(UserInfoWeb userInfoWeb, User user);
 

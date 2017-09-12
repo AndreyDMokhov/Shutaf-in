@@ -66,6 +66,7 @@
   "UserProfile.message.imageSaved" : "The image was saved",
   "UserProfile.message.imageDeleted" : "Image was deleted",
   "UserProfile.message.confirmDelete" : "Are you sure you want to delete?",
+  "UserProfile.edit":"Edit",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Email sent to specified address",

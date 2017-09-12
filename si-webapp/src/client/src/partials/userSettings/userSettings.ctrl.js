@@ -1,4 +1,4 @@
-app.controller("userSettingsController", function ($localStorage, $sessionStorage, userSettingsModel, notify, $filter, $state) {
+app.controller("userSettingsController", function ($localStorage, $sessionStorage, userSettingsModel, notify, $filter, $state, userInitService) {
 
     var vm = this;
     vm.dataLoading = false;
@@ -18,7 +18,7 @@ app.controller("userSettingsController", function ($localStorage, $sessionStorag
         userSettingsModel.saveDataPostRegistration(vm.userProfile).then(
             function (success) {
                 notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
-                $sessionStorage.userProfile = vm.userProfile;
+                userInitService.init();
                 vm.dataLoading = false;
             }, function (error) {
                 vm.dataLoading = false;

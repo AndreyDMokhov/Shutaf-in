@@ -5,10 +5,12 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.account.UserLanguageWeb;
-import com.shutafin.model.web.user.UserAccountSettingsWeb;
+import com.shutafin.model.web.user.UserInfoResponse;
+import com.shutafin.model.web.user.UserInfoWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.service.UserAccountService;
+import com.shutafin.service.UserInfoService;
 import com.shutafin.service.UserLanguageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +35,9 @@ public class UserAccountController {
     @Autowired
     private UserLanguageService userLanguageService;
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateAccountSettings(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb,
-                                      BindingResult result, @AuthenticatedUser User user) {
-        log.debug("/users/settings/update");
-        checkBindingResult(result);
-        userAccountService.updateAccountSettings(userAccountSettingsWeb, user);
-    }
+    @Autowired
+    private UserInfoService userInfoService;
+
 
     @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
@@ -71,6 +69,21 @@ public class UserAccountController {
     public Language get(@AuthenticatedUser User user) {
         log.debug("/users/settings/language");
         return userLanguageService.findUserLanguage(user);
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserInfoResponse getUserInfo(@AuthenticatedUser User user) {
+
+        return userInfoService.getUserInfo(user);
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateUserInfo(@AuthenticatedUser User user,
+                               @RequestBody @Valid UserInfoWeb userInfoWeb,
+                               BindingResult result) {
+
+        checkBindingResult(result);
+        userInfoService.updateUserInfo(userInfoWeb, user);
     }
 
     private void checkBindingResult(BindingResult result) {

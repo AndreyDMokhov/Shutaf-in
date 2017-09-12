@@ -3,7 +3,21 @@
         <div class="col-md-12 col-md-offset-0 toppad">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3 class="panel-title">{{vm.userProfile.firstName}} {{vm.userProfile.lastName}} </h3>
+                    <div>
+                        <h5 class="panel-title"></h5>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-left panel-title">{{vm.userProfile.firstName}}
+                            {{vm.userProfile.lastName}}
+                        </div>
+                        <div class="col-md-8 text-right">
+                            <a class="fa fa-pencil"
+                               ui-sref="userSettings"
+                               uib-tooltip="{{'UserProfile.edit' | translate}}"
+                               tooltip-placement="bottom" style="float: right;"></a>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -32,19 +46,21 @@
                                     <td>{{'UserSettings.form.country' | translate}}</td>
                                     <!--Uncomment bottom fields-->
                                     <!--<td ng-repeat="country in vm.country"-->
-                                        <!--ng-if="country.id === vm.userProfile.countryId">{{country.description}}</td>-->
+                                    <!--ng-if="country.id === vm.userProfile.countryId">{{country.description}}</td>-->
                                     <!--to delete the bottom field when countries are added to SessionStorage/UserProfile-->
                                     <td><span>Israel</span></td>
                                 </tr>
                                 <tr ng-hide="!vm.userProfile.cityId">
                                     <td>{{'UserProfile.city' | translate}}</td>
                                     <td ng-repeat="city in vm.cities"
-                                        ng-if="city.id === vm.userProfile.cityId">{{city.description}}</td>
+                                        ng-if="city.id === vm.userProfile.cityId">{{city.description}}
+                                    </td>
                                 </tr>
                                 <tr ng-hide="!vm.userProfile.genderId">
                                     <td>{{'UserSettings.form.gender' | translate}}</td>
                                     <td ng-repeat="gender in vm.gender"
-                                        ng-if="gender.id === vm.userProfile.genderId">{{gender.description}}</td>
+                                        ng-if="gender.id === vm.userProfile.genderId">{{gender.description}}
+                                    </td>
                                 </tr>
                                 <tr ng-hide="!vm.userProfile.facebookLink || vm.userProfile.facebookLink===''">
                                     <td>{{'UserSettings.form.facebook' | translate}}</td>

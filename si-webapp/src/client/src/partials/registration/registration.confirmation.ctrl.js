@@ -19,8 +19,6 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                 vm.dataLoading = false;
                 var session_id = success.headers('session_id');
                 $sessionStorage.sessionId = session_id;
-                userInitService.init();
-                constantService.init();
                 languageService.getUserLanguage().then(
                     function(result){//success
                         languageService.updateUserLanguage(result.data);
@@ -30,6 +28,10 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                         notify.set($filter('translate')("Error.SYS"), {type: 'error'});
                     }
                 );
+
+                userInitService.init().then(function () {
+                    constantService.init();
+                });
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
                 $state.go("userSettings");
             }, function (error) {

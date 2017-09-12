@@ -1,6 +1,6 @@
 app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionStorage, notify, $filter) {
     var rest = Restangular.withConfig(function (Configurer) {
-        Configurer.setBaseUrl('/api/users/info');
+
     });
 
     var data = {};
@@ -9,7 +9,7 @@ app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionSt
 
         var deferred = $q.defer();
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
-        data = rest.one("/").withHttpConfig({timeout: 10000});
+        data = rest.one("/api/users/settings/info").withHttpConfig({timeout: 10000});
         data.get().then(
             function (success) {
                 data.userProfile = success.data;

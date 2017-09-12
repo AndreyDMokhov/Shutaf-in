@@ -1,4 +1,4 @@
-app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout) {
+app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout, $window) {
 
     var vm = this;
 
@@ -21,7 +21,8 @@ app.controller("headerController", function ($rootScope, languageService, sessio
 
     function setLanguageCode(code, id) {
         languageService.updateUserLanguage({"id": id, "description": code});
-        constantService.init();
+        $window.location.reload();
+        $state.go('home');
     }
 
     init();
