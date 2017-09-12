@@ -1,7 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.UserInfoResponse;
+import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.UserInfoService;
 import com.shutafin.service.UserSearchService;
@@ -32,18 +32,18 @@ public class UserSearchServiceImpl implements UserSearchService {
 
         for (User u : users) {
 
-            UserInfoResponse userInfoResponse = userInfoService.getUserInfo(u);
+            UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(u);
 
 
             userSearchWebList.add(
                     new UserSearchResponse(
-                            userInfoResponse.getUserId(),
-                            userInfoResponse.getFirstName(),
-                            userInfoResponse.getLastName(),
-                            userInfoResponse.getUserImage(),
-                            userInfoResponse.getGenderId(),
-                            userInfoResponse.getCityId(),
-                            userInfoResponse.getCountryId()
+                            userInfoResponseDTO.getUserId(),
+                            userInfoResponseDTO.getFirstName(),
+                            userInfoResponseDTO.getLastName(),
+                            userInfoResponseDTO.getUserImage(),
+                            userInfoResponseDTO.getGenderId(),
+                            userInfoResponseDTO.getCityId(),
+                            userInfoResponseDTO.getCountryId()
                     )
             );
         }

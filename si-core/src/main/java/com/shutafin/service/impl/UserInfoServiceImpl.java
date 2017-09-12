@@ -3,7 +3,7 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.UserInfo;
-import com.shutafin.model.web.user.UserInfoResponse;
+import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserInfoRepository;
@@ -54,17 +54,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserInfoResponse getUserInfo(User user) {
-        UserInfoResponse userInfoResponse = userInitializationRepository.getUserInitializationData(user);
-        userInfoResponse.setEmail(uglifyEmail(userInfoResponse.getEmail()));
+    public UserInfoResponseDTO getUserInfo(User user) {
+        UserInfoResponseDTO userInfoResponseDTO = userInitializationRepository.getUserInitializationData(user);
+        userInfoResponseDTO.setEmail(uglifyEmail(userInfoResponseDTO.getEmail()));
 
         Long userImageId = userAccountRepository.findUserAccountImageId(user);
         if (userImageId != null) {
             UserImage userImage = userImageService.getUserImage(user, userImageId);
-            userInfoResponse.addUserImage(userImage);
+            userInfoResponseDTO.addUserImage(userImage);
         }
 
-        return userInfoResponse;
+        return userInfoResponseDTO;
     }
 
     @Override

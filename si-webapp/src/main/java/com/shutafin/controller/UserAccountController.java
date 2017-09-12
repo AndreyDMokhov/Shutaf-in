@@ -5,7 +5,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.account.UserLanguageWeb;
-import com.shutafin.model.web.user.UserInfoResponse;
+import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.model.web.user.UserImageWeb;
@@ -72,7 +72,7 @@ public class UserAccountController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserInfoResponse getUserInfo(@AuthenticatedUser User user) {
+    public UserInfoResponseDTO getUserInfo(@AuthenticatedUser User user) {
 
         return userInfoService.getUserInfo(user);
     }

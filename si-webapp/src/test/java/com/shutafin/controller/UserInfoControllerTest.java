@@ -3,15 +3,11 @@ package com.shutafin.controller;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.user.UserInfoResponse;
+import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserInfoService;
 import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -24,12 +20,10 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-/**
- * Created by evgeny on 8/1/2017.
- */
+
 @RunWith(SpringRunner.class)
-public class UserInitializationControllerTest extends BaseTestImpl {
-    private static final String INITIALIZATION_REQUEST_URL = "/users/info/";
+public class UserInfoControllerTest extends BaseTestImpl {
+    private static final String INITIALIZATION_REQUEST_URL = "/users/settings/info/";
     private static final String VALID_SESSION = "e382d6ec-0e97-4c32-a1a2-8280160cd179";
     private static final String INVALID_SESSION = "";
 
@@ -65,21 +59,21 @@ public class UserInitializationControllerTest extends BaseTestImpl {
         user.setLastName("bbb");
         user.setEmail("1@1.com");
 
-        UserInfoResponse userInfoResponse = new UserInfoResponse();
-        userInfoResponse.setFirstName("aaa");
-        userInfoResponse.setLastName("bbb");
-        userInfoResponse.setLanguageId(1);
+        UserInfoResponseDTO userInfoResponseDTO = new UserInfoResponseDTO();
+        userInfoResponseDTO.setFirstName("aaa");
+        userInfoResponseDTO.setLastName("bbb");
+        userInfoResponseDTO.setLanguageId(1);
 
 
         when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
-        when(userInfoService.getUserInfo(user)).thenReturn(userInfoResponse);
+        when(userInfoService.getUserInfo(user)).thenReturn(userInfoResponseDTO);
 
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(INITIALIZATION_REQUEST_URL)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(headers)
-                .setResponseClass(UserInitializationDataWrapper.class)
+                .setResponseClass(UserInfoResponseDTO.class)
                 .build();
         APIWebResponse response = getResponse(request);
         Assert.assertNull(response.getError());
@@ -88,10 +82,4 @@ public class UserInitializationControllerTest extends BaseTestImpl {
 
 }
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-class UserInitializationDataWrapper {
-    private UserInfoResponse userProfile;
-}
+

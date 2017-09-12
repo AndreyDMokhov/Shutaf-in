@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserInfoResponse {
+public class UserInfoResponseDTO {
 
     private Long userId;
     private String firstName;
@@ -30,20 +30,8 @@ public class UserInfoResponse {
     private String company;
     private String phoneNumber;
 
-
-    public UserInfoResponse(
-            Long userId,
-            String firstName,
-            String lastName,
-            String email,
-            Integer languageId,
-            Integer countryId,
-            Integer cityId,
-            Integer genderId,
-            String facebookLink,
-            String profession,
-            String company,
-            String phoneNumber) {
+    @SuppressWarnings("PMD.ExcessiveParameterList")
+    public UserInfoResponseDTO(Long userId, String firstName, String lastName, String email, Integer languageId, Integer countryId, Integer cityId, Integer genderId, String facebookLink, String profession, String company, String phoneNumber) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
