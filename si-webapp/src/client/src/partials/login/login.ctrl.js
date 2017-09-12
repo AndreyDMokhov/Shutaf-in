@@ -12,8 +12,10 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
             function (success) {
                 vm.dataLoading = false;
                 $sessionStorage.sessionId = success.headers('session_id');
-                userInitService.init();
-                constantService.init();
+                userInitService.init().then(function () {
+
+                    constantService.init();
+                });
                 $state.go('home');
 
                 languageService.getUserLanguage().then(

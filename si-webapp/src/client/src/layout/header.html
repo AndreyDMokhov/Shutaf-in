@@ -8,7 +8,7 @@
                         {{brand}}
                     </a>
                     <a ng-show="vm.sessionService.isAuthenticated()"
-                       ui-sref="userProfile"
+                       ui-sref="userProfile({id:vm.userProfile.userId})"
                        uib-tooltip="{{'UserProfile.title' | translate}}"
                        tooltip-placement="bottom">
                         <span class="fa fa-user" aria-hidden="true"></span>
@@ -68,12 +68,12 @@
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('settings' | includedByState)}">
-                    <a ui-sref="settings" tooltip-placement="bottom"
-                       uib-tooltip="{{'Settings.personal.title' | translate}}">
+                    ng-class="{active : ('userSettings' | includedByState)}">
+                    <a ui-sref="userSettings" tooltip-placement="bottom"
+                       uib-tooltip="{{'UserSettings.personal.title' | translate}}">
                         <span class="glyphicon glyphicon-cog"></span>
                         &nbsp;
-                        {{'Settings.personal.title' | translate}}
+                        {{'UserSettings.personal.title' | translate}}
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"

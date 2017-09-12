@@ -1,11 +1,11 @@
 app.factory('userSearchModel', function ($sessionStorage, Restangular) {
     var rest = Restangular.withConfig(function (RestangularProvider) {
-        RestangularProvider.setBaseUrl('/api/users');
+        RestangularProvider.setFullResponse(true);
     });
 
     function userSearch(fullName) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
-        return rest.one('/search?name=' + fullName).customGET();
+        return rest.one('/api/users/search?name=' + fullName).customGET();
     }
 
     return {
