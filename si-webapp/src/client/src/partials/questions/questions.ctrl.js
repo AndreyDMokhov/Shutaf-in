@@ -1,16 +1,14 @@
 app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify, $filter) {
-    $scope.questionsFromController = [];
-    $scope.back = function (data) {
-        sendData(data);
-        $state.go('home')
-    };
-    $scope.isReady = false;
 
+    var vm = this;
+    vm.isReady = false;
+
+    vm.questionsFromController = [];
 
     function sendData(send) {
         quizFactory.sendAnswers(send).then(
             function (success) {
-                notify.set($filter('translate')('Questions.confirm'),{type: 'success'})
+                notify.set($filter('translate')('Questions.confirm'), {type: 'success'})
             },
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -18,20 +16,21 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify, $
         );
     }
 
-    function getQuestion() {
+    function getQuestions() {
         quizFactory.getQuestions().then(
             function (success) {
-                $scope.questionsFromController = success;
-                $scope.isReady = true;
+                vm.questionsFromController = success.data.data;
+                vm.isReady = true;
             },
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
+    vm.sendData=sendData;
+    vm.getQuestions=getQuestions;
+    getQuestions();
 
-    getQuestion();
 });
-
 
 app.directive('quiz', function () {
     return {
@@ -43,29 +42,38 @@ app.directive('quiz', function () {
         restrict: 'AE',
         templateUrl: 'partials/questions/questionTemplate.html',
         link: function (scope, elem, attrs) {
+
             var questions = scope.questionsToDirective;
-            var answer = [];
-            scope.inProgress = true;
             scope.id = 0;
-            scope.currentQuestion = getQuestionByID(scope.id);
+            scope.currentQuestion = questions[scope.id];
+            scope.numberOfQuestions = questions.length;
+            var answer = [];
+            fillAnswerArray();
+            scope.currentAnswer = answer[scope.id].answerId;
 
             scope.nextQuestion = function () {
-                var result = {"questionId": scope.currentQuestion.questionId, "answerId": scope.currentAnswer};
-                answer.push(result);
+                answer[scope.id].questionId = scope.currentQuestion.questionId;
+                answer[scope.id].answerId = scope.currentAnswer;
                 scope.id++;
-                scope.currentQuestion = getQuestionByID(scope.id);
-                if (!scope.currentQuestion) {
-                    scope.inProgress = false;
-                    scope.backData({data: answer});
-                }
-                scope.currentAnswer = null;
+                scope.currentQuestion = questions[scope.id];
+                scope.currentAnswer = answer[scope.id].answerId;
             };
 
-            function getQuestionByID(id) {
-                if (id < questions.length) {
-                    return questions[id];
-                } else {
-                    return false;
+            scope.previousQuestion = function () {
+                scope.id--;
+                scope.currentQuestion = questions[scope.id];
+                scope.currentAnswer = answer[scope.id].answerId;
+            };
+
+            scope.save = function () {
+                answer[scope.id].questionId = scope.currentQuestion.questionId;
+                answer[scope.id].answerId = scope.currentAnswer;
+                scope.backData({data: answer});
+            };
+
+            function fillAnswerArray() {
+                for (var i = 0; i < questions.length; i++) {
+                    answer.push({"questionId": i, "answerId": questions[i].selectedAnswersIds[0]})
                 }
             }
         }
