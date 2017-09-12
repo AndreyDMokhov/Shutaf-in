@@ -4,7 +4,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.UserInfo;
 import com.shutafin.model.web.user.UserInfoResponse;
-import com.shutafin.model.web.user.UserInfoWeb;
+import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserInfoRepository;
 import com.shutafin.repository.common.UserRepository;
@@ -48,8 +48,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void createUserInfo(UserInfoWeb userInfoWeb, User user) {
-        UserInfo userInfo = convertToUserInfo(userInfoWeb, user);
+    public void createUserInfo(UserInfoRequest userInfoRequest, User user) {
+        UserInfo userInfo = convertToUserInfo(userInfoRequest, user);
         userInfoRepository.save(userInfo);
     }
 
@@ -57,51 +57,48 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfoResponse getUserInfo(User user) {
         UserInfoResponse userInfoResponse = userInitializationRepository.getUserInitializationData(user);
         userInfoResponse.setEmail(uglifyEmail(userInfoResponse.getEmail()));
+
         Long userImageId = userAccountRepository.findUserAccountImageId(user);
         if (userImageId != null) {
             UserImage userImage = userImageService.getUserImage(user, userImageId);
             userInfoResponse.addUserImage(userImage);
-        }
-        UserInfo userInfo = userInfoRepository.getUserInfo(user);
-        if (userInfo != null) {
-            userInfoResponse.addUserInfo(userInfo);
         }
 
         return userInfoResponse;
     }
 
     @Override
-    public void updateUserInfo(UserInfoWeb userInfoWeb, User user) {
+    public void updateUserInfo(UserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = userInfoRepository.getUserInfo(user);
-        userInfo = setUserInfoFields(userInfoWeb, userInfo);
+        userInfo = setUserInfoFields(userInfoRequest, userInfo);
         userInfoRepository.update(userInfo);
 
 
         user = userRepository.findById(user.getId());
 
-        user.setFirstName(userInfoWeb.getFirstName());
-        user.setLastName(userInfoWeb.getLastName());
+        user.setFirstName(userInfoRequest.getFirstName());
+        user.setLastName(userInfoRequest.getLastName());
         userRepository.update(user);
     }
 
-    private UserInfo convertToUserInfo(UserInfoWeb userInfoWeb, User user) {
+    private UserInfo convertToUserInfo(UserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = new UserInfo();
         userInfo.setUser(user);
-        userInfo = setUserInfoFields(userInfoWeb, userInfo);
+        userInfo = setUserInfoFields(userInfoRequest, userInfo);
         return userInfo;
     }
 
-    private UserInfo setUserInfoFields(UserInfoWeb userInfoWeb, UserInfo userInfo) {
-        if (userInfoWeb.getCityId() != null) {
-            userInfo.setCurrentCity(cityRepository.findById(userInfoWeb.getCityId()));
+    private UserInfo setUserInfoFields(UserInfoRequest userInfoRequest, UserInfo userInfo) {
+        if (userInfoRequest.getCityId() != null) {
+            userInfo.setCurrentCity(cityRepository.findById(userInfoRequest.getCityId()));
         }
-        if (userInfoWeb.getGenderId() != null) {
-            userInfo.setGender(genderRepository.findById(userInfoWeb.getGenderId()));
+        if (userInfoRequest.getGenderId() != null) {
+            userInfo.setGender(genderRepository.findById(userInfoRequest.getGenderId()));
         }
-        userInfo.setFacebookLink(userInfoWeb.getFacebookLink());
-        userInfo.setCompany(userInfoWeb.getCompany());
-        userInfo.setProfession(userInfoWeb.getProfession());
-        userInfo.setPhoneNumber(userInfoWeb.getPhoneNumber());
+        userInfo.setFacebookLink(userInfoRequest.getFacebookLink());
+        userInfo.setCompany(userInfoRequest.getCompany());
+        userInfo.setProfession(userInfoRequest.getProfession());
+        userInfo.setPhoneNumber(userInfoRequest.getPhoneNumber());
         return userInfo;
     }
 

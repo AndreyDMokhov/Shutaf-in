@@ -1,7 +1,7 @@
 /**
  * Created by evgeny on 7/10/2017.
  */
-app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage, constantService) {
+app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage, constantService, $translate) {
 
     var vm = this;
 
@@ -21,7 +21,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                 $sessionStorage.sessionId = session_id;
                 languageService.getUserLanguage().then(
                     function(result){//success
-                        languageService.updateUserLanguage(result.data);
+                        $translate.use(result.data.description);
                     },
                     function(err){//fail
                         console.log(err);

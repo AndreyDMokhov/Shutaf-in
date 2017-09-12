@@ -6,12 +6,10 @@ app.controller("userSettingsController", function ($localStorage, $sessionStorag
 
     vm.userProfile = $sessionStorage.userProfile;
 
-    vm.country = $localStorage.countries;
-    vm.cities = $localStorage.cities;
-    vm.gender = $localStorage.genders;
+    vm.country = $sessionStorage.countries;
+    vm.cities = $sessionStorage.cities;
+    vm.gender = $sessionStorage.genders;
 
-    // if number of countries more than one, delete next line
-    vm.userProfile.countryId = 1;
 
     function submitChanges() {
         vm.dataLoading = true;

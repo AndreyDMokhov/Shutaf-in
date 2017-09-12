@@ -15,7 +15,7 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserInfoWeb {
+public class UserInfoRequest {
 
     @NotBlank
     @Length(min=3, max=50)

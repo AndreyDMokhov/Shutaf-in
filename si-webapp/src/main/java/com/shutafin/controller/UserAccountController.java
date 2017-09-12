@@ -6,7 +6,7 @@ import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.account.UserLanguageWeb;
 import com.shutafin.model.web.user.UserInfoResponse;
-import com.shutafin.model.web.user.UserInfoWeb;
+import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.service.UserAccountService;
@@ -79,11 +79,11 @@ public class UserAccountController {
 
     @RequestMapping(value = "/info", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void updateUserInfo(@AuthenticatedUser User user,
-                               @RequestBody @Valid UserInfoWeb userInfoWeb,
+                               @RequestBody @Valid UserInfoRequest userInfoRequest,
                                BindingResult result) {
 
         checkBindingResult(result);
-        userInfoService.updateUserInfo(userInfoWeb, user);
+        userInfoService.updateUserInfo(userInfoRequest, user);
     }
 
     private void checkBindingResult(BindingResult result) {

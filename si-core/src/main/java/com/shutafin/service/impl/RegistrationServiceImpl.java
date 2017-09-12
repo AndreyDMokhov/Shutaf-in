@@ -11,14 +11,13 @@ import com.shutafin.model.entities.types.AccountType;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.model.web.user.UserInfoWeb;
+import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.account.RegistrationConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.initialization.LanguageRepository;
 import com.shutafin.service.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +71,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         userImageService.createUserImageDirectory(user);
-        userInfoService.createUserInfo(new UserInfoWeb(), user);
+        userInfoService.createUserInfo(new UserInfoRequest(), user);
         sendConfirmRegistrationEmail(user, userAccount);
     }
 

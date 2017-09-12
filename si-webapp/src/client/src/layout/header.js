@@ -1,6 +1,7 @@
 app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout, $window) {
 
     var vm = this;
+    vm.userProfile = {};
 
     vm.sessionService = sessionService;
     $timeout(function () {
@@ -14,7 +15,10 @@ app.controller("headerController", function ($rootScope, languageService, sessio
             vm.initialization.languages = $sessionStorage.languages;
         });
         if (vm.sessionService.isAuthenticated()) {
-            userInitService.init();
+            userInitService.init().then(function () {
+
+                vm.userProfile = $sessionStorage.userProfile;
+            });
         }
     }
 

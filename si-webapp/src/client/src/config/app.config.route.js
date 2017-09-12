@@ -54,7 +54,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: "partials/userProfile/userProfile.html",
                 controller: "userProfileController",
                 controllerAs: "vm",
-                url: "/userProfile"
+                url: "/profile/{id:int}"
             })
 
         .state("login",

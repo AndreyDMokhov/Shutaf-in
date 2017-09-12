@@ -1,7 +1,6 @@
 package com.shutafin.model.web.user;
 
 import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.entities.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +12,13 @@ import lombok.Setter;
 @Setter
 public class UserInfoResponse {
 
+    private Long userId;
     private String firstName;
     private String lastName;
     private String email;
 
     private Integer languageId;
+    private Integer countryId;
     private Integer cityId;
     private Integer genderId;
 
@@ -30,24 +31,31 @@ public class UserInfoResponse {
     private String phoneNumber;
 
 
-    public UserInfoResponse(String firstName, String lastName, String email, Integer languageId) {
+    public UserInfoResponse(
+            Long userId,
+            String firstName,
+            String lastName,
+            String email,
+            Integer languageId,
+            Integer countryId,
+            Integer cityId,
+            Integer genderId,
+            String facebookLink,
+            String profession,
+            String company,
+            String phoneNumber) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.languageId = languageId;
-    }
-
-    public void addUserInfo(UserInfo userInfo) {
-        if (userInfo.getCurrentCity() != null) {
-            cityId = userInfo.getCurrentCity().getId();
-        }
-        if (userInfo.getGender() != null) {
-            genderId = userInfo.getGender().getId();
-        }
-        facebookLink = userInfo.getFacebookLink();
-        profession = userInfo.getProfession();
-        company = userInfo.getCompany();
-        phoneNumber = userInfo.getPhoneNumber();
+        this.countryId = countryId;
+        this.cityId = cityId;
+        this.genderId = genderId;
+        this.facebookLink = facebookLink;
+        this.profession = profession;
+        this.company = company;
+        this.phoneNumber = phoneNumber;
     }
 
     public void addUserImage(UserImage userImage) {

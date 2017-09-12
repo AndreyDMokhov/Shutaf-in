@@ -1,9 +1,9 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.web.user.UserInfoResponse;
 import com.shutafin.repository.common.UserRepository;
-import com.shutafin.service.UserAccountService;
+import com.shutafin.service.UserInfoService;
 import com.shutafin.service.UserSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class UserSearchServiceImpl implements UserSearchService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserAccountService userAccountService;
+    private UserInfoService userInfoService;
 
     @Override
     @Transactional
@@ -31,13 +31,21 @@ public class UserSearchServiceImpl implements UserSearchService {
         List<UserSearchResponse> userSearchWebList = new ArrayList<>();
 
         for (User u : users) {
-            UserImage userImage = userAccountService.findUserAccountProfileImage(u);
-            String image = null;
-            if (userImage != null) {
-                image = userImage.getImageStorage().getImageEncoded();
-            }
 
-            userSearchWebList.add(new UserSearchResponse(u.getFirstName(), u.getLastName(), image));
+            UserInfoResponse userInfoResponse = userInfoService.getUserInfo(u);
+
+
+            userSearchWebList.add(
+                    new UserSearchResponse(
+                            userInfoResponse.getUserId(),
+                            userInfoResponse.getFirstName(),
+                            userInfoResponse.getLastName(),
+                            userInfoResponse.getUserImage(),
+                            userInfoResponse.getGenderId(),
+                            userInfoResponse.getCityId(),
+                            userInfoResponse.getCountryId()
+                    )
+            );
         }
         return userSearchWebList;
     }

@@ -58,7 +58,7 @@
                                 </tr>
                                 <tr ng-hide="!vm.userProfile.genderId">
                                     <td>{{'UserSettings.form.gender' | translate}}</td>
-                                    <td ng-repeat="gender in vm.gender"
+                                    <td ng-repeat="gender in vm.genders"
                                         ng-if="gender.id === vm.userProfile.genderId">{{gender.description}}
                                     </td>
                                 </tr>

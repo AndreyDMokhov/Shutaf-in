@@ -4,8 +4,8 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
 
-    vm.cities = $localStorage.cities;
-    vm.gender = $localStorage.genders;
+    vm.cities = $sessionStorage.cities;
+    vm.genders = $sessionStorage.genders;
 
     function setProfileImage() {
         if (!vm.userProfile.userImageId) {
