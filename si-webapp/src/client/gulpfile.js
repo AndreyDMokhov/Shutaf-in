@@ -6,11 +6,9 @@ var connect = require('gulp-connect');
 var proxy = require('http-proxy-middleware');
 var express = require('express');
 var minify = require('gulp-uglify');
-//var pump = require('pump');
 var babel = require('gulp-babel');
 var ngAnnotate = require('gulp-ng-annotate');
 var jshint = require('gulp-jshint');
-var concat = require('gulp-concat');
 var useref = require('gulp-useref');
 var gulpif = require('gulp-if');
 var minifyCss = require('gulp-minify-css');
@@ -20,7 +18,6 @@ var deleteFiles = require('del');
 var deleteEmpty = require('delete-empty');
 var preprocess = require('gulp-preprocess');
 var clean = require('gulp-clean');
-
 
 //clean all,
 gulp.task('clean-all', [
@@ -152,7 +149,7 @@ gulp.task('build', function (callback) {
 });
 
 // to run new server
-gulp.task('newConnect', function () {
+gulp.task('minifiedConnect', function () {
     connect.server({
         root: 'dist/',
         port: 9000,

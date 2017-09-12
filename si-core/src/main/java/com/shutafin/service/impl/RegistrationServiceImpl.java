@@ -11,6 +11,7 @@ import com.shutafin.model.entities.types.AccountType;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
+import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.account.RegistrationConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
@@ -57,6 +58,11 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private UserImageService userImageService;
 
+    @Autowired
+    private UserInfoService userInfoService;
+
+
+
     @Override
     @Transactional
     public void save(RegistrationRequestWeb registrationRequestWeb) {
@@ -64,6 +70,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         userImageService.createUserImageDirectory(user);
+        userInfoService.createUserInfo(new UserInfoRequest(), user);
         sendConfirmRegistrationEmail(user, userAccount);
     }
 

@@ -24,7 +24,6 @@
     "gulp-angular-templatecache": "^2.0.0",
     "gulp-babel": "^7.0.0",
     "gulp-clean": "^0.3.2",
-    "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.0.0",
     "gulp-if": "^2.0.2",
     "gulp-jshint": "^2.0.4",
@@ -35,7 +34,6 @@
     "gulp-useref": "^3.1.2",
     "http-proxy-middleware": "^0.17.4",
     "jshint": "^2.9.5",
-    "pump": "^1.0.2",
     "run-sequence": "^2.1.0"
   }
 }
