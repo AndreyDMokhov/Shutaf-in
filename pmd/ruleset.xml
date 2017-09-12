@@ -21,11 +21,11 @@
         <exclude name="NPathComplexity"/>
     </rule>
     <!--<rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">-->
-        <!--<properties>-->
-            <!--<property name="reportLevel">-->
-                <!--<value>10</value>-->
-            <!--</property>-->
-        <!--</properties>-->
+    <!--<properties>-->
+    <!--<property name="reportLevel">-->
+    <!--<value>10</value>-->
+    <!--</property>-->
+    <!--</properties>-->
     <!--</rule>-->
 
 
@@ -55,6 +55,7 @@
         <exclude name="UseLocaleWithCaseConversions"/>
         <exclude name="PreserveStackTrace"/>
         <exclude name="UseUtilityClass"/>
+        <exclude name="AvoidReassigningParameters"/>
     </rule>
 
     <rule ref="rulesets/java/empty.xml"/>

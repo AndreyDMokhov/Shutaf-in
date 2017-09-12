@@ -1,7 +1,7 @@
 /**
  * Created by evgeny on 7/10/2017.
  */
-app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage, constantService) {
+app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage, constantService, $translate) {
 
     var vm = this;
 
@@ -19,19 +19,21 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                 vm.dataLoading = false;
                 var session_id = success.headers('session_id');
                 $sessionStorage.sessionId = session_id;
-                userInitService.init();
-                constantService.init();
                 languageService.getUserLanguage().then(
                     function(result){//success
-                        languageService.updateUserLanguage(result.data);
+                        $translate.use(result.data.description);
                     },
                     function(err){//fail
                         console.log(err);
                         notify.set($filter('translate')("Error.SYS"), {type: 'error'});
                     }
                 );
+
+                userInitService.init().then(function () {
+                    constantService.init();
+                });
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
-                $state.go("home");
+                $state.go("userSettings");
             }, function (error) {
                 vm.dataLoading = false;
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

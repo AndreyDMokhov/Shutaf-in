@@ -4,10 +4,8 @@ import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.web.user.UserAccountSettingsWeb;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
-import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.UserAccountService;
 import com.shutafin.service.UserImageService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,25 +18,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private UserRepository userRepository;
     private UserAccountRepository userAccountRepository;
     private UserImageService userImageService;
 
     @Autowired
     public UserAccountServiceImpl(
-            UserRepository userRepository,
             UserAccountRepository userAccountRepository,
             UserImageService userImageService) {
-        this.userRepository = userRepository;
         this.userAccountRepository = userAccountRepository;
         this.userImageService = userImageService;
     }
 
-    @Override
-    @Transactional
-    public void updateAccountSettings(UserAccountSettingsWeb userAccountSettingsWeb, User user) {
-        updateFirstLastNames(user, userAccountSettingsWeb);
-    }
 
     @Override
     @Transactional
@@ -81,19 +71,6 @@ public class UserAccountServiceImpl implements UserAccountService {
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
         userAccount.setUserImage(null);
         userAccountRepository.update(userAccount);
-    }
-
-    private void updateFirstLastNames(User user, UserAccountSettingsWeb userAccountSettingsWeb) {
-        String firstNameWeb = userAccountSettingsWeb.getFirstName();
-        String lastNameWeb = userAccountSettingsWeb.getLastName();
-
-        if (user.getFirstName().equals(firstNameWeb) && user.getLastName().equals(lastNameWeb)) {
-            return;
-        }
-
-        user.setFirstName(firstNameWeb);
-        user.setLastName(lastNameWeb);
-        userRepository.update(user);
     }
 
 }

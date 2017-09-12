@@ -1,16 +1,16 @@
 app.factory('changeEmailModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
-        RestangularProvider.setBaseUrl('/api/users/account');
+        RestangularProvider.setFullResponse(true);
     });
 
     function emailChangeRequest(params) {
         rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
-        return  rest.one('/change-email-request').customPOST(params)
+        return  rest.one('/api/users/account/change-email-request').customPOST(params)
     }
     function emailChangeConfirmation(urlLink) {
         rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
-        return  rest.one('/change-email-confirmation/'+urlLink).customGET()
+        return  rest.one('/api/users/account/change-email-confirmation/'+urlLink).customGET()
     }
 
     return{

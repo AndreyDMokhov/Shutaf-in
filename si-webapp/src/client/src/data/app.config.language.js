@@ -2,12 +2,11 @@ app.factory('languageService', function ($translate, Restangular, $sessionStorag
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
-        RestangularProvider.setBaseUrl('/api/users/settings');
     });
 
     function getUserLanguage() {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
-        return rest.one('/language').customGET();
+        return rest.one('/api/users/settings/language').customGET();
     }
 
     function updateUserLanguage(params) {
@@ -23,7 +22,7 @@ app.factory('languageService', function ($translate, Restangular, $sessionStorag
         rest.setDefaultHeaders({"session_id": sessionId});
 
         if ($sessionStorage.currentLanguage !== params.id) {
-            return rest.one('/language').customPUT({id: params.id});
+            return rest.one('/api/users/settings/language').customPUT({id: params.id});
         }
     }
 

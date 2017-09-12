@@ -5,11 +5,10 @@ app.factory('registrationConfirmationModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
-        RestangularProvider.setBaseUrl('/api/users/registration/confirmation');
     });
 
     function confirmRegistration(urlLink) {
-        return rest.one('/' + urlLink).customGET();
+        return rest.one('/api/users/registration/confirmation/' + urlLink).customGET();
     }
 
     return {
