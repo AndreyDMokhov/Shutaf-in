@@ -1,4 +1,4 @@
-app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage) {
+app.controller("headerController", function (webSocketService, $rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage) {
 
     var vm = this;
 
@@ -11,7 +11,7 @@ app.controller("headerController", function ($rootScope, languageService, sessio
         vm.initialization.languages = $sessionStorage.languages;
         if (vm.sessionService.isAuthenticated()) {
             userInitService.init();
-
+            webSocketService.getConnection();
         }
     }
 

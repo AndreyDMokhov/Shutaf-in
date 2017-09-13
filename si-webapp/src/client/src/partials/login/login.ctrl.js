@@ -1,4 +1,4 @@
-app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, webSocketService, languageService, userInitService, constantService, $sessionStorage) {
+app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, constantService, $sessionStorage) {
 
     var vm = this;
 
@@ -14,7 +14,6 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
                 $sessionStorage.sessionId = success.headers('session_id');
                 userInitService.init();
                 constantService.init();
-                webSocketService.getConnection();
                 $state.go('home');
 
                 languageService.getUserLanguage().then(

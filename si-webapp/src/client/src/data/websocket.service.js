@@ -4,31 +4,64 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
 
         vm.isConnected = false;
         vm.stompClient = null;
+        vm.subscription = null;
 
-        function getConnection() {
+
+        function connect() {
             var socket = getSocket();
             vm.stompClient = Stomp.over(socket);
+            // if you comment next line, you will see all messages from stomp in console
             vm.stompClient.debug = false;
 
             return $q(function (resolve, reject) {
                 vm.stompClient.connect({'session_id': $sessionStorage.sessionId}, function (frame) {
-                    setConnected(true);
+                    vm.isConnected = true;
                     resolve();
                 }, function (err) {
-                    if (!sessionService.isAuthenticated()) {
-                        return;
-                    }
-
-                    setConnected(false);
-                    setTimeout(function () {
-                        getConnection().then(
-                            function (success) {
-                                setConnected(true);
-                                resolve();
-                            });
-                    }, 1000);
+                    vm.isConnected = false;
+                    reject();
                 });
             });
+        }
+
+        function getConnection() {
+            if (!sessionService.isAuthenticated()) {
+                return;
+            }
+            return $q(function (resolve, reject) {
+                connect().then(
+                    function (succes) {
+                        resolve(succes);
+                    }
+                    , function (error) {
+                        setTimeout(function () {
+                            getConnection().then(function (succes) {
+                                resolve(succes);
+                            });
+                        }, 1000);
+                    });
+            });
+        }
+
+        function subscribe(destination) {
+
+            var deferred = $q.defer();
+            if (vm.stompClient === null) {
+                getConnection();
+            } else {
+                unSubscribe();
+                vm.subscription = vm.stompClient.subscribe(destination, function (message) {
+                    deferred.notify(JSON.parse(message.body));
+                }, {'session_id': $sessionStorage.sessionId});
+            }
+            return deferred.promise;
+        }
+
+        function unSubscribe() {
+            if (vm.subscription !== null) {
+                vm.subscription.unsubscribe();
+                vm.subscription = null;
+            }
         }
 
         function getSocket() {
@@ -38,18 +71,8 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
             return socket;
         }
 
-        function getClient() {
-            return $q(function (resolve, reject) {
-                if (vm.stompClient === null) {
-                    getConnection().then(
-                        function (success) {
-                            resolve(vm.stompClient);
-                        });
-                }
-                else {
-                    resolve(vm.stompClient);
-                }
-            });
+        function sendMessage(message, address) {
+            vm.stompClient.send(address, {'session_id': $sessionStorage.sessionId}, JSON.stringify(message));
         }
 
         function disconnect() {
@@ -59,23 +82,19 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
                         vm.isConnected = false;
                         resolve();
                     })
-                } else {
-                    reject();
                 }
-            });
+            })
         }
 
-        function setConnected(boolean) {
-            isConnected = boolean;
-        }
-
-        function isConnected() {
-            return isConnected;
+        function isConnectionReady() {
+            return vm.isConnected;
         }
 
         vm.getConnection = getConnection;
-        vm.isConnected = isConnected;
-        vm.getClient = getClient;
+        vm.isConnectionReady = isConnectionReady;
         vm.disconnect = disconnect;
+        vm.connect = connect;
+        vm.subscribe = subscribe;
+        vm.sendMessage = sendMessage;
     }
 );
