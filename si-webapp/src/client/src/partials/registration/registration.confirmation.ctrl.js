@@ -1,7 +1,7 @@
 /**
  * Created by evgeny on 7/10/2017.
  */
-app.controller('registrationConfirmation', function (registrationConfirmationModel, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage, constantService, $translate) {
+app.controller('registrationConfirmation', function (registrationConfirmationModel, quizInitService, notify, $state, $filter, userInitService, $stateParams, languageService, $sessionStorage, constantService, $translate) {
 
     var vm = this;
 
@@ -31,6 +31,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
 
                 userInitService.init().then(function () {
                     constantService.init();
+                    quizInitService.init();
                 });
                 notify.set($filter('translate')("Registration.form.msg.registrationOK"), {type: 'success'});
                 $state.go("userSettings");

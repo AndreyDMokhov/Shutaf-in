@@ -1,10 +1,11 @@
-app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify, $filter) {
+app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify,$sessionStorage, $filter) {
 
     var vm = this;
-    vm.isReady = false;
+    vm.isReady = true;
 
-    vm.questionsFromController = [];
-    vm.answersFromController = [];
+    vm.questions = $sessionStorage.questions;
+    vm.answers = $sessionStorage.answers;
+
 
     function sendData(send) {
         quizFactory.sendAnswers(send).then(
@@ -17,28 +18,8 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify, $
         );
     }
 
-    function getData() {
-        quizFactory.getQuestions().then(
-            function (success) {
-                vm.questionsFromController = success.data.data;
-                quizFactory.getAnswers().then(
-                    function (success) {
-                        vm.answersFromController = success.data.data;
-                        vm.isReady = true;
-                    },
-                    function (error) {
-                        vm.isReady = true;
-                    }
-                );
-
-            },
-            function (error) {
-                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-            });
-    }
 
     vm.sendData = sendData;
-    getData();
 
 });
 
@@ -84,8 +65,14 @@ app.directive('quiz', function () {
             };
 
             function fillAnswerArray() {
+
                 for (var i = 0; i < questions.length; i++) {
-                    answer.push({"questionId": i, "answerId": scope.answersToDirective[i].selectedAnswersIds[0]})
+                    if (scope.answersToDirective[i]) {
+                        answer.push({"questionId": i, "answerId": scope.answersToDirective[i].selectedAnswersIds[0]})
+                    }
+                    else {
+                        answer.push({"questionId": i, "answerId": null})
+                    }
                 }
             }
         }

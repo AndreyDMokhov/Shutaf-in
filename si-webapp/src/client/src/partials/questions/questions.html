@@ -1,6 +1,6 @@
-<div ng-if="vm.isReady">
+<div>
     <h1 style="text-align: center" class="title">{{"Questions.title"|translate}}</h1>
-    <quiz questions-to-directive="vm.questionsFromController"
-          answers-to-directive = "vm.answersFromController"
+    <quiz questions-to-directive="vm.questions"
+          answers-to-directive = "vm.answers"
            back-data="vm.sendData(data)" ></quiz>
 </div>

@@ -1,4 +1,4 @@
-app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, constantService, $sessionStorage) {
+app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, constantService, quizInitService, $sessionStorage) {
 
     var vm = this;
 
@@ -15,6 +15,7 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
                 userInitService.init().then(function () {
 
                     constantService.init();
+                    quizInitService.init();
                 });
                 $state.go('home');
 

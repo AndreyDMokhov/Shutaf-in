@@ -9,6 +9,8 @@ app.controller('logoutController', function ($rootScope, logoutModel, $window, $
         delete $sessionStorage.sessionId;
         languageService.setDefaultLanguage();  //set default GUI language
         delete $sessionStorage.userProfile;
+        delete $sessionStorage.questions;
+        delete $sessionStorage.answers;
     $rootScope.brand = ($filter('translate')('Header.brand'));
     }
 
