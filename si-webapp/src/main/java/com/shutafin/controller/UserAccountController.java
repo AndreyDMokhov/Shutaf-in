@@ -5,10 +5,12 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.account.UserLanguageWeb;
-import com.shutafin.model.web.user.UserAccountSettingsWeb;
-import com.shutafin.model.web.user.UserImageWeb;
+import com.shutafin.model.web.user.UserInfoResponseDTO;
+import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
+import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.service.UserAccountService;
+import com.shutafin.service.UserInfoService;
 import com.shutafin.service.UserLanguageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/users/settings")
-@Slf4j
 public class UserAccountController {
 
     @Autowired
@@ -33,13 +35,9 @@ public class UserAccountController {
     @Autowired
     private UserLanguageService userLanguageService;
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateAccountSettings(@RequestBody @Valid UserAccountSettingsWeb userAccountSettingsWeb,
-                                      BindingResult result, @AuthenticatedUser User user) {
-        log.debug("/users/settings/update");
-        checkBindingResult(result);
-        userAccountService.updateAccountSettings(userAccountSettingsWeb, user);
-    }
+    @Autowired
+    private UserInfoService userInfoService;
+
 
     @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
@@ -52,23 +50,11 @@ public class UserAccountController {
                 image.getCreatedDate().getTime());
     }
 
-    @RequestMapping(value = "/image", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb getUserAccountProfileImage(@AuthenticatedUser User user) {
-        log.debug("/users/settings/image");
-        UserImage image = userAccountService.findUserAccountProfileImage(user);
-        if (image == null) {
-            return null;
-        }
-        return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
-    }
-
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserAccountProfileImage(@AuthenticatedUser User user) {
         log.debug("/users/settings/image");
         userAccountService.deleteUserAccountProfileImage(user);
     }
-
 
     @RequestMapping(value = "/language", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void update(@RequestBody @Valid UserLanguageWeb userLanguageWeb,
@@ -83,6 +69,21 @@ public class UserAccountController {
     public Language get(@AuthenticatedUser User user) {
         log.debug("/users/settings/language");
         return userLanguageService.findUserLanguage(user);
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserInfoResponseDTO getUserInfo(@AuthenticatedUser User user) {
+
+        return userInfoService.getUserInfo(user);
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateUserInfo(@AuthenticatedUser User user,
+                               @RequestBody @Valid UserInfoRequest userInfoRequest,
+                               BindingResult result) {
+
+        checkBindingResult(result);
+        userInfoService.updateUserInfo(userInfoRequest, user);
     }
 
     private void checkBindingResult(BindingResult result) {

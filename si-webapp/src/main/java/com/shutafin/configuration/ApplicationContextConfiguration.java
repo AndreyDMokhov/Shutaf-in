@@ -5,7 +5,6 @@ import com.shutafin.processors.SessionResponseAnnotationBeanPostProcessor;
 import com.shutafin.processors.TraceLogBeanPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 @Configuration
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         @PropertySource(value = "classpath:environment.config.properties"),
 
 })
-@EnableWebMvc
 public class ApplicationContextConfiguration {
 
     @Bean

@@ -22,8 +22,15 @@ import javax.validation.Valid;
 @Slf4j
 public class RegistrationController {
 
-    @Autowired
     private RegistrationService registrationService;
+
+    @Autowired
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+
+    public RegistrationController() {
+    }
 
     @RequestMapping(value = "/registration/request", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
@@ -41,7 +48,7 @@ public class RegistrationController {
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
     public User confirmRegistration(@PathVariable String link) {
         log.debug("/users/registration/confirmation/{link}");
-        if (StringUtils.isBlank(link)){
+        if (StringUtils.isBlank(link)) {
             log.warn("Link is blank or empty");
             throw new ResourceNotFoundException();
         }

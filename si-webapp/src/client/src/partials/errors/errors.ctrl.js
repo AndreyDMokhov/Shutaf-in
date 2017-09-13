@@ -7,7 +7,7 @@ app.controller('errorsController', function ($filter, $stateParams) {
 
     function showError() {
         var code = $stateParams.code;
-        if (code===undefined || code===null || code===""){
+        if (code === undefined || code === null || code === "") {
             code = 404;
         }
         vm.errorData.code = code;
