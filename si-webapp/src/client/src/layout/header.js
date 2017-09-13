@@ -24,7 +24,6 @@ app.controller("headerController", function ($rootScope, languageService, sessio
     function setLanguageCode(code, id) {
         languageService.updateUserLanguage({"id": id, "description": code});
         $window.location.reload();
-        $state.go('home');
     }
 
     init();

@@ -4,6 +4,7 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify, $
     vm.isReady = false;
 
     vm.questionsFromController = [];
+    vm.answersFromController = [];
 
     function sendData(send) {
         quizFactory.sendAnswers(send).then(
@@ -16,19 +17,28 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify, $
         );
     }
 
-    function getQuestions() {
+    function getData() {
         quizFactory.getQuestions().then(
             function (success) {
                 vm.questionsFromController = success.data.data;
-                vm.isReady = true;
+                quizFactory.getAnswers().then(
+                    function (success) {
+                        vm.answersFromController = success.data.data;
+                        vm.isReady = true;
+                    },
+                    function (error) {
+                        vm.isReady = true;
+                    }
+                );
+
             },
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
-    vm.sendData=sendData;
-    vm.getQuestions=getQuestions;
-    getQuestions();
+
+    vm.sendData = sendData;
+    getData();
 
 });
 
@@ -36,6 +46,7 @@ app.directive('quiz', function () {
     return {
         scope: {
             questionsToDirective: '=',
+            answersToDirective: '=',
             backData: '&',
             returnAnswer: '='
         },
@@ -44,6 +55,7 @@ app.directive('quiz', function () {
         link: function (scope, elem, attrs) {
 
             var questions = scope.questionsToDirective;
+
             scope.id = 0;
             scope.currentQuestion = questions[scope.id];
             scope.numberOfQuestions = questions.length;
@@ -73,7 +85,7 @@ app.directive('quiz', function () {
 
             function fillAnswerArray() {
                 for (var i = 0; i < questions.length; i++) {
-                    answer.push({"questionId": i, "answerId": questions[i].selectedAnswersIds[0]})
+                    answer.push({"questionId": i, "answerId": scope.answersToDirective[i].selectedAnswersIds[0]})
                 }
             }
         }
