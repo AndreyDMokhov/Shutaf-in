@@ -51,7 +51,7 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findPartners(User user) {
+    public List<User> findMatchingUsers(User user) {
         List<User> result = new ArrayList<>();
 
         if (user == null) {
@@ -73,16 +73,16 @@ public class UserMatchServiceImpl implements UserMatchService {
         userQuestionAnswerRepository.deleteUserAnswers(user);
         userExamKeyRepository.delete(user);
 
-        TreeMap<Question, Answer> sortedQestionsAnswers = new TreeMap<>();
+        TreeMap<Question, Answer> questionAnswerMap = new TreeMap<>();
         for (QuestionAnswerWeb questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
 
-            sortedQestionsAnswers.put(question, answer);
+            questionAnswerMap.put(question, answer);
         }
 
-        List<String> examKeyRes = generateExamKey(sortedQestionsAnswers);
+        List<String> examKeyRes = generateExamKey(questionAnswerMap);
         userExamKeyRepository.save(new UserExamKey(user, examKeyRes.get(0), examKeyRes.get(1)));
         if (varietyExamKeyRepository.findUserExamKeyByStr(examKeyRes.get(0)) == null) {
             varietyExamKeyRepository.save(new VarietyExamKey(examKeyRes.get(0)));

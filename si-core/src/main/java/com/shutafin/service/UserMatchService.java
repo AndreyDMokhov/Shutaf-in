@@ -11,7 +11,7 @@ import java.util.List;
  * Created by evgeny on 8/12/2017.
  */
 public interface UserMatchService {
-    List<User> findPartners(User user);
+    List<User> findMatchingUsers(User user);
     void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers);
     List<QuestionResponse> getUserQuestionsAnswers(User user);
     List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(User user);

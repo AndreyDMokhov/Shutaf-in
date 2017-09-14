@@ -15,7 +15,6 @@ app.factory('quizInitService', function (Restangular, $q, $rootScope, $sessionSt
                 var answers = rest.one("/api/users/match/questionnaire/answers").withHttpConfig({timeout: 10000});
                 _getDataFromResponse(answers).then(
                     function (success) {
-                        $sessionStorage.curransw = success.data;
                         _fillAnswerArray(success.data);
                     }
                 );

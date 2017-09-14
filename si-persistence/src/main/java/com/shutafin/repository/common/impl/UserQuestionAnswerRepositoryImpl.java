@@ -15,8 +15,8 @@ public class UserQuestionAnswerRepositoryImpl extends AbstractEntityDao<UserQues
     @Override
     public void deleteUserAnswers(User user) {
         getSession()
-                .createQuery("DELETE UserQuestionAnswer uqa where uqa.user.id = :userId")
-                .setParameter("userId", user.getId())
+                .createQuery("DELETE FROM UserQuestionAnswer uqa where uqa.user = :user")
+                .setParameter("user", user)
                 .executeUpdate();
     }
 

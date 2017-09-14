@@ -8,7 +8,10 @@ import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,8 +27,8 @@ public class UserMatchController {
     private UserMatchService userMatchService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<User> getMatchPartners(@AuthenticatedUser User user) {
-        return userMatchService.findPartners(user);
+    public List<User> getMatchingUsers(@AuthenticatedUser User user) {
+        return userMatchService.findMatchingUsers(user);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
