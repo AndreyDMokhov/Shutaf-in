@@ -3,12 +3,8 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify,$s
     var vm = this;
     vm.isReady = true;
 
-    vm.questions = $sessionStorage.questions;
-    vm.answers = $sessionStorage.answers;
-
-
-    function sendData(send) {
-        quizFactory.sendAnswers(send).then(
+    function sendData() {
+        quizFactory.sendAnswers($sessionStorage.answers).then(
             function (success) {
                 notify.set($filter('translate')('Questions.confirm'), {type: 'success'})
             },
@@ -18,16 +14,12 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify,$s
         );
     }
 
-
     vm.sendData = sendData;
-
 });
 
-app.directive('quiz', function () {
+app.directive('quiz', function ($sessionStorage) {
     return {
         scope: {
-            questionsToDirective: '=',
-            answersToDirective: '=',
             backData: '&',
             returnAnswer: '='
         },
@@ -35,18 +27,18 @@ app.directive('quiz', function () {
         templateUrl: 'partials/questions/questionTemplate.html',
         link: function (scope, elem, attrs) {
 
-            var questions = scope.questionsToDirective;
-
+            var questions = $sessionStorage.questions;
             scope.id = 0;
             scope.currentQuestion = questions[scope.id];
             scope.numberOfQuestions = questions.length;
-            var answer = [];
-            fillAnswerArray();
-            scope.currentAnswer = answer[scope.id].answerId;
+            var answer = $sessionStorage.answers;
+            scope.currentAnswer =  $sessionStorage.answers[scope.id].answerId;
+
 
             scope.nextQuestion = function () {
                 answer[scope.id].questionId = scope.currentQuestion.questionId;
                 answer[scope.id].answerId = scope.currentAnswer;
+                $sessionStorage.answers = answer;
                 scope.id++;
                 scope.currentQuestion = questions[scope.id];
                 scope.currentAnswer = answer[scope.id].answerId;
@@ -61,20 +53,8 @@ app.directive('quiz', function () {
             scope.save = function () {
                 answer[scope.id].questionId = scope.currentQuestion.questionId;
                 answer[scope.id].answerId = scope.currentAnswer;
-                scope.backData({data: answer});
+                scope.backData();
             };
-
-            function fillAnswerArray() {
-
-                for (var i = 0; i < questions.length; i++) {
-                    if (scope.answersToDirective[i]) {
-                        answer.push({"questionId": i, "answerId": scope.answersToDirective[i].selectedAnswersIds[0]})
-                    }
-                    else {
-                        answer.push({"questionId": i, "answerId": null})
-                    }
-                }
-            }
         }
     }
 });

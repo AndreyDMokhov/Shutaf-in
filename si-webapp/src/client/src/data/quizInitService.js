@@ -12,12 +12,13 @@ app.factory('quizInitService', function (Restangular, $q, $rootScope, $sessionSt
         _getDataFromResponse(questions).then(
             function (success) {
                 $sessionStorage.questions = success.data;
-            }
-        );
-        var answers = rest.one("/api/users/match/questionnaire/answers").withHttpConfig({timeout: 10000});
-        _getDataFromResponse(answers).then(
-            function (success) {
-                $sessionStorage.answers = success.data;
+                var answers = rest.one("/api/users/match/questionnaire/answers").withHttpConfig({timeout: 10000});
+                _getDataFromResponse(answers).then(
+                    function (success) {
+                        $sessionStorage.curransw = success.data;
+                        _fillAnswerArray(success.data);
+                    }
+                );
             }
         );
         return deferred.promise;
@@ -38,6 +39,20 @@ app.factory('quizInitService', function (Restangular, $q, $rootScope, $sessionSt
             });
         return deferred.promise;
     }
+
+    function _fillAnswerArray(data) {
+        var answers = [];
+        for (var i = 0; i < $sessionStorage.questions.length; i++) {
+            if (data[i]) {
+                answers.push({"questionId": i, "answerId": data[i].selectedAnswersIds[0]})
+            }
+            else {
+                answers.push({"questionId": i, "answerId": null})
+            }
+            $sessionStorage.answers = answers;
+        }
+    }
+
 
     return {
         init: init
