@@ -1,4 +1,4 @@
-app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, constantService, quizInitService, $sessionStorage) {
+app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, constantService, quizInitService, $sessionStorage, $window) {
 
     var vm = this;
 
@@ -12,23 +12,19 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
             function (success) {
                 vm.dataLoading = false;
                 $sessionStorage.sessionId = success.headers('session_id');
-                userInitService.init().then(function () {
-
-                    constantService.init();
-                    quizInitService.init();
-                });
-                $state.go('home');
-
+                $window.location.reload();
                 languageService.getUserLanguage().then(
-                    function(result){//success
-                        languageService.updateUserLanguage(result.data.data);
+                    function(result){
+                        $translate.use(result.data.description);
                         notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                     },
-                    function(err){//fail
+                    function(err){
                         console.log(err);
                         return err;
                     }
                 );
+
+                $state.go('home');
 
             }, function (error) {
 

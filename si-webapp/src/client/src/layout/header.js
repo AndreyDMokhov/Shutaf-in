@@ -8,15 +8,17 @@ app.controller("headerController", function ($rootScope, languageService, sessio
     vm.initialization = {};
 
     function init() {
-        constantService.init().then(function () {
-
-            vm.initialization.languages = $sessionStorage.languages;
-        });
         if (vm.sessionService.isAuthenticated()) {
             userInitService.init().then(function () {
-
+                constantService.init();
                 vm.userProfile = $sessionStorage.userProfile;
             });
+        } else {
+            constantService.init().then(function () {
+
+                vm.initialization.languages = $sessionStorage.languages;
+            });
+
         }
     }
 
