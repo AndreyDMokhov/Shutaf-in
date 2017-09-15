@@ -52,18 +52,18 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Override
     @Transactional(readOnly = true)
     public List<User> findMatchingUsers(User user) {
-        List<User> result = new ArrayList<>();
+        List<User> matchingUsersList = new ArrayList<>();
 
         if (user == null) {
-            return result;
+            return matchingUsersList;
         }
 
         UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
         List<String> keys = varietyExamKeyRepository.getKeysForMatch(userExamKey.getExamKeyRegExp());
-        result = userExamKeyRepository.getMatchedUsers(keys);
-        result.remove(user);
+        matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
+        matchingUsersList.remove(user);
 
-        return result;
+        return matchingUsersList;
     }
 
     @Override

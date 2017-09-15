@@ -1,4 +1,4 @@
-app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout, $window) {
+app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout, $window, quizInitService) {
 
     var vm = this;
     vm.userProfile = {};
@@ -10,7 +10,10 @@ app.controller("headerController", function ($rootScope, languageService, sessio
     function init() {
         if (vm.sessionService.isAuthenticated()) {
             userInitService.init().then(function () {
-                constantService.init();
+                constantService.init().then(function () {
+                    vm.initialization.languages = $sessionStorage.languages;
+                });
+                quizInitService.init();
                 vm.userProfile = $sessionStorage.userProfile;
             });
         } else {

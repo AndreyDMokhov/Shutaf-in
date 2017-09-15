@@ -113,7 +113,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state("questions",
             {
                 templateUrl:'partials/questions/questions.html',
-                controller: "QuestionsCtrl",
+                controller: "questionsCtrl",
                 controllerAs: "vm",
                 url: "/questions"
             })

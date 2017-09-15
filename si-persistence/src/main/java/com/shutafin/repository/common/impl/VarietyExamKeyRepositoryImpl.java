@@ -46,6 +46,6 @@ public class VarietyExamKeyRepositoryImpl extends AbstractEntityDao<VarietyExamK
             }
         }
 
-        return new ArrayList<String>(res);
+        return new ArrayList<>(res);
     }
 }

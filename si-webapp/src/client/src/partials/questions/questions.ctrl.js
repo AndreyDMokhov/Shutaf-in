@@ -1,10 +1,10 @@
-app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify,$sessionStorage, $filter) {
+app.controller('questionsCtrl', function ($scope, $state, quizModel, notify, $sessionStorage, $filter) {
 
     var vm = this;
     vm.isReady = true;
 
     function sendData() {
-        quizFactory.sendAnswers($sessionStorage.answers).then(
+        quizModel.sendAnswers($sessionStorage.answers).then(
             function (success) {
                 notify.set($filter('translate')('Questions.confirm'), {type: 'success'})
             },
@@ -17,7 +17,7 @@ app.controller('QuestionsCtrl', function ($scope, $state, quizFactory, notify,$s
     vm.sendData = sendData;
 });
 
-app.directive('quiz', function ($sessionStorage) {
+app.directive('quiz', function ($sessionStorage, $state) {
     return {
         scope: {
             backData: '&',
@@ -32,7 +32,7 @@ app.directive('quiz', function ($sessionStorage) {
             scope.currentQuestion = questions[scope.id];
             scope.numberOfQuestions = questions.length;
             var answer = $sessionStorage.answers;
-            scope.currentAnswer =  $sessionStorage.answers[scope.id].answerId;
+            scope.currentAnswer = $sessionStorage.answers[scope.id].answerId;
 
 
             scope.nextQuestion = function () {
@@ -54,6 +54,7 @@ app.directive('quiz', function ($sessionStorage) {
                 answer[scope.id].questionId = scope.currentQuestion.questionId;
                 answer[scope.id].answerId = scope.currentAnswer;
                 scope.backData();
+                $state.go('userProfile', {id: $sessionStorage.userProfile.userId})
             };
         }
     }

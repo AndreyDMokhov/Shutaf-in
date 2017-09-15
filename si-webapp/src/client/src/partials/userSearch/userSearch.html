@@ -8,9 +8,7 @@
                                id="fullName"
                                ng-model="vm.fullName"
                                ng-maxlength="50"
-                               placeholder="{{'Search.request' | translate}}"
-                               required
-                               onclick="this.select()"/>
+                               placeholder="{{'Search.request' | translate}}"/>
                         <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary button-size-font">
                             {{"Search.button" | translate}}
                         </button>
@@ -25,7 +23,7 @@
                 <div class="panel panel-info" ng-repeat="user in vm.userSearchList">
                     <div class="panel-heading">
                         <h4 class="panel-title">{{ user.firstName }} {{ user.lastName }}</h4>
-                        <span>Compatibility, %</span>
+                        <span>{{'UserProfile.compatibility' | translate}}</span>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -39,7 +37,7 @@
                                 <table class="table table-user-information">
                                     <tbody>
                                     <tr>
-                                        <td>Date of Birth</td>
+                                        <td>{{'UserProfile.dateOfBirth' | translate}}</td>
                                         <td>to be implemented</td>
                                     </tr>
                                     <tr ng-if="user.genderId">
