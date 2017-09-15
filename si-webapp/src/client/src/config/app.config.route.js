@@ -110,6 +110,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/users/search?{name}"
             })
+        .state("questions",
+            {
+                templateUrl:'partials/questions/questions.html',
+                controller: "questionsCtrl",
+                controllerAs: "vm",
+                url: "/questions"
+            })
     ;
     $urlRouterProvider.otherwise("/home");
 });

@@ -1,4 +1,4 @@
-app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout, $window) {
+app.controller("headerController", function ($rootScope, languageService, sessionService, constantService, userInitService, $filter, $sessionStorage, $state, $timeout, $window, quizInitService) {
 
     var vm = this;
     vm.userProfile = {};
@@ -8,15 +8,20 @@ app.controller("headerController", function ($rootScope, languageService, sessio
     vm.initialization = {};
 
     function init() {
-        constantService.init().then(function () {
-
-            vm.initialization.languages = $sessionStorage.languages;
-        });
         if (vm.sessionService.isAuthenticated()) {
             userInitService.init().then(function () {
-
+                constantService.init().then(function () {
+                    vm.initialization.languages = $sessionStorage.languages;
+                });
+                quizInitService.init();
                 vm.userProfile = $sessionStorage.userProfile;
             });
+        } else {
+            constantService.init().then(function () {
+
+                vm.initialization.languages = $sessionStorage.languages;
+            });
+
         }
     }
 
@@ -24,7 +29,6 @@ app.controller("headerController", function ($rootScope, languageService, sessio
     function setLanguageCode(code, id) {
         languageService.updateUserLanguage({"id": id, "description": code});
         $window.location.reload();
-        $state.go('home');
     }
 
     init();
