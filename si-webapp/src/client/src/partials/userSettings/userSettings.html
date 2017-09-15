@@ -59,6 +59,25 @@
                 </select>
             </div>
         </div>
+
+        <div class="row form-group">
+            <div ng-class="{
+                    'has-error': userSettings.dateOfBirth.$invalid,
+                    'has-success': userSettings.dateOfBirth.$valid }">
+                <label class="required" for="dateOfBirth">{{"UserSettings.form.dateOfBirth"|translate}}</label>
+                <input
+                        type="date"
+                        value={{vm.val}}
+                        name="dateOfBirth"
+                        id="dateOfBirth"
+                        class="form-control"
+                        ng-model="vm.userProfile.dateOfBirth"
+                        required
+                        >
+                </input>
+            </div>
+        </div>
+
         <div class="row form-group">
             <div ng-class="{
                     'has-error': userSettings.country.$invalid,
