@@ -1,8 +1,8 @@
 "use strict";
-app.factory('constantService', function (Restangular, $q, $sessionStorage, $localStorage) {
+app.factory('constantService', function (Restangular, $q, $sessionStorage) {
 
-    var rest = Restangular.withConfig(function (Configurer) {
-        Configurer.setBaseUrl('/api/initialization');
+    var rest = Restangular.withConfig(function (RestangularProvider) {
+        RestangularProvider.setBaseUrl('/api/initialization');
     });
 
     var data = [];
@@ -14,9 +14,9 @@ app.factory('constantService', function (Restangular, $q, $sessionStorage, $loca
             function success(success) {
                 data.languages = success.data.languages;
                 $sessionStorage.languages = success.data.languages;
-                $localStorage.cities = success.data.cities;
-                $localStorage.countries = success.data.countries;
-                $localStorage.genders = success.data.genders;
+                $sessionStorage.cities = success.data.cities;
+                $sessionStorage.countries = success.data.countries;
+                $sessionStorage.genders = success.data.genders;
 
                 deferred.resolve(data);
             },
@@ -29,5 +29,5 @@ app.factory('constantService', function (Restangular, $q, $sessionStorage, $loca
 
     return {
         init:init
-    };
+    }
 });

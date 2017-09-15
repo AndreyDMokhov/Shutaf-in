@@ -4,6 +4,10 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
 
     vm.userSearchList = {};
     vm.fullName = $stateParams.name;
+    vm.cities = $sessionStorage.cities;
+    vm.genders = $sessionStorage.genders;
+    vm.countries = $sessionStorage.countries;
+
 
     function activate() {
         userSearch();
@@ -14,7 +18,7 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
         userSearchModel.userSearch(vm.fullName).then(
             function (success) {
 
-                vm.userSearchList = success.data;
+                vm.userSearchList = success.data.data;
 
             }, function (error) {
 
@@ -27,7 +31,17 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
 
     }
 
+    function getImage(userProfile) {
+        if (!userProfile.userImageId) {
+            return '../../images/default_avatar.png';
+        }
+        else {
+            return 'data:image/jpeg;base64,' + userProfile.userImage;
+        }
+    }
+
     activate();
 
     vm.userSearch = userSearch;
+    vm.getImage = getImage;
 });

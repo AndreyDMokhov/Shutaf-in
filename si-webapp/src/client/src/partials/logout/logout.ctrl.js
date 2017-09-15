@@ -11,6 +11,8 @@ app.controller('logoutController', function ($rootScope, logoutModel, $window, $
         languageService.setDefaultLanguage();  //set default GUI language
         delete $sessionStorage.userProfile;
         $rootScope.brand = "Shutaf-In";
+        delete $sessionStorage.questions;
+        delete $sessionStorage.answers;
     }
 
    logout();

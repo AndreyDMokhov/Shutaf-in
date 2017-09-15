@@ -43,19 +43,19 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: "vm",
                 url: "/users"
             })
-        .state("settings",
+        .state("userSettings",
             {
-                templateUrl: "partials/settings/settings.html",
-                controller: "settingsController",
+                templateUrl: "partials/userSettings/userSettings.html",
+                controller: "userSettingsController",
                 controllerAs: "vm",
-                url: "/settings"
+                url: "/userSettings"
             })
         .state("userProfile",
             {
                 templateUrl: "partials/userProfile/userProfile.html",
                 controller: "userProfileController",
                 controllerAs: "vm",
-                url: "/userProfile"
+                url: "/profile/{id:int}"
             })
 
         .state("login",
@@ -110,6 +110,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: "userSearchController",
                 controllerAs: "vm",
                 url: "/users/search?{name}"
+            })
+        .state("questions",
+            {
+                templateUrl:'partials/questions/questions.html',
+                controller: "questionsCtrl",
+                controllerAs: "vm",
+                url: "/questions"
             })
     ;
     $urlRouterProvider.otherwise("/home");

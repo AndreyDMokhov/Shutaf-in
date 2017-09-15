@@ -1,7 +1,7 @@
 "use strict";
 app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionStorage, notify, $filter) {
     var rest = Restangular.withConfig(function (Configurer) {
-        Configurer.setBaseUrl('/api/initialization/user');
+
     });
 
     var data = {};
@@ -10,11 +10,11 @@ app.factory('userInitService', function (Restangular, $q, $rootScope, $sessionSt
 
         var deferred = $q.defer();
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
-        data = rest.one("init").withHttpConfig({timeout: 10000});
+        data = rest.one("/api/users/settings/info").withHttpConfig({timeout: 10000});
         data.get().then(
             function (success) {
-                data.userProfile = success.data.userProfile;
-                $sessionStorage.userProfile = success.data.userProfile;
+                data.userProfile = success.data;
+                $sessionStorage.userProfile = success.data;
                 $rootScope.brand = $sessionStorage.userProfile.firstName + " " + $sessionStorage.userProfile.lastName;
 
 
