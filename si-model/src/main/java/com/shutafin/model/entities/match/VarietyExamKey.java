@@ -19,8 +19,6 @@ import javax.persistence.*;
 @Setter
 public class VarietyExamKey extends AbstractBaseEntity {
 
-//    @JoinColumn(name = "EXAM_KEY", nullable = false)
-//    @OneToMany
     @Column(name = "EXAM_KEY", nullable = false)
     private String userExamKey;
 

@@ -57,7 +57,7 @@
 
   "SECTION": "PROFILE",
   "UserProfile.title" : "Profile",
-  "UserProfile.birthday" : "Birthday",
+  "UserProfile.dateOfBirth" : "Date of birth",
   "UserProfile.city" : "Current city",
   "UserProfile.button.setImage" : "Save image",
   "UserProfile.button.deleteImage" : "Delete image",
@@ -66,6 +66,7 @@
   "UserProfile.message.imageDeleted" : "Image was deleted",
   "UserProfile.message.confirmDelete" : "Are you sure you want to delete?",
   "UserProfile.edit":"Edit",
+  "UserProfile.compatibility":"Compatibility",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Email sent to specified address",
@@ -132,7 +133,7 @@
   "Questions.title" : "Questions",
   "Questions.button.next" : "Next",
   "Questions.button.back" : "Back",
-  "Questions.button.save" : "Sack",
+  "Questions.button.save" : "Save",
   "Questions.delimiter": "from",
   "Questions.confirm" : "Answers were saved"
 }

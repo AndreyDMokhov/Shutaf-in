@@ -55,23 +55,23 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findPartners(User user) {
-        List<User> result = new ArrayList<>();
+    public List<User> findMatchingUsers(User user) {
+        List<User> matchingUsersList = new ArrayList<>();
 
         if (user == null) {
-            return result;
+            return matchingUsersList;
         }
 
         UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
         List<String> keys = varietyExamKeyRepository.getKeysForMatch(userExamKey.getExamKeyRegExp());
-        result = userExamKeyRepository.getMatchedUsers(keys);
-        result.remove(user);
+        matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
+        matchingUsersList.remove(user);
 
         List<User> usersByCity = userQuestionAnswerCityRepository.getAllMatchedUsers(user);
-        List<User> result2 = innerJoinUserLists(result, usersByCity);
+        List<User> result2 = innerJoinUserLists(matchingUsersList, usersByCity);
 
 
-        return result;
+        return matchingUsersList;
     }
 
     private List<User> innerJoinUserLists(List<User> result, List<User> usersByCity) {
@@ -90,16 +90,16 @@ public class UserMatchServiceImpl implements UserMatchService {
         userQuestionAnswerRepository.deleteUserAnswers(user);
         userExamKeyRepository.delete(user);
 
-        TreeMap<Question, Answer> sortedQestionsAnswers = new TreeMap<>();
+        TreeMap<Question, Answer> questionAnswerMap = new TreeMap<>();
         for (QuestionAnswerWeb questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
 
-            sortedQestionsAnswers.put(question, answer);
+            questionAnswerMap.put(question, answer);
         }
 
-        List<String> examKeyRes = generateExamKey(sortedQestionsAnswers);
+        List<String> examKeyRes = generateExamKey(questionAnswerMap);
         userExamKeyRepository.save(new UserExamKey(user, examKeyRes.get(0), examKeyRes.get(1)));
         if (varietyExamKeyRepository.findUserExamKeyByStr(examKeyRes.get(0)) == null) {
             varietyExamKeyRepository.save(new VarietyExamKey(examKeyRes.get(0)));

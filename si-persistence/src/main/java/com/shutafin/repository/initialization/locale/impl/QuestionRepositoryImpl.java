@@ -61,10 +61,10 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
 
         Map<Integer, List<AnswerResponse>> questionAnswers = new HashMap<>();
         for (QuestionAnswerElement questionAnswerElement : answers) {
-            if ( ! questionAnswers.containsKey(questionAnswerElement.getQiestionId())){
-                questionAnswers.put(questionAnswerElement.getQiestionId(), new ArrayList<>());
+            if (!questionAnswers.containsKey(questionAnswerElement.getQuestionId())) {
+                questionAnswers.put(questionAnswerElement.getQuestionId(), new ArrayList<>());
             }
-            questionAnswers.get(questionAnswerElement.getQiestionId()).add(new AnswerResponse(questionAnswerElement.getAnswerId(), questionAnswerElement.getDescription(), questionAnswerElement.getIsUniversal()));
+            questionAnswers.get(questionAnswerElement.getQuestionId()).add(new AnswerResponse(questionAnswerElement.getAnswerId(), questionAnswerElement.getDescription(), questionAnswerElement.getIsUniversal()));
         }
 
         for (QuestionResponse questionResponse : result) {
@@ -95,7 +95,7 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
 
         Map<Integer, List<Integer>> questionAnswers = new HashMap<>();
         for (QuestionSelectedAnswerElement element : selectedQustionsAnswers) {
-            if ( ! questionAnswers.containsKey(element.getQuestionId())){
+            if (!questionAnswers.containsKey(element.getQuestionId())) {
                 questionAnswers.put(element.getQuestionId(), new ArrayList<>());
             }
             questionAnswers.get(element.getQuestionId()).add(element.getAnswerId());
@@ -113,7 +113,7 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
     @Getter
     @Setter
     static class QuestionAnswerElement {
-        private Integer qiestionId;
+        private Integer questionId;
         private Integer answerId;
         private String description;
         private Boolean isUniversal;
