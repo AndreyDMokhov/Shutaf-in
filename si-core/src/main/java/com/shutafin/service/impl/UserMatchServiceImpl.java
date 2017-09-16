@@ -11,6 +11,7 @@ import com.shutafin.model.web.QuestionSelectedAnswer;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserExamKeyRepository;
+import com.shutafin.repository.common.UserQuestionAnswerCityRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
 import com.shutafin.repository.common.VarietyExamKeyRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
@@ -49,6 +50,9 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Autowired
     private VarietyExamKeyRepository varietyExamKeyRepository;
 
+    @Autowired
+    private UserQuestionAnswerCityRepository userQuestionAnswerCityRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<User> findPartners(User user) {
@@ -63,6 +67,19 @@ public class UserMatchServiceImpl implements UserMatchService {
         result = userExamKeyRepository.getMatchedUsers(keys);
         result.remove(user);
 
+        List<User> usersByCity = userQuestionAnswerCityRepository.getAllMatchedUsers(user);
+        List<User> result2 = innerJoinUserLists(result, usersByCity);
+
+
+        return result;
+    }
+
+    private List<User> innerJoinUserLists(List<User> result, List<User> usersByCity) {
+        for (User user : usersByCity) {
+            if( ! result.contains(user)){
+                result.remove(user);
+            }
+        }
         return result;
     }
 
