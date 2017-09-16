@@ -147,6 +147,13 @@ gulp.task('minifyHtml', function() {
 
 
 // checks the style in accordance with the rules in .eslintrc
+gulp.task('eslintForBuild', function() {
+    return gulp.src(['src/**/*.js','!node_modules/**', '!src/bower_components/**'])
+        .pipe(eslint())
+        .pipe(eslint.format('table'))
+        .pipe(eslint.failOnError())
+});
+
 gulp.task('eslint', function() {
     return gulp.src(['src/**/*.js','!node_modules/**', '!src/bower_components/**'])
         .pipe(eslint())
@@ -155,22 +162,7 @@ gulp.task('eslint', function() {
         .pipe(livereload({ start: true }))
 });
 
-gulp.task('build', function (callback) {
-    runSequence(
-        'clean-all',
-        'eslint',
-        'copy',
-        'minifyHtml',
-        'build-html-template',
-        'preprocessing',
-        'babel',
-        'minify',
-        'copyData',
-        'copyComponents',
-        'delete-html',
-        'delete-empty-directories',
-        callback);
-});
+
 
 // to run new server
 gulp.task('minifiedConnect', function () {
@@ -205,7 +197,7 @@ gulp.task('start', ['eslint', 'runServer',  'watch']);
 gulp.task('build', function (callback) {
     runSequence(
         'clean-all',
-        'eslint',
+        'eslintForBuild',
         'copy',
         'minifyHtml',
         'build-html-template',
