@@ -68,7 +68,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         matchingUsersList.remove(user);
 
         List<User> usersByCity = userQuestionAnswerCityRepository.getAllMatchedUsers(user);
-        List<User> result2 = innerJoinUserLists(matchingUsersList, usersByCity);
+        matchingUsersList = innerJoinUserLists(matchingUsersList, usersByCity);
 
 
         return matchingUsersList;

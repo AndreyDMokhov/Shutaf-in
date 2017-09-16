@@ -31,10 +31,9 @@ public class UserQuestionAnswerCityRepositoryImpl extends AbstractEntityDao<User
                 .append(" FROM UserQuestionAnswerCity uqac INNER JOIN UserQuestionAnswerCity uqacMatch ON uqacMatch.question.id = uqac.question.id AND uqacMatch.city.id = uqac.city.id")
                 .append(" WHERE uqac.user.id = :userId AND uqacMatch.user.id <> :userId ");
 
-        List<User> result =  getSession()
+        return   getSession()
                 .createQuery(hql.toString())
                 .setParameter("userId", user.getId())
                 .list();
-        return result;
     }
 }
