@@ -3,6 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.QuestionResponse;
 import com.shutafin.model.web.QuestionSelectedAnswer;
+import com.shutafin.model.web.user.QuestionAnswerCityWeb;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
@@ -36,6 +37,11 @@ public class UserMatchController {
     @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserQuestionsAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerWeb> questionsAnswers) {
         userMatchService.saveQuestionsAnswers(user, questionsAnswers);
+    }
+
+    @RequestMapping(value = "/save/city", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void saveUserQuestionsCityAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerCityWeb> questionsCityAnswers) {
+        userMatchService.saveUserQuestionsCityAnswers(user, questionsCityAnswers);
     }
 
     @RequestMapping(value = "/questionnaire/initialization", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})

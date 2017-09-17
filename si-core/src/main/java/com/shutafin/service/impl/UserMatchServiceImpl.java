@@ -2,12 +2,15 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
+import com.shutafin.model.entities.UserQuestionAnswerCity;
 import com.shutafin.model.entities.infrastructure.Answer;
+import com.shutafin.model.entities.infrastructure.City;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
 import com.shutafin.model.web.QuestionResponse;
 import com.shutafin.model.web.QuestionSelectedAnswer;
+import com.shutafin.model.web.user.QuestionAnswerCityWeb;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserExamKeyRepository;
@@ -15,6 +18,7 @@ import com.shutafin.repository.common.UserQuestionAnswerCityRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
 import com.shutafin.repository.common.VarietyExamKeyRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
+import com.shutafin.repository.initialization.locale.CityRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +57,9 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Autowired
     private UserQuestionAnswerCityRepository userQuestionAnswerCityRepository;
 
+    @Autowired
+    private CityRepository cityRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<User> findMatchingUsers(User user) {
@@ -74,10 +81,11 @@ public class UserMatchServiceImpl implements UserMatchService {
         return matchingUsersList;
     }
 
-    private List<User> innerJoinUserLists(List<User> result, List<User> usersByCity) {
-        for (User user : usersByCity) {
-            if( ! result.contains(user)){
-                result.remove(user);
+    private List<User> innerJoinUserLists(List<User> matchedUsersList, List<User> additionalUsersFilterList) {
+        List<User> result = new ArrayList<>();
+        for (User user : additionalUsersFilterList) {
+            if(matchedUsersList.contains(user)){
+                result.add(user);
             }
         }
         return result;
@@ -106,6 +114,18 @@ public class UserMatchServiceImpl implements UserMatchService {
         }
         if (varietyExamKeyRepository.findUserExamKeyByStr(examKeyRes.get(1)) == null) {
             varietyExamKeyRepository.save(new VarietyExamKey(examKeyRes.get(1)));
+        }
+    }
+
+    @Override
+    @Transactional
+    public void saveUserQuestionsCityAnswers(User user, List<QuestionAnswerCityWeb> questionsCityAnswers) {
+        userQuestionAnswerCityRepository.deleteUserCityAnswers(user);
+        for (QuestionAnswerCityWeb questionAnswerCityWeb : questionsCityAnswers) {
+            Question question = questionRepository.findById(questionAnswerCityWeb.getQuestionId());
+            City city = cityRepository.findById(questionAnswerCityWeb.getCityId());
+
+            userQuestionAnswerCityRepository.save(new UserQuestionAnswerCity(user, question, city));
         }
     }
 

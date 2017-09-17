@@ -13,4 +13,5 @@ import java.util.List;
 public interface UserQuestionAnswerCityRepository extends PersistentDao<UserQuestionAnswerCity> {
     List<City> getUserQuestionAnswer(User user, Question question);
     List<User> getAllMatchedUsers(User user);
+    void deleteUserCityAnswers(User user);
 }

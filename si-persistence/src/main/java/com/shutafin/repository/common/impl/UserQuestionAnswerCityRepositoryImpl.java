@@ -27,13 +27,22 @@ public class UserQuestionAnswerCityRepositoryImpl extends AbstractEntityDao<User
     @Override
     public List<User> getAllMatchedUsers(User user) {
         StringBuilder hql = new StringBuilder()
-                .append(" SELECT uqac.user ")
-                .append(" FROM UserQuestionAnswerCity uqac INNER JOIN UserQuestionAnswerCity uqacMatch ON uqacMatch.question.id = uqac.question.id AND uqacMatch.city.id = uqac.city.id")
-                .append(" WHERE uqac.user.id = :userId AND uqacMatch.user.id <> :userId ");
+                .append(" SELECT uqac1.user ")
+                .append(" FROM UserQuestionAnswerCity uqac1 INNER JOIN UserQuestionAnswerCity uqac2")
+                .append(" ON uqac2.question.id = uqac1.question.id AND uqac2.city.id = uqac1.city.id AND uqac2.user.id <> uqac1.user.id")
+                .append(" WHERE uqac1.user.id <> :userId ");
 
-        return   getSession()
+        return getSession()
                 .createQuery(hql.toString())
                 .setParameter("userId", user.getId())
                 .list();
+    }
+
+    @Override
+    public void deleteUserCityAnswers(User user) {
+        getSession()
+                .createQuery("DELETE FROM UserQuestionAnswerCity uqac where uqac.user = :user")
+                .setParameter("user", user)
+                .executeUpdate();
     }
 }
