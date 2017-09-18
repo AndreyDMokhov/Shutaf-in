@@ -4,8 +4,8 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.web.AnswerResponse;
-import com.shutafin.model.web.QuestionResponse;
-import com.shutafin.model.web.QuestionSelectedAnswer;
+import com.shutafin.model.web.QuestionAnswersResponse;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.repository.base.AbstractConstEntityDao;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
 import lombok.AllArgsConstructor;
@@ -26,10 +26,10 @@ import java.util.Map;
 public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> implements QuestionRepository {
 
     @Override
-    public List<QuestionResponse> getUserQuestionsAnswers(Language language) {
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(Language language) {
 
         StringBuilder hql = new StringBuilder()
-                .append("select new com.shutafin.model.web.QuestionResponse ")
+                .append("select new com.shutafin.model.web.QuestionAnswersResponse ")
                 .append(" ( ")
                 .append(" cl.question.id, ")
                 .append(" cl.description, ")
@@ -37,7 +37,7 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
                 .append(" )")
                 .append(" from QuestionLocale cl where cl.language = :language AND cl.question.isActive = 1  ");
 
-        List<QuestionResponse> result = getSession()
+        List<QuestionAnswersResponse> result = getSession()
                 .createQuery(hql.toString())
                 .setCacheable(true)
                 .setParameter("language", language)
@@ -67,17 +67,17 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
             questionAnswers.get(questionAnswerElement.getQuestionId()).add(new AnswerResponse(questionAnswerElement.getAnswerId(), questionAnswerElement.getDescription(), questionAnswerElement.getIsUniversal()));
         }
 
-        for (QuestionResponse questionResponse : result) {
-            questionResponse.setAnswers(questionAnswers.get(questionResponse.getQuestionId()));
+        for (QuestionAnswersResponse questionAnswersResponse : result) {
+            questionAnswersResponse.setAnswers(questionAnswers.get(questionAnswersResponse.getQuestionId()));
         }
 
         return result;
     }
 
     @Override
-    public List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(User user) {
+    public List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(User user) {
 
-        List<QuestionSelectedAnswer> result = new ArrayList<>();
+        List<QuestionSelectedAnswersResponse> result = new ArrayList<>();
 
         StringBuilder hql = new StringBuilder()
                 .append("select new com.shutafin.repository.initialization.locale.impl.QuestionRepositoryImpl$QuestionSelectedAnswerElement ")
@@ -102,7 +102,7 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
         }
 
         for (QuestionSelectedAnswerElement element : selectedQustionsAnswers) {
-            result.add(new QuestionSelectedAnswer(element.getQuestionId(), questionAnswers.get(element.getQuestionId())));
+            result.add(new QuestionSelectedAnswersResponse(element.getQuestionId(), questionAnswers.get(element.getQuestionId())));
         }
 
         return result;
