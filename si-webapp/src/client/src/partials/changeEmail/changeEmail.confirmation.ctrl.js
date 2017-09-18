@@ -35,7 +35,7 @@ app.controller('changeEmailConfirmationController', function ($state, $rootScope
 
                     $state.go("error", {'code': '404'});
                 }
-            })
+            });
     }
 
     changeEmail();

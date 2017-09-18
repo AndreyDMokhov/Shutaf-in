@@ -11,5 +11,5 @@ app.factory('registrationModel', function (Restangular) {
 
     return {
         registerUser: registerUser
-    }
+    };
 });

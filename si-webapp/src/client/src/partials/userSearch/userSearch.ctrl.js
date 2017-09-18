@@ -27,7 +27,7 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
                 }
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
 
-            })
+            });
 
     }
 

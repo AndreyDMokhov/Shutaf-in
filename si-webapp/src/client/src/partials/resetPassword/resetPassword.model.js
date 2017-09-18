@@ -11,18 +11,18 @@ app.factory('resetPasswordModel', function (Restangular) {
 
     function resetPasswordValidate(params) {
         var link = '/api/reset-password/validate/'+params;
-        return rest.one(link).customGET()
+        return rest.one(link).customGET();
     }
 
     function resetPasswordChange(params){
         var link = '/api/reset-password/change/'+params.link;
         var PasswordWeb = {newPassword:params.newPassword};
-        return rest.one(link).customPOST(PasswordWeb)
+        return rest.one(link).customPOST(PasswordWeb);
     }
 
     return {
         requestResetPassword: requestResetPassword,
         resetPasswordValidate: resetPasswordValidate,
         resetPasswordChange:resetPasswordChange
-    }
+    };
 });

@@ -45,7 +45,7 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
 
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             }
-        )
+        );
     }
 
     function deleteImage() {

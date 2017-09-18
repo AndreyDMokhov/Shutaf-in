@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 app.controller('registrationConfirmation', function (registrationConfirmationModel,
                                                      notify,
                                                      $state,
@@ -26,7 +26,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                 if (error.data.error.errorTypeCode === 'RNF') {
                     $state.go("error", {'code': '404'});
                 }
-            })
+            });
 
     }
 

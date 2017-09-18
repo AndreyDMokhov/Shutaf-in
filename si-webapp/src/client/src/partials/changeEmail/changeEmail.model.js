@@ -7,15 +7,15 @@ app.factory('changeEmailModel', function (Restangular, $sessionStorage) {
 
     function emailChangeRequest(params) {
         rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
-        return  rest.one('/api/users/account/change-email-request').customPOST(params)
+        return  rest.one('/api/users/account/change-email-request').customPOST(params);
     }
     function emailChangeConfirmation(urlLink) {
         rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
-        return  rest.one('/api/users/account/change-email-confirmation/'+urlLink).customGET()
+        return  rest.one('/api/users/account/change-email-confirmation/'+urlLink).customGET();
     }
 
     return{
         emailChangeRequest: emailChangeRequest,
         emailChangeConfirmation: emailChangeConfirmation
-    }
+    };
 });

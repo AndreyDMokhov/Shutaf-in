@@ -37,7 +37,7 @@ app.controller('resetPasswordConfirmation', function ($filter, resetPasswordMode
                     $state.go("error", {'code': '404'});
                 }
             }
-        )
+        );
     }
 
 

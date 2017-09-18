@@ -14,5 +14,5 @@ app.factory('registrationConfirmationModel', function (Restangular) {
 
     return {
         confirmRegistration: confirmRegistration
-    }
+    };
 });

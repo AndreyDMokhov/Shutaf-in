@@ -12,5 +12,5 @@ app.factory('logoutModel', function (Restangular, $sessionStorage) {
 
     return {
         logout:logout
-    }
+    };
 });

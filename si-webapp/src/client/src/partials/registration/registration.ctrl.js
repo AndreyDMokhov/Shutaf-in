@@ -20,7 +20,7 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
                 vm.dataLoading = false;
 
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-            })
+            });
     }
 
     vm.registerUser = registerUser;

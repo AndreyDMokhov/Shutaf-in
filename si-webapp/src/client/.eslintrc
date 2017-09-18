@@ -1,5 +1,4 @@
 {
-  "extends": "eslint:recommended",
 
   //  "env": {
   //    "browser": false,                     // browser global variables
@@ -247,7 +246,7 @@
     "quote-props": 0,                      // require quotes around object literal property names
     "quotes": 0,                           // enforce the consistent use of either backticks, double, or single quotes
     "require-jsdoc": 0,                    // require JSDoc comments
-    "semi": 0,                             // require or disallow semicolons instead of ASI
+    "semi": 2,                             // require or disallow semicolons instead of ASI
     "semi-spacing": 0,                     // enforce consistent spacing before and after semicolons
     "semi-style": 0,                       // enforce location of semicolons
     "sort-keys": 0,                        // require object keys to be sorted

@@ -11,5 +11,5 @@ app.factory('loginModel', function (Restangular) {
 
     return {
         login: login
-    }
+    };
 });

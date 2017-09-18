@@ -15,5 +15,5 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
 
     return {
         userSearch: userSearch
-    }
+    };
 });
