@@ -1,65 +1,79 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.infrastructure.Language;
+import com.shutafin.model.web.QuestionAnswersResponse;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
+import com.shutafin.model.web.initialization.CityResponseDTO;
+import com.shutafin.model.web.initialization.CountryResponseDTO;
+import com.shutafin.model.web.initialization.GenderResponseDTO;
+import com.shutafin.model.web.user.UserInfoResponseDTO;
+import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
-import com.shutafin.service.InitializationService;
+import com.shutafin.service.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/initialization")
-@NoAuthentication
 @Slf4j
 public class InitializationController {
 
     @Autowired
     private InitializationService initializationService;
 
-    @RequestMapping(value = "/all/{languageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<String, List> getAll(@PathVariable("languageId") Integer languageId) {
-        log.debug("/initialization/all/{languageId}");
-        return new HashMap<String, List>() {{
-            put("genders", initializationService.findAllGendersByLanguage(languageId));
-            put("countries", initializationService.findAllCountriesByLanguage(languageId));
-            put("cities", initializationService.findAllCitiesByLanguage(languageId));
-            put("languages", initializationService.findAllLanguages());
-        }};
-    }
+    @Autowired
+    private UserMatchService userMatchService;
 
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private UserLanguageService userLanguageService;
+
+
+    @NoAuthentication
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<String, List> getLanguages() {
+    public List<Language> getLanguages() {
         log.debug("/initialization/languages");
-        return new HashMap<String, List>() {{
-            put("languages", initializationService.findAllLanguages());
-        }};
+        return initializationService.findAllLanguages();
     }
 
-    @RequestMapping(value = "/genders", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<String, List> getGenders(@RequestParam(defaultValue = "1") Integer languageId) {
-        log.debug("/initialization/genders");
-        return new HashMap<String, List>() {{
-            put("genders", initializationService.findAllGendersByLanguage(languageId));
-        }};
-    }
 
-    @RequestMapping(value = "/countries", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<String, List> getCountries(@RequestParam(defaultValue = "1") Integer languageId) {
-        log.debug("/initialization/countries");
-        return new HashMap<String, List>() {{
-            put("countries", initializationService.findAllCountriesByLanguage(languageId));
-        }};
-    }
+    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public InitializationResponse getInitializationResponse(@AuthenticatedUser User user) {
+        Language language = userLanguageService.findUserLanguage(user);
 
-    @RequestMapping(value = "/cities", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<String, List> getCities(@RequestParam(defaultValue = "1") Integer languageId) {
-        log.debug("/initialization/cities");
-        return new HashMap<String, List>() {{
-            put("cities", initializationService.findAllCitiesByLanguage(languageId));
-        }};
+        return InitializationResponse
+                .builder()
+                .userProfile(userInfoService.getUserInfo(user))
+                .cities(initializationService.findAllCitiesByLanguage(language))
+                .countries(initializationService.findAllCountriesByLanguage(language))
+                .genders(initializationService.findAllGendersByLanguage(language))
+                .questionAnswersResponses(userMatchService.getUserQuestionsAnswers(user))
+                .selectedAnswersResponses(userMatchService.getUserQuestionsSelectedAnswers(user))
+                .build();
     }
+}
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+class InitializationResponse {
+    private UserInfoResponseDTO userProfile;
+    private List<GenderResponseDTO> genders;
+    private List<CountryResponseDTO> countries;
+    private List<CityResponseDTO> cities;
+    private List<QuestionAnswersResponse> questionAnswersResponses;
+    private List<QuestionSelectedAnswersResponse> selectedAnswersResponses;
+
 }

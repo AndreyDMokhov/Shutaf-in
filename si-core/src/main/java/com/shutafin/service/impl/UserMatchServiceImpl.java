@@ -6,8 +6,8 @@ import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
-import com.shutafin.model.web.QuestionResponse;
-import com.shutafin.model.web.QuestionSelectedAnswer;
+import com.shutafin.model.web.QuestionAnswersResponse;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserExamKeyRepository;
@@ -110,13 +110,13 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionResponse> getUserQuestionsAnswers(User user) {
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(User user) {
         return questionRepository.getUserQuestionsAnswers(userAccountRepository.findUserLanguage(user));
     }
 
     @Override
     @Transactional
-    public List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(User user) {
+    public List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(User user) {
         return questionRepository.getUserQuestionsSelectedAnswers(user);
     }
 }

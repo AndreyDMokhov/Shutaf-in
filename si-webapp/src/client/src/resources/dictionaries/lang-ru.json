@@ -39,7 +39,7 @@
   "Registration.form.msg.requiredPassword":"Обязательное поле",
   "Registration.form.btn.cancel":"Отмена",
   "Registration.form.btn.registration":"Продолжить",
-  "Registration.form.msg.registrationOK":"Добро пожаловать!",
+  "Registration.form.msg.registration.success":"Добро пожаловать!",
   "Registration.request.success":"Для активации учетной записи, необходимо подтвердить свой электронный адрес",
 
   "SECTION": "LOGIN",

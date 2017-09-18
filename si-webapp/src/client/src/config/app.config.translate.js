@@ -6,20 +6,29 @@ app.config(function ($translateProvider, $sessionStorageProvider) {
     });
 
     function _defineLanguage() {
-        var currentLanguage = $sessionStorageProvider.get('currentLanguage');
+        var languages = $sessionStorageProvider.get('languages');
+        var currentLanguageId;
+        var currentLanguage = null;
 
-        if (_isUndefinedOrNull(currentLanguage)) {
+        if (languages) {
+            languages.forEach(function (language) {
+                currentLanguageId = $sessionStorageProvider.get('currentLanguage');
 
-            var currentLanguage = {"id":1, "description":"en"};
+                if (currentLanguageId === language.id) {
+                    currentLanguage = language;
+                }
+            });
+        }
+
+        if (!currentLanguage) {
+
+            currentLanguage = {id:1, description:'en'};
             $sessionStorageProvider.set('currentLanguage', currentLanguage);
         }
 
         return currentLanguage.description;
     }
 
-    function _isUndefinedOrNull(value) {
-        return value === undefined || value === null;
-    }
 
     $translateProvider.preferredLanguage(_defineLanguage());
     $translateProvider.useMissingTranslationHandlerLog();

@@ -9,7 +9,7 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
     function registerUser() {
         vm.dataLoading = true;
 
-        vm.registrationData.userLanguageId = $sessionStorage.currentLanguage.id;
+        vm.registrationData.userLanguageId = $sessionStorage.currentLanguage;
         registrationModel.registerUser(vm.registrationData).then(
             function (success) {
                 vm.dataLoading = false;
