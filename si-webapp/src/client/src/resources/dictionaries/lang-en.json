@@ -40,7 +40,7 @@
   "Registration.form.msg.requiredPassword":"Password is required",
   "Registration.form.btn.cancel":"Cancel",
   "Registration.form.btn.registration":"Register",
-  "Registration.form.msg.registrationOK":"Registration is ok",
+  "Registration.form.msg.registration.success":"Welcome!",
   "Registration.request.success":"It is necessary to confirm your email address in order to active your account",
 
   "SECTION": "LOGIN",

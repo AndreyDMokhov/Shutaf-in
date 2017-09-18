@@ -10,14 +10,14 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuestionResponse {
+public class QuestionAnswersResponse {
     private Integer questionId;
     private String description;
     private Boolean isActive;
 
     private List<AnswerResponse> answers;
 
-    public QuestionResponse(Integer questionId, String description, Boolean isActive) {
+    public QuestionAnswersResponse(Integer questionId, String description, Boolean isActive) {
         this.questionId = questionId;
         this.description = description;
         this.isActive = isActive;

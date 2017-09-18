@@ -1,3 +1,4 @@
+"use strict";
 app.controller('userProfileController', function ($localStorage, $state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout) {
 
     var vm = this;
@@ -44,7 +45,7 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
 
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             }
-        )
+        );
     }
 
     function deleteImage() {

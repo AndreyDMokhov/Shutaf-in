@@ -1,4 +1,11 @@
-app.controller('loginController', function ($rootScope, loginModel, $filter, $state, notify, languageService, userInitService, constantService, quizInitService, $sessionStorage, $window) {
+"use strict";
+app.controller('loginController', function (loginModel,
+                                            $filter,
+                                            $state,
+                                            notify,
+                                            $sessionStorage,
+                                            initializationService,
+                                            $window) {
 
     var vm = this;
 
@@ -12,21 +19,18 @@ app.controller('loginController', function ($rootScope, loginModel, $filter, $st
             function (success) {
                 vm.dataLoading = false;
                 $sessionStorage.sessionId = success.headers('session_id');
-                $window.location.reload();
-                languageService.getUserLanguage().then(
-                    function(result){
-                        $translate.use(result.data.description);
+                initializationService.initializeApplication().then(
+                    function () {
+                        $window.location.reload();
                         notify.set($filter('translate')('Login.message.success'), {type: 'success'});
-                    },
-                    function(err){
-                        console.log(err);
-                        return err;
-                    }
-                );
-
+                        $state.go('home');
+                    }, function (error) {
+                        vm.dataLoading = false;
+                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                    });
                 $state.go('home');
-
-            }, function (error) {
+            },
+            function (error) {
 
                 vm.dataLoading = false;
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

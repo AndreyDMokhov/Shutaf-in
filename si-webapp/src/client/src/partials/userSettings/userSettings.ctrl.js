@@ -1,4 +1,11 @@
-app.controller("userSettingsController", function ($localStorage, $sessionStorage, userSettingsModel, notify, $filter, $state, userInitService) {
+"use strict";
+app.controller("userSettingsController", function ($localStorage,
+                                                   $sessionStorage,
+                                                   userSettingsModel,
+                                                   notify,
+                                                   $filter,
+                                                   $state,
+                                                   initializationService) {
 
     var vm = this;
     vm.dataLoading = false;
@@ -14,10 +21,11 @@ app.controller("userSettingsController", function ($localStorage, $sessionStorag
     function submitChanges() {
         vm.dataLoading = true;
         userSettingsModel.saveDataPostRegistration(vm.userProfile).then(
-            function (success) {
-                notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
-                userInitService.init();
+            function () {
                 vm.dataLoading = false;
+                notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
+                initializationService.initializeApplication();
+                $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
             }, function (error) {
                 vm.dataLoading = false;
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
