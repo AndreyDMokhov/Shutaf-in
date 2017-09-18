@@ -1,6 +1,7 @@
 /**
  * Created by evgeny on 7/10/2017.
  */
+"use strict";
 app.factory('registrationConfirmationModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
@@ -13,5 +14,5 @@ app.factory('registrationConfirmationModel', function (Restangular) {
 
     return {
         confirmRegistration: confirmRegistration
-    }
+    };
 });

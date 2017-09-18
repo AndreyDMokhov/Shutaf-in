@@ -1,3 +1,4 @@
+"use strict";
 app.factory('userSearchModel', function ($sessionStorage, Restangular) {
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
@@ -14,5 +15,5 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
 
     return {
         userSearch: userSearch
-    }
+    };
 });

@@ -1,3 +1,4 @@
+"use strict";
 app.controller('changePasswordController', function ($rootScope, changePasswordModel, notify, $filter, $state) {
 
     var vm = this;

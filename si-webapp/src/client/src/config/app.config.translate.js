@@ -1,3 +1,4 @@
+"use strict";
 app.config(function ($translateProvider, $sessionStorageProvider) {
 
     $translateProvider.useStaticFilesLoader({

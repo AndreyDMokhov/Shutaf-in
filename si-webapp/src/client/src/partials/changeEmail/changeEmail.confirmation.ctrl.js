@@ -1,3 +1,4 @@
+"use strict";
 app.controller('changeEmailConfirmationController', function ($state, $rootScope, changeEmailModel, notify, $filter, $stateParams) {
 
     var vm = this;
@@ -34,8 +35,8 @@ app.controller('changeEmailConfirmationController', function ($state, $rootScope
 
                     $state.go("error", {'code': '404'});
                 }
-            })
-    };
+            });
+    }
 
     changeEmail();
 

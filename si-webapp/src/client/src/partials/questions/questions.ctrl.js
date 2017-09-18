@@ -6,7 +6,7 @@ app.controller('questionsCtrl', function ($scope, $state, quizModel, notify, $se
     function sendData() {
         quizModel.sendAnswers($sessionStorage.selectedAnswers).then(
             function (success) {
-                notify.set($filter('translate')('Questions.confirm'), {type: 'success'})
+                notify.set($filter('translate')('Questions.confirm'), {type: 'success'});
             },
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -54,8 +54,8 @@ app.directive('quiz', function ($sessionStorage, $state) {
                 answers[scope.id].questionId = scope.currentQuestion.questionId;
                 answers[scope.id].answerId = scope.currentAnswer;
                 scope.backData();
-                $state.go('userProfile', {id: $sessionStorage.userProfile.userId})
+                $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
             };
         }
-    }
+    };
 });

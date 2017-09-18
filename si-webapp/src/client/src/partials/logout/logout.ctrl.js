@@ -1,3 +1,4 @@
+"use strict";
 app.controller('logoutController', function ($rootScope, logoutModel, $window, $state,$filter, languageService, $sessionStorage) {
 
     function logout() {

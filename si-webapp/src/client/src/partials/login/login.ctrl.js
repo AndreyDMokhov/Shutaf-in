@@ -1,3 +1,4 @@
+"use strict";
 app.controller('loginController', function (loginModel,
                                             $filter,
                                             $state,

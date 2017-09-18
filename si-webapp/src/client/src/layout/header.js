@@ -1,3 +1,4 @@
+"use strict";
 app.controller("headerController", function (
                                             $rootScope,
                                             languageService,
@@ -14,7 +15,6 @@ app.controller("headerController", function (
     vm.sessionService = sessionService;
     $rootScope.brand = "Shutaf-In";
     vm.initialization = {};
-
     function init() {
         initializationService.initializeLanguages().then(function (languages) {
             vm.initialization.languages = languages;

@@ -1,3 +1,4 @@
+"use strict";
 app.controller('userRegistration', function (registrationModel, notify, $state, $filter, CACHED_LANGUAGE_ID, $sessionStorage) {
 
     var vm = this;
@@ -19,8 +20,8 @@ app.controller('userRegistration', function (registrationModel, notify, $state, 
                 vm.dataLoading = false;
 
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-            })
-    };
+            });
+    }
 
     vm.registerUser = registerUser;
 

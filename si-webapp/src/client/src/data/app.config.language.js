@@ -1,3 +1,4 @@
+"use strict";
 app.service('languageService', function ($translate, Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
