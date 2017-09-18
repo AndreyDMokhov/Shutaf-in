@@ -1,5 +1,9 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.model.entities.infrastructure.Language;
+import com.shutafin.model.web.initialization.CityResponseDTO;
+import com.shutafin.model.web.initialization.CountryResponseDTO;
+import com.shutafin.model.web.initialization.GenderResponseDTO;
 import com.shutafin.repository.initialization.LanguageRepository;
 import com.shutafin.service.InitializationService;
 import com.shutafin.repository.initialization.locale.CityRepository;
@@ -31,24 +35,24 @@ public class InitializationServiceImpl implements InitializationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List findAllLanguages() {
+    public List<Language> findAllLanguages() {
 
         return languageRepository.findAll();
     }
 
     @Override
-    public List findAllGendersByLanguage(Integer languageId) {
-        return genderRepository.getLocaleGenders(languageRepository.findById(languageId));
+    public List<GenderResponseDTO> findAllGendersByLanguage(Language language) {
+        return genderRepository.getLocaleGenders(language);
     }
 
     @Override
-    public List findAllCountriesByLanguage(Integer languageId) {
-        return countryRepository.getLocaleCountries(languageRepository.findById(languageId));
+    public List<CountryResponseDTO> findAllCountriesByLanguage(Language language) {
+        return countryRepository.getLocaleCountries(language);
     }
 
     @Override
-    public List findAllCitiesByLanguage(Integer languageId) {
-        return cityRepository.getLocaleCities(languageRepository.findById(languageId));
+    public List<CityResponseDTO> findAllCitiesByLanguage(Language language) {
+        return cityRepository.getLocaleCities(language);
     }
 
 }

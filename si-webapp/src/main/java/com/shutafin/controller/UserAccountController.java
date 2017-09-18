@@ -3,7 +3,6 @@ package com.shutafin.controller;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.account.UserLanguageWeb;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserInfoRequest;
@@ -65,11 +64,6 @@ public class UserAccountController {
         userLanguageService.updateUserLanguage(userLanguageWeb, user);
     }
 
-    @RequestMapping(value = "/language", method = RequestMethod.GET)
-    public Language get(@AuthenticatedUser User user) {
-        log.debug("/users/settings/language");
-        return userLanguageService.findUserLanguage(user);
-    }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserInfoResponseDTO getUserInfo(@AuthenticatedUser User user) {

@@ -119,7 +119,7 @@
                     <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
                         <li role="menuitem"
                             ng-repeat="lang in vm.initialization.languages | filter : {isActive : true}"><a
-                                class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a>
+                                class="pointer" ng-click="vm.setLanguageCode(lang.id)">{{lang.languageNativeName}}</a>
                         </li>
                     </ul>
                 </li>

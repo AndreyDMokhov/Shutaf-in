@@ -1,8 +1,8 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.QuestionResponse;
-import com.shutafin.model.web.QuestionSelectedAnswer;
+import com.shutafin.model.web.QuestionAnswersResponse;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
@@ -39,12 +39,12 @@ public class UserMatchController {
     }
 
     @RequestMapping(value = "/questionnaire/initialization", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionResponse> getUserQuestionsAnswers(@AuthenticatedUser User user) {
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(@AuthenticatedUser User user) {
         return userMatchService.getUserQuestionsAnswers(user);
     }
 
     @RequestMapping(value = "/questionnaire/answers", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(@AuthenticatedUser User user) {
+    public List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(@AuthenticatedUser User user) {
         return userMatchService.getUserQuestionsSelectedAnswers(user);
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuestionSelectedAnswer {
+public class QuestionSelectedAnswersResponse {
     private Integer questionId;
     private List<Integer> selectedAnswersIds;
 }
