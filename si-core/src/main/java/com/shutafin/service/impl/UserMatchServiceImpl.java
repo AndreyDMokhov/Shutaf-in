@@ -3,13 +3,13 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.entities.infrastructure.Answer;
+import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
-import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserExamKeyRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
 import com.shutafin.repository.common.VarietyExamKeyRepository;
@@ -23,9 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-/**
- * Created by evgeny on 8/12/2017.
- */
 @Service
 @Transactional
 @Slf4j
@@ -39,9 +36,6 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Autowired
     private AnswerRepository answerRepository;
-
-    @Autowired
-    private UserAccountRepository userAccountRepository;
 
     @Autowired
     private UserExamKeyRepository userExamKeyRepository;
@@ -110,8 +104,8 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionAnswersResponse> getUserQuestionsAnswers(User user) {
-        return questionRepository.getUserQuestionsAnswers(userAccountRepository.findUserLanguage(user));
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(Language language) {
+        return questionRepository.getUserQuestionsAnswers(language);
     }
 
     @Override

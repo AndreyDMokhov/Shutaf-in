@@ -1,6 +1,7 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
@@ -13,6 +14,6 @@ import java.util.List;
 public interface UserMatchService {
     List<User> findMatchingUsers(User user);
     void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers);
-    List<QuestionAnswersResponse> getUserQuestionsAnswers(User user);
+    List<QuestionAnswersResponse> getUserQuestionsAnswers(Language language);
     List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(User user);
 }

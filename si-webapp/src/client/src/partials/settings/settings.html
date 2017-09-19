@@ -1,0 +1,24 @@
+<!--<uib-tabset active="active">-->
+<!--<uib-tab index="0" ui-sref ="settings.personal" heading="Personal"></uib-tab>-->
+<!--<uib-tab index="1" ui-sref="settings.changeEmailRequest" heading="Email"></uib-tab>-->
+<!--<uib-tab index="2" ui-sref="settings.changePassword" heading="Password"></uib-tab>-->
+<!--</uib-tabset>-->
+
+<div class="row">
+    <div class="col-md-2">
+        <uib-tabset active="vm.getCurrentStateName()" vertical="true" type="pills">
+            <uib-tab
+                    ng-repeat="tab in vm.tabs"
+                    index="tab.state"
+                    ng-click="vm.selectedTab(tab)">
+                <uib-tab-heading>
+                    <i class="fa {{tab.icon}}" aria-hidden="true"></i>
+                    <p class="pull-right">
+                        {{tab.title}}
+                    </p>
+                </uib-tab-heading>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+    <div class="col-md-10" ui-view></div>
+</div>

@@ -85,6 +85,7 @@
   "ResetPassword.form.confirmPassword":"Confirm password",
 
   "SECTION": "SECURITY SETTINGS",
+  "Settings.security.title": "Security settings",
   "Settings.security.email.title": "Change email",
   "Settings.security.password.title": "Change password",
   "Settings.security.form.email": "Email",
@@ -106,6 +107,8 @@
 
   "SECTION" : "USER SETTINGS",
   "UserSettings.personal.title": "User settings",
+  "UserSettings.personal.settings.general": "General info",
+  "UserSettings.personal.settings.additional": "Additional info",
   "UserSettings.personal.form.firstName":"First name",
   "UserSettings.personal.form.lastName":"Last name",
   "UserSettings.personal.form.button.submit":"Submit",

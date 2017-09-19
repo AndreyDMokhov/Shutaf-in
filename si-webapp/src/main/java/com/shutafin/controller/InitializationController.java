@@ -58,7 +58,7 @@ public class InitializationController {
                 .cities(initializationService.findAllCitiesByLanguage(language))
                 .countries(initializationService.findAllCountriesByLanguage(language))
                 .genders(initializationService.findAllGendersByLanguage(language))
-                .questionAnswersResponses(userMatchService.getUserQuestionsAnswers(user))
+                .questionAnswersResponses(userMatchService.getUserQuestionsAnswers(language))
                 .selectedAnswersResponses(userMatchService.getUserQuestionsSelectedAnswers(user))
                 .build();
     }
