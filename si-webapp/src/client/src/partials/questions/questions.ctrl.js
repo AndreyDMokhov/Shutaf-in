@@ -28,34 +28,85 @@ app.directive('quiz', function ($sessionStorage, $state) {
         link: function (scope, elem, attrs) {
 
             var questions = $sessionStorage.questions;
+            // console.log(questions);
+            // console.log(questions.length);
             scope.id = 0;
-            scope.currentQuestion = questions[scope.id];
+
+
+            // scope.currentQuestion = questions[scope.id];
+            // // console.log(scope.currentQuestion);
+            // scope.numberOfQuestions = questions.length;
+            // var answers = $sessionStorage.selectedAnswers;
+            //
+            // scope.currentAnswer = $sessionStorage.selectedAnswers[scope.id].answerId;
+            // console.log($sessionStorage.selectedAnswers);
+
+            scope.currentPage = 1;
+
+            scope.currentQuestion = questions[scope.currentPage - 1];
+            console.log(scope.currentQuestion);
             scope.numberOfQuestions = questions.length;
             var answers = $sessionStorage.selectedAnswers;
-            scope.currentAnswer = $sessionStorage.selectedAnswers[scope.id].answerId;
+            console.log(answers);
+            scope.currentAnswer = $sessionStorage.selectedAnswers[scope.currentPage - 1].answerId;
+            console.log(scope.currentAnswer);
 
+            var currId = scope.currentPage;
 
-            scope.nextQuestion = function () {
-                answers[scope.id].questionId = scope.currentQuestion.questionId;
-                answers[scope.id].answerId = scope.currentAnswer;
+            scope.pageChanged = function () {
+                console.log(answers);
+                console.log(scope.currentQuestion.questionId);
+                answers[currId - 1].questionId = scope.currentQuestion.questionId;
+                answers[currId - 1].answerId = scope.currentAnswer;
+                currId = scope.currentPage;
                 $sessionStorage.selectedAnswers = answers;
-                scope.id++;
-                scope.currentQuestion = questions[scope.id];
-                scope.currentAnswer = answers[scope.id].answerId;
-            };
-
-            scope.previousQuestion = function () {
-                scope.id--;
-                scope.currentQuestion = questions[scope.id];
-                scope.currentAnswer = answers[scope.id].answerId;
+                scope.currentQuestion = questions[currId - 1];
+                console.log(scope.currentQuestion.questionId);
+                scope.currentAnswer = answers[currId - 1].answerId;
+                console.log(answers);
             };
 
             scope.save = function () {
-                answers[scope.id].questionId = scope.currentQuestion.questionId;
-                answers[scope.id].answerId = scope.currentAnswer;
+                answers[currId - 1].questionId = scope.currentQuestion.questionId;
+                answers[currId - 1].answerId = scope.currentAnswer;
+                $sessionStorage.selectedAnswers = answers;
+                // $sessionStorage.selectedAnswers =
+                //     [
+                //         {
+                //             questionId: 0, answerId: 1
+                //
+                //         },
+                //         {
+                //             questionId: 1, answerId: 4
+                //
+                //         },
+                //         {
+                //             questionId: 2, answerId: 6
+                //
+                //         },
+                //         {
+                //             questionId: 3, answerId: 11
+                //
+                //         }
+                //     ];
+
                 scope.backData();
                 $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
             };
+            scope.dis = false;
+
+            scope.totalItems = scope.numberOfQuestions;
+            scope.itemsPerPage = 1;
+
+            // scope.setPage = function (pageNo) {
+            //     scope.currentPage = pageNo;
+            // };
+            //
+
+
+            // scope.maxSize = 5;
+            // scope.bigTotalItems = 175;
+            // scope.bigCurrentPage = 1;
         }
     };
 });
