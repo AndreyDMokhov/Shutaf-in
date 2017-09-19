@@ -85,6 +85,7 @@
   "ResetPassword.form.confirmPassword":"Confirm password",
 
   "SECTION": "SECURITY SETTINGS",
+  "Settings.title":"Settings",
   "Settings.security.title": "Security settings",
   "Settings.security.email.title": "Change email",
   "Settings.security.password.title": "Change password",
@@ -106,7 +107,7 @@
   "Settings.security.msg.successRequest": "The request was sent successfully",
 
   "SECTION" : "USER SETTINGS",
-  "UserSettings.personal.title": "User settings",
+  "UserSettings.personal.title": "My info",
   "UserSettings.personal.settings.general": "General info",
   "UserSettings.personal.settings.additional": "Additional info",
   "UserSettings.personal.form.firstName":"First name",
@@ -122,7 +123,6 @@
   "UserSettings.form.company": "Company",
   "UserSettings.form.phoneNumber": "Phone number ",
   "UserSettings.btn.addSettings": "Show additional settings",
-  "UserSettings.title": "User settings",
   "UserSettings.btn.submit":  "Submit",
   "UserSettings.message.save.success": "Has been successfully saved",
 

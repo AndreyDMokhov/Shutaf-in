@@ -80,10 +80,10 @@
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : (('settings.personal' | includedByState) || ('settings.changeEmailRequest' | includedByState) || ('settings.changePassword' | includedByState)) }">
                     <a ui-sref="settings.personal" tooltip-placement="bottom"
-                       uib-tooltip="{{'UserSettings.personal.title' | translate}}">
+                       uib-tooltip="{{'Settings.title' | translate}}">
                         <span class="glyphicon glyphicon-cog"></span>
                         &nbsp;
-                        {{'UserSettings.personal.title' | translate}}
+                        {{'Settings.title' | translate}}
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()">
