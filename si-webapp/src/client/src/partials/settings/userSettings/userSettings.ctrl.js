@@ -9,7 +9,7 @@ app.controller("userSettingsController", function ($localStorage,
 
     var vm = this;
     vm.dataLoading = false;
-    vm.isCollapsed = true;
+    vm.isOpened = true;
 
     vm.userProfile = $sessionStorage.userProfile;
 

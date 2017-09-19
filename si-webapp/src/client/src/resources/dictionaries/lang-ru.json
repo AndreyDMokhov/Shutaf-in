@@ -85,6 +85,7 @@
 
 
   "SECTION": "SECURITY SETTINGS",
+  "Settings.security.title": "Настройки безопасности",
   "Settings.security.email.title": "Изменить адрес электронной почты",
   "Settings.security.password.title": "Изменить пароль",
   "Settings.security.form.email": "Электронная почта",
@@ -108,6 +109,8 @@
 
   "SECTION" : "USER SETTINGS",
   "UserSettings.personal.title": "Настройки пользователя",
+  "UserSettings.personal.settings.general": "Основная информация",
+  "UserSettings.personal.settings.additional": "Дополнительная информация",
   "UserSettings.personal.form.firstName":"Имя",
   "UserSettings.personal.form.lastName":"Фамилия",
   "UserSettings.personal.form.button.submit":"Применить",
