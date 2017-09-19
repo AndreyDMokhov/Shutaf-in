@@ -5,7 +5,8 @@ import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.web.AnswerResponse;
 import com.shutafin.model.web.QuestionResponse;
-import com.shutafin.model.web.QuestionSelectedAnswer;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
+import com.shutafin.model.web.user.QuestionAnswerRequest;
 import com.shutafin.repository.base.AbstractConstEntityDao;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
 import lombok.AllArgsConstructor;
@@ -75,34 +76,34 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
     }
 
     @Override
-    public List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(User user) {
+    public List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(User user) {
 
-        List<QuestionSelectedAnswer> result = new ArrayList<>();
+        List<QuestionSelectedAnswersResponse> result = new ArrayList<>();
 
         StringBuilder hql = new StringBuilder()
-                .append("select new com.shutafin.repository.initialization.locale.impl.QuestionRepositoryImpl$QuestionSelectedAnswerElement ")
+                .append("select new com.shutafin.model.web.user.QuestionAnswerRequest ")
                 .append(" ( ")
                 .append(" cl.answer.question.id, ")
                 .append(" cl.answer.id ")
                 .append(" ) ")
                 .append(" from UserQuestionAnswer cl where cl.user = :user  ");
 
-        List<QuestionSelectedAnswerElement> selectedQustionsAnswers = getSession()
+        List<QuestionAnswerRequest> selectedQustionsAnswers = getSession()
                 .createQuery(hql.toString())
                 .setCacheable(true)
                 .setParameter("user", user)
                 .getResultList();
 
         Map<Integer, List<Integer>> questionAnswers = new HashMap<>();
-        for (QuestionSelectedAnswerElement element : selectedQustionsAnswers) {
+        for (QuestionAnswerRequest element : selectedQustionsAnswers) {
             if (!questionAnswers.containsKey(element.getQuestionId())) {
                 questionAnswers.put(element.getQuestionId(), new ArrayList<>());
             }
             questionAnswers.get(element.getQuestionId()).add(element.getAnswerId());
         }
 
-        for (QuestionSelectedAnswerElement element : selectedQustionsAnswers) {
-            result.add(new QuestionSelectedAnswer(element.getQuestionId(), questionAnswers.get(element.getQuestionId())));
+        for (QuestionAnswerRequest element : selectedQustionsAnswers) {
+            result.add(new QuestionSelectedAnswersResponse(element.getQuestionId(), questionAnswers.get(element.getQuestionId())));
         }
 
         return result;
@@ -117,15 +118,6 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
         private Integer answerId;
         private String description;
         private Boolean isUniversal;
-    }
-
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
-    static class QuestionSelectedAnswerElement {
-        private Integer questionId;
-        private Integer answerId;
     }
 
 }

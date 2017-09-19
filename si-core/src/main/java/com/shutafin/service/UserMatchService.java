@@ -2,9 +2,9 @@ package com.shutafin.service;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.QuestionResponse;
-import com.shutafin.model.web.QuestionSelectedAnswer;
-import com.shutafin.model.web.user.QuestionAnswerCityWeb;
-import com.shutafin.model.web.user.QuestionAnswerWeb;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
+import com.shutafin.model.web.user.QuestionAnswerCityRequest;
+import com.shutafin.model.web.user.QuestionAnswerRequest;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
  */
 public interface UserMatchService {
     List<User> findMatchingUsers(User user);
-    void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers);
-    void saveUserQuestionsCityAnswers(User user, List<QuestionAnswerCityWeb> questionsCityAnswers);
+    void saveQuestionsAnswers(User user, List<QuestionAnswerRequest> questionsAnswers);
+    void saveUserQuestionsCityAnswers(User user, List<QuestionAnswerCityRequest> questionsCityAnswers);
     List<QuestionResponse> getUserQuestionsAnswers(User user);
-    List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(User user);
+    List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(User user);
 }

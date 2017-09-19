@@ -9,10 +9,11 @@ import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
 import com.shutafin.model.web.QuestionResponse;
-import com.shutafin.model.web.QuestionSelectedAnswer;
-import com.shutafin.model.web.user.QuestionAnswerCityWeb;
-import com.shutafin.model.web.user.QuestionAnswerWeb;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
+import com.shutafin.model.web.user.QuestionAnswerCityRequest;
+import com.shutafin.model.web.user.QuestionAnswerRequest;
 import com.shutafin.repository.account.UserAccountRepository;
+import com.shutafin.repository.account.UserInfoRepository;
 import com.shutafin.repository.common.UserExamKeyRepository;
 import com.shutafin.repository.common.UserQuestionAnswerCityRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
@@ -60,6 +61,9 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Autowired
     private CityRepository cityRepository;
 
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<User> findMatchingUsers(User user) {
@@ -69,13 +73,17 @@ public class UserMatchServiceImpl implements UserMatchService {
             return matchingUsersList;
         }
 
+        //match users by MUST questions - Filter_1
         UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
         List<String> keys = varietyExamKeyRepository.getKeysForMatch(userExamKey.getExamKeyRegExp());
         matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
         matchingUsersList.remove(user);
 
-        List<User> usersByCity = userQuestionAnswerCityRepository.getAllMatchedUsers(user);
-        matchingUsersList = innerJoinUserLists(matchingUsersList, usersByCity);
+        //Call chain of responsibility
+
+        //match users from Filter_1 by City questions - Filter_2
+//        List<User> usersByCity = userQuestionAnswerCityRepository.getAllMatchedUsers(user);
+//        matchingUsersList = innerJoinUserLists(matchingUsersList, usersByCity);
 
 
         return matchingUsersList;
@@ -93,13 +101,13 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers) {
+    public void saveQuestionsAnswers(User user, List<QuestionAnswerRequest> questionsAnswers) {
 
         userQuestionAnswerRepository.deleteUserAnswers(user);
         userExamKeyRepository.delete(user);
 
         TreeMap<Question, Answer> questionAnswerMap = new TreeMap<>();
-        for (QuestionAnswerWeb questionAnswer : questionsAnswers) {
+        for (QuestionAnswerRequest questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
@@ -119,11 +127,11 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public void saveUserQuestionsCityAnswers(User user, List<QuestionAnswerCityWeb> questionsCityAnswers) {
+    public void saveUserQuestionsCityAnswers(User user, List<QuestionAnswerCityRequest> questionsCityAnswers) {
         userQuestionAnswerCityRepository.deleteUserCityAnswers(user);
-        for (QuestionAnswerCityWeb questionAnswerCityWeb : questionsCityAnswers) {
-            Question question = questionRepository.findById(questionAnswerCityWeb.getQuestionId());
-            City city = cityRepository.findById(questionAnswerCityWeb.getCityId());
+        for (QuestionAnswerCityRequest questionAnswerCityRequest : questionsCityAnswers) {
+            Question question = questionRepository.findById(questionAnswerCityRequest.getQuestionId());
+            City city = cityRepository.findById(questionAnswerCityRequest.getCityId());
 
             userQuestionAnswerCityRepository.save(new UserQuestionAnswerCity(user, question, city));
         }
@@ -153,7 +161,7 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(User user) {
+    public List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(User user) {
         return questionRepository.getUserQuestionsSelectedAnswers(user);
     }
 }

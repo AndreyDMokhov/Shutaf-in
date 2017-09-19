@@ -2,9 +2,9 @@ package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.QuestionResponse;
-import com.shutafin.model.web.QuestionSelectedAnswer;
-import com.shutafin.model.web.user.QuestionAnswerCityWeb;
-import com.shutafin.model.web.user.QuestionAnswerWeb;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
+import com.shutafin.model.web.user.QuestionAnswerCityRequest;
+import com.shutafin.model.web.user.QuestionAnswerRequest;
 import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchService;
@@ -35,12 +35,12 @@ public class UserMatchController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserQuestionsAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerWeb> questionsAnswers) {
+    public void saveUserQuestionsAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerRequest> questionsAnswers) {
         userMatchService.saveQuestionsAnswers(user, questionsAnswers);
     }
 
     @RequestMapping(value = "/save/city", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserQuestionsCityAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerCityWeb> questionsCityAnswers) {
+    public void saveUserQuestionsCityAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerCityRequest> questionsCityAnswers) {
         userMatchService.saveUserQuestionsCityAnswers(user, questionsCityAnswers);
     }
 
@@ -50,7 +50,7 @@ public class UserMatchController {
     }
 
     @RequestMapping(value = "/questionnaire/answers", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionSelectedAnswer> getUserQuestionsSelectedAnswers(@AuthenticatedUser User user) {
+    public List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(@AuthenticatedUser User user) {
         return userMatchService.getUserQuestionsSelectedAnswers(user);
     }
 

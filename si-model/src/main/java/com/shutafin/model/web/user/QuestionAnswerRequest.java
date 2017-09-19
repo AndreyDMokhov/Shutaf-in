@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuestionAnswerWeb {
+public class QuestionAnswerRequest {
     @NotNull
     private Integer questionId;
     @NotNull
