@@ -8,7 +8,7 @@ import com.shutafin.model.entities.infrastructure.City;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
-import com.shutafin.model.web.QuestionResponse;
+import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerCityRequest;
 import com.shutafin.model.web.user.QuestionAnswerRequest;
@@ -155,7 +155,7 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionResponse> getUserQuestionsAnswers(User user) {
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(User user) {
         return questionRepository.getUserQuestionsAnswers(userAccountRepository.findUserLanguage(user));
     }
 

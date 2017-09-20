@@ -4,7 +4,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.web.AnswerResponse;
-import com.shutafin.model.web.QuestionResponse;
+import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerRequest;
 import com.shutafin.repository.base.AbstractConstEntityDao;
@@ -27,10 +27,10 @@ import java.util.Map;
 public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> implements QuestionRepository {
 
     @Override
-    public List<QuestionResponse> getUserQuestionsAnswers(Language language) {
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(Language language) {
 
         StringBuilder hql = new StringBuilder()
-                .append("select new com.shutafin.model.web.QuestionResponse ")
+                .append("select new com.shutafin.model.web.QuestionAnswersResponse ")
                 .append(" ( ")
                 .append(" cl.question.id, ")
                 .append(" cl.description, ")
@@ -38,7 +38,7 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
                 .append(" )")
                 .append(" from QuestionLocale cl where cl.language = :language AND cl.question.isActive = 1  ");
 
-        List<QuestionResponse> result = getSession()
+        List<QuestionAnswersResponse> result = getSession()
                 .createQuery(hql.toString())
                 .setCacheable(true)
                 .setParameter("language", language)
@@ -68,7 +68,7 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
             questionAnswers.get(questionAnswerElement.getQuestionId()).add(new AnswerResponse(questionAnswerElement.getAnswerId(), questionAnswerElement.getDescription(), questionAnswerElement.getIsUniversal()));
         }
 
-        for (QuestionResponse questionResponse : result) {
+        for (QuestionAnswersResponse questionResponse : result) {
             questionResponse.setAnswers(questionAnswers.get(questionResponse.getQuestionId()));
         }
 

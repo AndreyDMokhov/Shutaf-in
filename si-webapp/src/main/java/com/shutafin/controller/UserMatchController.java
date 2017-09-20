@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.QuestionResponse;
+import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerCityRequest;
 import com.shutafin.model.web.user.QuestionAnswerRequest;
@@ -45,7 +45,7 @@ public class UserMatchController {
     }
 
     @RequestMapping(value = "/questionnaire/initialization", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionResponse> getUserQuestionsAnswers(@AuthenticatedUser User user) {
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(@AuthenticatedUser User user) {
         return userMatchService.getUserQuestionsAnswers(user);
     }
 
