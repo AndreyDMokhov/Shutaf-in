@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.QuestionAnswerWeb;
+import com.shutafin.model.web.user.QuestionAnswerRequest;
 import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchService;

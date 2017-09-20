@@ -5,6 +5,7 @@ import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.entities.UserQuestionAnswerCity;
 import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.City;
+import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
@@ -12,8 +13,6 @@ import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerCityRequest;
 import com.shutafin.model.web.user.QuestionAnswerRequest;
-import com.shutafin.repository.account.UserAccountRepository;
-import com.shutafin.repository.account.UserInfoRepository;
 import com.shutafin.repository.common.UserExamKeyRepository;
 import com.shutafin.repository.common.UserQuestionAnswerCityRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
@@ -46,8 +45,8 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Autowired
     private AnswerRepository answerRepository;
 
-    @Autowired
-    private UserAccountRepository userAccountRepository;
+//    @Autowired
+//    private UserAccountRepository userAccountRepository;
 
     @Autowired
     private UserExamKeyRepository userExamKeyRepository;
@@ -61,8 +60,8 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Autowired
     private CityRepository cityRepository;
 
-    @Autowired
-    private UserInfoRepository userInfoRepository;
+//    @Autowired
+//    private UserInfoRepository userInfoRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -89,6 +88,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         return matchingUsersList;
     }
 
+/*
     private List<User> innerJoinUserLists(List<User> matchedUsersList, List<User> additionalUsersFilterList) {
         List<User> result = new ArrayList<>();
         for (User user : additionalUsersFilterList) {
@@ -98,6 +98,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         }
         return result;
     }
+*/
 
     @Override
     @Transactional
@@ -155,8 +156,8 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionAnswersResponse> getUserQuestionsAnswers(User user) {
-        return questionRepository.getUserQuestionsAnswers(userAccountRepository.findUserLanguage(user));
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(Language language) {
+        return questionRepository.getUserQuestionsAnswers(language);
     }
 
     @Override

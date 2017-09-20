@@ -45,7 +45,7 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
         var answers = [];
         for (var i = 0; i < $sessionStorage.questions.length; i++) {
             if (data[i]) {
-                answers.push({"questionId": i, "answerId": data[i].selectedAnswersIds[0]});
+                answers.push({"questionId": data[i].questionId, "answerId": data[i].selectedAnswersIds[0]});
             }
             else {
                 answers.push({"questionId": i, "answerId": null});
