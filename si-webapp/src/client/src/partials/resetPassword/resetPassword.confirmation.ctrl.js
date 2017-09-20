@@ -1,3 +1,4 @@
+"use strict";
 app.controller('resetPasswordConfirmation', function ($filter, resetPasswordModel, $state, notify, $stateParams) {
     var vm = this;
     var urlLink = $stateParams.link;
@@ -36,7 +37,7 @@ app.controller('resetPasswordConfirmation', function ($filter, resetPasswordMode
                     $state.go("error", {'code': '404'});
                 }
             }
-        )
+        );
     }
 
 

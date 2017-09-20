@@ -68,8 +68,8 @@ public class QuestionRepositoryImpl extends AbstractConstEntityDao<Question> imp
             questionAnswers.get(questionAnswerElement.getQuestionId()).add(new AnswerResponse(questionAnswerElement.getAnswerId(), questionAnswerElement.getDescription(), questionAnswerElement.getIsUniversal()));
         }
 
-        for (QuestionAnswersResponse questionResponse : result) {
-            questionResponse.setAnswers(questionAnswers.get(questionResponse.getQuestionId()));
+        for (QuestionAnswersResponse questionAnswersResponse : result) {
+            questionAnswersResponse.setAnswers(questionAnswers.get(questionAnswersResponse.getQuestionId()));
         }
 
         return result;

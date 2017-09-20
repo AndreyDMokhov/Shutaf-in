@@ -17,9 +17,8 @@ public class UserAccountRepositoryImpl extends AbstractEntityDao<UserAccount> im
     @Override
     public Language findUserLanguage(User user) {
         StringBuilder hql = new StringBuilder()
-        .append("select l from UserAccount u, Language l ")
-        .append(" where u.language = l.id ")
-        .append(" and ")
+        .append("select u.language from UserAccount u ")
+        .append(" where ")
         .append(" u.user = :user ");
         return (Language) getSession()
                 .createQuery(hql.toString())

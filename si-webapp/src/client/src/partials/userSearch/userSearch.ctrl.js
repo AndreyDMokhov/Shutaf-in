@@ -1,3 +1,4 @@
+"use strict";
 app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter) {
     var vm = this;
 
@@ -26,7 +27,7 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
                 }
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
 
-            })
+            });
 
     }
 

@@ -5,11 +5,11 @@ app.factory("userSettingsModel", function (Restangular, $sessionStorage) {
 
     function saveDataPostRegistration(params) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
-        return rest.one('/api/users/settings/info/').customPOST(params)
+        return rest.one('/api/users/settings/info/').customPOST(params);
     }
 
     return {
         saveDataPostRegistration: saveDataPostRegistration
-    }
+    };
 });
 

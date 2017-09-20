@@ -1,3 +1,4 @@
+"use strict";
 app.controller('resetPasswordRequestController', function (resetPasswordModel, notify, $filter, $state) {
     var vm = this;
     vm.resetPasswordEmail = {};
