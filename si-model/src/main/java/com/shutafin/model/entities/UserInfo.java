@@ -31,9 +31,9 @@ public class UserInfo extends AbstractBaseEntity {
     @OneToOne
     private Gender gender;
 
-    @Column(name = "DATE_OF_BIRTH")
+    @Column(name = "DAY_OF_BIRTH")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateOfBirth;
+    private Date dayOfBirth;
 
     @Column(name = "FACEBOOK_LINK")
     private String facebookLink;

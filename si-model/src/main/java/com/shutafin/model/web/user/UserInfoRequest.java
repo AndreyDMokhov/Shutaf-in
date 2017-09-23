@@ -37,8 +37,8 @@ public class UserInfoRequest {
     @Min(value = 1)
     private Integer genderId;
 
-    @DateTimeFormat(pattern="dd/MM/YY")
-    private Date dateOfBirth;
+    @DateTimeFormat(style="L-")
+    private Date dayOfBirth;
 
     @Length(max = 255)
     private String facebookLink;

@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.Date;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,7 +24,7 @@ public class UserInfoResponseDTO {
     private Integer countryId;
     private Integer cityId;
     private Integer genderId;
-    private Date dateOfBirth;
+    private Date dayOfBirth;
 
     private Long userImageId;
     private String userImage;
@@ -34,7 +35,7 @@ public class UserInfoResponseDTO {
     private String phoneNumber;
 
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public UserInfoResponseDTO(Long userId, String firstName, String lastName, String email, Integer languageId, Integer countryId, Integer cityId, Integer genderId, Date dateOfBirth, String facebookLink, String profession, String company, String phoneNumber) {
+    public UserInfoResponseDTO(Long userId, String firstName, String lastName, String email, Integer languageId, Integer countryId, Integer cityId, Integer genderId, Date dayOfBirth, String facebookLink, String profession, String company, String phoneNumber) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,7 +44,7 @@ public class UserInfoResponseDTO {
         this.countryId = countryId;
         this.cityId = cityId;
         this.genderId = genderId;
-        this.dateOfBirth = dateOfBirth;
+        this.dayOfBirth = dayOfBirth;
         this.facebookLink = facebookLink;
         this.profession = profession;
         this.company = company;

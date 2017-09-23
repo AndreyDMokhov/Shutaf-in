@@ -9,7 +9,6 @@ app.controller("userSettingsController", function ($localStorage, $sessionStorag
     vm.country = $sessionStorage.countries;
     vm.cities = $sessionStorage.cities;
     vm.gender = $sessionStorage.genders;
-    vm.val = dateCorrect() ;
 
 
     function submitChanges() {
@@ -26,10 +25,6 @@ app.controller("userSettingsController", function ($localStorage, $sessionStorag
                     $state.go('logout');
                 }
             });
-    }
-
-    function dateCorrect() {
-        return $filter('date')(vm.userProfile.dateOfBirth,'yyyy-MM-dd');;
     }
 
     vm.submitChanges = submitChanges;

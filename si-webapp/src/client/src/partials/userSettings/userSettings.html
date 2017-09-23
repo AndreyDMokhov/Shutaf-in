@@ -62,18 +62,17 @@
 
         <div class="row form-group">
             <div ng-class="{
-                    'has-error': userSettings.dateOfBirth.$invalid,
-                    'has-success': userSettings.dateOfBirth.$valid }">
-                <label class="required" for="dateOfBirth">{{"UserSettings.form.dateOfBirth"|translate}}</label>
+                    'has-error': userSettings.dayOfBirth.$invalid,
+                    'has-success': userSettings.dayOfBirth.$valid }">
+                <label class="required" for="dayOfBirth">{{"UserSettings.form.dayOfBirth"|translate}}</label>
                 <input
                         type="date"
-                        value={{vm.val}}
-                        name="dateOfBirth"
-                        id="dateOfBirth"
+                        name="dayOfBirth"
+                        value="{{vm.userProfile.dayOfBirth | date:'yyyy-MM-dd'}}"
+                        id="dayOfBirth"
                         class="form-control"
-                        ng-model="vm.userProfile.dateOfBirth"
-                        required
-                        >
+                        ng-model="vm.userProfile.dayOfBirth"
+                        required>
                 </input>
             </div>
         </div>

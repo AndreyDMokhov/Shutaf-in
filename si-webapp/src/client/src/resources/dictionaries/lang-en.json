@@ -111,7 +111,7 @@
   "UserSettings.personal.form.inputFieldError": "This field may contain {{minLength}} to {{maxLength}} characters",
   "UserSettings.personal.message.save.success":"Has been successfully saved",
   "UserSettings.form.gender": "Gender",
-  "UserSettings.form.dateOfBirth": "Date of birth",
+  "UserSettings.form.dayOfBirth": "Day of birth",
   "UserSettings.form.country": "Country",
   "UserSettings.form.city": "City",
   "UserSettings.form.facebook": "Facebook",
