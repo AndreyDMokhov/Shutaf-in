@@ -3,24 +3,23 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.entities.UserQuestionAnswerCity;
-import com.shutafin.model.entities.infrastructure.Answer;
-import com.shutafin.model.entities.infrastructure.City;
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.infrastructure.Question;
+import com.shutafin.model.entities.UserQuestionAnswerGender;
+import com.shutafin.model.entities.infrastructure.*;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
+import com.shutafin.model.entities.types.AnswerType;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
-import com.shutafin.model.web.user.QuestionAnswerCityRequest;
 import com.shutafin.model.web.user.QuestionAnswerRequest;
-import com.shutafin.repository.common.UserExamKeyRepository;
-import com.shutafin.repository.common.UserQuestionAnswerCityRepository;
-import com.shutafin.repository.common.UserQuestionAnswerRepository;
-import com.shutafin.repository.common.VarietyExamKeyRepository;
+import com.shutafin.repository.common.*;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
 import com.shutafin.repository.initialization.locale.CityRepository;
+import com.shutafin.repository.initialization.locale.GenderRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
 import com.shutafin.service.UserMatchService;
+import com.shutafin.service.match.UsersMatchChain;
+import com.shutafin.service.match.impl.UsersMatchByCity;
+import com.shutafin.service.match.impl.UsersMatchByGender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +44,6 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Autowired
     private AnswerRepository answerRepository;
 
-//    @Autowired
-//    private UserAccountRepository userAccountRepository;
-
     @Autowired
     private UserExamKeyRepository userExamKeyRepository;
 
@@ -58,10 +54,13 @@ public class UserMatchServiceImpl implements UserMatchService {
     private UserQuestionAnswerCityRepository userQuestionAnswerCityRepository;
 
     @Autowired
+    private UserQuestionAnswerGenderRepository userQuestionAnswerGenderRepository;
+
+    @Autowired
     private CityRepository cityRepository;
 
-//    @Autowired
-//    private UserInfoRepository userInfoRepository;
+    @Autowired
+    private GenderRepository genderRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -79,41 +78,45 @@ public class UserMatchServiceImpl implements UserMatchService {
         matchingUsersList.remove(user);
 
         //Call chain of responsibility
-
-        //match users from Filter_1 by City questions - Filter_2
-//        List<User> usersByCity = userQuestionAnswerCityRepository.getAllMatchedUsers(user);
-//        matchingUsersList = innerJoinUserLists(matchingUsersList, usersByCity);
-
+        UsersMatchChain usersMatchChain = createMatchChain(user);
+        matchingUsersList = usersMatchChain.doMatch(matchingUsersList);
 
         return matchingUsersList;
     }
 
-/*
-    private List<User> innerJoinUserLists(List<User> matchedUsersList, List<User> additionalUsersFilterList) {
-        List<User> result = new ArrayList<>();
-        for (User user : additionalUsersFilterList) {
-            if(matchedUsersList.contains(user)){
-                result.add(user);
-            }
-        }
-        return result;
+    private UsersMatchChain createMatchChain(User user) {
+        UsersMatchChain genderMatch = new UsersMatchByGender(user, userQuestionAnswerGenderRepository);
+
+        UsersMatchChain cityrMatch = new UsersMatchByCity(user, userQuestionAnswerCityRepository);
+        genderMatch.setNext(cityrMatch);
+
+        return genderMatch;
     }
-*/
 
     @Override
     @Transactional
     public void saveQuestionsAnswers(User user, List<QuestionAnswerRequest> questionsAnswers) {
 
         userQuestionAnswerRepository.deleteUserAnswers(user);
+        userQuestionAnswerCityRepository.deleteUserCityAnswers(user);
+        userQuestionAnswerGenderRepository.deleteUserGenderAnswers(user);
         userExamKeyRepository.delete(user);
 
         TreeMap<Question, Answer> questionAnswerMap = new TreeMap<>();
         for (QuestionAnswerRequest questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
-            Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
-            userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
 
-            questionAnswerMap.put(question, answer);
+            if (question.getQuestionType() == AnswerType.STANDARD.getCode()){
+                Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
+                userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
+                questionAnswerMap.put(question, answer);
+            } else if (question.getQuestionType() == AnswerType.CITY.getCode()){
+                City city = cityRepository.findById(questionAnswer.getAnswerId());
+                userQuestionAnswerCityRepository.save(new UserQuestionAnswerCity(user, question, city));
+            } else if (question.getQuestionType() == AnswerType.GENDER.getCode()){
+                Gender gender = genderRepository.findById(questionAnswer.getAnswerId());
+                userQuestionAnswerGenderRepository.save(new UserQuestionAnswerGender(user, question, gender));
+            }
         }
 
         List<String> examKeyRes = generateExamKey(questionAnswerMap);
@@ -123,18 +126,6 @@ public class UserMatchServiceImpl implements UserMatchService {
         }
         if (varietyExamKeyRepository.findUserExamKeyByStr(examKeyRes.get(1)) == null) {
             varietyExamKeyRepository.save(new VarietyExamKey(examKeyRes.get(1)));
-        }
-    }
-
-    @Override
-    @Transactional
-    public void saveUserQuestionsCityAnswers(User user, List<QuestionAnswerCityRequest> questionsCityAnswers) {
-        userQuestionAnswerCityRepository.deleteUserCityAnswers(user);
-        for (QuestionAnswerCityRequest questionAnswerCityRequest : questionsCityAnswers) {
-            Question question = questionRepository.findById(questionAnswerCityRequest.getQuestionId());
-            City city = cityRepository.findById(questionAnswerCityRequest.getCityId());
-
-            userQuestionAnswerCityRepository.save(new UserQuestionAnswerCity(user, question, city));
         }
     }
 
