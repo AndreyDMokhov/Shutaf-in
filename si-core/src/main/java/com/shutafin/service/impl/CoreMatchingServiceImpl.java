@@ -119,7 +119,7 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     }
 
     private void evaluateUserMatchingScores(User userOrigin) {
-        for (User userToMatch : userMatchService.findPartners(userOrigin)) {
+        for (User userToMatch : userMatchService.findMatchingUsers(userOrigin)) {
             evaluateUserMatchingScore(userOrigin, userToMatch);
         }
     }
