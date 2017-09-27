@@ -1,3 +1,4 @@
+"use strict";
 app.factory('changePasswordModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
@@ -6,10 +7,10 @@ app.factory('changePasswordModel', function (Restangular, $sessionStorage) {
 
     function changePassword(param) {
         rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
-        return  rest.one('/api/users/password/change').customPUT(param)
+        return  rest.one('/api/users/password/change').customPUT(param);
     }
 
     return{
         changePassword: changePassword
-    }
+    };
 });

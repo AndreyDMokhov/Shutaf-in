@@ -39,7 +39,7 @@
   "Registration.form.msg.requiredPassword":"Обязательное поле",
   "Registration.form.btn.cancel":"Отмена",
   "Registration.form.btn.registration":"Продолжить",
-  "Registration.form.msg.registrationOK":"Добро пожаловать!",
+  "Registration.form.msg.registration.success":"Добро пожаловать!",
   "Registration.request.success":"Для активации учетной записи, необходимо подтвердить свой электронный адрес",
 
   "SECTION": "LOGIN",
@@ -56,7 +56,7 @@
 
   "SECTION": "PROFILE",
   "UserProfile.title" : "Профиль",
-  "UserProfile.birthday" : "Дата рождения",
+  "UserProfile.dateOfBirth" : "Дата рождения",
   "UserProfile.city" : "Город",
   "UserProfile.button.setImage" : "Сохранить изображение",
   "UserProfile.button.deleteImage" : "Удалить изображение",
@@ -65,6 +65,7 @@
   "UserProfile.message.imageDeleted" : "Изображение было удалено",
   "UserProfile.message.confirmDelete" : "Вы уверены, что хотите удалить?",
   "UserProfile.edit":"Редактировать",
+  "UserProfile.compatibility":"Совместимость",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Письмо отправлено на указанный адрес",
@@ -84,8 +85,10 @@
 
 
   "SECTION": "SECURITY SETTINGS",
-  "Settings.security.email.title": "Изменить адрес электронной почты",
-  "Settings.security.password.title": "Изменить пароль",
+  "Settings.title":"Настройки",
+  "Settings.security.title": "Настройки безопасности",
+  "Settings.security.email.title": "Сменить емайл",
+  "Settings.security.password.title": "Сменить пароль",
   "Settings.security.form.email": "Электронная почта",
   "Settings.security.form.wrongEmail": "Проверьте адрес электронной почты",
   "Settings.security.form.password": "Пароль",
@@ -106,7 +109,9 @@
   "Settings.security.msg.successRequest": "Запрос был успешно отправлен",
 
   "SECTION" : "USER SETTINGS",
-  "UserSettings.personal.title": "Настройки пользователя",
+  "UserSettings.personal.title": "Информация о себе",
+  "UserSettings.personal.settings.general": "Основная информация",
+  "UserSettings.personal.settings.additional": "Дополнительная информация",
   "UserSettings.personal.form.firstName":"Имя",
   "UserSettings.personal.form.lastName":"Фамилия",
   "UserSettings.personal.form.button.submit":"Применить",
@@ -121,7 +126,6 @@
   "UserSettings.form.company": "Компания",
   "UserSettings.form.phoneNumber": "Номер телефона",
   "UserSettings.btn.addSettings": "Дополнительная информация",
-  "UserSettings.title": "Личная информация",
   "UserSettings.btn.submit":  "Сохранить",
   "UserSettings.message.save.success": "Данные успешно сохранены",
 
@@ -129,7 +133,15 @@
   "Search.button": "Поиск",
   "Search.notFound" : "По Вашему запросу пользователи не найдены",
   "Search.request" : "Введите Ваш запрос для поиска",
-  "Search.results" : "Результатов:"
+  "Search.results" : "Результатов:",
+
+  "SECTION" : "Questions",
+  "Questions.title" : "Вопросы",
+  "Questions.button.next" : "Дальше",
+  "Questions.button.back" : "Назад",
+  "Questions.button.save" : "Сохранить",
+  "Questions.delimiter": "из",
+  "Questions.confirm" : "Ответы успешно сохранены"
 
 }
 

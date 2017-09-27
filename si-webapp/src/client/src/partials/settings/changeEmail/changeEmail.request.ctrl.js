@@ -1,33 +1,28 @@
-app.controller('changePasswordController', function ($rootScope, changePasswordModel, notify, $filter, $state) {
+"use strict";
+app.controller('changeEmailRequestController', function ($state, $rootScope, changeEmailModel, notify, $filter) {
 
     var vm = this;
-
-    vm.isOpen = true;
-
     vm.dataLoading = false;
-
+    vm.isOpened = true;
     vm.securitySettings = {};
 
+    function changeEmailRequest() {
+        vm.dataLoading = true;
 
-    function changePassword() {
-        vm.dataLoading=true;
-
-        changePasswordModel.changePassword(vm.securitySettings).then(
+        changeEmailModel.emailChangeRequest(vm.securitySettings).then(
             function (success) {
                 vm.dataLoading = false;
-                notify.set($filter('translate')("Settings.security.msg.success"), {type: 'success'});
-                $state.go('settings');
+                notify.set($filter('translate')("Settings.security.msg.successRequest"), {type: 'success'});
+                $state.go("home");
             }, function (error) {
                 vm.dataLoading = false;
-
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 if (error.data.error.errorTypeCode === 'AUT') {
                     $state.go('logout');
                 }
+
             });
     }
 
-
-    vm.changePassword = changePassword;
-
+    vm.changeEmailRequest = changeEmailRequest;
 });
