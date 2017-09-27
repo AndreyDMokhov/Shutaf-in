@@ -87,9 +87,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
 
         MaxUserMatchingScore maxUserMatchingScore = maxUserMatchingScoreRepository.getUserMaxMatchingScore(user);
         if (maxUserMatchingScore == null) {
-            maxUserMatchingScore = new MaxUserMatchingScore();
-            maxUserMatchingScore.setUser(user);
-            maxUserMatchingScore.setScore(maxScore);
+            maxUserMatchingScore = new MaxUserMatchingScore(user, maxScore);
             maxUserMatchingScoreRepository.save(maxUserMatchingScore);
         } else {
             maxUserMatchingScore.setScore(maxScore);
