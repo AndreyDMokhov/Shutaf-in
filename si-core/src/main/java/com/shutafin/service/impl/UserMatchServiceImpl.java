@@ -5,31 +5,28 @@ import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.entities.infrastructure.Answer;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
-import com.shutafin.model.entities.matching.QuestionAnswer;
-import com.shutafin.model.web.AnswerWeb;
-import com.shutafin.model.web.QuestionWeb;
-import com.shutafin.model.web.initialization.AnswerResponseDTO;
-import com.shutafin.model.web.initialization.QuestionResponseDTO;
-import com.shutafin.model.web.user.UserQuestionAnswerWeb;
-import com.shutafin.repository.account.UserAccountRepository;
+import com.shutafin.model.entities.match.UserExamKey;
+import com.shutafin.model.entities.match.VarietyExamKey;
+import com.shutafin.model.web.QuestionAnswersResponse;
+import com.shutafin.model.web.QuestionSelectedAnswersResponse;
+import com.shutafin.model.web.user.QuestionAnswerWeb;
+import com.shutafin.repository.common.UserExamKeyRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
+import com.shutafin.repository.common.VarietyExamKeyRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
 import com.shutafin.service.UserMatchService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-/**
- * Created by evgeny on 8/12/2017.
- */
 @Service
 @Transactional
+@Slf4j
 public class UserMatchServiceImpl implements UserMatchService {
-
-    private static Map<User, Set<QuestionAnswer>> usersQuestionsAnswersMap;
 
     @Autowired
     private UserQuestionAnswerRepository userQuestionAnswerRepository;
@@ -41,99 +38,79 @@ public class UserMatchServiceImpl implements UserMatchService {
     private AnswerRepository answerRepository;
 
     @Autowired
-    private UserAccountRepository userAccountRepository;
+    private UserExamKeyRepository userExamKeyRepository;
+
+    @Autowired
+    private VarietyExamKeyRepository varietyExamKeyRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findPartners(User user) {
-        List<User> result = new ArrayList<User>();
+    public List<User> findMatchingUsers(User user) {
+        List<User> matchingUsersList = new ArrayList<>();
 
         if (user == null) {
-            return result;
+            return matchingUsersList;
         }
 
-        if (usersQuestionsAnswersMap == null) {
-            initUsersMatchMap();
-        }
+        UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
+        List<String> keys = varietyExamKeyRepository.getKeysForMatch(userExamKey.getExamKeyRegExp());
+        matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
+        matchingUsersList.remove(user);
 
-        Set<QuestionAnswer> userQuestionAnswersSet = usersQuestionsAnswersMap.get(user);
-        Set<Map.Entry<User, Set<QuestionAnswer>>> set = usersQuestionsAnswersMap.entrySet();
-        for (Map.Entry<User, Set<QuestionAnswer>> entry : set) {
-            if (!user.equals(entry.getKey()) && userQuestionAnswersSet.containsAll(entry.getValue())) {
-                result.add(entry.getKey());
-            }
-        }
-
-        return result;
+        return matchingUsersList;
     }
 
     @Override
     @Transactional
-    public void saveQuestionsAnswers(User user, List<UserQuestionAnswerWeb> userQuestionsAnswers) {
-        for (UserQuestionAnswerWeb questionAnswer : userQuestionsAnswers) {
+    public void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers) {
+
+        userQuestionAnswerRepository.deleteUserAnswers(user);
+        userExamKeyRepository.delete(user);
+
+        TreeMap<Question, Answer> questionAnswerMap = new TreeMap<>();
+        for (QuestionAnswerWeb questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
+
+            questionAnswerMap.put(question, answer);
         }
+
+        List<String> examKeyRes = generateExamKey(questionAnswerMap);
+        userExamKeyRepository.save(new UserExamKey(user, examKeyRes.get(0), examKeyRes.get(1)));
+        if (varietyExamKeyRepository.findUserExamKeyByStr(examKeyRes.get(0)) == null) {
+            varietyExamKeyRepository.save(new VarietyExamKey(examKeyRes.get(0)));
+        }
+        if (varietyExamKeyRepository.findUserExamKeyByStr(examKeyRes.get(1)) == null) {
+            varietyExamKeyRepository.save(new VarietyExamKey(examKeyRes.get(1)));
+        }
+    }
+
+    private List<String> generateExamKey(NavigableMap<Question, Answer> sortedQuestionsAnswers) {
+        List<String> res = new ArrayList<>();
+        StringBuilder sbKey = new StringBuilder();
+        StringBuilder sbKeyRegExp = new StringBuilder();
+        for (Map.Entry<Question, Answer> entry : sortedQuestionsAnswers.entrySet()) {
+            sbKey.append("-Q" + entry.getKey().getId() + "_" + entry.getValue().getId());
+
+            String answer = entry.getValue().getIsUniversal() ? "\\d+" : entry.getValue().getId().toString();
+            sbKeyRegExp.append("-Q" + entry.getKey().getId() + "_" + answer);
+        }
+        res.add(sbKey.toString());
+        res.add(sbKeyRegExp.toString());
+
+        return res;
     }
 
     @Override
     @Transactional
-    public List<QuestionWeb> getUserQuestionsAnswers(User user) {
-        List<QuestionWeb> questionsWebList = new ArrayList<>();
-        Language language = userAccountRepository.findUserLanguage(user);
-
-        List<QuestionResponseDTO> questions = questionRepository.getLocaleQuestions(language);
-        for (QuestionResponseDTO questionResponseDTO : questions) {
-            QuestionWeb questionWeb = convertQuestionDtoToWeb(questionResponseDTO);
-
-            List<AnswerResponseDTO> answers = answerRepository.getQuestionLocaleAnswers(language, questionRepository.findById(questionResponseDTO.getId()));
-            questionWeb.setAnswers(convertAnswerDtoListToWebList(answers));
-
-            List<UserQuestionAnswer> currentQuestionSelectedAnswers = userQuestionAnswerRepository.getUserQuestionAnswer(user, questionRepository.findById(questionResponseDTO.getId()));
-            questionWeb.setSelectedAnswersIds(getIdsFromAnswers(currentQuestionSelectedAnswers));
-
-            questionsWebList.add(questionWeb);
-        }
-
-        return questionsWebList;
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(Language language) {
+        return questionRepository.getUserQuestionsAnswers(language);
     }
 
-    private List<Integer> getIdsFromAnswers(List<UserQuestionAnswer> questionSelectedAnswers) {
-        List<Integer> ids = new ArrayList<>();
-        for (UserQuestionAnswer userQuestionAnswer : questionSelectedAnswers) {
-            ids.add(userQuestionAnswer.getAnswer().getId());
-        }
-        return ids;
-    }
-
-    private List<AnswerWeb> convertAnswerDtoListToWebList(List<AnswerResponseDTO> answers) {
-        List<AnswerWeb> answerWebList = new ArrayList<>();
-        for (AnswerResponseDTO answerResponseDTO : answers) {
-            answerWebList.add(convertAnswerDtoToWeb(answerResponseDTO));
-        }
-        return answerWebList;
-    }
-
-    private AnswerWeb convertAnswerDtoToWeb(AnswerResponseDTO answerResponseDTO) {
-        return new AnswerWeb(answerResponseDTO.getId(), answerResponseDTO.getDescription(), answerResponseDTO.getUniversal());
-    }
-
-    private QuestionWeb convertQuestionDtoToWeb(QuestionResponseDTO questionResponseDTO) {
-        return new QuestionWeb(questionResponseDTO.getId(), questionResponseDTO.getDescription(), questionResponseDTO.getActive(), null, null);
-    }
-
-    private void initUsersMatchMap() {
-        usersQuestionsAnswersMap = new HashMap<>();
-        List<UserQuestionAnswer> usersQuestionsAnswers = userQuestionAnswerRepository.findAll();
-        for (int i = 0; i < usersQuestionsAnswers.size(); i++) {
-            User user = usersQuestionsAnswers.get(i).getUser();
-            if (usersQuestionsAnswersMap.get(user) == null) {
-                usersQuestionsAnswersMap.put(user, new HashSet<QuestionAnswer>());
-            }
-            Question question = usersQuestionsAnswers.get(i).getQuestion();
-            Answer answer = usersQuestionsAnswers.get(i).getAnswer();
-            usersQuestionsAnswersMap.get(user).add(new QuestionAnswer(question, answer));
-        }
+    @Override
+    @Transactional
+    public List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(User user) {
+        return questionRepository.getUserQuestionsSelectedAnswers(user);
     }
 }

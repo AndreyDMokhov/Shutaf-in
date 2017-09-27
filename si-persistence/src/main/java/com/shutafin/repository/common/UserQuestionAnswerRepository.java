@@ -2,15 +2,11 @@ package com.shutafin.repository.common;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
-import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.repository.base.PersistentDao;
-
-import java.util.List;
 
 /**
  * Created by evgeny on 8/10/2017.
  */
 public interface UserQuestionAnswerRepository extends PersistentDao<UserQuestionAnswer> {
-    List<UserQuestionAnswer> getUserQuestionAnswer(User user, Question question);
-    List<UserQuestionAnswer> getAllUserQuestionAnswers(User user);
+    void deleteUserAnswers(User user);
 }

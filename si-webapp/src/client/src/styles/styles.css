@@ -19,3 +19,17 @@ label.required:after {content: " *"; color: red;}
     display: inline-block;
     width: 100%
 }
+
+body {
+    overflow-y: scroll;
+}
+
+.fa-chevron-down {
+    transform: rotate(0deg);
+    transition: all 0.1s 0.1s;
+}
+
+.fa-chevron-down.open {
+    transform: rotate(90deg);
+    transition: all 0.1s 0.1s;
+}

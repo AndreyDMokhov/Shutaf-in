@@ -21,11 +21,11 @@
         <exclude name="NPathComplexity"/>
     </rule>
     <!--<rule ref="rulesets/java/codesize.xml/CyclomaticComplexity">-->
-        <!--<properties>-->
-            <!--<property name="reportLevel">-->
-                <!--<value>10</value>-->
-            <!--</property>-->
-        <!--</properties>-->
+    <!--<properties>-->
+    <!--<property name="reportLevel">-->
+    <!--<value>10</value>-->
+    <!--</property>-->
+    <!--</properties>-->
     <!--</rule>-->
 
 
@@ -55,6 +55,7 @@
         <exclude name="UseLocaleWithCaseConversions"/>
         <exclude name="PreserveStackTrace"/>
         <exclude name="UseUtilityClass"/>
+        <exclude name="AvoidReassigningParameters"/>
     </rule>
 
     <rule ref="rulesets/java/empty.xml"/>
@@ -79,13 +80,7 @@
         <exclude name="AbstractNaming"/>
     </rule>
 
-    <rule ref="rulesets/java/logging-java.xml">
-        <!--todo COMMENT OUT AFTER LOGGER IS UP AND RUNNING-->
-        <exclude name="SystemPrintln"/>
-
-        <!--todo COMMENT OUT AFTER LOGGER IS UP AND RUNNING-->
-        <exclude name="AvoidPrintStackTrace"/>
-    </rule>
+    <rule ref="rulesets/java/logging-java.xml"/>
 
     <rule ref="rulesets/java/optimizations.xml">
         <exclude name="LocalVariableCouldBeFinal"/>

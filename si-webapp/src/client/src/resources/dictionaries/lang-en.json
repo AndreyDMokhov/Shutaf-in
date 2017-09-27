@@ -1,7 +1,6 @@
 {
   "SECTION":"HEADER",
   "Header.button.changeLanguage":"Language",
-  "Header.brand":"Shutaf-In",
 
   "SECTION":"ABOUT",
   "About.title":"About",
@@ -41,7 +40,7 @@
   "Registration.form.msg.requiredPassword":"Password is required",
   "Registration.form.btn.cancel":"Cancel",
   "Registration.form.btn.registration":"Register",
-  "Registration.form.msg.registrationOK":"Registration is ok",
+  "Registration.form.msg.registration.success":"Welcome!",
   "Registration.request.success":"It is necessary to confirm your email address in order to active your account",
 
   "SECTION": "LOGIN",
@@ -58,7 +57,7 @@
 
   "SECTION": "PROFILE",
   "UserProfile.title" : "Profile",
-  "UserProfile.birthday" : "Birthday",
+  "UserProfile.dateOfBirth" : "Date of birth",
   "UserProfile.city" : "Current city",
   "UserProfile.button.setImage" : "Save image",
   "UserProfile.button.deleteImage" : "Delete image",
@@ -66,14 +65,8 @@
   "UserProfile.message.imageSaved" : "The image was saved",
   "UserProfile.message.imageDeleted" : "Image was deleted",
   "UserProfile.message.confirmDelete" : "Are you sure you want to delete?",
-
-  "SECTION": "USER_SETTINGS",
-  "Settings.personal.title": "User settings",
-  "Settings.personal.form.firstName":"First name",
-  "Settings.personal.form.lastName":"Last name",
-  "Settings.personal.form.button.submit":"Submit",
-  "Settings.personal.form.inputFieldError": "This field may contain {{minLength}} to {{maxLength}} characters",
-  "Settings.personal.message.save.success":"Has been successfully saved",
+  "UserProfile.edit":"Edit",
+  "UserProfile.compatibility":"Compatibility",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Email sent to specified address",
@@ -92,6 +85,8 @@
   "ResetPassword.form.confirmPassword":"Confirm password",
 
   "SECTION": "SECURITY SETTINGS",
+  "Settings.title":"Settings",
+  "Settings.security.title": "Security settings",
   "Settings.security.email.title": "Change email",
   "Settings.security.password.title": "Change password",
   "Settings.security.form.email": "Email",
@@ -111,9 +106,37 @@
   "Settings.security.secondEmailConfirmed.success": "Email confirmed. Email has been successfully changed",
   "Settings.security.msg.successRequest": "The request was sent successfully",
 
+  "SECTION" : "USER SETTINGS",
+  "UserSettings.personal.title": "My info",
+  "UserSettings.personal.settings.general": "General info",
+  "UserSettings.personal.settings.additional": "Additional info",
+  "UserSettings.personal.form.firstName":"First name",
+  "UserSettings.personal.form.lastName":"Last name",
+  "UserSettings.personal.form.button.submit":"Submit",
+  "UserSettings.personal.form.inputFieldError": "This field may contain {{minLength}} to {{maxLength}} characters",
+  "UserSettings.personal.message.save.success":"Has been successfully saved",
+  "UserSettings.form.gender": "Gender",
+  "UserSettings.form.country": "Country",
+  "UserSettings.form.city": "City",
+  "UserSettings.form.facebook": "Facebook",
+  "UserSettings.form.profession": "Profession",
+  "UserSettings.form.company": "Company",
+  "UserSettings.form.phoneNumber": "Phone number ",
+  "UserSettings.btn.addSettings": "Show additional settings",
+  "UserSettings.btn.submit":  "Submit",
+  "UserSettings.message.save.success": "Has been successfully saved",
+
   "SECTION": "USER SEARCH",
   "Search.button": "Search",
   "Search.notFound" : "No users found on your request",
   "Search.request" : "Enter your request",
-  "Search.results" : "Results:"
+  "Search.results" : "Results:",
+
+  "SECTION" : "Questions",
+  "Questions.title" : "Questions",
+  "Questions.button.next" : "Next",
+  "Questions.button.back" : "Back",
+  "Questions.button.save" : "Save",
+  "Questions.delimiter": "from",
+  "Questions.confirm" : "Answers were saved"
 }

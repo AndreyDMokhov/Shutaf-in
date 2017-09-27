@@ -15,4 +15,5 @@ import javax.persistence.Table;
 @Cacheable
 @NoArgsConstructor
 public class Gender extends AbstractKeyConstEntity {
+
 }

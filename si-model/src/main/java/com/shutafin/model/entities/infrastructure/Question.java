@@ -1,6 +1,9 @@
 package com.shutafin.model.entities.infrastructure;
 
 import com.shutafin.model.AbstractKeyConstEntity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -16,18 +19,13 @@ import javax.persistence.Table;
 @Table(name = "I_QUESTION")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Cacheable
-public class Question extends AbstractKeyConstEntity {
+@NoArgsConstructor
+@Getter
+@Setter
+public class Question extends AbstractKeyConstEntity implements Comparable<Question> {
 
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive = true;
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
 
     @Override
     public int hashCode() {
@@ -36,6 +34,11 @@ public class Question extends AbstractKeyConstEntity {
 
     @Override
     public boolean equals(Object obj) {
-        return getId()==((Question)obj).getId();
+        return getId().equals( ((Question)obj).getId() );
+    }
+
+    @Override
+    public int compareTo(Question o) {
+        return getId() - o.getId();
     }
 }

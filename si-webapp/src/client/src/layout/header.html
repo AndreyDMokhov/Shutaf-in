@@ -8,7 +8,7 @@
                         {{brand}}
                     </a>
                     <a ng-show="vm.sessionService.isAuthenticated()"
-                       ui-sref="userProfile"
+                       ui-sref="userProfile({id:vm.userProfile.userId})"
                        uib-tooltip="{{'UserProfile.title' | translate}}"
                        tooltip-placement="bottom">
                         <span class="fa fa-user" aria-hidden="true"></span>
@@ -24,13 +24,23 @@
                         {{'Home.title' | translate}}
                     </a>
                 </li>
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('about' | includedByState)}">
+                <li ng-hide="true" ng-class="{active : ('about' | includedByState)}">
                     <a ui-sref="about" uib-tooltip="{{'About.title' | translate}}" tooltip-placement="bottom">
                         <span class="fa fa-book header-icon-size"></span>
                         &nbsp;
                         {{'About.title' | translate}}
                     </a>
                 </li>
+
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
+                    <a ui-sref="questions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
+                        <span class="fa fa-book header-icon-size"></span>
+                        &nbsp;
+                        {{'Questions.title' | translate}}
+                    </a>
+                </li>
+
+
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : ('userSearch' | includedByState)}">
                     <form class="header-search" id="userSearchForm">
@@ -68,28 +78,12 @@
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('settings' | includedByState)}">
-                    <a ui-sref="settings" tooltip-placement="bottom"
-                       uib-tooltip="{{'Settings.personal.title' | translate}}">
+                    ng-class="{active : (('settings.personal' | includedByState) || ('settings.changeEmailRequest' | includedByState) || ('settings.changePassword' | includedByState)) }">
+                    <a ui-sref="settings.personal" tooltip-placement="bottom"
+                       uib-tooltip="{{'Settings.title' | translate}}">
                         <span class="glyphicon glyphicon-cog"></span>
                         &nbsp;
-                        {{'Settings.personal.title' | translate}}
-                    </a>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('emailChangeRequest' | includedByState)}">
-                    <a ui-sref="changeEmailRequest">
-                        <span class="glyphicon glyphicon-cog"></span>
-                        &nbsp;
-                        {{'Settings.security.email.title' | translate}}
-                    </a>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('changePassword' | includedByState)}">
-                    <a ui-sref="changePassword">
-                        <span class="glyphicon glyphicon-cog"></span>
-                        &nbsp;
-                        {{'Settings.security.password.title' | translate}}
+                        {{'Settings.title' | translate}}
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()">
@@ -109,7 +103,7 @@
                     <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
                         <li role="menuitem"
                             ng-repeat="lang in vm.initialization.languages | filter : {isActive : true}"><a
-                                class="pointer" ng-click="vm.setLanguageCode(lang.description,lang.id)">{{lang.languageNativeName}}</a>
+                                class="pointer" ng-click="vm.setLanguageCode(lang.id)">{{lang.languageNativeName}}</a>
                         </li>
                     </ul>
                 </li>

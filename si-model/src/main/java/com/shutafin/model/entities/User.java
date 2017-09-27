@@ -14,10 +14,10 @@ import javax.persistence.*;
 @Table(name = "USER")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class User extends AbstractEntity {
 
     @Column(name = "FIRST_NAME", nullable = false, length = 50)
@@ -28,6 +28,7 @@ public class User extends AbstractEntity {
 
     @Column(name = "EMAIL", nullable = false, length = 50, unique = true)
     private String email;
+
 
     @Override
     public int hashCode() {
@@ -77,5 +78,4 @@ public class User extends AbstractEntity {
         }
         return true;
     }
-
 }

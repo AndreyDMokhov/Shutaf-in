@@ -1,7 +1,12 @@
-app.controller('userProfileController', function ($state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout) {
+"use strict";
+app.controller('userProfileController', function ($localStorage, $state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout) {
+
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
+
+    vm.cities = $sessionStorage.cities;
+    vm.genders = $sessionStorage.genders;
 
     function setProfileImage() {
         if (!vm.userProfile.userImageId) {
@@ -14,7 +19,6 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
     }
 
     function onLoad(e, reader, file, fileList, fileOjects, fileObj) {
-
         $timeout(function () {
             vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
             vm.deleteButton = true;
@@ -23,7 +27,6 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
     }
 
     function saveImage() {
-
         userProfileModel.addOrUpdateImage({image: vm.fileInfo.base64}).then(
             function (success) {
                 vm.userProfile.userImage = success.data.data.image;
@@ -33,6 +36,7 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
                 vm.deleteButton = false;
                 notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
             },
+
             function (error) {
 
                 if (error === undefined || error === null) {
@@ -41,7 +45,7 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
 
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             }
-        )
+        );
     }
 
     function deleteImage() {
@@ -49,6 +53,7 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
         if (!confirmDeleting) {
             return;
         }
+
         userProfileModel.deleteImage().then(
             function (success) {
                 vm.userProfile.userImage = '../../images/default_avatar.png';
@@ -58,15 +63,13 @@ app.controller('userProfileController', function ($state, $filter, sessionServic
                 vm.deleteButton = true;
                 notify.set($filter('translate')('UserProfile.message.imageDeleted'), {type: 'success'});
             },
+
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
 
-
     setProfileImage();
-
-
     vm.onLoad = onLoad;
     vm.saveImage = saveImage;
     vm.deleteImage = deleteImage;

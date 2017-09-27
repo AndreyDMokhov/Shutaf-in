@@ -1,3 +1,4 @@
+"use strict";
 app.factory('sessionService', function ($sessionStorage) {
 
 
@@ -8,6 +9,6 @@ app.factory('sessionService', function ($sessionStorage) {
 
     return {
         isAuthenticated:isAuthenticated
-    }
+    };
 
 });

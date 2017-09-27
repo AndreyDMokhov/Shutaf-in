@@ -1,7 +1,6 @@
 {
   "SECTION":"HEADER",
   "Header.button.changeLanguage":"Язык",
-  "Header.brand":"Shutaf-In",
 
   "SECTION":"ABOUT",
   "About.title":"О нас",
@@ -40,7 +39,7 @@
   "Registration.form.msg.requiredPassword":"Обязательное поле",
   "Registration.form.btn.cancel":"Отмена",
   "Registration.form.btn.registration":"Продолжить",
-  "Registration.form.msg.registrationOK":"Добро пожаловать!",
+  "Registration.form.msg.registration.success":"Добро пожаловать!",
   "Registration.request.success":"Для активации учетной записи, необходимо подтвердить свой электронный адрес",
 
   "SECTION": "LOGIN",
@@ -57,7 +56,7 @@
 
   "SECTION": "PROFILE",
   "UserProfile.title" : "Профиль",
-  "UserProfile.birthday" : "Дата рождения",
+  "UserProfile.dateOfBirth" : "Дата рождения",
   "UserProfile.city" : "Город",
   "UserProfile.button.setImage" : "Сохранить изображение",
   "UserProfile.button.deleteImage" : "Удалить изображение",
@@ -65,6 +64,8 @@
   "UserProfile.message.imageSaved" : "Изображение сохранено",
   "UserProfile.message.imageDeleted" : "Изображение было удалено",
   "UserProfile.message.confirmDelete" : "Вы уверены, что хотите удалить?",
+  "UserProfile.edit":"Редактировать",
+  "UserProfile.compatibility":"Совместимость",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Письмо отправлено на указанный адрес",
@@ -84,8 +85,10 @@
 
 
   "SECTION": "SECURITY SETTINGS",
-  "Settings.security.email.title": "Изменить адрес электронной почты",
-  "Settings.security.password.title": "Изменить пароль",
+  "Settings.title":"Настройки",
+  "Settings.security.title": "Настройки безопасности",
+  "Settings.security.email.title": "Сменить емайл",
+  "Settings.security.password.title": "Сменить пароль",
   "Settings.security.form.email": "Электронная почта",
   "Settings.security.form.wrongEmail": "Проверьте адрес электронной почты",
   "Settings.security.form.password": "Пароль",
@@ -105,19 +108,39 @@
   "Settings.security.secondEmailConfirmed.success": "Электронный адрес подтвержден. Электронный адрес был успешно изменен",
   "Settings.security.msg.successRequest": "Запрос был успешно отправлен",
 
-  "SECTION": "SETTINGS",
-  "Settings.personal.title": "Настройки пользователя",
-  "Settings.personal.form.firstName":"Имя",
-  "Settings.personal.form.lastName":"Фамилия",
-  "Settings.personal.form.button.submit":"Применить",
-  "Settings.personal.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
-  "Settings.personal.message.save.success":"Пользователь успешно сохранен",
+  "SECTION" : "USER SETTINGS",
+  "UserSettings.personal.title": "Информация о себе",
+  "UserSettings.personal.settings.general": "Основная информация",
+  "UserSettings.personal.settings.additional": "Дополнительная информация",
+  "UserSettings.personal.form.firstName":"Имя",
+  "UserSettings.personal.form.lastName":"Фамилия",
+  "UserSettings.personal.form.button.submit":"Применить",
+  "UserSettings.personal.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
+  "UserSettings.personal.message.save.success":"Пользователь успешно сохранен",
+  "UserSettings.form.gender": "Пол",
+  "UserSettings.form.country": "Страна",
+  "UserSettings.form.city": "Город",
+  "UserSettings.form.facebook": "Facebook",
+  "UserSettings.form.profession": "Профессия",
+  "UserSettings.form.company": "Компания",
+  "UserSettings.form.phoneNumber": "Номер телефона",
+  "UserSettings.btn.addSettings": "Дополнительная информация",
+  "UserSettings.btn.submit":  "Сохранить",
+  "UserSettings.message.save.success": "Данные успешно сохранены",
 
   "SECTION": "USER SEARCH",
   "Search.button": "Поиск",
   "Search.notFound" : "По Вашему запросу пользователи не найдены",
   "Search.request" : "Введите Ваш запрос для поиска",
-  "Search.results" : "Результатов:"
+  "Search.results" : "Результатов:",
+
+  "SECTION" : "Questions",
+  "Questions.title" : "Вопросы",
+  "Questions.button.next" : "Дальше",
+  "Questions.button.back" : "Назад",
+  "Questions.button.save" : "Сохранить",
+  "Questions.delimiter": "из",
+  "Questions.confirm" : "Ответы успешно сохранены"
 
 }
 

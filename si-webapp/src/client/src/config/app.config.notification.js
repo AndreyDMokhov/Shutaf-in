@@ -1,3 +1,4 @@
+"use strict";
 app.factory('notify', function (ngNotify) {
 
 
