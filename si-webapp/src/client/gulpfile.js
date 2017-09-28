@@ -26,7 +26,7 @@ var watch = require('gulp-watch');
 
 
 gulp.task('watch', function() {
-     gulp.watch('src/**/*', ['eslint']);
+     gulp.watch(['src/**/*', '!src/bower_components/**'], ['eslint']);
 });
 
 //clean all,
@@ -199,7 +199,7 @@ gulp.task('runServer', function () {
     });
 });
 
-gulp.task('start', ['eslint', 'runServer',  'watch']);
+gulp.task('start', ['eslint', 'runServer', 'watch']);
 
 gulp.task('build', function (callback) {
     runSequence(

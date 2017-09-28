@@ -65,16 +65,20 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Override
     @Transactional(readOnly = true)
     public List<User> findMatchingUsers(User user) {
-        List<User> matchingUsersList = new ArrayList<>();
 
         if (user == null) {
-            return matchingUsersList;
+            return new ArrayList<>();
         }
 
         //match users by MUST questions - Filter_1
         UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
+
+        if (userExamKey == null) {
+            return new ArrayList<>();
+        }
+
         List<String> keys = varietyExamKeyRepository.getKeysForMatch(userExamKey.getExamKeyRegExp());
-        matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
+        List<User> matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
         matchingUsersList.remove(user);
 
         //Call chain of responsibility
