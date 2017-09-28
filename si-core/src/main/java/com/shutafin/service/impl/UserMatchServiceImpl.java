@@ -12,7 +12,6 @@ import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.repository.common.UserExamKeyRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
-import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.common.VarietyExamKeyRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
@@ -43,9 +42,6 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Autowired
     private VarietyExamKeyRepository varietyExamKeyRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     @Transactional(readOnly = true)
