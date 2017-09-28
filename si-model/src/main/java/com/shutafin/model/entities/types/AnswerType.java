@@ -3,19 +3,19 @@ package com.shutafin.model.entities.types;
 /**
  * Created by evgeny on 9/22/2017.
  */
-public enum AnswerType implements IdentifiableType<Byte> {
-    STANDARD((byte)1),
-    GENDER((byte)2),
-    CITY((byte)3);
+public enum AnswerType implements IdentifiableType<Integer> {
+    STANDARD(1),
+    GENDER(2),
+    CITY(3);
 
-    private Byte id;
+    private Integer id;
 
-    AnswerType(Byte id){
+    AnswerType(Integer id){
         this.id = id;
     }
 
     @Override
-    public Byte getCode() {
+    public Integer getCode() {
         return id;
     }
 }

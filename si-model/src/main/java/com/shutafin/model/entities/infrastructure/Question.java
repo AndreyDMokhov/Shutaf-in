@@ -28,7 +28,7 @@ public class Question extends AbstractKeyConstEntity implements Comparable<Quest
     private Boolean isActive = true;
 
     @Column(name = "QUESTION_TYPE", nullable = false)
-    private Byte questionType;
+    private Integer questionType;
 
     @Override
     public int hashCode() {

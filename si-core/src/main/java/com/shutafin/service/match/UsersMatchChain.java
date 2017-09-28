@@ -32,6 +32,7 @@ public abstract class UsersMatchChain {
                 result.add(user);
             }
         }
+        result.remove(user);
         return result;
     }
 }

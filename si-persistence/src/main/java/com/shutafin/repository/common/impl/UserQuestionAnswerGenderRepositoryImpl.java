@@ -27,10 +27,10 @@ public class UserQuestionAnswerGenderRepositoryImpl extends AbstractEntityDao<Us
     @Override
     public List<User> getAllMatchedUsers(User user) {
         StringBuilder hql = new StringBuilder()
-                .append(" SELECT uqag1.user ")
+                .append(" SELECT uqag2.user ")
                 .append(" FROM UserQuestionAnswerGender uqag1 INNER JOIN UserQuestionAnswerGender uqag2")
-                .append(" ON uqag2.question.id = uqag1.question.id AND uqag2.gender.id = uqag1.gender.id AND uqag2.user.id <> uqag1.user.id")
-                .append(" WHERE uqag1.user.id <> :userId ");
+                .append(" ON uqag2.question.id = uqag1.question.id AND uqag2.gender.id = uqag1.gender.id")
+                .append(" WHERE uqag1.user.id = :userId ");
 
         return getSession()
                 .createQuery(hql.toString())
