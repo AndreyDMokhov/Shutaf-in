@@ -9,5 +9,6 @@ public interface UserMatchingScoreService {
 
     UserMatchingScore getMatchingScore(User userOrigin, User userToMatch);
     Map<Long, Integer> getUserMatchingScores(User userOrigin);
+    Integer deleteUserMatchingScores(User user);
 
 }

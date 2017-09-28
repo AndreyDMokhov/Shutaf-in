@@ -10,5 +10,6 @@ public interface UserMatchingScoreRepository extends PersistentDao<UserMatchingS
 
     UserMatchingScore getUserMatchingScore(User userOrigin, User userToMatch);
     List<UserMatchingScore> getAllUserMatchingScores(User userOrigin);
+    Integer deleteUserMatchingScores(User user);
 
 }

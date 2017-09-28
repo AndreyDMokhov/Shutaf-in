@@ -49,4 +49,9 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
         }
         return userMatchingScores;
     }
+
+    @Override
+    public Integer deleteUserMatchingScores(User user) {
+        return userMatchingScoreRepository.deleteUserMatchingScores(user);
+    }
 }

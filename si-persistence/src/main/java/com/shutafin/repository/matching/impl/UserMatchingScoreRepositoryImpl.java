@@ -28,4 +28,12 @@ public class UserMatchingScoreRepositoryImpl extends AbstractEntityDao<UserMatch
                 .setParameter("userOriginId", userOrigin.getId())
                 .list();
     }
+
+    @Override
+    public Integer deleteUserMatchingScores(User user) {
+        return getSession().createQuery("delete from UserMatchingScore ums where ums.userOrigin.id = :userId or " +
+                "ums.userToMatch.id = :userId")
+                .setParameter("userId", user.getId())
+                .executeUpdate();
+    }
 }

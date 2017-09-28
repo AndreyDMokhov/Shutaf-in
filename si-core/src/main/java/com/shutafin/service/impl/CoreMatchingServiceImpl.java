@@ -22,6 +22,8 @@ import java.util.Map;
 @Transactional
 public class CoreMatchingServiceImpl implements CoreMatchingService {
 
+    private static final Double BASIC_MATCHING_SCORE = 30.;
+
     @Autowired
     private AnswerSimilarityService answerSimilarityService;
 
@@ -82,10 +84,11 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
         }
 
         if (maxPossibleScoreToMatch == 0 || maxPossibleScoreOrigin == 0) {
-            return 0.;
+            return BASIC_MATCHING_SCORE;
         }
 
-        return Math.sqrt(totalScore / maxPossibleScoreOrigin * crossScore / maxPossibleScoreToMatch) * 100;
+        return Math.sqrt(totalScore / maxPossibleScoreOrigin * crossScore / maxPossibleScoreToMatch)
+                * (100 - BASIC_MATCHING_SCORE) + BASIC_MATCHING_SCORE;
     }
 
     private Integer getAnswerSimilarityScore(Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers,

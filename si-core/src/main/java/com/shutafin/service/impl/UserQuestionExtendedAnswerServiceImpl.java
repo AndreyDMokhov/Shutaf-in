@@ -13,6 +13,7 @@ import com.shutafin.repository.initialization.locale.QuestionImportanceRepositor
 import com.shutafin.repository.matching.MaxUserMatchingScoreRepository;
 import com.shutafin.repository.matching.UserQuestionExtendedAnswerRepository;
 import com.shutafin.service.AnswerSimilarityService;
+import com.shutafin.service.UserMatchingScoreService;
 import com.shutafin.service.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,24 +28,30 @@ import java.util.Map;
 @Transactional
 public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtendedAnswerService {
 
-    @Autowired
     private UserQuestionExtendedAnswerRepository userQuestionExtendedAnswerRepository;
-
-    @Autowired
     private QuestionExtendedRepository questionExtendedRepository;
-
-    @Autowired
     private AnswerExtendedRepository answerExtendedRepository;
-
-    @Autowired
     private QuestionImportanceRepository questionImportanceRepository;
-
-    @Autowired
     private MaxUserMatchingScoreRepository maxUserMatchingScoreRepository;
+    private AnswerSimilarityService answerSimilarityService;
+    private UserMatchingScoreService userMatchingScoreService;
 
     @Autowired
-    private AnswerSimilarityService answerSimilarityService;
-
+    public UserQuestionExtendedAnswerServiceImpl(UserQuestionExtendedAnswerRepository userQuestionExtendedAnswerRepository,
+                                                 QuestionExtendedRepository questionExtendedRepository,
+                                                 AnswerExtendedRepository answerExtendedRepository,
+                                                 QuestionImportanceRepository questionImportanceRepository,
+                                                 MaxUserMatchingScoreRepository maxUserMatchingScoreRepository,
+                                                 AnswerSimilarityService answerSimilarityService,
+                                                 UserMatchingScoreService userMatchingScoreService) {
+        this.userQuestionExtendedAnswerRepository = userQuestionExtendedAnswerRepository;
+        this.questionExtendedRepository = questionExtendedRepository;
+        this.answerExtendedRepository = answerExtendedRepository;
+        this.questionImportanceRepository = questionImportanceRepository;
+        this.maxUserMatchingScoreRepository = maxUserMatchingScoreRepository;
+        this.answerSimilarityService = answerSimilarityService;
+        this.userMatchingScoreService = userMatchingScoreService;
+    }
 
     @Override
     public Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionAnswers(User user) {
@@ -64,8 +71,8 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     @Override
     public void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList,
                                           User user) {
-
         deleteUserQuestionAnswers(user);
+        userMatchingScoreService.deleteUserMatchingScores(user);
         Integer maxScore = 0;
         for (UserQuestionExtendedAnswersWeb questionExtendedAnswersWeb : userQuestionExtendedAnswersWebList) {
             QuestionExtended question = questionExtendedRepository
