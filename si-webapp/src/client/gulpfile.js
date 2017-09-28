@@ -26,7 +26,7 @@ var watch = require('gulp-watch');
 
 
 gulp.task('watch', function() {
-     gulp.watch('src/**/*', ['eslint']);
+     gulp.watch(['src/**/*','!src/bower_components/**/*'], ['eslint']);
 });
 
 //clean all,
@@ -174,8 +174,8 @@ gulp.task('eslint', function() {
 // to run new server
 gulp.task('minifiedConnect', function () {
     connect.server({
-        // root: '.tmp/',
-        root: 'dist/',
+        root: '.tmp/',
+        // root: 'dist/',
         port: 9000,
         livereload: true,
         middleware: function (connect, opt) {
