@@ -8,8 +8,10 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Min;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +36,9 @@ public class UserInfoRequest {
     private Integer cityId;
     @Min(value = 1)
     private Integer genderId;
+
+    @DateTimeFormat(style="L-")
+    private Date dateOfBirth;
 
     @Length(max = 255)
     private String facebookLink;

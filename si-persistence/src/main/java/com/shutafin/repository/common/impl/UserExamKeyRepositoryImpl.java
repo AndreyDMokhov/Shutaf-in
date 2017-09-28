@@ -16,7 +16,7 @@ public class UserExamKeyRepositoryImpl extends AbstractEntityDao<UserExamKey> im
     @Override
     public void delete(User user) {
         getSession()
-                .createQuery("DELETE UserExamKey uek where uek.user.id = :userId")
+                .createQuery("DELETE FROM UserExamKey uek where uek.user.id = :userId")
                 .setParameter("userId", user.getId())
                 .executeUpdate();
     }
