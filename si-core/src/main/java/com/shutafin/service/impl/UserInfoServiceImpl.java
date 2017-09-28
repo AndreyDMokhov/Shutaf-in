@@ -95,7 +95,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfoRequest.getGenderId() != null) {
             userInfo.setGender(genderRepository.findById(userInfoRequest.getGenderId()));
         }
-        userInfo.setDayOfBirth(userInfoRequest.getDayOfBirth());
+        userInfo.setDateOfBirth(userInfoRequest.getDateOfBirth());
         userInfo.setFacebookLink(userInfoRequest.getFacebookLink());
         userInfo.setCompany(userInfoRequest.getCompany());
         userInfo.setProfession(userInfoRequest.getProfession());

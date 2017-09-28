@@ -118,7 +118,7 @@
   "UserSettings.personal.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
   "UserSettings.personal.message.save.success":"Пользователь успешно сохранен",
   "UserSettings.form.gender": "Пол",
-  "UserSettings.form.dayOfBirth": "День рождения",
+  "UserSettings.form.dateOfBirth": "Дата рождения",
   "UserSettings.form.country": "Страна",
   "UserSettings.form.city": "Город",
   "UserSettings.form.facebook": "Facebook",

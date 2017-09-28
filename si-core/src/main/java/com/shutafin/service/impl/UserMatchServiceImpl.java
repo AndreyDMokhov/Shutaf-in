@@ -12,6 +12,7 @@ import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.repository.common.UserExamKeyRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
+import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.common.VarietyExamKeyRepository;
 import com.shutafin.repository.initialization.locale.AnswerRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepository;
@@ -43,18 +44,25 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Autowired
     private VarietyExamKeyRepository varietyExamKeyRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<User> findMatchingUsers(User user) {
-        List<User> matchingUsersList = new ArrayList<>();
 
         if (user == null) {
-            return matchingUsersList;
+            return new ArrayList<>();
         }
 
         UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
+
+        if (userExamKey == null) {
+            return new ArrayList<>();
+        }
+
         List<String> keys = varietyExamKeyRepository.getKeysForMatch(userExamKey.getExamKeyRegExp());
-        matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
+        List<User> matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
         matchingUsersList.remove(user);
 
         return matchingUsersList;
