@@ -5,11 +5,12 @@ app.controller("userSettingsController", function ($localStorage,
                                                    notify,
                                                    $filter,
                                                    $state,
-                                                   initializationService) {
+                                                   initializationService,
+                                                   $window) {
 
     var vm = this;
     vm.dataLoading = false;
-    vm.isCollapsed = true;
+    vm.isOpened = true;
 
     vm.userProfile = $sessionStorage.userProfile;
 
@@ -24,7 +25,7 @@ app.controller("userSettingsController", function ($localStorage,
             function () {
                 vm.dataLoading = false;
                 notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
-                initializationService.initializeApplication();
+                $window.location.reload();
                 $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
             }, function (error) {
                 vm.dataLoading = false;

@@ -85,8 +85,10 @@
 
 
   "SECTION": "SECURITY SETTINGS",
-  "Settings.security.email.title": "Изменить адрес электронной почты",
-  "Settings.security.password.title": "Изменить пароль",
+  "Settings.title":"Настройки",
+  "Settings.security.title": "Настройки безопасности",
+  "Settings.security.email.title": "Сменить емайл",
+  "Settings.security.password.title": "Сменить пароль",
   "Settings.security.form.email": "Электронная почта",
   "Settings.security.form.wrongEmail": "Проверьте адрес электронной почты",
   "Settings.security.form.password": "Пароль",
@@ -107,13 +109,16 @@
   "Settings.security.msg.successRequest": "Запрос был успешно отправлен",
 
   "SECTION" : "USER SETTINGS",
-  "UserSettings.personal.title": "Настройки пользователя",
+  "UserSettings.personal.title": "Информация о себе",
+  "UserSettings.personal.settings.general": "Основная информация",
+  "UserSettings.personal.settings.additional": "Дополнительная информация",
   "UserSettings.personal.form.firstName":"Имя",
   "UserSettings.personal.form.lastName":"Фамилия",
   "UserSettings.personal.form.button.submit":"Применить",
   "UserSettings.personal.form.inputFieldError": "Данное поле должно содержать от {{minLength}} до {{maxLength}} символов",
   "UserSettings.personal.message.save.success":"Пользователь успешно сохранен",
   "UserSettings.form.gender": "Пол",
+  "UserSettings.form.dateOfBirth": "Дата рождения",
   "UserSettings.form.country": "Страна",
   "UserSettings.form.city": "Город",
   "UserSettings.form.facebook": "Facebook",
@@ -121,7 +126,6 @@
   "UserSettings.form.company": "Компания",
   "UserSettings.form.phoneNumber": "Номер телефона",
   "UserSettings.btn.addSettings": "Дополнительная информация",
-  "UserSettings.title": "Личная информация",
   "UserSettings.btn.submit":  "Сохранить",
   "UserSettings.message.save.success": "Данные успешно сохранены",
 

@@ -3,13 +3,13 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.entities.infrastructure.Answer;
+import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
-import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserExamKeyRepository;
 import com.shutafin.repository.common.UserQuestionAnswerCityRepository;
 import com.shutafin.repository.common.UserQuestionAnswerRepository;
@@ -24,9 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-/**
- * Created by evgeny on 8/12/2017.
- */
 @Service
 @Transactional
 @Slf4j
@@ -42,9 +39,6 @@ public class UserMatchServiceImpl implements UserMatchService {
     private AnswerRepository answerRepository;
 
     @Autowired
-    private UserAccountRepository userAccountRepository;
-
-    @Autowired
     private UserExamKeyRepository userExamKeyRepository;
 
     @Autowired
@@ -56,15 +50,19 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Override
     @Transactional(readOnly = true)
     public List<User> findMatchingUsers(User user) {
-        List<User> matchingUsersList = new ArrayList<>();
 
         if (user == null) {
-            return matchingUsersList;
+            return new ArrayList<>();
         }
 
         UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
+
+        if (userExamKey == null) {
+            return new ArrayList<>();
+        }
+
         List<String> keys = varietyExamKeyRepository.getKeysForMatch(userExamKey.getExamKeyRegExp());
-        matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
+        List<User> matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
         matchingUsersList.remove(user);
 
         List<User> usersByCity = userQuestionAnswerCityRepository.getAllMatchedUsers(user);
@@ -127,8 +125,8 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionAnswersResponse> getUserQuestionsAnswers(User user) {
-        return questionRepository.getUserQuestionsAnswers(userAccountRepository.findUserLanguage(user));
+    public List<QuestionAnswersResponse> getUserQuestionsAnswers(Language language) {
+        return questionRepository.getUserQuestionsAnswers(language);
     }
 
     @Override

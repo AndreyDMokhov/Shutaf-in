@@ -3,7 +3,7 @@ app.controller('changePasswordController', function ($rootScope, changePasswordM
 
     var vm = this;
 
-    vm.isOpen = true;
+    vm.isOpened = true;
 
     vm.dataLoading = false;
 

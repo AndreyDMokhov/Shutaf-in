@@ -1,8 +1,6 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.QuestionAnswersResponse;
-import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerWeb;
 import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
@@ -15,15 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * Created by evgeny on 8/12/2017.
- */
+
 @RestController
 @RequestMapping("/users/match")
 public class UserMatchController {
 
     @Autowired
     private UserMatchService userMatchService;
+
     @Autowired
     private UserSearchService userSearchService;
 
@@ -36,16 +33,6 @@ public class UserMatchController {
     @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserQuestionsAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerWeb> questionsAnswers) {
         userMatchService.saveQuestionsAnswers(user, questionsAnswers);
-    }
-
-    @RequestMapping(value = "/questionnaire/initialization", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionAnswersResponse> getUserQuestionsAnswers(@AuthenticatedUser User user) {
-        return userMatchService.getUserQuestionsAnswers(user);
-    }
-
-    @RequestMapping(value = "/questionnaire/answers", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionSelectedAnswersResponse> getUserQuestionsSelectedAnswers(@AuthenticatedUser User user) {
-        return userMatchService.getUserQuestionsSelectedAnswers(user);
     }
 
 }

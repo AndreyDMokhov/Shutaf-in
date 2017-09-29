@@ -50,7 +50,8 @@ public class UserSearchServiceImpl implements UserSearchService {
                             userInfoResponseDTO.getUserImage(),
                             userInfoResponseDTO.getGenderId(),
                             userInfoResponseDTO.getCityId(),
-                            userInfoResponseDTO.getCountryId()
+                            userInfoResponseDTO.getCountryId(),
+                            userInfoResponseDTO.getDateOfBirth() == null ? null : userInfoResponseDTO.getDateOfBirth().getTime()
                     )
             );
         }

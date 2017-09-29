@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @Transactional
 public class UserInfoServiceImpl implements UserInfoService {
@@ -63,7 +64,6 @@ public class UserInfoServiceImpl implements UserInfoService {
             UserImage userImage = userImageService.getUserImage(user, userImageId);
             userInfoResponseDTO.addUserImage(userImage);
         }
-
         return userInfoResponseDTO;
     }
 
@@ -95,6 +95,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfoRequest.getGenderId() != null) {
             userInfo.setGender(genderRepository.findById(userInfoRequest.getGenderId()));
         }
+        userInfo.setDateOfBirth(userInfoRequest.getDateOfBirth());
         userInfo.setFacebookLink(userInfoRequest.getFacebookLink());
         userInfo.setCompany(userInfoRequest.getCompany());
         userInfo.setProfession(userInfoRequest.getProfession());

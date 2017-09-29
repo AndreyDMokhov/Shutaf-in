@@ -78,28 +78,12 @@
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('userSettings' | includedByState)}">
-                    <a ui-sref="userSettings" tooltip-placement="bottom"
-                       uib-tooltip="{{'UserSettings.personal.title' | translate}}">
+                    ng-class="{active : (('settings.personal' | includedByState) || ('settings.changeEmailRequest' | includedByState) || ('settings.changePassword' | includedByState)) }">
+                    <a ui-sref="settings.personal" tooltip-placement="bottom"
+                       uib-tooltip="{{'Settings.title' | translate}}">
                         <span class="glyphicon glyphicon-cog"></span>
                         &nbsp;
-                        {{'UserSettings.personal.title' | translate}}
-                    </a>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('emailChangeRequest' | includedByState)}">
-                    <a ui-sref="changeEmailRequest">
-                        <span class="glyphicon glyphicon-cog"></span>
-                        &nbsp;
-                        {{'Settings.security.email.title' | translate}}
-                    </a>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('changePassword' | includedByState)}">
-                    <a ui-sref="changePassword">
-                        <span class="glyphicon glyphicon-cog"></span>
-                        &nbsp;
-                        {{'Settings.security.password.title' | translate}}
+                        {{'Settings.title' | translate}}
                     </a>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()">

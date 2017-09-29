@@ -3,7 +3,7 @@ app.controller('changeEmailRequestController', function ($state, $rootScope, cha
 
     var vm = this;
     vm.dataLoading = false;
-    vm.isOpen = true;
+    vm.isOpened = true;
     vm.securitySettings = {};
 
     function changeEmailRequest() {

@@ -26,6 +26,7 @@ public class UserInitializationRepositoryImpl extends AbstractEntityDao implemen
                 .append(" c.id as countryId, ")
                 .append(" ci.id as cityId, ")
                 .append(" g.id as genderId, ")
+                .append(" ui.dateOfBirth, ")
                 .append(" ui.facebookLink, ")
                 .append(" ui.profession, ")
                 .append(" ui.company, ")
