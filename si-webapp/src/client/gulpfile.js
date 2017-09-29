@@ -26,7 +26,7 @@ var watch = require('gulp-watch');
 
 
 gulp.task('watch', function() {
-     gulp.watch(['src/**/*','!src/bower_components/**/*'], ['eslint']);
+     gulp.watch(['src/**/*','!src/bower_components/**'], ['eslint']);
 });
 
 //clean all,
