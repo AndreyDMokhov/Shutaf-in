@@ -174,8 +174,8 @@ gulp.task('eslint', function() {
 // to run new server
 gulp.task('minifiedConnect', function () {
     connect.server({
-        root: '.tmp/',
-        // root: 'dist/',
+        // root: '.tmp/',
+        root: 'dist/',
         port: 9000,
         livereload: true,
         middleware: function (connect, opt) {

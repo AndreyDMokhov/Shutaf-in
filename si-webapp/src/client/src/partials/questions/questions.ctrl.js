@@ -86,7 +86,7 @@ app.directive('quiz', function ($sessionStorage, $state) {
                 }
             }
             function checkIfNull() {
-                for (i = 0; i < answers.length; i++) {
+                for (var i = 0; i < answers.length; i++) {
                     if (answers[i].answerId === null) {
                         flag = false;
                     }
@@ -94,7 +94,7 @@ app.directive('quiz', function ($sessionStorage, $state) {
             }
 
             function addToNumberOfAnswers(value) {
-                for (i = 0; i < numberOfAnswers.length; i++) {
+                for (var i = 0; i < numberOfAnswers.length; i++) {
                     if (numberOfAnswers[i] === value) {
                         return;
                     }
