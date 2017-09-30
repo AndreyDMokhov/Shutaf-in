@@ -1,16 +1,15 @@
 package com.shutafin.model.entities.infrastructure;
 
 import com.shutafin.model.AbstractKeyConstEntity;
+import com.shutafin.model.entities.types.QuestionType;
+import com.shutafin.model.entities.types.QuestionTypeConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by evgeny on 8/10/2017.
@@ -28,7 +27,8 @@ public class Question extends AbstractKeyConstEntity implements Comparable<Quest
     private Boolean isActive = true;
 
     @Column(name = "QUESTION_TYPE", nullable = false)
-    private Integer questionType;
+    @Convert(converter = QuestionTypeConverter.class)
+    private QuestionType questionType;
 
     @Override
     public int hashCode() {

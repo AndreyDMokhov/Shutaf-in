@@ -7,7 +7,7 @@ import com.shutafin.model.entities.UserQuestionAnswerGender;
 import com.shutafin.model.entities.infrastructure.*;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
-import com.shutafin.model.entities.types.AnswerType;
+import com.shutafin.model.entities.types.QuestionType;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerRequest;
@@ -110,14 +110,14 @@ public class UserMatchServiceImpl implements UserMatchService {
         for (QuestionAnswerRequest questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
 
-            if (question.getQuestionType() == AnswerType.STANDARD.getCode()){
+            if (question.getQuestionType().getCode() == QuestionType.STANDARD.getCode()){
                 Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
                 userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
                 questionAnswerMap.put(question, answer);
-            } else if (question.getQuestionType() == AnswerType.CITY.getCode()){
+            } else if (question.getQuestionType().getCode() == QuestionType.CITY.getCode()){
                 City city = cityRepository.findById(questionAnswer.getAnswerId());
                 userQuestionAnswerCityRepository.save(new UserQuestionAnswerCity(user, question, city));
-            } else if (question.getQuestionType() == AnswerType.GENDER.getCode()){
+            } else if (question.getQuestionType().getCode() == QuestionType.GENDER.getCode()){
                 Gender gender = genderRepository.findById(questionAnswer.getAnswerId());
                 userQuestionAnswerGenderRepository.save(new UserQuestionAnswerGender(user, question, gender));
             }
