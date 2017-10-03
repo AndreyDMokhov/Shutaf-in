@@ -18,12 +18,12 @@ public class WebSocketEndpointBrokerAndInterceptorConfigurer extends AbstractWeb
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/subscribe/chat");
+        config.enableSimpleBroker("/api/subscribe/chat");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/socket")
+        registry.addEndpoint("/api/socket")
                 .setAllowedOrigins("*")
                 .withSockJS()
                 .setClientLibraryUrl("http://cdn.jsdelivr.net/sockjs/1.1.4/sockjs.min.js");

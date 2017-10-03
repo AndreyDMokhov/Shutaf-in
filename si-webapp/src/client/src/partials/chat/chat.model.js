@@ -44,5 +44,5 @@ app.factory('chatModel', function (Restangular, $sessionStorage) {
         getActiveUsersInChat: getActiveUsersInChat,
         addUserToChat: addUserToChat,
         removeChat:removeChat
-    }
+    };
 });

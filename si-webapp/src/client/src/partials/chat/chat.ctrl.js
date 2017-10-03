@@ -37,7 +37,7 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
         }
 
         function _doSubscribe() {
-            webSocketService.subscribe('/subscribe/chat/' + vm.currentChat.id).then(null,null,
+            webSocketService.subscribe('/api/subscribe/chat/' + vm.currentChat.id).then(null,null,
                 function(message) {
                     showChatMessage(message);
                 });
@@ -57,14 +57,14 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
                     vm.chatName = "";
                 }, function (error) {
                     vm.dataLoading = false;
-                })
+                });
         }
 
         function getChats() {
             chatModel.getChats().then(
                 function (success) {
                     vm.listOfChats = success.data.data;
-                })
+                });
         }
 
         function joinChat(chat) {
@@ -89,7 +89,7 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
                 return;
             }
             vm.outMessage.messageType = 1;
-            vm.address = '/chat/' + vm.currentChat.id + '/message';
+            vm.address = '/api/chat/' + vm.currentChat.id + '/message';
             webSocketService.sendMessage(vm.outMessage, vm.address);
             vm.outMessage.message = "";
         }

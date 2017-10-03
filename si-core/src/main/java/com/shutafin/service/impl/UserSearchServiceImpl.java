@@ -1,6 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
+import com.shutafin.model.web.user.UserBaseResponse;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.service.UserInfoService;
 import com.shutafin.service.UserSearchService;
@@ -34,6 +35,33 @@ public class UserSearchServiceImpl implements UserSearchService {
         return getUserResponseDTO(users);
     }
 
+    @Override
+    public List<UserBaseResponse> userBaseResponseByList(List<User> users) {
+        return getUserBaseResponse(users);
+
+    }
+
+    private List<UserBaseResponse> getUserBaseResponse(List<User> users) {
+        List<UserBaseResponse> userBaseResponseList = new ArrayList<>();
+
+        for (User u : users) {
+
+            UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(u);
+
+
+            userBaseResponseList.add(
+                    new UserBaseResponse(
+                            userInfoResponseDTO.getUserId(),
+                            userInfoResponseDTO.getFirstName(),
+                            userInfoResponseDTO.getLastName(),
+                            userInfoResponseDTO.getUserImage()
+                    )
+            );
+        }
+
+        return userBaseResponseList;
+    }
+
     private List<UserSearchResponse> getUserResponseDTO(List<User> users) {
         List<UserSearchResponse> userSearchWebList = new ArrayList<>();
 
@@ -58,7 +86,6 @@ public class UserSearchServiceImpl implements UserSearchService {
 
         return userSearchWebList;
     }
-
 
     private List<User> findMatchingUsersFromList(List<User> users, String fullName) {
 
