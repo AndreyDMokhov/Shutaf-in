@@ -100,6 +100,22 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div ng-class="{
+                    'has-error': userSettings.dateOfBirth.$invalid,
+                    'has-success': userSettings.dateOfBirth.$valid }">
+                            <label class="required" for="dateOfBirth">{{"UserSettings.form.dateOfBirth"|translate}}</label>
+                            <input
+                                    type="date"
+                                    name="dateOfBirth"
+                                    value="{{vm.userProfile.dateOfBirth | date:'yyyy-MM-dd'}}"
+                                    id="dateOfBirth"
+                                    class="form-control"
+                                    ng-model="vm.userProfile.dateOfBirth"
+                                    required>
+                            </input>
+                        </div>
+                    </div>
                 </div>
                 <div uib-accordion-group class="panel panel-primary">
                     <uib-accordion-heading>

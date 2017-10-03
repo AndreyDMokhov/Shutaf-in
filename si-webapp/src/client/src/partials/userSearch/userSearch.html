@@ -36,9 +36,9 @@
                             <div class=" col-md-9">
                                 <table class="table table-user-information">
                                     <tbody>
-                                    <tr>
+                                    <tr ng-if="user.dateOfBirth">
                                         <td>{{'UserProfile.dateOfBirth' | translate}}</td>
-                                        <td>to be implemented</td>
+                                        <td>{{user.dateOfBirth | date: 'dd / MM / yyyy'}}</td>
                                     </tr>
                                     <tr ng-if="user.genderId">
                                         <td>{{'UserSettings.form.gender' | translate}}</td>

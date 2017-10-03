@@ -25,4 +25,6 @@ public class UserSearchResponse {
 
     private Integer countryId;
 
+    private Long dateOfBirth;
+
 }
