@@ -6,7 +6,9 @@
                 <input type="text" id="chatName" ng-model="vm.chatName" class="form-control"
                        placeholder="Type name here ">
             </div>
-            <button id="addChat" ng-click="vm.addChat()" ng-disabled="vm.dataLoading" class="btn btn-default" type="submit">{{'Chat.button.add' | translate}}</button>
+            <button id="addChat" ng-click="vm.addChat()" ng-disabled="vm.dataLoading" class="btn btn-default"
+                    type="submit">{{'Chat.button.add' | translate}}
+            </button>
         </form>
 
         <table class="table table-hover">
@@ -21,11 +23,18 @@
                 <td>{{chat.chatTitle}}</td>
                 <td align="right">
 
-                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading" ng-show="chat.id==vm.currentChat.id" ng-click="vm.exitChat()">{{'Chat.button.exit' | translate}}</button>
+                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading"
+                            ng-show="chat.id==vm.currentChat.id" ng-click="vm.exitChat()">{{'Chat.button.exit' |
+                        translate}}
+                    </button>
                     &nbsp;
-                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading" ng-click="vm.removeChat(chat.id)">{{'Chat.button.delete' | translate}}</button>
+                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading"
+                            ng-click="vm.removeChat(chat.id)">{{'Chat.button.delete' | translate}}
+                    </button>
                     &nbsp;
-                    <button class="btn btn-sm btn-primary" ng-disabled="vm.subscribing" ng-click="vm.joinChat(chat)">{{'Chat.button.join' | translate}}</button>
+                    <button class="btn btn-sm btn-primary" ng-disabled="vm.subscribing" ng-click="vm.joinChat(chat)">
+                        {{'Chat.button.join' | translate}}
+                    </button>
                 </td>
             </tr>
             </tbody>
@@ -48,40 +57,14 @@
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
                 <td>
-                    <button class="btn btn-sm btn-primary" ng-disabled="(vm.currentChat | json) == '{}'" ng-click="vm.addUserToChat(user.userId)">{{'Chat.button.add' | translate}}</button>
+                    <button class="btn btn-sm btn-primary" ng-disabled="(vm.currentChat | json) == '{}'"
+                            ng-click="vm.addUserToChat(user.userId)">{{'Chat.button.add' | translate}}
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
-    </div>
 
-
-    <div class="col-md-4 col-lg-4" align="center">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="message in vm.messages track by $index">
-                <td> {{message.message}} :{{message.lastName}} {{message.firstName}} {{message.createDate | date: 'HH:mm:ss, dd.MM'}}</td>
-            </tr>
-            </tbody>
-        </table>
-
-        <form id="messageInput" ng-show="(vm.currentChat | json) != '{}'"  class="form-inline">
-            <div class="form-group">
-                <label for="message">{{'Chat.form.input' | translate}}</label>
-                <input type="text" name="message" id="message" ng-model="vm.outMessage.message" class="form-control"
-                       placeholder="Type your message ">
-            </div>
-            <button id="send" class="btn btn-default" ng-disabled="!vm.outMessage.message || vm.outMessage.message === '' " ng-click="vm.sendMessage()" type="submit">{{'Chat.button.send' | translate}}</button>
-        </form>
-    </div>
-
-
-    <div class="col-md-4 col-lg-4 " align="right">
         <table class="table table-hover">
             <thead>
             <tr>
@@ -94,10 +77,53 @@
                 <td>{{user.firstName}}</td>
                 <td>{{user.lastName}}</td>
                 <td>
-                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading" ng-click="vm.removeUserFromChat(user.id)">{{'Chat.button.delete' | translate}}</button>
+                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading"
+                            ng-click="vm.removeUserFromChat(user.id)">{{'Chat.button.delete' | translate}}
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+
+
+    <div class="col-md-8 col-lg-8">
+        <strong>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</strong>
+        <hr>
+        <form id="messageInput" ng-show="(vm.currentChat | json) != '{}'" >
+            <div class="form-group">
+                <!--<label for="message">{{'Chat.form.input' | translate}}</label>-->
+                <textarea name="message" id="message" ng-model="vm.outMessage.message" class="form-control"
+                          placeholder="Type your message "></textarea>
+                <button id="send" class="btn btn-default"
+                        class="form-control"
+                        ng-disabled="!vm.outMessage.message || vm.outMessage.message === '' "
+                        ng-click="vm.sendMessage()"
+                        type="submit">{{'Chat.button.send' | translate}}
+                </button>
+            </div>
+        </form>
+
+        <div class="card" ng-repeat="message in vm.messages.slice().reverse() | limitTo: vm.messagesCount track by $index">
+            <div class="container-fluid">
+                <strong>{{message.lastName}} {{message.firstName}}</strong>
+                <br>
+                <p>
+                    {{message.message}}
+                </p>
+
+                <div align="right">
+                    {{message.createDate | date: 'HH:mm:ss, dd/MM'}}
+                </div>
+            </div>
+            <hr>
+        </div>
+        <button class="btn btn-sm btn-info"
+                ng-show="vm.messages.length >= vm.messagesCount"
+                ng-click="vm.showMore()">
+            See previous
+        </button>
+
+    </div>
+
 </div>

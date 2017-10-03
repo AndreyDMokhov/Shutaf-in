@@ -1,6 +1,8 @@
 app.controller('chatController', function (chatModel, $sessionStorage, $scope, $q, webSocketService) {
         var vm = this;
 
+        vm.messagesCount = 5;
+
         vm.users = {};
         vm.dataLoading = false;
         vm.chatName = null;
@@ -10,6 +12,12 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
         vm.messages = {};
         vm.usersInChat = {};
         vm.subscribing = false;
+
+        function showMore() {
+            vm.messagesCount += 5;
+        }
+
+        vm.showMore = showMore;
 
         function activate() {
             getUserData();

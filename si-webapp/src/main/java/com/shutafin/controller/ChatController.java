@@ -81,7 +81,7 @@ public class ChatController {
 
     @WebSocketAuthentication
     @MessageMapping("/api/chat/{chat_id}/message")
-    @SendTo("/subscribe/chat/{chat_id}")
+    @SendTo("/api/subscribe/chat/{chat_id}")
     public ChatMessageResponse send(@DestinationVariable("chat_id") Long chatId,
                                     Message<ChatMessageRequest> message,
                                     @AuthenticatedUser User user) {
