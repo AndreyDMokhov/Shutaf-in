@@ -3,6 +3,19 @@
 <head>
     <title>Shutaf-In</title>
 
+    <script>
+        !function (A, n, g, u, l, a, r) {
+            A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
+                (A[l].q = A[l].q || []).push(arguments)
+            }, A[l].l = +new Date, a = n.createElement(g),
+                r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+        }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-XXXXX-X');
+        ga('send', 'pageview');
+    </script>
+
+    <!-- build:js scripts/vendor.js -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
@@ -11,7 +24,6 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
     <script src="bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
-
 
     <script src="bower_components/angular-translate/angular-translate.min.js"></script>
     <script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
@@ -28,19 +40,19 @@
     <script src="bower_components/angular-base64-upload/dist/angular-base64-upload.min.js"></script>
     <script src="bower_components/sockjs-client/dist/sockjs.min.js"></script>
     <script src="bower_components/stomp-websocket/lib/stomp.min.js"></script>
+    <!-- endbuild -->
 
-
+    <!-- build:js scripts/main.js -->
     <script src="config/app.module.js"></script>
+    <!-- @echo templateCache -->
     <script src="config/app.config.translate.js"></script>
     <script src="config/app.config.route.js"></script>
     <script src="config/app.storage.constants.js"></script>
     <script src="config/app.config.notification.js"></script>
     <script src="data/app.session.js"></script>
-    <script src="data/constantService.js"></script>
     <script src="data/app.config.language.js"></script>
+    <script src="data/app.initialization.service.js"></script>
     <script src="layout/header.js"></script>
-    <script src="data/userInitializationService.js"></script>
-    <script src="data/websocket.service.js"></script>
 
     <script src="partials/logout/logout.ctrl.js"></script>
     <script src="partials/logout/logout.model.js"></script>
@@ -52,42 +64,55 @@
     <script src="partials/registration/registration.model.js"></script>
     <script src="partials/registration/registration.confirmation.ctrl.js"></script>
     <script src="partials/registration/registration.confirmation.model.js"></script>
-    <script src="partials/errors/errors.js"></script>
+    <script src="partials/errors/errors.ctrl.js"></script>
 
     <script src="partials/login/login.ctrl.js"></script>
     <script src="partials/login/login.model.js"></script>
     <script src="partials/userProfile/userProfile.ctrl.js"></script>
     <script src="partials/userProfile/userProfile.model.js"></script>
+
     <script src="partials/settings/settings.ctrl.js"></script>
-    <script src="partials/settings/settings.model.js"></script>
+    <script src="partials/settings/changeEmail/changeEmail.request.ctrl.js"></script>
+    <script src="partials/settings/changeEmail/changeEmail.confirmation.ctrl.js"></script>
+    <script src="partials/settings/changeEmail/changeEmail.model.js"></script>
 
-    <script src="partials/changeEmail/changeEmail.request.ctrl.js"></script>
-    <script src="partials/changeEmail/changeEmail.confirmation.ctrl.js"></script>
-    <script src="partials/changeEmail/changeEmail.model.js"></script>
-
-    <script src="partials/changePassword/changePassword.ctrl.js"></script>
-    <script src="partials/changePassword/changePassword.model.js"></script>
+    <script src="partials/settings/changePassword/changePassword.ctrl.js"></script>
+    <script src="partials/settings/changePassword/changePassword.model.js"></script>
+    <script src="partials/settings/userSettings/userSettings.ctrl.js"></script>
+    <script src="partials/settings/userSettings/userSettings.model.js"></script>
     <script src="partials/resetPassword/resetPassword.request.ctrl.js"></script>
     <script src="partials/resetPassword/resetPassword.model.js"></script>
     <script src="partials/resetPassword/resetPassword.confirmation.ctrl.js"></script>
 
+    <script src="partials/userSearch/userSearch.ctrl.js"></script>
+    <script src="partials/userSearch/userSearch.model.js"></script>
+    <script src="partials/questions/questions.ctrl.js"></script>
+    <script src="partials/questions/questions.model.js"></script>
     <script src="partials/chat/chat.ctrl.js"></script>
     <script src="partials/chat/chat.model.js"></script>
 
+    <!-- endbuild -->
+
+
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="bower_components/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- build:css css/vendor.css -->
     <link href="bower_components/angular-ui-grid/ui-grid.css" rel="stylesheet" type="text/css">
     <link href="bower_components/ng-dialog/css/ngDialog.min.css" rel="stylesheet" type="text/css">
     <link href="bower_components/ng-dialog/css/ngDialog-theme-plain.min.css" rel="stylesheet" type="text/css">
     <link href="bower_components/ng-notify/dist/ng-notify.min.css" rel="stylesheet" type="text/css">
     <link href="bower_components/angular-motion/dist/angular-motion.min.css" rel="stylesheet" type="text/css">
-    <link href="bower_components/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <link rel="shortcut icon" href="favico.png">
-
+    <!-- endbuild -->
+    <!-- build:css css/main.css -->
     <link rel="stylesheet" href="styles/userProfile.css">
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/userSearch.css">
+    <link rel="stylesheet" href="styles/cardCarousel.css">
 
 
+    <!-- endbuild -->
+    <link rel="shortcut icon" href="favico.png">
 </head>
 <body>
     <div ng-include="'layout/layout.html'">

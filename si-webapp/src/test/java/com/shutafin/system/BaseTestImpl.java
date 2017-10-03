@@ -5,13 +5,17 @@ import com.google.gson.GsonBuilder;
 import com.shutafin.App;
 import com.shutafin.configuration.*;
 import com.shutafin.model.web.APIWebResponse;
+import com.shutafin.model.web.error.errors.InputValidationError;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -21,13 +25,14 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-
+@Slf4j
 @WebMvcTest(value = App.class)
 @EnableAutoConfiguration
 @ContextConfiguration(classes = {
@@ -45,26 +50,20 @@ public class BaseTestImpl implements BaseTest {
     private MockMvc mockMvc;
 
     @Override
-    public APIWebResponse getResponse(MvcResult mvcResult) {
-        try {
-            String json = mvcResult.getResponse().getContentAsString();
-            APIWebResponse apiResponse = gson.fromJson(json, APIWebResponse.class);
-
-            if (apiResponse == null) {
-                apiResponse = new APIWebResponse();
-            }
-
-            return apiResponse;
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        }
+    public APIWebResponse getResponse(ControllerRequest request) {
+        MockHttpServletResponse mockHttpServletResponse = getServletResponse(request);
+        return getResponse(mockHttpServletResponse);
     }
 
     @Override
+    public MockHttpServletResponse getServletResponse(ControllerRequest request) {
+        return getMvcResult(request).getResponse();
+    }
+
     @SneakyThrows
-    public APIWebResponse getResponse(ControllerRequest request) {
+    @Override
+    public MvcResult getMvcResult(ControllerRequest request) {
+
         MockHttpServletRequestBuilder builder = getHttpMethodSenderType(request.getUrl(), request.getHttpMethod())
                 .contentType(MediaType.APPLICATION_JSON_VALUE);
 
@@ -87,12 +86,84 @@ public class BaseTestImpl implements BaseTest {
             }
         }
 
-        MvcResult result = mockMvc
+        return mockMvc
                 .perform(builder)
                 .andDo(print())
                 .andReturn();
+    }
 
-        return getResponse(result);
+    @Override
+    public APIWebResponse getResponse(MockHttpServletResponse mockHttpServletResponse) {
+
+        try {
+            String json = mockHttpServletResponse.getContentAsString();
+            APIWebResponse apiResponse = gson.fromJson(json, APIWebResponse.class);
+
+            if (apiResponse == null) {
+                apiResponse = new APIWebResponse();
+            }
+
+            return apiResponse;
+
+        } catch (UnsupportedEncodingException e) {
+            log.error("Illegal state exception. ", e);
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public void assertInputValidationError(String requestUrl, String jsonContent,
+                                           List<String> errorList) {
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(requestUrl)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(jsonContent)
+                .build();
+        assertErrorList(request, errorList);
+    }
+
+    @Override
+    public void assertInputValidationError(String requestUrl, String jsonContent,
+                                           List<String> errorList, List<HttpHeaders> sessionHeaders) {
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(requestUrl)
+                .setHttpMethod(HttpMethod.POST)
+                .setJsonContext(jsonContent)
+                .setHeaders(sessionHeaders)
+                .build();
+        assertErrorList(request, errorList);
+    }
+
+    @Override
+    public void assertInputValidationError(String requestUrl, Object requestObject,
+                                           List<String> errorList) {
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(requestUrl)
+                .setHttpMethod(HttpMethod.POST)
+                .setRequestObject(requestObject)
+                .build();
+        assertErrorList(request, errorList);
+    }
+
+    @Override
+    public void assertInputValidationError(String requestUrl, Object requestObject,
+                                           List<String> errorList, List<HttpHeaders> sessionHeaders) {
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(requestUrl)
+                .setHttpMethod(HttpMethod.POST)
+                .setRequestObject(requestObject)
+                .setHeaders(sessionHeaders)
+                .build();
+        assertErrorList(request, errorList);
+    }
+
+    private void assertErrorList(ControllerRequest request, List<String> errorList) {
+        APIWebResponse response = getResponse(request);
+        Assert.assertNotNull(response.getError());
+        InputValidationError inputValidationError = (InputValidationError) response.getError();
+        Collections.sort(errorList);
+        Collections.sort(inputValidationError.getErrors());
+        Assert.assertEquals(errorList, inputValidationError.getErrors());
     }
 
     protected List<HttpHeaders> addSessionIdToHeader(String sessionId) {
@@ -121,6 +192,7 @@ public class BaseTestImpl implements BaseTest {
                 return post(url);
         }
 
+        log.error("HTTP method {} is not supported", httpMethod.name());
         throw new IllegalArgumentException(String.format("HTTP method %s is not supported", httpMethod.name()));
     }
 

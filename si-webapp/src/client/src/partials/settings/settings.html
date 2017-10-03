@@ -1,55 +1,18 @@
-<div class="col-md-6 col-md-offset-3">
-    <h2>{{'Settings.personal.title' | translate}}</h2>
-
-    <form name="settingsForm" novalidate role="form">
-        <div class="form-group"
-             ng-class="{
-                    'has-error': settingsForm.firstName.$invalid && settingsForm.firstName.$dirty,
-                    'has-success': settingsForm.firstName.$valid }">
-            <label for="firstName">{{'Settings.personal.form.firstName' | translate}}</label>
-            <input
-                    class="form-control"
-                    name="firstName"
-                    id="firstName"
-                    ng-model=" vm.accountSettings.firstName"
-                    ng-minLength="3"
-                    ng-maxLength="50"
-                    required/>
-
-            <p class="help-block" ng-if="settingsForm.firstName.$invalid && settingsForm.firstName.$dirty">
-                {{'Settings.personal.form.inputFieldError' | translate : '{ fieldName: "First name", minLength : "3", maxLength: "50"}'}}
-            </p>
-        </div>
-
-        <div class="form-group"
-             ng-class="{
-                    'has-error': settingsForm.lastName.$invalid && settingsForm.lastName.$dirty,
-                    'has-success': settingsForm.lastName.$valid }">
-            <label for="lastName">{{'Settings.personal.form.lastName' | translate}}</label>
-            <input
-                    class="form-control"
-                    name="lastName"
-                    id="lastName"
-                    ng-model=" vm.accountSettings.lastName"
-                    ng-minLength="3"
-                    ng-maxLength="50"
-                    required/>
-
-            <p class="help-block" ng-if="settingsForm.lastName.$invalid && settingsForm.lastName.$dirty">
-                {{'Settings.personal.form.inputFieldError' | translate: '{ minLength : "3", maxLength: "50"}'}}
-            </p>
-        </div>
-
-        <br/>
-
-        <div class="form-actions">
-            <button ng-click="vm.submitChanges()"
-                    type="submit"
-                    ng-disabled="settingsForm.firstName.$invalid || settingsForm.lastName.$invalid"
-                    class="btn btn-success pull-right">
-                {{'Settings.personal.form.button.submit' | translate}}
-                <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
-            </button>
-        </div>
-    </form>
+<div class="row">
+    <div class="col-md-3">
+        <uib-tabset active="vm.getCurrentStateName()" vertical="true" type="pills">
+            <uib-tab
+                    ng-repeat="tab in vm.tabs"
+                    index="tab.state"
+                    ng-click="vm.selectedTab(tab)">
+                <uib-tab-heading>
+                    <i class="fa {{tab.icon}}" aria-hidden="true"></i>
+                    <p class="pull-right">
+                        {{tab.title}}
+                    </p>
+                </uib-tab-heading>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+    <div class="col-md-9" ui-view></div>
 </div>

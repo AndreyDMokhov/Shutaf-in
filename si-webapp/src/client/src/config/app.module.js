@@ -1,3 +1,4 @@
+"use strict";
 var app = angular.module("app", [
     'ngAnimate',
     'ngSanitize',
@@ -13,5 +14,9 @@ var app = angular.module("app", [
     'restangular',
     'pascalprecht.translate',
     'naif.base64',
-    'ngStorage',
+    'ngStorage'
+    /* @if templateCache **
+     ,'templateCache'
+     /* @endif */
+
 ]);

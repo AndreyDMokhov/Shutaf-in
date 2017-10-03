@@ -6,7 +6,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.processors.annotations.response.SessionResponse;
-import com.shutafin.service.*;
+import com.shutafin.service.RegistrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,20 @@ import javax.validation.Valid;
 @Slf4j
 public class RegistrationController {
 
-
-    @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
+
+    public RegistrationController() {
+    }
 
     @RequestMapping(value = "/registration/request", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
-                                       BindingResult result){
+                             BindingResult result) {
+        log.debug("/users/registration/request");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
@@ -40,8 +46,10 @@ public class RegistrationController {
 
     @SessionResponse
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
-    public User confirmRegistration(@PathVariable String link){
-        if (StringUtils.isBlank(link)){
+    public User confirmRegistration(@PathVariable String link) {
+        log.debug("/users/registration/confirmation/{link}");
+        if (StringUtils.isBlank(link)) {
+            log.warn("Link is blank or empty");
             throw new ResourceNotFoundException();
         }
         return registrationService.confirmRegistration(link);

@@ -65,6 +65,11 @@
             <version>1.16.16</version>
         </dependency>
 
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.9</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -289,6 +294,9 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.6.1</version>
                     <configuration>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
                         <source>1.8</source>
                         <target>1.8</target>
                     </configuration>
@@ -307,7 +315,7 @@
                             <configuration>
                                 <printFailingErrors>true</printFailingErrors>
                                 <rulesets>
-                                    <ruleset>${main.basedir}\pmd\ruleset.xml</ruleset>
+                                    <ruleset>${main.basedir}${file.separator}pmd${file.separator}ruleset.xml</ruleset>
                                 </rulesets>
                             </configuration>
                         </execution>

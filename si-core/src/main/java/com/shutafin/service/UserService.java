@@ -1,11 +1,8 @@
 package com.shutafin.service;
 
-import com.shutafin.model.web.user.UserInfoWeb;
-
-import java.util.List;
+import com.shutafin.model.web.user.UserInfoRequest;
 
 public interface UserService {
-    void save(UserInfoWeb user);
-    List<UserInfoWeb> findAll();
+    void save(UserInfoRequest user);
 }
 

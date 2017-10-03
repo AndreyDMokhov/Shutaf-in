@@ -30,7 +30,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 public class UserAccountControllerTest extends BaseTestImpl {
 
-    private static final String REGISTRATION_REQUEST_URL = "/users/settings/language";
+    private static final String USER_SETTINGS_LANGUAGE_URL = "/users/settings/language";
     private static final String VALID_JSON = "{\"id\":\"1\"}";
     private static final String LANG_ID_0 = "{\"id\":\"0\"}";
     private static final String LANG_ID_NULL = "{\"id\":\"\"}";
@@ -64,7 +64,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     public void updateRequestJson_Positive() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(REGISTRATION_REQUEST_URL)
+                .setUrl(USER_SETTINGS_LANGUAGE_URL)
                 .setHttpMethod(HttpMethod.PUT)
                 .setHeaders(headers)
                 .setJsonContext(VALID_JSON)
@@ -78,7 +78,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     public void updateRequestJson_LangId_0() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(REGISTRATION_REQUEST_URL)
+                .setUrl(USER_SETTINGS_LANGUAGE_URL)
                 .setHttpMethod(HttpMethod.PUT)
                 .setHeaders(headers)
                 .setRequestObject(new UserLanguageWeb(0))
@@ -95,7 +95,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     public void updateRequestJson_LangIdIsNull() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(REGISTRATION_REQUEST_URL)
+                .setUrl(USER_SETTINGS_LANGUAGE_URL)
                 .setHttpMethod(HttpMethod.PUT)
                 .setHeaders(headers)
                 .setJsonContext(LANG_ID_NULL)
@@ -112,7 +112,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     public void updateRequestJson_WrongSession() {
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(REGISTRATION_REQUEST_URL)
+                .setUrl(USER_SETTINGS_LANGUAGE_URL)
                 .setHttpMethod(HttpMethod.PUT)
                 .setHeaders(headers)
                 .setJsonContext(VALID_JSON)
@@ -123,34 +123,6 @@ public class UserAccountControllerTest extends BaseTestImpl {
         Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
     }
 
-    @Test
-    public void getRequestJson_Positive() {
-        List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
-        ControllerRequest request = ControllerRequest.builder()
-                .setUrl(REGISTRATION_REQUEST_URL)
-                .setHttpMethod(HttpMethod.GET)
-                .setHeaders(headers)
-                .setResponseClass(LanguageResponseDTO.class)
-                .build();
-        APIWebResponse response = getResponse(request);
-
-        Assert.assertNull(response.getError());
-        Assert.assertEquals(language.getDescription(), ((LanguageResponseDTO) response.getData()).getDescription());
-    }
-
-    @Test
-    public void getRequestJson_Wrong_Session() {
-        List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
-        ControllerRequest request = ControllerRequest.builder()
-                .setUrl(REGISTRATION_REQUEST_URL)
-                .setHttpMethod(HttpMethod.GET)
-                .setHeaders(headers)
-                .build();
-        APIWebResponse response = getResponse(request);
-
-        Assert.assertNotNull(response.getError());
-        Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
-    }
 
     public List<HttpHeaders> addSessionIdToHeader(String sessionId) {
         List<HttpHeaders> headers = new ArrayList<>();

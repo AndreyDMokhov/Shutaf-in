@@ -1,7 +1,7 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.UserInfoWeb;
+import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(UserInfoWeb userInfoWeb) {
+    public void save(UserInfoRequest userInfoRequest) {
         User user = new User();
-        user.setId(userInfoWeb.getUserId());
-        user.setFirstName(userInfoWeb.getFirstName());
-        user.setLastName(userInfoWeb.getLastName());
-        user.setEmail(userInfoWeb.getEmail());
+        user.setFirstName(userInfoRequest.getFirstName());
+        user.setLastName(userInfoRequest.getLastName());
+        user.setEmail(userInfoRequest.getEmail());
 
         Long userId = (Long) userRepository.save(user);
         user.setId(userId);

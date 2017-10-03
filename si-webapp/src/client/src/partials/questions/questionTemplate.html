@@ -1,0 +1,27 @@
+<div class="quiz-area card ">
+    <div class="cardContainer">
+        <h2 style="text-align: center">{{currentQuestion.description}} </h2>
+            <div class="radio" ng-repeat="answer in currentQuestion.answers">
+                <label>
+                    <input type="radio" name="answer.description"
+                           ng-model="$parent.currentAnswer"
+                           ng-value="answer.answerId"
+                    >
+                    {{answer.description}}
+                </label>
+            </div>
+            <br>
+            <button ng-click="previousQuestion()" class="btn btn-default" ng-disabled="id===0">
+                {{"Questions.button.back"|translate}}
+            </button>
+            {{currentQuestion.questionId}} {{"Questions.delimiter"|translate}} {{numberOfQuestions}}
+            <button ng-click="nextQuestion()" class="btn btn-default"
+                    ng-hide="currentQuestion.questionId===numberOfQuestions" ng-disabled="!currentAnswer">
+                {{"Questions.button.next"|translate}}
+            </button>
+            <button ng-click="save()" class="btn btn-default" ng-show="currentQuestion.questionId===numberOfQuestions"
+                    ng-disabled="!currentAnswer">{{"Questions.button.save"|translate}}
+            </button>
+        </form>
+    </div>
+</div>

@@ -24,18 +24,21 @@ public class ResponseExceptionHandler {
 
         return new ResponseEntity(HttpStatus.GATEWAY_TIMEOUT);
     }
+
     @ExceptionHandler(AbstractAPIException.class)
     @ResponseBody
     public ResponseEntity<ErrorResponse> getAPIExceptionResponse(AbstractAPIException exception) {
 
-        exception.printStackTrace();
+        log.error("API exception: ", exception);
 
         HttpStatus httpStatus = HttpStatus.valueOf(exception.getErrorType().getHttpCode());
         return new ResponseEntity<>(exception.getErrorResponse(), httpStatus);
     }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> getSystemExceptionResponse(Exception exception) {
-        exception.printStackTrace();
+
+        log.error("Internal error: ", exception);
 
         ErrorType errorType = ErrorType.SYSTEM;
 

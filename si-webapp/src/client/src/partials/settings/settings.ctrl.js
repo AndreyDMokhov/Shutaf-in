@@ -1,31 +1,34 @@
-app.controller('settingsController', function (settingsModel, userInitService, languageService, constantService, $filter, notify, $sessionStorage) {
+app.controller('settingsController', function ($filter, $state) {
     var vm = this;
-    vm.dataLoading = false;
 
-    vm.accountSettings = $sessionStorage.userProfile;
+    vm.tabs = [
+        {
+            tabId: 1,
+            title: $filter('translate')('UserSettings.personal.title'),
+            state: 'settings.personal',
+            icon: 'fa-info'
+        },
+        {
+            tabId: 2,
+            title: $filter('translate')('Settings.security.email.title'),
+            state: 'settings.changeEmailRequest',
+            icon: 'fa-envelope'
+        },
+        {
+            tabId: 3,
+            title: $filter('translate')('Settings.security.password.title'),
+            state: 'settings.changePassword',
+            icon: 'fa-key'
+        }
+    ];
 
+    vm.getCurrentStateName = function() {
+        return $state.$current.name;
+    };
 
-    function submitChanges() {
-        vm.dataLoading = true;
-        settingsModel.submitChanges(vm.accountSettings).then(
-            function (success) {
-                vm.dataLoading = false;
-                userInitService.init();
+    vm.selectedTab = function (tab) {
+        $state.go(tab.state);
+    };
 
-                notify.set($filter('translate')('Settings.personal.message.save.success'), {type: 'success'});
-
-            }, function (error) {
-                vm.dataLoading = false;
-                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-
-                if (error.data.error.errorTypeCode === 'AUT') {
-                    $state.go('logout');
-                }
-            });
-    }
-
-
-
-    vm.submitChanges = submitChanges;
 
 });
