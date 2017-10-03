@@ -42,7 +42,7 @@ public class UserAccountController {
     public UserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
                                                       @RequestBody @Valid UserImageWeb userImageWeb,
                                                       BindingResult result) {
-        log.debug("/users/settings/image");
+        log.debug("/users/settings/image update");
         checkBindingResult(result);
         UserImage image = userAccountService.updateProfileImage(userImageWeb, user);
         return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
@@ -51,7 +51,7 @@ public class UserAccountController {
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserAccountProfileImage(@AuthenticatedUser User user) {
-        log.debug("/users/settings/image");
+        log.debug("/users/settings/image delete");
         userAccountService.deleteUserAccountProfileImage(user);
     }
 
