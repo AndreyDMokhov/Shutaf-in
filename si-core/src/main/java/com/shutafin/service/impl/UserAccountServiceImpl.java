@@ -1,12 +1,14 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.entities.ImagePair;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.types.PermissionType;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
+import com.shutafin.repository.common.ImagePairRepository;
 import com.shutafin.service.UserAccountService;
 import com.shutafin.service.UserImageService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +23,16 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     private UserAccountRepository userAccountRepository;
     private UserImageService userImageService;
+    private ImagePairRepository imagePairRepository;
 
     @Autowired
     public UserAccountServiceImpl(
             UserAccountRepository userAccountRepository,
-            UserImageService userImageService) {
+            UserImageService userImageService,
+            ImagePairRepository imagePairRepository) {
         this.userAccountRepository = userAccountRepository;
         this.userImageService = userImageService;
+        this.imagePairRepository = imagePairRepository;
     }
 
 
@@ -48,8 +53,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         if (userImage == null) {
-            userImage = userImageService.addUserImage(userImageWeb, user, PermissionType.PUBLIC);
-//            userImage = userImageService.compressUserImage(userImage);
+            userImage = getCompressedUserImage(userImageWeb, user);
         }
 
         if (userAccount != null) {
@@ -57,6 +61,14 @@ public class UserAccountServiceImpl implements UserAccountService {
             userAccountRepository.updateUserAccountImage(userImage, user);
         }
         return userImage;
+    }
+
+    private UserImage getCompressedUserImage(UserImageWeb userImageWeb, User user) {
+        UserImage originalUserImage = userImageService.addUserImage(userImageWeb, user, PermissionType.PUBLIC);
+        UserImage compressedUserImage = userImageService.compressUserImage(originalUserImage);
+        ImagePair imagePair = new ImagePair(originalUserImage, compressedUserImage);
+        imagePairRepository.save(imagePair);
+        return compressedUserImage;
     }
 
     @Override

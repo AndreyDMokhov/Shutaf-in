@@ -40,8 +40,4 @@ public class UserAccount extends AbstractBaseEntity {
     @OneToOne
     private UserImage userImage;
 
-    @JoinColumn(name = "COMPRESSED_USER_IMAGE_ID")
-    @OneToOne
-    private UserImage compressedUserImage;
-
 }

@@ -35,7 +35,7 @@ public class UserImageServiceImpl implements UserImageService {
 
     private static final String IMAGE_EXTENSION = "jpg";
     private static final String DOT_DELIMITER = ".";
-    private static final Integer COMPRESSED_IMAGE_SIZE = 128;
+    private static final Integer COMPRESSED_IMAGE_SIZE = 256;
     private static final Float COMPRESSION_QUALITY = 0.7f;
 
     @Autowired
@@ -224,7 +224,7 @@ public class UserImageServiceImpl implements UserImageService {
         userImage.setId(userImageId);
         userImage.setUser(user);
         userImage.setImageStorage(new ImageStorage());
-        String imageLocalPath = getUserDirectoryPath(user) + userImageId + IMAGE_EXTENSION;
+        String imageLocalPath = getUserDirectoryPath(user) + userImageId + DOT_DELIMITER + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         File imageFile = new File(imageLocalPath);
         try {
