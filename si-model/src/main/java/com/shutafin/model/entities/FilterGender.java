@@ -1,36 +1,35 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
-import com.shutafin.model.entities.infrastructure.City;
+import com.shutafin.model.entities.infrastructure.Gender;
 import com.shutafin.model.entities.infrastructure.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Created by evgeny on 9/13/2017.
+ * Created by evgeny on 9/23/2017.
  */
 @Entity
-@Table(name = "USER_QUESTION_ANSWER_CITY")
+@Table(name = "FILTER_GENDER")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserQuestionAnswerCity extends AbstractBaseEntity {
+public class FilterGender extends AbstractBaseEntity {
 
     @JoinColumn(name = "USER_ID", nullable = false)
     @ManyToOne
     private User user;
 
-    @JoinColumn(name = "QUESTION_ID", nullable = false)
+    @JoinColumn(name = "GENDER_ID", nullable = false)
     @ManyToOne
-    private Question question;
-
-    @JoinColumn(name = "CITY_ID", nullable = false)
-    @ManyToOne
-    private City city;
+    private Gender gender;
 
 }

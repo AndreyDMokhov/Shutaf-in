@@ -23,15 +23,6 @@ public class UserMatchController {
     @Autowired
     private UserMatchService userMatchService;
 
-    @Autowired
-    private UserSearchService userSearchService;
-
-    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<UserSearchResponse> getMatchingUsers(@RequestParam(value = "name", required = false) String fullName, @AuthenticatedUser User user) {
-
-        return userSearchService.userSearchByList(userMatchService.findMatchingUsers(user), fullName);
-    }
-
     @RequestMapping(value = "/save", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserQuestionsAnswers(@AuthenticatedUser User user, @RequestBody @Valid List<QuestionAnswerRequest> questionsAnswers) {
         userMatchService.saveQuestionsAnswers(user, questionsAnswers);

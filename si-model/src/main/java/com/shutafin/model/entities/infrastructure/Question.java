@@ -1,8 +1,6 @@
 package com.shutafin.model.entities.infrastructure;
 
 import com.shutafin.model.AbstractKeyConstEntity;
-import com.shutafin.model.entities.types.QuestionType;
-import com.shutafin.model.entities.types.QuestionTypeConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,10 +23,6 @@ public class Question extends AbstractKeyConstEntity implements Comparable<Quest
 
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean isActive = true;
-
-    @Column(name = "QUESTION_TYPE", nullable = false)
-    @Convert(converter = QuestionTypeConverter.class)
-    private QuestionType questionType;
 
     @Override
     public int hashCode() {
