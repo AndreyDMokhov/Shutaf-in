@@ -12,7 +12,8 @@ public enum ErrorType {
     RESOURCE_NOT_FOUND_ERROR(404, ErrorCode.RNF),
     INCORRECT_PASSWORD_ERROR(401, ErrorCode.IPE),
     ACCOUNT_NOT_CONFIRMED(403, ErrorCode.ANC),
-    ACCOUNT_BLOCKED(403, ErrorCode.ABL);
+    ACCOUNT_BLOCKED(403, ErrorCode.ABL),
+    IMAGE_SIZE_EXCEEDS_LIMIT(400, ErrorCode.SEL);
 
 
     private Integer httpCode;
@@ -48,5 +49,5 @@ public enum ErrorType {
 
 
 enum ErrorCode {
-    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANC, ABL;
+    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANC, ABL, SEL;
 }

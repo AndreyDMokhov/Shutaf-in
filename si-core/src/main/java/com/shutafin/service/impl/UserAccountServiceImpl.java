@@ -33,6 +33,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     @Transactional
     public UserImage updateProfileImage(UserImageWeb userImageWeb, User user) {
+        userImageService.checkImageSize(userImageWeb);
         UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
 

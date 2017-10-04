@@ -13,5 +13,6 @@ public interface UserImageService {
     void deleteUserImage(User user, Long userImageId);
     void createUserImageDirectory(User user);
     List<UserImage> getAllUserImages(User user);
+    void checkImageSize(UserImageWeb image);
 
 }
