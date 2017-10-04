@@ -1,12 +1,15 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.infrastructure.City;
+import com.shutafin.model.entities.infrastructure.Gender;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.initialization.CityResponseDTO;
 import com.shutafin.model.web.initialization.CountryResponseDTO;
 import com.shutafin.model.web.initialization.GenderResponseDTO;
+import com.shutafin.model.web.user.AgeRangeResponseDTO;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
@@ -39,6 +42,8 @@ public class InitializationController {
     @Autowired
     private UserLanguageService userLanguageService;
 
+    @Autowired
+    private UserSearchService userSearchService;
 
     @NoAuthentication
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -60,6 +65,9 @@ public class InitializationController {
                 .genders(initializationService.findAllGendersByLanguage(language))
                 .questionAnswersResponses(userMatchService.getUserQuestionsAnswers(language))
                 .selectedAnswersResponses(userMatchService.getUserQuestionsSelectedAnswers(user))
+                .citiesForFilter(userSearchService.getCitiesForFilter(user))
+                .genderForFilter(userSearchService.getGenderForFilter(user))
+                .ageRangeFilter(userSearchService.getAgeRangeForFilter(user))
                 .build();
     }
 }
@@ -75,5 +83,8 @@ class InitializationResponse {
     private List<CityResponseDTO> cities;
     private List<QuestionAnswersResponse> questionAnswersResponses;
     private List<QuestionSelectedAnswersResponse> selectedAnswersResponses;
+    private List<City> citiesForFilter;
+    private List<Gender> genderForFilter;
+    private AgeRangeResponseDTO ageRangeFilter;
 
 }
