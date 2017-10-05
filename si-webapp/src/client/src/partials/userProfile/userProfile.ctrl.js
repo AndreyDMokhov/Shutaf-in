@@ -4,7 +4,7 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
-    vm.size = 5000;
+    vm.size = 2000;
 
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
@@ -19,20 +19,20 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
         }
     }
 
-    function onLoad(e, reader, file, fileList, fileOjects, fileObj) {
+    $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
+            $timeout(function () {
+                vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
+                vm.deleteButton = true;
+                if(vm.size>vm.fileInfo.filesize/1024){
+                    saveImage();
+                }
+                else{
+                    notify.set($filter('translate')('UserProfile.message.sizeImage', {size:vm.size/1000}), {type: 'error'});
+                }
+            }, 0);
 
-        $timeout(function () {
-            vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
-            vm.deleteButton = true;
-            if(vm.size>vm.fileInfo.filesize/1024){
-                saveImage();
-            }
-            else{
-                notify.set($filter('translate')('UserProfile.message.sizeImage', {size:vm.size/1000}), {type: 'error'});
-            }
 
-        }, 0);
-    }
+    };
 
     function saveImage() {
         userProfileModel.addOrUpdateImage({image: vm.fileInfo.base64}).then(
@@ -78,7 +78,6 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
     }
 
     setProfileImage();
-    vm.onLoad = onLoad;
     vm.saveImage = saveImage;
     vm.deleteImage = deleteImage;
 });
