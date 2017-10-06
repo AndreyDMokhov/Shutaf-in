@@ -12,14 +12,14 @@ public class ImagePairRepositoryImpl extends AbstractEntityDao<ImagePair> implem
     @Override
     public UserImage findCompressedUserImage(UserImage userImage) {
         return (UserImage) getSession()
-                .createQuery("select ip.compressedUserImage from ImagePair ip where ip.originalUserImage.id = :userImageId")
+                .createQuery("select ip.compressedImage from ImagePair ip where ip.originalImage.id = :userImageId")
                 .setParameter("userImageId", userImage.getId()).uniqueResult();
     }
 
     @Override
     public UserImage findOriginalUserImage(UserImage userImage) {
         return (UserImage) getSession()
-                .createQuery("select ip.originalUserImage from ImagePair ip where ip.compressedUserImage.id = :userImageId")
+                .createQuery("select ip.originalImage from ImagePair ip where ip.compressedImage.id = :userImageId")
                 .setParameter("userImageId", userImage.getId()).uniqueResult();
     }
 }

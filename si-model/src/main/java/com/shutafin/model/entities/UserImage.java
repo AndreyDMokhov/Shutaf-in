@@ -30,4 +30,7 @@ public class UserImage extends AbstractEntity {
     @Convert(converter = PermissionTypeConverter.class)
     private PermissionType permissionType;
 
+    @Column(name = "IS_COMPRESSED", nullable = false)
+    private Boolean compressed = false;
+
 }
