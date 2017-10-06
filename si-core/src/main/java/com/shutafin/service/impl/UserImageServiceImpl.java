@@ -1,6 +1,5 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.ImageSizeLimitExceededException;
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
@@ -27,7 +26,6 @@ import java.util.List;
 public class UserImageServiceImpl implements UserImageService {
 
     private static final String IMAGE_EXTENSION = ".jpg";
-    private static final Integer IMAGE_SIZE_LIMIT_KB = 500;
 
     @Autowired
     private UserImageRepository userImageRepository;
@@ -96,15 +94,6 @@ public class UserImageServiceImpl implements UserImageService {
         return userImageRepository.findAllUserImages(user);
     }
 
-    @Override
-    public void checkImageSize(UserImageWeb image) {
-        Integer imageSize = image.getImage().length() / 4 * 3 / 1024;
-        if (imageSize > IMAGE_SIZE_LIMIT_KB) {
-            log.error("Image size exceeds limit");
-            log.error(String.format("Image size: %d KB, limit: %d KB", imageSize, IMAGE_SIZE_LIMIT_KB));
-            throw new ImageSizeLimitExceededException("Image size exceeds limit " + IMAGE_SIZE_LIMIT_KB + " KB");
-        }
-    }
 
     private void deleteLocalImage(UserImage userImage) {
         File image = new File(userImage.getLocalPath());

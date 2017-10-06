@@ -1,6 +1,7 @@
 package com.shutafin.handlers;
 
 import com.shutafin.exception.AbstractAPIException;
+import com.shutafin.exception.exceptions.ImageSizeLimitExceededException;
 import com.shutafin.model.web.error.ErrorResponse;
 import com.shutafin.model.web.error.ErrorType;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.validation.ValidationException;
 
 @ControllerAdvice
 @Slf4j
@@ -22,6 +25,16 @@ public class ResponseExceptionHandler {
 
         HttpStatus httpStatus = HttpStatus.valueOf(exception.getErrorType().getHttpCode());
         return new ResponseEntity<>(exception.getErrorResponse(), httpStatus);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> getValidationException(ValidationException exception) {
+        Throwable rootException = exception.getCause();
+        if (rootException.getClass().equals(ImageSizeLimitExceededException.class)) {
+            return getAPIExceptionResponse((AbstractAPIException) rootException);
+        } else {
+            return getSystemExceptionResponse(exception);
+        }
     }
 
     @ExceptionHandler(Exception.class)
