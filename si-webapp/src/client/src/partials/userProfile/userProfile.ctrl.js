@@ -27,7 +27,7 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
                     saveImage();
                 }
                 else{
-                    notify.set($filter('translate')('UserProfile.message.sizeImage', {size:vm.size/1000}), {type: 'error'});
+                    notify.set($filter('translate')('UserProfile.message.sizeImage'), {type: 'error'});
                 }
             }, 0);
 
