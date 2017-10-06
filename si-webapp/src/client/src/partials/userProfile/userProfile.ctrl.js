@@ -1,9 +1,19 @@
 "use strict";
-app.controller('userProfileController', function ($localStorage, $state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout) {
+app.controller('userProfileController', function ($localStorage,
+                                                  $state,
+                                                  $filter,
+                                                  sessionService,
+                                                  userProfileModel,
+                                                  $sessionStorage,
+                                                  notify,
+                                                  $timeout,
+                                                  $scope,
+                                                  IMAGE_MAX_SIZE_MB) {
 
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
+    vm.size = IMAGE_MAX_SIZE_MB * 1000;
 
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
@@ -18,13 +28,21 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
         }
     }
 
-    function onLoad(e, reader, file, fileList, fileOjects, fileObj) {
+    $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
         $timeout(function () {
             vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
             vm.deleteButton = true;
-            saveImage();
+            if (vm.size > vm.fileInfo.filesize / 1024) {
+                saveImage();
+            }
+            else {
+                setProfileImage();
+                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: IMAGE_MAX_SIZE_MB}), {type: 'warn'});
+            }
         }, 0);
-    }
+
+
+    };
 
     function saveImage() {
         userProfileModel.addOrUpdateImage({image: vm.fileInfo.base64}).then(
@@ -70,7 +88,6 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
     }
 
     setProfileImage();
-    vm.onLoad = onLoad;
     vm.saveImage = saveImage;
     vm.deleteImage = deleteImage;
 });
