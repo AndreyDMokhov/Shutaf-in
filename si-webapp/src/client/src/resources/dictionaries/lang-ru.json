@@ -66,7 +66,7 @@
   "UserProfile.message.confirmDelete" : "Вы уверены, что хотите удалить?",
   "UserProfile.edit":"Редактировать",
   "UserProfile.compatibility":"Совместимость",
-  "UserProfile.message.sizeImage":"Изображение должно быть не более 2 MB",
+  "UserProfile.message.sizeImage":"Изображение должно быть не более {{size}} MB",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Письмо отправлено на указанный адрес",

@@ -1,10 +1,19 @@
 "use strict";
-app.controller('userProfileController', function ($localStorage, $state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout, $scope) {
+app.controller('userProfileController', function ($localStorage,
+                                                  $state,
+                                                  $filter,
+                                                  sessionService,
+                                                  userProfileModel,
+                                                  $sessionStorage,
+                                                  notify,
+                                                  $timeout,
+                                                  $scope,
+                                                  IMAGE_MAX_SIZE_MB) {
 
     var vm = this;
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
-    vm.size = 2000;
+    vm.size = IMAGE_MAX_SIZE_MB * 1000;
 
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
@@ -20,16 +29,17 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
     }
 
     $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
-            $timeout(function () {
-                vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
-                vm.deleteButton = true;
-                if(vm.size>vm.fileInfo.filesize/1024){
-                    saveImage();
-                }
-                else{
-                    notify.set($filter('translate')('UserProfile.message.sizeImage'), {type: 'error'});
-                }
-            }, 0);
+        $timeout(function () {
+            vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
+            vm.deleteButton = true;
+            if (vm.size > vm.fileInfo.filesize / 1024) {
+                saveImage();
+            }
+            else {
+                setProfileImage();
+                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: IMAGE_MAX_SIZE_MB}), {type: 'warn'});
+            }
+        }, 0);
 
 
     };

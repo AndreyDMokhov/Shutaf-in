@@ -67,7 +67,7 @@
   "UserProfile.message.confirmDelete" : "Are you sure you want to delete?",
   "UserProfile.edit":"Edit",
   "UserProfile.compatibility":"Compatibility",
-  "UserProfile.message.sizeImage":"Image should be no more than 2 MB",
+  "UserProfile.message.sizeImage":"Image should be no more than {{size}} MB",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Email sent to specified address",
