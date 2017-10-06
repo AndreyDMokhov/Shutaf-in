@@ -11,9 +11,13 @@ app.controller('userProfileController', function ($localStorage,
                                                   IMAGE_MAX_SIZE_MB) {
 
     var vm = this;
+    $scope.myImage = 'resources/yyy.jpg';
+    $scope.myCroppedImage='';
+    vm.invisible = true;
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
-    vm.size = IMAGE_MAX_SIZE_MB * 1000;
+    vm.size = 2000;
+    // vm.size = IMAGE_MAX_SIZE_MB * 1000;
 
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
@@ -32,12 +36,13 @@ app.controller('userProfileController', function ($localStorage,
         $timeout(function () {
             vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
             vm.deleteButton = true;
+            vm.invisible = false;
             if (vm.size > vm.fileInfo.filesize / 1024) {
                 saveImage();
             }
             else {
                 setProfileImage();
-                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: IMAGE_MAX_SIZE_MB}), {type: 'warn'});
+                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: vm.size/1000}), {type: 'warn'});
             }
         }, 0);
 
@@ -86,8 +91,13 @@ app.controller('userProfileController', function ($localStorage,
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
+    function doIt() {
+     vm.invisible = true;
+     vm.image = $scope.myCroppedImage;
+    }
 
     setProfileImage();
     vm.saveImage = saveImage;
     vm.deleteImage = deleteImage;
+    vm.doIt = doIt;
 });

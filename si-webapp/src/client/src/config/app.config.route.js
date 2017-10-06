@@ -117,6 +117,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'changePasswordController',
             controllerAs:'vm'
         })
+    //     .state('cropImage', {
+    //         url: '/crop',
+    //     templateUrl: 'partials/cropTest/cropTest.html',
+    //     controller: 'cropController',
+    //     controllerAs : 'vm'
+    // })
 
     ;
     $urlRouterProvider.otherwise('/home');
