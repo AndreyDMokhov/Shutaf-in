@@ -39,8 +39,9 @@
                                         name="filename"
                                         id="filename"
                                         base-sixty-four-input
-                                        onload="vm.onLoad();"
-                                        maxsize="500"
+                                        do-not-parse-if-oversize
+                                        onload="onLoad"
+                                        maxsize="{{vm.size}}"
                                         accept="image/jpeg">
                             </div>
                             <button
