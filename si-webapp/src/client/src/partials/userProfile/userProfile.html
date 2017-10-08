@@ -43,16 +43,7 @@
                                         onload="onLoad"
                                         maxsize="{{vm.size}}"
                                         accept="image/jpeg">
-<div  ng-hide="vm.invisible">
-                                <ui-cropper image="vm.image" area-type="square"
-                                            result-image="myCroppedImage" result-image-size='{w: 225,h: 225}'
-                                            allow-crop-resize-on-corners="false"
-                                            area-min-size="{w: 225,h: 225}"> </ui-cropper>
-
-                            </div>
-                                <button ng-click="vm.doIt()" >SAVE</button>
-                            </div>
-
+                        </div>
                             <button
                                     ng-click="vm.deleteImage()"
                                     class="btn btn-primary button-size-font"
@@ -110,5 +101,7 @@
                 </div>
             </div>
         </div>
+        <!--<div  ng-hide="vm.invisible" style="border: 2px solid black">-->
+
     </div>
 </div>
