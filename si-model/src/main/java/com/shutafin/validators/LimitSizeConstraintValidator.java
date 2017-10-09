@@ -1,7 +1,6 @@
 package com.shutafin.validators;
 
 import com.shutafin.annotations.LimitSize;
-import com.shutafin.exception.exceptions.ImageSizeLimitExceededException;
 import com.shutafin.model.entities.types.ImageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +34,7 @@ public class LimitSizeConstraintValidator implements ConstraintValidator<LimitSi
         if (imageSize > imageSizeLimit && imageType.equals(ImageType.PROFILE_IMAGE)) {
             log.error("Profile image size exceeds limit");
             log.error(String.format("Profile image size: %d KB, limit: %d KB", imageSize, imageSizeLimit));
-            throw new ImageSizeLimitExceededException("Image size exceeds limit " + imageSizeLimit + " KB");
+            return false;
         }
         return true;
     }
