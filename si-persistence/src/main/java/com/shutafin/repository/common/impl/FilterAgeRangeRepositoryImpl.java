@@ -2,7 +2,6 @@ package com.shutafin.repository.common.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.FilterAgeRange;
-import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.web.user.AgeRangeResponseDTO;
 import com.shutafin.repository.base.AbstractEntityDao;
 import com.shutafin.repository.common.FilterAgeRangeRepository;
@@ -31,7 +30,7 @@ public class FilterAgeRangeRepositoryImpl extends AbstractEntityDao<FilterAgeRan
     public List<User> getAllMatchedUsers(User user, List<User> matchedUsers) {
 
         AgeRangeResponseDTO ageRangeResponseDTO = getUserFilterAgeRange(user);
-        if (ageRangeResponseDTO == null || matchedUsers.size() == 0){
+        if (ageRangeResponseDTO == null || matchedUsers.isEmpty()){
             return matchedUsers;
         }
 

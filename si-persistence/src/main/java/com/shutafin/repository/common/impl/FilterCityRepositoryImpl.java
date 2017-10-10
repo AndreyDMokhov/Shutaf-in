@@ -3,7 +3,6 @@ package com.shutafin.repository.common.impl;
 import com.shutafin.model.entities.FilterCity;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.City;
-import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.repository.base.AbstractEntityDao;
 import com.shutafin.repository.common.FilterCityRepository;
 import org.springframework.stereotype.Repository;
@@ -29,7 +28,7 @@ public class FilterCityRepositoryImpl extends AbstractEntityDao<FilterCity> impl
 
     @Override
     public List<User> getAllMatchedUsers(User user, List<User> matchedUsers) {
-        if (getUserFilterCity(user).size() == 0 || matchedUsers.size() == 0){
+        if (getUserFilterCity(user).isEmpty() || matchedUsers.isEmpty()){
             return matchedUsers;
         }
         StringBuilder hql = new StringBuilder()

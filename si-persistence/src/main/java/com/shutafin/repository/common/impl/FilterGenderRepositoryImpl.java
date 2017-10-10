@@ -3,7 +3,6 @@ package com.shutafin.repository.common.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.FilterGender;
 import com.shutafin.model.entities.infrastructure.Gender;
-import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.repository.base.AbstractEntityDao;
 import com.shutafin.repository.common.FilterGenderRepository;
 import org.springframework.stereotype.Repository;
@@ -29,7 +28,7 @@ public class FilterGenderRepositoryImpl extends AbstractEntityDao<FilterGender> 
 
     @Override
     public List<User> getAllMatchedUsers(User user, List<User> matchedUsers) {
-        if (getUserFilterGender(user).size() == 0 || matchedUsers.size() == 0){
+        if (getUserFilterGender(user).isEmpty() || matchedUsers.isEmpty()){
             return matchedUsers;
         }
         StringBuilder hql = new StringBuilder()

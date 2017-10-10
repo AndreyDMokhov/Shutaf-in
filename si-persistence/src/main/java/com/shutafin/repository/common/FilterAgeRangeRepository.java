@@ -2,7 +2,6 @@ package com.shutafin.repository.common;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.FilterAgeRange;
-import com.shutafin.model.entities.infrastructure.Question;
 import com.shutafin.model.web.user.AgeRangeResponseDTO;
 import com.shutafin.repository.base.PersistentDao;
 

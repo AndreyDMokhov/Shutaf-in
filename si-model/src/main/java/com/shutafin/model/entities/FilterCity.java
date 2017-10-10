@@ -2,7 +2,6 @@ package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
 import com.shutafin.model.entities.infrastructure.City;
-import com.shutafin.model.entities.infrastructure.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

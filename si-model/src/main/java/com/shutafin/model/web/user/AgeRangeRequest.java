@@ -20,7 +20,7 @@ public class AgeRangeRequest {
     @Min(value = 18)
     private Integer fromAge;
 
-    @Min(value = 19)
+    @Min(value = 18)
     @Max(value = 120)
     private Integer toAge;
 
