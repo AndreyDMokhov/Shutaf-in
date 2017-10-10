@@ -3,6 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.entities.types.CompressionType;
 import com.shutafin.model.entities.types.PermissionType;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
@@ -44,7 +45,7 @@ public class UserImageController {
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        UserImage userImage = userImageService.addUserImage(image, user, PermissionType.PRIVATE);
+        UserImage userImage = userImageService.addUserImage(image, user, PermissionType.PRIVATE, CompressionType.NO_COMPRESSION);
         return new UserImageWeb(
                 userImage.getId(),
                 null,

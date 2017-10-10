@@ -1,6 +1,8 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractEntity;
+import com.shutafin.model.entities.types.CompressionType;
+import com.shutafin.model.entities.types.CompressionTypeConverter;
 import com.shutafin.model.entities.types.PermissionTypeConverter;
 import com.shutafin.model.entities.types.PermissionType;
 import lombok.*;
@@ -30,7 +32,8 @@ public class UserImage extends AbstractEntity {
     @Convert(converter = PermissionTypeConverter.class)
     private PermissionType permissionType;
 
-    @Column(name = "IS_COMPRESSED", nullable = false)
-    private Boolean compressed = false;
+    @Column(name = "COMPRESSION_TYPE_ID", nullable = false)
+    @Convert(converter = CompressionTypeConverter.class)
+    private CompressionType compressionType;
 
 }

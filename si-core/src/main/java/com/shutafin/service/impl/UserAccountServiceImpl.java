@@ -4,6 +4,7 @@ import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.entities.types.CompressionType;
 import com.shutafin.model.entities.types.PermissionType;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
@@ -48,7 +49,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         if (userImage == null) {
-            userImage = userImageService.addAndCompressUserImage(userImageWeb, user, PermissionType.PUBLIC);
+            userImage = userImageService.addUserImage(userImageWeb, user, PermissionType.PUBLIC, CompressionType.COMPRESSION_PROFILE_IMAGE);
         }
 
         if (userAccount != null) {

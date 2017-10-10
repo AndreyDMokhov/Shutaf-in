@@ -4,6 +4,7 @@ import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.entities.types.CompressionType;
 import com.shutafin.model.entities.types.PermissionType;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.repository.common.ImageStorageRepository;
@@ -43,20 +44,11 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     @Transactional
-    public UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType) {
-        UserImage userImage = new UserImage();
-        userImage.setPermissionType(permissionType);
-        String imageEncoded = image.getImage();
-        userImage.setUser(user);
-
-        userImageRepository.save(userImage);
-
-        String imageLocalPath = getUserDirectoryPath(user) + userImage.getId() + IMAGE_EXTENSION;
-        userImage.setLocalPath(imageLocalPath);
-        saveUserImageToFileSystem(imageEncoded, userImage);
-        ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
-        userImage.setImageStorage(imageStorage);
-        userImageRepository.update(userImage);
+    public UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
+        UserImage userImage = addUserImage(image, user, permissionType);
+        if (compressionType != null && !compressionType.equals(CompressionType.NO_COMPRESSION)) {
+            return imageCompressService.addCompressedUserImage(userImage, compressionType);
+        }
         return userImage;
     }
 
@@ -104,15 +96,27 @@ public class UserImageServiceImpl implements UserImageService {
         return userImageRepository.findAllUserImages(user);
     }
 
-    @Override
-    public UserImage addAndCompressUserImage(UserImageWeb image, User user, PermissionType permissionType) {
-        UserImage originalImage = addUserImage(image, user, permissionType);
-        return imageCompressService.getCompressedUserImage(originalImage);
-    }
-
     private void deleteLocalImage(UserImage userImage) {
         File image = new File(userImage.getLocalPath());
         image.delete();
+    }
+
+    private UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType) {
+        UserImage userImage = new UserImage();
+        userImage.setPermissionType(permissionType);
+        userImage.setCompressionType(CompressionType.NO_COMPRESSION);
+        String imageEncoded = image.getImage();
+        userImage.setUser(user);
+
+        userImageRepository.save(userImage);
+
+        String imageLocalPath = getUserDirectoryPath(user) + userImage.getId() + IMAGE_EXTENSION;
+        userImage.setLocalPath(imageLocalPath);
+        saveUserImageToFileSystem(imageEncoded, userImage);
+        ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
+        userImage.setImageStorage(imageStorage);
+        userImageRepository.update(userImage);
+        return userImage;
     }
 
     private String getUserDirectoryPath(User user) {
