@@ -1,7 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.annotations.LimitSize;
-import com.shutafin.exception.exceptions.ImageSizeLimitExceededException;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
@@ -17,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -85,11 +82,6 @@ public class UserAccountController {
 
     private void checkBindingResult(BindingResult result) {
         if (result.hasErrors()) {
-            for (ObjectError error : result.getAllErrors()) {
-                if (error.getCode().equals(LimitSize.class.getSimpleName())) {
-                    throw new ImageSizeLimitExceededException("Image size exceeds limit ");
-                }
-            }
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);

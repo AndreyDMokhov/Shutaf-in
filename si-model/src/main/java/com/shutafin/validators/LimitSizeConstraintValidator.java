@@ -1,7 +1,6 @@
 package com.shutafin.validators;
 
 import com.shutafin.annotations.LimitSize;
-import com.shutafin.model.entities.types.ImageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -18,11 +17,9 @@ public class LimitSizeConstraintValidator implements ConstraintValidator<LimitSi
     @Value("${image.size.limit}")
     private Integer imageSizeLimit;
 
-    private ImageType imageType;
-
     @Override
     public void initialize(LimitSize constraintAnnotation) {
-        imageType = constraintAnnotation.value();
+        log.info("Initialized LimitSizeConstraintValidator");
     }
 
     @Override
@@ -31,7 +28,7 @@ public class LimitSizeConstraintValidator implements ConstraintValidator<LimitSi
             return false;
         }
         Integer imageSize = getImageSize(image);
-        if (imageSize > imageSizeLimit && imageType.equals(ImageType.PROFILE_IMAGE)) {
+        if (imageSize > imageSizeLimit) {
             log.error("Profile image size exceeds limit");
             log.error(String.format("Profile image size: %d KB, limit: %d KB", imageSize, imageSizeLimit));
             return false;

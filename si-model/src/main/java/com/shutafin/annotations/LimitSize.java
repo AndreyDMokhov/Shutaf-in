@@ -1,6 +1,5 @@
 package com.shutafin.annotations;
 
-import com.shutafin.model.entities.types.ImageType;
 import com.shutafin.validators.LimitSizeConstraintValidator;
 
 import javax.validation.Constraint;
@@ -14,8 +13,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = LimitSizeConstraintValidator.class)
 public @interface LimitSize {
-
-    ImageType value() default ImageType.PROFILE_IMAGE;
 
     String message() default "Invalid image size";
     Class<?>[] groups() default {};
