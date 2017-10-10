@@ -1,0 +1,8 @@
+<div  style="margin-top: 100px">
+    <ui-cropper image="myImage" area-type="square"
+                result-image="myCroppedImage" result-image-size='{w: 225,h: 225}'
+                max-canvas-dimensions="{w: 640, h: 480}"
+    > </ui-cropper>
+</div>
+<button class="btn btn-default " ng-click="cropIt(myCroppedImage)" >{{"Questions.button.save"|translate}}</button>
+
