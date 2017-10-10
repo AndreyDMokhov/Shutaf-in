@@ -43,3 +43,6 @@
     margin-top: 12px;
     margin-left: 20px;
 }
+.label-above-input {
+    display:block;
+}

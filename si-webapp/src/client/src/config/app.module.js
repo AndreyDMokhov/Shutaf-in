@@ -14,6 +14,7 @@ var app = angular.module("app", [
     'restangular',
     'pascalprecht.translate',
     'naif.base64',
+    'rzModule',
     'ngStorage'
     /* @if templateCache **
      ,'templateCache'
