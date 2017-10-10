@@ -12,7 +12,7 @@ app.controller('userProfileController', function ($localStorage,
                                                   IMAGE_MAX_SIZE_MB) {
 
     var vm = this;
-    $scope.myCroppedImage='';
+    $scope.myCroppedImage = '';
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
     vm.size = IMAGE_MAX_SIZE_MB * 1000;
@@ -36,11 +36,11 @@ app.controller('userProfileController', function ($localStorage,
             vm.deleteButton = true;
 
             if (vm.size > vm.fileInfo.filesize / 1024) {
-                $scope.showImagePopup();
+                showImagePopup();
             }
             else {
                 setProfileImage();
-                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: vm.size/1000}), {type: 'warn'});
+                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: vm.size / 1000}), {type: 'warn'});
             }
         }, 0);
 
@@ -87,14 +87,15 @@ app.controller('userProfileController', function ($localStorage,
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
-    $scope.cropIt =function(data) {
-        vm.image=data;
-        var arr = data.split([',']);
-        saveImage(arr[1]);
+
+    $scope.cropIt = function (base64Image) {
+        vm.image = base64Image;
+        var base64ImageWithoutPrefix = base64Image.split([',']);
+        saveImage(base64ImageWithoutPrefix[1]);
         ngDialog.close();
     };
 
-    $scope.showImagePopup = function() {
+    function showImagePopup() {
         ngDialog.open({
             templateUrl: 'partials/userProfile/imagePopup.html',
             scope: $scope,
@@ -102,9 +103,8 @@ app.controller('userProfileController', function ($localStorage,
             className: 'ngdialog-theme-plain custom-width',
             closeByDocument: true
         });
-    };
+    }
 
     setProfileImage();
-    vm.saveImage = saveImage;
     vm.deleteImage = deleteImage;
 });

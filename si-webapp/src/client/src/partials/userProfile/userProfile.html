@@ -60,10 +60,6 @@
                                 </tr>
                                 <tr ng-hide="!vm.userProfile.countryId">
                                     <td>{{'UserSettings.form.country' | translate}}</td>
-                                    <!--Uncomment bottom fields-->
-                                    <!--<td ng-repeat="country in vm.country"-->
-                                    <!--ng-if="country.id === vm.userProfile.countryId">{{country.description}}</td>-->
-                                    <!--to delete the bottom field when countries are added to SessionStorage/UserProfile-->
                                     <td><span>Israel</span></td>
                                 </tr>
                                 <tr ng-hide="!vm.userProfile.cityId">
@@ -101,7 +97,6 @@
                 </div>
             </div>
         </div>
-        <!--<div  ng-hide="vm.invisible" style="border: 2px solid black">-->
 
     </div>
 </div>
