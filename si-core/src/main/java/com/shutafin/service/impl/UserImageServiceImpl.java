@@ -179,6 +179,4 @@ public class UserImageServiceImpl implements UserImageService {
         imageStorage.setId(storedImageId);
         return imageStorage;
     }
-
-
 }
