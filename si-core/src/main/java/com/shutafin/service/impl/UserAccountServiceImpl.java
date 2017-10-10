@@ -49,7 +49,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         if (userImage == null) {
-            userImage = userImageService.addUserImage(userImageWeb, user, PermissionType.PUBLIC, CompressionType.COMPRESSION_PROFILE_IMAGE);
+            userImage = userImageService.addUserImage(userImageWeb, user, PermissionType.PUBLIC, CompressionType.COMPRESSION_RATE_0_7);
         }
 
         if (userAccount != null) {

@@ -1,19 +1,16 @@
 package com.shutafin.model.entities.types;
 
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public enum CompressionType implements IdentifiableType<Integer> {
-    NO_COMPRESSION (0, null, null),
-    COMPRESSION_PROFILE_IMAGE (1, 256, 0.7f);
+
+    NO_COMPRESSION(0, null, null),
+    COMPRESSION_RATE_0_7(1, 256, 0.7f);
 
     private Integer id;
     private Integer compressSize;
     private Float compressionQuality;
-
-    CompressionType(Integer id, Integer compressSize, Float compressionQuality) {
-        this.id = id;
-        this.compressSize = compressSize;
-        this.compressionQuality = compressionQuality;
-    }
 
     @Override
     public Integer getCode() {

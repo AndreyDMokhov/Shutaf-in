@@ -38,14 +38,19 @@ public class UserImageController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public UserImageWeb addUserImage(@AuthenticatedUser User user,
-                                     @RequestBody @Valid UserImageWeb image, BindingResult result) {
+                                     @RequestBody @Valid UserImageWeb image,
+                                     BindingResult result) {
         log.debug("/images/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        UserImage userImage = userImageService.addUserImage(image, user, PermissionType.PRIVATE, CompressionType.NO_COMPRESSION);
+        UserImage userImage = userImageService.addUserImage(
+                                                        image,
+                                                        user,
+                                                        PermissionType.PRIVATE,
+                                                        CompressionType.NO_COMPRESSION);
         return new UserImageWeb(
                 userImage.getId(),
                 null,
