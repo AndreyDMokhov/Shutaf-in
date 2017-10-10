@@ -20,7 +20,6 @@
   "Error.IPE":"Incorrect password",
   "Error.ABL":"Your account was blocked",
   "Error.ANC":"Account not activated, please confirm your email",
-  "Error.SEL":"Image size exceeds 2048 KB, please choose another one",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",

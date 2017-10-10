@@ -10,9 +10,9 @@ import javax.validation.ConstraintValidatorContext;
 @Slf4j
 public class LimitSizeConstraintValidator implements ConstraintValidator<LimitSize, String> {
 
-    public static final Integer BYTES_IN_KB = 1024;
-    public static final Integer ENCODED_SYMBOL_NUMBER = 4;
-    public static final Integer SOURCE_BYTES_NUMBER = 3;
+    private static final Integer BYTES_IN_KB = 1024;
+    private static final Integer ENCODED_SYMBOL_NUMBER = 4;
+    private static final Integer SOURCE_BYTES_NUMBER = 3;
 
     @Value("${image.size.limit}")
     private Integer imageSizeLimit;

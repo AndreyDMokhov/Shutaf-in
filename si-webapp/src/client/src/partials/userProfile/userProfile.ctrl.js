@@ -15,7 +15,7 @@ app.controller('userProfileController', function ($localStorage,
     $scope.myCroppedImage = '';
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
-    vm.size = IMAGE_MAX_SIZE_MB * 1000;
+    vm.size = IMAGE_MAX_SIZE_MB * 1024;
 
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
@@ -40,7 +40,7 @@ app.controller('userProfileController', function ($localStorage,
             }
             else {
                 setProfileImage();
-                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: vm.size / 1000}), {type: 'warn'});
+                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: vm.size / 1024}), {type: 'warn'});
             }
         }, 0);
 
@@ -61,6 +61,12 @@ app.controller('userProfileController', function ($localStorage,
             function (error) {
                 if (error === undefined || error === null) {
                     notify.set($filter('translate')('Error.SYS'), {type: 'error'});
+                }
+
+                if (error.data.error.errorTypeCode === 'INP') {
+                    if (error.data.error.errors.indexOf('INP.image.LimitSize') > 0) {
+                        notify.set($filter('translate')('UserProfile.message.sizeImage'), {type: 'warn'});
+                    }
                 }
 
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
