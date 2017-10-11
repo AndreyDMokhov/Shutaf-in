@@ -52,6 +52,7 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
 
         EmailNotificationLog emailNotificationLog = getEmailNotificationLog(
+                baseTemplate.getEmailHeader(),
                 messageContent,
                 emailTo,
                 emailMessage.getUser(),
@@ -59,6 +60,21 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
         try {
             mailSender.send(getMimeMessage(emailTo, messageContent, baseTemplate.getEmailHeader()));
+        } catch (MailException e) {
+            log.error("Error sending email notification:", e);
+            emailNotificationLog.setIsSendFailed(Boolean.TRUE);
+            emailNotificationLogRepository.update(emailNotificationLog);
+            throw new EmailSendException();
+        }
+    }
+
+    //Next method used for resend failed user Email notifications
+    @Override
+    public void sendEmail(EmailNotificationLog emailNotificationLog) {
+        try {
+            mailSender.send(getMimeMessage(emailNotificationLog.getEmailTo(), emailNotificationLog.getEmailContent(), emailNotificationLog.getEmailHeader()));
+            emailNotificationLog.setIsSendFailed(Boolean.FALSE);
+            emailNotificationLogRepository.update(emailNotificationLog);
         } catch (MailException e) {
             log.error("Error sending email notification:", e);
             emailNotificationLog.setIsSendFailed(Boolean.TRUE);
@@ -85,11 +101,12 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         }
     }
 
-    private EmailNotificationLog getEmailNotificationLog(String html, String emailTo, User user, EmailReason emailReason) {
+    private EmailNotificationLog getEmailNotificationLog(String emailHeader, String emailContent, String emailTo, User user, EmailReason emailReason) {
 
         EmailNotificationLog emailNotificationLog = new EmailNotificationLog();
 
-        emailNotificationLog.setEmailContent(html);
+        emailNotificationLog.setEmailHeader(emailHeader);
+        emailNotificationLog.setEmailContent(emailContent);
 
         emailNotificationLog.setEmailReason(emailReason);
         emailNotificationLog.setIsSendFailed(Boolean.FALSE);
