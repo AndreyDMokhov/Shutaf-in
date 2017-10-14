@@ -46,7 +46,7 @@ public class UserImageServiceImpl implements UserImageService {
     @Transactional
     public UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
         UserImage userImage = addUserImage(image, user, permissionType);
-        if (compressionType != null && !compressionType.equals(CompressionType.NO_COMPRESSION)) {
+        if (compressionType != null && compressionType != CompressionType.NO_COMPRESSION) {
             return imageCompressService.addCompressedUserImage(userImage, compressionType);
         }
         return userImage;
@@ -179,6 +179,4 @@ public class UserImageServiceImpl implements UserImageService {
         imageStorage.setId(storedImageId);
         return imageStorage;
     }
-
-
 }

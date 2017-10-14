@@ -53,7 +53,7 @@ gulp.task('copy', function () {
         // copy all
         './src/**'
     ])
-        .pipe(gulp.dest('.tmp'))
+        .pipe(gulp.dest('.tmp'));
 });
 
 // compiler from ES6 to ES5
@@ -69,7 +69,7 @@ gulp.task('babel', function () {
             compact: false
         }))
         .on('error', console.error.bind(console))
-        .pipe(gulp.dest('.tmp'))
+        .pipe(gulp.dest('.tmp'));
 });
 // minifies js and css
 gulp.task('minify', function () {
@@ -91,7 +91,7 @@ gulp.task('copyData', function () {
         '!./.tmp/**/*.css',
         '!./.tmp/**/*.sass',
         '!./.tmp/**/*.less'])
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('copyComponents', function () {
@@ -99,7 +99,7 @@ gulp.task('copyComponents', function () {
         './.tmp/bower_components/bootstrap/**/*/',
         './.tmp/bower_components/components-font-awesome/**/'
     ], {base: '.tmp'})
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('dist'));
 });
 //builds one js-file from specified html
 gulp.task('build-html-template', function () {
@@ -116,7 +116,7 @@ gulp.task('delete-html', function () {
     return deleteFiles([
         'dist/**/*.html',
         '!dist/index.html'
-    ])
+    ]);
 });
 
 // inserts script in specified place and remove comments
@@ -130,7 +130,7 @@ gulp.task('preprocessing', function () {
                 templateCache: ' <script src="build/templates.js"></script>'
             }
         }))
-        .pipe(gulp.dest('./.tmp'))
+        .pipe(gulp.dest('./.tmp'));
 });
 
 //This task removes all empty folders in the specified folder
@@ -138,37 +138,37 @@ gulp.task('delete-empty-directories', function () {
     deleteEmpty.sync('dist/');
 });
 // minifies the style in accordance with the rules
-gulp.task('minifyHtml', function() {
-    return gulp.src(['.tmp/**/*.html','!.tmp/bower_components/**','!.tmp/index.html'])
+gulp.task('minifyHtml', function () {
+    return gulp.src(['.tmp/**/*.html', '!.tmp/bower_components/**', '!.tmp/index.html'])
         .pipe(htmlmin({
-            collapseWhitespace: true}))
+            collapseWhitespace: true
+        }))
         .pipe(gulp.dest('.tmp'));
 });
 
 
 // checks the style in accordance with the rules in .eslintrc
 // used for task Build
-gulp.task('eslintForBuild', function() {
-    return gulp.src(['src/**/*.js','!node_modules/**', '!src/bower_components/**'])
+gulp.task('eslintForBuild', function () {
+    return gulp.src(['src/**/*.js', '!node_modules/**', '!src/bower_components/**'])
         .pipe(eslint({
             useEslintrc: true
         }))
         .pipe(eslint.format('table'))
-        .pipe(eslint.failAfterError())
+        .pipe(eslint.failAfterError());
 });
 
 // checks the style in accordance with the rules in .eslintrc
 // used for runtime checking
-gulp.task('eslint', function() {
-    return gulp.src(['src/**/*.js','!node_modules/**', '!src/bower_components/**'])
+gulp.task('eslint', function () {
+    return gulp.src(['src/**/*.js', '!node_modules/**', '!src/bower_components/**'])
         .pipe(eslint({
             useEslintrc: true
         }))
         .pipe(eslint.format('table'))
         .pipe(eslint.failAfterError())
-        .pipe(livereload({ start: true }))
+        .pipe(livereload({start: true}));
 });
-
 
 
 // to run new server
@@ -181,7 +181,7 @@ gulp.task('minifiedConnect', function () {
         middleware: function (connect, opt) {
             return [
                 proxy('http://localhost:8080/api')
-            ]
+            ];
         }
     });
 });
@@ -194,7 +194,7 @@ gulp.task('runServer', function () {
         middleware: function (connect, opt) {
             return [
                 proxy('http://localhost:8080/api')
-            ]
+            ];
         }
     });
 });
@@ -217,4 +217,3 @@ gulp.task('build', function (callback) {
         'delete-empty-directories',
         callback);
 });
-
