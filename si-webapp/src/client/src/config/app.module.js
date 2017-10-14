@@ -13,6 +13,7 @@ var app = angular.module("app", [
     'ui.router',
     'restangular',
     'pascalprecht.translate',
+    'uiCropper',
     'naif.base64',
     'rzModule',
     'ngStorage'

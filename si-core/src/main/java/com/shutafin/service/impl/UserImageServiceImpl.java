@@ -94,6 +94,7 @@ public class UserImageServiceImpl implements UserImageService {
         return userImageRepository.findAllUserImages(user);
     }
 
+
     private void deleteLocalImage(UserImage userImage) {
         File image = new File(userImage.getLocalPath());
         image.delete();
@@ -159,4 +160,5 @@ public class UserImageServiceImpl implements UserImageService {
         imageStorage.setId(storedImageId);
         return imageStorage;
     }
+
 }
