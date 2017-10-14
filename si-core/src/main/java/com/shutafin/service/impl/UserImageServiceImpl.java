@@ -12,6 +12,7 @@ import com.shutafin.repository.common.UserImageRepository;
 import com.shutafin.service.EnvironmentConfigurationService;
 import com.shutafin.service.ImageCompressService;
 import com.shutafin.service.UserImageService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,8 @@ import java.util.List;
 @Slf4j
 public class UserImageServiceImpl implements UserImageService {
 
-    private static final String IMAGE_EXTENSION = ".jpg";
+    private static final String DOT_SEPARATOR = ".";
+    private static final String IMAGE_EXTENSION = "jpg";
 
     @Autowired
     private UserImageRepository userImageRepository;
@@ -114,7 +116,7 @@ public class UserImageServiceImpl implements UserImageService {
 
         userImageRepository.save(userImage);
 
-        String imageLocalPath = getUserDirectoryPath(user) + userImage.getId() + IMAGE_EXTENSION;
+        String imageLocalPath = getUserDirectoryPath(user) + userImage.getId() + DOT_SEPARATOR + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         saveUserImageToFileSystem(imageEncoded, userImage);
         ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
@@ -152,7 +154,7 @@ public class UserImageServiceImpl implements UserImageService {
         userImage.setId(userImageId);
         userImage.setUser(user);
         userImage.setImageStorage(new ImageStorage());
-        String imageLocalPath = getUserDirectoryPath(user) + userImageId + IMAGE_EXTENSION;
+        String imageLocalPath = getUserDirectoryPath(user) + userImageId + DOT_SEPARATOR + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         File imageFile = new File(imageLocalPath);
         try {
@@ -184,22 +186,22 @@ public class UserImageServiceImpl implements UserImageService {
         return imageStorage;
     }
 
+    @SneakyThrows
     private UserImageWeb convertToJpg(UserImageWeb userImageWeb) {
         String imageEncoded = userImageWeb.getImage();
-        try {
-            byte[] imageData = Base64.getDecoder().decode(imageEncoded);
-            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageData));
-            BufferedImage newBufferedImage = new BufferedImage(bufferedImage.getWidth(),
-                    bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
-            newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(newBufferedImage, "jpg", baos);
-            byte[] byteArray = baos.toByteArray();
-            userImageWeb.setImage(Base64.getEncoder().encodeToString(byteArray));
-            return userImageWeb;
-        } catch (IOException exp) {
-            log.error("Could not read or write image: ", exp);
-        }
-        return null;
+
+        byte[] imageData = Base64.getDecoder().decode(imageEncoded);
+        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageData));
+        BufferedImage newBufferedImage = new BufferedImage(
+                bufferedImage.getWidth(),
+                bufferedImage.getHeight(),
+                BufferedImage.TYPE_INT_RGB);
+
+        newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(newBufferedImage, IMAGE_EXTENSION, baos);
+        byte[] byteArray = baos.toByteArray();
+        userImageWeb.setImage(Base64.getEncoder().encodeToString(byteArray));
+        return userImageWeb;
     }
 }
