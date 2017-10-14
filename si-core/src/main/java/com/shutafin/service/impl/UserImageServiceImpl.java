@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.Instant;
 import java.util.Base64;
@@ -45,6 +48,7 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     @Transactional
     public UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
+        image = convertToJpg(image);
         UserImage userImage = addUserImage(image, user, permissionType);
         if (compressionType != null && compressionType != CompressionType.NO_COMPRESSION) {
             return imageCompressService.addCompressedUserImage(userImage, compressionType);
@@ -178,5 +182,24 @@ public class UserImageServiceImpl implements UserImageService {
         Long storedImageId = (Long) imageStorageRepository.save(imageStorage);
         imageStorage.setId(storedImageId);
         return imageStorage;
+    }
+
+    private UserImageWeb convertToJpg(UserImageWeb userImageWeb) {
+        String imageEncoded = userImageWeb.getImage();
+        try {
+            byte[] imageData = Base64.getDecoder().decode(imageEncoded);
+            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageData));
+            BufferedImage newBufferedImage = new BufferedImage(bufferedImage.getWidth(),
+                    bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+            newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(newBufferedImage, "jpg", baos);
+            byte[] byteArray = baos.toByteArray();
+            userImageWeb.setImage(Base64.getEncoder().encodeToString(byteArray));
+            return userImageWeb;
+        } catch (IOException exp) {
+            log.error("Could not read or write image: ", exp);
+        }
+        return null;
     }
 }

@@ -69,25 +69,7 @@ public class ImageCompressServiceImpl implements ImageCompressService {
         return compressedUserImage;
     }
 
-    private String convertToJpg(String imageEncoded) {
-        try {
-            byte[] imageData = Base64.getDecoder().decode(imageEncoded);
-            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageData));
-            BufferedImage newBufferedImage = new BufferedImage(bufferedImage.getWidth(),
-                    bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
-            newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(newBufferedImage, IMAGE_EXTENSION, baos);
-            byte[] byteArray = baos.toByteArray();
-            return Base64.getEncoder().encodeToString(byteArray);
-        } catch (IOException exp) {
-            log.error("Could not read or write image: ", exp);
-        }
-        return null;
-    }
-
     private String compressUserImage(String imageEncoded, CompressionType compressionType) {
-        imageEncoded = convertToJpg(imageEncoded);
         imageEncoded = resizeImage(imageEncoded, compressionType);
         imageEncoded = compressImageQuality(imageEncoded, compressionType);
         return imageEncoded;
