@@ -81,7 +81,7 @@ public class ImageCompressServiceImpl implements ImageCompressService {
             byte[] byteArray = baos.toByteArray();
             return Base64.getEncoder().encodeToString(byteArray);
         } catch (IOException exp) {
-            exp.printStackTrace();
+            log.error("Could not read or write image: ", exp);
         }
         return null;
     }
