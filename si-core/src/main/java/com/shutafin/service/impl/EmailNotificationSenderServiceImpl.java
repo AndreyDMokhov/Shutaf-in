@@ -81,10 +81,13 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
     private void send(MimeMessage mimeMessage, EmailNotificationLog emailNotificationLog) {
         emailNotificationLog.setIsSendFailed(Boolean.FALSE);
-        if (!isSendSuccessful(mimeMessage)) {
-            if (!isResendSuccessful(mimeMessage)) {
-                emailNotificationLog.setIsSendFailed(Boolean.TRUE);
-            }
+        if (isSendSuccessful(mimeMessage)) {
+            emailNotificationLogRepository.update(emailNotificationLog);
+            return;
+        }
+        if (isResendSuccessful(mimeMessage)) {
+            emailNotificationLogRepository.update(emailNotificationLog);
+            return;
         }
         emailNotificationLogRepository.update(emailNotificationLog);
     }
