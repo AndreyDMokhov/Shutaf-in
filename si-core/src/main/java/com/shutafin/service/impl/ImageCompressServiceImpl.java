@@ -53,8 +53,12 @@ public class ImageCompressServiceImpl implements ImageCompressService {
         UserImage compressedUserImage = imagePairRepository.findCompressedUserImage(userImage);
         if (compressedUserImage == null) {
             String imageEncoded = compressUserImage(userImage.getImageStorage().getImageEncoded(), compressionType);
-            compressedUserImage = saveCompressedUserImage(imageEncoded, userImage.getUser(), userImage.getPermissionType(),
+            compressedUserImage = saveCompressedUserImage(
+                    imageEncoded,
+                    userImage.getUser(),
+                    userImage.getPermissionType(),
                     compressionType);
+
             saveImagePair(userImage, compressedUserImage);
         }
         return compressedUserImage;
@@ -81,8 +85,7 @@ public class ImageCompressServiceImpl implements ImageCompressService {
         BufferedImage bufferedImage = getBufferedImage(imageEncoded);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageOutputStream imageOutputStream = null;
-        imageOutputStream = ImageIO.createImageOutputStream(byteArrayOutputStream);
+        ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(byteArrayOutputStream);
 
         ImageWriter imageWriter = ImageIO.getImageWritersByFormatName(IMAGE_EXTENSION).next();
 
@@ -130,9 +133,7 @@ public class ImageCompressServiceImpl implements ImageCompressService {
     private BufferedImage getBufferedImage(String imageEncoded) {
         byte[] imageDecoded = Base64.getDecoder().decode(imageEncoded);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageDecoded);
-        BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-
-        return bufferedImage;
+        return ImageIO.read(byteArrayInputStream);
     }
 
     private void saveImagePair(UserImage originalImage, UserImage compressedImage) {
