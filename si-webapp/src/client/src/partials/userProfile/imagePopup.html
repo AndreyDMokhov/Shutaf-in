@@ -1,7 +1,7 @@
 <div  style="margin-top: 100px">
     <ui-cropper image="myImage" area-type="square"
                 result-image="myCroppedImage"
-                result-image-size='{w: 1500,h: 1500}'
+                result-image-size="{w: selectedSize.value.w, h: selectedSize.value.h}"
                 max-canvas-dimensions="{w: 640, h: 480}"
                 result-image-quality="1.0"
     > </ui-cropper>

@@ -8,6 +8,7 @@ app.controller('userProfileController', function ($localStorage,
                                                   notify,
                                                   $timeout,
                                                   $scope,
+                                                  $q,
                                                   ngDialog,
                                                   IMAGE_MAX_SIZE_MB) {
 
@@ -31,8 +32,10 @@ app.controller('userProfileController', function ($localStorage,
     }
 
     $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
+
         $timeout(function () {
             $scope.myImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
+            setImageSize();
             vm.deleteButton = true;
 
             if (vm.size > vm.fileInfo.filesize / 1024) {
@@ -101,6 +104,7 @@ app.controller('userProfileController', function ($localStorage,
         ngDialog.close();
     };
 
+
     function showImagePopup() {
         ngDialog.open({
             templateUrl: 'partials/userProfile/imagePopup.html',
@@ -109,6 +113,21 @@ app.controller('userProfileController', function ($localStorage,
             className: 'ngdialog-theme-plain custom-width',
             closeByDocument: true
         });
+    }
+    function setImageSize() {
+        var width, height, myBase64 = $scope.myImage;
+        var img = new Image();
+        img.src = myBase64;
+        img.addEventListener('load',function(){
+            width=img.width;
+            height=img.height;
+            $scope.selectedSize =
+                {value:{w: width/2, h: height/2}}
+            ;
+            console.log(height);
+            console.log(width);
+        });
+
     }
 
     setProfileImage();
