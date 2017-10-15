@@ -4,6 +4,8 @@ import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.entities.types.CompressionType;
+import com.shutafin.model.entities.types.PermissionType;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.user.UserImageWeb;
@@ -53,7 +55,8 @@ public class UserImageControllerTest extends BaseTestImpl {
         validUser = createUser();
         validUserImage = createUserImage();
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
-        Mockito.when(userImageService.addUserImage(Mockito.any(UserImageWeb.class), Mockito.any(User.class)))
+        Mockito.when(userImageService.addUserImage(Mockito.any(UserImageWeb.class), Mockito.any(User.class),
+                Mockito.any(PermissionType.class), Mockito.any(CompressionType.class)))
                 .thenReturn(validUserImage);
         Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
                 .thenReturn(validUserImage);
