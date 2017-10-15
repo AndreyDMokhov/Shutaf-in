@@ -10,6 +10,7 @@ import com.shutafin.repository.common.ImagePairRepository;
 import com.shutafin.repository.common.UserImageRepository;
 import com.shutafin.service.ImageCompressService;
 import com.shutafin.service.UserImageService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,16 +76,14 @@ public class ImageCompressServiceImpl implements ImageCompressService {
         return imageEncoded;
     }
 
+    @SneakyThrows
     private String compressImageQuality(String imageEncoded, CompressionType compressionType) {
         BufferedImage bufferedImage = getBufferedImage(imageEncoded);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageOutputStream imageOutputStream = null;
-        try {
-            imageOutputStream = ImageIO.createImageOutputStream(byteArrayOutputStream);
-        } catch (IOException e) {
-            log.error("Could not create Image Output Stream: ", e);
-        }
+        imageOutputStream = ImageIO.createImageOutputStream(byteArrayOutputStream);
+
         ImageWriter imageWriter = ImageIO.getImageWritersByFormatName(IMAGE_EXTENSION).next();
 
         ImageWriteParam imageWriteParam = imageWriter.getDefaultWriteParam();
@@ -93,11 +92,7 @@ public class ImageCompressServiceImpl implements ImageCompressService {
 
         imageWriter.setOutput(imageOutputStream);
 
-        try {
-            imageWriter.write(null, new IIOImage(bufferedImage, null, null), imageWriteParam);
-        } catch (IOException e) {
-            log.error("Could not write Image to stream: ", e);
-        }
+        imageWriter.write(null, new IIOImage(bufferedImage, null, null), imageWriteParam);
 
         imageWriter.dispose();
 
@@ -122,32 +117,25 @@ public class ImageCompressServiceImpl implements ImageCompressService {
         return encodeBufferedImage(img);
     }
 
+    @SneakyThrows
     private String encodeBufferedImage(BufferedImage img) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(img, IMAGE_EXTENSION, byteArrayOutputStream);
-        } catch (IOException e) {
-            log.error("Could not write image to Byte Array: ", e);
-        }
+        ImageIO.write(img, IMAGE_EXTENSION, byteArrayOutputStream);
         byte[] imageDecoded = byteArrayOutputStream.toByteArray();
 
         return Base64.getEncoder().encodeToString(imageDecoded);
     }
 
+    @SneakyThrows
     private BufferedImage getBufferedImage(String imageEncoded) {
         byte[] imageDecoded = Base64.getDecoder().decode(imageEncoded);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageDecoded);
-        BufferedImage bufferedImage = null;
-        try {
-            bufferedImage = ImageIO.read(byteArrayInputStream);
-        } catch (IOException e) {
-            log.error("Could not read image from Byte Array: ", e);
-        }
+        BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+
         return bufferedImage;
     }
 
     private void saveImagePair(UserImage originalImage, UserImage compressedImage) {
-        ImagePair imagePair = new ImagePair(originalImage, compressedImage);
-        imagePairRepository.save(imagePair);
+        imagePairRepository.save(new ImagePair(originalImage, compressedImage));
     }
 }
