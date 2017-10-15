@@ -32,6 +32,9 @@ public class EmailNotificationLog extends AbstractEntity {
     @Column(name = "IS_SEND_FAILED")
     private Boolean isSendFailed;
 
+    @Column(name = "EMAIL_HEADER", nullable = false)
+    private String emailHeader;
+
     @Column(name = "EMAIL_CONTENT", nullable = false)
     @Lob
     private String emailContent;

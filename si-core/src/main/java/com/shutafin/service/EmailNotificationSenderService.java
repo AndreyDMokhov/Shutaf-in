@@ -1,5 +1,6 @@
 package com.shutafin.service;
 
+import com.shutafin.model.entities.EmailNotificationLog;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
 
@@ -10,4 +11,5 @@ import com.shutafin.model.smtp.EmailMessage;
 public interface EmailNotificationSenderService {
 
     void sendEmail(EmailMessage emailMessage, EmailReason emailReason);
+    void sendEmail(EmailNotificationLog emailNotificationLog);
 }
