@@ -4,16 +4,23 @@ import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.entities.types.CompressionType;
+import com.shutafin.model.entities.types.PermissionType;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.repository.common.ImageStorageRepository;
 import com.shutafin.repository.common.UserImageRepository;
 import com.shutafin.service.EnvironmentConfigurationService;
+import com.shutafin.service.ImageCompressService;
 import com.shutafin.service.UserImageService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.Instant;
 import java.util.Base64;
@@ -25,7 +32,8 @@ import java.util.List;
 @Slf4j
 public class UserImageServiceImpl implements UserImageService {
 
-    private static final String IMAGE_EXTENSION = ".jpg";
+    private static final String DOT_SEPARATOR = ".";
+    private static final String IMAGE_EXTENSION = "jpg";
 
     @Autowired
     private UserImageRepository userImageRepository;
@@ -36,21 +44,17 @@ public class UserImageServiceImpl implements UserImageService {
     @Autowired
     private EnvironmentConfigurationService environmentConfigurationService;
 
+    @Autowired
+    private ImageCompressService imageCompressService;
+
     @Override
     @Transactional
-    public UserImage addUserImage(UserImageWeb image, User user) {
-        UserImage userImage = new UserImage();
-        String imageEncoded = image.getImage();
-        userImage.setUser(user);
-
-        userImageRepository.save(userImage);
-
-        String imageLocalPath = getUserDirectoryPath(user) + userImage.getId() + IMAGE_EXTENSION;
-        userImage.setLocalPath(imageLocalPath);
-        saveUserImageToFileSystem(imageEncoded, userImage);
-        ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
-        userImage.setImageStorage(imageStorage);
-        userImageRepository.update(userImage);
+    public UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
+        image = convertToJpg(image);
+        UserImage userImage = addUserImage(image, user, permissionType);
+        if (compressionType != null && compressionType != CompressionType.NO_COMPRESSION) {
+            return imageCompressService.addCompressedUserImage(userImage, compressionType);
+        }
         return userImage;
     }
 
@@ -62,9 +66,13 @@ public class UserImageServiceImpl implements UserImageService {
             return userImage;
         }
         userImage = userImageRepository.findById(userImageId);
-        if (userImage == null || !user.getId().equals(userImage.getUser().getId())) {
+        if (userImage == null) {
             log.warn("Resource not found exception:");
             log.warn("User Image with ID {} was not found", userImageId);
+            throw new ResourceNotFoundException(String.format("User Image with ID %d was not found", userImageId));
+        } else if (!user.getId().equals(userImage.getUser().getId()) &&
+                !userImage.getPermissionType().equals(PermissionType.PUBLIC)) {
+            log.warn("User does not have authority to view this image, throw exception");
             throw new ResourceNotFoundException(String.format("User Image with ID %d was not found", userImageId));
         }
         saveUserImageToFileSystem(userImage.getImageStorage().getImageEncoded(), userImage);
@@ -94,10 +102,27 @@ public class UserImageServiceImpl implements UserImageService {
         return userImageRepository.findAllUserImages(user);
     }
 
-
     private void deleteLocalImage(UserImage userImage) {
         File image = new File(userImage.getLocalPath());
         image.delete();
+    }
+
+    private UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType) {
+        UserImage userImage = new UserImage();
+        userImage.setPermissionType(permissionType);
+        userImage.setCompressionType(CompressionType.NO_COMPRESSION);
+        String imageEncoded = image.getImage();
+        userImage.setUser(user);
+
+        userImageRepository.save(userImage);
+
+        String imageLocalPath = getUserDirectoryPath(user) + userImage.getId() + DOT_SEPARATOR + IMAGE_EXTENSION;
+        userImage.setLocalPath(imageLocalPath);
+        saveUserImageToFileSystem(imageEncoded, userImage);
+        ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
+        userImage.setImageStorage(imageStorage);
+        userImageRepository.update(userImage);
+        return userImage;
     }
 
     private String getUserDirectoryPath(User user) {
@@ -129,7 +154,7 @@ public class UserImageServiceImpl implements UserImageService {
         userImage.setId(userImageId);
         userImage.setUser(user);
         userImage.setImageStorage(new ImageStorage());
-        String imageLocalPath = getUserDirectoryPath(user) + userImageId + IMAGE_EXTENSION;
+        String imageLocalPath = getUserDirectoryPath(user) + userImageId + DOT_SEPARATOR + IMAGE_EXTENSION;
         userImage.setLocalPath(imageLocalPath);
         File imageFile = new File(imageLocalPath);
         try {
@@ -161,4 +186,22 @@ public class UserImageServiceImpl implements UserImageService {
         return imageStorage;
     }
 
+    @SneakyThrows
+    private UserImageWeb convertToJpg(UserImageWeb userImageWeb) {
+        String imageEncoded = userImageWeb.getImage();
+
+        byte[] imageData = Base64.getDecoder().decode(imageEncoded);
+        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageData));
+        BufferedImage newBufferedImage = new BufferedImage(
+                bufferedImage.getWidth(),
+                bufferedImage.getHeight(),
+                BufferedImage.TYPE_INT_RGB);
+
+        newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(newBufferedImage, IMAGE_EXTENSION, baos);
+        byte[] byteArray = baos.toByteArray();
+        userImageWeb.setImage(Base64.getEncoder().encodeToString(byteArray));
+        return userImageWeb;
+    }
 }
