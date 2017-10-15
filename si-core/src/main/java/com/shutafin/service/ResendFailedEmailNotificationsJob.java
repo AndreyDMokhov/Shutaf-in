@@ -24,9 +24,10 @@ public class ResendFailedEmailNotificationsJob {
     private EmailNotificationSenderService emailNotificationSenderService;
 
     @Transactional
-    @Scheduled(fixedRate = 15000)
-    public void resendFailedEmailNotifications(){
+    @Scheduled(fixedRate = 30000)
+    public void resendFailedEmailNotifications() {
         List<EmailNotificationLog> failedEmailNotificationLogs = emailNotificationLogRepository.getAllFailedEmailNotifications();
+        log.info("{} emails to be resend", failedEmailNotificationLogs.size());
         for (EmailNotificationLog emailNotificationLog : failedEmailNotificationLogs) {
             emailNotificationSenderService.sendEmail(emailNotificationLog);
         }

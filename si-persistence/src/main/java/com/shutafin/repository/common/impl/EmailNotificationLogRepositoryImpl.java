@@ -21,7 +21,6 @@ public class EmailNotificationLogRepositoryImpl extends AbstractEntityDao<EmailN
                 .append(" WHERE enl.isSendFailed = 1 ");
         return getSession()
                 .createQuery(hql.toString())
-                .setCacheable(true)
                 .getResultList();
     }
 }
