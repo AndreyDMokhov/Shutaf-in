@@ -121,11 +121,20 @@ app.controller('userProfileController', function ($localStorage,
         img.addEventListener('load',function(){
             width=img.width;
             height=img.height;
-            $scope.selectedSize =
-                {value:{w: width/2, h: height/2}}
-            ;
-            console.log(height);
-            console.log(width);
+            if(width>=1000&&height>=1000){
+                $scope.selectedSize =
+                    {value:{w: 1000, h: 1000}}
+                ;
+            }
+            else{
+                if(width>=height){
+                    $scope.selectedSize =
+                        {value:{w: height, h: height}};
+                }
+                else{
+                    $scope.selectedSize =
+                    {value:{w: width, h: width}};  }
+            }
         });
 
     }
