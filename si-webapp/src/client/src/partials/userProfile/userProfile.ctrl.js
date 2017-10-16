@@ -10,7 +10,8 @@ app.controller('userProfileController', function ($localStorage,
                                                   $scope,
                                                   $q,
                                                   ngDialog,
-                                                  IMAGE_MAX_SIZE_MB) {
+                                                  IMAGE_MAX_SIZE_MB,
+                                                  $window) {
 
     var vm = this;
     $scope.myCroppedImage = '';
@@ -59,6 +60,7 @@ app.controller('userProfileController', function ($localStorage,
                 $sessionStorage.userProfile = vm.userProfile;
                 vm.deleteButton = false;
                 notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
+                $window.location.reload();
             },
 
             function (error) {
