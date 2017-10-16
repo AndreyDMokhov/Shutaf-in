@@ -83,8 +83,8 @@ class InitializationResponse {
     private List<CityResponseDTO> cities;
     private List<QuestionAnswersResponse> questionAnswersResponses;
     private List<QuestionSelectedAnswersResponse> selectedAnswersResponses;
-    private List<City> citiesForFilter;
-    private List<Gender> genderForFilter;
+    private List<Integer> citiesForFilter;
+    private Integer genderForFilter;
     private AgeRangeResponseDTO ageRangeFilter;
 
 }

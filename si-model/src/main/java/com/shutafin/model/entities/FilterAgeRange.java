@@ -20,7 +20,7 @@ import javax.persistence.*;
 public class FilterAgeRange extends AbstractBaseEntity {
 
     @JoinColumn(name = "USER_ID", nullable = false)
-    @ManyToOne
+    @OneToOne
     private User user;
 
     @Column(name = "FROM_AGE", nullable = false)

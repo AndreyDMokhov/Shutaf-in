@@ -1,4 +1,4 @@
-package com.shutafin.service.match;
+package com.shutafin.service.filter;
 
 import com.shutafin.model.entities.User;
 import lombok.Getter;

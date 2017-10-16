@@ -11,7 +11,7 @@ import java.util.List;
  * Created by evgeny on 9/23/2017.
  */
 public interface FilterGenderRepository extends PersistentDao<FilterGender> {
-    List<Gender> getUserFilterGender(User user);
+    Gender getUserFilterGender(User user);
     List<User> getAllMatchedUsers(User user, List<User> matchedUsers);
     void deleteUserFilterGender(User user);
 }

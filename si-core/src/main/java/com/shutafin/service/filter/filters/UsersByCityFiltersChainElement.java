@@ -1,8 +1,8 @@
-package com.shutafin.service.match.impl;
+package com.shutafin.service.filter.filters;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.repository.common.FilterCityRepository;
-import com.shutafin.service.match.UsersFiltersChain;
+import com.shutafin.service.filter.UsersFiltersChain;
 
 import java.util.List;
 

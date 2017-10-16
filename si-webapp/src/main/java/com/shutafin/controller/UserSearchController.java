@@ -42,7 +42,7 @@ public class UserSearchController {
     }
 
     @RequestMapping(value = "/save/ageRange/filter", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserGenderFilter(@AuthenticatedUser User user, @RequestBody @Valid AgeRangeRequest ageRangeRequest) {
+    public void saveUserAgeRangeFilter(@AuthenticatedUser User user, @RequestBody @Valid AgeRangeRequest ageRangeRequest) {
         userFilterService.saveUserFilterAgeRange(user, ageRangeRequest);
     }
 }

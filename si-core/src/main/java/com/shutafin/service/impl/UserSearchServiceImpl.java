@@ -50,13 +50,27 @@ public class UserSearchServiceImpl implements UserSearchService {
     }
 
     @Override
-    public List<City> getCitiesForFilter(User user) {
-        return filterCityRepository.getUserFilterCity(user);
+    public List<Integer> getCitiesForFilter(User user) {
+
+        List<City> cities = filterCityRepository.getUserFilterCity(user);
+        if (cities.isEmpty()){
+            return null;
+        }
+
+        List<Integer> result = new ArrayList();
+        for(City city : cities){
+            result.add(city.getId());
+        }
+        return result;
     }
 
     @Override
-    public List<Gender> getGenderForFilter(User user) {
-        return filterGenderRepository.getUserFilterGender(user);
+    public Integer getGenderForFilter(User user) {
+        Gender gender = filterGenderRepository.getUserFilterGender(user);
+        if (gender != null){
+            return gender.getId();
+        }
+        return null;
     }
 
     @Override

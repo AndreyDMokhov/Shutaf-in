@@ -15,20 +15,21 @@ import java.util.List;
 @Repository
 public class FilterGenderRepositoryImpl extends AbstractEntityDao<FilterGender> implements FilterGenderRepository {
     @Override
-    public List<Gender> getUserFilterGender(User user) {
+    public Gender getUserFilterGender(User user) {
         StringBuilder hql = new StringBuilder()
                 .append(" SELECT fg.gender ")
                 .append(" FROM FilterGender fg")
                 .append(" WHERE fg.user = :user ");
-        return getSession()
+        return (Gender) getSession()
                 .createQuery(hql.toString())
                 .setParameter("user", user)
-                .list();
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     @Override
     public List<User> getAllMatchedUsers(User user, List<User> matchedUsers) {
-        if (getUserFilterGender(user).isEmpty() || matchedUsers.isEmpty()){
+        if (getUserFilterGender(user) == null || matchedUsers.isEmpty()){
             return matchedUsers;
         }
         StringBuilder hql = new StringBuilder()

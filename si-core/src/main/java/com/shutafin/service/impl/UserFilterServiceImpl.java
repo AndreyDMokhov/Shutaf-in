@@ -12,10 +12,10 @@ import com.shutafin.repository.initialization.locale.CityRepository;
 import com.shutafin.repository.initialization.locale.GenderRepository;
 import com.shutafin.service.UserFilterService;
 import com.shutafin.service.UserMatchService;
-import com.shutafin.service.match.UsersFiltersChain;
-import com.shutafin.service.match.impl.UsersByAgeRangeFiltersChainElement;
-import com.shutafin.service.match.impl.UsersByCityFiltersChainElement;
-import com.shutafin.service.match.impl.UsersByGenderFiltersChainElement;
+import com.shutafin.service.filter.UsersFiltersChain;
+import com.shutafin.service.filter.filters.UsersByAgeRangeFiltersChainElement;
+import com.shutafin.service.filter.filters.UsersByCityFiltersChainElement;
+import com.shutafin.service.filter.filters.UsersByGenderFiltersChainElement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,8 +77,10 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Transactional
     public void saveUserFilterCity(User user, List<Integer> cities) {
         filterCityRepository.deleteUserFilterCity(user);
-        for (Integer cityId : cities) {
-            filterCityRepository.save(new FilterCity(user, cityRepository.findById(cityId)));
+        if (cities != null){
+            for (Integer cityId : cities) {
+                filterCityRepository.save(new FilterCity(user, cityRepository.findById(cityId)));
+            }
         }
     }
 
@@ -86,13 +88,17 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Transactional
     public void saveUserFilterGender(User user, Integer genderId) {
         filterGenderRepository.deleteUserFilterGender(user);
-        filterGenderRepository.save(new FilterGender(user, genderRepository.findById(genderId)));
+        if (genderId != null){
+            filterGenderRepository.save(new FilterGender(user, genderRepository.findById(genderId)));
+        }
     }
 
     @Override
     @Transactional
     public void saveUserFilterAgeRange(User user, AgeRangeRequest ageRangeRequest) {
         filterAgeRangeRepository.deleteUserFilterAgeRange(user);
-        filterAgeRangeRepository.save(new FilterAgeRange(user, ageRangeRequest.getFromAge(), ageRangeRequest.getToAge()));
+        if (ageRangeRequest != null){
+            filterAgeRangeRepository.save(new FilterAgeRange(user, ageRangeRequest.getFromAge(), ageRangeRequest.getToAge()));
+        }
     }
 }
