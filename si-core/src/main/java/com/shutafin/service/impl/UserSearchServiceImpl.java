@@ -92,6 +92,7 @@ public class UserSearchServiceImpl implements UserSearchService {
                             userInfoResponseDTO.getFirstName(),
                             userInfoResponseDTO.getLastName(),
                             userInfoResponseDTO.getUserImage(),
+                            userInfoResponseDTO.getUserImageId(),
                             userInfoResponseDTO.getGenderId(),
                             userInfoResponseDTO.getCityId(),
                             userInfoResponseDTO.getCountryId(),
