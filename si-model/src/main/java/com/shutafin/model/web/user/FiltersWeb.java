@@ -1,12 +1,11 @@
 package com.shutafin.model.web.user;
 
-import com.shutafin.model.entities.FilterAgeRange;
-import com.shutafin.model.entities.FilterCity;
-import com.shutafin.model.entities.FilterGender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * Created by evgeny on 10/17/2017.
@@ -16,8 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FiltersWeb {
-    private Long userId;
-    private FilterCity filterCity;
-    private FilterGender filterGender;
-    private FilterAgeRange filterAgeRange;
+    private List<Integer> filterCitiesIds;
+    private Integer filterGenderId;
+    private AgeRangeRequest filterAgeRange;
 }

@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.AgeRangeRequest;
+import com.shutafin.model.web.user.FiltersWeb;
 import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserFilterService;
@@ -31,18 +31,8 @@ public class UserSearchController {
         return userSearchService.userSearchByList(userFilterService.findFilteredUsers(user), fullName);
     }
 
-    @RequestMapping(value = "/save/city/filter", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserCityFilter(@AuthenticatedUser User user, @RequestParam List<Integer> cities) {
-        userFilterService.saveUserFilterCity(user, cities);
-    }
-
-    @RequestMapping(value = "/save/gender/filter", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserGenderFilter(@AuthenticatedUser User user, @RequestParam Integer genderId) {
-        userFilterService.saveUserFilterGender(user, genderId);
-    }
-
-    @RequestMapping(value = "/save/ageRange/filter", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserAgeRangeFilter(@AuthenticatedUser User user, @RequestBody @Valid AgeRangeRequest ageRangeRequest) {
-        userFilterService.saveUserFilterAgeRange(user, ageRangeRequest);
+    @RequestMapping(value = "/save/filters", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void saveUserFilters(@AuthenticatedUser User user, @RequestBody @Valid FiltersWeb filtersWeb) {
+        userFilterService.saveUserFilters(user, filtersWeb);
     }
 }

@@ -5,6 +5,7 @@ import com.shutafin.model.entities.FilterCity;
 import com.shutafin.model.entities.FilterGender;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.AgeRangeRequest;
+import com.shutafin.model.web.user.FiltersWeb;
 import com.shutafin.repository.common.FilterAgeRangeRepository;
 import com.shutafin.repository.common.FilterCityRepository;
 import com.shutafin.repository.common.FilterGenderRepository;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -75,6 +77,14 @@ public class UserFilterServiceImpl implements UserFilterService {
 
     @Override
     @Transactional
+    public void saveUserFilters(User user, FiltersWeb filtersWeb) {
+        saveUserFilterCity(user, filtersWeb.getFilterCitiesIds());
+        saveUserFilterGender(user, filtersWeb.getFilterGenderId());
+        saveUserFilterAgeRange(user, filtersWeb.getFilterAgeRange());
+    }
+
+    @Override
+    @Transactional
     public void saveUserFilterCity(User user, List<Integer> cities) {
         filterCityRepository.deleteUserFilterCity(user);
         if (cities != null){
@@ -95,7 +105,7 @@ public class UserFilterServiceImpl implements UserFilterService {
 
     @Override
     @Transactional
-    public void saveUserFilterAgeRange(User user, AgeRangeRequest ageRangeRequest) {
+    public void saveUserFilterAgeRange(User user, @Valid AgeRangeRequest ageRangeRequest) {
         filterAgeRangeRepository.deleteUserFilterAgeRange(user);
         if (ageRangeRequest != null){
             filterAgeRangeRepository.save(new FilterAgeRange(user, ageRangeRequest.getFromAge(), ageRangeRequest.getToAge()));
