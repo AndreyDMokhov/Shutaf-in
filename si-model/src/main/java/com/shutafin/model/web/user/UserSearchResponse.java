@@ -17,7 +17,9 @@ public class UserSearchResponse {
 
     private String lastName;
 
-    private String image;
+    private String userImage;
+
+    private Long userImageId;
 
     private Integer genderId;
 

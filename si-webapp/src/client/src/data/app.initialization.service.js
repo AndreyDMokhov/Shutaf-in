@@ -24,6 +24,7 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         rest.one('/api/initialization/all').customGET().then(
             function (success) {
+
                 $sessionStorage.userProfile = success.data.userProfile;
                 $sessionStorage.cities = success.data.cities;
                 $sessionStorage.countries = success.data.countries;
@@ -48,10 +49,10 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
         var answers = [];
         for (var i = 0; i < $sessionStorage.questions.length; i++) {
             if (data[i]) {
-                answers.push({"questionId": i, "answerId": data[i].selectedAnswersIds[0]});
+                answers.push({"questionId": data[i].questionId, "answerId": data[i].selectedAnswersIds[0]});
             }
             else {
-                answers.push({"questionId": i, "answerId": null});
+                answers.push({"questionId": i+1, "answerId": null});
             }
         }
         return answers;

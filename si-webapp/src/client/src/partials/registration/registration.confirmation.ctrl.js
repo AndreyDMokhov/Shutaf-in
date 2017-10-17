@@ -18,7 +18,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
             function (success) {
 
                 $sessionStorage.sessionId = success.headers('session_id');
-                $window.location.reload();
+                $window.location.href = "/";
                 notify.set($filter('translate')("Registration.form.msg.registration.success"), {type: 'success'});
                 $state.go("home");
             }, function (error) {

@@ -1,9 +1,22 @@
 "use strict";
-app.controller('userProfileController', function ($localStorage, $state, $filter, sessionService, userProfileModel, $sessionStorage, notify, $timeout) {
+app.controller('userProfileController', function ($localStorage,
+                                                  $state,
+                                                  $filter,
+                                                  sessionService,
+                                                  userProfileModel,
+                                                  $sessionStorage,
+                                                  notify,
+                                                  $timeout,
+                                                  $scope,
+                                                  ngDialog,
+                                                  IMAGE_MAX_SIZE_MB,
+                                                  $window) {
 
     var vm = this;
+    $scope.myCroppedImage = '';
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
+    vm.size = IMAGE_MAX_SIZE_MB * 1024;
 
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
@@ -18,16 +31,25 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
         }
     }
 
-    function onLoad(e, reader, file, fileList, fileOjects, fileObj) {
+    $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
         $timeout(function () {
-            vm.image = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
+            $scope.myImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
             vm.deleteButton = true;
-            saveImage();
-        }, 0);
-    }
 
-    function saveImage() {
-        userProfileModel.addOrUpdateImage({image: vm.fileInfo.base64}).then(
+            if (vm.size > vm.fileInfo.filesize / 1024) {
+                showImagePopup();
+            }
+            else {
+                setProfileImage();
+                notify.set($filter('translate')('UserProfile.message.sizeImage', {size: vm.size / 1024}), {type: 'warn'});
+            }
+        }, 0);
+
+
+    };
+
+    function saveImage(data) {
+        userProfileModel.addOrUpdateImage({image: data}).then(
             function (success) {
                 vm.userProfile.userImage = success.data.data.image;
                 vm.userProfile.userImageId = success.data.data.id;
@@ -35,12 +57,18 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
                 $sessionStorage.userProfile = vm.userProfile;
                 vm.deleteButton = false;
                 notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
+                $window.location.reload();
             },
 
             function (error) {
-
                 if (error === undefined || error === null) {
                     notify.set($filter('translate')('Error.SYS'), {type: 'error'});
+                }
+
+                if (error.data.error.errorTypeCode === 'INP') {
+                    if (error.data.error.errors.indexOf('INP.image.LimitSize') > 0) {
+                        notify.set($filter('translate')('UserProfile.message.sizeImage'), {type: 'warn'});
+                    }
                 }
 
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -63,14 +91,28 @@ app.controller('userProfileController', function ($localStorage, $state, $filter
                 vm.deleteButton = true;
                 notify.set($filter('translate')('UserProfile.message.imageDeleted'), {type: 'success'});
             },
-
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
     }
 
+    $scope.cropIt = function (base64Image) {
+        vm.image = base64Image;
+        var base64ImageWithoutPrefix = base64Image.split([',']);
+        saveImage(base64ImageWithoutPrefix[1]);
+        ngDialog.close();
+    };
+
+    function showImagePopup() {
+        ngDialog.open({
+            templateUrl: 'partials/userProfile/imagePopup.html',
+            scope: $scope,
+            showClose: false,
+            className: 'ngdialog-theme-plain custom-width',
+            closeByDocument: true
+        });
+    }
+
     setProfileImage();
-    vm.onLoad = onLoad;
-    vm.saveImage = saveImage;
     vm.deleteImage = deleteImage;
 });
