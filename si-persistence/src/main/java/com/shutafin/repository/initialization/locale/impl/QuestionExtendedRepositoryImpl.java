@@ -14,7 +14,7 @@ public class QuestionExtendedRepositoryImpl extends AbstractConstEntityDao<Quest
     @Override
     public List<QuestionExtended> getAllQuestionsExtended() {
         StringBuilder hql = new StringBuilder();
-        hql.append("select * from QuestionExtended; ");
+        hql.append("from QuestionExtended ");
 
         return getSession()
                 .createQuery(hql.toString())

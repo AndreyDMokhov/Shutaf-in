@@ -13,4 +13,5 @@ public interface UserQuestionExtendedAnswerService {
 
     Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionAnswers(User user);
     void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList, User user);
+    List<UserQuestionExtendedAnswersWeb> getSelectedQuestionExtendedAnswers(User user);
 }

@@ -3,10 +3,13 @@ package com.shutafin.controller;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.QuestionAnswersResponse;
+import com.shutafin.model.web.QuestionExtendedWithAnswersLocaleWeb;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
+import com.shutafin.model.web.UserQuestionExtendedAnswersWeb;
 import com.shutafin.model.web.initialization.CityResponseDTO;
 import com.shutafin.model.web.initialization.CountryResponseDTO;
 import com.shutafin.model.web.initialization.GenderResponseDTO;
+import com.shutafin.model.web.initialization.QuestionImportanceDTO;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
@@ -18,7 +21,9 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -38,6 +43,12 @@ public class InitializationController {
 
     @Autowired
     private UserLanguageService userLanguageService;
+
+    @Autowired
+    private QuestionExtendedService questionExtendedService;
+
+    @Autowired
+    private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
 
     @NoAuthentication
@@ -60,6 +71,9 @@ public class InitializationController {
                 .genders(initializationService.findAllGendersByLanguage(language))
                 .questionAnswersResponses(userMatchService.getUserQuestionsAnswers(language))
                 .selectedAnswersResponses(userMatchService.getUserQuestionsSelectedAnswers(user))
+                .questionExtendedWithAnswers(questionExtendedService.getQuestionsExtendedWithAnswers(language))
+                .questionImportanceList(questionExtendedService.getQuestionImportanceList(language))
+                .selectedExtendedAnswersResponses(userQuestionExtendedAnswerService.getSelectedQuestionExtendedAnswers(user))
                 .build();
     }
 }
@@ -75,5 +89,7 @@ class InitializationResponse {
     private List<CityResponseDTO> cities;
     private List<QuestionAnswersResponse> questionAnswersResponses;
     private List<QuestionSelectedAnswersResponse> selectedAnswersResponses;
-
+    private List<QuestionExtendedWithAnswersLocaleWeb> questionExtendedWithAnswers;
+    private List<QuestionImportanceDTO> questionImportanceList;
+    private List<UserQuestionExtendedAnswersWeb> selectedExtendedAnswersResponses;
 }

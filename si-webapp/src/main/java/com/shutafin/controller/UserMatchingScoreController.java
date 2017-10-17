@@ -37,12 +37,6 @@ public class UserMatchingScoreController {
         return userMatchingScoreService.getUserMatchingScores(user);
     }
 
-    @RequestMapping(value = "/template", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionExtendedWithAnswersLocaleWeb> getQuestionsExtendedWithAnswersLocale(@AuthenticatedUser User user) {
-        Language language = userLanguageService.findUserLanguage(user);
-        return questionExtendedService.getQuestionsExtendedWithAnswers(language);
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void addUserQuestionExtendedAnswers(@AuthenticatedUser User user,
                                                @RequestBody List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList) {

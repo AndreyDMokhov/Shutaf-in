@@ -4,8 +4,10 @@ import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.initialization.AnswerExtendedResponseDTO;
 import com.shutafin.model.web.initialization.QuestionExtendedResponseDTO;
 import com.shutafin.model.web.QuestionExtendedWithAnswersLocaleWeb;
+import com.shutafin.model.web.initialization.QuestionImportanceDTO;
 import com.shutafin.repository.initialization.locale.AnswerExtendedRepository;
 import com.shutafin.repository.initialization.locale.QuestionExtendedRepository;
+import com.shutafin.repository.initialization.locale.QuestionImportanceRepository;
 import com.shutafin.service.QuestionExtendedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class QuestionExtendedServiceImpl implements QuestionExtendedService {
     @Autowired
     private AnswerExtendedRepository answerExtendedRepository;
 
+    @Autowired
+    private QuestionImportanceRepository questionImportanceRepository;
+
     @Override
     public List<QuestionExtendedWithAnswersLocaleWeb> getQuestionsExtendedWithAnswers(Language language) {
         List<QuestionExtendedWithAnswersLocaleWeb> questionExtendedWithAnswersList = new ArrayList<>();
@@ -39,5 +44,10 @@ public class QuestionExtendedServiceImpl implements QuestionExtendedService {
             questionExtendedWithAnswersList.add(questionWithAnswers);
         }
         return questionExtendedWithAnswersList;
+    }
+
+    @Override
+    public List<QuestionImportanceDTO> getQuestionImportanceList(Language language) {
+        return questionImportanceRepository.getAllQuestionImportanceLocale(language);
     }
 }

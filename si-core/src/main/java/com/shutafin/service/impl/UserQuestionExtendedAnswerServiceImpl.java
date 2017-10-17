@@ -11,18 +11,16 @@ import com.shutafin.repository.initialization.locale.AnswerExtendedRepository;
 import com.shutafin.repository.initialization.locale.QuestionExtendedRepository;
 import com.shutafin.repository.initialization.locale.QuestionImportanceRepository;
 import com.shutafin.repository.matching.MaxUserMatchingScoreRepository;
+import com.shutafin.repository.matching.UserMatchingScoreRepository;
 import com.shutafin.repository.matching.UserQuestionExtendedAnswerRepository;
 import com.shutafin.service.AnswerSimilarityService;
-import com.shutafin.service.UserMatchingScoreService;
 import com.shutafin.service.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,7 +32,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     private QuestionImportanceRepository questionImportanceRepository;
     private MaxUserMatchingScoreRepository maxUserMatchingScoreRepository;
     private AnswerSimilarityService answerSimilarityService;
-    private UserMatchingScoreService userMatchingScoreService;
+    private UserMatchingScoreRepository userMatchingScoreRepository;
 
     @Autowired
     public UserQuestionExtendedAnswerServiceImpl(UserQuestionExtendedAnswerRepository userQuestionExtendedAnswerRepository,
@@ -43,14 +41,14 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
                                                  QuestionImportanceRepository questionImportanceRepository,
                                                  MaxUserMatchingScoreRepository maxUserMatchingScoreRepository,
                                                  AnswerSimilarityService answerSimilarityService,
-                                                 UserMatchingScoreService userMatchingScoreService) {
+                                                 UserMatchingScoreRepository userMatchingScoreRepository) {
         this.userQuestionExtendedAnswerRepository = userQuestionExtendedAnswerRepository;
         this.questionExtendedRepository = questionExtendedRepository;
         this.answerExtendedRepository = answerExtendedRepository;
         this.questionImportanceRepository = questionImportanceRepository;
         this.maxUserMatchingScoreRepository = maxUserMatchingScoreRepository;
         this.answerSimilarityService = answerSimilarityService;
-        this.userMatchingScoreService = userMatchingScoreService;
+        this.userMatchingScoreRepository = userMatchingScoreRepository;
     }
 
     @Override
@@ -72,7 +70,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     public void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList,
                                           User user) {
         deleteUserQuestionAnswers(user);
-        userMatchingScoreService.deleteUserMatchingScores(user);
+        userMatchingScoreRepository.deleteUserMatchingScores(user);
         Integer maxScore = 0;
         for (UserQuestionExtendedAnswersWeb questionExtendedAnswersWeb : userQuestionExtendedAnswersWebList) {
             QuestionExtended question = questionExtendedRepository
@@ -100,6 +98,38 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
             maxUserMatchingScore.setScore(maxScore);
             maxUserMatchingScoreRepository.update(maxUserMatchingScore);
         }
+    }
+
+    @Override
+    public List<UserQuestionExtendedAnswersWeb> getSelectedQuestionExtendedAnswers(User user) {
+        List<UserQuestionExtendedAnswersWeb> selectedAnswers = new ArrayList<>();
+        Map<QuestionExtended, List<UserQuestionExtendedAnswer>> allUserAnswers = getAllUserQuestionAnswers(user);
+        for (Map.Entry<QuestionExtended, List<UserQuestionExtendedAnswer>> question : allUserAnswers.entrySet()) {
+            List<Integer> questionAnswers = new ArrayList<>();
+            for (UserQuestionExtendedAnswer answer : question.getValue()) {
+                questionAnswers.add(answer.getAnswer().getId());
+            }
+            selectedAnswers.add(new UserQuestionExtendedAnswersWeb(question.getKey().getId(),
+                    question.getValue().get(0).getImportance().getId(), questionAnswers));
+        }
+        selectedAnswers.addAll(getNotAnsweredQuestions(allUserAnswers));
+        return selectedAnswers;
+    }
+
+    private List<UserQuestionExtendedAnswersWeb> getNotAnsweredQuestions(Map<QuestionExtended,
+            List<UserQuestionExtendedAnswer>> allUserAnswers) {
+        List<UserQuestionExtendedAnswersWeb> notAnsweredQuestions = new ArrayList<>();
+        List<QuestionExtended> questionsExtended = questionExtendedRepository.getAllQuestionsExtended();
+        Set<Integer> answeredQuestions = allUserAnswers.keySet()
+                .stream()
+                .map(question -> question.getId())
+                .collect(Collectors.toSet());
+        for (QuestionExtended question : questionsExtended) {
+            if (!answeredQuestions.contains(question.getId())) {
+                notAnsweredQuestions.add(new UserQuestionExtendedAnswersWeb(question.getId(), null, null));
+            }
+        }
+        return notAnsweredQuestions;
     }
 
     private void deleteUserQuestionAnswers(User user) {
