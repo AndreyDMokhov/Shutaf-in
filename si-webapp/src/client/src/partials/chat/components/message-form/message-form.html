@@ -1,0 +1,30 @@
+
+<form role="form" ng-submit="sendMessageThrowWs()" ng-show="!isEmpty()">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="input-group">
+                <input ng-model="outMessage.message" type="text" class="form-control" placeholder="Type your message "/>
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-primary">{{'Chat.button.send' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!--<form ng-show="!isEmpty()">-->
+    <!--<div class="form-group">-->
+        <!--<textarea name="message" id="message" ng-model="outMessage.message" class="form-control"-->
+                  <!--placeholder="Type your message "></textarea>-->
+
+
+        <!--<button id="send" class="btn btn-default"-->
+                <!--class="form-control"-->
+                <!--ng-disabled="!outMessage.message || outMessage.message === '' "-->
+                <!--ng-click="sendMessageThrowWs()"-->
+                <!--type="submit">{{'Chat.button.send' | translate}}-->
+        <!--</button>-->
+    <!--</div>-->
+<!--</form>-->
+
+

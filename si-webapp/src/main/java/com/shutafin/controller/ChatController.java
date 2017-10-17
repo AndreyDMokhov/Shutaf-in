@@ -2,6 +2,7 @@ package com.shutafin.controller;
 
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
+import com.shutafin.model.entities.MessageIdListWrapper;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.chat.ChatMessageRequest;
 import com.shutafin.model.web.chat.ChatMessageResponse;
@@ -13,15 +14,14 @@ import com.shutafin.service.UserMatchService;
 import com.shutafin.service.UserSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,11 +92,11 @@ public class ChatController {
     }
 
     @RequestMapping(value = "/{chat_id}/get/users", method = RequestMethod.GET)
-    public List<User> getUsers(@PathVariable("chat_id") Long chatId,
+    public List<UserBaseResponse> getUsers(@PathVariable("chat_id") Long chatId,
                                @AuthenticatedUser User user) {
 
         Chat chat = chatManagementService.findAuthorizedChat(chatId, user);
-        return chatManagementService.getListUsersByChatId(chat);
+        return userSearchService.userBaseResponseByList(chatManagementService.getListUsersByChatId(chat));
     }
 
     @RequestMapping(value = "/{chat_id}/get/messages", method = RequestMethod.GET)
@@ -113,6 +113,11 @@ public class ChatController {
         return userSearchService.userBaseResponseByList(userMatchService.findMatchingUsers(user));
     }
 
+    @RequestMapping(value = "/updateMessagesAsRead", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateMessagesAsRead (@RequestBody @Valid MessageIdListWrapper messagesIdList, @AuthenticatedUser User user){
+        chatManagementService.updateMessagesAsRead(messagesIdList.getMessageIdList(), user);
+    }
+
     private List<ChatMessageResponse> createListChatMessageOutputWeb(List<ChatMessage> chatMessages) {
         return chatMessages
                 .stream()
@@ -122,11 +127,13 @@ public class ChatController {
 
     private ChatMessageResponse createChatMessageOutputWeb(ChatMessage chatMessage) {
         ChatMessageResponse chatMessageOutputWeb = new ChatMessageResponse();
+        chatMessageOutputWeb.setMessageId(chatMessage.getId());
         chatMessageOutputWeb.setFirstName(chatMessage.getUser().getFirstName());
         chatMessageOutputWeb.setLastName(chatMessage.getUser().getLastName());
         chatMessageOutputWeb.setCreateDate(chatMessage.getCreatedDate());
         chatMessageOutputWeb.setMessage(chatMessage.getMessage());
         chatMessageOutputWeb.setMessageType(chatMessage.getMessageType().getId());
+        chatMessageOutputWeb.setUsersToNotify(chatMessage.getUsersToNotify());
         return chatMessageOutputWeb;
     }
 

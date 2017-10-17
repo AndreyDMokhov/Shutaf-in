@@ -1,23 +1,13 @@
-app.controller('chatController', function (chatModel, $sessionStorage, $scope, $q, webSocketService) {
+app.controller('chatController', function (chatModel) {
         var vm = this;
-
-        vm.messagesCount = 5;
 
         vm.users = {};
         vm.dataLoading = false;
         vm.chatName = null;
         vm.currentChat = {};
         vm.listOfChats = {};
-        vm.outMessage = {};
         vm.messages = {};
         vm.usersInChat = {};
-        vm.subscribing = false;
-
-        function showMore() {
-            vm.messagesCount += 5;
-        }
-
-        vm.showMore = showMore;
 
         function activate() {
             getUserData();
@@ -31,38 +21,15 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
                 });
         }
 
-        function subscribe() {
-            vm.subscribing = true;
-            if (!webSocketService.isConnectionReady()) {
-                setTimeout(function () {
-                    subscribe();
-                }, 1000);
-            }
-            else {
-                vm.subscribing = false;
-                _doSubscribe();
-            }
-        }
-
-        function _doSubscribe() {
-            webSocketService.subscribe('/api/subscribe/chat/' + vm.currentChat.id).then(null,null,
-                function(message) {
-                    showChatMessage(message);
-                });
-        }
-
-        function showChatMessage(message) {
-            vm.messages.push(message);
-        }
-
         function addChat() {
             vm.dataLoading = true;
             vm.currentChat.id = null;
             chatModel.addChat(vm.chatName).then(
                 function (success) {
-                    joinChat(success.data.data);
+                    // joinChat(success.data.data);
                     getChats();
                     vm.chatName = "";
+                    vm.dataLoading = false;
                 }, function (error) {
                     vm.dataLoading = false;
                 });
@@ -72,48 +39,6 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
             chatModel.getChats().then(
                 function (success) {
                     vm.listOfChats = success.data.data;
-                });
-        }
-
-        function joinChat(chat) {
-            if (vm.currentChat.id === chat.id) {
-                return;
-            }
-            vm.currentChat = chat;
-            subscribe();
-            getAllMessages();
-            getActiveUsersInChat();
-        }
-
-        function getAllMessages() {
-            chatModel.getAllMessages(vm.currentChat.id).then(
-                function (success) {
-                    vm.messages = success.data.data;
-                });
-        }
-
-        function sendMessage() {
-            if (!vm.outMessage.message || vm.outMessage.message === '') {
-                return;
-            }
-            vm.outMessage.messageType = 1;
-            vm.address = '/api/chat/' + vm.currentChat.id + '/message';
-            webSocketService.sendMessage(vm.outMessage, vm.address);
-            vm.outMessage.message = "";
-        }
-
-        function removeUserFromChat(userId) {
-            chatModel.removeUserFromChat(vm.currentChat.id, userId).then(
-                function (success) {
-                    vm.getActiveUsersInChat();
-                });
-        }
-
-
-        function getActiveUsersInChat() {
-            chatModel.getActiveUsersInChat(vm.currentChat.id).then(
-                function (success) {
-                    vm.usersInChat = success.data.data;
                 });
         }
 
@@ -133,9 +58,24 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
         }
 
         function addUserToChat(userId) {
+            console.log(vm.users);
             chatModel.addUserToChat(vm.currentChat.id, userId).then(
                 function (success) {
-                    vm.getActiveUsersInChat();
+                    getActiveUsersInChat();
+                });
+        }
+
+        function getActiveUsersInChat() {
+            chatModel.getActiveUsersInChat(vm.currentChat.id).then(
+                function (success) {
+                    vm.usersInChat = success.data.data;
+                });
+        }
+
+        function removeUserFromChat(userId) {
+            chatModel.removeUserFromChat(vm.currentChat.id, userId).then(
+                function (success) {
+                    getActiveUsersInChat();
                 });
         }
 
@@ -145,17 +85,31 @@ app.controller('chatController', function (chatModel, $sessionStorage, $scope, $
             vm.currentChat = {};
         }
 
+        function updateChatMessages(messages) {
+            vm.messages = messages;
+        }
+
+        function updateChatData(chatData) {
+            if (vm.currentChat.id === chatData.id) {
+                return;
+            }
+            vm.currentChat = chatData;
+            getActiveUsersInChat();
+        }
+
+
         activate();
 
         vm.getUserData = getUserData;
         vm.addChat = addChat;
         vm.getChats = getChats;
-        vm.joinChat = joinChat;
-        vm.sendMessage = sendMessage;
-        vm.removeUserFromChat = removeUserFromChat;
-        vm.getActiveUsersInChat = getActiveUsersInChat;
         vm.removeChat = removeChat;
-        vm.addUserToChat = addUserToChat;
         vm.exitChat = exitChat;
+        vm.addUserToChat = addUserToChat;
+        vm.getActiveUsersInChat = getActiveUsersInChat;
+        vm.removeUserFromChat = removeUserFromChat;
+        vm.updateChatMessages = updateChatMessages;
+        vm.updateChatData = updateChatData;
+
     }
 );

@@ -1,5 +1,5 @@
 <div class=row>
-    <div class="col-md-4 col-lg-4 " align="left">
+    <div class="col-md-4 col-lg-4 chat-col-left" align="left">
         <form class="form-inline">
             <div class="form-group">
                 <label for="chatName">{{'Chat.title.addNewChat' | translate}}</label>
@@ -11,119 +11,59 @@
             </button>
         </form>
 
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Chats</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="chat in vm.listOfChats track by $index">
-                <td>{{chat.chatTitle}}</td>
-                <td align="right">
 
-                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading"
-                            ng-show="chat.id==vm.currentChat.id" ng-click="vm.exitChat()">{{'Chat.button.exit' |
-                        translate}}
-                    </button>
-                    &nbsp;
-                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading"
-                            ng-click="vm.removeChat(chat.id)">{{'Chat.button.delete' | translate}}
-                    </button>
-                    &nbsp;
-                    <button class="btn btn-sm btn-primary" ng-disabled="vm.subscribing" ng-click="vm.joinChat(chat)">
-                        {{'Chat.button.join' | translate}}
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <h4>Chats</h4>
+        <div class="chat-list" ng-repeat="chat in vm.listOfChats track by $index">
+            <chat-component current-chat-id="vm.currentChat" chat-data="chat"
+                            update-chat-data="vm.updateChatData(chatData)"
+                            update-chat-messages="vm.updateChatMessages(messages)"></chat-component>
+        </div>
 
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>Users</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th></th>
-            </tr>
-            <tbody>
-            <tr ng-repeat="user in vm.users track by $index">
-                <td>{{user.firstName}}</td>
-                <td>{{user.lastName}}</td>
-                <td>
-                    <button class="btn btn-sm btn-primary" ng-disabled="(vm.currentChat | json) == '{}'"
-                            ng-click="vm.addUserToChat(user.userId)">{{'Chat.button.add' | translate}}
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
 
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>{{'Chat.title.usersInChat' | translate}}: {{vm.currentChat.chatTitle}}</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="user in vm.usersInChat track by $index">
-                <td>{{user.firstName}}</td>
-                <td>{{user.lastName}}</td>
-                <td>
-                    <button class="btn btn-sm btn-danger" ng-disabled="vm.dataLoading"
-                            ng-click="vm.removeUserFromChat(user.id)">{{'Chat.button.delete' | translate}}
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <h4>Users</h4>
+        <div class="chat-list" ng-repeat="user in vm.users track by $index">
+            <div class="chat-item" ng-click="vm.addUserToChat(user.userId)">
+
+                <table class="item-table">
+                    <tbody>
+                    <tr>
+                    <td>
+                        <user-avatar uuid={{user.lastName}} size="20x20"></user-avatar>
+                    </td>
+                    <td><span class="title">{{user.lastName}} {{user.firstName}}</span></td>
+                    <td><span style="color: #ff4500" class="title">Add</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h4>{{'Chat.title.usersInChat' | translate}}: {{vm.currentChat.chatTitle}}</h4>
+        <div class="chat-list" ng-repeat="user in vm.usersInChat track by $index">
+            <div class="chat-item" ng-click="vm.removeUserFromChat(user.userId)">
+
+                <table class="item-table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <user-avatar uuid={{user.lastName}} size="20x20"></user-avatar>
+                        </td>
+                        <td><span class="title">{{user.lastName}} {{user.firstName}}</span></td>
+                        <td><span style="color: #ff4500" class="title">Delete</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 
     <div class="col-md-8 col-lg-8">
         <strong>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</strong>
         <hr>
-        <form id="messageInput" ng-show="(vm.currentChat | json) != '{}'" >
-            <div class="form-group">
-                <!--<label for="message">{{'Chat.form.input' | translate}}</label>-->
-                <textarea name="message" id="message" ng-model="vm.outMessage.message" class="form-control"
-                          placeholder="Type your message "></textarea>
-                <button id="send" class="btn btn-default"
-                        class="form-control"
-                        ng-disabled="!vm.outMessage.message || vm.outMessage.message === '' "
-                        ng-click="vm.sendMessage()"
-                        type="submit">{{'Chat.button.send' | translate}}
-                </button>
-            </div>
-        </form>
-
-        <div class="card" ng-repeat="message in vm.messages.slice().reverse() | limitTo: vm.messagesCount track by $index">
-            <div class="container-fluid">
-                <strong>{{message.lastName}} {{message.firstName}}</strong>
-                <br>
-                <p>
-                    {{message.message}}
-                </p>
-
-                <div align="right">
-                    {{message.createDate | date: 'HH:mm:ss, dd/MM'}}
-                </div>
-            </div>
-            <hr>
+        <div class="message-container">
+            <message-list data-messages="vm.messages"></message-list>
+            <message-form data-chat-data="vm.currentChat"></message-form>
         </div>
-        <button class="btn btn-sm btn-info"
-                ng-show="vm.messages.length >= vm.messagesCount"
-                ng-click="vm.showMore()">
-            See previous
-        </button>
-
     </div>
-
 </div>

@@ -1,0 +1,27 @@
+
+<div class="message-list">
+    <div class="message-item" ng-repeat="message in innerMessages track by $index" ng-style="message.isNew ? {'background-color':'#C3C3C3'} : {}">
+        <table class="item-table">
+            <tbody>
+            <td>
+                <user-avatar uuid={{message.lastName}} size="50x50"></user-avatar>
+            </td>
+            <td >
+                <span class="title">{{message.lastName}} {{message.firstName}}</span>
+                <div>{{message.createDate | date:"MM/dd/yyyy 'at' h:mma"}}</div>
+                <span class="chip">
+                {{message.message}}
+            </span>
+            </td>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--</div>-->
+<!--<p></p>-->
+<!--<button class="btn btn-sm btn-info"-->
+<!--ng-show="messages.length > messagesCount"-->
+<!--ng-click="showMore()">-->
+<!--See previous-->
+<!--</button>-->

@@ -110,7 +110,11 @@ public class ChatManagementServiceImpl implements ChatManagementService {
             chatMessageType = ChatMessageType.TEXT;
         }
         chatMessage.setMessageType(chatMessageType);
-        chatMessage.setPermittedUsers(getPermittedUsers(chatUser.getChat()));
+
+        String permittedUsers = getPermittedUsers(chatUser.getChat());
+        String usersToNotify = permittedUsers.replace(chatUser.getUser().getId()+",","");
+        chatMessage.setPermittedUsers(permittedUsers);
+        chatMessage.setUsersToNotify(usersToNotify);
         chatMessageRepository.save(chatMessage);
         return chatMessage;
     }
@@ -137,6 +141,16 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Transactional(readOnly = true)
     public List<ChatMessage> getListMessages(Chat chat, User user) {
         return chatMessageRepository.findChatMessagesByChatAndPermittedUser(chat, user);
+    }
+
+    @Override
+    public void updateMessagesAsRead(List<Long> messagesIdList, User user) {
+        String userIdToDelete = user.getId().toString()+",";
+        List<ChatMessage> chatMessages = chatMessageRepository.updateMessagesAsRead(messagesIdList);
+        for (ChatMessage chatMessage: chatMessages){
+            chatMessage.setUsersToNotify(chatMessage.getUsersToNotify().replace(userIdToDelete,""));
+            chatMessageRepository.update(chatMessage);
+        }
     }
 
     private User getUserById(Long userId) {

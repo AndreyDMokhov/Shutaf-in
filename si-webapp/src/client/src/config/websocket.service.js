@@ -5,11 +5,12 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         vm.isConnected = false;
         vm.stompClient = null;
         vm.subscription = null;
-
+        vm.connecting = false;
 
         /**
-         *  Handshake with web socket
-         *  Receives socket number, session_id, socket session and records them to stompClient
+         *  Handshake with web socket (send over HTTP(101) change protocol request)
+         *  Receives socket session, stomp headers and records them to stompClient
+         *  Will reconnect each second, if error occurs
          *
          *  Backend connected classes:
          *  1. SimpleMessageBroker (spring)
@@ -21,41 +22,41 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         function connect() {
             var socket = getSocket();
             vm.stompClient = Stomp.over(socket);
-            // if you comment next line, you will see all messages from stomp in console
+            /**
+             * STOMP debug mode setting
+             * @returns {*}
+             */
             vm.stompClient.debug = false;
 
             return $q(function (resolve, reject) {
-                vm.stompClient.connect({'session_id': $sessionStorage.sessionId}, function (frame) {
+                vm.stompClient.connect({'session_id': $sessionStorage.sessionId}, function (success) {
+                    vm.connecting = false;
                     vm.isConnected = true;
                     resolve();
                 }, function (err) {
-                    vm.isConnected = false;
-                    reject();
+                    setTimeout(function () {
+                        connect();
+                    }, 1000);
                 });
             });
         }
 
         /**
-         * Calls connect() each second, if there is no connection
+         * CHeck if authenticated or already connected, then call connect()
          * @returns {*}
          */
         function getConnection() {
-            if (!sessionService.isAuthenticated()) {
+            if (!sessionService.isAuthenticated() || vm.isConnected || vm.connecting) {
                 return;
             }
+            vm.connecting = true;
             return $q(function (resolve, reject) {
                 connect().then(
                     function (success) {
                         resolve(success);
-                    }
-                    , function (error) {
-                        setTimeout(function () {
-                            getConnection().then(function (succes) {
-                                resolve(succes);
-                            });
-                        }, 1000);
                     });
             });
+
         }
 
         /***
@@ -67,16 +68,9 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         function subscribe(destination) {
 
             var deferred = $q.defer();
-            if (vm.stompClient === null) {
+            if (!vm.isConnected) {
                 getConnection();
             } else {
-                //TODO SEVERE BUG
-                //If not to do, then the message is multiplied by the number of subscriptions
-                //1 active chat - one message
-                //2 active chat - (on send) two messages
-                unSubscribe();
-
-                //vm.subscription
                 vm.subscription = vm.stompClient.subscribe(destination, function (message) {
                     deferred.notify(JSON.parse(message.body));
                 }, {'session_id': $sessionStorage.sessionId});
@@ -113,7 +107,6 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
          * @param address: channel (@MessageMapping info)
          */
         function sendMessage(message, address) {
-            //TODO SUBSCRIPTION's bug affects this section.
             vm.stompClient.send(address, {'session_id': $sessionStorage.sessionId}, JSON.stringify(message));
         }
 

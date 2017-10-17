@@ -10,14 +10,22 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ChatMessageRepositoryImpl extends AbstractEntityDao<ChatMessage> implements ChatMessageRepository{
+public class ChatMessageRepositoryImpl extends AbstractEntityDao<ChatMessage> implements ChatMessageRepository {
 
     @Override
     public List<ChatMessage> findChatMessagesByChatAndPermittedUser(Chat chat, User user) {
         return (List<ChatMessage>) getSession()
                 .createQuery("FROM " + getEntityClass().getName() + " e WHERE e.chat = :chat AND e.permittedUsers LIKE :userId")
                 .setParameter("chat", chat)
-                .setParameter("userId", "%,"+user.getId().toString()+",%")
+                .setParameter("userId", "%," + user.getId().toString() + ",%")
+                .list();
+    }
+
+    @Override
+    public List<ChatMessage> updateMessagesAsRead(List<Long> messagesIdList) {
+        return (List<ChatMessage>) getSession()
+                .createQuery("from " + getEntityClass().getName() + " message where message.id in (:ids)")
+                .setParameterList("ids", messagesIdList)
                 .list();
     }
 }

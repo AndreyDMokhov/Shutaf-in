@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface ChatMessageRepository extends PersistentDao<ChatMessage> {
     List<ChatMessage> findChatMessagesByChatAndPermittedUser(Chat chat, User user);
+    List<ChatMessage> updateMessagesAsRead(List<Long> messagesIdList);
 }

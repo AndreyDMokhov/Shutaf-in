@@ -13,10 +13,12 @@ import java.util.Date;
 @Setter
 public class ChatMessageResponse {
 
+    private Long messageId;
     private String firstName;
     private String lastName;
     private Date createDate;
     private String message;
     private Integer messageType;
+    private String usersToNotify;
 
 }

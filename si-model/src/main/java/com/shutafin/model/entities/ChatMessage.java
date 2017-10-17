@@ -37,4 +37,7 @@ public class ChatMessage extends AbstractEntity {
     @Column(name = "PERMITTED_USERS", length = 200)
     private String permittedUsers;
 
+    @Column(name = "USERS_TO_NOTIFY", length = 200)
+    private String usersToNotify;
+
 }
