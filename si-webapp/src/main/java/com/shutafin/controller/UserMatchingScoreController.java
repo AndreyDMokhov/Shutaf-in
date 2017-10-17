@@ -1,17 +1,16 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.web.QuestionExtendedWithAnswersLocaleWeb;
 import com.shutafin.model.web.UserQuestionExtendedAnswersWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
-import com.shutafin.service.QuestionExtendedService;
-import com.shutafin.service.UserLanguageService;
 import com.shutafin.service.UserMatchingScoreService;
 import com.shutafin.service.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -22,12 +21,6 @@ public class UserMatchingScoreController {
 
     @Autowired
     private UserMatchingScoreService userMatchingScoreService;
-
-    @Autowired
-    private QuestionExtendedService questionExtendedService;
-
-    @Autowired
-    private UserLanguageService userLanguageService;
 
     @Autowired
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
