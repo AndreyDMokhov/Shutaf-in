@@ -96,7 +96,7 @@ public class ChatController {
                                @AuthenticatedUser User user) {
 
         Chat chat = chatManagementService.findAuthorizedChat(chatId, user);
-        return userSearchService.userBaseResponseByList(chatManagementService.getListUsersByChatId(chat));
+        return userSearchService.userBaseResponseByList(chatManagementService.getListUsersByChatId(chat, user));
     }
 
     @RequestMapping(value = "/{chat_id}/get/messages", method = RequestMethod.GET)

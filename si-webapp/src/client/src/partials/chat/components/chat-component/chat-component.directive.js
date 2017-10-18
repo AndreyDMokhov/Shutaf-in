@@ -5,7 +5,8 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
             currentChatId: '=',
             chatData: '=',
             updateChatData: '&',
-            updateChatMessages: '&'
+            updateChatMessages: '&',
+            removeChat: '&'
         },
         templateUrl: 'partials/chat/components/chat-component/chat-component.html',
 
@@ -15,9 +16,10 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
             scope.messages = {};
             scope.lastMessage = {};
             scope.characterLimit = 20;
+
+            // TODO: bind newMessageCounter to css file
             scope.newMessageCounter = 0;
             var userId = $sessionStorage.userProfile.userId;
-            var messageIdWrapper = {};
             var messageIdList = [];
 
             function init() {
@@ -68,26 +70,34 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
                     markMessageNotRead(scope.messages[i]);
                 }
             }
-            function markMessageNotRead(message){
+
+            function markMessageNotRead(message) {
                 if (message.usersToNotify === null) {
                     return;
                 }
                 var usersToNotify = message.usersToNotify.toString();
-                if (usersToNotify.indexOf("," + userId + ",") !== -1) {
+                if (usersToNotify.includes("," + userId + ",")) {
                     message.isNew = true;
-                    scope.newMessageCounter ++;
+                    scope.newMessageCounter++;
                     messageIdList.push(message.messageId);
+
                 }
-                messageIdWrapper.messageIdList = messageIdList;
             }
+
             function updateMessagesAsRead() {
-                if(Object.keys(messageIdList).length === 0){
+                if (Object.keys(messageIdList).length === 0) {
                     return;
                 }
+                var messageIdWrapper = {};
+                messageIdWrapper.messageIdList = messageIdList;
                 chatModel.updateMessagesAsRead(messageIdWrapper);
                 scope.newMessageCounter = 0;
                 messageIdList = [];
             }
+
+            scope.deleteChat = function (){
+                scope.removeChat({chatId: scope.chatData.id});
+            };
 
             getAllMessages();
             init();

@@ -132,9 +132,11 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> getListUsersByChatId(Chat chat) {
+    public List<User> getListUsersByChatId(Chat chat, User user) {
         List<ChatUser> chatUsers = chatUserRepository.findActiveChatUsersByChat(chat);
-        return chatUsers.stream().map(ChatUser::getUser).collect(Collectors.toList());
+        return chatUsers.stream().map(ChatUser::getUser)
+                .filter(x->!x.getId().equals(user.getId()))
+                .collect(Collectors.toList());
     }
 
     @Override

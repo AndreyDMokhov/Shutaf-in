@@ -1,4 +1,10 @@
-app.controller('chatController', function (chatModel) {
+app.controller('chatController', function (chatModel, $sessionStorage, $state) {
+
+//  TODO: add pop up window for chat add function
+//  TODO: code clean up.
+//  TODO: add translate
+//  TODO: concat user names to chat name
+
         var vm = this;
 
         vm.users = {};
@@ -8,6 +14,7 @@ app.controller('chatController', function (chatModel) {
         vm.listOfChats = {};
         vm.messages = {};
         vm.usersInChat = {};
+        vm.currentUserId = $sessionStorage.userProfile.userId;
 
         function activate() {
             getUserData();
@@ -58,7 +65,6 @@ app.controller('chatController', function (chatModel) {
         }
 
         function addUserToChat(userId) {
-            console.log(vm.users);
             chatModel.addUserToChat(vm.currentChat.id, userId).then(
                 function (success) {
                     getActiveUsersInChat();
@@ -79,11 +85,6 @@ app.controller('chatController', function (chatModel) {
                 });
         }
 
-        function exitChat() {
-            vm.messages = {};
-            vm.usersInChat = null;
-            vm.currentChat = {};
-        }
 
         function updateChatMessages(messages) {
             vm.messages = messages;
@@ -97,6 +98,10 @@ app.controller('chatController', function (chatModel) {
             getActiveUsersInChat();
         }
 
+        function changeStateToUserSearch(){
+            $state.go('userSearch');
+        }
+
 
         activate();
 
@@ -104,12 +109,11 @@ app.controller('chatController', function (chatModel) {
         vm.addChat = addChat;
         vm.getChats = getChats;
         vm.removeChat = removeChat;
-        vm.exitChat = exitChat;
         vm.addUserToChat = addUserToChat;
         vm.getActiveUsersInChat = getActiveUsersInChat;
         vm.removeUserFromChat = removeUserFromChat;
         vm.updateChatMessages = updateChatMessages;
         vm.updateChatData = updateChatData;
-
+        vm.changeStateToUserSearch = changeStateToUserSearch;
     }
 );
