@@ -4,7 +4,7 @@ import com.shutafin.model.entities.FilterAgeRange;
 import com.shutafin.model.entities.FilterCity;
 import com.shutafin.model.entities.FilterGender;
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.AgeRangeRequest;
+import com.shutafin.model.web.user.AgeRangeWebDTO;
 import com.shutafin.model.web.user.FiltersWeb;
 import com.shutafin.repository.common.FilterAgeRangeRepository;
 import com.shutafin.repository.common.FilterCityRepository;
@@ -105,10 +105,10 @@ public class UserFilterServiceImpl implements UserFilterService {
 
     @Override
     @Transactional
-    public void saveUserFilterAgeRange(User user, @Valid AgeRangeRequest ageRangeRequest) {
+    public void saveUserFilterAgeRange(User user, @Valid AgeRangeWebDTO ageRangeWebDTO) {
         filterAgeRangeRepository.deleteUserFilterAgeRange(user);
-        if (ageRangeRequest != null){
-            filterAgeRangeRepository.save(new FilterAgeRange(user, ageRangeRequest.getFromAge(), ageRangeRequest.getToAge()));
+        if (ageRangeWebDTO != null){
+            filterAgeRangeRepository.save(new FilterAgeRange(user, ageRangeWebDTO.getFromAge(), ageRangeWebDTO.getToAge()));
         }
     }
 }

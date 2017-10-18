@@ -2,7 +2,7 @@ package com.shutafin.repository.common.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.FilterAgeRange;
-import com.shutafin.model.web.user.AgeRangeResponseDTO;
+import com.shutafin.model.web.user.AgeRangeWebDTO;
 import com.shutafin.repository.base.AbstractEntityDao;
 import com.shutafin.repository.common.FilterAgeRangeRepository;
 import org.springframework.stereotype.Repository;
@@ -15,12 +15,12 @@ import java.util.List;
 @Repository
 public class FilterAgeRangeRepositoryImpl extends AbstractEntityDao<FilterAgeRange> implements FilterAgeRangeRepository {
     @Override
-    public AgeRangeResponseDTO getUserFilterAgeRange(User user) {
+    public AgeRangeWebDTO getUserFilterAgeRange(User user) {
         StringBuilder hql = new StringBuilder()
-                .append(" SELECT new com.shutafin.model.web.user.AgeRangeResponseDTO(far.fromAge, far.toAge) ")
+                .append(" SELECT new com.shutafin.model.web.user.AgeRangeWebDTO(far.fromAge, far.toAge) ")
                 .append(" FROM FilterAgeRange far ")
                 .append(" WHERE far.user = :user ");
-        return (AgeRangeResponseDTO) getSession()
+        return (AgeRangeWebDTO) getSession()
                 .createQuery(hql.toString())
                 .setParameter("user", user)
                 .uniqueResult();
@@ -29,8 +29,8 @@ public class FilterAgeRangeRepositoryImpl extends AbstractEntityDao<FilterAgeRan
     @Override
     public List<User> getAllMatchedUsers(User user, List<User> matchedUsers) {
 
-        AgeRangeResponseDTO ageRangeResponseDTO = getUserFilterAgeRange(user);
-        if (ageRangeResponseDTO == null || matchedUsers.isEmpty()){
+        AgeRangeWebDTO ageRangeWebDTO = getUserFilterAgeRange(user);
+        if (ageRangeWebDTO == null || matchedUsers.isEmpty()){
             return matchedUsers;
         }
 
@@ -44,8 +44,8 @@ public class FilterAgeRangeRepositoryImpl extends AbstractEntityDao<FilterAgeRan
         return getSession()
                 .createQuery(hql.toString())
                 .setParameter("matchedUsers", matchedUsers)
-                .setParameter("fromAge", ageRangeResponseDTO.getFromAge())
-                .setParameter("toAge", ageRangeResponseDTO.getToAge())
+                .setParameter("fromAge", ageRangeWebDTO.getFromAge())
+                .setParameter("toAge", ageRangeWebDTO.getToAge())
                 .list();
     }
 

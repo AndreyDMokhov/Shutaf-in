@@ -15,7 +15,7 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AgeRangeRequest {
+public class AgeRangeWebDTO {
 
     @Min(value = 18)
     private Integer fromAge;
