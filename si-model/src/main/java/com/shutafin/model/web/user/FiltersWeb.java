@@ -17,5 +17,5 @@ import java.util.List;
 public class FiltersWeb {
     private List<Integer> filterCitiesIds;
     private Integer filterGenderId;
-    private AgeRangeRequest filterAgeRange;
+    private AgeRangeWebDTO filterAgeRange;
 }

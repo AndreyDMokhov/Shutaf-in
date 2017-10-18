@@ -1,7 +1,7 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.AgeRangeRequest;
+import com.shutafin.model.web.user.AgeRangeWebDTO;
 import com.shutafin.model.web.user.FiltersWeb;
 
 import java.util.List;
@@ -14,5 +14,5 @@ public interface UserFilterService {
     void saveUserFilters(User user, FiltersWeb filtersWeb);
     void saveUserFilterCity(User user, List<Integer> cities);
     void saveUserFilterGender(User user, Integer genderId);
-    void saveUserFilterAgeRange(User user, AgeRangeRequest ageRangeRequest);
+    void saveUserFilterAgeRange(User user, AgeRangeWebDTO ageRangeWebDTO);
 }

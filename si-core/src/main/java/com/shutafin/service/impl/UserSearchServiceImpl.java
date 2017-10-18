@@ -3,7 +3,7 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.City;
 import com.shutafin.model.entities.infrastructure.Gender;
-import com.shutafin.model.web.user.AgeRangeResponseDTO;
+import com.shutafin.model.web.user.AgeRangeWebDTO;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.repository.common.FilterAgeRangeRepository;
@@ -72,7 +72,7 @@ public class UserSearchServiceImpl implements UserSearchService {
     }
 
     @Override
-    public AgeRangeResponseDTO getAgeRangeForFilter(User user) {
+    public AgeRangeWebDTO getAgeRangeForFilter(User user) {
         return filterAgeRangeRepository.getUserFilterAgeRange(user);
     }
 
