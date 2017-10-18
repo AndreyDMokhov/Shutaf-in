@@ -39,7 +39,7 @@
     "ngstorage": "^0.3.11",
     "angular-base64-upload": "^0.1.22",
     "angular-ui-carousel": "^0.1.10",
-    "angularjs-slider": "^6.4.0"
+    "ui-cropper": "^1.0.6"
   },
   "resolutions": {
     "angular": "1.5.9"

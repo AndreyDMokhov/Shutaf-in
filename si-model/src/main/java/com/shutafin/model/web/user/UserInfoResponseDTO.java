@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
+@SuppressWarnings("PMD.TooManyFields")
 public class UserInfoResponseDTO {
 
     private Long userId;
@@ -33,6 +34,8 @@ public class UserInfoResponseDTO {
     private String profession;
     private String company;
     private String phoneNumber;
+
+    private String originalUserImage;
 
     @SuppressWarnings("PMD.ExcessiveParameterList")
     public UserInfoResponseDTO(Long userId, String firstName, String lastName, String email, Integer languageId, Integer countryId, Integer cityId, Integer genderId, Date dateOfBirth, String facebookLink, String profession, String company, String phoneNumber) {
@@ -56,6 +59,9 @@ public class UserInfoResponseDTO {
         this.userImage = userImage.getImageStorage().getImageEncoded();
     }
 
+    public void addOriginalUserImage(UserImage originalUserImage) {
+        this.originalUserImage = originalUserImage.getImageStorage().getImageEncoded();
+    }
 }
 
 

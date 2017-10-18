@@ -28,3 +28,8 @@
 .button-size-font {
     font-size: 12px
 }
+.ngdialog.ngdialog-theme-plain.custom-width .ngdialog-content  {
+    width: 0;
+    height: 0;
+    background-color: transparent;
+}

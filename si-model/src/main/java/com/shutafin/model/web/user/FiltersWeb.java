@@ -5,18 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
- * Created by evgeny on 8/22/2017.
+ * Created by evgeny on 10/17/2017.
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuestionAnswerWeb {
-    @NotNull
-    private Integer questionId;
-    @NotNull
-    private Integer answerId;
+public class FiltersWeb {
+    private List<Integer> filterCitiesIds;
+    private Integer filterGenderId;
+    private AgeRangeWebDTO filterAgeRange;
 }

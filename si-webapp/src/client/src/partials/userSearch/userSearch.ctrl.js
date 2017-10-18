@@ -37,7 +37,7 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
     }
 
     function getImage(userProfile) {
-        if (!userProfile.userImageId) {
+        if (!userProfile.userImage) {
             return '../../images/default_avatar.png';
         }
         else {

@@ -1,20 +1,14 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserQuestionAnswer;
-import com.shutafin.model.entities.infrastructure.Answer;
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.infrastructure.Question;
+import com.shutafin.model.entities.*;
+import com.shutafin.model.entities.infrastructure.*;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
-import com.shutafin.model.web.user.QuestionAnswerWeb;
-import com.shutafin.repository.common.UserExamKeyRepository;
-import com.shutafin.repository.common.UserQuestionAnswerRepository;
-import com.shutafin.repository.common.VarietyExamKeyRepository;
-import com.shutafin.repository.initialization.locale.AnswerRepository;
-import com.shutafin.repository.initialization.locale.QuestionRepository;
+import com.shutafin.model.web.user.QuestionAnswerRequest;
+import com.shutafin.repository.common.*;
+import com.shutafin.repository.initialization.locale.*;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+/**
+ * Created by evgeny on 8/12/2017.
+ */
 @Service
 @Transactional
 @Slf4j
@@ -51,6 +48,7 @@ public class UserMatchServiceImpl implements UserMatchService {
             return new ArrayList<>();
         }
 
+        //match users by MUST questions
         UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
 
         if (userExamKey == null) {
@@ -66,17 +64,17 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public void saveQuestionsAnswers(User user, List<QuestionAnswerWeb> questionsAnswers) {
+    public void saveQuestionsAnswers(User user, List<QuestionAnswerRequest> questionsAnswers) {
 
         userQuestionAnswerRepository.deleteUserAnswers(user);
         userExamKeyRepository.delete(user);
 
         TreeMap<Question, Answer> questionAnswerMap = new TreeMap<>();
-        for (QuestionAnswerWeb questionAnswer : questionsAnswers) {
+        for (QuestionAnswerRequest questionAnswer : questionsAnswers) {
             Question question = questionRepository.findById(questionAnswer.getQuestionId());
+
             Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
-
             questionAnswerMap.put(question, answer);
         }
 
