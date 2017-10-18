@@ -27,7 +27,7 @@ app.controller('userProfileController', function ($localStorage,
             vm.deleteButton = true;
         }
         else {
-            vm.image = 'data:image/jpeg;base64,' + vm.userProfile.userImage;
+            vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
         }
     }
 
@@ -51,7 +51,7 @@ app.controller('userProfileController', function ($localStorage,
     function saveImage(data) {
         userProfileModel.addOrUpdateImage({image: data}).then(
             function (success) {
-                vm.userProfile.userImage = success.data.data.image;
+                vm.userProfile.userImage = success.data.data.originalUserImage;
                 vm.userProfile.userImageId = success.data.data.id;
                 vm.userProfile.createdDate = success.data.data.createdDate;
                 $sessionStorage.userProfile = vm.userProfile;
