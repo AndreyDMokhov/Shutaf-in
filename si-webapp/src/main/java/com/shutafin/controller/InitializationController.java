@@ -9,6 +9,7 @@ import com.shutafin.model.web.UserQuestionExtendedAnswersWeb;
 import com.shutafin.model.web.initialization.CityResponseDTO;
 import com.shutafin.model.web.initialization.CountryResponseDTO;
 import com.shutafin.model.web.initialization.GenderResponseDTO;
+import com.shutafin.model.web.user.FiltersWeb;
 import com.shutafin.model.web.initialization.QuestionImportanceDTO;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
@@ -45,6 +46,9 @@ public class InitializationController {
     private UserLanguageService userLanguageService;
 
     @Autowired
+    private UserSearchService userSearchService;
+
+    @Autowired
     private QuestionExtendedService questionExtendedService;
 
     @Autowired
@@ -74,6 +78,11 @@ public class InitializationController {
                 .questionExtendedWithAnswers(questionExtendedService.getQuestionsExtendedWithAnswers(language))
                 .questionImportanceList(questionExtendedService.getQuestionImportanceList(language))
                 .selectedExtendedAnswersResponses(userQuestionExtendedAnswerService.getSelectedQuestionExtendedAnswers(user))
+                .filters(
+                        new FiltersWeb(
+                                userSearchService.getCitiesForFilter(user),
+                                userSearchService.getGenderForFilter(user),
+                                userSearchService.getAgeRangeForFilter(user)))
                 .build();
     }
 }
@@ -92,4 +101,6 @@ class InitializationResponse {
     private List<QuestionExtendedWithAnswersLocaleWeb> questionExtendedWithAnswers;
     private List<QuestionImportanceDTO> questionImportanceList;
     private List<UserQuestionExtendedAnswersWeb> selectedExtendedAnswersResponses;
+    private FiltersWeb filters;
+
 }
