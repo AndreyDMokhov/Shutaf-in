@@ -32,8 +32,8 @@ public class FilterCityRepositoryImpl extends AbstractEntityDao<FilterCity> impl
             return matchedUsers;
         }
         StringBuilder hql = new StringBuilder()
-                .append(" SELECT fc2.user ")
-                .append(" FROM FilterCity fc1 INNER JOIN FilterCity fc2")
+                .append(" SELECT distinct fc2.user ")
+                .append(" FROM FilterCity fc1 LEFT JOIN FilterCity fc2")
                 .append(" ON fc2.city.id = fc1.city.id")
                 .append(" WHERE fc1.user = :user ")
                 .append(" AND fc2.user IN (:matchedUsers) ");

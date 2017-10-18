@@ -17,7 +17,7 @@ import java.util.List;
  * Created by evgeny on 10/3/2017.
  */
 @RestController
-@RequestMapping("/users/search")
+@RequestMapping("/users")
 public class UserSearchController {
 
     @Autowired
@@ -26,12 +26,12 @@ public class UserSearchController {
     @Autowired
     private UserSearchService userSearchService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getMatchingUsers(@RequestParam(value = "name", required = false) String fullName, @AuthenticatedUser User user) {
         return userSearchService.userSearchByList(userFilterService.findFilteredUsers(user), fullName);
     }
 
-    @RequestMapping(value = "/save/filters", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/search/save/filters", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilters(@AuthenticatedUser User user, @RequestBody @Valid FiltersWeb filtersWeb) {
         userFilterService.saveUserFilters(user, filtersWeb);
     }

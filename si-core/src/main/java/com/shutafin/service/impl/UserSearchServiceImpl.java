@@ -5,6 +5,7 @@ import com.shutafin.model.entities.infrastructure.City;
 import com.shutafin.model.entities.infrastructure.Gender;
 import com.shutafin.model.web.user.AgeRangeResponseDTO;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
+import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.repository.common.FilterAgeRangeRepository;
 import com.shutafin.repository.common.FilterCityRepository;
 import com.shutafin.repository.common.FilterGenderRepository;
@@ -13,10 +14,10 @@ import com.shutafin.service.UserSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.shutafin.model.web.user.UserSearchResponse;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,24 +54,21 @@ public class UserSearchServiceImpl implements UserSearchService {
     public List<Integer> getCitiesForFilter(User user) {
 
         List<City> cities = filterCityRepository.getUserFilterCity(user);
-        if (cities.isEmpty()){
+        if (cities.isEmpty()) {
             return null;
         }
 
-        List<Integer> result = new ArrayList();
-        for(City city : cities){
-            result.add(city.getId());
-        }
-        return result;
+        return cities
+                .stream()
+                .map(City::getId)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Integer getGenderForFilter(User user) {
         Gender gender = filterGenderRepository.getUserFilterGender(user);
-        if (gender != null){
-            return gender.getId();
-        }
-        return null;
+
+        return gender == null ? null : gender.getId();
     }
 
     @Override
