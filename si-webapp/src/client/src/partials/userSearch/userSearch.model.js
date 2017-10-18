@@ -8,9 +8,9 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         if (fullName) {
 
-            return rest.one('/api/users/match/search?name=' + fullName).customGET();
+            return rest.one('/api/users/search?name=' + fullName).customGET();
         }
-        return rest.one('/api/users/match/search').customGET();
+        return rest.one('/api/users/search').customGET();
     }
 
     return {
