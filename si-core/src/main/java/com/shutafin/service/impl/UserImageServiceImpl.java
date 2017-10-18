@@ -7,6 +7,7 @@ import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.types.CompressionType;
 import com.shutafin.model.entities.types.PermissionType;
 import com.shutafin.model.web.user.UserImageWeb;
+import com.shutafin.repository.common.ImagePairRepository;
 import com.shutafin.repository.common.ImageStorageRepository;
 import com.shutafin.repository.common.UserImageRepository;
 import com.shutafin.service.EnvironmentConfigurationService;
@@ -46,6 +47,9 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Autowired
     private ImageCompressService imageCompressService;
+
+    @Autowired
+    private ImagePairRepository imagePairRepository;
 
     @Override
     @Transactional
@@ -100,6 +104,16 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     public List<UserImage> getAllUserImages(User user) {
         return userImageRepository.findAllUserImages(user);
+    }
+
+    @Override
+    public UserImage getOriginalUserImage(UserImage compressedUserImage) {
+        return imagePairRepository.findOriginalUserImage(compressedUserImage);
+    }
+
+    @Override
+    public UserImage getCompressedUserImage(UserImage originalUserImage) {
+        return imagePairRepository.findCompressedUserImage(originalUserImage);
     }
 
     private void deleteLocalImage(UserImage userImage) {
