@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +20,6 @@ public class ChatMessageResponse {
     private Date createDate;
     private String message;
     private Integer messageType;
-    private String usersToNotify;
+    private List<Long> usersToNotify;
 
 }

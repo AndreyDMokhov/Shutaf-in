@@ -15,11 +15,39 @@ public class ChatMessageRepositoryImpl extends AbstractEntityDao<ChatMessage> im
     @Override
     public List<ChatMessage> findChatMessagesByChatAndPermittedUser(Chat chat, User user) {
         return (List<ChatMessage>) getSession()
-                .createQuery("FROM " + getEntityClass().getName() + " e WHERE e.chat = :chat AND e.permittedUsers LIKE :userId")
+                .createQuery("FROM " + getEntityClass().getName() + " e WHERE e.chat = :chat")
                 .setParameter("chat", chat)
-                .setParameter("userId", "%," + user.getId().toString() + ",%")
                 .list();
     }
+
+//    @Override
+//    public List<ChatMessageResponse> findChatMessagesByChatAndPermittedUser(Chat chat, User user) {
+//
+//        StringBuilder hql = new StringBuilder()
+//                .append(" select ")
+//                .append(" new com.shutafin.model.web.chat.ChatMessageResponse ")
+//                .append(" ( ")
+//                .append(" cm.id as messageId ")
+//                .append(" u.id as userId, ")
+//                .append(" u.firstName, ")
+//                .append(" u.lastName, ")
+//                .append(" cm.createdDate as createdDate ")
+//                .append(" cm.message as message ")
+//                .append(" cm.messageType as messageType")
+//                .append(" cm.usersToNotify as usersToNotify")
+//                .append(" ) ")
+//                .append(" from User u, ")
+//                .append(" ChatMessage cm ")
+//                .append(" where ")
+//                .append(" cm.user = u ")
+//                .append(" and ")
+//                .append(" cm.chat = :chat ");
+//
+//        return (List<ChatMessageResponse>) getSession()
+//                .createQuery(hql.toString())
+//                .setParameter("chat", chat)
+//                .list();
+//    }
 
     @Override
     public List<ChatMessage> updateMessagesAsRead(List<Long> messagesIdList) {

@@ -29,6 +29,7 @@
 .message-item {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
+    transition-duration: 0.8s;
     margin-left: 2px;
     border-radius: 5px;
     background-color: rgb(250,250,250);
@@ -42,7 +43,7 @@
 }
 .chat-item:hover, .chat-item:focus, .chat-item:active {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    background-color: #d1d1d1;
+    background-color: #d1d1d1!important;
     cursor: pointer;
 }
 .chat-list {

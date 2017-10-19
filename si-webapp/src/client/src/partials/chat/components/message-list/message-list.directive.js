@@ -8,40 +8,43 @@ app.directive('messageList', function () {
 
         link: function (scope, element, attrs) {
 
-            scope.innerMessages = scope.messages;
+            //TODO: is there a better way to get body properties?
+            //TODO: replace $watch
             var body = angular.element(element[0].children[0]);
 
             var prepareChatWindow = function () {
                 angular.element(document).ready(function () {
                     scrollToBottom();
-                    setTimeout(function () {
-                        unmarkMessages();
-                    }, 1000);
+                    markMessageItems();
                 });
             };
 
-            var scrollToBottom = function(){
+            var scrollToBottom = function () {
                 body.scrollTop(body.prop('scrollHeight'));
             };
 
             scope.$watchCollection('messages', function (val) {
-                if (Object.keys(val).length === 0) {
-                    scope.innerMessages = scope.messages;
+                if (!val || Object.keys(val).length === 0) {
                     return;
                 }
                 if (val) {
                     prepareChatWindow();
-                    scope.innerMessages = scope.messages;
                 }
             });
 
-            function unmarkMessages(){
+            function markMessageItems() {
                 for (var i = 0; i < scope.messages.length; i++) {
-                    scope.messages[i].isNew=false;
+                    if (scope.messages[i].isNew) {
+                        body[0].children[i].style.backgroundColor = '#C3C3C3';
+                    }
                 }
-                scope.innerMessages = scope.messages;
-                scope.$apply();
             }
+
+            scope.unmarkMessageItem = function (index) {
+                scope.messages[index].isNew = false;
+                body[0].children[index].style.backgroundColor = '#FAFAFA';
+            }
+
         }
     };
 });

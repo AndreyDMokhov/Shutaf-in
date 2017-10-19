@@ -1,6 +1,6 @@
 app.controller('chatController', function (chatModel, $sessionStorage, $state) {
 
-//  TODO: add pop up window for chat add function
+
 //  TODO: code clean up.
 //  TODO: add translate
 //  TODO: concat user names to chat name
@@ -8,8 +8,6 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state) {
         var vm = this;
 
         vm.users = {};
-        vm.dataLoading = false;
-        vm.chatName = null;
         vm.currentChat = {};
         vm.listOfChats = {};
         vm.messages = {};
@@ -29,16 +27,16 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state) {
         }
 
         function addChat() {
-            vm.dataLoading = true;
             vm.currentChat.id = null;
+            //  TODO: add pop up window for chat add function
+            vm.chatName = 'new chat';
             chatModel.addChat(vm.chatName).then(
                 function (success) {
-                    // joinChat(success.data.data);
+                    vm.currentChat = success.data.data;
                     getChats();
-                    vm.chatName = "";
-                    vm.dataLoading = false;
+                    updateChatMessages();
+                    getActiveUsersInChat();
                 }, function (error) {
-                    vm.dataLoading = false;
                 });
         }
 
@@ -85,7 +83,6 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state) {
                 });
         }
 
-
         function updateChatMessages(messages) {
             vm.messages = messages;
         }
@@ -98,10 +95,9 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state) {
             getActiveUsersInChat();
         }
 
-        function changeStateToUserSearch(){
+        function changeStateToUserSearch() {
             $state.go('userSearch');
         }
-
 
         activate();
 

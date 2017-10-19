@@ -16,16 +16,16 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
             scope.messages = {};
             scope.lastMessage = {};
             scope.characterLimit = 20;
-
-            // TODO: bind newMessageCounter to css file
             scope.newMessageCounter = 0;
             var userId = $sessionStorage.userProfile.userId;
             var messageIdList = [];
+            var body = angular.element(element[0].children[0]);
 
-            function init() {
+            //TODO: do subscribe if connection lost;
+            function initWsConnection() {
                 if (!webSocketService.isConnectionReady()) {
                     setTimeout(function () {
-                        init();
+                        initWsConnection();
                     }, 1000);
                 }
                 else {
@@ -38,6 +38,8 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
                     function (message) {
                         addChatMessage(message);
                     });
+                // must be called after the connection is ready, in other way we will get multiple subscriptions
+                webSocketService.registerObserverCallback(initWsConnection);
             }
 
             function addChatMessage(message) {
@@ -67,20 +69,21 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
 
             function findNewMessages() {
                 for (var i = 0; i < scope.messages.length; i++) {
-                    markMessageNotRead(scope.messages[i]);
+                    if (scope.messages[i].usersToNotify.length !==0) {
+                        markMessageNotRead(scope.messages[i]);
+                    }
                 }
             }
 
             function markMessageNotRead(message) {
-                if (message.usersToNotify === null) {
-                    return;
-                }
-                var usersToNotify = message.usersToNotify.toString();
-                if (usersToNotify.includes("," + userId + ",")) {
+                if (message.usersToNotify.includes(userId)) {
+                    body[0].style.backgroundColor = '#E1E1E1';
                     message.isNew = true;
                     scope.newMessageCounter++;
                     messageIdList.push(message.messageId);
-
+                }
+                else {
+                    message.isNew = false;
                 }
             }
 
@@ -92,15 +95,16 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
                 messageIdWrapper.messageIdList = messageIdList;
                 chatModel.updateMessagesAsRead(messageIdWrapper);
                 scope.newMessageCounter = 0;
+                body[0].style.backgroundColor = '#FAFAFA';
                 messageIdList = [];
             }
 
-            scope.deleteChat = function (){
+            scope.deleteChat = function () {
                 scope.removeChat({chatId: scope.chatData.id});
             };
 
             getAllMessages();
-            init();
+            initWsConnection();
         }
     };
 });

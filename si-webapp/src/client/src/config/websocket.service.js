@@ -7,6 +7,25 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         vm.subscription = null;
         vm.connecting = false;
 
+
+        /**
+         * CHeck if authenticated or already connected, then call connect()
+         * @returns {*}
+         */
+        function getConnection() {
+            if (!sessionService.isAuthenticated() || vm.isConnected || vm.connecting) {
+                return;
+            }
+            // this trigger helps us to avoid multiple calls of observerCallback and getConnection func
+            vm.connecting = true;
+            return $q(function (resolve, reject) {
+                connect().then(
+                    function (success) {
+                        resolve(success);
+                    });
+            });
+        }
+
         /**
          *  Handshake with web socket (send over HTTP(101) change protocol request)
          *  Receives socket session, stomp headers and records them to stompClient
@@ -26,37 +45,20 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
              * STOMP debug mode setting
              * @returns {*}
              */
-            vm.stompClient.debug = false;
-
+            // vm.stompClient.debug = false;
             return $q(function (resolve, reject) {
                 vm.stompClient.connect({'session_id': $sessionStorage.sessionId}, function (success) {
                     vm.connecting = false;
                     vm.isConnected = true;
                     resolve();
                 }, function (err) {
+                    vm.isConnected = false;
+                    notifyObservers();
                     setTimeout(function () {
                         connect();
                     }, 1000);
                 });
             });
-        }
-
-        /**
-         * CHeck if authenticated or already connected, then call connect()
-         * @returns {*}
-         */
-        function getConnection() {
-            if (!sessionService.isAuthenticated() || vm.isConnected || vm.connecting) {
-                return;
-            }
-            vm.connecting = true;
-            return $q(function (resolve, reject) {
-                connect().then(
-                    function (success) {
-                        resolve(success);
-                    });
-            });
-
         }
 
         /***
@@ -135,11 +137,33 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
             return vm.isConnected;
         }
 
+        var observerCallbacks = [];
+
+        //register an observer callback. will be called if connection is lost
+        function registerObserverCallback(callback) {
+            if (!observerCallbacks.includes(callback)) {
+                observerCallbacks.push(callback);
+            }
+        }
+
+        //call this when connection is lost. it fires all callbacks, that are register above
+        var notifyObservers = function () {
+            if (!vm.connecting) {
+                angular.forEach(observerCallbacks, function (callback) {
+                    callback();
+                });
+            }
+        };
+
+
         vm.getConnection = getConnection;
         vm.isConnectionReady = isConnectionReady;
         vm.disconnect = disconnect;
         vm.connect = connect;
         vm.subscribe = subscribe;
+        vm.unSubscribe = unSubscribe;
         vm.sendMessage = sendMessage;
+        vm.registerObserverCallback = registerObserverCallback;
     }
-);
+)
+;

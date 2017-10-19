@@ -2,6 +2,7 @@ package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.AbstractBaseEntity;
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
 import com.shutafin.model.entities.ChatUser;
@@ -111,46 +112,50 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         }
         chatMessage.setMessageType(chatMessageType);
 
-        String permittedUsers = getPermittedUsers(chatUser.getChat());
-        String usersToNotify = permittedUsers.replace(chatUser.getUser().getId()+",","");
-        chatMessage.setPermittedUsers(permittedUsers);
-        chatMessage.setUsersToNotify(usersToNotify);
+        LinkedList<Long> permittedUsersIdList = getPermittedUsers(chatUser.getChat());
+        LinkedList<Long> usersToNotifyIdList = getUsersToNotify(permittedUsersIdList, chatUser.getUser().getId());
+        chatMessage.setPermittedUsers(permittedUsersIdList);
+        chatMessage.setUsersToNotify(usersToNotifyIdList);
         chatMessageRepository.save(chatMessage);
         return chatMessage;
     }
 
-    private String getPermittedUsers(Chat chat) {
+    private LinkedList<Long> getPermittedUsers(Chat chat) {
         List<ChatUser> chatUsers = chatUserRepository.findActiveChatUsersByChat(chat);
-        StringBuilder permittedUsers = new StringBuilder(",");
-        for (ChatUser chatUser : chatUsers) {
-            permittedUsers
-                    .append(chatUser.getUser().getId())
-                    .append(',');
-        }
-        return permittedUsers.toString();
+        return chatUsers
+                .stream()
+                .map(ChatUser::getUser)
+                .map(User::getId)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
+
 
     @Override
     @Transactional(readOnly = true)
     public List<User> getListUsersByChatId(Chat chat, User user) {
         List<ChatUser> chatUsers = chatUserRepository.findActiveChatUsersByChat(chat);
         return chatUsers.stream().map(ChatUser::getUser)
-                .filter(x->!x.getId().equals(user.getId()))
+                .filter(x -> !x.getId().equals(user.getId()))
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<ChatMessage> getListMessages(Chat chat, User user) {
-        return chatMessageRepository.findChatMessagesByChatAndPermittedUser(chat, user);
+        List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByChatAndPermittedUser(chat, user);
+        chatMessages = chatMessages
+                .stream()
+                .filter(x->x.getPermittedUsers().contains(user.getId()))
+                .collect(Collectors.toList());
+        return chatMessages;
     }
 
     @Override
     public void updateMessagesAsRead(List<Long> messagesIdList, User user) {
-        String userIdToDelete = user.getId().toString()+",";
         List<ChatMessage> chatMessages = chatMessageRepository.updateMessagesAsRead(messagesIdList);
-        for (ChatMessage chatMessage: chatMessages){
-            chatMessage.setUsersToNotify(chatMessage.getUsersToNotify().replace(userIdToDelete,""));
+        for (ChatMessage chatMessage : chatMessages) {
+            LinkedList<Long> usersToNotifyIdList = getUsersToNotify(chatMessage.getUsersToNotify(), user.getId());
+            chatMessage.setUsersToNotify(usersToNotifyIdList);
             chatMessageRepository.update(chatMessage);
         }
     }
@@ -170,6 +175,13 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         chatUser.setIsActiveUser(true);
         chatUser.setJoinDate(new Date());
         return chatUser;
+    }
+
+    private LinkedList<Long> getUsersToNotify(LinkedList<Long> userIdList, Long userId) {
+        return userIdList
+                .stream()
+                .filter(x -> !x.equals(userId))
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
 }
