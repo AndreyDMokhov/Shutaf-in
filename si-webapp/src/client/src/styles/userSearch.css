@@ -43,6 +43,18 @@
     margin-top: 12px;
     margin-left: 20px;
 }
+
 .label-above-input {
-    display:block;
+    display: block;
+}
+
+.select.dropdown-menu {
+    max-height: 200px;
+    overflow: auto;
+}
+
+.btn-choose-city {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

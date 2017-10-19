@@ -64,38 +64,40 @@
     </div>
 </div>
 
-<div style="width: 20%">
+<div style="width: 20%" >
     <div class="form-group">
         <label class="label-above-input">Choose age</label>
         <rzslider rz-slider-model="vm.minRangeSlider.minValue" rz-slider-high="vm.minRangeSlider.maxValue" rz-slider-options="vm.minRangeSlider.options"></rzslider>
     </div>
-<!--<hr>-->
-<div class="form-group"  append-source >
-    <label class="label-above-input">Choose gender</label>
-    <button type="button" class="btn btn-default label-above-input" ng-model="vm.selectedGender" data-html="1" bs-options="gender.id as gender.description for gender in vm.genders" bs-select>
-        Action <span class="caret"></span>
-    </button>
-</div>
-
-    <div class="form-group"  append-source >
-    <label class="label-above-input">Choose country</label>
-    <button type="button" class="btn btn-default label-above-input" ng-model="vm.selectedCountry" data-html="1" bs-options="country.id as country.description for country in vm.countries" bs-select>
-        Action <span class="caret"></span>
-    </button>
-</div>
-
-    <!--<div class="form-group">-->
-        <!--<label>Choose country</label>-->
-        <!--<select class="form-control" ng-model="vm.selectedCountry" ng-options="country.id as country.description for country in vm.countries"></select>-->
-    <!--</div>-->
-
     <div  class="form-group">
-        <label>Choose city</label>
-        <select ng-disabled="vm.selectedCountry=='' "class="form-control" ng-model="vm.selectedCity" ng-options="city.id as city.description for city in vm.cities"></select>
+        <label>Choose gender</label>
+        <select class="form-control" ng-model="vm.searchData.filterGenderId" ng-options="gender.id as gender.description for gender in vm.genders"></select>
     </div>
 
+    <div class="form-group"  append-source ng-if="false"  >
+    <label class="label-above-input">Choose country</label>
+    <button type="button" class="btn btn-default label-above-input" ng-model="vm.selectedCountry" data-html="1" ng-options="country.id as country.description for country in vm.countries" bs-select>
+        Action <span class="caret"></span>
+    </button>
+</div>
 
 
-<button ng-click="vm.doIt()">get It</button>
+    <!--<div  class="form-group" >-->
+        <!--<label>Choose city</label>-->
+        <!--<select class="form-control" ng-model="vm.CitiesIds" ng-options="city.id as city.description for city in vm.cities"></select>-->
+    <!--</div>-->
+
+    <div class="form-group">
+        <label class="label-above-input">Choose city</label>
+        <button placement="auto" type="submit" class="btn btn-default label-above-input btn-choose-city" ng-model="vm.searchData.filterCitiesIds"
+                placeholder="choose" max-length-html="chhhhoooss"
+                data-html="1" bs-options="city.id as city.description for city in vm.cities" data-multiple="1" bs-select>
+            Action <span class="caret"></span>
+        </button>
+    </div>
+
+    <!--style="width: 100%"-->
+
+<button class="btn btn-success pull-left" type="submit" ng-click="vm.doIt()"> {{"UserSettings.btn.submit" | translate}}</button>
 
 </div>

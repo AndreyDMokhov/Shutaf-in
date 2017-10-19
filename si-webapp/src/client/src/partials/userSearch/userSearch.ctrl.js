@@ -1,29 +1,36 @@
 "use strict";
 app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter,$scope,$rootScope, $timeout, $modal) {
     var vm = this;
-
+    vm.searchData={};
     vm.userSearchList = {};
     vm.fullName = $stateParams.name;
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
-    vm.countries = $sessionStorage.countries;
-    // vm.selectedGender = vm.genders[0].id;
-    vm.selectedGender = '';
-    vm.selectedCountry = '';
-    vm.selectedCity = '';
-    console.log(vm.cities);
-    console.log(vm.selectedCountry);
+    vm.searchData.filterGenderId = $sessionStorage.filters.filterGenderId;
+    vm.searchData.filterCitiesIds = $sessionStorage.filters.filterCitiesIds ;
+    vm.searchData.filterAgeRange = $sessionStorage.filters.filterAgeRange;
+    vm.minRangeSlider = {
+        options: {
+            floor: 18,
+            ceil: 120,
+            step: 1
+        }
+    };
+    fillAgeRange();
+
 
     function activate() {
         userSearch();
     }
 
     function userSearch() {
+        console.log(vm.fullName);
 
         userSearchModel.userSearch(vm.fullName).then(
             function (success) {
 
                 vm.userSearchList = success.data.data;
+                console.log(vm.userSearchList);
 
             }, function (error) {
 
@@ -47,23 +54,32 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
 
     activate();
 
-    vm.minRangeSlider = {
-        minValue: 25,
-        maxValue: 32,
-        options: {
-            floor: 18,
-            ceil: 60,
-            step: 1
-        }
-    };
-    function doIt() {
-        alert("minAge = " + vm.minRangeSlider.minValue + " maxAge = " + vm.minRangeSlider.maxValue+
-        " gender = " + vm.selectedGender +" country = " + vm.selectedCountry +" city = " + vm.selectedCity);
-        console.log(vm.selectedGender);
-        console.log(vm.selectedCountry);
-        console.log(vm.selectedCity);
-    }
 
+    function doIt() {
+        vm.searchData.filterAgeRange = {
+            fromAge: vm.minRangeSlider.minValue,
+            toAge: vm.minRangeSlider.maxValue
+        };
+        userSearchModel.saveFilters(vm.searchData).then(
+            function (success) {
+                console.log(success);
+                $sessionStorage.filters.filterGenderId = vm.searchData.filterGenderId ;
+              $sessionStorage.filters.filterCitiesIds = vm.searchData.filterCitiesIds ;
+              $sessionStorage.filters.filterAgeRange = vm.searchData.filterAgeRange;
+            }, function (error) {
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+            });
+    }
+function fillAgeRange() {
+    if(vm.searchData.filterAgeRange===null){
+        vm.minRangeSlider.minValue=25;
+        vm.minRangeSlider.maxValue=50;
+    }
+    else{
+    vm.minRangeSlider.minValue=vm.searchData.filterAgeRange.fromAge;
+    vm.minRangeSlider.maxValue=vm.searchData.filterAgeRange.toAge;
+    }
+}
 
     vm.userSearch = userSearch;
     vm.getImage = getImage;
