@@ -52,7 +52,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     }
 
     @Override
-    public Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionAnswers(User user) {
+    public Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionExtendedAnswers(User user) {
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userQuestionExtendedAnswerMap = new HashMap<>();
         for (UserQuestionExtendedAnswer userAnswer :
                 userQuestionExtendedAnswerRepository.getAllUserQuestionExtendedAnswers(user)) {
@@ -67,8 +67,8 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
 
 
     @Override
-    public void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList,
-                                          User user) {
+    public void addUserQuestionExtendedAnswers(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList,
+                                               User user) {
         deleteUserQuestionAnswers(user);
         userMatchingScoreRepository.deleteUserMatchingScores(user);
         Integer maxScore = 0;
@@ -90,6 +90,10 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
 
         }
 
+        saveMaxUserMatchingScore(user, maxScore);
+    }
+
+    private void saveMaxUserMatchingScore(User user, Integer maxScore) {
         MaxUserMatchingScore maxUserMatchingScore = maxUserMatchingScoreRepository.getUserMaxMatchingScore(user);
         if (maxUserMatchingScore == null) {
             maxUserMatchingScore = new MaxUserMatchingScore(user, maxScore);
@@ -103,7 +107,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     @Override
     public List<UserQuestionExtendedAnswersWeb> getSelectedQuestionExtendedAnswers(User user) {
         List<UserQuestionExtendedAnswersWeb> selectedAnswers = new ArrayList<>();
-        Map<QuestionExtended, List<UserQuestionExtendedAnswer>> allUserAnswers = getAllUserQuestionAnswers(user);
+        Map<QuestionExtended, List<UserQuestionExtendedAnswer>> allUserAnswers = getAllUserQuestionExtendedAnswers(user);
         for (Map.Entry<QuestionExtended, List<UserQuestionExtendedAnswer>> question : allUserAnswers.entrySet()) {
             List<Integer> questionAnswers = new ArrayList<>();
             for (UserQuestionExtendedAnswer answer : question.getValue()) {

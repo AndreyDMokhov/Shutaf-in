@@ -33,6 +33,6 @@ public class UserMatchingScoreController {
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void addUserQuestionExtendedAnswers(@AuthenticatedUser User user,
                                                @RequestBody List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList) {
-        userQuestionExtendedAnswerService.addUserQuestionAnswersWeb(userQuestionExtendedAnswersWebList, user);
+        userQuestionExtendedAnswerService.addUserQuestionExtendedAnswers(userQuestionExtendedAnswersWebList, user);
     }
 }

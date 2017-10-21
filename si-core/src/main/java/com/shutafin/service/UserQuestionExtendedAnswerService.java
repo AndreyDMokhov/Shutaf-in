@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface UserQuestionExtendedAnswerService {
 
-    Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionAnswers(User user);
-    void addUserQuestionAnswersWeb(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList, User user);
+    Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionExtendedAnswers(User user);
+    void addUserQuestionExtendedAnswers(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList, User user);
     List<UserQuestionExtendedAnswersWeb> getSelectedQuestionExtendedAnswers(User user);
 }

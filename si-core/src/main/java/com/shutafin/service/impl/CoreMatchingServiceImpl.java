@@ -67,9 +67,9 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
                 .getScore().doubleValue();
 
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers =
-                userQuestionExtendedAnswerService.getAllUserQuestionAnswers(userOrigin);
+                userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOrigin);
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers =
-                userQuestionExtendedAnswerService.getAllUserQuestionAnswers(userToMatch);
+                userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userToMatch);
 
         for (QuestionExtended question : userOriginAnswers.keySet()) {
             Integer answerSimilarityScore = getAnswerSimilarityScore(userOriginAnswers, userToMatchAnswers, question);
