@@ -33,12 +33,12 @@ public class QuestionExtendedServiceImpl implements QuestionExtendedService {
     @Override
     public List<QuestionExtendedWithAnswersLocaleWeb> getQuestionsExtendedWithAnswers(Language language) {
         List<QuestionExtendedWithAnswersLocaleWeb> questionExtendedWithAnswersList = new ArrayList<>();
-        for (QuestionExtendedResponseDTO question : questionExtendedRepository.getLocaleQuestionExtended(language)) {
+        for (QuestionExtendedResponseDTO question : questionExtendedRepository.getLocaleQuestionsExtended(language)) {
             QuestionExtendedWithAnswersLocaleWeb questionWithAnswers = new QuestionExtendedWithAnswersLocaleWeb();
             questionWithAnswers.setQuestionId(question.getId());
             questionWithAnswers.setQuestionDescription(question.getDescription());
             questionWithAnswers.setAnswers(new HashMap<Integer, String>());
-            for (AnswerExtendedResponseDTO answer : answerExtendedRepository.getLocaleAnswerExtended(language, question.getId())) {
+            for (AnswerExtendedResponseDTO answer : answerExtendedRepository.getLocaleAnswersExtended(language, question.getId())) {
                 questionWithAnswers.getAnswers().put(answer.getId(), answer.getDescription());
             }
             questionExtendedWithAnswersList.add(questionWithAnswers);

@@ -23,7 +23,7 @@ public class QuestionExtendedRepositoryImpl extends AbstractConstEntityDao<Quest
     }
 
     @Override
-    public List<QuestionExtendedResponseDTO> getLocaleQuestionExtended(Language language) {
+    public List<QuestionExtendedResponseDTO> getLocaleQuestionsExtended(Language language) {
         StringBuilder hql = new StringBuilder();
         hql.append("select new com.shutafin.model.web.initialization.QuestionExtendedResponseDTO ")
                 .append(" ( ")

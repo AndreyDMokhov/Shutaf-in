@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface AnswerExtendedRepository extends Dao<AnswerExtended> {
     List<AnswerExtended> getAllAnswersExtended();
-    List<AnswerExtendedResponseDTO> getLocaleAnswerExtended(Language language, Integer questionId);
+    List<AnswerExtendedResponseDTO> getLocaleAnswersExtended(Language language, Integer questionId);
 }

@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface QuestionExtendedRepository extends Dao<QuestionExtended> {
     List<QuestionExtended> getAllQuestionsExtended();
-    List<QuestionExtendedResponseDTO> getLocaleQuestionExtended(Language language);
+    List<QuestionExtendedResponseDTO> getLocaleQuestionsExtended(Language language);
 }
