@@ -41,10 +41,7 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
         List<User> usersToMatch = userMatchService.findMatchingUsers(userOrigin);
         Map<Long, Integer> userMatchingScores = new HashMap<>();
         for (User userToMatch : usersToMatch) {
-            UserMatchingScore score = userMatchingScoreRepository.getUserMatchingScore(userOrigin, userToMatch);
-            if (score == null) {
-                score = coreMatchingService.evaluateUserMatchingScore(userOrigin, userToMatch);
-            }
+            UserMatchingScore score = getMatchingScore(userOrigin, userToMatch);
             userMatchingScores.put(userToMatch.getId(), score.getScore());
         }
         return userMatchingScores;
