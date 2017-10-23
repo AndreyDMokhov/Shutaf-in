@@ -117,7 +117,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'changePasswordController',
             controllerAs:'vm'
         })
-
     ;
     $urlRouterProvider.otherwise('/home');
 });

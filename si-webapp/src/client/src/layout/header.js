@@ -35,8 +35,18 @@ app.controller("headerController", function (
         $window.location.reload();
     }
 
+    function getUserImage() {
+        if (!vm.userProfile.userImage) {
+            return '../../images/default_avatar.png';
+        }
+        else {
+            return 'data:image/jpeg;base64,' + vm.userProfile.userImage;
+        }
+    }
+
     init();
 
     vm.setLanguageCode = setLanguageCode;
+    vm.getUserImage = getUserImage;
 
 });

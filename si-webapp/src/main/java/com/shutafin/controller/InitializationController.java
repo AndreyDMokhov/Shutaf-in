@@ -7,6 +7,7 @@ import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.initialization.CityResponseDTO;
 import com.shutafin.model.web.initialization.CountryResponseDTO;
 import com.shutafin.model.web.initialization.GenderResponseDTO;
+import com.shutafin.model.web.user.FiltersWeb;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
@@ -18,7 +19,9 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -39,6 +42,8 @@ public class InitializationController {
     @Autowired
     private UserLanguageService userLanguageService;
 
+    @Autowired
+    private UserSearchService userSearchService;
 
     @NoAuthentication
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -60,6 +65,11 @@ public class InitializationController {
                 .genders(initializationService.findAllGendersByLanguage(language))
                 .questionAnswersResponses(userMatchService.getUserQuestionsAnswers(language))
                 .selectedAnswersResponses(userMatchService.getUserQuestionsSelectedAnswers(user))
+                .filters(
+                        new FiltersWeb(
+                                userSearchService.getCitiesForFilter(user),
+                                userSearchService.getGenderForFilter(user),
+                                userSearchService.getAgeRangeForFilter(user)))
                 .build();
     }
 }
@@ -75,5 +85,6 @@ class InitializationResponse {
     private List<CityResponseDTO> cities;
     private List<QuestionAnswersResponse> questionAnswersResponses;
     private List<QuestionSelectedAnswersResponse> selectedAnswersResponses;
+    private FiltersWeb filters;
 
 }
