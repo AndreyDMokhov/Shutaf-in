@@ -24,13 +24,13 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         rest.one('/api/initialization/all').customGET().then(
             function (success) {
+
                 $sessionStorage.userProfile = success.data.userProfile;
                 $sessionStorage.cities = success.data.cities;
                 $sessionStorage.countries = success.data.countries;
                 $sessionStorage.genders = success.data.genders;
                 $sessionStorage.questions = success.data.questionAnswersResponses;
                 $sessionStorage.selectedAnswers = _getSelectedAnswers(success.data.selectedAnswersResponses);
-
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
 
                 deferred.resolve(success.data);
@@ -45,10 +45,10 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
         var answers = [];
         for (var i = 0; i < $sessionStorage.questions.length; i++) {
             if (data[i]) {
-                answers.push({"questionId": i, "answerId": data[i].selectedAnswersIds[0]});
+                answers.push({"questionId": data[i].questionId, "answerId": data[i].selectedAnswersIds[0]});
             }
             else {
-                answers.push({"questionId": i, "answerId": null});
+                answers.push({"questionId": i+1, "answerId": null});
             }
         }
         return answers;

@@ -63,6 +63,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userImageId != null) {
             UserImage userImage = userImageService.getUserImage(user, userImageId);
             userInfoResponseDTO.addUserImage(userImage);
+            UserImage originalUserImage = userImageService.getOriginalUserImage(userImage);
+            userInfoResponseDTO.addOriginalUserImage(originalUserImage);
         }
         return userInfoResponseDTO;
     }
