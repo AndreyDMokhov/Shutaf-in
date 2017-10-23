@@ -9,14 +9,16 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
 
 
         /**
-         * CHeck if authenticated or already connected, then call connect()
+         * Check if authenticated or already connected, then call connect()
          * @returns {*}
          */
         function getConnection() {
             if (!sessionService.isAuthenticated() || vm.isConnected || vm.connecting) {
                 return;
             }
-            // this trigger helps us to avoid multiple calls of observerCallback and getConnection func
+            /**
+             * this trigger helps us to avoid multiple calls of observerCallback and getConnection func
+             */
             vm.connecting = true;
             return $q(function (resolve, reject) {
                 connect().then(
@@ -42,10 +44,9 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
             var socket = getSocket();
             vm.stompClient = Stomp.over(socket);
             /**
-             * STOMP debug mode setting
-             * @returns {*}
+             * STOMP debug mode setting. If true -> shows all debug messages in console.log
              */
-            // vm.stompClient.debug = false;
+            vm.stompClient.debug = false;
             return $q(function (resolve, reject) {
                 vm.stompClient.connect({'session_id': $sessionStorage.sessionId}, function (success) {
                     vm.connecting = false;
@@ -81,7 +82,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         }
 
         /**
-         *  vm.subscription.unsubscribe(); unSubscribe via Stomp
+         *  vm.subscription.unsubscribe(); unSubscribe all subscriptions via Stomp
          */
         function unSubscribe() {
             if (vm.subscription !== null) {
@@ -139,14 +140,18 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
 
         var observerCallbacks = [];
 
-        //register an observer callback. will be called if connection is lost
+        /**
+         *  register an observer callback. will be called if connection is lost
+         */
         function registerObserverCallback(callback) {
             if (!observerCallbacks.includes(callback)) {
                 observerCallbacks.push(callback);
             }
         }
 
-        //call this when connection is lost. it fires all callbacks, that are register above
+        /**
+         *  call this when connection is lost. it fires all callbacks, that are register above
+         */
         var notifyObservers = function () {
             if (!vm.connecting) {
                 angular.forEach(observerCallbacks, function (callback) {

@@ -1,4 +1,4 @@
-app.controller('chatController', function (chatModel, $sessionStorage, $state) {
+app.controller('chatController', function (chatModel, $sessionStorage, $state, ngDialog) {
 
 
 //  TODO: code clean up.
@@ -27,9 +27,8 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state) {
         }
 
         function addChat() {
-            vm.currentChat.id = null;
             //  TODO: add pop up window for chat add function
-            vm.chatName = 'new chat';
+            vm.chatName = '';
             chatModel.addChat(vm.chatName).then(
                 function (success) {
                     vm.currentChat = success.data.data;

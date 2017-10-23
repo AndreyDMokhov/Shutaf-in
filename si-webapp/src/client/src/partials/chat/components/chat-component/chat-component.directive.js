@@ -21,7 +21,6 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
             var messageIdList = [];
             var body = angular.element(element[0].children[0]);
 
-            //TODO: do subscribe if connection lost;
             function initWsConnection() {
                 if (!webSocketService.isConnectionReady()) {
                     setTimeout(function () {
@@ -38,7 +37,11 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
                     function (message) {
                         addChatMessage(message);
                     });
-                // must be called after the connection is ready, in other way we will get multiple subscriptions
+                /**
+                 *  Should be called after getting status: connection is ready,
+                 *  in other way we will get multiple subscriptions
+                 * @returns {*}
+                 */
                 webSocketService.registerObserverCallback(initWsConnection);
             }
 
