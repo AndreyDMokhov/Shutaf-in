@@ -1,4 +1,5 @@
-app.controller('settingsController', function ($filter, $state) {
+app.controller('settingsController', function ($filter, $state,$window) {
+    $window.document.title = "Shutaf-In | " +$state.current.title;
     var vm = this;
 
     vm.tabs = [

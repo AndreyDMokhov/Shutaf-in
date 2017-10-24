@@ -1,5 +1,5 @@
-app.controller('questionsCtrl', function ($scope, $state, quizModel, notify, $sessionStorage, $filter) {
-
+app.controller('questionsCtrl', function ($scope, $state, quizModel, notify, $sessionStorage, $filter, $window) {
+    $window.document.title = "Shutaf-In | " +$state.current.title;
     var vm = this;
     vm.isReady = true;
 

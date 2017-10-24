@@ -1,6 +1,6 @@
 "use strict";
-app.controller('changePasswordController', function ($rootScope, changePasswordModel, notify, $filter, $state) {
-
+app.controller('changePasswordController', function ($rootScope, changePasswordModel, notify, $filter, $state, $window) {
+    $window.document.title = "Shutaf-In | " +$state.current.title;
     var vm = this;
 
     vm.isOpened = true;
