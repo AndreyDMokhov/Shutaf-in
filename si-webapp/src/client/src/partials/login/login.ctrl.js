@@ -7,8 +7,9 @@ app.controller('loginController', function (loginModel,
                                             initializationService,
                                             $window) {
 
-    var vm = this;
+    $window.document.title = "Shutaf-In | " +$state.current.title;
 
+    var vm = this;
     vm.dataLoading = false;
 
     vm.loginData = {};

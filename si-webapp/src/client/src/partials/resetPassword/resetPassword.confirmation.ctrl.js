@@ -1,5 +1,6 @@
 "use strict";
-app.controller('resetPasswordConfirmation', function ($filter, resetPasswordModel, $state, notify, $stateParams) {
+app.controller('resetPasswordConfirmation', function ($filter, resetPasswordModel, $state, notify, $stateParams, $window) {
+    $window.document.title = "Shutaf-In | " +$state.current.title;
     var vm = this;
     var urlLink = $stateParams.link;
 

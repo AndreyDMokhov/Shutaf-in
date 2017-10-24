@@ -1,6 +1,6 @@
 "use strict";
 app.controller('logoutController', function ($rootScope, logoutModel, $window, $state,$filter, languageService, $sessionStorage) {
-
+    $window.document.title = "Shutaf-In | " +$state.current.title;
     function logout() {
         logoutModel.logout().then(function (success) {
         });

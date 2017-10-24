@@ -1,5 +1,6 @@
 "use strict";
-app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter) {
+app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter, $window) {
+    $window.document.title = "Shutaf-In | " +$state.current.title;
     var vm = this;
 
     vm.userSearchList = {};
