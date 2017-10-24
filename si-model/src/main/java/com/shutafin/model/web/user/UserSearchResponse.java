@@ -21,6 +21,8 @@ public class UserSearchResponse {
 
     private Long userImageId;
 
+    private Long originalUserImageId;
+
     private Integer genderId;
 
     private Integer cityId;
