@@ -1,5 +1,6 @@
 "use strict";
-app.controller('resetPasswordRequestController', function (resetPasswordModel, notify, $filter, $state) {
+app.controller('resetPasswordRequestController', function (resetPasswordModel, notify, $filter, $state, $window) {
+    $window.document.title = "Shutaf-In | " +$filter('translate')('ResetPassword.title');
     var vm = this;
     vm.resetPasswordEmail = {};
     vm.emailConfirm = false;

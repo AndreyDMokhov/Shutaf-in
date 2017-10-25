@@ -1,6 +1,6 @@
 "use strict";
 app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter, $window) {
-    $window.document.title = "Shutaf-In | " +$state.current.title;
+    $window.document.title = "Shutaf-In | " +$filter('translate')('Search.title');
     var vm = this;
 
     vm.userSearchList = {};
