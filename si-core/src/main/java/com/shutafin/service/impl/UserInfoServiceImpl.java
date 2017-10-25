@@ -70,6 +70,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public UserInfoResponseDTO getUserInfo(Long userId){
+        return getUserInfo(userRepository.findById(userId));
+    }
+
+    @Override
     public void updateUserInfo(UserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = userInfoRepository.getUserInfo(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);
