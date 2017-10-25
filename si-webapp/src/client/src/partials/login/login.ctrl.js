@@ -7,7 +7,7 @@ app.controller('loginController', function (loginModel,
                                             initializationService,
                                             $window) {
 
-    $window.document.title = "Shutaf-In | " +$state.current.title;
+    $window.document.title = "Shutaf-In | " +$filter('translate')('Login.title');
 
     var vm = this;
     vm.dataLoading = false;

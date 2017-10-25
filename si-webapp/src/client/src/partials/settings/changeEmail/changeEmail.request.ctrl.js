@@ -1,6 +1,6 @@
 "use strict";
 app.controller('changeEmailRequestController', function ($state, $rootScope, changeEmailModel, notify, $filter, $window) {
-    $window.document.title = "Shutaf-In | " +$state.current.title;
+    $window.document.title = "Shutaf-In | " +$filter('translate')('Settings.security.email.title');
     var vm = this;
     vm.dataLoading = false;
     vm.isOpened = true;

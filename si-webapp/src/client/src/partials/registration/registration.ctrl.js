@@ -1,6 +1,6 @@
 "use strict";
 app.controller('userRegistration', function (registrationModel, notify, $state, $filter, CACHED_LANGUAGE_ID, $sessionStorage, $window) {
-    $window.document.title = "Shutaf-In | " +$state.current.title;
+    $window.document.title = "Shutaf-In | " +$filter('translate')('Registration.title');
     var vm = this;
     vm.registrationData = {};
 

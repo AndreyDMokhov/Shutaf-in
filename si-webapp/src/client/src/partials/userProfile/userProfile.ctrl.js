@@ -12,7 +12,7 @@ app.controller('userProfileController', function ($localStorage,
                                                   ngDialog,
                                                   IMAGE_MAX_SIZE_MB,
                                                   $window) {
-    $window.document.title = "Shutaf-In | " +$state.current.title;
+    $window.document.title = "Shutaf-In | " +$filter('translate')('UserSettings.personal.title');
 
     var vm = this;
     $scope.myCroppedImage = '';

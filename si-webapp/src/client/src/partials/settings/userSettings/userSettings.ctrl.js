@@ -7,7 +7,7 @@ app.controller("userSettingsController", function ($localStorage,
                                                    $state,
                                                    initializationService,
                                                    $window) {
-    $window.document.title = "Shutaf-In | " +$state.current.title;
+    $window.document.title = "Shutaf-In | " +$filter('translate')('UserProfile.title');
 
     var vm = this;
     vm.dataLoading = false;

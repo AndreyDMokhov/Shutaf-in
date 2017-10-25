@@ -15,8 +15,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partials/about/about.html',
                 controller: 'aboutController',
                 controllerAs: 'vm',
-                url: '/about',
-                title: 'About'
+                url: '/about'
             })
 
         .state('registration',
@@ -24,8 +23,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partials/registration/registration.html',
                 controller: 'userRegistration',
                 controllerAs: 'vm',
-                url: '/registration/request',
-                title: 'Registration'
+                url: '/registration/request'
             })
         .state('registrationConfirmation',
             {
@@ -45,16 +43,14 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partials/users/users.html',
                 controller: 'usersController',
                 controllerAs: 'vm',
-                url: '/users',
-                title: 'Users'
+                url: '/users'
             })
         .state('userProfile',
             {
                 templateUrl: 'partials/userProfile/userProfile.html',
                 controller: 'userProfileController',
                 controllerAs: 'vm',
-                url: '/profile/{id:int}',
-            title: 'Profile'
+                url: '/profile/{id:int}'
             })
 
         .state('login',
@@ -62,41 +58,35 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partials/login/login.html',
                 controller: 'loginController',
                 controllerAs: 'vm',
-                url: '/login',
-                title: 'Login'
+                url: '/login'
             })
         .state('logout', {
                 controller: 'logoutController',
-                url: '/logout',
-            title: 'Logout'
+                url: '/logout'
         })
         .state('resetPasswordRequest', {
                 templateUrl: 'partials/resetPassword/resetPassword.request.html',
                 controller: 'resetPasswordRequestController',
                 controllerAs: 'vm',
-                url: '/reset-password/request',
-            title: 'Reset password'
+                url: '/reset-password/request'
         })
         .state('resetPasswordNewPassword', {
                 url: '/reset-password/confirmation/{link}',
                 templateUrl: 'partials/resetPassword/resetPassword.confirmation.html',
                 controller: 'resetPasswordConfirmation',
-                controllerAs: 'vm',
-            title: 'Reset password'
+                controllerAs: 'vm'
         })
         .state('userSearch', {
                 templateUrl: 'partials/userSearch/userSearch.html',
                 controller: 'userSearchController',
                 controllerAs: 'vm',
-                url: '/users/search?{name}',
-            title: 'User search'
+                url: '/users/search?{name}'
         })
         .state('questions', {
                 templateUrl:'partials/questions/questions.html',
                 controller: 'questionsCtrl',
                 controllerAs: 'vm',
-                url: '/questions',
-            title: 'Questions'
+                url: '/questions'
             })
         /* Settings */
         .state('settings', {
@@ -110,28 +100,24 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url:'/personal',
             templateUrl: 'partials/settings/userSettings/userSettings.html',
             controller: 'userSettingsController',
-            controllerAs: 'vm',
-            title: 'Settings'
+            controllerAs: 'vm'
         })
         .state('settings.changeEmailRequest', {
             url:'/email',
             templateUrl: 'partials/settings/changeEmail/changeEmail.html',
             controller: 'changeEmailRequestController',
-            controllerAs:'vm',
-            title: 'Settings'
+            controllerAs:'vm'
         })
         .state('settings.changeEmailConfirmation', {
                 controller: 'changeEmailConfirmationController',
                 controllerAs: 'vm',
-                url: '/settings/change-email/confirmation/{link}',
-            title: 'Settings'
+                url: '/settings/change-email/confirmation/{link}'
         })
         .state('settings.changePassword', {
             url:'/password',
             templateUrl: 'partials/settings/changePassword/changePassword.html',
             controller: 'changePasswordController',
-            controllerAs:'vm',
-            title: 'Settings'
+            controllerAs:'vm'
         })
     ;
     $urlRouterProvider.otherwise('/home');

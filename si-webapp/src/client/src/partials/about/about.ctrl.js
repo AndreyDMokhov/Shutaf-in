@@ -1,5 +1,5 @@
 "use strict";
-app.controller('aboutController', function ($state, $window) {
+app.controller('aboutController', function ($state, $window, $filter) {
     var vm = this;
-    $window.document.title = "Shutaf-In | " +$state.current.title;
+    $window.document.title = "Shutaf-In | " +$filter('translate')('About.title');
 });
