@@ -81,6 +81,11 @@ public class UserDocumentServiceImpl implements UserDocumentService {
     }
 
     private boolean fileSignatureCorrect(UserDocumentWeb userDocumentWeb, DocumentType documentType) {
-        return userDocumentWeb.getFileData().startsWith(documentType.getFileSignature());
+        for (String fileSignature : documentType.getFileSignature()) {
+            if (userDocumentWeb.getFileData().startsWith(fileSignature)){
+                return true;
+            }
+        }
+        return false;
     }
 }

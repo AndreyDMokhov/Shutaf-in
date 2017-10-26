@@ -3,17 +3,18 @@ package com.shutafin.model.types;
 public enum DocumentType implements IdentifiableType<Integer> {
     DOC(0, "0M8R4KGxGuE"),
     DOCX(1, "UEsDBBQA"),
-    PDF(2, "JVBERg==");
+    PDF(2, "JVBER"),
+    TIF(3, "SUkqAA", "TU0AKg");
 
     private Integer id;
 
     /*File signature is unique data to identify file content according to it's HEX value
     In this case HEX value is converted to Base64*/
-    private String fileSignature;
+    private String[] fileSignatures;
 
-    DocumentType(Integer id, String fileSignature) {
+    DocumentType(Integer id, String... fileSignatures) {
         this.id = id;
-        this.fileSignature = fileSignature;
+        this.fileSignatures = fileSignatures;
     }
 
     @Override
@@ -35,7 +36,7 @@ public enum DocumentType implements IdentifiableType<Integer> {
         throw new IllegalArgumentException(String.format("Document type with ID %d does not exist", id));
     }
 
-    public String getFileSignature() {
-        return fileSignature;
+    public String[] getFileSignature() {
+        return fileSignatures;
     }
 }
