@@ -19,7 +19,7 @@ app.controller('userProfileController', function ($localStorage,
     vm.userProfile = $sessionStorage.userProfile;
     vm.fileInfo = {};
     vm.size = IMAGE_MAX_SIZE_MB * 1024;
-    vm.hideButton = false;
+    vm.hideDeleteButton = false;
     vm.hideEditButton = false;
 
     vm.cities = $sessionStorage.cities;
@@ -148,8 +148,7 @@ app.controller('userProfileController', function ($localStorage,
         var urlElemensArr = $location.url().split('/');
         var userId = urlElemensArr[urlElemensArr.length - 1];
         if (userId != $sessionStorage.userProfile.userId){
-            vm.deleteButton = true;
-            vm.hideButton = true;
+            vm.hideDeleteButton = true;
             vm.hideEditButton = true;
 
             userProfileModel.getSelectedUserProfile(userId).then(
