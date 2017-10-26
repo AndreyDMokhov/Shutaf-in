@@ -3,8 +3,8 @@
     <div class="message-item" ng-repeat="message in messages track by $index">
         <table class="item-table" ng-mouseover="unmarkMessageItem($index)">
             <tbody>
-            <td id="userPic" align="center">
-                <user-avatar uuid={{message.lastName}} size="50x50"></user-avatar>
+            <td class="userPic">
+                <user-avatar user-id={{message.userId}} width="50" height="50"></user-avatar>
             </td>
             <td >
                 <span class="title">{{message.lastName}} {{message.firstName}}</span>
@@ -18,10 +18,3 @@
     </div>
 </div>
 
-<!--</div>-->
-<!--<p></p>-->
-<!--<button class="btn btn-sm btn-info"-->
-<!--ng-show="messages.length > messagesCount"-->
-<!--ng-click="showMore()">-->
-<!--See previous-->
-<!--</button>-->

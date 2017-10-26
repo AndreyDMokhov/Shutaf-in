@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ChatManagementService {
 
-    Chat getNewChat(String chatTitle);
+    Chat getNewChat(String chatTitle, Long userId);
     void addChatUserToChat(User user, Chat chat);
     void addChatUserToChat(Long userId, Chat chat);
     Chat findAuthorizedChat(Long chatId, User user);
@@ -19,4 +19,5 @@ public interface ChatManagementService {
     List<User> getListUsersByChatId(Chat chat,User user);
     List<ChatMessage> getListMessages(Chat chat, User user);
     void updateMessagesAsRead(List<Long> messagesIdList, User user);
+    Chat renameChat(Long chatId, String chatTitle);
 }

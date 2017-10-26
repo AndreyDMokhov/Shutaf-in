@@ -39,10 +39,16 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     @Transactional
-    public Chat getNewChat(String chatTitle) {
+    public Chat getNewChat(String chatTitle, Long userId) {
         Chat chat = new Chat();
         chat.setChatTitle(chatTitle);
+        if (chatTitle.equals("null")) {
+            chat.setIsNoTitle(true);
+        }
+        chat.setChatTitle(chatTitle);
         chatRepository.save(chat);
+        User user = getUserById(userId);
+        addChatUserToChat(user, chat);
         return chat;
     }
 
@@ -145,7 +151,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByChatAndPermittedUser(chat, user);
         chatMessages = chatMessages
                 .stream()
-                .filter(x->x.getPermittedUsers().contains(user.getId()))
+                .filter(x -> x.getPermittedUsers().contains(user.getId()))
                 .collect(Collectors.toList());
         return chatMessages;
     }
@@ -158,6 +164,15 @@ public class ChatManagementServiceImpl implements ChatManagementService {
             chatMessage.setUsersToNotify(usersToNotifyIdList);
             chatMessageRepository.update(chatMessage);
         }
+    }
+
+    @Override
+    public Chat renameChat(Long chatId, String chatTitle) {
+        Chat chat = chatRepository.findById(chatId);
+        chat.setChatTitle(chatTitle);
+        chat.setIsNoTitle(false);
+        chatRepository.update(chat);
+        return chat;
     }
 
     private User getUserById(Long userId) {

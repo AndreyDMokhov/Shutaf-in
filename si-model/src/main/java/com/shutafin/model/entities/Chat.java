@@ -18,5 +18,7 @@ public class Chat extends AbstractEntity {
 
     @Column(name = "CHAT_TITLE", length = 50)
     private String chatTitle;
+    @Column(name = "IS_NO_TITLE", nullable = false)
+    private Boolean isNoTitle;
 
 }

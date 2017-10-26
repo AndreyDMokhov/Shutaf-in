@@ -14,4 +14,5 @@ public interface UserSearchService {
     Integer getGenderForFilter(User user);
     AgeRangeWebDTO getAgeRangeForFilter(User user);
     List<UserBaseResponse> userBaseResponseByList(List<User> users);
+    UserSearchResponse findUserDataById(Long userId);
 }

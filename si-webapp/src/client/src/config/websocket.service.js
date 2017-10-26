@@ -41,6 +41,10 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
          * @returns {*}
          */
         function connect() {
+            if (!sessionService.isAuthenticated() || vm.isConnected) {
+                return;
+            }
+            vm.connecting = true;
             var socket = getSocket();
             vm.stompClient = Stomp.over(socket);
             /**

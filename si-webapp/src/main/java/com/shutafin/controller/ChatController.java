@@ -39,12 +39,22 @@ public class ChatController {
     @Autowired
     private UserSearchService userSearchService;
 
-    @RequestMapping(value = "/new/{chat_title}", method = RequestMethod.GET)
+    @RequestMapping(value = "/new/{chat_title}/{user_id}", method = RequestMethod.GET)
     public Chat addChat(@PathVariable("chat_title") String chatTitle,
+                        @PathVariable("user_id") Long userId,
                         @AuthenticatedUser User user) {
 
-        Chat chat = chatManagementService.getNewChat(chatTitle);
+        Chat chat = chatManagementService.getNewChat(chatTitle, userId);
         chatManagementService.addChatUserToChat(user, chat);
+        return chat;
+    }
+
+    @RequestMapping(value = "/rename/{chat_id}/{chat_title}", method = RequestMethod.GET)
+    public Chat renameChat(@PathVariable("chat_id") Long chatId,
+                           @PathVariable("chat_title") String chatTitle,
+                           @AuthenticatedUser User user) {
+
+        Chat chat = chatManagementService.renameChat(chatId, chatTitle);
         return chat;
     }
 
@@ -127,6 +137,7 @@ public class ChatController {
 
     private ChatMessageResponse createChatMessageOutputWeb(ChatMessage chatMessage) {
         ChatMessageResponse chatMessageOutputWeb = new ChatMessageResponse();
+        chatMessageOutputWeb.setUserId(chatMessage.getUser().getId());
         chatMessageOutputWeb.setMessageId(chatMessage.getId());
         chatMessageOutputWeb.setFirstName(chatMessage.getUser().getFirstName());
         chatMessageOutputWeb.setLastName(chatMessage.getUser().getLastName());

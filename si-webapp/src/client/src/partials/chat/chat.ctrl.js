@@ -1,18 +1,14 @@
-app.controller('chatController', function (chatModel, $sessionStorage, $state, ngDialog) {
-
-
-//  TODO: code clean up.
-//  TODO: add translate
-//  TODO: concat user names to chat name
+app.controller('chatController', function (chatModel, $sessionStorage, $state, languageService, ngDialog) {
 
         var vm = this;
 
-        vm.users = {};
+        vm.users = [];
         vm.currentChat = {};
-        vm.listOfChats = {};
-        vm.messages = {};
-        vm.usersInChat = {};
+        vm.listOfChats = [];
+        vm.messages = [];
+        vm.usersInChat = [];
         vm.currentUserId = $sessionStorage.userProfile.userId;
+        vm.characterLimit = 15;
 
         function activate() {
             getUserData();
@@ -23,48 +19,86 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state, n
             chatModel.getUsers().then(
                 function (success) {
                     vm.users = success.data.data;
+                    $sessionStorage.users = vm.users;
                 });
         }
 
-        function addChat() {
-            //  TODO: add pop up window for chat add function
-            vm.chatName = '';
-            chatModel.addChat(vm.chatName).then(
+        function addChat(userId) {
+            if (!userId) {
+                return;
+            }
+            vm.chatName = null;
+            chatModel.addChat(vm.chatName, userId).then(
                 function (success) {
                     vm.currentChat = success.data.data;
-                    getChats();
-                    updateChatMessages();
-                    getActiveUsersInChat();
-                }, function (error) {
-                });
+                    vm.listOfChats.push(vm.currentChat);
+                    vm.usersInChat = [];
+                    vm.usersInChat.push(findUserInUserListById(userId));
+                    checkOneChatTitle(vm.usersInChat, vm.currentChat);
+                    vm.messages = [];
+                }
+            );
         }
 
-        function getChats() {
-            chatModel.getChats().then(
+        function removeChat(chat) {
+            if(!chat){
+                return;
+            }
+            chatModel.removeChat(chat.id).then(
                 function (success) {
-                    vm.listOfChats = success.data.data;
-                });
-        }
-
-        function removeChat(chatId) {
-            chatModel.removeChat(chatId).then(
-                function (success) {
-                    if (vm.currentChat.id === chatId) {
-                        vm.messages = {};
-                        vm.usersInChat = null;
+                    if (vm.currentChat.id === chat.id) {
+                        vm.messages = [];
+                        vm.usersInChat = [];
                         vm.currentChat = {};
-                        getChats();
                     }
-                    else {
-                        getChats();
-                    }
+                    vm.listOfChats.splice(vm.listOfChats.indexOf(chat),1);
                 });
+        }
+
+        function renameChat(chatId, chatTitle) {
+            chatModel.renameChat(chatId,chatTitle).then(
+                function(success){
+                    var newChatData = success.data.data;
+                    var oldVal = vm.listOfChats.find(function (item) {
+                        return item.id === newChatData.id;
+                    });
+                    vm.listOfChats.splice(vm.listOfChats.indexOf(oldVal), 1, newChatData);
+
+                }
+            )
         }
 
         function addUserToChat(userId) {
+            if (!vm.currentChat.id || !userId || isUserActiveInCurrentChat(userId)) {
+                return;
+            }
             chatModel.addUserToChat(vm.currentChat.id, userId).then(
                 function (success) {
-                    getActiveUsersInChat();
+                    vm.usersInChat.push(findUserInUserListById(userId));
+                    checkOneChatTitle(vm.usersInChat, vm.currentChat);
+                });
+        }
+
+        function isUserActiveInCurrentChat(userId) {
+            var res = vm.usersInChat.find(function (item) {
+                return item.userId === userId;
+            });
+            return res !== undefined;
+        }
+
+        function findUserInUserListById(userId) {
+            return vm.users.find(function (item) {
+                return item.userId === userId;
+            });
+        }
+
+        function removeUserFromChat(userId) {
+            chatModel.removeUserFromChat(vm.currentChat.id, userId).then(
+                function (success) {
+                    vm.usersInChat = vm.usersInChat.filter(function (item) {
+                        return item.userId !== userId;
+                    });
+                    checkOneChatTitle(vm.usersInChat, vm.currentChat);
                 });
         }
 
@@ -72,13 +106,6 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state, n
             chatModel.getActiveUsersInChat(vm.currentChat.id).then(
                 function (success) {
                     vm.usersInChat = success.data.data;
-                });
-        }
-
-        function removeUserFromChat(userId) {
-            chatModel.removeUserFromChat(vm.currentChat.id, userId).then(
-                function (success) {
-                    getActiveUsersInChat();
                 });
         }
 
@@ -98,6 +125,54 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state, n
             $state.go('userSearch');
         }
 
+        function getChats() {
+            chatModel.getChats().then(
+                function (success) {
+                    vm.listOfChats = success.data.data;
+                    checkChatTitlesList();
+                });
+        }
+
+        function checkChatTitlesList() {
+            vm.listOfChats.forEach(function (element) {
+                if (element.isNoTitle) {
+                    getUsersInChatAndSetChatTitle(element);
+                }
+            });
+        }
+
+        function checkOneChatTitle(usersInChat, chatData) {
+            if (chatData.isNoTitle) {
+                setChatTitle(usersInChat, chatData);
+                if (chatData.id === vm.currentChat.id) {
+                    vm.currentChat = chatData;
+                }
+            }
+        }
+
+        function getUsersInChatAndSetChatTitle(chatData) {
+            chatModel.getActiveUsersInChat(chatData.id).then(
+                function (success) {
+                    var usersInChat = success.data.data;
+                    setChatTitle(usersInChat, chatData);
+                }
+            );
+        }
+
+        function setChatTitle(usersInChat, chatData) {
+            if(languageService.getUserLanguage().id===2){
+                chatData.chatTitle='Вы';
+            }
+            else{
+                chatData.chatTitle = 'You';
+            }
+            var fullChatTitle = usersInChat.map(function (elem) {
+                return elem.firstName + ' ' + elem.lastName;
+            }).join(", ");
+            chatData.chatTitle = chatData.chatTitle +', '+ fullChatTitle;
+        }
+
+
         activate();
 
         vm.getUserData = getUserData;
@@ -110,5 +185,6 @@ app.controller('chatController', function (chatModel, $sessionStorage, $state, n
         vm.updateChatMessages = updateChatMessages;
         vm.updateChatData = updateChatData;
         vm.changeStateToUserSearch = changeStateToUserSearch;
+        vm.renameChat=renameChat;
     }
 );

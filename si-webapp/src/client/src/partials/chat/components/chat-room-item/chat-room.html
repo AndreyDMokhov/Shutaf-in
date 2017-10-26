@@ -1,0 +1,30 @@
+<div class="chat-item" ng-attr-title="{{'Chat.title.enter.chat' | translate}}" ng-click="enterChat()">
+
+    <table ng-attr-id='chatItemTable{{directiveId}}' class="item-table">
+        <tbody>
+        <tr>
+            <th colspan="2">&nbsp;{{chatData.chatTitle | limitTo:characterLimit}}
+                {{chatData.chatTitle.length > characterLimit ? '... ' : ''}}<span ng-show="newMessageCounter>0" style="color: #ff4500">&nbsp;new: {{newMessageCounter}}</span>
+            </th>
+        </tr>
+        <tr>
+            <td class="userPic">
+                <user-avatar ng-show="lastMessage.userId" user-id={{lastMessage.userId}} width="20" height="20"></user-avatar>
+            </td>
+            <td>
+            <span class="title">{{lastMessage.lastName | limitTo:characterLimit/2}}{{lastMessage.lastName.length > characterLimit/2 ? '... ' : ' '}}
+                {{lastMessage.firstName | limitTo:characterLimit/2}}{{lastMessage.firstName.length > characterLimit/2 ? '...' : ''}}</span>
+
+                <span class="chip">
+                {{lastMessage.message | limitTo:characterLimit}}{{lastMessage.message.length > characterLimit ? '...' : ''}}
+            </span>
+            </td>
+            <td class="sign">
+                <span ng-click="editChatTitle()" class="fa fa-pencil" ng-attr-title="{{'Chat.title.edit.chat.title' | translate}}"></span>
+                <span ng-click="deleteChat()" class="glyphicon glyphicon-trash" ng-attr-title="{{'Chat.title.delete.chat' | translate}}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

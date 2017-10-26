@@ -1,34 +1,33 @@
 <div class=row>
-    <div class="col-md-4 col-lg-4 chat-col-left" align="left">
+    <div class="col-md-4 col-lg-4 chat-col-left chat-menu" align="left">
 
-        <h4>Chats</h4>
         <div class="chat-list">
-            <div ng-repeat="chat in vm.listOfChats track by $index">
-                <chat-component current-chat-id="vm.currentChat" chat-data="chat"
-                                update-chat-data="vm.updateChatData(chatData)"
-                                update-chat-messages="vm.updateChatMessages(messages)"
-                                remove-chat = "vm.removeChat(chatId)"></chat-component>
+            <div ng-repeat="chat in vm.listOfChats track by chat.id">
+                <chat-room current-chat-id="vm.currentChat"
+                           chat-data="chat"
+                           update-chat-data="vm.updateChatData(chatData)"
+                           update-chat-messages="vm.updateChatMessages(messages)"
+                           remove-chat="vm.removeChat(chat)"
+                           rename-chat="vm.renameChat(chatId, chatTitle)"></chat-room>
 
-            </div>
-            <div class="chat-item" align="center" title="Create new chat" ng-click="vm.addChat(user.userId)">
-                <i id="add-chat-icon" class="fa fa-plus-square-o"></i>
             </div>
         </div>
-
 
         <h4>Users</h4>
         <div class="chat-list" ng-repeat="user in vm.users track by $index">
-            <div class="chat-item" title="Add user" ng-click="vm.addUserToChat(user.userId)">
-
+            <div class="chat-item user-item">
                 <table class="item-table">
                     <tbody>
                     <tr>
-                        <td id="userPic" align="center">
-                            <user-avatar uuid={{user.lastName}} size="20x20"></user-avatar>
+                        <td class="userPic">
+                            <user-avatar user-id={{user.userId}} width="20" height="20"></user-avatar>
                         </td>
                         <td><span class="title">{{user.lastName}} {{user.firstName}}</span></td>
-                        <td align="right" id="sign">
-                            <i id="add-user-icon" class="fa fa-user-plus" ></i>
+                        <td class="sign">
+                            <span id="send-mess-icon" ng-attr-title="{{'Chat.title.send.message' | translate}}"
+                                  class="fa fa-comment-o" ng-click="vm.addChat(user.userId)"></span>
+                            <span id="add-user-icon" ng-attr-title="{{'Chat.title.add.user' | translate}}"
+                                  class="fa fa-user-plus" ng-click="vm.addUserToChat(user.userId)"></span>
                         </td>
 
                     </tr>
@@ -36,29 +35,31 @@
                 </table>
             </div>
 
-
         </div>
-        <div class="chat-item"  align="center" title="Find shutafin" ng-click="vm.changeStateToUserSearch()">
-            <i id="find-user-icon" class="fa fa-search-plus"></i>
+        <div class="chat-item " align="center" ng-attr-title="{{'Chat.title.find.users' | translate}}"
+             ng-click="vm.changeStateToUserSearch()">
+            <span id="find-user-icon" class="fa fa-search-plus"></span>
         </div>
-
-        <h4>{{'Chat.title.usersInChat' | translate}}: {{vm.currentChat.chatTitle}}</h4>
-        <div class="chat-list" title="Delete user" ng-repeat="user in vm.usersInChat track by $index">
-            <div class="chat-item" ng-click="vm.removeUserFromChat(user.userId)">
-
+        <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}: {{vm.currentChat.chatTitle |
+            limitTo:vm.characterLimit}}{{vm.currentChat.chatTitle.length > vm.characterLimit ? '... ' : ''}}</h4>
+        <div class="chat-list" ng-repeat="user in vm.usersInChat track by $index">
+            <div class="chat-item user-item">
                 <table class="item-table">
                     <tbody>
                     <tr>
-                        <td id="userPic" align="center">
-                            <user-avatar uuid={{user.lastName}} size="20x20"></user-avatar>
+                        <td class="userPic">
+                            <user-avatar user-id={{user.userId}} width="20" height="20"></user-avatar>
                         </td>
                         <td><span class="title">{{user.lastName}} {{user.firstName}}</span></td>
-                        <td align="right" id="sign">
-                            <i id="del-user-icon" class="fa fa-user-times" ></i>
+                        <td class="sign">
+                            <span id="del-user-icon" ng-click="vm.removeUserFromChat(user.userId)"
+                                  ng-attr-title="{{'Chat.title.delete.user' | translate}}"
+                                  class="fa fa-user-times"></span>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>

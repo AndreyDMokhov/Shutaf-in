@@ -1,4 +1,4 @@
-app.directive('chatComponent', function (chatModel, webSocketService, $sessionStorage) {
+app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage, ngDialog) {
     return {
         restrict: "E",
         scope: {
@@ -6,14 +6,15 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
             chatData: '=',
             updateChatData: '&',
             updateChatMessages: '&',
-            removeChat: '&'
+            removeChat: '&',
+            renameChat: '&'
         },
-        templateUrl: 'partials/chat/components/chat-component/chat-component.html',
+        templateUrl: 'partials/chat/components/chat-room-item/chat-room.html',
 
         link: function (scope, element, attrs) {
 
             var destination = '/api/subscribe/chat/' + scope.chatData.id;
-            scope.messages = {};
+            scope.messages = [];
             scope.lastMessage = {};
             scope.characterLimit = 20;
             scope.newMessageCounter = 0;
@@ -40,7 +41,6 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
                 /**
                  *  Should be called after getting status: connection is ready,
                  *  in other way we will get multiple subscriptions
-                 * @returns {*}
                  */
                 webSocketService.registerObserverCallback(initWsConnection);
             }
@@ -64,7 +64,7 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
                     });
             }
 
-            scope.updateChat = function () {
+            scope.enterChat = function () {
                 updateMessagesAsRead();
                 scope.updateChatData({chatData: scope.chatData});
                 scope.updateChatMessages({messages: scope.messages});
@@ -72,7 +72,7 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
 
             function findNewMessages() {
                 for (var i = 0; i < scope.messages.length; i++) {
-                    if (scope.messages[i].usersToNotify.length !==0) {
+                    if (scope.messages[i].usersToNotify.length !== 0) {
                         markMessageNotRead(scope.messages[i]);
                     }
                 }
@@ -103,7 +103,26 @@ app.directive('chatComponent', function (chatModel, webSocketService, $sessionSt
             }
 
             scope.deleteChat = function () {
-                scope.removeChat({chatId: scope.chatData.id});
+                scope.messages = [];
+                scope.lastMessage = {};
+                scope.removeChat();
+            };
+
+            scope.editChatTitle = function () {
+                scope.dialog = ngDialog.open({
+                    template: 'partials/chat/components/chat-room-item/chat-rename.popup.html',
+                    scope: scope,
+                    showClose: false,
+                    className: 'ngdialog-theme-default',
+                    closeByDocument: true
+                });
+            };
+
+            scope.setNewChatTitle = function (newChatTitle) {
+                scope.dialog.close();
+                if (newChatTitle) {
+                    scope.renameChat({chatId: scope.chatData.id, chatTitle: newChatTitle});
+                }
             };
 
             getAllMessages();

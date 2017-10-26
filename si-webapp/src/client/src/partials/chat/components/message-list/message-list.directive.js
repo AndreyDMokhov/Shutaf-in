@@ -8,20 +8,18 @@ app.directive('messageList', function () {
 
         link: function (scope, element, attrs) {
 
-            //TODO: is there a better way to get body properties?
-            //TODO: replace $watch
             var body = angular.element(element[0].children[0]);
 
-            var prepareChatWindow = function () {
+            function prepareChatWindow() {
                 angular.element(document).ready(function () {
                     scrollToBottom();
                     markMessageItems();
                 });
-            };
+            }
 
-            var scrollToBottom = function () {
+            function scrollToBottom() {
                 body.scrollTop(body.prop('scrollHeight'));
-            };
+            }
 
             scope.$watchCollection('messages', function (val) {
                 if (!val || Object.keys(val).length === 0) {
@@ -44,7 +42,6 @@ app.directive('messageList', function () {
                 scope.messages[index].isNew = false;
                 body[0].children[index].style.backgroundColor = '#FAFAFA';
             }
-
         }
     };
 });

@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 public class ChatMessageResponse {
 
+    private Long userId;
     private Long messageId;
     private String firstName;
     private String lastName;

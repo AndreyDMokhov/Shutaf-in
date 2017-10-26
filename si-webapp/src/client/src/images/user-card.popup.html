@@ -1,0 +1,38 @@
+<div class="panel panel-info" >
+    <div class="panel-heading">
+        <h4 class="panel-title">{{ currentUser.firstName }} {{ currentUser.lastName }}</h4>
+
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3" align="center">
+                <img ng-src={{image}}
+                     width="100px"
+                     height="100px">
+            </div>
+            <div class=" col-md-9">
+                <table class="table table-user-information">
+                    <tbody>
+                    <tr ng-if="currentUser.dateOfBirth">
+                        <td>{{'UserProfile.dateOfBirth' | translate}}</td>
+                        <td>{{currentUser.dateOfBirth | date: 'dd / MM / yyyy'}}</td>
+                    </tr>
+                    <tr ng-if="currentUser.genderId">
+                        <td>{{'UserSettings.form.gender' | translate}}</td>
+                        <td ng-repeat="gender in genders"
+                            ng-if="gender.id === currentUser.genderId">{{gender.description}}
+                        </td>
+                    </tr>
+                    <tr ng-if="currentUser.cityId">
+                        <td>{{'UserProfile.city' | translate}}</td>
+                        <td ng-repeat="city in cities"
+                            ng-if="city.id === currentUser.cityId">{{city.description}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
