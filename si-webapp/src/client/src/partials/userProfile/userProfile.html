@@ -15,7 +15,8 @@
                             <a class="fa fa-pencil"
                                ui-sref="settings.personal"
                                uib-tooltip="{{'UserProfile.edit' | translate}}"
-                               tooltip-placement="bottom" style="float: right; color: white;"></a>
+                               tooltip-placement="bottom" style="float: right; color: white;"
+                               ng-hide="vm.hideEditButton"></a>
                         </div>
                     </div>
                 </div>
@@ -47,7 +48,8 @@
                             <button
                                     ng-click="vm.deleteImage()"
                                     class="btn btn-primary button-size-font"
-                                    ng-disabled="vm.deleteButton">
+                                    ng-disabled="vm.deleteButton"
+                                    ng-hide="vm.hideButton">
                                 {{'UserProfile.button.deleteImage'|translate}}
                             </button>
                         </div>

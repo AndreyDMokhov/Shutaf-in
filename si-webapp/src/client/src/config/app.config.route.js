@@ -50,13 +50,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controllerAs: 'vm',
                 url: '/profile/{id:int}'
             })
-        .state('searchResultUserProfile',
-            {
-                templateUrl: 'partials/userProfile/searchResultUserProfile.html',
-                controller: 'searchResultUserProfileController',
-                controllerAs: 'vm',
-                url: '/user/profile/{id:int}'
-            })
 
         .state('login',
             {
