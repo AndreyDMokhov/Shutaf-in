@@ -2,7 +2,6 @@ package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.AbstractBaseEntity;
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
 import com.shutafin.model.entities.ChatUser;
@@ -18,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,7 +63,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         } else if (!chatUser.getIsActiveUser()) {
             chatUser.setIsActiveUser(true);
             chatUser.setJoinDate(new Date());
-            chatUserRepository.update(chatUser);
+            chatUserRepository.refresh(chatUser);
         }
     }
 
@@ -87,14 +88,15 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Override
     @Transactional
     public void removeChatUserFromChat(Long userId, Chat chat) {
-        User user = getUserById(userId);
-        chatUserRepository.setInactiveChatUserAndExitDate(user, chat);
+        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chat.getId(), userId);
+        chatUser.setIsActiveUser(false);
+        chatUserRepository.refresh(chatUser);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Chat> getListChats(User user) {
-        return chatUserRepository.findChatsByActiveChatUser(user);
+        return chatUserRepository.findChatsWhereIsActiveUserTrue(user);
     }
 
     @Override
@@ -127,7 +129,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     }
 
     private LinkedList<Long> getPermittedUsers(Chat chat) {
-        List<ChatUser> chatUsers = chatUserRepository.findActiveChatUsersByChat(chat);
+        List<ChatUser> chatUsers = chatUserRepository.findChatUsersByChatAndIsActiveUserTrue(chat);
         return chatUsers
                 .stream()
                 .map(ChatUser::getUser)
@@ -139,7 +141,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Override
     @Transactional(readOnly = true)
     public List<User> getListUsersByChatId(Chat chat, User user) {
-        List<ChatUser> chatUsers = chatUserRepository.findActiveChatUsersByChat(chat);
+        List<ChatUser> chatUsers = chatUserRepository.findChatUsersByChatAndIsActiveUserTrue(chat);
         return chatUsers.stream().map(ChatUser::getUser)
                 .filter(x -> !x.getId().equals(user.getId()))
                 .collect(Collectors.toList());
@@ -148,7 +150,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Override
     @Transactional(readOnly = true)
     public List<ChatMessage> getListMessages(Chat chat, User user) {
-        List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByChatAndPermittedUser(chat, user);
+        List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByChat(chat);
         chatMessages = chatMessages
                 .stream()
                 .filter(x -> x.getPermittedUsers().contains(user.getId()))
@@ -158,25 +160,25 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     public void updateMessagesAsRead(List<Long> messagesIdList, User user) {
-        List<ChatMessage> chatMessages = chatMessageRepository.updateMessagesAsRead(messagesIdList);
+        List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByMessageIdList(messagesIdList);
         for (ChatMessage chatMessage : chatMessages) {
             LinkedList<Long> usersToNotifyIdList = getUsersToNotify(chatMessage.getUsersToNotify(), user.getId());
             chatMessage.setUsersToNotify(usersToNotifyIdList);
-            chatMessageRepository.update(chatMessage);
+            chatMessageRepository.refresh(chatMessage);
         }
     }
 
     @Override
     public Chat renameChat(Long chatId, String chatTitle) {
-        Chat chat = chatRepository.findById(chatId);
+        Chat chat = chatRepository.findChatById(chatId);
         chat.setChatTitle(chatTitle);
         chat.setIsNoTitle(false);
-        chatRepository.update(chat);
+        chatRepository.refresh(chat);
         return chat;
     }
 
     private User getUserById(Long userId) {
-        User user = userRepository.findById(userId);
+        User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new ResourceNotFoundException();
         }
