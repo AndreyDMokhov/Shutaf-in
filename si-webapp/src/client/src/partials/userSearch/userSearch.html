@@ -23,9 +23,9 @@
                 <div class="panel panel-info" ng-repeat="user in vm.userSearchList">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a ui-sref="userProfile({id:user.userId})" uib-tooltip="Profile" tooltip-placement="bottom" class="ng-binding">
+                            <div ng-click="vm.showUserProfilePopup({id:user.userId})" uib-tooltip="{{'UserProfile.title'|translate}}" tooltip-placement="left" class="ng-binding">
                                 {{ user.firstName }} {{ user.lastName }}
-                            </a>
+                            </div>
                         </h4>
                         <span>{{'UserProfile.compatibility' | translate}}</span>
                     </div>

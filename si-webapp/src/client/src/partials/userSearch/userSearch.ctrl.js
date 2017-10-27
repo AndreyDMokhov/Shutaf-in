@@ -1,5 +1,5 @@
 "use strict";
-app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter) {
+app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter, ngDialog) {
     var vm = this;
 
     vm.userSearchList = {};
@@ -40,8 +40,20 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
         }
     }
 
+    function showUserProfilePopup(userId) {
+        ngDialog.open({
+            templateUrl: 'partials/userProfile/userProfile.html',
+            controller: 'userProfileController',
+            data: {selectedUserId: userId},
+            className: 'ngdialog-theme-default custom-user-profile-popup',
+            controllerAs: 'vm',
+            url: '/profile/' + userId
+        });
+    }
+
     activate();
 
     vm.userSearch = userSearch;
     vm.getImage = getImage;
+    vm.showUserProfilePopup = showUserProfilePopup;
 });

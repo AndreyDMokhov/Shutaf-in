@@ -10,6 +10,8 @@
                     <div class="row">
                         <div class="col-md-4 text-left panel-title">{{vm.userProfile.firstName}}
                             {{vm.userProfile.lastName}}
+                            <span ng-hide="vm.hideCurrentProfileText" class="text-left panel-title">({{'UserProfile.current' | translate}})
+                            </span>
                         </div>
                         <div class="col-md-8 text-right">
                             <a class="fa fa-pencil"
@@ -30,11 +32,13 @@
                                             height="225px"
                                             width="225px"
                                             uib-tooltip="{{'UserProfile.click.image'|translate}}"
+                                            tooltip-enable="vm.enableDisableProfileImageTooltip"
                                             tooltip-placement="bottom"
                                             tooltip-class="custom-class">
                                 </label>
                                 <input
                                         ng-show="hide"
+                                        ng-disabled="vm.disableLoadImage"
                                         type="file"
                                         ng-model="vm.fileInfo"
                                         name="filename"
