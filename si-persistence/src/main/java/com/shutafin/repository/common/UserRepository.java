@@ -2,13 +2,9 @@ package com.shutafin.repository.common;
 
 
 import com.shutafin.model.entities.User;
-import com.shutafin.repository.base.PersistentDao;
+import com.shutafin.repository.base.BaseJpaRepository;
 
-import java.util.List;
 
-public interface UserRepository extends PersistentDao<User> {
-
-    User findUserByEmail(String email);
-    Boolean isEmailExists(String email);
-    List<User> findUsersByFirstAndLastName(List<String> names);
+public interface UserRepository extends BaseJpaRepository<User, Long> {
+    User findByEmail(String email);
 }

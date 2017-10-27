@@ -49,7 +49,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         }
 
         //match users by MUST questions
-        UserExamKey userExamKey = userExamKeyRepository.getUserExamKey(user);
+        UserExamKey userExamKey = userExamKeyRepository.findByUser(user);
 
         if (userExamKey == null) {
             return new ArrayList<>();
@@ -66,24 +66,24 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Transactional
     public void saveQuestionsAnswers(User user, List<QuestionAnswerRequest> questionsAnswers) {
 
-        userQuestionAnswerRepository.deleteUserAnswers(user);
-        userExamKeyRepository.delete(user);
+        userQuestionAnswerRepository.deleteAllByUser(user);
+        userExamKeyRepository.deleteByUser(user);
 
         TreeMap<Question, Answer> questionAnswerMap = new TreeMap<>();
         for (QuestionAnswerRequest questionAnswer : questionsAnswers) {
-            Question question = questionRepository.findById(questionAnswer.getQuestionId());
+            Question question = questionRepository.findOne(questionAnswer.getQuestionId());
 
-            Answer answer = answerRepository.findById(questionAnswer.getAnswerId());
+            Answer answer = answerRepository.findOne(questionAnswer.getAnswerId());
             userQuestionAnswerRepository.save(new UserQuestionAnswer(user, question, answer));
             questionAnswerMap.put(question, answer);
         }
 
         List<String> examKeyRes = generateExamKey(questionAnswerMap);
         userExamKeyRepository.save(new UserExamKey(user, examKeyRes.get(0), examKeyRes.get(1)));
-        if (varietyExamKeyRepository.findUserExamKeyByStr(examKeyRes.get(0)) == null) {
+        if (varietyExamKeyRepository.findByUserExamKey(examKeyRes.get(0)) == null) {
             varietyExamKeyRepository.save(new VarietyExamKey(examKeyRes.get(0)));
         }
-        if (varietyExamKeyRepository.findUserExamKeyByStr(examKeyRes.get(1)) == null) {
+        if (varietyExamKeyRepository.findByUserExamKey(examKeyRes.get(1)) == null) {
             varietyExamKeyRepository.save(new VarietyExamKey(examKeyRes.get(1)));
         }
     }
