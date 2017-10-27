@@ -59,7 +59,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Transactional
     @Override
     public void resetPasswordRequest(EmailWeb emailWeb) {
-        User user = userRepository.findUserByEmail(emailWeb.getEmail());
+        User user = userRepository.findByEmail(emailWeb.getEmail());
         if (user != null) {
             ResetPasswordConfirmation resetPasswordConfirmation = saveResetPasswordConfirmation(user);
             Language userLanguage = userAccountRepository.findUserLanguage(user);
@@ -90,7 +90,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Transactional(readOnly = true)
     @Override
     public void resetPasswordValidation(String link) {
-        if (resetPasswordConfirmationRepository.findValidUrlLink(link) == null) {
+        if (resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtBeforeAndIsConfirmedIsTrue(link, new Date()) == null) {
             log.warn("Resource not found exception:");
             log.warn("UrlLink {} was not found", link);
             throw new ResourceNotFoundException();
@@ -100,14 +100,14 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Transactional
     @Override
     public void passwordChange(PasswordWeb passwordWeb, String link) {
-        ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findValidUrlLink(link);
+        ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtBeforeAndIsConfirmedIsTrue(link, new Date());
         if (resetPasswordConfirmation == null) {
             log.warn("Resource not found exception:");
             log.warn("UrlLink {} was not found", link);
             throw new ResourceNotFoundException();
         }
         resetPasswordConfirmation.setIsConfirmed(Boolean.TRUE);
-        resetPasswordConfirmationRepository.update(resetPasswordConfirmation);
+        resetPasswordConfirmationRepository.save(resetPasswordConfirmation);
 
         passwordService.updateUserPasswordInDb(resetPasswordConfirmation.getUser(), passwordWeb.getNewPassword());
     }

@@ -1,4 +1,4 @@
-package com.shutafin.repository.initialization.custom;
+package com.shutafin.repository.initialization;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserInfoResponseDTO;

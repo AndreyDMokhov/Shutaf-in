@@ -1,34 +1,39 @@
 package com.shutafin.repository.common.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.FilterAgeRange;
 import com.shutafin.model.web.user.AgeRangeWebDTO;
-import com.shutafin.repository.base.AbstractEntityDao;
-import com.shutafin.repository.common.FilterAgeRangeRepository;
+import com.shutafin.repository.common.FilterAgeRangeRepositoryCustom;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
-/**
- * Created by evgeny on 10/1/2017.
- */
 @Repository
-public class FilterAgeRangeRepositoryImpl extends AbstractEntityDao<FilterAgeRange> implements FilterAgeRangeRepository {
+public class FilterAgeRangeRepositoryImpl implements FilterAgeRangeRepositoryCustom {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     public AgeRangeWebDTO getUserFilterAgeRange(User user) {
         StringBuilder hql = new StringBuilder()
                 .append(" SELECT new com.shutafin.model.web.user.AgeRangeWebDTO(far.fromAge, far.toAge) ")
                 .append(" FROM FilterAgeRange far ")
                 .append(" WHERE far.user = :user ");
-        return (AgeRangeWebDTO) getSession()
-                .createQuery(hql.toString())
-                .setParameter("user", user)
-                .uniqueResult();
+        try {
+            return (AgeRangeWebDTO) entityManager
+                    .createQuery(hql.toString())
+                    .setParameter("user", user)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
     public List<User> getAllMatchedUsers(User user, List<User> matchedUsers) {
-
         AgeRangeWebDTO ageRangeWebDTO = getUserFilterAgeRange(user);
         if (ageRangeWebDTO == null || matchedUsers.isEmpty()){
             return matchedUsers;
@@ -41,21 +46,12 @@ public class FilterAgeRangeRepositoryImpl extends AbstractEntityDao<FilterAgeRan
                 .append(" AND TIMESTAMPDIFF(YEAR, ui.dateOfBirth, CURDATE()) BETWEEN :fromAge AND :toAge ")
                 .append("  ");
 
-        return getSession()
+        return entityManager
                 .createQuery(hql.toString())
                 .setParameter("matchedUsers", matchedUsers)
                 .setParameter("fromAge", ageRangeWebDTO.getFromAge())
                 .setParameter("toAge", ageRangeWebDTO.getToAge())
-                .list();
+                .getResultList();
     }
 
-    @Override
-    public void deleteUserFilterAgeRange(User user) {
-        StringBuilder hql = new StringBuilder()
-                .append(" DELETE FROM FilterAgeRange far where far.user = :user ");
-        getSession()
-                .createQuery(hql.toString())
-                .setParameter("user", user)
-                .executeUpdate();
-    }
 }

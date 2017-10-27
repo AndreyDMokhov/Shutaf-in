@@ -1,16 +1,21 @@
-package com.shutafin.repository.initialization.custom.impl;
+package com.shutafin.repository.initialization;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
-import com.shutafin.repository.base.AbstractEntityDao;
-import com.shutafin.repository.initialization.custom.UserInitializationRepository;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 
 /**
  * Created by Alex on 03.07.2017.
  */
 @Repository
-public class UserInitializationRepositoryImpl extends AbstractEntityDao implements UserInitializationRepository {
+public class UserInitializationRepositoryImpl implements UserInitializationRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public UserInfoResponseDTO getUserInitializationData(User user) {
@@ -45,10 +50,14 @@ public class UserInitializationRepositoryImpl extends AbstractEntityDao implemen
                 .append(" and ")
                 .append(" u.id = :id");
 
-        return (UserInfoResponseDTO) getSession()
-                .createQuery(hql.toString())
-                .setParameter("id", user.getId())
-                .uniqueResult();
+        try {
+            return (UserInfoResponseDTO) entityManager
+                    .createQuery(hql.toString())
+                    .setParameter("id", user.getId())
+                    .getSingleResult();
+        } catch (NoResultException ignore) {
+            return null;
+        }
     }
 
 }
