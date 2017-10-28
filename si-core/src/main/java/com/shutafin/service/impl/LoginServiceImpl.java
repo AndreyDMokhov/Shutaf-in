@@ -54,7 +54,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private User findUserByEmail(LoginWebModel loginWeb) {
-        User user = userPersistence.findUserByEmail(loginWeb.getEmail());
+        User user = userPersistence.findByEmail(loginWeb.getEmail());
         if (user == null) {
             log.warn("Users was not found by email {}", loginWeb.getEmail());
             throw new AuthenticationException();
@@ -63,7 +63,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private UserAccount checkUserAccountStatus(User user) {
-        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+        UserAccount userAccount = userAccountRepository.findByUser(user);
         if (userAccount == null) {
             String message = String.format("UserAccount for user with ID %s does not exist", user.getId());
             log.error(message, user.getId());
@@ -102,7 +102,7 @@ public class LoginServiceImpl implements LoginService {
     private void countLoginFailsAndBlockAccountIfMoreThanMax(User user, UserAccount userAccount) {
         if (userLoginLogRepository.hasExceededMaxLoginTries(user, AMOUNT_OF_ALLOWED_MAX_TRIES, MAX_TRIES_FOR_MINUTES)) {
             userAccount.setAccountStatus(AccountStatus.BLOCKED);
-            userAccountRepository.update(userAccount);
+            userAccountRepository.save(userAccount);
         }
     }
 

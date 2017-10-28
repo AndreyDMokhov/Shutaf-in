@@ -1,5 +1,18 @@
 "use strict";
-app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter, $scope, $rootScope, $timeout, $modal) {
+app.controller("userSearchController", function (
+    $state,
+    $sessionStorage,
+    notify,
+    sessionService,
+    userSearchModel,
+    $stateParams,
+    $filter,
+    $scope,
+    $rootScope,
+    $timeout,
+    $modal,
+    browserTitle) {
+
     var vm = this;
     vm.age = true;
     vm.gender = true;
@@ -9,6 +22,8 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
     vm.fullName = $stateParams.name;
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
+    vm.countries = $sessionStorage.countries;
+
     vm.searchData.filterGenderId = $sessionStorage.filters.filterGenderId;
     vm.searchData.filterCitiesIds = $sessionStorage.filters.filterCitiesIds;
     vm.searchData.filterAgeRange = $sessionStorage.filters.filterAgeRange;
@@ -19,7 +34,6 @@ app.controller("userSearchController", function ($state, $sessionStorage, notify
             step: 1
         }
     };
-
     fillAgeRange();
 
     function activate() {

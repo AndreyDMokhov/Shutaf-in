@@ -1,6 +1,13 @@
 "use strict";
-app.controller('changeEmailRequestController', function ($state, $rootScope, changeEmailModel, notify, $filter) {
+app.controller('changeEmailRequestController', function (
+                                                        $state,
+                                                        $rootScope,
+                                                        changeEmailModel,
+                                                        notify,
+                                                        $filter,
+                                                        browserTitle) {
 
+    browserTitle.setBrowserTitleByFilterName('Settings.security.email.title');
     var vm = this;
     vm.dataLoading = false;
     vm.isOpened = true;

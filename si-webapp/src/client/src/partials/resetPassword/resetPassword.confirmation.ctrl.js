@@ -1,5 +1,14 @@
 "use strict";
-app.controller('resetPasswordConfirmation', function ($filter, resetPasswordModel, $state, notify, $stateParams) {
+app.controller('resetPasswordConfirmation', function (
+                                                    $filter,
+                                                    resetPasswordModel,
+                                                    $state,
+                                                    notify,
+                                                    $stateParams,
+                                                    browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('ResetPassword.title');
+
     var vm = this;
     var urlLink = $stateParams.link;
 

@@ -64,7 +64,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
             throw new AuthenticationException();
         }
 
-        if (userRepository.isEmailExists(emailChangeConfirmationWeb.getNewEmail())) {
+        if (userRepository.findByEmail(emailChangeConfirmationWeb.getNewEmail()) != null) {
             log.warn("Email not unique validation exception:");
             log.warn("Such email already exists");
             throw new EmailNotUniqueValidationException("Such email already exists");
@@ -72,7 +72,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
 
         deleteAllCurrentEmailChangeRequests(user);
 
-        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+        UserAccount userAccount = userAccountRepository.findByUser(user);
         Date expirationTime = DateUtils.addDays(new Date(), 1);
         EmailChangeConfirmation oldEmailObject = saveToBD(
                 user,
@@ -89,20 +89,20 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
                 expirationTime);
 
         oldEmailObject.setConnectedId(newEmailObject);
-        emailChangeConfirmationRepository.update(oldEmailObject);
+        emailChangeConfirmationRepository.save(oldEmailObject);
 
         sendChangeEmailNotification(oldEmailObject, userAccount);
         sendChangeEmailNotification(newEmailObject, userAccount);
     }
 
     private void deleteAllCurrentEmailChangeRequests(User user) {
-        emailChangeConfirmationRepository.deleteAllCurrentEmailChangeRequests(user);
+        emailChangeConfirmationRepository.deleteAllByUser(user);
     }
 
     @Override
     @Transactional
     public EmailChangedResponse emailChangeConfirmation(String link) {
-        EmailChangeConfirmation emailChangeConfirmation = emailChangeConfirmationRepository.getEmailChangeConfirmationByUrlLink(link, new Date());
+        EmailChangeConfirmation emailChangeConfirmation = emailChangeConfirmationRepository.findByUrlLinkAndExpiresAtBefore(link, new Date());
 
         if (emailChangeConfirmation == null) {
             log.warn("Resource not found exception:");
@@ -127,7 +127,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     private void updateUserEmail(User user, String newEmail) {
         try {
             user.setEmail(newEmail);
-            userRepository.update(user);
+            userRepository.save(user);
         } catch (ConstraintViolationException e) {
             log.warn("Email not unique validation exception:");
             log.warn("Such email {} already exists", newEmail);
