@@ -56,9 +56,11 @@ app.controller('userProfileController', function ($localStorage,
     function saveImage(data) {
         userProfileModel.addOrUpdateImage({image: data}).then(
             function (success) {
-                vm.userProfile.userImage = success.data.data.originalUserImage;
+                vm.userProfile.userImage = success.data.data.image;
                 vm.userProfile.userImageId = success.data.data.id;
                 vm.userProfile.createdDate = success.data.data.createdDate;
+                //todo change to original size image
+                vm.userProfile.originalUserImage = success.data.data.image;
                 $sessionStorage.userProfile = vm.userProfile;
                 vm.deleteButton = false;
                 notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
@@ -91,10 +93,12 @@ app.controller('userProfileController', function ($localStorage,
             function (success) {
                 vm.userProfile.userImage = '../../images/default_avatar.png';
                 vm.userProfile.userImageId = null;
+                vm.userProfile.originalUserImage = null;
                 $sessionStorage.userProfile = vm.userProfile;
                 vm.image = '../../images/default_avatar.png';
                 vm.deleteButton = true;
                 notify.set($filter('translate')('UserProfile.message.imageDeleted'), {type: 'success'});
+                $window.location.reload();
             },
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
