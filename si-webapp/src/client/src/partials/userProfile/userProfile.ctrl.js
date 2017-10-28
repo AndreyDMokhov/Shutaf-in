@@ -11,11 +11,13 @@ app.controller('userProfileController', function ($localStorage,
                                                   $q,
                                                   ngDialog,
                                                   IMAGE_MAX_SIZE_MB,
-                                                  $window) {
-
+                                                  $window,
+                                                  browserTitle) {
     var vm = this;
+
     $scope.myCroppedImage = '';
     vm.userProfile = $sessionStorage.userProfile;
+    browserTitle.setExplicitTitle(vm.userProfile.firstName + " " + vm.userProfile.lastName);
     vm.fileInfo = {};
     vm.size = IMAGE_MAX_SIZE_MB * 1024;
 
@@ -119,26 +121,28 @@ app.controller('userProfileController', function ($localStorage,
             closeByDocument: true
         });
     }
+
     function setImageSize() {
         var width, height, myBase64 = $scope.myImage;
         var img = new Image();
         img.src = myBase64;
-        img.addEventListener('load',function(){
-            width=img.width;
-            height=img.height;
-            if(width>=1000&&height>=1000){
+        img.addEventListener('load', function () {
+            width = img.width;
+            height = img.height;
+            if (width >= 1000 && height >= 1000) {
                 $scope.selectedSize =
-                    {value:{w: 1000, h: 1000}}
+                    {value: {w: 1000, h: 1000}}
                 ;
             }
-            else{
-                if(width>=height){
+            else {
+                if (width >= height) {
                     $scope.selectedSize =
-                        {value:{w: height, h: height}};
+                        {value: {w: height, h: height}};
                 }
-                else{
+                else {
                     $scope.selectedSize =
-                    {value:{w: width, h: width}};  }
+                        {value: {w: width, h: width}};
+                }
             }
         });
 
