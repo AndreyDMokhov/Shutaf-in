@@ -1,5 +1,13 @@
-app.controller('questionsCtrl', function ($scope, $state, quizModel, notify, $sessionStorage, $filter, $window) {
-    $window.document.title = "Shutaf-In | " +$filter('translate')('Questions.title');
+app.controller('questionsCtrl', function (
+                                        $scope,
+                                        $state,
+                                        quizModel,
+                                        notify,
+                                        $sessionStorage,
+                                        $filter,
+                                        browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('Questions.title');
     var vm = this;
     vm.isReady = true;
 

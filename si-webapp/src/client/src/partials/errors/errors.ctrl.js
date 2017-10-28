@@ -2,7 +2,11 @@
  * Created by evgeny on 7/13/2017.
  */
 "use strict";
-app.controller('errorsController', function ($filter, $stateParams) {
+app.controller('errorsController', function (
+                                            $filter,
+                                            $stateParams,
+                                            browserTitle) {
+
     var vm = this;
     vm.errorData = {};
 
@@ -13,6 +17,7 @@ app.controller('errorsController', function ($filter, $stateParams) {
         }
         vm.errorData.code = code;
         vm.errorData.description = $filter('translate')('Error.RNF');
+        browserTitle.setBrowserTitleByFilterName(null);
     }
 
     showError();
