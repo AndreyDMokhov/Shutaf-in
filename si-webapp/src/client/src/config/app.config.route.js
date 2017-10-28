@@ -6,8 +6,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partials/home/home.html',
                 controller: 'homeController',
                 controllerAs: 'vm',
-                url: '/home',
-                title: 'Home'
+                url: '/home'
 
             })
         .state('about',
