@@ -59,6 +59,7 @@ app.controller('userProfileController', function ($localStorage,
                 vm.userProfile.userImage = success.data.data.image;
                 vm.userProfile.userImageId = success.data.data.id;
                 vm.userProfile.createdDate = success.data.data.createdDate;
+                //todo change to original size image
                 vm.userProfile.originalUserImage = success.data.data.image;
                 $sessionStorage.userProfile = vm.userProfile;
                 vm.deleteButton = false;
