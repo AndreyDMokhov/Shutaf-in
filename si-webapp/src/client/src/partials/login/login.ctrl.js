@@ -5,10 +5,12 @@ app.controller('loginController', function (loginModel,
                                             notify,
                                             $sessionStorage,
                                             initializationService,
-                                            $window) {
+                                            $window,
+                                            browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('Login.title');
 
     var vm = this;
-
     vm.dataLoading = false;
 
     vm.loginData = {};

@@ -1,5 +1,14 @@
 "use strict";
-app.controller("userSearchController", function ($state, $sessionStorage, notify, sessionService, userSearchModel, $stateParams, $filter) {
+app.controller("userSearchController", function ($state,
+                                                 $sessionStorage,
+                                                 notify,
+                                                 sessionService,
+                                                 userSearchModel,
+                                                 $stateParams,
+                                                 $filter,
+                                                 browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('Search.title');
     var vm = this;
 
     vm.userSearchList = {};
