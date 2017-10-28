@@ -5,9 +5,10 @@ app.controller('loginController', function (loginModel,
                                             notify,
                                             $sessionStorage,
                                             initializationService,
-                                            $window) {
+                                            $window,
+                                            browserTitle) {
 
-    $window.document.title = "Shutaf-In | " +$filter('translate')('Login.title');
+    browserTitle.setBrowserTitleByFilterName('Login.title');
 
     var vm = this;
     vm.dataLoading = false;

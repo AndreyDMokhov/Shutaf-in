@@ -6,8 +6,10 @@ app.controller("userSettingsController", function ($localStorage,
                                                    $filter,
                                                    $state,
                                                    initializationService,
-                                                   $window) {
-    $window.document.title = "Shutaf-In | " +$filter('translate')('UserProfile.title');
+                                                   $window,
+                                                   browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
 
     var vm = this;
     vm.dataLoading = false;

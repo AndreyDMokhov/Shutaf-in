@@ -1,6 +1,7 @@
 "use strict";
-app.factory('resetPasswordModel', function (Restangular, $state, $window) {
-    $window.document.title = "Shutaf-In | " +$state.current.title;
+app.factory('resetPasswordModel', function (Restangular, $state, browserTitle) {
+
+    browserTitle.setExplicitTitle($state.current.title);
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
     });
