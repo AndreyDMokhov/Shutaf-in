@@ -20,18 +20,22 @@ import java.util.List;
 @Transactional
 public class InitializationServiceImpl implements InitializationService {
 
-    @Autowired
     private LanguageRepository languageRepository;
-
-    @Autowired
     private GenderRepository genderRepository;
-
-    @Autowired
     private CountryRepository countryRepository;
-
-    @Autowired
     private CityRepository cityRepository;
 
+    @Autowired
+    public InitializationServiceImpl(
+            LanguageRepository languageRepository,
+            GenderRepository genderRepository,
+            CountryRepository countryRepository,
+            CityRepository cityRepository) {
+        this.languageRepository = languageRepository;
+        this.genderRepository = genderRepository;
+        this.countryRepository = countryRepository;
+        this.cityRepository = cityRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)

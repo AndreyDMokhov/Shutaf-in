@@ -36,7 +36,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Override
     @Transactional(readOnly = true)
     public UserSession findValidUserSession(String sessionId) {
-        return userSessionRepository.findSessionBySessionIdAndInValid(sessionId, IS_TRUE);
+        return userSessionRepository.findBySessionIdAndIsValidTrue(sessionId);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
             throw new AuthenticationException();
         }
         userSession.setExpirationDate(DateUtils.addDays(new Date(), NUMBER_DAYS_EXPIRATION));
-        userSessionRepository.update(userSession);
+        userSessionRepository.save(userSession);
     }
 
     @Override
@@ -68,23 +68,23 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Override
     @Transactional
     public void invalidateUserSession(String sessionId) {
-        UserSession userSession = userSessionRepository.findSessionBySessionIdAndIsValid(sessionId, IS_TRUE);
+        UserSession userSession = userSessionRepository.findBySessionIdAndIsValidTrue(sessionId);
         if (userSession != null) {
             userSession.setIsValid(IS_FALSE);
-            userSessionRepository.update(userSession);
+            userSessionRepository.save(userSession);
         }
     }
 
     @Override
     @Transactional
     public void invalidateAllExpiredSessions() {
-        userSessionRepository.updateAllValidExpiredSessions();
+        userSessionRepository.updateAllValidExpiredUserSessions();
     }
 
     @Override
     @Transactional
     public void deleteAllInvalidSessions() {
         Date date = DateUtils.addMinutes(new Date(), -(EXPIRED_SESSION_DELETE_TIME));
-        userSessionRepository.deleteAllInvalidSessions(date);
+        userSessionRepository.deleteAllByIsValidFalseAndExpirationDateAfter(date);
     }
 }

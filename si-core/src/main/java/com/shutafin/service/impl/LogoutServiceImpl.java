@@ -27,9 +27,9 @@ public class LogoutServiceImpl implements LogoutService {
     @Override
     public void logout(String sessionId, User user) {
 
-        UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
+        UserSession userSession = userSessionRepository.findBySessionId(sessionId);
 
-        userSessionRepository.update(userSession);
+        userSessionRepository.save(userSession);
         userSessionRepository.evict(userSession);
 
         userRepository.evict(user);
