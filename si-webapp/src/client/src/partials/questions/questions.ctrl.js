@@ -10,7 +10,12 @@ app.controller('questionsCtrl', function ($scope,
     var vm = this;
 
     vm.answers = $sessionStorage.selectedAnswers;
+    vm.questions = $sessionStorage.questions;
+    vm.selectedAnswers = $sessionStorage.selectedAnswers;
 
+    function putAnswersToSessionStorage(answers) {
+        $sessionStorage.selectedAnswers = answers;
+    }
 
     function sendData() {
         quizModel.sendAnswers($sessionStorage.selectedAnswers).then(
@@ -24,4 +29,5 @@ app.controller('questionsCtrl', function ($scope,
     }
 
     vm.sendData = sendData;
+    vm.putAnswersToSessionStorage = putAnswersToSessionStorage;
 });

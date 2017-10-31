@@ -1,1 +1,7 @@
-<our-component send-data="vm.sendData"></our-component>
+<div>
+    <h1 style="text-align: center" class="title">{{"Questions.title"|translate}}</h1>
+    <question-component send-data="vm.sendData" put-answers="vm.putAnswersToSessionStorage" list-questions="vm.questions" selected-answers="vm.selectedAnswers"></question-component>
+</div>
+
+
+

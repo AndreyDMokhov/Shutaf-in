@@ -1,14 +1,17 @@
-app.component('ourComponent', {
+app.component('questionComponent', {
     templateUrl: 'partials/questions/question.component.html',
     bindings: {
-        sendData: '='
+        sendData: '=',
+        putAnswers: '=',
+        listQuestions: '=',
+        selectedAnswers: '='
     },
     controller: function ($sessionStorage, $state) {
         this.disableSubmit = true;
-        var questions = $sessionStorage.questions;
+        var questions = this.listQuestions;
         this.currentPage = 1;
         this.currentQuestion = questions[this.currentPage - 1];
-        var answers = $sessionStorage.selectedAnswers;
+        var answers = this.selectedAnswers;
         this.currentAnswer = findById(answers, this.currentQuestion.questionId);
         var previousAnswer = this.currentAnswer;
         var previousQuestionId = this.currentQuestion.questionId;
@@ -35,13 +38,13 @@ app.component('ourComponent', {
             this.currentAnswer = answers[findPosition(answers, this.currentQuestion.questionId)].answerId;
             previousAnswer = this.currentAnswer;
             previousQuestionId = this.currentQuestion.questionId;
-            $sessionStorage.selectedAnswers = answers;
+            this.putAnswers(answers);
         };
 
         this.save = function () {
             answers[findPosition(answers, previousQuestionId)].answerId = this.currentAnswer;
-            $sessionStorage.selectedAnswers = answers;
             this.sendData();
+            this.putAnswers(answers);
             $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
         };
 
