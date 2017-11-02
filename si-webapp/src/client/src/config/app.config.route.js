@@ -64,15 +64,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('resetPasswordRequest', {
                 templateUrl: 'partials/resetPassword/resetPassword.request.html',
-                controller: 'resetPasswordRequestController',
-                controllerAs: 'vm',
                 url: '/reset-password/request'
         })
         .state('resetPasswordNewPassword', {
                 url: '/reset-password/confirmation/{link}',
-                templateUrl: 'partials/resetPassword/resetPassword.confirmation.html',
-                controller: 'resetPasswordConfirmation',
-                controllerAs: 'vm'
+                templateUrl: 'partials/resetPassword/resetPassword.confirmation.html'
         })
         .state('userSearch', {
                 templateUrl: 'partials/userSearch/userSearch.html',
