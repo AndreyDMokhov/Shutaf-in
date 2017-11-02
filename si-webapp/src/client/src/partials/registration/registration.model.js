@@ -1,5 +1,5 @@
 "use strict";
-app.service('registrationService', function (Restangular) {
+app.factory('registrationModel', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
