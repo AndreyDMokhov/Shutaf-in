@@ -134,6 +134,12 @@
   "Search.notFound" : "No users found on your request",
   "Search.request" : "Enter your request",
   "Search.results" : "Results:",
+  "Search.ChooseAge" : "Choose age",
+  "Search.ChooseGender" : "Choose gender",
+  "Search.ChooseCity" : "Choose city",
+  "Search.ChooseButton" : "Click to choose",
+  "Search.ValueInCityButtonMoreThan3" : "selected",
+
 
   "SECTION" : "Questions",
   "Questions.title" : "Questions",

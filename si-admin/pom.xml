@@ -23,8 +23,8 @@
     </properties>
 
     <modules>
-        <module>admin-frontend</module>
-        <module>admin-backend</module>
+        <module>si-admin-frontend</module>
+        <module>si-admin-backend</module>
     </modules>
 
 </project>
