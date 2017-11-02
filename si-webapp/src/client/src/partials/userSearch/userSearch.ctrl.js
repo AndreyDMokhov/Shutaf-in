@@ -14,6 +14,8 @@ app.controller("userSearchController", function (
     browserTitle) {
 
     var vm = this;
+
+    browserTitle.setBrowserTitleByFilterName('Search.title');
     vm.age = true;
     vm.gender = true;
     vm.city = true;
@@ -73,6 +75,8 @@ app.controller("userSearchController", function (
                 $sessionStorage.filters.filterGenderId = vm.searchData.filterGenderId;
                 $sessionStorage.filters.filterCitiesIds = vm.searchData.filterCitiesIds;
                 $sessionStorage.filters.filterAgeRange = vm.searchData.filterAgeRange;
+
+                vm.userSearchList = success.data.data;
             }, function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
             });
