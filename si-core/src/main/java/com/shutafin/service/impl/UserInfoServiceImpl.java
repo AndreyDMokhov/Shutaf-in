@@ -88,7 +88,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         userRepository.save(user);
 
         if (userInfoRequest.getCityId() != null && filterCityRepository.getUserFilterCity(user).isEmpty()){
-            filterCityRepository.save(new FilterCity(user, cityRepository.findById(userInfoRequest.getCityId())));
+
+            filterCityRepository.save(new FilterCity(user, cityRepository.findOne(userInfoRequest.getCityId())));
         }
     }
 
