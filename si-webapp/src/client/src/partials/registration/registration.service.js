@@ -1,18 +1,20 @@
-/**
- * Created by evgeny on 7/10/2017.
- */
 "use strict";
-app.factory('registrationConfirmationModel', function (Restangular) {
+app.service('registrationService', function (Restangular) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
     });
+
+    function registerUser(params) {
+        return rest.one('/api/users/registration/request').customPOST(params);
+    }
 
     function confirmRegistration(urlLink) {
         return rest.one('/api/users/registration/confirmation/' + urlLink).customGET();
     }
 
     return {
+        registerUser: registerUser,
         confirmRegistration: confirmRegistration
     };
 });
