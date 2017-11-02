@@ -16,9 +16,9 @@ app.controller("userSearchController", function (
     var vm = this;
 
     browserTitle.setBrowserTitleByFilterName('Search.title');
-    vm.age = true;
-    vm.gender = true;
-    vm.city = true;
+    vm.age = false;
+    vm.gender = false;
+    vm.city = false;
     vm.searchData = {};
     vm.userSearchList = {};
     vm.fullName = $stateParams.name;
@@ -68,8 +68,12 @@ app.controller("userSearchController", function (
 
     function saveFilters() {
         setAgeRangeData();
-        if (!vm.city) vm.searchData.filterCitiesIds = null;
-        if (!vm.gender) vm.searchData.filterGenderId = null;
+        if (!vm.city) {
+            vm.searchData.filterCitiesIds = null;
+        }
+        if (!vm.gender) {
+            vm.searchData.filterGenderId = null;
+        }
         userSearchModel.saveFiltersInDB(vm.searchData).then(
             function (success) {
                 $sessionStorage.filters.filterGenderId = vm.searchData.filterGenderId;
