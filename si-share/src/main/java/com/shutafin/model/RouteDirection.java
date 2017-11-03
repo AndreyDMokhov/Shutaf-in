@@ -11,7 +11,8 @@ import java.util.List;
 public enum RouteDirection {
 
     SI_GATEWAY("si-webapp"),
-    SI_ADMIN("si-admin")
+    SI_ADMIN("si-admin"),
+    SI_DEAL("si-deal")
     ;
 
     private String serviceId;

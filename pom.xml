@@ -25,6 +25,7 @@
         <module>si-discovery</module>
         <module>si-share</module>
         <module>si-admin</module>
+        <module>si-deal</module>
     </modules>
 
     <dependencyManagement>
