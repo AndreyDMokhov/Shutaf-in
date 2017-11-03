@@ -1,10 +1,7 @@
 package com.shutafin.repository.common;
 
 import com.shutafin.model.entities.ImageStorage;
-import com.shutafin.model.entities.UserImage;
-import com.shutafin.repository.base.PersistentDao;
+import com.shutafin.repository.base.BaseJpaRepository;
 
-public interface ImageStorageRepository extends PersistentDao<ImageStorage> {
-
-    ImageStorage findImageStorage(UserImage userImage);
+public interface ImageStorageRepository extends BaseJpaRepository<ImageStorage, Long> {
 }

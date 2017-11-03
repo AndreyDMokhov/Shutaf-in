@@ -1,72 +1,102 @@
 package com.shutafin.configuration;
 
+import com.shutafin.repository.base.BaseRepositoryFactoryBean;
 import com.zaxxer.hikari.HikariDataSource;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@PropertySource(value = "classpath:database.config.properties")
+@EnableCaching
+@EnableJpaRepositories(basePackages = "com.shutafin",
+        repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
 public class PersistenceContextConfiguration {
 
+    @Autowired
+    public DataSource dataSource;
+
+    @Autowired
     private Environment environment;
 
-    public PersistenceContextConfiguration(Environment environment) {
-        this.environment = environment;
-    }
 
     @Bean
     public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource());
+        return new JdbcTemplate(dataSource);
     }
+
 
     @Bean
     @Primary
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory);
-        return transactionManager;
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setPackagesToScan("com.shutafin");
+        factoryBean.setJpaProperties(getJpaProperties());
+        factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
+        factoryBean.setDataSource(dataSource);
+        return factoryBean;
     }
 
     @Bean
     public DataSource dataSource() {
-        HikariDataSource hikariDataSource = new HikariDataSource();
+        DataSourceProperties dataSourceProperties = dataSourceProperties();
+        return DataSourceBuilder
+                .create(dataSourceProperties.getClassLoader())
+                .driverClassName(dataSourceProperties.getDriverClassName())
+                .url(dataSourceProperties.getUrl())
+                .username(dataSourceProperties.getUsername())
+                .password(dataSourceProperties.getPassword())
+                .type(HikariDataSource.class)
+                .build();
+    }
 
-        hikariDataSource.setDriverClassName(environment.getProperty("jdbc.driver"));
-        hikariDataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
-        hikariDataSource.setUsername(environment.getProperty("jdbc.username"));
-        hikariDataSource.setPassword(environment.getProperty("jdbc.password"));
-        return hikariDataSource;
+
+    @Bean
+    public JpaVendorAdapter jpaVendorAdapter() {
+        return new HibernateJpaVendorAdapter();
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.shutafin.model.entities");
-        sessionFactory.setHibernateProperties(getHibernateProperties());
-        return sessionFactory;
+    @Autowired
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setEntityManagerFactory(entityManagerFactory);
+        return txManager;
     }
 
-    private Properties getHibernateProperties() {
+    private Properties getJpaProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
-        properties.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
-        properties.setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
-        properties.setProperty("hibernate.cache.region.factory_class", environment.getProperty("hibernate.cache.region.factory_class"));
-        properties.setProperty("hibernate.cache.use_second_level_cache", environment.getProperty("hibernate.cache.use_second_level_cache"));
-        properties.setProperty("hibernate.cache.use_query_cache", environment.getProperty("hibernate.cache.use_query_cache"));
-        properties.setProperty("hibernate.id.new_generator_mappings", environment.getProperty("hibernate.id.new_generator_mappings"));
+
+        properties.put("hibernate.cache.region.factory_class", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.region.factory_class"));
+        properties.put("hibernate.cache.use_second_level_cache", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.use_second_level_cache"));
+        properties.put("hibernate.cache.use_query_cache", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.use_query_cache"));
+        properties.put("hibernate.cache.provider_class", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.provider_class"));
+
+
 
         return properties;
     }

@@ -32,7 +32,7 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
                 $sessionStorage.questions = success.data.questionAnswersResponses;
                 $sessionStorage.selectedAnswers = _getSelectedAnswers(success.data.selectedAnswersResponses);
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
-
+                $sessionStorage.filters = success.data.filters;
                 deferred.resolve(success.data);
             }, function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

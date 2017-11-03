@@ -2,7 +2,7 @@ package com.shutafin.system;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.shutafin.App;
+import com.shutafin.GatewayApplication;
 import com.shutafin.configuration.*;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.errors.InputValidationError;
@@ -33,14 +33,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Slf4j
-@WebMvcTest(value = App.class)
+@WebMvcTest(value = GatewayApplication.class)
 @EnableAutoConfiguration
 @ContextConfiguration(classes = {
         ApplicationContextConfiguration.class,
         PersistenceContextConfiguration.class,
         HttpMessageConverterConfiguration.class,
         WebContextConfiguration.class,
-        SMTPContextConfiguration.class
+        SMTPContextConfiguration.class,
+        GatewayApplication.class
 })
 public class BaseTestImpl implements BaseTest {
 

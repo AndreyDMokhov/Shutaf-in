@@ -1,5 +1,12 @@
 "use strict";
-app.controller('resetPasswordRequestController', function (resetPasswordModel, notify, $filter, $state) {
+app.controller('resetPasswordRequestController', function (
+                                                        resetPasswordModel,
+                                                        notify,
+                                                        $filter,
+                                                        $state,
+                                                        browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('ResetPassword.title');
     var vm = this;
     vm.resetPasswordEmail = {};
     vm.emailConfirm = false;

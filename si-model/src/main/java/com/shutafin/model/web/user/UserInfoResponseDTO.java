@@ -35,6 +35,7 @@ public class UserInfoResponseDTO {
     private String company;
     private String phoneNumber;
 
+    private Long originalUserImageId;
     private String originalUserImage;
 
     @SuppressWarnings("PMD.ExcessiveParameterList")
@@ -60,6 +61,7 @@ public class UserInfoResponseDTO {
     }
 
     public void addOriginalUserImage(UserImage originalUserImage) {
+        this.originalUserImageId = originalUserImage.getId();
         this.originalUserImage = originalUserImage.getImageStorage().getImageEncoded();
     }
 }

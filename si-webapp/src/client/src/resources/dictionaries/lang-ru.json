@@ -131,10 +131,16 @@
   "UserSettings.message.save.success": "Данные успешно сохранены",
 
   "SECTION": "USER SEARCH",
+  "Search.title": "Поиск",
   "Search.button": "Поиск",
   "Search.notFound" : "По Вашему запросу пользователи не найдены",
   "Search.request" : "Введите Ваш запрос для поиска",
   "Search.results" : "Результатов:",
+  "Search.ChooseAge" : "Выберите возраст",
+  "Search.ChooseGender" : "Выберите пол",
+  "Search.ChooseCity" : "Выберите город",
+  "Search.ChooseButton" : "Выбрать",
+  "Search.ValueInCityButtonMoreThan3" : "Выбрано",
 
   "SECTION" : "Questions",
   "Questions.title" : "Вопросы",

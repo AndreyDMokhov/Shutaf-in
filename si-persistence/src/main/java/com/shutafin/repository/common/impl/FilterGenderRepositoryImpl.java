@@ -1,30 +1,39 @@
 package com.shutafin.repository.common.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.FilterGender;
 import com.shutafin.model.entities.infrastructure.Gender;
-import com.shutafin.repository.base.AbstractEntityDao;
-import com.shutafin.repository.common.FilterGenderRepository;
+import com.shutafin.repository.common.FilterGenderRepositoryCustom;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
-/**
- * Created by evgeny on 9/23/2017.
- */
 @Repository
-public class FilterGenderRepositoryImpl extends AbstractEntityDao<FilterGender> implements FilterGenderRepository {
-    @Override
+public class FilterGenderRepositoryImpl implements FilterGenderRepositoryCustom {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+
+    
     public Gender getUserFilterGender(User user) {
+
         StringBuilder hql = new StringBuilder()
                 .append(" SELECT fg.gender ")
                 .append(" FROM FilterGender fg")
                 .append(" WHERE fg.user = :user ");
-        return (Gender) getSession()
-                .createQuery(hql.toString())
-                .setParameter("user", user)
-                .setCacheable(true)
-                .uniqueResult();
+
+
+        try {
+            return (Gender) entityManager
+                    .createQuery(hql.toString())
+                    .setParameter("user", user)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -34,22 +43,22 @@ public class FilterGenderRepositoryImpl extends AbstractEntityDao<FilterGender> 
         }
         StringBuilder hql = new StringBuilder()
                 .append(" SELECT ui.user ")
-                .append(" FROM FilterGender fg INNER JOIN UserInfo ui")
-                .append(" ON fg.gender.id = ui.gender.id")
-                .append(" WHERE fg.user = :user ")
+                .append(" FROM FilterGender fg, UserInfo ui")
+                .append(" WHERE fg.gender.id = ui.gender.id")
+                .append(" AND fg.user = :user ")
                 .append(" AND ui.user IN (:matchedUsers) ");
 
-        return getSession()
+        return entityManager
                 .createQuery(hql.toString())
                 .setParameter("user", user)
                 .setParameter("matchedUsers", matchedUsers)
-                .list();
+                .getResultList();
     }
 
     @Override
     public void deleteUserFilterGender(User user) {
         StringBuilder hql = new StringBuilder().append(" DELETE FROM FilterGender fg WHERE fg.user = :user ");
-        getSession()
+        entityManager
                 .createQuery(hql.toString())
                 .setParameter("user", user)
                 .executeUpdate();
