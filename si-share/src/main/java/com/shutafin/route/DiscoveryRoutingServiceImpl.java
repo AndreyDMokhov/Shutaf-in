@@ -1,7 +1,5 @@
-package com.shutafin.service.impl;
+package com.shutafin.route;
 
-import com.shutafin.model.RouteDirection;
-import com.shutafin.service.DiscoveryRoutingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
@@ -29,7 +27,7 @@ public class DiscoveryRoutingServiceImpl implements DiscoveryRoutingService {
             return null;
         }
 
-        return substituteIpWithDns(instances.get(0).getUri());
+        return substituteIpWithDns(instances.get(0).getUri()) + "/internal";
     }
 
     @Override

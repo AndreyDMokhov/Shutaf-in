@@ -22,9 +22,14 @@
         <module>si-webapp</module>
         <module>si-persistence</module>
         <module>si-common</module>
-        <module>si-discovery</module>
+
+        <!--STANDALONE JAR-->
         <module>si-share</module>
+
+        <!--MICROSERVICES-->
+        <module>si-discovery</module>
         <module>si-admin</module>
+        <module>si-internal</module>
     </modules>
 
     <dependencyManagement>

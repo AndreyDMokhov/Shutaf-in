@@ -1,6 +1,4 @@
-package com.shutafin.service;
-
-import com.shutafin.model.RouteDirection;
+package com.shutafin.route;
 
 import java.util.Map;
 
