@@ -22,4 +22,7 @@ public class AbstractUserFile extends AbstractEntity {
     @Convert(converter = PermissionTypeConverter.class)
     private PermissionType permissionType;
 
+    @Column(name = "LOCAL_PATH", unique = true, length = 200)
+    private String localPath;
+
 }
