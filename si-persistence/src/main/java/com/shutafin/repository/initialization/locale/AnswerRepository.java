@@ -17,11 +17,15 @@ import java.util.List;
  */
 public interface AnswerRepository extends BaseJpaRepository<Answer, Integer> {
 
-    @QueryHints(value = {@QueryHint(name = "org.springframework.data.jpa.repository", value = "true")})
+    @QueryHints(value = {
+            @QueryHint(name = "org.hibernate.cacheable", value = "true")
+    })
     @Query(value = "select new com.shutafin.model.web.initialization.AnswerResponseDTO  (  cl.answer.id,  cl.description,  cl.answer.isUniversal as isUniversal  ) from AnswerLocale cl where cl.language = :language")
     List<AnswerResponseDTO> getLocaleAnswers(@Param("language") Language language);
 
-    @QueryHints(value = {@QueryHint(name = "org.springframework.data.jpa.repository", value = "true")})
+    @QueryHints(value = {
+            @QueryHint(name = "org.hibernate.cacheable", value = "true")
+    })
     @Query(value = "select new com.shutafin.model.web.initialization.AnswerResponseDTO (cl.answer.id, cl.description, cl.answer.isUniversal as isUniversal) from AnswerLocale cl where cl.language = :language and cl.answer.question = :question")
     List<AnswerResponseDTO> getQuestionLocaleAnswers(@Param("language") Language language, @Param("question") Question question);
 }

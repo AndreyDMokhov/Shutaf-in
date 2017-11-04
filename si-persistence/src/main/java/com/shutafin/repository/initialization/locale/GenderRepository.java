@@ -15,7 +15,9 @@ import java.util.List;
 public interface GenderRepository extends BaseJpaRepository<Gender, Integer> {
 
 
-    @QueryHints(value = {@QueryHint(name = "org.springframework.data.jpa.repository", value = "true")})
+    @QueryHints(value = {
+            @QueryHint(name = "org.hibernate.cacheable", value = "true")
+    })
     @Query("select new com.shutafin.model.web.initialization.GenderResponseDTO  (  gl.gender.id,  gl.description  ) from GenderLocale gl where gl.language = :language")
     List<GenderResponseDTO> getLocaleGenders(@Param("language") Language language);
 }
