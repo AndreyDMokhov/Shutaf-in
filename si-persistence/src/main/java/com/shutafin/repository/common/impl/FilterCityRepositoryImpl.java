@@ -35,9 +35,9 @@ public class FilterCityRepositoryImpl implements FilterCityRepositoryCustom {
         }
         StringBuilder hql = new StringBuilder()
                 .append(" SELECT distinct fc2.user ")
-                .append(" FROM FilterCity fc1 LEFT JOIN FilterCity fc2")
-                .append(" ON fc2.city.id = fc1.city.id")
-                .append(" WHERE fc1.user = :user ")
+                .append(" FROM FilterCity fc1, FilterCity fc2")
+                .append(" WHERE fc2.city.id = fc1.city.id")
+                .append(" AND  fc1.user = :user ")
                 .append(" AND fc2.user IN (:matchedUsers) ");
 
         return entityManager

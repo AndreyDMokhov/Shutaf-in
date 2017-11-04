@@ -77,7 +77,10 @@ public class PersistenceContextConfiguration {
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
-        return new HibernateJpaVendorAdapter();
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setShowSql(Boolean.parseBoolean(environment.getRequiredProperty("spring.jpa.show-sql")));
+
+        return vendorAdapter;
     }
 
     @Bean
@@ -95,7 +98,6 @@ public class PersistenceContextConfiguration {
         properties.put("hibernate.cache.use_second_level_cache", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.use_second_level_cache"));
         properties.put("hibernate.cache.use_query_cache", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.use_query_cache"));
         properties.put("hibernate.cache.provider_class", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.provider_class"));
-
 
 
         return properties;

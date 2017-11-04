@@ -13,7 +13,9 @@ import java.util.List;
 
 public interface CityRepository extends BaseJpaRepository<City, Integer> {
 
-    @QueryHints(value = {@QueryHint(name = "org.springframework.data.jpa.repository", value = "true")})
+    @QueryHints(value = {
+            @QueryHint(name = "org.hibernate.cacheable", value = "true")
+    })
     @Query(value = "select new com.shutafin.model.web.initialization.CityResponseDTO  (  cl.city.id,  cl.description,  cl.city.country.id as countryId  ) from CityLocale cl where cl.language = :language")
     List<CityResponseDTO> getLocaleCities(@Param("language") Language language);
 }

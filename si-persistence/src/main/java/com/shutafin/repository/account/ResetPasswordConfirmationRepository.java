@@ -7,5 +7,6 @@ import java.util.Date;
 
 public interface ResetPasswordConfirmationRepository extends BaseJpaRepository<ResetPasswordConfirmation, Long> {
 
-    ResetPasswordConfirmation findByUrlLinkAndExpiresAtBeforeAndIsConfirmedIsTrue(String link, Date date);
+    ResetPasswordConfirmation findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(String link, Date date);
+
 }

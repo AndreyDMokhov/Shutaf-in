@@ -28,6 +28,7 @@ public class ResetPasswordConfirmation extends AbstractEntity {
     private Boolean isConfirmed;
 
     @Column(name = "EXPIRES_AT", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date expiresAt;
 
 }

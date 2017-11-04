@@ -7,6 +7,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'homeController',
                 controllerAs: 'vm',
                 url: '/home'
+
             })
         .state('about',
             {

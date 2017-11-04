@@ -32,7 +32,8 @@ public class UserSearchController {
     }
 
     @RequestMapping(value = "/search/save/filters", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserFilters(@AuthenticatedUser User user, @RequestBody @Valid FiltersWeb filtersWeb) {
+    public List<UserSearchResponse> saveUserFilters(@AuthenticatedUser User user, @RequestBody @Valid FiltersWeb filtersWeb) {
         userFilterService.saveUserFilters(user, filtersWeb);
+        return userSearchService.userSearchByList(userFilterService.findFilteredUsers(user));
     }
 }
