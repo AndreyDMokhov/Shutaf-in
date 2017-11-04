@@ -62,7 +62,8 @@ gulp.task('babel', function () {
         '.tmp/**/*.js',
         '!./.tmp/bower_components/lodash/vendor/firebug-lite/src/firebug-lite-debug.js',
         '!./.tmp/bower_components/ng-dialog/**',
-        '!./.tmp/bower_components/ngstorage/**'
+        '!./.tmp/bower_components/ngstorage/**',
+        '!./.tmp/bower_components/angularjs-slider/**'
     ])
         .pipe(babel({
             presets: ['babel-preset-es2015-without-strict'],
@@ -73,7 +74,8 @@ gulp.task('babel', function () {
 });
 // minifies js and css
 gulp.task('minify', function () {
-    return gulp.src('.tmp/**/*.html')
+    return gulp.src(['.tmp/**/*.html',
+        '!.tmp/bower_components/angularjs-slider/**'])
         .pipe(useref())
         .pipe(gulpif('*.js', ngAnnotate()))
         .pipe(gulpif('*.js', minify()))
@@ -90,14 +92,16 @@ gulp.task('copyData', function () {
         '!./.tmp/**/*.html',
         '!./.tmp/**/*.css',
         '!./.tmp/**/*.sass',
-        '!./.tmp/**/*.less'])
+        '!./.tmp/**/*.less',
+        '!.tmp/bower_components/angularjs-slider/**/'])
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('copyComponents', function () {
     return gulp.src([
         './.tmp/bower_components/bootstrap/**/*/',
-        './.tmp/bower_components/components-font-awesome/**/'
+        './.tmp/bower_components/components-font-awesome/**/',
+        './.tmp/bower_components/angularjs-slider/**/'
     ], {base: '.tmp'})
         .pipe(gulp.dest('dist'));
 });
@@ -105,7 +109,8 @@ gulp.task('copyComponents', function () {
 gulp.task('build-html-template', function () {
     return gulp.src([
         '.tmp/**/*.html',
-        '!.tmp/index.html'
+        '!.tmp/index.html',
+        '!.tmp/bower_components/angularjs-slider/**'
     ])
         .pipe(templateCache('templates.js', {module: 'templateCache', standalone: true}))
         .pipe(gulp.dest('.tmp/build'));
@@ -115,7 +120,8 @@ gulp.task('build-html-template', function () {
 gulp.task('delete-html', function () {
     return deleteFiles([
         'dist/**/*.html',
-        '!dist/index.html'
+        '!dist/index.html',
+        '!.tmp/bower_components/angularjs-slider/**'
     ]);
 });
 
@@ -139,7 +145,7 @@ gulp.task('delete-empty-directories', function () {
 });
 // minifies the style in accordance with the rules
 gulp.task('minifyHtml', function () {
-    return gulp.src(['.tmp/**/*.html', '!.tmp/bower_components/**', '!.tmp/index.html'])
+    return gulp.src(['.tmp/**/*.html', '!.tmp/bower_components/**', '!.tmp/index.html',''])
         .pipe(htmlmin({
             collapseWhitespace: true
         }))

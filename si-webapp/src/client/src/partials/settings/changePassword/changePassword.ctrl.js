@@ -1,6 +1,13 @@
 "use strict";
-app.controller('changePasswordController', function ($rootScope, changePasswordModel, notify, $filter, $state) {
+app.controller('changePasswordController', function (
+                                                    $rootScope,
+                                                    changePasswordModel,
+                                                    notify,
+                                                    $filter,
+                                                    $state,
+                                                    browserTitle) {
 
+    browserTitle.setBrowserTitleByFilterName('Settings.security.password.title');
     var vm = this;
 
     vm.isOpened = true;

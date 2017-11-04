@@ -1,6 +1,14 @@
 "use strict";
-app.controller('userRegistration', function (registrationModel, notify, $state, $filter, CACHED_LANGUAGE_ID, $sessionStorage) {
+app.controller('userRegistration', function (
+                                            registrationModel,
+                                            notify,
+                                            $state,
+                                            $filter,
+                                            CACHED_LANGUAGE_ID,
+                                            $sessionStorage,
+                                            browserTitle) {
 
+    browserTitle.setBrowserTitleByFilterName('Registration.title');
     var vm = this;
     vm.registrationData = {};
 

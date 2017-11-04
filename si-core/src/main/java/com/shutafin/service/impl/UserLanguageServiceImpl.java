@@ -36,7 +36,7 @@ public class UserLanguageServiceImpl implements UserLanguageService {
     @Override
     @Transactional
     public void updateUserLanguage(UserLanguageWeb userLanguageWeb, User user) {
-        Language language = languageRepository.findById(userLanguageWeb.getId());
+        Language language = languageRepository.findOne(userLanguageWeb.getId());
         userAccountRepository.updateUserLanguage(language, user);
     }
 

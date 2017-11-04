@@ -51,9 +51,9 @@ public class UserDocumentController {
                 userDocument.getDocumentType().getCode());
     }
 
-    @RequestMapping(value = "/{userId}/{docId}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserDocument(@PathVariable(value = "userId") Long userId,
-                                   @PathVariable(value = "docId") Long userDocumentId) {
+    @DeleteMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void deleteUserDocument(@RequestParam(value = "userId") Long userId,
+                                   @RequestParam(value = "docId") Long userDocumentId) {
         log.debug("DELETE /documents/{userId}/{docId}");
         userDocumentService.deleteUserDocument(userId, userDocumentId);
     }

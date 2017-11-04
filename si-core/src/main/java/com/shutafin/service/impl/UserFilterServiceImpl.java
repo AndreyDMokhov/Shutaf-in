@@ -89,7 +89,7 @@ public class UserFilterServiceImpl implements UserFilterService {
         filterCityRepository.deleteUserFilterCity(user);
         if (cities != null){
             for (Integer cityId : cities) {
-                filterCityRepository.save(new FilterCity(user, cityRepository.findById(cityId)));
+                filterCityRepository.save(new FilterCity(user, cityRepository.findOne(cityId)));
             }
         }
     }
@@ -99,14 +99,14 @@ public class UserFilterServiceImpl implements UserFilterService {
     public void saveUserFilterGender(User user, Integer genderId) {
         filterGenderRepository.deleteUserFilterGender(user);
         if (genderId != null){
-            filterGenderRepository.save(new FilterGender(user, genderRepository.findById(genderId)));
+            filterGenderRepository.save(new FilterGender(user, genderRepository.findOne(genderId)));
         }
     }
 
     @Override
     @Transactional
     public void saveUserFilterAgeRange(User user, @Valid AgeRangeWebDTO ageRangeWebDTO) {
-        filterAgeRangeRepository.deleteUserFilterAgeRange(user);
+        filterAgeRangeRepository.deleteByUser(user);
         if (ageRangeWebDTO != null){
             filterAgeRangeRepository.save(new FilterAgeRange(user, ageRangeWebDTO.getFromAge(), ageRangeWebDTO.getToAge()));
         }

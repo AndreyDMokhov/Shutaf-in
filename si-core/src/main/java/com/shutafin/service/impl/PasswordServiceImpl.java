@@ -41,20 +41,20 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     @Transactional
     public void updateUserPasswordInDb(User user, String password) {
-        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
+        UserCredentials userCredentials = userCredentialsRepository.findByUser(user);
         if (userCredentials == null) {
             log.error("System exception:");
             log.error("UserCredentials for user with ID {} does not exist", user.getId());
             throw new SystemException("UserCredentials for user with ID {" + user.getId() + "} does not exist");
         }
-        userCredentialsRepository.update(populateWithSaltAndHash(userCredentials, password));
+        userCredentialsRepository.save(populateWithSaltAndHash(userCredentials, password));
     }
 
     @Override
     @Transactional
     public boolean isPasswordCorrect(User user, String password) {
         Argon2 argon2 = Argon2Factory.create();
-        UserCredentials userCredentials = userCredentialsRepository.findUserByUserId(user);
+        UserCredentials userCredentials = userCredentialsRepository.findByUser(user);
         String hash = userCredentials.getPasswordHash();
         String salt = userCredentials.getPasswordSalt();
         return argon2.verify(hash, password + SALT + salt);

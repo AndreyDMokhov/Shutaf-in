@@ -1,4 +1,4 @@
-app.controller('settingsController', function ($filter, $state) {
+app.controller('settingsController', function ($filter, $state,$window) {
     var vm = this;
 
     vm.tabs = [

@@ -69,7 +69,7 @@ public class ImageCompressServiceImpl implements ImageCompressService {
         compressedImage.setImage(imageEncoded);
         UserImage compressedUserImage = userImageService.addUserImage(compressedImage, user, permissionType, null);
         compressedUserImage.setCompressionType(compressionType);
-        userImageRepository.update(compressedUserImage);
+        userImageRepository.save(compressedUserImage);
         return compressedUserImage;
     }
 
