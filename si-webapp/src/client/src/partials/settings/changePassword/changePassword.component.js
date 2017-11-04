@@ -3,12 +3,23 @@ app.component('changePasswordComponent', {
     templateUrl: 'partials/settings/changePassword/changePassword.component.html',
     bindings: {},
     controllerAs: 'vm',
-    controller: function ($rootScope, changePasswordModel, notify, $filter, $state) {
+    controller: function (
+        $rootScope,
+        changePasswordModel,
+        notify,
+        $filter,
+        $state,
+        browserTitle) {
 
+    browserTitle.setBrowserTitleByFilterName('Settings.security.password.title');
         var vm = this;
+
         vm.isOpened = true;
+
         vm.dataLoading = false;
+
         vm.securitySettings = {};
+
 
         function changePassword() {
             vm.dataLoading = true;
@@ -27,6 +38,7 @@ app.component('changePasswordComponent', {
                     }
                 });
         }
+
 
         vm.changePassword = changePassword;
     }

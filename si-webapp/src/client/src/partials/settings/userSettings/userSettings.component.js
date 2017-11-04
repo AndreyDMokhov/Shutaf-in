@@ -10,7 +10,10 @@ app.component('userSettingsComponent', {
                           $filter,
                           $state,
                           initializationService,
-                          $window) {
+                          $window,
+                          browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
 
         var vm = this;
         vm.dataLoading = false;

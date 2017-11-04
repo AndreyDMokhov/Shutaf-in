@@ -3,8 +3,15 @@ app.component('changeEmailComponent', {
     templateUrl: 'partials/settings/changeEmail/changeEmail.component.html',
     bindings: {},
     controllerAs: 'vm',
-    controller: function ($state, $rootScope, changeEmailModel, notify, $filter) {
+    controller: function (
+        $state,
+        $rootScope,
+        changeEmailModel,
+        notify,
+        $filter,
+        browserTitle) {
 
+    browserTitle.setBrowserTitleByFilterName('Settings.security.email.title');
         var vm = this;
         vm.dataLoading = false;
         vm.isOpened = true;
@@ -24,6 +31,7 @@ app.component('changeEmailComponent', {
                     if (error.data.error.errorTypeCode === 'AUT') {
                         $state.go('logout');
                     }
+
                 });
         }
 
