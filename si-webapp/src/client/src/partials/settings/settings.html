@@ -1,18 +1,1 @@
-<div class="row">
-    <div class="col-md-3">
-        <uib-tabset active="vm.getCurrentStateName()" vertical="true" type="pills">
-            <uib-tab
-                    ng-repeat="tab in vm.tabs"
-                    index="tab.state"
-                    ng-click="vm.selectedTab(tab)">
-                <uib-tab-heading>
-                    <i class="fa {{tab.icon}}" aria-hidden="true"></i>
-                    <p class="pull-right">
-                        {{tab.title}}
-                    </p>
-                </uib-tab-heading>
-            </uib-tab>
-        </uib-tabset>
-    </div>
-    <div class="col-md-9" ui-view></div>
-</div>
+<settings-component></settings-component>

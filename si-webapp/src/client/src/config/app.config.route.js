@@ -91,21 +91,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('settings', {
             abstract: true,
             url: '/settings',
-            controller: 'settingsController',
-            controllerAs: 'vm',
             templateUrl: 'partials/settings/settings.html'
         })
         .state('settings.personal', {
             url:'/personal',
-            templateUrl: 'partials/settings/userSettings/userSettings.html',
-            controller: 'userSettingsController',
-            controllerAs: 'vm'
+            templateUrl: 'partials/settings/userSettings/userSettings.html'
         })
         .state('settings.changeEmailRequest', {
             url:'/email',
-            templateUrl: 'partials/settings/changeEmail/changeEmail.html',
-            controller: 'changeEmailRequestController',
-            controllerAs:'vm'
+            templateUrl: 'partials/settings/changeEmail/changeEmail.html'
+
         })
         .state('settings.changeEmailConfirmation', {
                 controller: 'changeEmailConfirmationController',
@@ -114,9 +109,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('settings.changePassword', {
             url:'/password',
-            templateUrl: 'partials/settings/changePassword/changePassword.html',
-            controller: 'changePasswordController',
-            controllerAs:'vm'
+            templateUrl: 'partials/settings/changePassword/changePassword.html'
         })
     ;
     $urlRouterProvider.otherwise('/home');
