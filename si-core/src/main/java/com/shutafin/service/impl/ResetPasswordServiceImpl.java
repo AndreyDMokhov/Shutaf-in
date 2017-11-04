@@ -90,7 +90,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Transactional(readOnly = true)
     @Override
     public void resetPasswordValidation(String link) {
-        if (resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtBeforeAndIsConfirmedIsTrue(link, new Date()) == null) {
+        if (resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date()) == null) {
             log.warn("Resource not found exception:");
             log.warn("UrlLink {} was not found", link);
             throw new ResourceNotFoundException();
@@ -100,7 +100,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Transactional
     @Override
     public void passwordChange(PasswordWeb passwordWeb, String link) {
-        ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtBeforeAndIsConfirmedIsTrue(link, new Date());
+        ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
         if (resetPasswordConfirmation == null) {
             log.warn("Resource not found exception:");
             log.warn("UrlLink {} was not found", link);
