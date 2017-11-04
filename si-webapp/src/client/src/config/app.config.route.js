@@ -91,15 +91,15 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('settings', {
             abstract: true,
             url: '/settings',
-            templateUrl: 'partials/settings/settings.html'
+            template: '<settings-component></settings-component>'
         })
         .state('settings.personal', {
             url:'/personal',
-            templateUrl: 'partials/settings/userSettings/userSettings.html'
+            template: '<user-settings-component></user-settings-component>'
         })
         .state('settings.changeEmailRequest', {
             url:'/email',
-            templateUrl: 'partials/settings/changeEmail/changeEmail.html'
+            template: '<change-email-component></change-email-component>'
 
         })
         .state('settings.changeEmailConfirmation', {
@@ -109,7 +109,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('settings.changePassword', {
             url:'/password',
-            templateUrl: 'partials/settings/changePassword/changePassword.html'
+            template: '<change-password-component></change-password-component>'
         })
     ;
     $urlRouterProvider.otherwise('/home');
