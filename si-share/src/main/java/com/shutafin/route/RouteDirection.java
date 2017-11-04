@@ -1,4 +1,4 @@
-package com.shutafin.model;
+package com.shutafin.route;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
