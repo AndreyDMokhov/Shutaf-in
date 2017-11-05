@@ -2,7 +2,14 @@ app.component('resetPasswordRequestComponent', {
     templateUrl: 'partials/resetPassword/resetPasswordRequest/resetPasswordRequest.component.html',
     bindings: {},
     controllerAs: 'vm',
-    controller: function (resetPasswordModel, notify, $filter, $state) {
+    controller: function (
+        resetPasswordModel,
+        notify,
+        $filter,
+        $state,
+        browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('ResetPassword.title');
         var vm = this;
         vm.resetPasswordEmail = {};
         vm.emailConfirm = false;

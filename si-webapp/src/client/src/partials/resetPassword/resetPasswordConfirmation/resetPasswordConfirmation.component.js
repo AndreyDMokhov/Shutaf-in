@@ -2,11 +2,21 @@ app.component('resetPasswordConfirmationComponent', {
     templateUrl: 'partials/resetPassword/resetPasswordConfirmation/resetPasswordConfirmation.component.html',
     bindings: {},
     controllerAs: 'vm',
-    controller: function ($filter, resetPasswordModel, $state, notify, $stateParams) {
+    controller: function (
+        $filter,
+        resetPasswordModel,
+        $state,
+        notify,
+        $stateParams,
+        browserTitle) {
+
+    browserTitle.setBrowserTitleByFilterName('ResetPassword.title');
+
         var vm = this;
         var urlLink = $stateParams.link;
 
         vm.isLinkValid = false;
+
 
         function validateUrlLink() {
             if (urlLink === undefined || urlLink === null || urlLink === "") {
@@ -42,8 +52,10 @@ app.component('resetPasswordConfirmationComponent', {
             );
         }
 
+
         validateUrlLink();
         vm.sendNewPassword = sendNewPassword;
 
     }
 });
+
