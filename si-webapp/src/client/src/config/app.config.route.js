@@ -7,6 +7,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'homeController',
                 controllerAs: 'vm',
                 url: '/home'
+
             })
         .state('about',
             {
@@ -18,9 +19,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('registration',
             {
-                templateUrl: 'partials/registration/registration.html',
-                controller: 'userRegistration',
-                controllerAs: 'vm',
+                template: '<registration-component></registration-component>',
                 url: '/registration/request'
             })
         .state('registrationConfirmation',
@@ -86,21 +85,16 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('settings', {
             abstract: true,
             url: '/settings',
-            controller: 'settingsController',
-            controllerAs: 'vm',
-            templateUrl: 'partials/settings/settings.html'
+            template: '<settings-component></settings-component>'
         })
         .state('settings.personal', {
             url:'/personal',
-            templateUrl: 'partials/settings/userSettings/userSettings.html',
-            controller: 'userSettingsController',
-            controllerAs: 'vm'
+            template: '<user-settings-component></user-settings-component>'
         })
         .state('settings.changeEmailRequest', {
             url:'/email',
-            templateUrl: 'partials/settings/changeEmail/changeEmail.html',
-            controller: 'changeEmailRequestController',
-            controllerAs:'vm'
+            template: '<change-email-component></change-email-component>'
+
         })
         .state('settings.changeEmailConfirmation', {
                 controller: 'changeEmailConfirmationController',
@@ -109,9 +103,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('settings.changePassword', {
             url:'/password',
-            templateUrl: 'partials/settings/changePassword/changePassword.html',
-            controller: 'changePasswordController',
-            controllerAs:'vm'
+            template: '<change-password-component></change-password-component>'
         })
     ;
     $urlRouterProvider.otherwise('/home');
