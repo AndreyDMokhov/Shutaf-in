@@ -62,16 +62,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 url: '/logout'
         })
         .state('resetPasswordRequest', {
-                templateUrl: 'partials/resetPassword/resetPassword.request.html',
-                controller: 'resetPasswordRequestController',
-                controllerAs: 'vm',
+                template: '<reset-password-request-component></reset-password-request-component>',
                 url: '/reset-password/request'
         })
         .state('resetPasswordNewPassword', {
                 url: '/reset-password/confirmation/{link}',
-                templateUrl: 'partials/resetPassword/resetPassword.confirmation.html',
-                controller: 'resetPasswordConfirmation',
-                controllerAs: 'vm'
+                template: '<reset-password-confirmation-component></reset-password-confirmation-component>'
         })
         .state('userSearch', {
                 templateUrl: 'partials/userSearch/userSearch.html',

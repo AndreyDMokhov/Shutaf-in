@@ -1,5 +1,6 @@
 package com.shutafin.handlers;
 
+import com.shutafin.annotations.InternalRestController;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorResponse;
 import org.springframework.core.MethodParameter;
@@ -20,7 +21,7 @@ public class GeneralResponseHandlerAdvice implements ResponseBodyAdvice<Object> 
         return returnType
                 .getMethod()
                 .getDeclaringClass()
-                .getAnnotation(RestController.class) != null;
+                .getAnnotation(InternalRestController.class) == null;
     }
 
     @Override
