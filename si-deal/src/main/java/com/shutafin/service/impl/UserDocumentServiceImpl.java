@@ -2,8 +2,6 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.DocumentStorage;
 import com.shutafin.model.entities.UserDocument;
-import com.shutafin.model.exceptions.InvalidResourceException;
-import com.shutafin.model.exceptions.ResourceNotFoundException;
 import com.shutafin.model.types.DocumentType;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.UserDocumentWeb;
@@ -45,7 +43,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         DocumentType documentType = DocumentType.getById(userDocumentWeb.getDocumentTypeId());
         if (!fileSignatureCorrect(userDocumentWeb, documentType)) {
             log.warn("File content differs from document type or file is corrupted");
-            throw new InvalidResourceException();
+            throw new RuntimeException();
         }
 
         UserDocument userDocument = new UserDocument();
@@ -81,11 +79,11 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         if (userDocument == null) {
             log.warn("Resource not found exception:");
             log.warn("User Document with ID {} was not found", userDocumentId);
-            throw new ResourceNotFoundException(String.format("User Document with ID %d was not found", userDocumentId));
+            throw new RuntimeException(String.format("User Document with ID %d was not found", userDocumentId));
         } else if (!userId.equals(userDocument.getUserId()) &&
                 !userDocument.getPermissionType().equals(PermissionType.PUBLIC)) {
             log.warn("User does not have authority to view this image, throw exception");
-            throw new ResourceNotFoundException(String.format("User Document with ID %d was not found", userDocumentId));
+            throw new RuntimeException(String.format("User Document with ID %d was not found", userDocumentId));
         }
 
         saveUserDocumentToFileSystem(userDocument);

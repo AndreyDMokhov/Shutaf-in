@@ -1,7 +1,6 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.UserDocument;
-import com.shutafin.model.exceptions.InputValidationException;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.UserDocumentWeb;
 import com.shutafin.service.UserDocumentService;
@@ -27,7 +26,7 @@ public class UserDocumentController {
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
-            throw new InputValidationException(result);
+            throw new RuntimeException();
         }
 
         UserDocument userDocument = userDocumentService.addUserDocument(userDocumentWeb, PermissionType.PRIVATE);
