@@ -9,7 +9,12 @@ app.factory('registrationModel', function (Restangular) {
         return rest.one('/api/users/registration/request').customPOST(params);
     }
 
+    function confirmRegistration(urlLink) {
+        return rest.one('/api/users/registration/confirmation/' + urlLink).customGET();
+    }
+
     return {
-        registerUser: registerUser
+        registerUser: registerUser,
+        confirmRegistration: confirmRegistration
     };
 });
