@@ -10,7 +10,8 @@
                     <div class="row">
                         <div class="col-md-4 text-left panel-title">{{vm.userProfile.firstName}}
                             {{vm.userProfile.lastName}}
-                            <span ng-hide="vm.hideCurrentProfileText" class="text-left panel-title">({{'UserProfile.current' | translate}})
+                            <span ng-hide="vm.hideCurrentProfileText" class="text-muted panel-title">
+                                ({{'UserProfile.current' | translate}})
                             </span>
                         </div>
                         <div class="col-md-8 text-right">
@@ -53,7 +54,7 @@
                                     ng-click="vm.deleteImage()"
                                     class="btn btn-primary button-size-font"
                                     ng-disabled="vm.deleteButton"
-                                    ng-hide="vm.hideDeleteButton">
+                                    ng-hide="vm.hideDeleteImageButton">
                                 {{'UserProfile.button.deleteImage'|translate}}
                             </button>
                         </div>

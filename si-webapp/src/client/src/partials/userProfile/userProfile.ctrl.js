@@ -23,7 +23,7 @@ app.controller('userProfileController', function ($localStorage,
     vm.fileInfo = {};
     vm.size = IMAGE_MAX_SIZE_MB * 1024;
 
-    vm.hideDeleteButton = false;
+    vm.hideDeleteImageButton = false;
     vm.hideEditButton = false;
     vm.enableDisableProfileImageTooltip = true;
     vm.hideCurrentProfileText = false;
@@ -160,7 +160,7 @@ app.controller('userProfileController', function ($localStorage,
     function loadSearchResultsUserProfile(){
         if ($scope.ngDialogData != null){
             var userId = $scope.ngDialogData.selectedUserId.id;
-            vm.hideDeleteButton = true;
+            vm.hideDeleteImageButton = true;
             vm.hideEditButton = true;
             vm.enableDisableProfileImageTooltip = false;
             vm.hideCurrentProfileText = true;
@@ -169,6 +169,7 @@ app.controller('userProfileController', function ($localStorage,
             userProfileModel.getSelectedUserProfile(userId).then(
                 function (success){
                     vm.userProfile = success.data.data;
+                    vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
                 },
                 function (error){
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -177,7 +178,7 @@ app.controller('userProfileController', function ($localStorage,
         }
     }
 
-    setProfileImage();
     loadSearchResultsUserProfile();
+    setProfileImage();
     vm.deleteImage = deleteImage;
 });

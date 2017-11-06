@@ -76,7 +76,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserInfoResponseDTO getUserInfo(Long userId){
-        return getUserInfo(userRepository.findById(userId));
+        return getUserInfo(userRepository.findOne(userId));
     }
 
     @Override

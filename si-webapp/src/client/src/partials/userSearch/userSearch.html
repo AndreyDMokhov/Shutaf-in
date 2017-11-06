@@ -66,12 +66,10 @@
                     {{'Search.notFound'|translate}}
                 </span>
 
-                <div class="panel panel-info" ng-repeat="user in vm.userSearchList">
-                    <div class="panel-heading">
+                <div class="panel panel-primary" ng-repeat="user in vm.userSearchList">
+                    <div class="panel-heading pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
                         <h4 class="panel-title">
-                            <div ng-click="vm.showUserProfilePopup({id:user.userId})" uib-tooltip="{{'UserProfile.title'|translate}}" tooltip-placement="left" class="ng-binding">
-                                {{ user.firstName }} {{ user.lastName }}
-                            </div>
+                            {{ user.firstName }} {{ user.lastName }}
                         </h4>
                         <span>{{'UserProfile.compatibility' | translate}}</span>
                     </div>

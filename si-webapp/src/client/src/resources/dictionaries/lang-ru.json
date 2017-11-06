@@ -67,7 +67,7 @@
   "UserProfile.edit":"Редактировать",
   "UserProfile.compatibility":"Совместимость",
   "UserProfile.message.sizeImage":"Размер изображение не должен превышать {{size}} МБ",
-  "UserProfile.current":"Ваш профиль",
+  "UserProfile.current":"ваш профиль",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Письмо отправлено на указанный адрес",
