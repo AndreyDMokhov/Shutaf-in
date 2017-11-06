@@ -7,11 +7,8 @@ app.controller("userSearchController", function (
     userSearchModel,
     $stateParams,
     $filter,
-    $scope,
-    $rootScope,
-    $timeout,
-    $modal,
-    browserTitle) {
+    browserTitle,
+    ngDialog) {
 
     var vm = this;
 
@@ -63,6 +60,17 @@ app.controller("userSearchController", function (
         }
     }
 
+    function showUserProfilePopup(userId) {
+        ngDialog.open({
+            templateUrl: 'partials/userProfile/userProfile.html',
+            controller: 'userProfileController',
+            data: {selectedUserId: userId},
+            className: 'ngdialog-theme-default custom-user-profile-popup',
+            controllerAs: 'vm',
+            url: '/profile/' + userId
+        });
+    }
+
     activate();
 
 
@@ -112,4 +120,5 @@ app.controller("userSearchController", function (
     vm.userSearch = userSearch;
     vm.getImage = getImage;
     vm.saveFilters = saveFilters;
+    vm.showUserProfilePopup = showUserProfilePopup;
 });

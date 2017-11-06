@@ -12,7 +12,9 @@ app.controller('userProfileController', function ($localStorage,
                                                   ngDialog,
                                                   IMAGE_MAX_SIZE_MB,
                                                   $window,
+                                                  $location,
                                                   browserTitle) {
+
     var vm = this;
 
     $scope.myCroppedImage = '';
@@ -20,6 +22,12 @@ app.controller('userProfileController', function ($localStorage,
     browserTitle.setExplicitTitle(vm.userProfile.firstName + " " + vm.userProfile.lastName);
     vm.fileInfo = {};
     vm.size = IMAGE_MAX_SIZE_MB * 1024;
+
+    vm.hideDeleteImageButton = false;
+    vm.hideEditButton = false;
+    vm.enableDisableProfileImageTooltip = true;
+    vm.hideCurrentProfileText = false;
+    vm.disableLoadImage = false;
 
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
@@ -149,6 +157,28 @@ app.controller('userProfileController', function ($localStorage,
 
     }
 
+    function loadSearchResultsUserProfile(){
+        if ($scope.ngDialogData != null){
+            var userId = $scope.ngDialogData.selectedUserId.id;
+            vm.hideDeleteImageButton = true;
+            vm.hideEditButton = true;
+            vm.enableDisableProfileImageTooltip = false;
+            vm.hideCurrentProfileText = true;
+            vm.disableLoadImage = true;
+
+            userProfileModel.getSelectedUserProfile(userId).then(
+                function (success){
+                    vm.userProfile = success.data.data;
+                    vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
+                },
+                function (error){
+                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                }
+            );
+        }
+    }
+
+    loadSearchResultsUserProfile();
     setProfileImage();
     vm.deleteImage = deleteImage;
 });
