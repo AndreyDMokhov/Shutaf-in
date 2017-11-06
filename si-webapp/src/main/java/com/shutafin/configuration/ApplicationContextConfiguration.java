@@ -12,7 +12,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @PropertySources({
         @PropertySource(value = "classpath:application.properties"),
         @PropertySource(value = "classpath:environment.config.properties"),
-        @PropertySource(value = "classpath:image.properties"),
+        @PropertySource(value = "classpath:server.properties"),
 
 })
 public class ApplicationContextConfiguration {

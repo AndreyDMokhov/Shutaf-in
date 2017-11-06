@@ -69,7 +69,7 @@ public class UserImageServiceImpl implements UserImageService {
         if (userImage != null) {
             return userImage;
         }
-        userImage = userImageRepository.findById(userImageId);
+        userImage = userImageRepository.findOne(userImageId);
         if (userImage == null) {
             log.warn("Resource not found exception:");
             log.warn("User Image with ID {} was not found", userImageId);
@@ -103,7 +103,7 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     public List<UserImage> getAllUserImages(User user) {
-        return userImageRepository.findAllUserImages(user);
+        return userImageRepository.findAllByUser(user);
     }
 
     @Override
@@ -135,8 +135,7 @@ public class UserImageServiceImpl implements UserImageService {
         saveUserImageToFileSystem(imageEncoded, userImage);
         ImageStorage imageStorage = createImageBackup(userImage, imageEncoded);
         userImage.setImageStorage(imageStorage);
-        userImageRepository.update(userImage);
-        return userImage;
+        return userImageRepository.save(userImage);
     }
 
     private String getUserDirectoryPath(User user) {
@@ -195,9 +194,7 @@ public class UserImageServiceImpl implements UserImageService {
         ImageStorage imageStorage = new ImageStorage();
         imageStorage.setImageEncoded(image);
         imageStorage.setUserImage(userImage);
-        Long storedImageId = (Long) imageStorageRepository.save(imageStorage);
-        imageStorage.setId(storedImageId);
-        return imageStorage;
+        return imageStorageRepository.save(imageStorage);
     }
 
     @SneakyThrows

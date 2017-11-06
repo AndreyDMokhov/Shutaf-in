@@ -82,14 +82,14 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
     private void send(MimeMessage mimeMessage, EmailNotificationLog emailNotificationLog) {
         emailNotificationLog.setIsSendFailed(Boolean.FALSE);
         if (isSendSuccessful(mimeMessage)) {
-            emailNotificationLogRepository.update(emailNotificationLog);
+            emailNotificationLogRepository.save(emailNotificationLog);
             return;
         }
         if (isResendSuccessful(mimeMessage)) {
-            emailNotificationLogRepository.update(emailNotificationLog);
+            emailNotificationLogRepository.save(emailNotificationLog);
             return;
         }
-        emailNotificationLogRepository.update(emailNotificationLog);
+        emailNotificationLogRepository.save(emailNotificationLog);
     }
 
     private boolean isSendSuccessful(MimeMessage mimeMessage) {
@@ -157,9 +157,7 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
         emailNotificationLog.setUser(user);
 
-        Long id = (Long) emailNotificationLogRepository.save(emailNotificationLog);
-        emailNotificationLog.setId(id);
-        return emailNotificationLog;
+        return emailNotificationLogRepository.save(emailNotificationLog);
     }
 
 }

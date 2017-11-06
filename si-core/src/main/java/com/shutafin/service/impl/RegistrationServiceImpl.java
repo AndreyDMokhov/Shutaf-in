@@ -77,7 +77,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     @Transactional
     public User confirmRegistration(String link) {
-        RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.getRegistrationConfirmationByUrlLink(link);
+        RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.findByUrlLink(link);
 
         if (registrationConfirmation == null) {
             log.warn("Resource not found exception:");
@@ -86,11 +86,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
 
         registrationConfirmation.setIsConfirmed(true);
-        registrationConfirmationRepository.update(registrationConfirmation);
+        registrationConfirmationRepository.save(registrationConfirmation);
 
-        UserAccount userAccount = userAccountRepository.findUserAccountByUser(registrationConfirmation.getUser());
+        UserAccount userAccount = userAccountRepository.findByUser(registrationConfirmation.getUser());
         userAccount.setAccountStatus(AccountStatus.CONFIRMED);
-        userAccountRepository.update(userAccount);
+        userAccountRepository.save(userAccount);
 
         return registrationConfirmation.getUser();
     }
@@ -117,9 +117,9 @@ public class RegistrationServiceImpl implements RegistrationService {
         userAccount.setAccountStatus(AccountStatus.NEW);
         userAccount.setAccountType(AccountType.REGULAR);
 
-        Language language = languageRepository.findById(registrationRequestWeb.getUserLanguageId());
+        Language language = languageRepository.findOne(registrationRequestWeb.getUserLanguageId());
         if (language == null) {
-            language = languageRepository.findById(LANGUAGE_ID);
+            language = languageRepository.findOne(LANGUAGE_ID);
         }
         userAccount.setLanguage(language);
         userAccountRepository.save(userAccount);
@@ -131,7 +131,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         user.setFirstName(registrationRequestWeb.getFirstName());
         user.setLastName(registrationRequestWeb.getLastName());
         String email = registrationRequestWeb.getEmail();
-        if (userRepository.findUserByEmail(email) != null) {
+        if (userRepository.findByEmail(email) != null) {
             log.warn("Email not unique validation exception:");
             log.warn("Email already exists");
             throw new EmailNotUniqueValidationException("Email " + email + " already exists");
