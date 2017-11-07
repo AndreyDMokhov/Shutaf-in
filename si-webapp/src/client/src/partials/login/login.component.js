@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 app.component('loginComponent', {
-    templateUrl: 'login.component.html',
+    templateUrl: 'partials/login/login.component.html',
     bindings: {},
     controllerAs: 'vm',
     controller: function (loginModel,
