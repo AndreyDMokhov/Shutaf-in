@@ -43,7 +43,6 @@ angular.module('app').directive('userAvatar', function (Restangular, $sessionSto
                 }
             }
 
-
             scope.getUserDataAndShowPopup = function () {
                 if (!scope.currentUser.genderId || !scope.currentUser.cityId || !scope.currentUser.dateOfBirth) {
                     rest.one('/api/users/search/' + scope.currentUser.userId).customGET().then(
@@ -71,5 +70,5 @@ angular.module('app').directive('userAvatar', function (Restangular, $sessionSto
                 });
             };
         }
-    }
+    };
 });

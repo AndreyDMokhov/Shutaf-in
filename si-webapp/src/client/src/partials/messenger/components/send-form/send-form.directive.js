@@ -1,7 +1,7 @@
-app.directive('messageForm', function (webSocketService) {
+app.directive('sendFormDirective', function (webSocketService) {
     return {
         restrict: "E",
-        templateUrl: 'partials/chat/components/message-form/message-form.html',
+        templateUrl: 'partials/messenger/components/send-form/send-form.html',
         scope: {
             chatData: '='
         },

@@ -20,8 +20,8 @@
             </span>
             </td>
             <td class="sign">
-                <span ng-click="editChatTitle()" class="fa fa-pencil" ng-attr-title="{{'Chat.title.edit.chat.title' | translate}}"></span>
-                <span ng-click="deleteChat()" class="glyphicon glyphicon-trash" ng-attr-title="{{'Chat.title.delete.chat' | translate}}"></span>
+                <span ng-click="editChatTitle();$event.stopPropagation()" class="fa fa-pencil" ng-attr-title="{{'Chat.title.edit.chat.title' | translate}}"></span>
+                <span ng-click="deleteChat();$event.stopPropagation()" class="glyphicon glyphicon-trash" ng-attr-title="{{'Chat.title.delete.chat' | translate}}"></span>
             </td>
         </tr>
         </tbody>

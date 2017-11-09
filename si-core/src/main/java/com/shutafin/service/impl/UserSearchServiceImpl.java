@@ -95,8 +95,7 @@ public class UserSearchServiceImpl implements UserSearchService {
         if (user == null) {
             throw new ResourceNotFoundException();
         }
-        LinkedList<UserSearchResponse> resList = new LinkedList(getUserResponseDTO(Arrays.asList(user)));
-        return resList.getFirst();
+        return getUserResponseDTO(user);
     }
 
     private List<UserBaseResponse> getUserBaseResponse(List<User> users) {
@@ -105,7 +104,6 @@ public class UserSearchServiceImpl implements UserSearchService {
         for (User u : users) {
 
             UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(u);
-
 
             userBaseResponseList.add(
                     new UserBaseResponse(
@@ -119,30 +117,29 @@ public class UserSearchServiceImpl implements UserSearchService {
 
         return userBaseResponseList;
     }
+    private UserSearchResponse getUserResponseDTO(User users) {
+        UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(users);
+
+        return new UserSearchResponse(
+                        userInfoResponseDTO.getUserId(),
+                        userInfoResponseDTO.getFirstName(),
+                        userInfoResponseDTO.getLastName(),
+                        userInfoResponseDTO.getUserImage(),
+                        userInfoResponseDTO.getUserImageId(),
+                        userInfoResponseDTO.getGenderId(),
+                        userInfoResponseDTO.getCityId(),
+                        userInfoResponseDTO.getCountryId(),
+                        userInfoResponseDTO.getDateOfBirth() == null ? null : userInfoResponseDTO.getDateOfBirth().getTime()
+                );
+    }
+
 
     private List<UserSearchResponse> getUserResponseDTO(List<User> users) {
         List<UserSearchResponse> userSearchWebList = new ArrayList<>();
 
         for (User u : users) {
-
-            UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(u);
-
-
-            userSearchWebList.add(
-                    new UserSearchResponse(
-                            userInfoResponseDTO.getUserId(),
-                            userInfoResponseDTO.getFirstName(),
-                            userInfoResponseDTO.getLastName(),
-                            userInfoResponseDTO.getUserImage(),
-                            userInfoResponseDTO.getUserImageId(),
-                            userInfoResponseDTO.getGenderId(),
-                            userInfoResponseDTO.getCityId(),
-                            userInfoResponseDTO.getCountryId(),
-                            userInfoResponseDTO.getDateOfBirth() == null ? null : userInfoResponseDTO.getDateOfBirth().getTime()
-                    )
-            );
+            userSearchWebList.add(getUserResponseDTO(u));
         }
-
         return userSearchWebList;
     }
 

@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import javax.validation.constraints.NotNull;
 
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by Rogov on 17.10.2017.
@@ -19,5 +19,5 @@ import java.util.ArrayList;
 public class MessageIdListWrapper {
 
     @NotNull
-    private ArrayList<Long> messageIdList;
+    private List<Long> messageIdList;
 }

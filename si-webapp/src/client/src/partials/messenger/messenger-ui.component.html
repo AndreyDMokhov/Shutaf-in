@@ -1,17 +1,8 @@
+
 <div class=row>
     <div class="col-md-4 col-lg-4 chat-col-left chat-menu" align="left">
 
-        <div class="chat-list">
-            <div ng-repeat="chat in vm.listOfChats track by chat.id">
-                <chat-room current-chat-id="vm.currentChat"
-                           chat-data="chat"
-                           update-chat-data="vm.updateChatData(chatData)"
-                           update-chat-messages="vm.updateChatMessages(messages)"
-                           remove-chat="vm.removeChat(chat)"
-                           rename-chat="vm.renameChat(chatId, chatTitle)"></chat-room>
-
-            </div>
-        </div>
+        <channel-component></channel-component>
 
         <h4>Users</h4>
         <div class="chat-list" ng-repeat="user in vm.users track by $index">
@@ -69,8 +60,8 @@
         <strong>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</strong>
         <hr>
         <div class="message-container">
-            <message-list data-messages="vm.messages"></message-list>
-            <message-form data-chat-data="vm.currentChat"></message-form>
+            <message-list-directive data-messages="vm.messages"></message-list-directive>
+            <send-form-directive data-chat-data="vm.currentChat"></send-form-directive>
         </div>
     </div>
 </div>

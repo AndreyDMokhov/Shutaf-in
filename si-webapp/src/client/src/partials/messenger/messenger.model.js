@@ -1,4 +1,4 @@
-app.factory('chatModel', function (Restangular, $sessionStorage) {
+app.factory('messengerModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "CHAT_MESSAGE")
@@ -38,10 +38,10 @@ public class ChatMessage extends AbstractEntity {
 
     @Column(name = "PERMITTED_USERS", length = 200)
     @Convert(converter = ChatUserListConverter.class)
-    private LinkedList<Long> permittedUsers;
+    private List<Long> permittedUsers;
 
     @Column(name = "USERS_TO_NOTIFY", length = 200)
     @Convert(converter = ChatUserListConverter.class)
-    private LinkedList<Long> usersToNotify;
+    private List<Long> usersToNotify;
 
 }

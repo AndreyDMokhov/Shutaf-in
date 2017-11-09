@@ -2,7 +2,6 @@ package com.shutafin.repository.common;
 
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
-import com.shutafin.model.entities.User;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

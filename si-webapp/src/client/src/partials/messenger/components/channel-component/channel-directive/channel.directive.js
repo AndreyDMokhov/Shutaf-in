@@ -1,17 +1,13 @@
-app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage, ngDialog) {
+app.directive('channelDirective', function (messengerModel, webSocketService, $sessionStorage, ngDialog) {
     return {
         restrict: "E",
         scope: {
-            currentChatId: '=',
-            chatData: '=',
-            updateChatData: '&',
-            updateChatMessages: '&',
-            removeChat: '&',
-            renameChat: '&'
+            chatData: '='
         },
-        templateUrl: 'partials/chat/components/chat-room-item/chat-room.html',
+        templateUrl: 'partials/messenger/components/channel-component/channel-directive/channel.html',
+        require: '^channelComponent',
 
-        link: function (scope, element, attrs) {
+        link: function (scope, element, attrs, ctrl) {
 
             var destination = '/api/subscribe/chat/' + scope.chatData.id;
             scope.messages = [];
@@ -20,7 +16,7 @@ app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage
             scope.newMessageCounter = 0;
             var userId = $sessionStorage.userProfile.userId;
             var messageIdList = [];
-            var body = angular.element(element[0].children[0]);
+            var chatElement = angular.element(element[0].children[0]);
 
             function initWsConnection() {
                 if (!webSocketService.isConnectionReady()) {
@@ -40,7 +36,7 @@ app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage
                     });
                 /**
                  *  Should be called after getting status: connection is ready,
-                 *  in other way we will get multiple subscriptions
+                 *  other way subscription happens twice on the same channel.
                  */
                 webSocketService.registerObserverCallback(initWsConnection);
             }
@@ -49,14 +45,14 @@ app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage
                 markMessageNotRead(message);
                 scope.messages.push(message);
                 scope.lastMessage = message;
-                if (scope.currentChatId.id === scope.chatData.id) {
-                    scope.updateChatMessages({messages: scope.messages});
+                if (ctrl.currentChat.id === scope.chatData.id) {
+                    ctrl.updateChatRoom(scope.messages,scope.chatData);
                     updateMessagesAsRead();
                 }
             }
 
             function getAllMessages() {
-                chatModel.getAllMessages(scope.chatData.id).then(
+                messengerModel.getAllMessages(scope.chatData.id).then(
                     function (success) {
                         scope.messages = success.data.data;
                         scope.lastMessage = scope.messages[scope.messages.length - 1];
@@ -66,8 +62,7 @@ app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage
 
             scope.enterChat = function () {
                 updateMessagesAsRead();
-                scope.updateChatData({chatData: scope.chatData});
-                scope.updateChatMessages({messages: scope.messages});
+                ctrl.updateChatRoom(scope.messages,scope.chatData)
             };
 
             function findNewMessages() {
@@ -80,7 +75,7 @@ app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage
 
             function markMessageNotRead(message) {
                 if (message.usersToNotify.includes(userId)) {
-                    body[0].style.backgroundColor = '#E1E1E1';
+                    chatElement[0].style.backgroundColor = '#E1E1E1';
                     message.isNew = true;
                     scope.newMessageCounter++;
                     messageIdList.push(message.messageId);
@@ -96,21 +91,19 @@ app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage
                 }
                 var messageIdWrapper = {};
                 messageIdWrapper.messageIdList = messageIdList;
-                chatModel.updateMessagesAsRead(messageIdWrapper);
+                messengerModel.updateMessagesAsRead(messageIdWrapper);
                 scope.newMessageCounter = 0;
-                body[0].style.backgroundColor = '#FAFAFA';
+                chatElement[0].style.backgroundColor = '#FAFAFA';
                 messageIdList = [];
             }
 
             scope.deleteChat = function () {
-                scope.messages = [];
-                scope.lastMessage = {};
-                scope.removeChat();
+               ctrl.removeChat(scope.chatData);
             };
 
             scope.editChatTitle = function () {
                 scope.dialog = ngDialog.open({
-                    template: 'partials/chat/components/chat-room-item/chat-rename.popup.html',
+                    template: 'partials/messenger/components/channel-component/channel-directive/chat-rename.popup.html',
                     scope: scope,
                     showClose: false,
                     className: 'ngdialog-theme-default',
@@ -121,7 +114,7 @@ app.directive('chatRoom', function (chatModel, webSocketService, $sessionStorage
             scope.setNewChatTitle = function (newChatTitle) {
                 scope.dialog.close();
                 if (newChatTitle) {
-                    scope.renameChat({chatId: scope.chatData.id, chatTitle: newChatTitle});
+                    ctrl.renameChat(scope.chatData.id, newChatTitle);
                 }
             };
 

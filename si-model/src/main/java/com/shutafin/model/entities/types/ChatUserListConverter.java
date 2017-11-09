@@ -1,24 +1,28 @@
 package com.shutafin.model.entities.types;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 
 import javax.persistence.AttributeConverter;
-import java.lang.reflect.Type;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Rogov on 18.10.2017.
  */
-public class ChatUserListConverter implements AttributeConverter<LinkedList<Long>, String> {
-    @Override
-    public String convertToDatabaseColumn(LinkedList<Long> attribute) {
-        return attribute == null ? null : new Gson().toJson(attribute);
-    }
+public class ChatUserListConverter implements AttributeConverter<List<Long>, String> {
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public LinkedList<Long> convertToEntityAttribute(String dbData) {
-        Type collectionType = new TypeToken<LinkedList<Long>>(){}.getType();
-        return dbData == null ? null : new Gson().fromJson(dbData, collectionType);
+    @SneakyThrows
+    public String convertToDatabaseColumn(List<Long> attribute) {
+        return attribute == null ? null : mapper.writeValueAsString(attribute);
+    }
+
+
+    @Override
+    @SneakyThrows
+    public List<Long> convertToEntityAttribute(String dbData) {
+        return dbData == null ? null : mapper.readValue(dbData, new TypeReference<List<Long>>(){});
     }
 }

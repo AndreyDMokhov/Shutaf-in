@@ -119,9 +119,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state("chat",
         {
-            templateUrl: 'partials/chat/chat.html',
-            controller: "chatController",
-            controllerAs: "vm",
+            template: '<messenger-ui-component></messenger-ui-component>',
             url: "/chat"
         })
     ;
