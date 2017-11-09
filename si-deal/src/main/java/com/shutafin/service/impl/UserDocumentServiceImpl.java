@@ -25,6 +25,8 @@ import java.util.Date;
 @Slf4j
 public class UserDocumentServiceImpl implements UserDocumentService {
 
+    private static final String NAME_SEPARATOR = "_";
+
     @Value("${windows.base.path}")
     private String windowsBasePath;
 
@@ -48,6 +50,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
 
         UserDocument userDocument = new UserDocument();
         userDocument.setUserId(userDocumentWeb.getUserId());
+        userDocument.setTitle(userDocumentWeb.getDocumentTitle());
         userDocument.setPermissionType(permissionType);
         userDocument.setDocumentType(documentType);
 
@@ -57,16 +60,13 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         userDocument.setDocumentStorage(documentStorage);
 
         userDocument = userDocumentRepository.save(userDocument);
-        String localPath = getUserDirectoryPath(userDocument.getUserId())
-                + userDocument.getId()
-                + userDocument.getDocumentType().getFileExtension();
+        String localPath = generateUserDocumentLocalPath(userDocument);
         userDocument.setLocalPath(localPath);
         createUserDocumentsDirectory(userDocument.getUserId());
         saveUserDocumentToFileSystem(userDocument);
 
         return userDocument;
     }
-
 
     @Override
     public UserDocument getUserDocument(Long userId, Long userDocumentId) {
@@ -75,16 +75,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
             return userDocument;
         }
 
-        userDocument = userDocumentRepository.findOne(userDocumentId);
-        if (userDocument == null) {
-            log.warn("Resource not found exception:");
-            log.warn("User Document with ID {} was not found", userDocumentId);
-            throw new RuntimeException(String.format("User Document with ID %d was not found", userDocumentId));
-        } else if (!userId.equals(userDocument.getUserId()) &&
-                !userDocument.getPermissionType().equals(PermissionType.PUBLIC)) {
-            log.warn("User does not have authority to view this image, throw exception");
-            throw new RuntimeException(String.format("User Document with ID %d was not found", userDocumentId));
-        }
+        userDocument = getUserDocumentFromRepository(userId, userDocumentId);
 
         saveUserDocumentToFileSystem(userDocument);
         return userDocument;
@@ -97,6 +88,16 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         userDocumentRepository.delete(userDocument);
     }
 
+    @Override
+    public UserDocument renameUserDocument(Long userId, Long userDocumentId, String newTitle) {
+        UserDocument userDocument = getUserDocumentFromRepository(userId, userDocumentId);
+        if (renameUserDocumentInFileSystem(userDocument, newTitle)) {
+            userDocument.setTitle(newTitle);
+            userDocument.setLocalPath(generateUserDocumentLocalPath(userDocument));
+        }
+        return userDocument;
+    }
+
     private DocumentStorage createDocumentBackup(UserDocument userDocument, String documentEncoded) {
         DocumentStorage documentStorage = new DocumentStorage();
         documentStorage.setUserDocument(userDocument);
@@ -106,7 +107,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
 
     private boolean fileSignatureCorrect(UserDocumentWeb userDocumentWeb, DocumentType documentType) {
         for (String fileSignature : documentType.getFileSignature()) {
-            if (userDocumentWeb.getFileData().startsWith(fileSignature)){
+            if (userDocumentWeb.getFileData().startsWith(fileSignature)) {
                 return true;
             }
         }
@@ -158,10 +159,15 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         userDocument.setId(userDocumentId);
         userDocument.setUserId(userId);
         userDocument.setDocumentStorage(new DocumentStorage());
-        String documentLocalPath = getDocumentLocalPath(userId, userDocumentId);
-        userDocument.setLocalPath(documentLocalPath);
-        File documentFile = new File(documentLocalPath);
         try {
+            String documentLocalPath = getDocumentLocalPath(userId, userDocumentId);
+            if (documentLocalPath == null) {
+                throw new FileNotFoundException();
+            }
+            String documentTitle = documentLocalPath.split(NAME_SEPARATOR)[1].split("\\.")[0];
+            userDocument.setLocalPath(documentLocalPath);
+            userDocument.setTitle(documentTitle);
+            File documentFile = new File(documentLocalPath);
             if (documentFile.exists()) {
                 FileInputStream inputStream = new FileInputStream(documentFile);
                 byte[] documentDecoded = new byte[inputStream.available()];
@@ -182,6 +188,33 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         return null;
     }
 
+    private UserDocument getUserDocumentFromRepository(Long userId, Long userDocumentId) {
+        UserDocument userDocument;
+        userDocument = userDocumentRepository.findOne(userDocumentId);
+        if (userDocument == null) {
+            log.warn("Resource not found exception:");
+            log.warn("User Document with ID {} was not found", userDocumentId);
+            throw new RuntimeException(String.format("User Document with ID %d was not found", userDocumentId));
+        } else if (!userId.equals(userDocument.getUserId()) &&
+                !userDocument.getPermissionType().equals(PermissionType.PUBLIC)) {
+            log.warn("User does not have authority to view this image, throw exception");
+            throw new RuntimeException(String.format("User Document with ID %d was not found", userDocumentId));
+        }
+        return userDocument;
+    }
+
+    private Boolean renameUserDocumentInFileSystem(UserDocument userDocument, String newTitle) {
+        String documentLocalPath = getDocumentLocalPath(userDocument.getUserId(), userDocument.getId());
+        File documentFile = new File(documentLocalPath);
+        String newDocumentName = getUserDirectoryPath(userDocument.getUserId()) +
+                userDocument.getId().toString() +
+                NAME_SEPARATOR +
+                newTitle +
+                userDocument.getDocumentType().getFileExtension();
+        File renamedDocumentFile = new File(newDocumentName);
+        return documentFile.renameTo(renamedDocumentFile);
+    }
+
     private DocumentType getDocumentType(File documentFile) {
         String name = documentFile.getName();
         String extension = name.substring(name.lastIndexOf(".") + 1);
@@ -192,9 +225,17 @@ public class UserDocumentServiceImpl implements UserDocumentService {
         String userDocumentsDirectory = getUserDirectoryPath(userId);
         File documentsDirectory = new File(userDocumentsDirectory);
         File[] files = documentsDirectory.listFiles((dir, name) -> name.startsWith(userDocumentId.toString()));
-        if (files.length < 1){
+        if (files.length < 1) {
             return null;
         }
         return files[0].getAbsolutePath();
+    }
+
+    private String generateUserDocumentLocalPath(UserDocument userDocument) {
+        return getUserDirectoryPath(userDocument.getUserId())
+                + userDocument.getId()
+                + NAME_SEPARATOR
+                + userDocument.getTitle()
+                + userDocument.getDocumentType().getFileExtension();
     }
 }

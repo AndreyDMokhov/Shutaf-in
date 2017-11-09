@@ -26,4 +26,7 @@ public class UserDocument extends AbstractUserFile {
     @OneToOne
     private DocumentStorage documentStorage;
 
+    @Column(name = "TITLE", length = 50, nullable = false)
+    private String title;
+
 }
