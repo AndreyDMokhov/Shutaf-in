@@ -2,6 +2,7 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
+import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.LogoutService;
@@ -24,13 +25,17 @@ public class LogoutServiceImpl implements LogoutService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserAccountRepository userAccountRepository;
+
     @Override
     public void logout(String sessionId, User user) {
 
-        UserSession userSession = userSessionRepository.findSessionBySessionId(sessionId);
+        UserSession userSession = userSessionRepository.findBySessionId(sessionId);
 
-        userSessionRepository.update(userSession);
+        userSessionRepository.save(userSession);
         userSessionRepository.evict(userSession);
+        userAccountRepository.evict(userAccountRepository.findByUser(user));
 
         userRepository.evict(user);
 

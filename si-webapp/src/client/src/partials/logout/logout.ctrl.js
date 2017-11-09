@@ -1,10 +1,18 @@
 "use strict";
-app.controller('logoutController', function ($rootScope, logoutModel, $window, $state,$filter, languageService, $sessionStorage) {
+app.controller('logoutController', function (
+                                            $rootScope,
+                                            logoutModel,
+                                            $state,
+                                            languageService,
+                                            $sessionStorage,
+                                            browserTitle) {
+
+    browserTitle.setExplicitTitle('');
 
     function logout() {
         logoutModel.logout().then(function (success) {
         });
-        setTimeout(function(){
+        setTimeout(function () {
             $state.go('home');
         });
         delete $sessionStorage.sessionId;
@@ -18,8 +26,8 @@ app.controller('logoutController', function ($rootScope, logoutModel, $window, $
         delete $sessionStorage.questionsExtended;
         delete $sessionStorage.questionImportance;
         delete $sessionStorage.selectedExtendedAnswers;
-    $rootScope.brand = 'Shutaf-In';
+        $rootScope.brand = 'Shutaf-In';
     }
 
-   logout();
+    logout();
 });

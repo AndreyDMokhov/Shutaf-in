@@ -11,13 +11,23 @@ app.controller('userProfileController', function ($localStorage,
                                                   $q,
                                                   ngDialog,
                                                   IMAGE_MAX_SIZE_MB,
-                                                  $window) {
+                                                  $window,
+                                                  $location,
+                                                  browserTitle) {
 
     var vm = this;
+
     $scope.myCroppedImage = '';
     vm.userProfile = $sessionStorage.userProfile;
+    browserTitle.setExplicitTitle(vm.userProfile.firstName + " " + vm.userProfile.lastName);
     vm.fileInfo = {};
     vm.size = IMAGE_MAX_SIZE_MB * 1024;
+
+    vm.hideDeleteImageButton = false;
+    vm.hideEditButton = false;
+    vm.enableDisableProfileImageTooltip = true;
+    vm.hideCurrentProfileText = false;
+    vm.disableLoadImage = false;
 
     vm.cities = $sessionStorage.cities;
     vm.genders = $sessionStorage.genders;
@@ -54,9 +64,11 @@ app.controller('userProfileController', function ($localStorage,
     function saveImage(data) {
         userProfileModel.addOrUpdateImage({image: data}).then(
             function (success) {
-                vm.userProfile.userImage = success.data.data.originalUserImage;
+                vm.userProfile.userImage = success.data.data.image;
                 vm.userProfile.userImageId = success.data.data.id;
                 vm.userProfile.createdDate = success.data.data.createdDate;
+                //todo change to original size image
+                vm.userProfile.originalUserImage = success.data.data.image;
                 $sessionStorage.userProfile = vm.userProfile;
                 vm.deleteButton = false;
                 notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
@@ -89,10 +101,12 @@ app.controller('userProfileController', function ($localStorage,
             function (success) {
                 vm.userProfile.userImage = '../../images/default_avatar.png';
                 vm.userProfile.userImageId = null;
+                vm.userProfile.originalUserImage = null;
                 $sessionStorage.userProfile = vm.userProfile;
                 vm.image = '../../images/default_avatar.png';
                 vm.deleteButton = true;
                 notify.set($filter('translate')('UserProfile.message.imageDeleted'), {type: 'success'});
+                $window.location.reload();
             },
             function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -116,31 +130,55 @@ app.controller('userProfileController', function ($localStorage,
             closeByDocument: true
         });
     }
+
     function setImageSize() {
         var width, height, myBase64 = $scope.myImage;
         var img = new Image();
         img.src = myBase64;
-        img.addEventListener('load',function(){
-            width=img.width;
-            height=img.height;
-            if(width>=1000&&height>=1000){
+        img.addEventListener('load', function () {
+            width = img.width;
+            height = img.height;
+            if (width >= 1000 && height >= 1000) {
                 $scope.selectedSize =
-                    {value:{w: 1000, h: 1000}}
+                    {value: {w: 1000, h: 1000}}
                 ;
             }
-            else{
-                if(width>=height){
+            else {
+                if (width >= height) {
                     $scope.selectedSize =
-                        {value:{w: height, h: height}};
+                        {value: {w: height, h: height}};
                 }
-                else{
+                else {
                     $scope.selectedSize =
-                    {value:{w: width, h: width}};  }
+                        {value: {w: width, h: width}};
+                }
             }
         });
 
     }
 
+    function loadSearchResultsUserProfile(){
+        if ($scope.ngDialogData != null){
+            var userId = $scope.ngDialogData.selectedUserId.id;
+            vm.hideDeleteImageButton = true;
+            vm.hideEditButton = true;
+            vm.enableDisableProfileImageTooltip = false;
+            vm.hideCurrentProfileText = true;
+            vm.disableLoadImage = true;
+
+            userProfileModel.getSelectedUserProfile(userId).then(
+                function (success){
+                    vm.userProfile = success.data.data;
+                    vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
+                },
+                function (error){
+                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                }
+            );
+        }
+    }
+
+    loadSearchResultsUserProfile();
     setProfileImage();
     vm.deleteImage = deleteImage;
 });

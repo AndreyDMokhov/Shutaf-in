@@ -36,7 +36,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Transactional
     public UserImage updateProfileImage(UserImageWeb userImageWeb, User user) {
         UserImage userImage = null;
-        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+        UserAccount userAccount = userAccountRepository.findByUser(user);
 
         if (userImageWeb.getId() != null) {
             try {
@@ -70,9 +70,9 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public void deleteUserAccountProfileImage(User user) {
-        UserAccount userAccount = userAccountRepository.findUserAccountByUser(user);
+        UserAccount userAccount = userAccountRepository.findByUser(user);
         userAccount.setUserImage(null);
-        userAccountRepository.update(userAccount);
+        userAccountRepository.save(userAccount);
     }
 
 }

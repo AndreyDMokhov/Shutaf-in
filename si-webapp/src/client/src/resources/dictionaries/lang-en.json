@@ -68,6 +68,7 @@
   "UserProfile.edit":"Edit",
   "UserProfile.compatibility":"Compatibility",
   "UserProfile.message.sizeImage":"Image size should not exceed {{size}} MB",
+  "UserProfile.current":"your profile",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Email sent to specified address",
@@ -129,10 +130,17 @@
   "UserSettings.message.save.success": "Has been successfully saved",
 
   "SECTION": "USER SEARCH",
+  "Search.title": "Search",
   "Search.button": "Search",
   "Search.notFound" : "No users found on your request",
   "Search.request" : "Enter your request",
   "Search.results" : "Results:",
+  "Search.ChooseAge" : "Choose age",
+  "Search.ChooseGender" : "Choose gender",
+  "Search.ChooseCity" : "Choose city",
+  "Search.ChooseButton" : "Click to choose",
+  "Search.ValueInCityButtonMoreThan3" : "selected",
+
 
   "SECTION" : "Questions",
   "Questions.title" : "Questions",
