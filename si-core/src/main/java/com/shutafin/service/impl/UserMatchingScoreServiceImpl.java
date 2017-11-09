@@ -29,7 +29,7 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
 
     @Override
     public UserMatchingScore getMatchingScore(User userOrigin, User userToMatch) {
-        UserMatchingScore score = userMatchingScoreRepository.getUserMatchingScore(userOrigin, userToMatch);
+        UserMatchingScore score = userMatchingScoreRepository.findByUserOriginAndUserToMatch(userOrigin, userToMatch);
         if (score == null) {
             score = coreMatchingService.evaluateUserMatchingScore(userOrigin, userToMatch);
         }
@@ -48,7 +48,7 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     }
 
     @Override
-    public Integer deleteUserMatchingScores(User user) {
-        return userMatchingScoreRepository.deleteUserMatchingScores(user);
+    public Long deleteUserMatchingScores(User user) {
+        return userMatchingScoreRepository.deleteAllByUserOriginOrUserToMatch(user, user);
     }
 }

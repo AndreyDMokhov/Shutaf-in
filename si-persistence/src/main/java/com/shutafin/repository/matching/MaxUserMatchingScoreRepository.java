@@ -2,9 +2,9 @@ package com.shutafin.repository.matching;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.matching.MaxUserMatchingScore;
-import com.shutafin.repository.base.PersistentDao;
+import com.shutafin.repository.base.BaseJpaRepository;
 
-public interface MaxUserMatchingScoreRepository extends PersistentDao<MaxUserMatchingScore> {
+public interface MaxUserMatchingScoreRepository extends BaseJpaRepository<MaxUserMatchingScore, Long> {
 
-    MaxUserMatchingScore getUserMaxMatchingScore(User user);
+    MaxUserMatchingScore findByUser(User user);
 }

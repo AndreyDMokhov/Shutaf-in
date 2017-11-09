@@ -46,13 +46,12 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     public UserMatchingScore evaluateUserMatchingScore(User userOrigin, User userToMatch) {
 
         Double resultScore = calculateMatchingScore(userOrigin, userToMatch);
-        UserMatchingScore matchingScore = userMatchingScoreRepository.getUserMatchingScore(userOrigin, userToMatch);
+        UserMatchingScore matchingScore = userMatchingScoreRepository.findByUserOriginAndUserToMatch(userOrigin, userToMatch);
         if (matchingScore == null) {
             matchingScore = new UserMatchingScore(userOrigin, userToMatch, resultScore.intValue());
             userMatchingScoreRepository.save(matchingScore);
         } else {
             matchingScore.setScore(resultScore.intValue());
-            userMatchingScoreRepository.update(matchingScore);
         }
         return matchingScore;
 
@@ -61,9 +60,9 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     private Double calculateMatchingScore(User userOrigin, User userToMatch) {
         Double totalScore = 0.;
         Double crossScore = 0.;
-        Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.getUserMaxMatchingScore(userOrigin)
+        Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.findByUser(userOrigin)
                 .getScore().doubleValue();
-        Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.getUserMaxMatchingScore(userToMatch)
+        Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.findByUser(userToMatch)
                 .getScore().doubleValue();
 
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers =
@@ -116,7 +115,7 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
 
     @Override
     public void evaluateAllUserMatchingScores() {
-        for (User userOrigin : userRepository.findAllUsers()) {
+        for (User userOrigin : userRepository.findAll()) {
             evaluateUserMatchingScores(userOrigin);
         }
     }

@@ -2,14 +2,14 @@ package com.shutafin.repository.matching;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.matching.UserMatchingScore;
-import com.shutafin.repository.base.PersistentDao;
+import com.shutafin.repository.base.BaseJpaRepository;
 
 import java.util.List;
 
-public interface UserMatchingScoreRepository extends PersistentDao<UserMatchingScore> {
+public interface UserMatchingScoreRepository extends BaseJpaRepository<UserMatchingScore, Long> {
 
-    UserMatchingScore getUserMatchingScore(User userOrigin, User userToMatch);
-    List<UserMatchingScore> getAllUserMatchingScores(User userOrigin);
-    Integer deleteUserMatchingScores(User user);
+    UserMatchingScore findByUserOriginAndUserToMatch(User userOrigin, User userToMatch);
+    List<UserMatchingScore> findByUserOrigin(User userOrigin);
+    Long deleteAllByUserOriginOrUserToMatch(User userOrigin, User userToMatch);
 
 }

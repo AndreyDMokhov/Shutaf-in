@@ -55,7 +55,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     public Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionExtendedAnswers(User user) {
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userQuestionExtendedAnswerMap = new HashMap<>();
         for (UserQuestionExtendedAnswer userAnswer :
-                userQuestionExtendedAnswerRepository.getAllUserQuestionExtendedAnswers(user)) {
+                userQuestionExtendedAnswerRepository.findAllByUser(user)) {
 
             if (userQuestionExtendedAnswerMap.get(userAnswer.getQuestion()) == null) {
                 userQuestionExtendedAnswerMap.put(userAnswer.getQuestion(), new ArrayList<>());
@@ -70,18 +70,18 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     public void addUserQuestionExtendedAnswers(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList,
                                                User user) {
         deleteUserQuestionAnswers(user);
-        userMatchingScoreRepository.deleteUserMatchingScores(user);
+        userMatchingScoreRepository.deleteAllByUserOriginOrUserToMatch(user, user);
         Integer maxScore = 0;
         for (UserQuestionExtendedAnswersWeb questionExtendedAnswersWeb : userQuestionExtendedAnswersWebList) {
             QuestionExtended question = questionExtendedRepository
-                    .findById(questionExtendedAnswersWeb.getQuestionId());
+                    .findOne(questionExtendedAnswersWeb.getQuestionId());
             QuestionImportance importance = questionImportanceRepository
-                    .findById(questionExtendedAnswersWeb.getQuestionImportanceId());
+                    .findOne(questionExtendedAnswersWeb.getQuestionImportanceId());
             UserQuestionExtendedAnswer userQuestionExtendedAnswer;
 
             AnswerExtended answer = null;
             for (Integer answerId : questionExtendedAnswersWeb.getAnswersId()) {
-                answer = answerExtendedRepository.findById(answerId);
+                answer = answerExtendedRepository.findOne(answerId);
                 userQuestionExtendedAnswer = new UserQuestionExtendedAnswer(user, question, answer, importance);
                 userQuestionExtendedAnswerRepository.save(userQuestionExtendedAnswer);
             }
@@ -94,13 +94,12 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     }
 
     private void saveMaxUserMatchingScore(User user, Integer maxScore) {
-        MaxUserMatchingScore maxUserMatchingScore = maxUserMatchingScoreRepository.getUserMaxMatchingScore(user);
+        MaxUserMatchingScore maxUserMatchingScore = maxUserMatchingScoreRepository.findByUser(user);
         if (maxUserMatchingScore == null) {
             maxUserMatchingScore = new MaxUserMatchingScore(user, maxScore);
             maxUserMatchingScoreRepository.save(maxUserMatchingScore);
         } else {
             maxUserMatchingScore.setScore(maxScore);
-            maxUserMatchingScoreRepository.update(maxUserMatchingScore);
         }
     }
 
@@ -123,7 +122,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     private List<UserQuestionExtendedAnswersWeb> getNotAnsweredQuestions(Map<QuestionExtended,
             List<UserQuestionExtendedAnswer>> allUserAnswers) {
         List<UserQuestionExtendedAnswersWeb> notAnsweredQuestions = new ArrayList<>();
-        List<QuestionExtended> questionsExtended = questionExtendedRepository.getAllQuestionsExtended();
+        List<QuestionExtended> questionsExtended = questionExtendedRepository.findAll();
         Set<Integer> answeredQuestions = allUserAnswers.keySet()
                 .stream()
                 .map(question -> question.getId())
@@ -138,7 +137,7 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
 
     private void deleteUserQuestionAnswers(User user) {
         for (UserQuestionExtendedAnswer userQuestionExtendedAnswer :
-                userQuestionExtendedAnswerRepository.getAllUserQuestionExtendedAnswers(user)) {
+                userQuestionExtendedAnswerRepository.findAllByUser(user)) {
             userQuestionExtendedAnswerRepository.delete(userQuestionExtendedAnswer);
         }
     }
