@@ -60,6 +60,10 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     private Double calculateMatchingScore(User userOrigin, User userToMatch) {
         Double totalScore = 0.;
         Double crossScore = 0.;
+        if (!isUserHasAnswers(userOrigin) || !isUserHasAnswers(userToMatch)) {
+            return BASIC_MATCHING_SCORE;
+        }
+
         Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.findByUser(userOrigin)
                 .getScore().doubleValue();
         Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.findByUser(userToMatch)
@@ -124,5 +128,9 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
         for (User userToMatch : userMatchService.findMatchingUsers(userOrigin)) {
             evaluateUserMatchingScore(userOrigin, userToMatch);
         }
+    }
+
+    private Boolean isUserHasAnswers(User user) {
+        return maxUserMatchingScoreRepository.findByUser(user) != null;
     }
 }
