@@ -2,7 +2,10 @@ package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
 import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.types.*;
+import com.shutafin.model.entities.types.AccountStatus;
+import com.shutafin.model.entities.types.AccountStatusConverter;
+import com.shutafin.model.entities.types.AccountType;
+import com.shutafin.model.entities.types.AccountTypeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -62,7 +62,7 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
 
             scope.enterChat = function () {
                 updateMessagesAsRead();
-                ctrl.updateChatRoom(scope.messages,scope.chatData)
+                ctrl.updateChatRoom(scope.messages,scope.chatData);
             };
 
             function findNewMessages() {
