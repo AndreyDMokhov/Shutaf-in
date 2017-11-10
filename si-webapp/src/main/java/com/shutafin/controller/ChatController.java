@@ -40,7 +40,7 @@ public class ChatController {
     @Autowired
     private UserSearchService userSearchService;
 
-    @RequestMapping(value = "/new/{chat_title}/{user_id}", method = RequestMethod.GET)
+    @GetMapping(value = "/new/{chat_title}/{user_id}")
     public Chat addChat(@PathVariable("chat_title") String chatTitle,
                         @PathVariable("user_id") Long chatMemberUserId,
                         @AuthenticatedUser User chatOwner) {
@@ -48,7 +48,7 @@ public class ChatController {
         return chatManagementService.createNewChat(chatTitle, chatOwner, chatMemberUserId);
     }
 
-    @RequestMapping(value = "/rename/{chat_id}/{chat_title}", method = RequestMethod.GET)
+    @GetMapping(value = "/rename/{chat_id}/{chat_title}")
     public Chat renameChat(@PathVariable("chat_id") Long chatId,
                            @PathVariable("chat_title") String chatTitle,
                            @AuthenticatedUser User user) {
@@ -57,7 +57,7 @@ public class ChatController {
         return chatManagementService.renameChat(chat, chatTitle);
     }
 
-    @RequestMapping(value = "/{chat_id}/add/user/{user_id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{chat_id}/add/user/{user_id}")
     public void addChatUser(@PathVariable("chat_id") Long chatId,
                             @PathVariable("user_id") Long userId,
                             @AuthenticatedUser User user) {
@@ -66,7 +66,7 @@ public class ChatController {
         chatManagementService.addChatUserToChat(chat, userId);
     }
 
-    @RequestMapping(value = "/{chat_id}/remove/user/{user_id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{chat_id}/remove/user/{user_id}")
     public void removeChatUser(@PathVariable("chat_id") Long chatId,
                                @PathVariable("user_id") Long userId,
                                @AuthenticatedUser User user) {
@@ -75,7 +75,7 @@ public class ChatController {
         chatManagementService.removeChatUserFromChat(chat, userId);
     }
 
-    @RequestMapping(value = "/{chat_id}/remove/chat", method = RequestMethod.GET)
+    @GetMapping(value = "/{chat_id}/remove/chat")
     public void removeChat(@PathVariable("chat_id") Long chatId,
                            @AuthenticatedUser User user) {
 
@@ -83,7 +83,7 @@ public class ChatController {
         chatManagementService.removeChatUserFromChat(chat, user.getId());
     }
 
-    @RequestMapping(value = "/get/chats", method = RequestMethod.GET)
+    @GetMapping(value = "/get/chats")
     public List<Chat> getChats(@AuthenticatedUser User user) {
         return chatInfoService.getListChats(user);
     }
@@ -101,7 +101,7 @@ public class ChatController {
         return createChatMessageOutputWeb(chatMessage);
     }
 
-    @RequestMapping(value = "/{chat_id}/get/users", method = RequestMethod.GET)
+    @GetMapping(value = "/{chat_id}/get/users")
     public List<UserBaseResponse> getUsers(@PathVariable("chat_id") Long chatId,
                                            @AuthenticatedUser User user) {
 
@@ -109,7 +109,7 @@ public class ChatController {
         return userSearchService.userBaseResponseByList(chatInfoService.getListUsersByChatId(chat, user));
     }
 
-    @RequestMapping(value = "/{chat_id}/get/messages", method = RequestMethod.GET)
+    @GetMapping(value = "/{chat_id}/get/messages")
     public List<ChatMessageResponse> getMessages(@PathVariable("chat_id") Long chatId,
                                                  @AuthenticatedUser User user) {
 
@@ -118,13 +118,13 @@ public class ChatController {
         return createListChatMessageOutputWeb(chatMessages);
     }
 
-    @RequestMapping(value = "/allUsers", method = RequestMethod.GET)
+    @GetMapping(value = "/allUsers")
     public List<UserBaseResponse> getUsers(@AuthenticatedUser User user) {
         return userSearchService.userBaseResponseByList(userMatchService.findMatchingUsers(user));
     }
 
-    @RequestMapping(value = "/updateMessagesAsRead", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateMessagesAsRead(@RequestBody @Valid MessageIdListWrapper messagesIdList, @AuthenticatedUser User user) {
+    @PutMapping(value = "/updateMessagesAsRead", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateMessagesAsRead(@RequestBody @Valid ReadMessagesRequest messagesIdList, @AuthenticatedUser User user) {
         chatManagementService.updateMessagesAsRead(messagesIdList.getMessageIdList(), user);
     }
 

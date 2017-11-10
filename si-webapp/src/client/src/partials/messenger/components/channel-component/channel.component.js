@@ -2,6 +2,7 @@ app.component('channelComponent', {
     templateUrl: 'partials/messenger/components/channel-component/channel.component.html',
     bindings: {},
     controllerAs: 'vm',
+    /*todo transform this into a service*/
     require: {
         messengerUiCtrl: '^messengerUiComponent'
     },
@@ -64,14 +65,14 @@ app.component('channelComponent', {
 
         function checkChatTitlesList() {
             vm.listOfChats.forEach(function (element) {
-                if (element.isNoTitle) {
+                if (element.hasNoTitle) {
                     getUsersInChatAndSetChatTitle(element);
                 }
             });
         }
 
         function checkOneChatTitle(usersInChat, chatData) {
-            if (chatData.isNoTitle) {
+            if (chatData.hasNoTitle) {
                 setChatTitle(usersInChat, chatData);
                 if (chatData.id === vm.currentChat.id) {
                     vm.currentChat = chatData;
@@ -89,7 +90,9 @@ app.component('channelComponent', {
         }
 
         function setChatTitle(usersInChat, chatData) {
+            //todo get rig of this if else
             if (languageService.getUserLanguage().id === 2) {
+                //todo substitute with translate filter
                 chatData.chatTitle = 'Вы';
             }
             else {

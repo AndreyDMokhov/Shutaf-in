@@ -1,9 +1,10 @@
-
 <div class=row>
     <div class="col-md-4 col-lg-4 chat-col-left chat-menu" align="left">
 
         <channel-component></channel-component>
 
+        <!--todo translate this -->
+        <!--todo split onto two components-->
         <h4>Users</h4>
         <div class="chat-list" ng-repeat="user in vm.users track by $index">
             <div class="chat-item user-item">
@@ -27,12 +28,15 @@
             </div>
 
         </div>
-        <div class="chat-item " align="center" ng-attr-title="{{'Chat.title.find.users' | translate}}"
+        <div class="chat-item" align="center" ng-attr-title="{{'Chat.title.find.users' | translate}}"
              ng-click="vm.changeStateToUserSearch()">
             <span id="find-user-icon" class="fa fa-search-plus"></span>
         </div>
+
+        <!--todo move this condition to JS -->
         <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}: {{vm.currentChat.chatTitle |
             limitTo:vm.characterLimit}}{{vm.currentChat.chatTitle.length > vm.characterLimit ? '... ' : ''}}</h4>
+
         <div class="chat-list" ng-repeat="user in vm.usersInChat track by $index">
             <div class="chat-item user-item">
                 <table class="item-table">

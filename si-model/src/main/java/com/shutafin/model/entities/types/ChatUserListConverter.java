@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Created by Rogov on 18.10.2017.
+ *
+ * Converts the list of the users, who have not read their messages yet
  */
 public class ChatUserListConverter implements AttributeConverter<List<Long>, String> {
     private ObjectMapper mapper = new ObjectMapper();

@@ -1,6 +1,5 @@
 package com.shutafin.service.impl.chat;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
@@ -46,8 +45,8 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     public Chat createNewChat(String chatTitle, User chatOwner, Long chatMemberUserId) {
         Chat chat = new Chat();
         chat.setChatTitle(chatTitle);
-        if (chatTitle.equals("null")) {
-            chat.setIsNoTitle(true);
+        if (chatTitle == null || chatTitle.equals("null")) {
+            chat.setHasNoTitle(true);
         }
         chat.setChatTitle(chatTitle);
         chatRepository.save(chat);
@@ -116,7 +115,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Override
     public Chat renameChat(Chat chat, String chatTitle) {
         chat.setChatTitle(chatTitle);
-        chat.setIsNoTitle(false);
+        chat.setHasNoTitle(false);
         chatRepository.save(chat);
         return chat;
     }
@@ -131,7 +130,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     }
 
     private User getUserById(Long userId) {
-        User user = userRepository.findUserById(userId);
+        User user = userRepository.findOne(userId);
         if (user == null) {
             throw new ResourceNotFoundException();
         }

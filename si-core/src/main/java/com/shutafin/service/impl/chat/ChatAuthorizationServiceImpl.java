@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class ChatAuthorizationServiceImpl implements ChatAuthorizationService{
+public class ChatAuthorizationServiceImpl implements ChatAuthorizationService {
+
     @Autowired
     private ChatUserRepository chatUserRepository;
 

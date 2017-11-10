@@ -9,7 +9,9 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
-
+/**
+ * Checks the incoming request on subject of having subscription and authentication
+ */
 public class ClientSessionInboundChannelInterceptor extends ChannelInterceptorAdapter {
 
     @Autowired

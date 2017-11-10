@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by Rogov on 27.10.2017.
+ *
+ * Chat modifiers
  */
 public interface ChatManagementService {
     Chat createNewChat(String chatTitle, User chatOwner, Long chatMemberUserId);

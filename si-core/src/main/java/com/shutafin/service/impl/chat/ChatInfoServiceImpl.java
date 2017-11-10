@@ -1,6 +1,5 @@
 package com.shutafin.service.impl.chat;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
 import com.shutafin.model.entities.ChatUser;
@@ -17,6 +16,9 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Rogov on 27.10.2017.
+ *
+ *
+ * Readonly service
  */
 @Service
 @Transactional
@@ -32,7 +34,7 @@ public class ChatInfoServiceImpl implements ChatInfoService {
     @Override
     @Transactional(readOnly = true)
     public List<Chat> getListChats(User user) {
-        return chatUserRepository.findChatsWhereIsActiveUserTrue(user);
+        return chatUserRepository.findChatActiveUsers(user);
     }
 
 

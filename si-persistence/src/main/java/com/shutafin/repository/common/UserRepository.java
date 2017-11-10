@@ -7,5 +7,4 @@ import com.shutafin.repository.base.BaseJpaRepository;
 
 public interface UserRepository extends BaseJpaRepository<User, Long> {
     User findByEmail(String email);
-    User findUserById(Long userId);
 }

@@ -89,7 +89,7 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     public UserSearchResponse findUserDataById(Long userId) {
-        User user = userRepository.findUserById(userId);
+        User user = userRepository.findOne(userId);
         if (user == null) {
             throw new ResourceNotFoundException();
         }

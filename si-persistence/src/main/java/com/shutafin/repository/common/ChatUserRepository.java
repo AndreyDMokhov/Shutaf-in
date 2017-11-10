@@ -15,7 +15,7 @@ public interface ChatUserRepository extends BaseJpaRepository<ChatUser, Long> {
     ChatUser findChatUserByChatIdAndUserId(Long chatId, Long userId);
 
     @Query("select e.chat from ChatUser e where e.user = :user AND e.isActiveUser = TRUE")
-    List<Chat> findChatsWhereIsActiveUserTrue(@Param("user") User user);
+    List<Chat> findChatActiveUsers(@Param("user") User user);
 
     List<ChatUser> findChatUsersByChatAndIsActiveUserTrue (Chat chat);
 }

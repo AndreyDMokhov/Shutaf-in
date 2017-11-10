@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * Created by Rogov on 27.10.2017.
+ *
+ * Chat "getters"
  */
 public interface ChatInfoService {
     List<Chat> getListChats(User user);

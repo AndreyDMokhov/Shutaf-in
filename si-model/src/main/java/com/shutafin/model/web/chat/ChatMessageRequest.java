@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * MessageType represents the type of the message, like DOCUMENT, IMAGE or TEXT
+ */
+
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

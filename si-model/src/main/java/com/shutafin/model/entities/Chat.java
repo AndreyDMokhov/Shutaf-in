@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "CHAT")
@@ -18,7 +20,8 @@ public class Chat extends AbstractEntity {
 
     @Column(name = "CHAT_TITLE", length = 50)
     private String chatTitle;
-    @Column(name = "IS_NO_TITLE", nullable = false)
-    private Boolean isNoTitle;
+
+    @Column(name = "HAS_NO_TITLE", nullable = false)
+    private Boolean hasNoTitle;
 
 }

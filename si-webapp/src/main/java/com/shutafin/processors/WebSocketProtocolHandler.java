@@ -19,15 +19,15 @@ public class WebSocketProtocolHandler extends AbstractAuthenticationProtocolType
         String sessionId = null;
 
         for (Object parameter : parameters) {
-            if (parameter.getClass() != GenericMessage.class) {
+            if (parameter == null || parameter.getClass() != GenericMessage.class) {
                 continue;
             }
             Message<?> message = (Message) parameter;
-            if (message != null) {
-                StompHeaderAccessor accessor =
-                        MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-                sessionId = accessor.getFirstNativeHeader(SESSION_ID_HEADER_TOKEN);
-            }
+
+            StompHeaderAccessor accessor =
+                    MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+            sessionId = accessor.getFirstNativeHeader(SESSION_ID_HEADER_TOKEN);
+
         }
 
         return sessionId;
