@@ -1,5 +1,6 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.model.entities.FilterCity;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.UserInfo;
@@ -7,6 +8,7 @@ import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserInfoRepository;
+import com.shutafin.repository.common.FilterCityRepository;
 import com.shutafin.repository.common.UserRepository;
 import com.shutafin.repository.initialization.UserInitializationRepository;
 import com.shutafin.repository.initialization.locale.CityRepository;
@@ -29,6 +31,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInitializationRepository userInitializationRepository;
     private UserAccountRepository userAccountRepository;
     private UserImageService userImageService;
+    private FilterCityRepository filterCityRepository;
 
     @Autowired
     public UserInfoServiceImpl(
@@ -38,7 +41,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             GenderRepository genderRepository,
             UserInitializationRepository userInitializationRepository,
             UserAccountRepository userAccountRepository,
-            UserImageService userImageService) {
+            UserImageService userImageService,
+            FilterCityRepository filterCityRepository) {
         this.userInfoRepository = userInfoRepository;
         this.userRepository = userRepository;
         this.cityRepository = cityRepository;
@@ -46,6 +50,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         this.userInitializationRepository = userInitializationRepository;
         this.userAccountRepository = userAccountRepository;
         this.userImageService = userImageService;
+        this.filterCityRepository = filterCityRepository;
     }
 
     @Override
@@ -70,6 +75,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public UserInfoResponseDTO getUserInfo(Long userId){
+        return getUserInfo(userRepository.findOne(userId));
+    }
+
+    @Override
     public void updateUserInfo(UserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = userInfoRepository.findByUser(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);
@@ -81,6 +91,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         user.setFirstName(userInfoRequest.getFirstName());
         user.setLastName(userInfoRequest.getLastName());
         userRepository.save(user);
+
+        if (userInfoRequest.getCityId() != null && filterCityRepository.getUserFilterCity(user).isEmpty()){
+
+            filterCityRepository.save(new FilterCity(user, cityRepository.findOne(userInfoRequest.getCityId())));
+        }
     }
 
     private UserInfo convertToUserInfo(UserInfoRequest userInfoRequest, User user) {

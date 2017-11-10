@@ -1,5 +1,13 @@
-app.controller('questionsCtrl', function ($scope, $state, quizModel, notify, $sessionStorage, $filter) {
+app.controller('questionsCtrl', function (
+                                        $scope,
+                                        $state,
+                                        quizModel,
+                                        notify,
+                                        $sessionStorage,
+                                        $filter,
+                                        browserTitle) {
 
+    browserTitle.setBrowserTitleByFilterName('Questions.title');
     var vm = this;
     vm.isReady = true;
 

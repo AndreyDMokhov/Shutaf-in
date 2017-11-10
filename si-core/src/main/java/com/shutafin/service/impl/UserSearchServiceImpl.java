@@ -121,16 +121,16 @@ public class UserSearchServiceImpl implements UserSearchService {
         UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(users);
 
         return new UserSearchResponse(
-                        userInfoResponseDTO.getUserId(),
-                        userInfoResponseDTO.getFirstName(),
-                        userInfoResponseDTO.getLastName(),
-                        userInfoResponseDTO.getUserImage(),
-                        userInfoResponseDTO.getUserImageId(),
-                        userInfoResponseDTO.getGenderId(),
-                        userInfoResponseDTO.getCityId(),
-                        userInfoResponseDTO.getCountryId(),
-                        userInfoResponseDTO.getDateOfBirth() == null ? null : userInfoResponseDTO.getDateOfBirth().getTime()
-                );
+                userInfoResponseDTO.getUserId(),
+                userInfoResponseDTO.getFirstName(),
+                userInfoResponseDTO.getLastName(),
+                userInfoResponseDTO.getUserImage(),
+                userInfoResponseDTO.getUserImageId(),
+                userInfoResponseDTO.getGenderId(),
+                userInfoResponseDTO.getCityId(),
+                userInfoResponseDTO.getCountryId(),
+                userInfoResponseDTO.getDateOfBirth() == null ? null : userInfoResponseDTO.getDateOfBirth().getTime()
+        );
     }
 
 
@@ -146,8 +146,8 @@ public class UserSearchServiceImpl implements UserSearchService {
     private List<User> findMatchingUsersFromList(List<User> users, String fullName) {
 
         return users.stream()
-                .filter(u -> String.valueOf(u.getFirstName() + " " + u.getLastName()).equals(fullName))
-                .filter(u -> String.valueOf(u.getLastName() + " " + u.getFirstName()).equals(fullName))
+                .filter(u -> String.valueOf(u.getFirstName() + " " + u.getLastName()).equals(fullName) ||
+                        String.valueOf(u.getLastName() + " " + u.getFirstName()).equals(fullName))
                 .collect(Collectors.toList());
     }
 }

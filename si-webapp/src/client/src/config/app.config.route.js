@@ -18,9 +18,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('registration',
             {
-                templateUrl: 'partials/registration/registration.html',
-                controller: 'userRegistration',
-                controllerAs: 'vm',
+                template: '<registration-component></registration-component>',
                 url: '/registration/request'
             })
         .state('registrationConfirmation',
@@ -59,63 +57,52 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 url: '/login'
             })
         .state('logout', {
-            controller: 'logoutController',
-            url: '/logout'
+                controller: 'logoutController',
+                url: '/logout'
         })
         .state('resetPasswordRequest', {
-            templateUrl: 'partials/resetPassword/resetPassword.request.html',
-            controller: 'resetPasswordRequestController',
-            controllerAs: 'vm',
-            url: '/reset-password/request'
+                template: '<reset-password-request-component></reset-password-request-component>',
+                url: '/reset-password/request'
         })
         .state('resetPasswordNewPassword', {
-            url: '/reset-password/confirmation/{link}',
-            templateUrl: 'partials/resetPassword/resetPassword.confirmation.html',
-            controller: 'resetPasswordConfirmation',
-            controllerAs: 'vm'
+                url: '/reset-password/confirmation/{link}',
+                template: '<reset-password-confirmation-component></reset-password-confirmation-component>'
         })
         .state('userSearch', {
-            templateUrl: 'partials/userSearch/userSearch.html',
-            controller: 'userSearchController',
-            controllerAs: 'vm',
-            url: '/users/search?{name}'
+                templateUrl: 'partials/userSearch/userSearch.html',
+                controller: 'userSearchController',
+                controllerAs: 'vm',
+                url: '/users/search?{name}'
         })
         .state('questions', {
-            templateUrl: 'partials/questions/questions.html',
-            controller: 'questionsCtrl',
-            controllerAs: 'vm',
-            url: '/questions'
-        })
+                templateUrl:'partials/questions/questions.html',
+                controller: 'questionsCtrl',
+                controllerAs: 'vm',
+                url: '/questions'
+            })
         /* Settings */
         .state('settings', {
             abstract: true,
             url: '/settings',
-            controller: 'settingsController',
-            controllerAs: 'vm',
-            templateUrl: 'partials/settings/settings.html'
+            template: '<settings-component></settings-component>'
         })
         .state('settings.personal', {
-            url: '/personal',
-            templateUrl: 'partials/settings/userSettings/userSettings.html',
-            controller: 'userSettingsController',
-            controllerAs: 'vm'
+            url:'/personal',
+            template: '<user-settings-component></user-settings-component>'
         })
         .state('settings.changeEmailRequest', {
-            url: '/email',
-            templateUrl: 'partials/settings/changeEmail/changeEmail.html',
-            controller: 'changeEmailRequestController',
-            controllerAs: 'vm'
+            url:'/email',
+            template: '<change-email-component></change-email-component>'
+
         })
         .state('settings.changeEmailConfirmation', {
-            controller: 'changeEmailConfirmationController',
-            controllerAs: 'vm',
-            url: '/settings/change-email/confirmation/{link}'
+                controller: 'changeEmailConfirmationController',
+                controllerAs: 'vm',
+                url: '/settings/change-email/confirmation/{link}'
         })
         .state('settings.changePassword', {
-            url: '/password',
-            templateUrl: 'partials/settings/changePassword/changePassword.html',
-            controller: 'changePasswordController',
-            controllerAs: 'vm'
+            url:'/password',
+            template: '<change-password-component></change-password-component>'
         })
         .state("chat",
         {

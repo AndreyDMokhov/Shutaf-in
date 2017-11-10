@@ -1,5 +1,5 @@
 "use strict";
-app.controller('registrationConfirmation', function (registrationConfirmationModel,
+app.controller('registrationConfirmation', function (registrationModel,
                                                      notify,
                                                      $state,
                                                      $filter,
@@ -14,7 +14,7 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
         if (urlLink === undefined || urlLink === null || urlLink === "") {
             $state.go("error", {'code': '404'});
         }
-        registrationConfirmationModel.confirmRegistration(urlLink).then(
+        registrationModel.confirmRegistration(urlLink).then(
             function (success) {
 
                 $sessionStorage.sessionId = success.headers('session_id');
@@ -27,7 +27,6 @@ app.controller('registrationConfirmation', function (registrationConfirmationMod
                     $state.go("error", {'code': '404'});
                 }
             });
-
     }
 
     confirmUserRegistration();

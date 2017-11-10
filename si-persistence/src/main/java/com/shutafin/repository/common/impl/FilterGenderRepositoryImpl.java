@@ -43,9 +43,9 @@ public class FilterGenderRepositoryImpl implements FilterGenderRepositoryCustom 
         }
         StringBuilder hql = new StringBuilder()
                 .append(" SELECT ui.user ")
-                .append(" FROM FilterGender fg INNER JOIN UserInfo ui")
-                .append(" ON fg.gender.id = ui.gender.id")
-                .append(" WHERE fg.user = :user ")
+                .append(" FROM FilterGender fg, UserInfo ui")
+                .append(" WHERE fg.gender.id = ui.gender.id")
+                .append(" AND fg.user = :user ")
                 .append(" AND ui.user IN (:matchedUsers) ");
 
         return entityManager

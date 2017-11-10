@@ -15,6 +15,7 @@ var app = angular.module("app", [
     'pascalprecht.translate',
     'uiCropper',
     'naif.base64',
+    'rzModule',
     'ngStorage'
     /* @if templateCache **
      ,'templateCache'
