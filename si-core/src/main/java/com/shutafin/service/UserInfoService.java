@@ -1,8 +1,8 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserInfoRequest;
+import com.shutafin.model.web.user.UserInfoResponseDTO;
 
 
 public interface UserInfoService {

@@ -40,22 +40,32 @@
     <script src="bower_components/angular-base64-upload/dist/angular-base64-upload.min.js"></script>
     <script src="bower_components/ui-cropper/compile/minified/ui-cropper.js"></script>
     <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
+    <script src="bower_components/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="bower_components/stomp-websocket/lib/stomp.min.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
     <script src="config/app.module.js"></script>
     <!-- @echo templateCache -->
+
+    <!--SI Configurations-->
     <script src="config/app.config.translate.js"></script>
     <script src="config/app.config.route.js"></script>
     <script src="config/app.storage.constants.js"></script>
     <script src="config/app.config.notification.js"></script>
+    <script src="config/websocket.service.js"></script>
+
+    <!--SI Data-->
     <script src="data/app.session.js"></script>
     <script src="data/app.config.language.js"></script>
     <script src="data/app.initialization.service.js"></script>
     <script src="data/app.browserTitle.js"></script>
 
+
+    <!--SI Layout-->
     <script src="layout/header.js"></script>
 
+    <!--SI Partials-->
     <script src="partials/logout/logout.ctrl.js"></script>
     <script src="partials/logout/logout.model.js"></script>
 
@@ -94,6 +104,16 @@
     <script src="partials/questions/questions.ctrl.js"></script>
     <script src="partials/questions/questions.model.js"></script>
 
+    <!--Si Chat-->
+    <script src="partials/messenger/messenger.model.js"></script>
+    <script src="partials/messenger/messenger-ui.component.js"></script>
+    <script src="partials/messenger/components/send-form/send-form.directive.js"></script>
+    <script src="partials/messenger/components/message-list/message-list.directive.js"></script>
+    <script src="partials/messenger/components/channel-component/channel-directive/channel.directive.js"></script>
+    <script src="partials/messenger/components/channel-component/channel.component.js"></script>
+    <script src="data/user-avatar.directive.js"></script>
+
+
     <!-- endbuild -->
 
 
@@ -113,8 +133,7 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/userSearch.css">
     <link rel="stylesheet" href="styles/cardCarousel.css">
-
-
+    <link rel="stylesheet" href="styles/chat.css">
     <!-- endbuild -->
     <link rel="shortcut icon" href="favico.png">
 </head>

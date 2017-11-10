@@ -148,5 +148,20 @@
   "Questions.button.back" : "Back",
   "Questions.button.save" : "Save",
   "Questions.delimiter": "from",
-  "Questions.confirm" : "Answers were saved"
+  "Questions.confirm" : "Answers were saved",
+
+  "SECTION": "CHAT",
+  "Chat.title": "Chat",
+  "Chat.title.messages": "Messages in ",
+  "Chat.form.input": "Your Message",
+  "Chat.button.send": "Send",
+  "Chat.title.usersInChat": "Users in ",
+  "Chat.title.send.message": "Send message",
+  "Chat.title.add.user": "Add user to group",
+  "Chat.title.delete.user": "Delete user",
+  "Chat.title.find.users": "Find neighbour",
+  "Chat.title.delete.chat": "Delete correspondence",
+  "Chat.title.enter.chat": "Enter chat",
+  "Chat.title.edit.chat.title": "Edit chat title",
+  "Chat.header.rename.chat.title":"Rename chat:"
 }

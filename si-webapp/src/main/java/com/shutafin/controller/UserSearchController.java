@@ -31,6 +31,11 @@ public class UserSearchController {
         return userSearchService.userSearchByList(userFilterService.findFilteredUsers(user), fullName);
     }
 
+    @RequestMapping(value = "/search/{user_id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserSearchResponse getUserById(@PathVariable("user_id") Long userId, @AuthenticatedUser User user) {
+        return userSearchService.findUserDataById(userId);
+    }
+
     @RequestMapping(value = "/search/save/filters", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> saveUserFilters(@AuthenticatedUser User user, @RequestBody @Valid FiltersWeb filtersWeb) {
         userFilterService.saveUserFilters(user, filtersWeb);

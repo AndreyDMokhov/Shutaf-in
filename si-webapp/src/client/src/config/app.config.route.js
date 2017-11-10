@@ -7,7 +7,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'homeController',
                 controllerAs: 'vm',
                 url: '/home'
-
             })
         .state('about',
             {
@@ -104,6 +103,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('settings.changePassword', {
             url:'/password',
             template: '<change-password-component></change-password-component>'
+        })
+        .state("chat",
+        {
+            template: '<messenger-ui-component></messenger-ui-component>',
+            url: "/chat"
         })
     ;
     $urlRouterProvider.otherwise('/home');

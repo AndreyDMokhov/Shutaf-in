@@ -149,7 +149,22 @@
   "Questions.button.back" : "Назад",
   "Questions.button.save" : "Сохранить",
   "Questions.delimiter": "из",
-  "Questions.confirm" : "Ответы успешно сохранены"
+  "Questions.confirm" : "Ответы успешно сохранены",
+
+  "SECTION": "CHAT",
+  "Chat.title": "Чат",
+  "Chat.title.messages": "Сообщения в ",
+  "Chat.form.input": "Ваше сообщение",
+  "Chat.button.send": "Отправить",
+  "Chat.title.usersInChat": "Пользователи в ",
+  "Chat.title.send.message": "Начать общение",
+  "Chat.title.add.user": "Добавить пользователя в чат",
+  "Chat.title.delete.user": "Удалить пользователя",
+  "Chat.title.find.users": "Найти соседа",
+  "Chat.title.delete.chat": "Удалить переписку",
+  "Chat.title.enter.chat": "Войти в чат",
+  "Chat.title.edit.chat.title": "Изменить имя чата",
+  "Chat.header.rename.chat.title":"Изменить имя чата:"
 
 }
 
