@@ -9,7 +9,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
 
 
         /**
-         * Check if authenticated or already connected, then call connect()
+         * Checks if authenticated or already connected, then call connect()
          * @returns {*}
          */
         function getConnection() {
