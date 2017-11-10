@@ -47,12 +47,21 @@ app.component('channelComponent', {
             );
         }
 
-        function updateChatRoom(messages, chatData) {
+        function updateCurrentChatRoom(chatData) {
             if (vm.currentChat.id === chatData.id) {
                 return;
             }
-            vm.currentChat.id = chatData.id;
-            vm.messengerUiCtrl.updateChatRoom(messages, chatData);
+            vm.currentChat = chatData;
+            vm.messengerUiCtrl.updateCurrentChatRoom(chatData);
+        }
+        function updateChatMessages(messages){
+            vm.messengerUiCtrl.updateChatMessages(messages);
+        }
+
+        function activateChat(usersInChat, chatData){
+            vm.listOfChats.push(chatData);
+            vm.currentChat = chatData;
+            checkOneChatTitle(usersInChat, chatData);
         }
 
         function getChats() {
@@ -109,8 +118,10 @@ app.component('channelComponent', {
 
         vm.getChats = getChats;
         vm.removeChat = removeChat;
-        vm.updateChatRoom = updateChatRoom;
         vm.renameChat = renameChat;
         vm.checkOneChatTitle=checkOneChatTitle;
+        vm.activateChat=activateChat;
+        vm.updateCurrentChatRoom = updateCurrentChatRoom;
+        vm.updateChatMessages=updateChatMessages;
     }
 });
