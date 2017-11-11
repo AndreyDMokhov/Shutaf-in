@@ -6,7 +6,7 @@ app.component('messengerUiComponent', {
     bindings: {},
     controllerAs: 'vm',
 
-    controller: function (messengerModel, $sessionStorage, $state) {
+    controller: function (messengerModel, $sessionStorage) {
 
         var vm = this;
 
@@ -101,10 +101,6 @@ app.component('messengerUiComponent', {
             vm.usersInChat.length=0;
         }
 
-        function changeStateToUserSearch() {
-            $state.go('userSearch');
-        }
-
         activate();
 
         vm.getUserData = getUserData;
@@ -113,7 +109,6 @@ app.component('messengerUiComponent', {
         vm.addUserToChat = addUserToChat;
         vm.getActiveUsersInChat = getActiveUsersInChat;
         vm.removeUserFromChat = removeUserFromChat;
-        vm.changeStateToUserSearch = changeStateToUserSearch;
         vm.updateChatRoom = updateChatRoom;
     }
 });

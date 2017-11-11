@@ -152,9 +152,11 @@
 
   "SECTION": "CHAT",
   "Chat.title": "Chat",
+  "Chat.name.prefix": "You",
   "Chat.title.messages": "Messages in ",
   "Chat.form.input": "Your Message",
   "Chat.button.send": "Send",
+  "Chat.title.compatibleUsers": "Compatible users",
   "Chat.title.usersInChat": "Users in ",
   "Chat.title.send.message": "Send message",
   "Chat.title.add.user": "Add user to group",
@@ -163,5 +165,6 @@
   "Chat.title.delete.chat": "Delete correspondence",
   "Chat.title.enter.chat": "Enter chat",
   "Chat.title.edit.chat.title": "Edit chat title",
+  "Chat.title.new.message": "new",
   "Chat.header.rename.chat.title":"Rename chat:"
 }

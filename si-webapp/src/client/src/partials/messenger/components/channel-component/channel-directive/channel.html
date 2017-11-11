@@ -4,14 +4,11 @@
         <tbody>
         <tr>
             <th colspan="2">
-                <!--todo move this logic to JS-->
                 &nbsp;
-                {{chatData.chatTitle | limitTo:characterLimit}}
-                {{chatData.chatTitle.length > characterLimit ? '... ' : ''}}
+                <crop-name-directive name={{chatData.chatTitle}} character-limit="characterLimit"></crop-name-directive>
                 <span ng-show="newMessageCounter>0" style="color: #ff4500">
                     &nbsp;
-                    <!--todo translate the word 'new'-->
-                    new: {{newMessageCounter}}
+                    {{'Chat.title.new.message' | translate}}: {{newMessageCounter}}
                 </span>
             </th>
         </tr>
@@ -21,13 +18,13 @@
                              height="20"></user-avatar>
             </td>
             <td>
-                <!--todo move this logic to JS-->
-                <span class="title">{{lastMessage.lastName | limitTo:characterLimit/2}}{{lastMessage.lastName.length > characterLimit/2 ? '... ' : ' '}}
-                {{lastMessage.firstName | limitTo:characterLimit/2}}{{lastMessage.firstName.length > characterLimit/2 ? '...' : ''}}</span>
+                <span class="title">
+                <crop-name-directive name={{lastMessage.lastName}} character-limit="characterLimit/2"></crop-name-directive>
+                <crop-name-directive name={{lastMessage.firstName}} character-limit="characterLimit/2"></crop-name-directive>
+                </span>
 
                 <span class="chip">
-                    <!--todo move this logic to JS-->
-                {{lastMessage.message | limitTo:characterLimit}}{{lastMessage.message.length > characterLimit ? '...' : ''}}
+                    <crop-name-directive name={{lastMessage.message}} character-limit="characterLimit"></crop-name-directive>
             </span>
             </td>
             <td class="sign">

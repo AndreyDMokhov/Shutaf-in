@@ -1,7 +1,6 @@
 <h4 class="panel-title">
-    <!--todo move this logic to JS-->
-    {{'Chat.header.rename.chat.title' | translate}} {{chatData.chatTitle |
-    limitTo:characterLimit/2}}{{chatData.chatTitle.length > characterLimit/2 ? '... ' : ''}}
+    {{'Chat.header.rename.chat.title' | translate}} <crop-name-directive
+        name={{chatData.chatTitle}} character-limit="characterLimit"></crop-name-directive>
 </h4>
 <form role="form">
     <div class="input-group">

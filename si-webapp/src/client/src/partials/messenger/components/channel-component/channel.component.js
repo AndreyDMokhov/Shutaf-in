@@ -6,7 +6,7 @@ app.component('channelComponent', {
     require: {
         messengerUiCtrl: '^messengerUiComponent'
     },
-    controller: function (messengerModel, $sessionStorage, $state, languageService) {
+    controller: function (messengerModel, $sessionStorage, $filter) {
 
         var vm = this;
 
@@ -88,22 +88,14 @@ app.component('channelComponent', {
                 }
             );
         }
-
         function setChatTitle(usersInChat, chatData) {
-            //todo get rig of this if else
-            if (languageService.getUserLanguage().id === 2) {
-                //todo substitute with translate filter
-                chatData.chatTitle = 'Вы';
-            }
-            else {
-                chatData.chatTitle = 'You';
-            }
-            var fullChatTitle = usersInChat.map(function (elem) {
-                return elem.firstName + ' ' + elem.lastName;
-            }).join(", ");
-            chatData.chatTitle = chatData.chatTitle + ', ' + fullChatTitle;
+            chatData.chatTitle = $filter('translate')('Chat.name.prefix');
+            var fullChatTitle = [];
+            usersInChat.forEach(function (elem) {
+                fullChatTitle = fullChatTitle + ', ' + elem.firstName + ' ' + elem.lastName;
+            });
+            chatData.chatTitle = chatData.chatTitle + fullChatTitle;
         }
-
 
         activate();
 
@@ -111,6 +103,6 @@ app.component('channelComponent', {
         vm.removeChat = removeChat;
         vm.updateChatRoom = updateChatRoom;
         vm.renameChat = renameChat;
-        vm.checkOneChatTitle=checkOneChatTitle;
+        vm.checkOneChatTitle = checkOneChatTitle;
     }
 });
