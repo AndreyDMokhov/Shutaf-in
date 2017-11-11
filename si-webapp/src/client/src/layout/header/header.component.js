@@ -10,7 +10,8 @@ app.component('headerComponent', {
                               $sessionStorage,
                               $state,
                               $window,
-                              initializationService) {
+                              initializationService,
+                              webSocketService) {
 
             var vm = this;
             vm.userProfile = {};
@@ -18,7 +19,6 @@ app.component('headerComponent', {
             vm.sessionService = sessionService;
             $rootScope.brand = "Shutaf-In";
             vm.initialization = {};
-
             function init() {
                 initializationService.initializeLanguages().then(function (languages) {
                     vm.initialization.languages = languages;
@@ -27,6 +27,7 @@ app.component('headerComponent', {
                         initializationService.initializeApplication().then(function () {
                             vm.userProfile = $sessionStorage.userProfile;
                             $rootScope.brand = vm.userProfile.firstName + ' ' + vm.userProfile.lastName;
+                            webSocketService.getConnection();
                         });
                     }
                 });
