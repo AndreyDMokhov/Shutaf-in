@@ -25,13 +25,6 @@
                         {{'Home.title' | translate}}
                     </a>
                 </li>
-                <li ng-hide="true" ng-class="{active : ('about' | includedByState)}">
-                    <a ui-sref="about" uib-tooltip="{{'About.title' | translate}}" tooltip-placement="bottom">
-                        <span class="fa fa-book header-icon-size"></span>
-                        &nbsp;
-                        {{'About.title' | translate}}
-                    </a>
-                </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
                     <a ui-sref="questions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
