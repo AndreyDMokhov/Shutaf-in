@@ -98,7 +98,7 @@ public class PersistenceContextConfiguration {
         properties.put("hibernate.cache.use_second_level_cache", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.use_second_level_cache"));
         properties.put("hibernate.cache.use_query_cache", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.use_query_cache"));
         properties.put("hibernate.cache.provider_class", environment.getRequiredProperty("spring.jpa.properties.hibernate.cache.provider_class"));
-
+        properties.put("hibernate.dialect", environment.getRequiredProperty("spring.jpa.properties.hibernate.dialect"));
 
         return properties;
     }

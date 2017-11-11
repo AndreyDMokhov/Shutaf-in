@@ -51,9 +51,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('login',
             {
-                templateUrl: 'partials/login/login.html',
-                controller: 'loginController',
-                controllerAs: 'vm',
+                template: '<login-component></login-component>',
                 url: '/login'
             })
         .state('logout', {
