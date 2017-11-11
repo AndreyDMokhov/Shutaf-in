@@ -4,7 +4,7 @@
                 <li ng-class="{active : ('userProfile' | includedByState)}">
 
                     <a class="navbar-brand" ng-show="!vm.sessionService.isAuthenticated()">
-                        {{brand}}
+                        {{$root.brand}}
                     </a>
                     <a ng-show="vm.sessionService.isAuthenticated()"
                        ui-sref="userProfile({id:vm.userProfile.userId})"
@@ -14,7 +14,7 @@
                             <img class="logo-center" src="{{vm.getUserImage()}}" width="28" height="28">
                         </span>
                         &nbsp;
-                        {{brand}}
+                        {{$root.brand}}
                     </a>
                 </li>
 
