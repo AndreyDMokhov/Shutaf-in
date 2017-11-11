@@ -4,9 +4,7 @@ app.factory('quizModel', function (Restangular, $sessionStorage) {
         RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
     });
 
-
     function sendAnswers(params) {
-
         return rest.one('/api/users/match/save').customPOST(params);
     }
 
