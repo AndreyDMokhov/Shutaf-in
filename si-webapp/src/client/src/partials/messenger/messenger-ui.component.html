@@ -10,7 +10,11 @@
                 add-user-to-chat="vm.addUserToChat(userId)">
         </compatible-users-directive>
 
-        <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}: <crop-name-directive name={{vm.currentChat.chatTitle}} character-limit="vm.characterLimit"></crop-name-directive>
+        <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}:
+            <crop-name-directive
+                    name={{vm.currentChat.chatTitle}}
+                    character-limit="vm.characterLimit">
+            </crop-name-directive>
         </h4>
         <chat-users-directive
                 users-in-chat="vm.usersInChat"

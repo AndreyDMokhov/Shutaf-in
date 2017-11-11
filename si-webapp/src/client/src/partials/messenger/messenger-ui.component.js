@@ -1,5 +1,5 @@
 /**
- * Contains channel component, message list and send form directives, and users (from matching and current chat users)
+ * Contains channel component, message list and send form directives, and users directives (from matching and current chat users)
  */
 app.component('messengerUiComponent', {
     templateUrl: 'partials/messenger/messenger-ui.component.html',

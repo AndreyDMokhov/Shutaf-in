@@ -13,7 +13,7 @@ app.directive('cropNameDirective', function () {
                     scope.name = scope.name.substring(0, parseInt(scope.characterLimit)) + '... ';
                 }
                 return scope.name;
-            }
+            };
         }
     };
 });

@@ -15,10 +15,10 @@ app.directive('compatibleUsersDirective', function ($state) {
             };
             scope.addNewUserToChat = function (currUserId) {
                 scope.addUserToChat({userId:currUserId});
-            }
+            };
             scope.changeStateToUserSearch = function () {
                 $state.go('userSearch');
-            }
+            };
         }
     };
 });
