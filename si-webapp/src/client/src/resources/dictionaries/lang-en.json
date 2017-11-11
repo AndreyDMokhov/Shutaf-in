@@ -68,6 +68,7 @@
   "UserProfile.edit":"Edit",
   "UserProfile.compatibility":"Compatibility",
   "UserProfile.message.sizeImage":"Image size should not exceed {{size}} MB",
+  "UserProfile.current":"your profile",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Email sent to specified address",
@@ -134,6 +135,12 @@
   "Search.notFound" : "No users found on your request",
   "Search.request" : "Enter your request",
   "Search.results" : "Results:",
+  "Search.ChooseAge" : "Choose age",
+  "Search.ChooseGender" : "Choose gender",
+  "Search.ChooseCity" : "Choose city",
+  "Search.ChooseButton" : "Click to choose",
+  "Search.ValueInCityButtonMoreThan3" : "selected",
+
 
   "SECTION" : "Questions",
   "Questions.title" : "Questions",
@@ -141,5 +148,20 @@
   "Questions.button.back" : "Back",
   "Questions.button.save" : "Save",
   "Questions.delimiter": "from",
-  "Questions.confirm" : "Answers were saved"
+  "Questions.confirm" : "Answers were saved",
+
+  "SECTION": "CHAT",
+  "Chat.title": "Chat",
+  "Chat.title.messages": "Messages in ",
+  "Chat.form.input": "Your Message",
+  "Chat.button.send": "Send",
+  "Chat.title.usersInChat": "Users in ",
+  "Chat.title.send.message": "Send message",
+  "Chat.title.add.user": "Add user to group",
+  "Chat.title.delete.user": "Delete user",
+  "Chat.title.find.users": "Find neighbour",
+  "Chat.title.delete.chat": "Delete correspondence",
+  "Chat.title.enter.chat": "Enter chat",
+  "Chat.title.edit.chat.title": "Edit chat title",
+  "Chat.header.rename.chat.title":"Rename chat:"
 }

@@ -1,0 +1,15 @@
+<h4 class="panel-title">
+    <!--todo move this logic to JS-->
+    {{'Chat.header.rename.chat.title' | translate}} {{chatData.chatTitle |
+    limitTo:characterLimit/2}}{{chatData.chatTitle.length > characterLimit/2 ? '... ' : ''}}
+</h4>
+<form role="form">
+    <div class="input-group">
+        <input ng-model="newChatTitle" type="text" class="form-control" placeholder=""/>
+        <div class="input-group-btn">
+            <button type="submit" ng-click="setNewChatTitle(newChatTitle)" class="btn btn-primary">{{'Chat.button.send' |
+                translate}}
+            </button>
+        </div>
+    </div>
+</form>

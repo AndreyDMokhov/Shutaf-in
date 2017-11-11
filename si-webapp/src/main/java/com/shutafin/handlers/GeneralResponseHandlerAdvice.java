@@ -1,5 +1,6 @@
 package com.shutafin.handlers;
 
+import com.shutafin.annotations.InternalRestController;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorResponse;
 import org.springframework.core.MethodParameter;
@@ -16,7 +17,10 @@ public class GeneralResponseHandlerAdvice implements ResponseBodyAdvice<Object> 
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return true;
+        return returnType
+                .getMethod()
+                .getDeclaringClass()
+                .getAnnotation(InternalRestController.class) == null;
     }
 
     @Override

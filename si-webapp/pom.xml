@@ -21,7 +21,10 @@
     <name>si-webapp</name>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.shutafin</groupId>
             <artifactId>si-model</artifactId>
@@ -40,6 +43,12 @@
         <dependency>
             <groupId>com.shutafin</groupId>
             <artifactId>si-persistence</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.shutafin</groupId>
+            <artifactId>si-internal</artifactId>
             <version>0.1</version>
         </dependency>
         <dependency>

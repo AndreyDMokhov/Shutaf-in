@@ -2,11 +2,15 @@ package com.shutafin.model.entities;
 
 import com.shutafin.model.AbstractBaseEntity;
 import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.types.*;
+import com.shutafin.model.entities.types.AccountStatus;
+import com.shutafin.model.entities.types.AccountStatusConverter;
+import com.shutafin.model.entities.types.AccountType;
+import com.shutafin.model.entities.types.AccountTypeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -15,6 +19,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "USER_ACCOUNT")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

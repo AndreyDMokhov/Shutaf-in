@@ -1,13 +1,13 @@
 "use strict";
-app.controller("headerController", function (
-                                            $rootScope,
-                                            languageService,
-                                            sessionService,
-                                            $filter,
-                                            $sessionStorage,
-                                            $state,
-                                            $window,
-                                            initializationService) {
+app.controller("headerController", function ($rootScope,
+                                             languageService,
+                                             sessionService,
+                                             $filter,
+                                             $sessionStorage,
+                                             $state,
+                                             $window,
+                                             initializationService,
+                                             webSocketService) {
 
     var vm = this;
     vm.userProfile = {};
@@ -23,6 +23,7 @@ app.controller("headerController", function (
                 initializationService.initializeApplication().then(function () {
                     vm.userProfile = $sessionStorage.userProfile;
                     $rootScope.brand = vm.userProfile.firstName + ' ' + vm.userProfile.lastName;
+                    webSocketService.getConnection();
                 });
             }
         });
@@ -31,7 +32,7 @@ app.controller("headerController", function (
 
     function setLanguageCode(languageId) {
         languageService.updateUserLanguage(languageId);
-        $state.go('home', {}, {reload:true});
+        $state.go('home', {}, {reload: true});
         $window.location.reload();
     }
 

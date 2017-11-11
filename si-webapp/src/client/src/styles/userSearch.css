@@ -43,3 +43,32 @@
     margin-top: 12px;
     margin-left: 20px;
 }
+
+.label-above-input {
+    display: block;
+}
+
+.select.dropdown-menu {
+    max-height: 200px;
+    overflow: auto;
+}
+
+.btn-choose-city {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.rzslider .rz-pointer{
+    background: #d9edf7;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    top: -12px
+}
+.rzslider .rz-pointer:after{
+    top:9px;
+    left: 8px
+}
+.rzslider .rz-pointer.rz-active:after {
+    background-color: #0db9f0;
+}
