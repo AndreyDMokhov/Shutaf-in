@@ -1,13 +1,15 @@
-app.component('questionFullComponent', {
-    templateUrl: 'partials/questions/questionFullComponent.html',
+app.component('questionsComponent', {
+    templateUrl: 'partials/questions/questions.component.html',
     controllerAs: 'vm',
     controller: function ($scope,
                           $state,
                           quizModel,
                           notify,
                           $sessionStorage,
-                          $filter) {
+                          $filter,
+                          browserTitle) {
         var vm = this;
+        browserTitle.setBrowserTitleByFilterName('Questions.title');
 
         vm.questions = $sessionStorage.questions;
         vm.selectedAnswers = $sessionStorage.selectedAnswers;
