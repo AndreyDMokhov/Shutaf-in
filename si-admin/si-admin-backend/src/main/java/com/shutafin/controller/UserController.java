@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
-import com.shutafin.route.RouteDirection;
 import com.shutafin.route.DiscoveryRoutingService;
+import com.shutafin.route.RouteDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
