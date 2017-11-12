@@ -169,7 +169,12 @@ app.controller('userProfileController', function ($localStorage,
             userProfileModel.getSelectedUserProfile(userId).then(
                 function (success){
                     vm.userProfile = success.data.data;
-                    vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
+                    if (!vm.userProfile.originalUserImage) {
+                        vm.image = '../../images/default_avatar.png';
+                    }
+                    else {
+                        vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
+                    }
                 },
                 function (error){
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
