@@ -41,9 +41,7 @@ app.component('messengerUiComponent', {
                     vm.messages = [];
                     vm.usersInChat = [];
                     vm.usersInChat.push(findUserInUserListById(userId));
-                    vm.channelProcessingCtrl.listOfChats.push(vm.currentChat);
-                    vm.channelProcessingCtrl.currentChat=vm.currentChat;
-                    vm.channelProcessingCtrl.checkOneChatTitle(vm.usersInChat, vm.currentChat);
+                    vm.channelProcessingCtrl.activateChat(vm.usersInChat, vm.currentChat);
                 }
             );
         }
@@ -89,10 +87,13 @@ app.component('messengerUiComponent', {
                 });
         }
 
-        function updateChatRoom(messages, chatData) {
-            vm.messages = messages;
+        function updateCurrentChatRoom(chatData) {
             vm.currentChat = chatData;
             getActiveUsersInChat();
+        }
+
+        function updateChatMessages(messages){
+            vm.messages = messages;
         }
 
         function removeChat() {
@@ -109,6 +110,7 @@ app.component('messengerUiComponent', {
         vm.addUserToChat = addUserToChat;
         vm.getActiveUsersInChat = getActiveUsersInChat;
         vm.removeUserFromChat = removeUserFromChat;
-        vm.updateChatRoom = updateChatRoom;
+        vm.updateCurrentChatRoom = updateCurrentChatRoom;
+        vm.updateChatMessages=updateChatMessages;
     }
 });

@@ -1,11 +1,10 @@
-<div ng-controller="headerController as vm">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li ng-class="{active : ('userProfile' | includedByState)}">
 
                     <a class="navbar-brand" ng-show="!vm.sessionService.isAuthenticated()">
-                        {{brand}}
+                        {{$root.brand}}
                     </a>
                     <a ng-show="vm.sessionService.isAuthenticated()"
                        ui-sref="userProfile({id:vm.userProfile.userId})"
@@ -15,7 +14,7 @@
                             <img class="logo-center" src="{{vm.getUserImage()}}" width="28" height="28">
                         </span>
                         &nbsp;
-                        {{brand}}
+                        {{$root.brand}}
                     </a>
                 </li>
 
@@ -24,13 +23,6 @@
                         <span class="fa fa-home header-icon-size"></span>
                         &nbsp;
                         {{'Home.title' | translate}}
-                    </a>
-                </li>
-                <li ng-hide="true" ng-class="{active : ('about' | includedByState)}">
-                    <a ui-sref="about" uib-tooltip="{{'About.title' | translate}}" tooltip-placement="bottom">
-                        <span class="fa fa-book header-icon-size"></span>
-                        &nbsp;
-                        {{'About.title' | translate}}
                     </a>
                 </li>
 
@@ -116,4 +108,3 @@
 
         </div>
     </nav>
-</div>
