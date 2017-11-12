@@ -51,9 +51,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('login',
             {
-                templateUrl: 'partials/login/login.html',
-                controller: 'loginController',
-                controllerAs: 'vm',
+                template: '<login-component></login-component>',
                 url: '/login'
             })
         .state('logout', {
@@ -75,9 +73,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 url: '/users/search?{name}'
         })
         .state('questions', {
-                templateUrl:'partials/questions/questions.html',
-                controller: 'questionsCtrl',
-                controllerAs: 'vm',
+                template:'<questions-component></questions-component>',
                 url: '/questions'
             })
         /* Settings */
