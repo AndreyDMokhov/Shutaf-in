@@ -1,12 +1,12 @@
 /**
- * Contains channel component, message list and send form directives, and users (from matching and current chat users)
+ * Contains channel component, message list and send form directives, and users directives (from matching and current chat users)
  */
 app.component('messengerUiComponent', {
     templateUrl: 'partials/messenger/messenger-ui.component.html',
     bindings: {},
     controllerAs: 'vm',
 
-    controller: function (messengerModel, $sessionStorage, $state) {
+    controller: function (messengerModel, $sessionStorage) {
 
         var vm = this;
 
@@ -102,10 +102,6 @@ app.component('messengerUiComponent', {
             vm.usersInChat.length=0;
         }
 
-        function changeStateToUserSearch() {
-            $state.go('userSearch');
-        }
-
         activate();
 
         vm.getUserData = getUserData;
@@ -114,7 +110,6 @@ app.component('messengerUiComponent', {
         vm.addUserToChat = addUserToChat;
         vm.getActiveUsersInChat = getActiveUsersInChat;
         vm.removeUserFromChat = removeUserFromChat;
-        vm.changeStateToUserSearch = changeStateToUserSearch;
         vm.updateCurrentChatRoom = updateCurrentChatRoom;
         vm.updateChatMessages=updateChatMessages;
     }
