@@ -113,6 +113,9 @@
                                 <fileset>
                                     <directory>${basedir}/src/client/dist</directory>
                                 </fileset>
+                                <fileset>
+                                    <directory>${basedir}/src/client/node</directory>
+                                </fileset>
 
                             </filesets>
                         </configuration>
