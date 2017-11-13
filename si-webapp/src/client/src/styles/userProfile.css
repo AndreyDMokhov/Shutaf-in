@@ -33,3 +33,14 @@
     height: 0;
     background-color: transparent;
 }
+
+.ngdialog.ngdialog-theme-default.custom-user-profile-popup .ngdialog-content {
+    padding: 0 !important;
+    background: transparent !important;
+    display: table; /*table-like styles for vertical centering*/
+    width: 100% !important;
+    height:100%;
+}
+.ngdialog-content > .ngdialog-close{
+    display:none; /*hide original close button*/
+}

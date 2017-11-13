@@ -7,7 +7,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'homeController',
                 controllerAs: 'vm',
                 url: '/home'
-
             })
         .state('about',
             {
@@ -52,9 +51,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('login',
             {
-                templateUrl: 'partials/login/login.html',
-                controller: 'loginController',
-                controllerAs: 'vm',
+                template: '<login-component></login-component>',
                 url: '/login'
             })
         .state('logout', {
@@ -76,9 +73,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 url: '/users/search?{name}'
         })
         .state('questions', {
-                templateUrl:'partials/questions/questions.html',
-                controller: 'questionsCtrl',
-                controllerAs: 'vm',
+                template:'<questions-component></questions-component>',
                 url: '/questions'
             })
         /* Settings */
@@ -104,6 +99,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('settings.changePassword', {
             url:'/password',
             template: '<change-password-component></change-password-component>'
+        })
+        .state("chat",
+        {
+            template: '<messenger-ui-component></messenger-ui-component>',
+            url: "/chat"
         })
     ;
     $urlRouterProvider.otherwise('/home');

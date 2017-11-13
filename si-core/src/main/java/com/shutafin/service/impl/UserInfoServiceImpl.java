@@ -4,8 +4,8 @@ import com.shutafin.model.entities.FilterCity;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.UserInfo;
-import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserInfoRequest;
+import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserInfoRepository;
 import com.shutafin.repository.common.FilterCityRepository;
@@ -72,6 +72,11 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoResponseDTO.addOriginalUserImage(originalUserImage);
         }
         return userInfoResponseDTO;
+    }
+
+    @Override
+    public UserInfoResponseDTO getUserInfo(Long userId){
+        return getUserInfo(userRepository.findOne(userId));
     }
 
     @Override
