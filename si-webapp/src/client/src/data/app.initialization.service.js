@@ -1,7 +1,6 @@
-app.factory('initializationService', function (Restangular, $q, $sessionStorage, notify, $filter, languageService) {
+app.factory('initializationService', function (Restangular, $q, $sessionStorage, notify, $filter, languageService, webSocketService) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
-
     });
 
     function initializeLanguages() {
@@ -37,6 +36,7 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
 
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
                 $sessionStorage.filters = success.data.filters;
+                webSocketService.getConnection();
                 deferred.resolve(success.data);
             }, function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

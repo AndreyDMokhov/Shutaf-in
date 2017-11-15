@@ -1,0 +1,5 @@
+<div class="chat-list">
+    <div ng-repeat="chat in vm.listOfChats track by chat.id">
+        <channel-directive chat-data="chat"></channel-directive>
+    </div>
+</div>

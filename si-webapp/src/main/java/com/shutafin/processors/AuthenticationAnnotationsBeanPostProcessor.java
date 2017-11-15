@@ -5,6 +5,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUserType;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
+import com.shutafin.processors.annotations.authentication.WebSocketAuthentication;
 import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -23,8 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProcessor {
-
-    private static final String SESSION_ID_HEADER_TOKEN = "session_id";
 
     private Map<String, Class> requiredProxyBeans = new HashMap<>();
 
@@ -59,12 +55,10 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
                     return executeMethod(method, bean, args);
                 }
 
-
-                HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-                String sessionId = request.getHeader(SESSION_ID_HEADER_TOKEN);
-                if (sessionId == null) {
-                    throw new AuthenticationException();
-                }
+                AbstractAuthenticationProtocolTypeResolver protocolTypeResolver =
+                        AbstractAuthenticationProtocolTypeResolver
+                                .getProtocolTypeResolver(method.getAnnotation(WebSocketAuthentication.class), args);
+                String sessionId = protocolTypeResolver.getSessionIdFromProtocol();
 
                 User user = sessionManagementService.findUserWithValidSession(sessionId);
 

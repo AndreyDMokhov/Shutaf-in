@@ -1,0 +1,20 @@
+
+<div class="message-list">
+    <div class="message-item" ng-repeat="message in messages track by $index">
+        <table class="item-table" ng-mouseover="unmarkMessageItem($index)">
+            <tbody>
+            <td class="userPic">
+                <user-avatar user-id={{message.userId}} width="50" height="50"></user-avatar>
+            </td>
+            <td >
+                <span class="title">{{message.lastName}} {{message.firstName}}</span>
+
+                <div>{{message.createDate | date:"MM/dd/yyyy, h:mma"}}</div>
+                <span class="chip">
+                {{message.message}}
+            </span>
+            </td>
+            </tbody>
+        </table>
+    </div>
+</div>

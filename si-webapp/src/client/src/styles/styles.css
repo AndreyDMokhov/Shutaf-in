@@ -12,16 +12,16 @@
 .header-icon-size {
     font-size: 1.15em
 }
-label.required:after {content: " *"; color: red;}
 
-.spinnerResetPassword{
+label.required:after {
+    content: " *";
+    color: red;
+}
+
+.spinnerResetPassword {
     text-align: center;
     display: inline-block;
     width: 100%
-}
-
-body {
-    overflow-y: scroll;
 }
 
 .fa-chevron-down {
@@ -32,4 +32,9 @@ body {
 .fa-chevron-down.open {
     transform: rotate(90deg);
     transition: all 0.1s 0.1s;
+}
+
+div[role="main"] {
+    height: 500px;
+    overflow-y: scroll;
 }

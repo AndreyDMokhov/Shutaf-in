@@ -21,7 +21,10 @@
     <name>si-webapp</name>
 
     <dependencies>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.shutafin</groupId>
             <artifactId>si-model</artifactId>
@@ -109,6 +112,9 @@
                                 </fileset>
                                 <fileset>
                                     <directory>${basedir}/src/client/dist</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${basedir}/src/client/node</directory>
                                 </fileset>
 
                             </filesets>

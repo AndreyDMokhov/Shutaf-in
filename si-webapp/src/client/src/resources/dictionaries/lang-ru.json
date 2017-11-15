@@ -5,6 +5,9 @@
   "SECTION":"ABOUT",
   "About.title":"О нас",
 
+  "SECTION": "HELP",
+  "Help.title": "Помощь",
+
   "SECTION":"HOME",
   "Home.title":"Домашняя",
   "Home.description":"Это сервис для поиска соседей.",
@@ -149,7 +152,25 @@
   "Questions.button.back" : "Назад",
   "Questions.button.save" : "Сохранить",
   "Questions.delimiter": "из",
-  "Questions.confirm" : "Ответы успешно сохранены"
+  "Questions.confirm" : "Ответы успешно сохранены",
+
+  "SECTION": "CHAT",
+  "Chat.title": "Чат",
+  "Chat.name.prefix": "Вы",
+  "Chat.title.messages": "Сообщения в ",
+  "Chat.form.input": "Ваше сообщение",
+  "Chat.button.send": "Отправить",
+  "Chat.title.compatibleUsers": "Совместимые пользователи",
+  "Chat.title.usersInChat": "Пользователи в ",
+  "Chat.title.send.message": "Начать общение",
+  "Chat.title.add.user": "Добавить пользователя в чат",
+  "Chat.title.delete.user": "Удалить пользователя",
+  "Chat.title.find.users": "Найти соседа",
+  "Chat.title.delete.chat": "Удалить переписку",
+  "Chat.title.enter.chat": "Войти в чат",
+  "Chat.title.edit.chat.title": "Изменить имя чата",
+  "Chat.title.new.message": "новые",
+  "Chat.header.rename.chat.title":"Изменить имя чата:"
 
 }
 
