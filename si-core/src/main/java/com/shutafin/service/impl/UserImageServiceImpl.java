@@ -35,6 +35,7 @@ public class UserImageServiceImpl implements UserImageService {
 
     private static final String DOT_SEPARATOR = ".";
     private static final String IMAGE_EXTENSION = "jpg";
+    private static final String DEFAULT_AVATAR = "default_avatar.jpg";
 
     @Autowired
     private UserImageRepository userImageRepository;
@@ -114,6 +115,22 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     public UserImage getCompressedUserImage(UserImage originalUserImage) {
         return imagePairRepository.findCompressedUserImage(originalUserImage);
+    }
+
+    @Override
+    @SneakyThrows
+    public String getDefaultImageBase64() {
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_AVATAR);
+
+        if (resourceAsStream != null) {
+            byte[] imageDecoded = new byte[resourceAsStream.available()];
+            resourceAsStream.read(imageDecoded);
+            resourceAsStream.close();
+            return Base64.getEncoder().encodeToString(imageDecoded);
+        }
+
+        return null;
+
     }
 
     private void deleteLocalImage(UserImage userImage) {

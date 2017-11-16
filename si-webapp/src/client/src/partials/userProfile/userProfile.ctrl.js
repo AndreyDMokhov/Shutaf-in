@@ -1,6 +1,7 @@
 "use strict";
 app.controller('userProfileController', function ($localStorage,
                                                   $state,
+                                                  $stateParams,
                                                   $filter,
                                                   sessionService,
                                                   userProfileModel,
@@ -25,8 +26,8 @@ app.controller('userProfileController', function ($localStorage,
 
     vm.hideDeleteImageButton = false;
     vm.hideEditButton = false;
+    vm.isThisMyProfile = false;
     vm.enableDisableProfileImageTooltip = true;
-    vm.hideCurrentProfileText = false;
     vm.disableLoadImage = false;
 
     vm.cities = $sessionStorage.cities;
@@ -157,30 +158,46 @@ app.controller('userProfileController', function ($localStorage,
 
     }
 
-    function loadSearchResultsUserProfile(){
-        if ($scope.ngDialogData != null){
-            var userId = $scope.ngDialogData.selectedUserId.id;
-            vm.hideDeleteImageButton = true;
-            vm.hideEditButton = true;
-            vm.enableDisableProfileImageTooltip = false;
-            vm.hideCurrentProfileText = true;
-            vm.disableLoadImage = true;
+    function loadSearchResultsUserProfile() {
+        var profileId = null;
+        var isModalRequest = $scope.ngDialogData != null;
 
-            userProfileModel.getSelectedUserProfile(userId).then(
-                function (success){
-                    vm.userProfile = success.data.data;
-                    if (!vm.userProfile.originalUserImage) {
-                        vm.image = '../../images/default_avatar.png';
-                    }
-                    else {
-                        vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
-                    }
-                },
-                function (error){
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
-            );
+        if (!isModalRequest) {
+            profileId = $stateParams.id;
+
+            var hasProfileIdInParam = profileId !== undefined && profileId !== null && profileId !== '';
+
+            if (!hasProfileIdInParam) {
+                $state.go('error', {code: '404'});
+            }
+        } else {
+
+            profileId = $scope.ngDialogData.selectedUserId.id;
         }
+
+        vm.isThisMyProfile = vm.userProfile.userId === profileId;
+
+        vm.enableDisableProfileImageTooltip = true;
+
+
+        userProfileModel.getSelectedUserProfile(profileId).then(
+            function (success) {
+                if (success.data.data === null) {
+                    $state.go('error', {code: 404});
+                }
+                vm.userProfile = success.data.data;
+                if (!vm.userProfile.originalUserImage) {
+                    vm.image = '../../images/default_avatar.png';
+                }
+                else {
+                    vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
+                }
+            },
+            function (error) {
+                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+            }
+        );
+
     }
 
     loadSearchResultsUserProfile();

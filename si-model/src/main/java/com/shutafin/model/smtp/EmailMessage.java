@@ -2,6 +2,8 @@ package com.shutafin.model.smtp;
 
 import com.shutafin.model.entities.User;
 
+import java.util.Map;
+
 import static org.apache.commons.lang3.Validate.*;
 
 /**
@@ -13,6 +15,7 @@ public class EmailMessage {
     private BaseTemplate mailTemplate;
     private String emailTo;
     private User user;
+    private Map<String, byte[]> imageSources;
 
 
     public EmailMessage(String emailTo, BaseTemplate mailTemplate) {
@@ -20,6 +23,15 @@ public class EmailMessage {
         notNull(mailTemplate);
         this.emailTo = emailTo;
         this.mailTemplate = mailTemplate;
+    }
+
+    public EmailMessage(String emailTo, BaseTemplate mailTemplate, Map<String, byte[]> imageSources) {
+        notNull(emailTo);
+        notNull(mailTemplate);
+        notNull(imageSources);
+        this.emailTo = emailTo;
+        this.mailTemplate = mailTemplate;
+        this.imageSources = imageSources;
     }
 
     public EmailMessage(User user, BaseTemplate mailTemplate) {
@@ -43,5 +55,9 @@ public class EmailMessage {
 
     public User getUser() {
         return user;
+    }
+
+    public Map<String, byte[]> getImageSources() {
+        return imageSources;
     }
 }

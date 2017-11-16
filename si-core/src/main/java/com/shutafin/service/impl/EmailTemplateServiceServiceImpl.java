@@ -6,11 +6,12 @@ import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.service.EmailTemplateService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 import static org.apache.commons.lang3.Validate.notBlank;
@@ -58,6 +59,7 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         ));
     }
 
+    @SneakyThrows
     private Properties getProperties(Language language) {
         Properties properties = new Properties();
         InputStream is = null;
@@ -70,12 +72,7 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
         is = getClass().getClassLoader().getResourceAsStream(builder.toString());
 
 
-        try {
-            properties.load(is);
-        } catch (IOException e) {
-            log.error("Unexpected error occurred: ", e);
-            throw new IllegalStateException("Unexpected error occurred");
-        }
+        properties.load(is);
 
         return properties;
     }
@@ -87,5 +84,16 @@ public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
                 language,
                 link
         ));
+    }
+
+    @Override
+    public EmailMessage getEmailMessage(User user, EmailReason emailReason, Language language, String link, Map<String, byte[]> imageSources) {
+        notNull(user);
+        notNull(emailReason);
+        notNull(language);
+        notBlank(link);
+        notNull(imageSources);
+
+        return new EmailMessage(user.getEmail(), getTemplate(emailReason, language, link), imageSources);
     }
 }

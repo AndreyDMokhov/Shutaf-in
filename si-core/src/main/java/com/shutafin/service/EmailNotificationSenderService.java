@@ -1,8 +1,11 @@
 package com.shutafin.service;
 
+import com.shutafin.model.entities.EmailImageSource;
 import com.shutafin.model.entities.EmailNotificationLog;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
+
+import java.util.Set;
 
 /**
  * Created by Edward Kats.
@@ -11,5 +14,5 @@ import com.shutafin.model.smtp.EmailMessage;
 public interface EmailNotificationSenderService {
 
     void sendEmail(EmailMessage emailMessage, EmailReason emailReason);
-    void sendEmail(EmailNotificationLog emailNotificationLog);
+    void sendEmail(EmailNotificationLog emailNotificationLog, Set<EmailImageSource> emailImageSources);
 }

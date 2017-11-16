@@ -3,10 +3,7 @@ package com.shutafin.model.entities;
 import com.shutafin.model.AbstractEntity;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.entities.types.EmailReasonConverter;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -20,9 +17,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class EmailNotificationLog extends AbstractEntity {
 
-    @JoinColumn(name = "USER_ID", nullable = true)
+    @JoinColumn(name = "USER_ID")
     @ManyToOne
     private User user;
 

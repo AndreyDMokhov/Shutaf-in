@@ -17,5 +17,6 @@ public interface UserImageService {
     List<UserImage> getAllUserImages(User user);
     UserImage getOriginalUserImage(UserImage compressedUserImage);
     UserImage getCompressedUserImage(UserImage originalUserImage);
+    String getDefaultImageBase64();
 
 }

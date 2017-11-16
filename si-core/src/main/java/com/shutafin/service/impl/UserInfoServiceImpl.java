@@ -61,6 +61,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserInfoResponseDTO getUserInfo(User user) {
+        if (user == null) {
+            return null;
+        }
+
         UserInfoResponseDTO userInfoResponseDTO = userInitializationRepository.getUserInitializationData(user);
         userInfoResponseDTO.setEmail(uglifyEmail(userInfoResponseDTO.getEmail()));
 

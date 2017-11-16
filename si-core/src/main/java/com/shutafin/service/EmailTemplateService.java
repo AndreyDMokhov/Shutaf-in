@@ -6,10 +6,13 @@ import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 
+import java.util.Map;
+
 
 public interface EmailTemplateService {
 
     BaseTemplate getTemplate(EmailReason emailReason, Language language, String link);
     EmailMessage getEmailMessage(User user, EmailReason emailReason, Language language, String link);
     EmailMessage getEmailMessage(String emailTo, EmailReason emailReason, Language language, String link);
+    EmailMessage getEmailMessage(User user, EmailReason emailReason, Language language, String link, Map<String, byte[]> imageSources);
 }
