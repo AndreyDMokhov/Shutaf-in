@@ -23,6 +23,9 @@ app.controller('logoutController', function (
         delete $sessionStorage.cities;
         delete $sessionStorage.countries;
         delete $sessionStorage.genders;
+        delete $sessionStorage.questionsExtended;
+        delete $sessionStorage.questionImportance;
+        delete $sessionStorage.selectedExtendedAnswers;
         $rootScope.brand = 'Shutaf-In';
     }
 

@@ -30,6 +30,10 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
                 $sessionStorage.genders = success.data.genders;
                 $sessionStorage.questions = success.data.questionAnswersResponses;
                 $sessionStorage.selectedAnswers = _getSelectedAnswers(success.data.selectedAnswersResponses);
+                $sessionStorage.questionsExtended = success.data.questionExtendedWithAnswers;
+                $sessionStorage.questionImportance = success.data.questionImportanceList;
+                $sessionStorage.selectedExtendedAnswers = success.data.selectedExtendedAnswersResponses;
+
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
                 $sessionStorage.filters = success.data.filters;
                 webSocketService.getConnection();

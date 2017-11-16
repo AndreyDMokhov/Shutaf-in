@@ -35,4 +35,6 @@ public class UserQuestionAnswer extends AbstractBaseEntity {
     @JoinColumn(name = "ANSWER_ID", nullable = false)
     @ManyToOne
     private Answer answer;
+
+
 }
