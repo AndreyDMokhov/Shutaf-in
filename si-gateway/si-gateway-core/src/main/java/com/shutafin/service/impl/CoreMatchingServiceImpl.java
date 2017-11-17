@@ -58,8 +58,7 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     }
 
     private Double calculateMatchingScore(User userOrigin, User userToMatch) {
-        Double totalScore = 0.;
-        Double crossScore = 0.;
+
         if (!isUserHasAnswers(userOrigin) || !isUserHasAnswers(userToMatch)) {
             return BASIC_MATCHING_SCORE;
         }
@@ -73,6 +72,9 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
                 userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOrigin);
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers =
                 userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userToMatch);
+
+        Double totalScore = 0.;
+        Double crossScore = 0.;
 
         for (QuestionExtended question : userOriginAnswers.keySet()) {
             Integer answerSimilarityScore = getAnswerSimilarityScore(userOriginAnswers, userToMatchAnswers, question);
