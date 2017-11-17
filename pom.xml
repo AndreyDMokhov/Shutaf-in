@@ -17,19 +17,13 @@
 
     <name>si-parent</name>
     <modules>
-        <module>si-core</module>
-        <module>si-model</module>
-        <module>si-webapp</module>
-        <module>si-persistence</module>
-        <module>si-common</module>
-        <module>si-internal</module>
-
-        <!--STANDALONE JAR-->
         <module>si-share</module>
-
-        <!--MICROSERVICES-->
         <module>si-discovery</module>
         <module>si-admin</module>
+        <module>si-gateway</module>
+        <module>si-email-notification</module>
+        <module>si-matching</module>
+        <module>si-account</module>
     </modules>
 
     <dependencyManagement>

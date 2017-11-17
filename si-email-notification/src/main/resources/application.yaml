@@ -1,0 +1,38 @@
+server:
+  port: 8200
+
+spring:
+  application:
+    name: si-email-notification
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/si-email-notification
+    username: root
+    password: r00t
+  jpa:
+    show-sql: true
+    hibernate:
+      use-new-id-generator-mappings: false
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    username: shutafin@gmail.com
+    password: shutafin2017k
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+    default-encoding: UTF-8
