@@ -1,7 +1,9 @@
-package com.shutafin.model.web.error.errors;
+package com.shutafin.model.error.errors;
 
-import com.shutafin.model.web.error.ErrorResponse;
-import com.shutafin.model.web.error.ErrorType;
+
+
+import com.shutafin.model.error.ErrorResponse;
+import com.shutafin.model.error.ErrorType;
 
 import java.util.List;
 

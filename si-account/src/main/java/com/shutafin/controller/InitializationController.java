@@ -1,7 +1,6 @@
 package com.shutafin.controller;
 
 import com.shutafin.core.service.InitializationService;
-import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,14 +12,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/initialization")
-@NoAuthentication
 @Slf4j
 public class InitializationController {
 
     @Autowired
     private InitializationService initializationService;
 
-    @RequestMapping(value = "/all/{languageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/all/{languageId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<String, List> getAll(@PathVariable("languageId") Integer languageId) {
         log.debug("/initialization/all/{languageId}");
         return new HashMap<String, List>() {{
@@ -31,7 +29,7 @@ public class InitializationController {
         }};
     }
 
-    @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/languages", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<String, List> getLanguages() {
         log.debug("/initialization/languages");
         return new HashMap<String, List>() {{
@@ -39,7 +37,7 @@ public class InitializationController {
         }};
     }
 
-    @RequestMapping(value = "/genders", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/genders", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<String, List> getGenders(@RequestParam(defaultValue = "1") Integer languageId) {
         log.debug("/initialization/genders");
         return new HashMap<String, List>() {{
@@ -47,7 +45,7 @@ public class InitializationController {
         }};
     }
 
-    @RequestMapping(value = "/countries", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/countries", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<String, List> getCountries(@RequestParam(defaultValue = "1") Integer languageId) {
         log.debug("/initialization/countries");
         return new HashMap<String, List>() {{
@@ -55,7 +53,7 @@ public class InitializationController {
         }};
     }
 
-    @RequestMapping(value = "/cities", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/cities", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<String, List> getCities(@RequestParam(defaultValue = "1") Integer languageId) {
         log.debug("/initialization/cities");
         return new HashMap<String, List>() {{

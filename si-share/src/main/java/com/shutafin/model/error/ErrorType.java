@@ -1,4 +1,4 @@
-package com.shutafin.model.web.error;
+package com.shutafin.model.error;
 
 
 public enum ErrorType {

@@ -3,30 +3,28 @@ package com.shutafin.controller;
 import com.shutafin.core.service.UserAccountService;
 import com.shutafin.core.service.UserInfoService;
 import com.shutafin.core.service.UserLanguageService;
+import com.shutafin.core.service.UserService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserLanguageWeb;
-import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 
 @Slf4j
 @RestController
-@RequestMapping("/users/settings")
+@RequestMapping("/users")
 public class UserAccountController {
 
     @Autowired
@@ -38,51 +36,54 @@ public class UserAccountController {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private UserService userService;
 
-    @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
+
+    @PostMapping(value = "/{userId}/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserImageWeb updateUserAccountProfileImage(@PathVariable("userId") Long userId,
                                                       @RequestBody @Valid UserImageWeb userImageWeb,
                                                       BindingResult result) {
-        log.debug("/users/settings/image");
+        log.debug("/users/{}/profile-image", userId);
         checkBindingResult(result);
-        UserImage image = userAccountService.updateProfileImage(userImageWeb, user);
+        UserImage image = userAccountService.updateProfileImage(userImageWeb, userService.findUserById(userId));
         return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
                 image.getCreatedDate().getTime());
     }
 
-    @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserAccountProfileImage(@AuthenticatedUser User user) {
-        log.debug("/users/settings/image");
-        userAccountService.deleteUserAccountProfileImage(user);
+    @DeleteMapping(value = "/{userId}/image", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void deleteUserAccountProfileImage(@PathVariable("userId") Long userId) {
+        log.debug("/users/{}/image", userId);
+        userAccountService.deleteUserAccountProfileImage(userService.findUserById(userId));
     }
 
-    @RequestMapping(value = "/language", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{userId}/language", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void update(@RequestBody @Valid UserLanguageWeb userLanguageWeb,
                        BindingResult result,
-                       @AuthenticatedUser User user) {
+                       @PathVariable("userId") Long userId) {
         log.debug("/users/settings/language");
         checkBindingResult(result);
-        userLanguageService.updateUserLanguage(userLanguageWeb, user);
+        userLanguageService.updateUserLanguage(userLanguageWeb, userService.findUserById(userId));
     }
 
-    @RequestMapping(value = "/language", method = RequestMethod.GET)
-    public Language get(@AuthenticatedUser User user) {
+    @GetMapping(value = "/{userId}/language")
+    public Language get(@PathVariable("userId") Long userId) {
         log.debug("/users/settings/language");
-        return userLanguageService.findUserLanguage(user);
+        return userLanguageService.findUserLanguage(userService.findUserById(userId));
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserInfoResponseDTO getUserInfo(@AuthenticatedUser User user) {
-        return userInfoService.getUserInfo(user);
+    @GetMapping(value = "/{userId}/info", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserInfoResponseDTO getUserInfo(@PathVariable("userId") Long userId) {
+        return userInfoService.getUserInfo(userService.findUserById(userId));
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateUserInfo(@AuthenticatedUser User user,
+    @PostMapping(value = "/{userId}/info", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateUserInfo(@PathVariable("userId") Long userId,
                                @RequestBody @Valid UserInfoRequest userInfoRequest,
                                BindingResult result) {
 
         checkBindingResult(result);
-        userInfoService.updateUserInfo(userInfoRequest, user);
+        userInfoService.updateUserInfo(userInfoRequest, userService.findUserById(userId));
     }
 
     private void checkBindingResult(BindingResult result) {

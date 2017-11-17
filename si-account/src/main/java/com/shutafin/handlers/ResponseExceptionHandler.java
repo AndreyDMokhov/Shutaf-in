@@ -1,8 +1,8 @@
 package com.shutafin.handlers;
 
+import com.shutafin.model.error.ErrorResponse;
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.exception.AbstractAPIException;
-import com.shutafin.model.web.error.ErrorResponse;
-import com.shutafin.model.web.error.ErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

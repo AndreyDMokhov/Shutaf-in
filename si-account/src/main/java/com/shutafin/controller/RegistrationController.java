@@ -1,14 +1,9 @@
 package com.shutafin.controller;
 
 import com.shutafin.core.service.RegistrationService;
-import com.shutafin.model.entities.User;
-import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.processors.annotations.authentication.NoAuthentication;
-import com.shutafin.processors.annotations.response.SessionResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -18,7 +13,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
-@NoAuthentication
 @Slf4j
 public class RegistrationController {
 
@@ -29,10 +23,8 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    public RegistrationController() {
-    }
 
-    @RequestMapping(value = "/registration/request", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/registration/request", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
                              BindingResult result) {
         log.debug("/users/registration/request");
@@ -44,14 +36,5 @@ public class RegistrationController {
         registrationService.save(registrationRequestWeb);
     }
 
-//    @SessionResponse
-//    @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
-//    public User confirmRegistration(@PathVariable String link) {
-//        log.debug("/users/registration/confirmation/{link}");
-//        if (StringUtils.isBlank(link)) {
-//            log.warn("Link is blank or empty");
-//            throw new ResourceNotFoundException();
-//        }
-//        return registrationService.confirmRegistration(link);
-//    }
+
 }

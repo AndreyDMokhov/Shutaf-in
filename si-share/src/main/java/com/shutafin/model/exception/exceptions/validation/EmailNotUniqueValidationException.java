@@ -1,7 +1,8 @@
 package com.shutafin.model.exception.exceptions.validation;
 
+
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.exception.exceptions.ValidationException;
-import com.shutafin.model.web.error.ErrorType;
 
 import java.util.ArrayList;
 import java.util.List;
