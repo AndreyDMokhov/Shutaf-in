@@ -1,4 +1,4 @@
-package com.shutafin.entity.smtp;
+package com.shutafin.model.smtp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

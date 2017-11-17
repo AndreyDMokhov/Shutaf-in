@@ -1,4 +1,4 @@
-package com.shutafin.entity.web;
+package com.shutafin.model.web;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Email;

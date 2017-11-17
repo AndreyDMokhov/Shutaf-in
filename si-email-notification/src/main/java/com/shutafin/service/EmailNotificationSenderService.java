@@ -1,7 +1,7 @@
 package com.shutafin.service;
 
-import com.shutafin.entity.smtp.EmailMessage;
-import com.shutafin.entity.types.EmailReason;
+import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.model.entity.EmailReason;
 
 public interface EmailNotificationSenderService {
 

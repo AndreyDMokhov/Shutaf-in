@@ -1,11 +1,11 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.entity.EmailNotificationLog;
-import com.shutafin.entity.smtp.BaseTemplate;
-import com.shutafin.entity.smtp.EmailMessage;
-import com.shutafin.entity.types.EmailReason;
-import com.shutafin.exception.exceptions.EmailNotificationProcessingException;
-import com.shutafin.exception.exceptions.EmailSendException;
+import com.shutafin.model.entity.EmailNotificationLog;
+import com.shutafin.model.exception.exceptions.EmailNotificationProcessingException;
+import com.shutafin.model.exception.exceptions.EmailSendException;
+import com.shutafin.model.smtp.BaseTemplate;
+import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.model.entity.EmailReason;
 import com.shutafin.helpers.EmailTemplateHelper;
 import com.shutafin.repository.EmailNotificationLogRepository;
 import com.shutafin.service.EmailNotificationSenderService;
@@ -76,8 +76,7 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         emailNotificationLog.setEmailContent(html);
         emailNotificationLog.setEmailReason(emailReason);
         emailNotificationLog.setIsSendFailed(Boolean.FALSE);
-        emailNotificationLogRepository.save(emailNotificationLog);
-        return emailNotificationLog;
+        return emailNotificationLogRepository.save(emailNotificationLog);
     }
 
 }

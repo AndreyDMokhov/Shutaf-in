@@ -1,4 +1,4 @@
-package com.shutafin.entity.types;
+package com.shutafin.model.entity;
 
 public enum EmailReason {
     REGISTRATION_CONFIRMATION(1, "registration"),

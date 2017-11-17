@@ -1,7 +1,5 @@
-package com.shutafin.entity;
+package com.shutafin.model.entity;
 
-import com.shutafin.entity.types.EmailReason;
-import com.shutafin.entity.types.EmailReasonConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

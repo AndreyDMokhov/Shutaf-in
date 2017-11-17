@@ -1,9 +1,9 @@
 package com.shutafin.service;
 
-import com.shutafin.entity.smtp.BaseTemplate;
-import com.shutafin.entity.smtp.EmailMessage;
-import com.shutafin.entity.types.EmailReason;
-import com.shutafin.entity.web.EmailNotificationWeb;
+import com.shutafin.model.smtp.BaseTemplate;
+import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.model.entity.EmailReason;
+import com.shutafin.model.web.EmailNotificationWeb;
 
 public interface EmailTemplateService {
 

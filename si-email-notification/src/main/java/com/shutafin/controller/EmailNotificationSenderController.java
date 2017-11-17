@@ -1,16 +1,19 @@
 package com.shutafin.controller;
 
-import com.shutafin.entity.smtp.EmailMessage;
-import com.shutafin.entity.types.EmailReason;
-import com.shutafin.entity.web.EmailNotificationWeb;
-import com.shutafin.exception.exceptions.InputValidationException;
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.model.entity.EmailReason;
+import com.shutafin.model.web.EmailNotificationWeb;
 import com.shutafin.service.EmailNotificationSenderService;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -35,7 +38,7 @@ public class EmailNotificationSenderController {
             value = "/registration",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void registration(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result){
+    public void registration(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result) {
         checkBindingResult(result);
         sendEmail(emailNotificationWeb, EmailReason.REGISTRATION_CONFIRMATION);
     }
@@ -44,7 +47,7 @@ public class EmailNotificationSenderController {
             value = "/change/email",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void changeEmail(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result){
+    public void changeEmail(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result) {
         checkBindingResult(result);
         sendEmail(emailNotificationWeb, EmailReason.CHANGE_EMAIL);
     }
@@ -53,7 +56,7 @@ public class EmailNotificationSenderController {
             value = "/change/password",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void changePassword(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result){
+    public void changePassword(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result) {
         checkBindingResult(result);
         sendEmail(emailNotificationWeb, EmailReason.CHANGE_PASSWORD);
     }
@@ -62,7 +65,7 @@ public class EmailNotificationSenderController {
             value = "/reset/password",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void resetPassword(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result){
+    public void resetPassword(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result) {
         checkBindingResult(result);
         sendEmail(emailNotificationWeb, EmailReason.RESET_PASSWORD);
     }
