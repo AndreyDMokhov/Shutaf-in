@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 public enum RouteDirection {
 
-    SI_GATEWAY("si-webapp"),
+    SI_GATEWAY("si-gateway"),
     SI_ADMIN("si-admin"),
     SI_ACCOUNT("si-account"),
     SI_MATCHING("si-matching"),
