@@ -72,7 +72,6 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
     private EmailNotificationLog getEmailNotificationLog(EmailMessage emailMessage, String html, EmailReason emailReason) {
         EmailNotificationLog emailNotificationLog = new EmailNotificationLog();
         emailNotificationLog.setUserId(emailMessage.getUserId());
-        emailNotificationLog.setEmail(emailMessage.getEmail());
         emailNotificationLog.setEmailTo(emailMessage.getEmailTo());
         emailNotificationLog.setEmailContent(html);
         emailNotificationLog.setEmailReason(emailReason);

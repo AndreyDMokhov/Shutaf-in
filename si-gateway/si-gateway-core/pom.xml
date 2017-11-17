@@ -41,6 +41,11 @@
             <artifactId>si-gateway-common</artifactId>
             <version>0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.shutafin</groupId>
+            <artifactId>si-share</artifactId>
+            <version>0.1</version>
+        </dependency>
 
     </dependencies>
 

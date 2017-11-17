@@ -66,11 +66,13 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     @Override
     public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, EmailReason emailReason) {
-        return new EmailMessage(emailNotificationWeb.getUserId(), emailNotificationWeb.getEmail(),
-                                emailNotificationWeb.getEmailTo(), getTemplate(
-                emailReason,
-                emailNotificationWeb.getLanguageDescription(),
-                emailNotificationWeb.getLink()
-        ));
+        return new EmailMessage(
+                emailNotificationWeb.getUserId(),
+                emailNotificationWeb.getEmailTo(),
+                getTemplate(
+                        emailReason,
+                        emailNotificationWeb.getLanguageDescription(),
+                        emailNotificationWeb.getLink()
+                ));
     }
 }

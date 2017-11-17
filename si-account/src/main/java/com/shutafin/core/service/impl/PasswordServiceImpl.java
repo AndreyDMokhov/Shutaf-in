@@ -5,7 +5,7 @@ import com.shutafin.core.service.PasswordService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserCredentials;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.persistence.repository.account.UserCredentialsRepository;
+import com.shutafin.repository.account.UserCredentialsRepository;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import lombok.extern.slf4j.Slf4j;

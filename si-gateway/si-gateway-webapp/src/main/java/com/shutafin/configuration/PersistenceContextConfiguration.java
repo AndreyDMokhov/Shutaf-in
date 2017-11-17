@@ -56,7 +56,7 @@ public class PersistenceContextConfiguration {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setPackagesToScan("com.shutafin");
         factoryBean.setJpaProperties(getJpaProperties());
-        factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
+        factoryBean.setJpaVendorAdapter(jpaVendor());
         factoryBean.setDataSource(dataSource);
         return factoryBean;
     }
@@ -76,7 +76,7 @@ public class PersistenceContextConfiguration {
 
 
     @Bean
-    public JpaVendorAdapter jpaVendorAdapter() {
+    public JpaVendorAdapter jpaVendor() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(Boolean.parseBoolean(environment.getRequiredProperty("spring.jpa.show-sql")));
 

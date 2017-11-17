@@ -6,7 +6,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.exception.exceptions.validation.EmailNotUniqueValidationException;
 import com.shutafin.model.web.user.EmailChangeWeb;
-import com.shutafin.persistence.repository.account.UserRepository;
+import com.shutafin.repository.account.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

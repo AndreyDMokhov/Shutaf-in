@@ -8,7 +8,6 @@ import lombok.Getter;
 public class EmailMessage {
 
     private Long userId;
-    private String email;
     private String emailTo;
     private BaseTemplate mailTemplate;
 

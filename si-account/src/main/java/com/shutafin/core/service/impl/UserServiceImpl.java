@@ -3,7 +3,7 @@ package com.shutafin.core.service.impl;
 import com.shutafin.core.service.UserService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.user.UserInfoRequest;
-import com.shutafin.persistence.repository.account.UserRepository;
+import com.shutafin.repository.account.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

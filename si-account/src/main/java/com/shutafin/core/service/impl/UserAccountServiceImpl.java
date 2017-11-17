@@ -7,7 +7,7 @@ import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.user.UserImageWeb;
-import com.shutafin.persistence.repository.account.UserAccountRepository;
+import com.shutafin.repository.account.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

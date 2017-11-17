@@ -13,6 +13,7 @@ import com.shutafin.model.web.user.EmailChangedResponse;
 import com.shutafin.repository.account.EmailChangeConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.common.UserRepository;
+import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
@@ -36,6 +37,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     private EmailNotificationSenderService mailSenderService;
     private EmailChangeConfirmationRepository emailChangeConfirmationRepository;
     private UserRepository userRepository;
+    private DiscoveryRoutingService discoveryRoutingService;
 
     @Autowired
     public EmailChangeConfirmationServiceImpl(
@@ -45,7 +47,8 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
             UserAccountRepository userAccountRepository,
             EmailNotificationSenderService mailSenderService,
             EmailChangeConfirmationRepository emailChangeConfirmationRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            DiscoveryRoutingService discoveryRoutingService) {
         this.passwordService = passwordService;
         this.environmentConfigurationService = environmentConfigurationService;
         this.emailTemplateService = emailTemplateService;
@@ -53,6 +56,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
         this.mailSenderService = mailSenderService;
         this.emailChangeConfirmationRepository = emailChangeConfirmationRepository;
         this.userRepository = userRepository;
+        this.discoveryRoutingService = discoveryRoutingService;
     }
 
     @Override
@@ -70,7 +74,8 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
             throw new EmailNotUniqueValidationException("Such email already exists");
         }
 
-        deleteAllCurrentEmailChangeRequests(user);
+
+        emailChangeConfirmationRepository.deleteAllByUser(user);
 
         UserAccount userAccount = userAccountRepository.findByUser(user);
         Date expirationTime = DateUtils.addDays(new Date(), 1);
@@ -95,9 +100,6 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
         sendChangeEmailNotification(newEmailObject, userAccount);
     }
 
-    private void deleteAllCurrentEmailChangeRequests(User user) {
-        emailChangeConfirmationRepository.deleteAllByUser(user);
-    }
 
     @Override
     @Transactional

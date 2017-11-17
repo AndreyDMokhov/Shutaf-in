@@ -5,7 +5,7 @@ import com.shutafin.model.entities.Answer;
 import com.shutafin.model.entities.Question;
 import com.shutafin.model.entities.UserQuestionAnswer;
 import com.shutafin.model.infrastructure.SelectedAnswerElement;
-import com.shutafin.repository.CustomUserQuestionAnswerRepository;
+import com.shutafin.repository.UserQuestionAnswerRepositoryCustom;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,7 +13,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 
-public class UserQuestionAnswerRepositoryImpl implements CustomUserQuestionAnswerRepository {
+public class UserQuestionAnswerRepositoryImpl implements UserQuestionAnswerRepositoryCustom {
 
     @PersistenceContext
     private EntityManager em;

@@ -1,10 +1,10 @@
 package com.shutafin.core.service.impl;
 
 import com.shutafin.core.service.InitializationService;
-import com.shutafin.persistence.repository.LanguageRepository;
-import com.shutafin.persistence.repository.locale.CityRepository;
-import com.shutafin.persistence.repository.locale.CountryRepository;
-import com.shutafin.persistence.repository.locale.GenderRepository;
+import com.shutafin.repository.LanguageRepository;
+import com.shutafin.repository.locale.CityRepository;
+import com.shutafin.repository.locale.CountryRepository;
+import com.shutafin.repository.locale.GenderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

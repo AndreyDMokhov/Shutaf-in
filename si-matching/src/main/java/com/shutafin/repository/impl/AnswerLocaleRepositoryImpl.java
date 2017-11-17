@@ -2,14 +2,14 @@ package com.shutafin.repository.impl;
 
 
 import com.shutafin.model.infrastructure.AnswerElement;
-import com.shutafin.repository.CustomAnswerLocaleRepository;
+import com.shutafin.repository.AnswerLocaleRepositoryCustom;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-public class AnswerLocaleRepositoryImpl implements CustomAnswerLocaleRepository {
+public class AnswerLocaleRepositoryImpl implements AnswerLocaleRepositoryCustom {
 
     @PersistenceContext
     private EntityManager em;

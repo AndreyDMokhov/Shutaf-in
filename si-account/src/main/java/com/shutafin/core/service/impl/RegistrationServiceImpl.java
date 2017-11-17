@@ -7,22 +7,19 @@ import com.shutafin.core.service.UserImageService;
 import com.shutafin.core.service.UserInfoService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.validation.EmailNotUniqueValidationException;
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.types.AccountType;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.model.web.user.UserInfoRequest;
-import com.shutafin.persistence.repository.LanguageRepository;
-import com.shutafin.persistence.repository.account.UserAccountRepository;
-import com.shutafin.persistence.repository.account.UserRepository;
+import com.shutafin.repository.LanguageRepository;
+import com.shutafin.repository.account.UserAccountRepository;
+import com.shutafin.repository.account.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
 @Transactional

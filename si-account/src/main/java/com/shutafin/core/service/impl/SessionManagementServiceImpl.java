@@ -4,7 +4,7 @@ import com.shutafin.core.service.SessionManagementService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
-import com.shutafin.persistence.repository.account.UserSessionRepository;
+import com.shutafin.repository.account.UserSessionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
