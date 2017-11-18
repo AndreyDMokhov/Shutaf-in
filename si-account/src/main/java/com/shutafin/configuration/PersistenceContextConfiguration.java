@@ -79,7 +79,7 @@ public class PersistenceContextConfiguration {
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(Boolean.parseBoolean(environment.getRequiredProperty("spring.jpa.show-sql")));
-
+        vendorAdapter.setGenerateDdl(true);
         return vendorAdapter;
     }
 
