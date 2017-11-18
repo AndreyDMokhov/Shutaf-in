@@ -38,7 +38,7 @@ public class UserImageController {
     }
 
     @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb addUserImage(@PathVariable("userId") Long userId,
+    public UserImageWeb addUserImage(@RequestParam("userId") Long userId,
                                      @RequestBody @Valid UserImageWeb image, BindingResult result) {
         log.debug("/images/");
         if (result.hasErrors()) {

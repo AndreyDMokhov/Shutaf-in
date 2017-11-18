@@ -1,9 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.core.service.InitializationService;
-import com.shutafin.core.service.UserInfoService;
-import com.shutafin.core.service.UserLanguageService;
-import com.shutafin.core.service.UserSearchService;
+import com.shutafin.core.service.*;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.web.locale.CityResponseDTO;
@@ -18,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +39,9 @@ public class InitializationController {
     @Autowired
     private UserSearchService userSearchService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Language> getLanguages() {
         log.debug("/initialization/languages");
@@ -48,8 +49,9 @@ public class InitializationController {
     }
 
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public InitializationResponse getInitializationResponse(User user) {
+    @RequestMapping(value = "{userId}/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public InitializationResponse getInitializationResponse(@PathVariable("userId") Long userId) {
+        User user = userService.findUserById(userId);
         Language language = userLanguageService.findUserLanguage(user);
 
         return InitializationResponse

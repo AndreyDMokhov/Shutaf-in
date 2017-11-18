@@ -1,7 +1,6 @@
 package com.shutafin.model.base;
 
-
-import com.shutafin.model.entities.Language;
+import com.shutafin.model.infrastructure.Language;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

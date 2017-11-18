@@ -24,9 +24,6 @@ public class LoginController {
         this.loginWebService = loginWebService;
     }
 
-
-
-
     @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public User login(@RequestBody @Valid LoginWebModel loginWeb, BindingResult result) {
         log.debug("/login/");
