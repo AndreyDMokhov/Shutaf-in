@@ -1,5 +1,6 @@
 package com.shutafin.model.web.user;
 
+import com.shutafin.model.annotations.LimitSize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class UserImageWeb {
 
     private Long id;
 
-    @NotBlank
+    @LimitSize
     private String image;
 
     private Long createdDate;

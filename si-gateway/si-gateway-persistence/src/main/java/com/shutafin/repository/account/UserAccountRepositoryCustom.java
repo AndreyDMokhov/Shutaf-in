@@ -4,6 +4,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.infrastructure.Language;
 
+@Deprecated
 public interface UserAccountRepositoryCustom {
     Language findUserLanguage(User user);
     void updateUserLanguage(Language language, User user);

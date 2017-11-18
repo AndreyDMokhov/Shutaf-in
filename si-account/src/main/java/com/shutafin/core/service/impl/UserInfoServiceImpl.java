@@ -86,7 +86,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public UserInfoResponseDTO getUserInfo(Long userId) {
+        return getUserInfo(userRepository.findOne(userId));
+    }
+
+    @Override
     public void updateUserInfo(UserInfoRequest userInfoRequest, User user) {
+        // TODO: filterCity
         UserInfo userInfo = userInfoRepository.findByUser(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);
 
@@ -104,10 +110,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private UserInfo setUserInfoFields(UserInfoRequest userInfoRequest, UserInfo userInfo) {
         if (userInfoRequest.getCityId() != null) {
-            userInfo.setCurrentCity(cityRepository.findOne(userInfoRequest.getCityId()).getCity());
+            userInfo.setCurrentCity(cityRepository.findOne(userInfoRequest.getCityId()));
         }
         if (userInfoRequest.getGenderId() != null) {
-            userInfo.setGender(genderRepository.findOne(userInfoRequest.getGenderId()).getGender());
+            userInfo.setGender(genderRepository.findOne(userInfoRequest.getGenderId()));
         }
         userInfo.setFacebookLink(userInfoRequest.getFacebookLink());
         userInfo.setCompany(userInfoRequest.getCompany());

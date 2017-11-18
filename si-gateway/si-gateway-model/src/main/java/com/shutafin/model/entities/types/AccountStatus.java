@@ -5,6 +5,7 @@ package com.shutafin.model.entities.types;
  * Created by Edward Kats.
  * 03 / Jul / 2017
  */
+@Deprecated
 public enum AccountStatus implements IdentifiableType<Integer> {
     NEW(1),
     CONFIRMED(2),

@@ -8,7 +8,7 @@ import com.shutafin.repository.base.BaseJpaRepository;
 
 import java.util.List;
 
-
+@Deprecated
 public interface UserAccountRepository extends BaseJpaRepository<UserAccount, Long>, UserAccountRepositoryCustom {
 
     UserAccount findByUser(User user);

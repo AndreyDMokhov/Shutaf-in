@@ -4,6 +4,8 @@ import com.shutafin.core.service.UserImageService;
 import com.shutafin.core.service.UserService;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.types.CompressionType;
+import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.user.UserImageWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,12 @@ public class UserImageController {
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        UserImage userImage = userImageService.addUserImage(image, userService.findUserById(userId));
+        UserImage userImage = userImageService.addUserImage(
+                image,
+                userService.findUserById(userId),
+                PermissionType.PRIVATE,
+                CompressionType.NO_COMPRESSION);
+
         return new UserImageWeb(
                 userImage.getId(),
                 null,

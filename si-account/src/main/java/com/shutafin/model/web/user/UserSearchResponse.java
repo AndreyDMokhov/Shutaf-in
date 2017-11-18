@@ -17,12 +17,18 @@ public class UserSearchResponse {
 
     private String lastName;
 
-    private String image;
+    private String userImage;
+
+    private Long userImageId;
+
+    private Long originalUserImageId;
 
     private Integer genderId;
 
     private Integer cityId;
 
     private Integer countryId;
+
+    private Long dateOfBirth;
 
 }

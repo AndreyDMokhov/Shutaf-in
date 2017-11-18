@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Deprecated
 @Entity
 @Table(name = "IMAGE_STORAGE")
 @AllArgsConstructor
