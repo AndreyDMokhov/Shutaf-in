@@ -37,15 +37,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('users',
             {
                 templateUrl: 'partials/users/users.html',
-                controller: 'usersController',
-                controllerAs: 'vm',
                 url: '/users'
             })
         .state('userProfile',
             {
-                templateUrl: 'partials/userProfile/userProfile.html',
-                controller: 'userProfileController',
-                controllerAs: 'vm',
+                template: '<user-profile-component></user-profile-component>',
                 url: '/profile/{id:int}'
             })
 
@@ -55,27 +51,27 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 url: '/login'
             })
         .state('logout', {
-                controller: 'logoutController',
-                url: '/logout'
+            controller: 'logoutController',
+            url: '/logout'
         })
         .state('resetPasswordRequest', {
-                template: '<reset-password-request-component></reset-password-request-component>',
-                url: '/reset-password/request'
+            template: '<reset-password-request-component></reset-password-request-component>',
+            url: '/reset-password/request'
         })
         .state('resetPasswordNewPassword', {
-                url: '/reset-password/confirmation/{link}',
-                template: '<reset-password-confirmation-component></reset-password-confirmation-component>'
+            url: '/reset-password/confirmation/{link}',
+            template: '<reset-password-confirmation-component></reset-password-confirmation-component>'
         })
         .state('userSearch', {
-                templateUrl: 'partials/userSearch/userSearch.html',
-                controller: 'userSearchController',
-                controllerAs: 'vm',
-                url: '/users/search?{name}'
+            templateUrl: 'partials/userSearch/userSearch.html',
+            controller: 'userSearchController',
+            controllerAs: 'vm',
+            url: '/users/search?{name}'
         })
         .state('questions', {
-                template:'<questions-component></questions-component>',
-                url: '/questions'
-            })
+            template:'<questions-component></questions-component>',
+            url: '/questions'
+        })
         /* Settings */
         .state('settings', {
             abstract: true,
@@ -92,19 +88,19 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
         })
         .state('settings.changeEmailConfirmation', {
-                controller: 'changeEmailConfirmationController',
-                controllerAs: 'vm',
-                url: '/settings/change-email/confirmation/{link}'
+            controller: 'changeEmailConfirmationController',
+            controllerAs: 'vm',
+            url: '/settings/change-email/confirmation/{link}'
         })
         .state('settings.changePassword', {
             url:'/password',
             template: '<change-password-component></change-password-component>'
         })
         .state("chat",
-        {
-            template: '<messenger-ui-component></messenger-ui-component>',
-            url: "/chat"
-        })
+            {
+                template: '<messenger-ui-component></messenger-ui-component>',
+                url: "/chat"
+            })
     ;
     $urlRouterProvider.otherwise('/home');
 });
