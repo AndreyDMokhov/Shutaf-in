@@ -17,6 +17,7 @@ import javax.persistence.*;
 /**
  * Created by evgeny on 6/20/2017.
  */
+@Deprecated
 @Entity
 @Table(name = "USER_ACCOUNT")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

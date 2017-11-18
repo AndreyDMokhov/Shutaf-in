@@ -2,6 +2,7 @@ package com.shutafin.model.entities.types;
 
 import lombok.AllArgsConstructor;
 
+@Deprecated
 @AllArgsConstructor
 public enum CompressionType implements IdentifiableType<Integer> {
 

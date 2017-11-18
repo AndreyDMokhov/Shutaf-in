@@ -12,6 +12,7 @@ import javax.persistence.*;
 /**
  * Created by evgeny on 9/23/2017.
  */
+@Deprecated
 @Entity
 @Table(name = "FILTER_GENDER")
 @NoArgsConstructor

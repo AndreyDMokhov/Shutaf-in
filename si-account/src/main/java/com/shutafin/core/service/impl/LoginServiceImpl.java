@@ -1,7 +1,5 @@
 package com.shutafin.core.service.impl;
 
-
-
 import com.shutafin.core.service.LoginService;
 import com.shutafin.core.service.PasswordService;
 import com.shutafin.model.entities.User;

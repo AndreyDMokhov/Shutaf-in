@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@Deprecated
 @Slf4j
 public class LimitSizeConstraintValidator implements ConstraintValidator<LimitSize, String> {
 

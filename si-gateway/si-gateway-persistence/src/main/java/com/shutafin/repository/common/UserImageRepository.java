@@ -6,6 +6,7 @@ import com.shutafin.repository.base.BaseJpaRepository;
 
 import java.util.List;
 
+@Deprecated
 public interface UserImageRepository extends BaseJpaRepository<UserImage, Long> {
 
     List<UserImage> findAllByUser(User user);

@@ -24,8 +24,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userInfoRequest.getLastName());
         user.setEmail(userInfoRequest.getEmail());
 
-        Long userId = userRepository.save(user).getId();
-        user.setId(userId);
+        userRepository.save(user);
     }
 
     @Override

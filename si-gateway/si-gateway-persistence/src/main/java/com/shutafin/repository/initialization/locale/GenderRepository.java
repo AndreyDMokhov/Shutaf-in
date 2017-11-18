@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import javax.persistence.QueryHint;
 import java.util.List;
 
-
+@Deprecated
 public interface GenderRepository extends BaseJpaRepository<Gender, Integer> {
 
 

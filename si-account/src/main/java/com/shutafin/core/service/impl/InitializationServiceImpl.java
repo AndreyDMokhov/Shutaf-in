@@ -1,6 +1,10 @@
 package com.shutafin.core.service.impl;
 
 import com.shutafin.core.service.InitializationService;
+import com.shutafin.model.infrastructure.Language;
+import com.shutafin.model.web.locale.CityResponseDTO;
+import com.shutafin.model.web.locale.CountryResponseDTO;
+import com.shutafin.model.web.locale.GenderResponseDTO;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.locale.CityRepository;
 import com.shutafin.repository.locale.CountryRepository;
@@ -10,46 +14,48 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
 public class InitializationServiceImpl implements InitializationService {
 
-    @Autowired
     private LanguageRepository languageRepository;
-
-    @Autowired
     private GenderRepository genderRepository;
-
-    @Autowired
     private CountryRepository countryRepository;
-
-    @Autowired
     private CityRepository cityRepository;
 
+    @Autowired
+    public InitializationServiceImpl(
+            LanguageRepository languageRepository,
+            GenderRepository genderRepository,
+            CountryRepository countryRepository,
+            CityRepository cityRepository) {
+        this.languageRepository = languageRepository;
+        this.genderRepository = genderRepository;
+        this.countryRepository = countryRepository;
+        this.cityRepository = cityRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)
-    public List findAllLanguages() {
+    public List<Language> findAllLanguages() {
 
-        return StreamSupport.stream(languageRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        return languageRepository.findAll();
     }
 
     @Override
-    public List findAllGendersByLanguage(Integer languageId) {
-        return genderRepository.findAllByLanguage(languageRepository.findOne(languageId));
+    public List<GenderResponseDTO> findAllGendersByLanguage(Language language) {
+        return genderRepository.getLocaleGenders(language);
     }
 
     @Override
-    public List findAllCountriesByLanguage(Integer languageId) {
-        return countryRepository.findAllByLanguage(languageRepository.findOne(languageId));
+    public List<CountryResponseDTO> findAllCountriesByLanguage(Language language) {
+        return countryRepository.getLocaleCountries(language);
     }
 
     @Override
-    public List findAllCitiesByLanguage(Integer languageId) {
-        return cityRepository.findAllByLanguage(languageRepository.findOne(languageId));
+    public List<CityResponseDTO> findAllCitiesByLanguage(Language language) {
+        return cityRepository.getLocaleCities(language);
     }
 
 }

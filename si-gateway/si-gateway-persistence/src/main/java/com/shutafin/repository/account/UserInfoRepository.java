@@ -4,6 +4,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserInfo;
 import com.shutafin.repository.base.BaseJpaRepository;
 
+@Deprecated
 public interface UserInfoRepository extends BaseJpaRepository<UserInfo, Long> {
 
     UserInfo findByUser(User user);
