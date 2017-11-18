@@ -1,17 +1,13 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.infrastructure.User;
-import com.shutafin.model.entities.UserQuestionAnswer;
-import com.shutafin.model.entities.Answer;
-import com.shutafin.model.entities.Question;
+import com.shutafin.model.DTO.QuestionsListWithAnswersDTO;
+import com.shutafin.model.DTO.QuestionsListWithSelectedAnswersDTO;
+import com.shutafin.model.DTO.UserQuestionAnswerDTO;
 import com.shutafin.model.infrastructure.AnswerElement;
+import com.shutafin.model.infrastructure.AnswersForQuestion;
 import com.shutafin.model.infrastructure.SelectedAnswerElement;
 import com.shutafin.model.match.UserExamKey;
 import com.shutafin.model.match.VarietyExamKey;
-import com.shutafin.model.infrastructure.AnswersForQuestion;
-import com.shutafin.model.DTO.UserQuestionAnswerDTO;
-import com.shutafin.model.DTO.QuestionsListWithSelectedAnswersDTO;
-import com.shutafin.model.DTO.QuestionsListWithAnswersDTO;
 import com.shutafin.repository.*;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +31,6 @@ public class UserMatchServiceImpl implements UserMatchService {
     private AnswerRepository answerRepository;
 
     @Autowired
-    private UserExamKeyRepository userExamKeyRepository;
-
-    @Autowired
     private VarietyExamKeyRepository varietyExamKeyRepository;
 
     @Autowired
@@ -46,22 +39,28 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Autowired
     private AnswerLocaleRepository answerLocaleRepository;
 
+    @Autowired
+    private UserExamKeyRepository userExamKeyRepository;
+
 
     @Override
     @Transactional(readOnly = true)
-    public List<Long> findMatchingUsers(User user) {
-        List<Long> matchingUsersList = new ArrayList<>();
-        List<UserExamKey> userExamKeyList;
-        if (user == null) {
-            return matchingUsersList;
+    public List<Long> findMatchingUsers(Long userId) {
+        if (userId == null) {
+            return new ArrayList<>();
         }
 
-        UserExamKey userExamKey = userExamKeyRepository.findByUserId(user.getUserId());
+        //match users by MUST questions
+        UserExamKey userExamKey = userExamKeyRepository.findByUserId(userId);
+
+        if (userExamKey == null) {
+            return new ArrayList<>();
+        }
+
         List<VarietyExamKey> varietyExamKeys = varietyExamKeyRepository.findAll();
         List<String> keys = getRegExpKeysForMatch(userExamKey.getExamKeyRegExp(), varietyExamKeys);
-        userExamKeyList = userExamKeyRepository.findAllByExamKeyIn(keys);
-        matchingUsersList = userExamKeyList.stream().map(UserExamKey::getUserId).collect(Collectors.toList());
-        matchingUsersList.remove(user.getUserId());
+        List<Long> matchingUsersList = userExamKeyRepository.getMatchedUsers(keys);
+        matchingUsersList.remove(userId);
 
         return matchingUsersList;
     }
@@ -91,14 +90,14 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public void saveQuestionsAnswers(User user, List<UserQuestionAnswerDTO> questionsAnswers) {
-        userQuestionAnswerRepository.deleteAllByUserId(user.getUserId());
+    public void saveSelectedUserQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers) {
+        userQuestionAnswerRepository.deleteAllByUserId(userId);
 
-        userExamKeyRepository.deleteByUserId(user.getUserId());
-        userQuestionAnswerRepository.saveList(user.getUserId(), questionsAnswers);
+        userExamKeyRepository.deleteByUserId(userId);
+        userQuestionAnswerRepository.saveList(userId, questionsAnswers);
 
         List<String> examKeyRes = generateExamKey(questionsAnswers);
-        userExamKeyRepository.save(new UserExamKey(user.getUserId(), examKeyRes.get(0), examKeyRes.get(1)));
+        userExamKeyRepository.save(new UserExamKey(userId, examKeyRes.get(0), examKeyRes.get(1)));
 
         for (String str : examKeyRes) {
             if (varietyExamKeyRepository.findByUserExamKey(str) == null) {
@@ -126,8 +125,7 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionsListWithAnswersDTO> getUserQuestionsAnswers(User user) {
-        Integer languageId = user.getLanguageId();
+    public List<QuestionsListWithAnswersDTO> getQuestionsAnswersByLanguageId(Integer languageId) {
         List<QuestionsListWithAnswersDTO> result = questionLocaleRepository.findByLanguageId(languageId);
         List<AnswerElement> answers = answerLocaleRepository.findAllByLanguageId(languageId);
 
@@ -147,9 +145,9 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionsListWithSelectedAnswersDTO> getUserQuestionsSelectedAnswers(User user) {
+    public List<QuestionsListWithSelectedAnswersDTO> getSelectedUserQuestionsAnswers(Long userId) {
         List<QuestionsListWithSelectedAnswersDTO> result = new ArrayList<>();
-        List<SelectedAnswerElement> selectedQuestionsAnswers = userQuestionAnswerRepository.findAllByUserId(user.getUserId());
+        List<SelectedAnswerElement> selectedQuestionsAnswers = userQuestionAnswerRepository.findAllByUserId(userId);
 
         selectedQuestionsAnswers.stream()
                 .collect(Collectors.groupingBy(

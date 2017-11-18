@@ -1,13 +1,11 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.base.AbstractEntity;
-import lombok.*;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.Cache;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.Date;
 
 

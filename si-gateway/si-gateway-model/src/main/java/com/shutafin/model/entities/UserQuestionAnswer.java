@@ -16,6 +16,7 @@ import javax.persistence.Table;
 /**
  * Created by evgeny on 8/20/2017.
  */
+@Deprecated
 @Entity
 @Table(name = "USER_QUESTION_ANSWER")
 @NoArgsConstructor

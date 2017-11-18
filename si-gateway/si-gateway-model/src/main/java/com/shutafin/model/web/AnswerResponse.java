@@ -1,10 +1,14 @@
 package com.shutafin.model.web;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Created by evgeny on 8/23/2017.
  */
+@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

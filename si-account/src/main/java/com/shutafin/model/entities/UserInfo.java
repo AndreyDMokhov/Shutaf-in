@@ -3,7 +3,9 @@ package com.shutafin.model.entities;
 import com.shutafin.model.base.AbstractBaseEntity;
 import com.shutafin.model.infrastructure.City;
 import com.shutafin.model.infrastructure.Gender;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 

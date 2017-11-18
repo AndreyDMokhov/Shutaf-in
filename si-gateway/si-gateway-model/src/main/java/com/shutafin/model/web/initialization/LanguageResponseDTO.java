@@ -3,7 +3,7 @@ package com.shutafin.model.web.initialization;
 import com.shutafin.model.web.BaseResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
-
+@Deprecated
 @Setter
 @Getter
 public class LanguageResponseDTO extends BaseResponseDTO {

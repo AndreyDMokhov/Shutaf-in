@@ -1,7 +1,9 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.base.AbstractBaseEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 

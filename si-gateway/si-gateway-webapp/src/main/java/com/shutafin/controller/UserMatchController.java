@@ -6,7 +6,10 @@ import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
 /**
  * Created by evgeny on 8/12/2017.
  */
+@Deprecated
 @RestController
 @RequestMapping("/users/match")
 public class UserMatchController {

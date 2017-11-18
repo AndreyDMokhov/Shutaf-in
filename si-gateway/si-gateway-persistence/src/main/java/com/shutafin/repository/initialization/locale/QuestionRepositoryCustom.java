@@ -6,7 +6,7 @@ import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 
 import java.util.List;
-
+@Deprecated
 public interface QuestionRepositoryCustom {
 
     List<QuestionAnswersResponse> getUserQuestionsAnswers(Language language);

@@ -7,6 +7,7 @@ import com.shutafin.model.web.user.UserSearchResponse;
 
 import java.util.List;
 
+@Deprecated
 public interface UserSearchService {
     List<UserSearchResponse> userSearchByList(List<User> users, String fullName);
     List<UserSearchResponse> userSearchByList(List<User> users);
