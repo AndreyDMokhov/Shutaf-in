@@ -39,11 +39,13 @@ public class InitializationServiceImpl implements InitializationService {
 
     @Override
     @Transactional(readOnly = true)
+    // TODO: MS-account InitializationController.getLanguages()
     public List<Language> findAllLanguages() {
 
         return languageRepository.findAll();
     }
 
+    // TODO: MS-account InitializationController.getInitializationResponse()
     @Override
     public List<GenderResponseDTO> findAllGendersByLanguage(Language language) {
         return genderRepository.getLocaleGenders(language);

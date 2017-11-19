@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
