@@ -9,8 +9,8 @@ import com.shutafin.model.web.UserQuestionExtendedAnswersWeb;
 import com.shutafin.model.web.initialization.CityResponseDTO;
 import com.shutafin.model.web.initialization.CountryResponseDTO;
 import com.shutafin.model.web.initialization.GenderResponseDTO;
-import com.shutafin.model.web.user.FiltersWeb;
 import com.shutafin.model.web.initialization.QuestionImportanceDTO;
+import com.shutafin.model.web.user.FiltersWeb;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
@@ -35,7 +35,7 @@ public class InitializationController {
 
     @Autowired
     private InitializationService initializationService;
-
+    //TODO moved to matching microservice
     @Autowired
     private UserMatchService userMatchService;
 
@@ -48,9 +48,10 @@ public class InitializationController {
     @Autowired
     private UserSearchService userSearchService;
 
+    //TODO moved to matching microservice
     @Autowired
     private QuestionExtendedService questionExtendedService;
-
+    //TODO moved to matching microservice
     @Autowired
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 

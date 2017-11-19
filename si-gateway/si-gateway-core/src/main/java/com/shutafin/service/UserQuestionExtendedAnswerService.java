@@ -8,7 +8,7 @@ import com.shutafin.model.web.UserQuestionExtendedAnswersWeb;
 import java.util.List;
 import java.util.Map;
 
-
+@Deprecated
 public interface UserQuestionExtendedAnswerService {
 
     Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionExtendedAnswers(User user);

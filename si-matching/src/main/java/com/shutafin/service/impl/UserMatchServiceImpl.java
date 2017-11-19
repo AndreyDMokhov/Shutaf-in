@@ -24,23 +24,22 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserMatchServiceImpl implements UserMatchService {
 
-    @Autowired
     private UserQuestionAnswerRepository userQuestionAnswerRepository;
-
-    @Autowired
     private AnswerRepository answerRepository;
-
-    @Autowired
     private VarietyExamKeyRepository varietyExamKeyRepository;
-
-    @Autowired
     private QuestionLocaleRepository questionLocaleRepository;
-
-    @Autowired
     private AnswerLocaleRepository answerLocaleRepository;
+    private UserExamKeyRepository userExamKeyRepository;
 
     @Autowired
-    private UserExamKeyRepository userExamKeyRepository;
+    public UserMatchServiceImpl(UserQuestionAnswerRepository userQuestionAnswerRepository, AnswerRepository answerRepository, VarietyExamKeyRepository varietyExamKeyRepository, QuestionLocaleRepository questionLocaleRepository, AnswerLocaleRepository answerLocaleRepository, UserExamKeyRepository userExamKeyRepository) {
+        this.userQuestionAnswerRepository = userQuestionAnswerRepository;
+        this.answerRepository = answerRepository;
+        this.varietyExamKeyRepository = varietyExamKeyRepository;
+        this.questionLocaleRepository = questionLocaleRepository;
+        this.answerLocaleRepository = answerLocaleRepository;
+        this.userExamKeyRepository = userExamKeyRepository;
+    }
 
 
     @Override

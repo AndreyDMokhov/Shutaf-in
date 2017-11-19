@@ -1,28 +1,21 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.model.DTO.AgeRangeWebDTO;
+import com.shutafin.model.DTO.FiltersWeb;
 import com.shutafin.model.entities.FilterAgeRange;
 import com.shutafin.model.entities.FilterCity;
 import com.shutafin.model.entities.FilterGender;
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.AgeRangeWebDTO;
-import com.shutafin.model.web.user.FiltersWeb;
-import com.shutafin.repository.common.FilterAgeRangeRepository;
-import com.shutafin.repository.common.FilterCityRepository;
-import com.shutafin.repository.common.FilterGenderRepository;
-import com.shutafin.repository.initialization.locale.CityRepository;
-import com.shutafin.repository.initialization.locale.GenderRepository;
+import com.shutafin.repository.FilterAgeRangeRepository;
+import com.shutafin.repository.FilterCityRepository;
+import com.shutafin.repository.FilterGenderRepository;
 import com.shutafin.service.UserFilterService;
 import com.shutafin.service.UserMatchService;
-import com.shutafin.service.filter.UsersFiltersChain;
-import com.shutafin.service.filter.filters.UsersByAgeRangeFiltersChainElement;
-import com.shutafin.service.filter.filters.UsersByCityFiltersChainElement;
-import com.shutafin.service.filter.filters.UsersByGenderFiltersChainElement;
+import com.shutafin.service.filter.UsersFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,82 +26,93 @@ import java.util.List;
 @Slf4j
 public class UserFilterServiceImpl implements UserFilterService {
 
-    @Autowired
     private FilterCityRepository filterCityRepository;
-
-    @Autowired
     private FilterGenderRepository filterGenderRepository;
-
-    @Autowired
     private FilterAgeRangeRepository filterAgeRangeRepository;
-
-    @Autowired
-    private CityRepository cityRepository;
-
-    @Autowired
-    private GenderRepository genderRepository;
-
-    @Autowired
     private UserMatchService userMatchService;
+    private List<UsersFilter> usersFilters;
+
+    @Autowired
+    public UserFilterServiceImpl(FilterCityRepository filterCityRepository, FilterGenderRepository filterGenderRepository, FilterAgeRangeRepository filterAgeRangeRepository, UserMatchService userMatchService, List<UsersFilter> usersFilters) {
+        this.filterCityRepository = filterCityRepository;
+        this.filterGenderRepository = filterGenderRepository;
+        this.filterAgeRangeRepository = filterAgeRangeRepository;
+        this.userMatchService = userMatchService;
+        this.usersFilters = usersFilters;
+    }
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findFilteredUsers(User user) {
+    public List<Long> findFilteredUsers(Long userId) {
 
-        List<User> matchingUsersList = userMatchService.findMatchingUsers(user);
+        List<Long> matchingUsersList = userMatchService.findMatchingUsers(userId);
 
-        //Call chain of responsibility
-        UsersFiltersChain usersFiltersChain = createFilterChain(user);
-
-        return usersFiltersChain.doMatch(matchingUsersList);
+        return matchingUsersList.isEmpty() ? matchingUsersList : filterMatchedUsers(userId, matchingUsersList);
     }
 
-    private UsersFiltersChain createFilterChain(User user) {
-        UsersFiltersChain genderFilter = new UsersByGenderFiltersChainElement(user, filterGenderRepository);
-
-        UsersFiltersChain cityFilter = new UsersByCityFiltersChainElement(user, filterCityRepository);
-        genderFilter.setNext(cityFilter);
-
-        UsersFiltersChain ageRangeFilter = new UsersByAgeRangeFiltersChainElement(user, filterAgeRangeRepository);
-        cityFilter.setNext(ageRangeFilter);
-
-        return genderFilter;
+    private List<Long> filterMatchedUsers(Long userId, List<Long> matchingUsersList) {
+        for (UsersFilter filter : usersFilters) {
+            if(matchingUsersList.isEmpty()){
+                continue;
+            }
+            matchingUsersList = filter.doFilter(userId,matchingUsersList);
+        }
+        return matchingUsersList;
     }
 
     @Override
     @Transactional
-    public void saveUserFilters(User user, FiltersWeb filtersWeb) {
-        saveUserFilterCity(user, filtersWeb.getFilterCitiesIds());
-        saveUserFilterGender(user, filtersWeb.getFilterGenderId());
-        saveUserFilterAgeRange(user, filtersWeb.getFilterAgeRange());
+    public void saveUserFilters(Long userId, FiltersWeb filtersWeb) {
+        saveUserFilterCity(userId, filtersWeb.getFilterCitiesIds());
+        saveUserFilterGender(userId, filtersWeb.getFilterGenderId());
+        saveUserFilterAgeRange(userId, filtersWeb.getFilterAgeRange());
     }
 
     @Override
     @Transactional
-    public void saveUserFilterCity(User user, List<Integer> cities) {
-        filterCityRepository.deleteUserFilterCity(user);
+    public void saveUserFilterCity(Long userId, List<Integer> cities) {
+        filterCityRepository.deleteByUserId(userId);
         if (cities != null){
             for (Integer cityId : cities) {
-                filterCityRepository.save(new FilterCity(user, cityRepository.findOne(cityId)));
+                filterCityRepository.save(new FilterCity(userId, cityId));
             }
         }
     }
 
     @Override
     @Transactional
-    public void saveUserFilterGender(User user, Integer genderId) {
-        filterGenderRepository.deleteUserFilterGender(user);
+    public void saveUserFilterGender(Long userId, Integer genderId) {
+        filterGenderRepository.deleteByUserId(userId);
         if (genderId != null){
-            filterGenderRepository.save(new FilterGender(user, genderRepository.findOne(genderId)));
+            filterGenderRepository.save(new FilterGender(userId, genderId));
         }
     }
 
     @Override
     @Transactional
-    public void saveUserFilterAgeRange(User user, @Valid AgeRangeWebDTO ageRangeWebDTO) {
-        filterAgeRangeRepository.deleteByUser(user);
+    public void saveUserFilterAgeRange(Long userId, AgeRangeWebDTO ageRangeWebDTO) {
+        filterAgeRangeRepository.deleteByUserId(userId);
         if (ageRangeWebDTO != null){
-            filterAgeRangeRepository.save(new FilterAgeRange(user, ageRangeWebDTO.getFromAge(), ageRangeWebDTO.getToAge()));
+            filterAgeRangeRepository.save(new FilterAgeRange(userId, ageRangeWebDTO.getFromAge(), ageRangeWebDTO.getToAge()));
         }
+    }
+
+    @Override
+    public List<Integer> getCitiesForFilter(Long userId) {
+        List<Integer> cities = filterCityRepository.findAllCityIdsByUserId(userId);
+        if (cities.isEmpty()) {
+            return null;
+        }
+        return cities;
+    }
+
+    @Override
+    public Integer getGenderForFilter(Long userId) {
+        return filterGenderRepository.findGenderIdByUserId(userId);
+    }
+
+    @Override
+    public AgeRangeWebDTO getAgeRangeForFilter(Long userId) {
+         return filterAgeRangeRepository.findAgeRangeByUserId(userId);
     }
 }

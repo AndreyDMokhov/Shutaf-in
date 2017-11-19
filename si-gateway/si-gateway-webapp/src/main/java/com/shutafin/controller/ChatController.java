@@ -33,7 +33,7 @@ public class ChatController {
 
     @Autowired
     private ChatInfoService chatInfoService;
-
+    //TODO moved to matching service
     @Autowired
     private UserMatchService userMatchService;
 

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
+@Deprecated
 @Entity
 @Table(name = "I_QUESTION_EXTENDED")
 @NoArgsConstructor

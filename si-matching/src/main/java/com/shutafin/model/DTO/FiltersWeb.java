@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -17,5 +18,6 @@ import java.util.List;
 public class FiltersWeb {
     private List<Integer> filterCitiesIds;
     private Integer filterGenderId;
+    @Valid
     private AgeRangeWebDTO filterAgeRange;
 }

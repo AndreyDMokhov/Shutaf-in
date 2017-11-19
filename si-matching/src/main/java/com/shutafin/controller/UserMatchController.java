@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/user/match")
+@RequestMapping("/matching")
 public class UserMatchController {
 
     @Autowired

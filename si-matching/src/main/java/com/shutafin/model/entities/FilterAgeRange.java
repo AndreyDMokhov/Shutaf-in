@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by evgeny on 10/1/2017.
@@ -19,9 +21,8 @@ import javax.persistence.*;
 @Setter
 public class FilterAgeRange extends AbstractBaseEntity {
 
-    @JoinColumn(name = "USER_ID", nullable = false)
-    @OneToOne
-    private User user;
+    @Column(name = "USER_ID", nullable = false)
+    private Long userId;
 
     @Column(name = "FROM_AGE", nullable = false)
     private Integer fromAge;

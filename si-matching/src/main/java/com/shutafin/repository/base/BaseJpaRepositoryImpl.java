@@ -11,8 +11,7 @@ import java.util.List;
 
 public class BaseJpaRepositoryImpl<T, ID extends Serializable>
         extends SimpleJpaRepository<T, ID>
-//        implements BaseJpaRepository<T, ID>
-{
+        implements BaseJpaRepository<T, ID> {
 
 
 
@@ -23,12 +22,12 @@ public class BaseJpaRepositoryImpl<T, ID extends Serializable>
         this.entityManager = entityManager;
     }
 
-//    @Override
+    @Override
     public void evict(T entity) {
         entityManager.detach(entity);
     }
 
-//    @Override
+    @Override
     public T refresh(T entity) {
         if (entity != null && !entityManager.contains(entity)) {
             entityManager.refresh(entityManager.merge(entity));
@@ -36,7 +35,7 @@ public class BaseJpaRepositoryImpl<T, ID extends Serializable>
         return entity;
     }
 
-//    @Override
+    @Override
     public Specification build(List<Specification> specificationList) {
         if (specificationList == null || specificationList.isEmpty()) {
             return null;

@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Deprecated
+//TODO move not @Deprecated methods to account service
+
 @Service
 @Transactional
 public class UserSearchServiceImpl implements UserSearchService {
@@ -56,6 +57,7 @@ public class UserSearchServiceImpl implements UserSearchService {
         return getUserResponseDTO(users);
     }
 
+    @Deprecated
     @Override
     public List<Integer> getCitiesForFilter(User user) {
 
@@ -70,6 +72,7 @@ public class UserSearchServiceImpl implements UserSearchService {
                 .collect(Collectors.toList());
     }
 
+    @Deprecated
     @Override
     public Integer getGenderForFilter(User user) {
         Gender gender = filterGenderRepository.getUserFilterGender(user);
@@ -77,6 +80,7 @@ public class UserSearchServiceImpl implements UserSearchService {
         return gender == null ? null : gender.getId();
     }
 
+    @Deprecated
     @Override
     public AgeRangeWebDTO getAgeRangeForFilter(User user) {
         return filterAgeRangeRepository.getUserFilterAgeRange(user);
