@@ -62,7 +62,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     private UserInfoService userInfoService;
 
 
-
     @Override
     @Transactional
     public void save(RegistrationRequestWeb registrationRequestWeb) {
@@ -104,6 +103,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         String link = environmentConfigurationService.getServerAddress() + "/#/users/registration/confirmation/" + registrationConfirmation.getUrlLink();
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(registrationConfirmation.getUser(), EmailReason.REGISTRATION_CONFIRMATION, userAccount.getLanguage(), link);
+
+        //todo MS-email
         mailSenderService.sendEmail(emailMessage, EmailReason.REGISTRATION_CONFIRMATION);
     }
 

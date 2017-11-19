@@ -1,11 +1,15 @@
 package com.shutafin.model.web;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,11 +23,6 @@ public class EmailNotificationWeb {
     @Email
     @Length(max = 50)
     @NotBlank
-    private String email;
-
-    @Email
-    @Length(max = 50)
-    @NotBlank
     private String emailTo;
 
     @NotBlank
@@ -32,4 +31,6 @@ public class EmailNotificationWeb {
 
     @NotBlank
     private String link;
+
+    private Map<String, byte[]> imageSources;
 }

@@ -1,8 +1,8 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.entity.EmailReason;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.model.entity.EmailReason;
 import com.shutafin.model.web.EmailNotificationWeb;
 import com.shutafin.service.EmailNotificationSenderService;
 import com.shutafin.service.EmailTemplateService;
@@ -68,6 +68,15 @@ public class EmailNotificationSenderController {
     public void resetPassword(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result) {
         checkBindingResult(result);
         sendEmail(emailNotificationWeb, EmailReason.RESET_PASSWORD);
+    }
+
+    @PostMapping(
+            value = "/matching/candidates",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public void matchingCandidates(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result) {
+        checkBindingResult(result);
+        sendEmail(emailNotificationWeb, EmailReason.MATCHING_CANDIDATES);
     }
 
     private void checkBindingResult(BindingResult result) {

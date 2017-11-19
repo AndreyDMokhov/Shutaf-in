@@ -161,6 +161,8 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
                     userAccount.getLanguage(),
                     link);
         }
+
+        //todo MS-email
         mailSenderService.sendEmail(emailMessage, EmailReason.CHANGE_EMAIL);
 
     }

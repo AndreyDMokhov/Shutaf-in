@@ -10,7 +10,6 @@ import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +52,7 @@ public class MatchingCandidatesEmailNotificationJobService {
     }
 
 
-//    @Scheduled(cron = "0 0 0 * * *")
+    //    @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void sendEmailNotification() {
         List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(AccountStatus.CONFIRMED, AccountType.REGULAR);
@@ -87,6 +86,7 @@ public class MatchingCandidatesEmailNotificationJobService {
                 link,
                 imageSources);
 
+        //todo MS-email
         mailSenderService.sendEmail(emailMessage, EmailReason.MATCHING_CANDIDATES);
     }
 

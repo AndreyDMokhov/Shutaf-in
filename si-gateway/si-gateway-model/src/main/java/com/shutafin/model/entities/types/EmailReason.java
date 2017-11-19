@@ -1,9 +1,6 @@
 package com.shutafin.model.entities.types;
 
-/**
- * Created by Edward Kats.
- * 03 / Jul / 2017
- */
+@Deprecated
 public enum EmailReason {
     REGISTRATION_CONFIRMATION(1, "registration"),
     CHANGE_EMAIL(2, "changeEmail"),

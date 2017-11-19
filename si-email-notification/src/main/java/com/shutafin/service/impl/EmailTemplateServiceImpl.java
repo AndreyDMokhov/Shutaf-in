@@ -1,8 +1,8 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.model.entity.EmailReason;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.model.entity.EmailReason;
 import com.shutafin.model.web.EmailNotificationWeb;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +72,8 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
                 getTemplate(
                         emailReason,
                         emailNotificationWeb.getLanguageDescription(),
-                        emailNotificationWeb.getLink()
-                ));
+                        emailNotificationWeb.getLink()),
+                emailNotificationWeb.getImageSources()
+        );
     }
 }

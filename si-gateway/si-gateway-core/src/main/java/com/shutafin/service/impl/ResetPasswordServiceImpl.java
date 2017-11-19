@@ -80,6 +80,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private void sendMessage(User user, Language language, String uuid) {
         String link = createLink(uuid);
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(user, EmailReason.RESET_PASSWORD, language, link);
+
+        //todo MS-email
         mailSenderService.sendEmail(emailMessage, EmailReason.RESET_PASSWORD);
     }
 

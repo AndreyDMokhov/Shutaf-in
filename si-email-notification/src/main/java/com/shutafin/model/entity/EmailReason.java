@@ -4,7 +4,8 @@ public enum EmailReason {
     REGISTRATION_CONFIRMATION(1, "registration"),
     CHANGE_EMAIL(2, "changeEmail"),
     CHANGE_PASSWORD(3, "changePassword"),
-    RESET_PASSWORD(4, "resetPassword");
+    RESET_PASSWORD(4, "resetPassword"),
+    MATCHING_CANDIDATES(5, "matchingCandidates");
 
     private Integer id;
     private String propertyPrefix;
