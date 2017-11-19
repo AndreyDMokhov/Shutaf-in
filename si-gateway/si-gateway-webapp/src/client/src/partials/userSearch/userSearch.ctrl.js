@@ -8,7 +8,7 @@ app.controller("userSearchController", function (
     $stateParams,
     $filter,
     browserTitle,
-    ngDialog) {
+    ngDialog, $scope) {
 
     var vm = this;
 
@@ -61,13 +61,13 @@ app.controller("userSearchController", function (
     }
 
     function showUserProfilePopup(userId) {
+        vm.userId=userId;
         ngDialog.open({
-            templateUrl: 'partials/userProfile/userProfile.html',
-            controller: 'userProfileController',
-            data: {selectedUserId: userId},
+            scope             : $scope,
+            template: '<user-profile-component dialog-user-id="vm.userId"></user-profile-component>',
+            plain: true,
             className: 'ngdialog-theme-default custom-user-profile-popup',
-            controllerAs: 'vm',
-            url: '/profile/' + userId
+            url: '/profile'
         });
     }
 
