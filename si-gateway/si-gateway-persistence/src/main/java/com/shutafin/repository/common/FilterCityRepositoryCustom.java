@@ -5,7 +5,6 @@ import com.shutafin.model.entities.infrastructure.City;
 
 import java.util.List;
 
-@Deprecated
 public interface FilterCityRepositoryCustom {
     List<City> getUserFilterCity(User user);
     List<User> getAllMatchedUsers(User user, List<User> matchedUsers);

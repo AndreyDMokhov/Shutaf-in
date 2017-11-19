@@ -54,6 +54,7 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     @Transactional
+    // TODO: MS-account UserImageController.addUserImage()
     public UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
         image = convertToJpg(image);
         UserImage userImage = addUserImage(image, user, permissionType);
@@ -65,6 +66,7 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     @Transactional
+    // TODO: MS-account UserImageController.getUserImage()
     public UserImage getUserImage(User user, Long userImageId) {
         UserImage userImage = getUserImageFromFileSystem(user, userImageId);
         if (userImage != null) {
@@ -86,6 +88,7 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     @Transactional
+    // TODO: MS-account UserImageController.deleteUserImage()
     public void deleteUserImage(User user, Long userImageId) {
         UserImage userImage = this.getUserImage(user, userImageId);
         deleteLocalImage(userImage);

@@ -12,7 +12,6 @@ import javax.persistence.*;
 /**
  * Created by evgeny on 9/13/2017.
  */
-@Deprecated
 @Entity
 @Table(name = "FILTER_CITY")
 @NoArgsConstructor
