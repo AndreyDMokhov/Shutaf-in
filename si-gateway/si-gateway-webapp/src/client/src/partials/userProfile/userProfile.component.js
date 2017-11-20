@@ -1,6 +1,6 @@
 "use strict";
 app.component('userProfileComponent', {
-    templateUrl: 'partials/userProfile/userProfile.html',
+    templateUrl: 'partials/userProfile/userProfile.component.html',
     bindings: {
         dialogUserId: '='
     },

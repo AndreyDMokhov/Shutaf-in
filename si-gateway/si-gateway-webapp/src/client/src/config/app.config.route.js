@@ -63,9 +63,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             template: '<reset-password-confirmation-component></reset-password-confirmation-component>'
         })
         .state('userSearch', {
-            templateUrl: 'partials/userSearch/userSearch.html',
-            controller: 'userSearchController',
-            controllerAs: 'vm',
+            template: '<user-search-component></user-search-component>',
             url: '/users/search?{name}'
         })
         .state('questions', {
