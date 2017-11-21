@@ -1,0 +1,14 @@
+<h4 class="panel-title">
+    {{'Chat.header.rename.chat.title' | translate}}
+    <crop-name-directive name={{chatData.chatTitle}} character-limit="characterLimit"></crop-name-directive>
+</h4>
+<form role="form">
+    <div class="input-group">
+        <input ng-model="newChatTitle" type="text" class="form-control" placeholder=""/>
+        <div class="input-group-btn">
+            <button type="submit" ng-click="setNewChatTitle(newChatTitle)" class="btn btn-primary">{{'Chat.button.send' |
+                translate}}
+            </button>
+        </div>
+    </div>
+</form>
