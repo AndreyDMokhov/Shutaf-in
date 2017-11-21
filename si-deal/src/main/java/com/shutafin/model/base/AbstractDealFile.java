@@ -1,5 +1,6 @@
 package com.shutafin.model.base;
 
+import com.shutafin.model.entities.DealFolder;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.types.PermissionTypeConverter;
 import lombok.AccessLevel;
@@ -13,10 +14,11 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AbstractUserFile extends AbstractEntity {
+public class AbstractDealFile extends AbstractRemovableEntity {
 
-    @Column(name = "USER_ID", nullable = false)
-    private Long userId;
+    @JoinColumn(name = "DEAL_FOLDER_ID", nullable = false)
+    @OneToOne
+    private DealFolder dealFolder;
 
     @Column(name = "PERMISSION_TYPE_ID", nullable = false)
     @Convert(converter = PermissionTypeConverter.class)

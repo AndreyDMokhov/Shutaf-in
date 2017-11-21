@@ -3,7 +3,7 @@ package com.shutafin.model.types;
 public enum PermissionType implements IdentifiableType<Integer> {
     PUBLIC(1),
     PRIVATE(2),
-    GROUP(3);
+    DEAL(3);
 
     private Integer id;
 

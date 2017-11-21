@@ -1,12 +1,12 @@
 package com.shutafin.repository;
 
+import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.entities.DocumentStorage;
-import com.shutafin.model.entities.UserDocument;
-import org.springframework.data.repository.CrudRepository;
+import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DocumentStorageRepository extends CrudRepository<DocumentStorage, Long> {
+public interface DocumentStorageRepository extends BaseJpaRepository<DocumentStorage, Long> {
 
-    DocumentStorage findByUserDocument(UserDocument userDocument);
+    DocumentStorage findByDealDocument(DealDocument dealDocument);
 }

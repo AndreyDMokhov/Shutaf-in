@@ -13,12 +13,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDocumentWeb {
+public class DealUserDocumentWeb {
 
     private Long id;
 
     @NotNull
     private Long userId;
+
+    @NotNull
+    private Long dealFolderId;
 
     @NotBlank
     private String fileData;

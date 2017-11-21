@@ -1,10 +1,10 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.UserDocument;
+import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.types.PermissionType;
+import com.shutafin.model.web.DealUserDocumentWeb;
 import com.shutafin.model.web.UserDocumentTitleWeb;
-import com.shutafin.model.web.UserDocumentWeb;
-import com.shutafin.service.UserDocumentService;
+import com.shutafin.service.DealDocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,10 +19,10 @@ import javax.validation.Valid;
 public class UserDocumentController {
 
     @Autowired
-    private UserDocumentService userDocumentService;
+    private DealDocumentService dealDocumentService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public UserDocumentWeb addUserDocument(@RequestBody @Valid UserDocumentWeb userDocumentWeb, BindingResult result) {
+    public DealUserDocumentWeb addUserDocument(@RequestBody @Valid DealUserDocumentWeb dealUserDocumentWeb, BindingResult result) {
         log.debug("/documents/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
@@ -30,47 +30,48 @@ public class UserDocumentController {
             throw new RuntimeException();
         }
 
-        UserDocument userDocument = userDocumentService.addUserDocument(userDocumentWeb, PermissionType.PRIVATE);
+        DealDocument dealDocument = dealDocumentService.addDealDocument(dealUserDocumentWeb, PermissionType.PRIVATE);
 
-        return getUserDocumentWeb(userDocument, false);
+        return getUserDocumentWeb(dealDocument, false);
     }
 
     @RequestMapping(value = "/{userId}/{docId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserDocumentWeb getUserDocument(@PathVariable(value = "userId") Long userId,
-                                           @PathVariable(value = "docId") Long userDocumentId) {
+    public DealUserDocumentWeb getUserDocument(@PathVariable(value = "userId") Long userId,
+                                               @PathVariable(value = "docId") Long userDocumentId) {
         log.debug("GET /documents/{userId}/{docId}");
-        UserDocument userDocument = userDocumentService.getUserDocument(userId, userDocumentId);
-        return getUserDocumentWeb(userDocument, true);
+        DealDocument dealDocument = dealDocumentService.getDealDocument(userId, userDocumentId);
+        return getUserDocumentWeb(dealDocument, true);
     }
 
     @RequestMapping(value = "/{userId}/{docId}", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserDocumentWeb renameUserDocument(@PathVariable(value = "userId") Long userId,
-                                              @PathVariable(value = "docId") Long userDocumentId,
-                                              @RequestBody @Valid UserDocumentTitleWeb documentTitle) {
+    public DealUserDocumentWeb renameUserDocument(@PathVariable(value = "userId") Long userId,
+                                                  @PathVariable(value = "docId") Long userDocumentId,
+                                                  @RequestBody @Valid UserDocumentTitleWeb documentTitle) {
         log.debug("POST /documents/{userId}/{docId}");
-        UserDocument userDocument = userDocumentService.renameUserDocument(userId, userDocumentId, documentTitle.getTitle());
-        return getUserDocumentWeb(userDocument, false);
+        DealDocument dealDocument = dealDocumentService.renameDealDocument(userId, userDocumentId, documentTitle.getTitle());
+        return getUserDocumentWeb(dealDocument, false);
     }
 
     @DeleteMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserDocument(@RequestParam(value = "userId") Long userId,
                                    @RequestParam(value = "docId") Long userDocumentId) {
         log.debug("DELETE /documents/{userId}/{docId}");
-        userDocumentService.deleteUserDocument(userId, userDocumentId);
+        dealDocumentService.deleteDealDocument(userId, userDocumentId);
     }
 
-    private UserDocumentWeb getUserDocumentWeb(UserDocument userDocument, Boolean includeEncoded) {
-        UserDocumentWeb userDocumentWeb = new UserDocumentWeb(userDocument.getId(),
-                userDocument.getUserId(),
+    private DealUserDocumentWeb getUserDocumentWeb(DealDocument dealDocument, Boolean includeEncoded) {
+        DealUserDocumentWeb dealUserDocumentWeb = new DealUserDocumentWeb(dealDocument.getId(),
+                dealDocument.getModifiedByUser(),
+                dealDocument.getDealFolder().getId(),
                 null,
-                userDocument.getCreatedDate().getTime(),
-                userDocument.getDocumentType().getCode(),
-                userDocument.getTitle());
+                dealDocument.getCreatedDate().getTime(),
+                dealDocument.getDocumentType().getCode(),
+                dealDocument.getTitle());
         if (includeEncoded) {
-            userDocumentWeb.setFileData(userDocument.getDocumentStorage().getDocumentEncoded());
+            dealUserDocumentWeb.setFileData(dealDocument.getDocumentStorage().getDocumentEncoded());
         }
-        return userDocumentWeb;
+        return dealUserDocumentWeb;
     }
 }

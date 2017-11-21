@@ -16,9 +16,9 @@ import javax.persistence.*;
 @Setter
 public class DocumentStorage extends AbstractBaseEntity {
 
-    @JoinColumn(name = "USER_DOCUMENT_ID")
+    @JoinColumn(name = "DEAL_DOCUMENT_ID")
     @OneToOne
-    private UserDocument userDocument;
+    private DealDocument dealDocument;
 
     @Column(name = "BASE_64_DOCUMENT", nullable = false)
     @Lob

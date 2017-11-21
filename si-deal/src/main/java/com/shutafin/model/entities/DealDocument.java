@@ -1,6 +1,6 @@
 package com.shutafin.model.entities;
 
-import com.shutafin.model.base.AbstractUserFile;
+import com.shutafin.model.base.AbstractDealFile;
 import com.shutafin.model.types.DocumentType;
 import com.shutafin.model.types.DocumentTypeConverter;
 import lombok.AllArgsConstructor;
@@ -11,12 +11,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USER_DOCUMENT")
+@Table(name = "DEAL_DOCUMENT")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDocument extends AbstractUserFile {
+public class DealDocument extends AbstractDealFile {
 
     @Column(name = "DOCUMENT_TYPE_ID", nullable = false)
     @Convert(converter = DocumentTypeConverter.class)
@@ -28,5 +28,8 @@ public class UserDocument extends AbstractUserFile {
 
     @Column(name = "TITLE", length = 50, nullable = false)
     private String title;
+
+    @Column(name = "IS_DELETED", nullable = false)
+    private Boolean isDeleted;
 
 }
