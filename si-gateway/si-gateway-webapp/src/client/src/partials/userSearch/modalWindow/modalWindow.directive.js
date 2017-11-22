@@ -7,7 +7,6 @@ app.directive('modalWindowFullImage', function ($uibModal, $log, userSearchModel
         },
         link: function (scope, element, attrs) {
 
-            scope.items = ['item1', 'item2', 'item3'];
             scope.animationsEnabled = true;
             scope.getImage = function () {
                 if (!scope.userProfile.userImage) {
@@ -19,26 +18,17 @@ app.directive('modalWindowFullImage', function ($uibModal, $log, userSearchModel
             };
 
             scope.open = function (size, parentSelector) {
-                var parentElem = parentSelector ?
-                    angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
                 var modalInstance = $uibModal.open({
                     animation: scope.animationsEnabled,
                     templateUrl: 'partials/userSearch/modalWindow/modalWindow.template.html',
-                    controller: function ($uibModalInstance, items) {
+                    controller: function ($uibModalInstance) {
                         var vm = this;
-                        vm.items = items;
                         vm.currentImage = scope.originImage;
                         vm.fullName = scope.userProfile.firstName + " " + scope.userProfile.lastName;
 
                     },
                     controllerAs: 'vm',
-                    size: 'lg',
-                    appendTo: parentElem,
-                    resolve: {
-                        items: function () {
-                            return scope.items;
-                        }
-                    }
+                    size: 'lg'
                 });
             };
             scope.openModalWindowFullImageSize = function () {
