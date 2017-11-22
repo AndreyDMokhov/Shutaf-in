@@ -1,6 +1,8 @@
 package com.shutafin.model.entity;
 
 import com.shutafin.model.base.AbstractEntity;
+import com.shutafin.model.email.EmailReason;
+import com.shutafin.model.email.EmailReasonConverter;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,13 +16,13 @@ import javax.persistence.*;
 @Builder
 public class EmailNotificationLog extends AbstractEntity {
 
-    @Column(name = "USER_ID", nullable = true)
+    @Column(name = "USER_ID", nullable = false)
     private Long userId;
 
     @Column(name = "EMAIL_TO", nullable = false, length = 100)
     private String emailTo;
 
-    @Column(name = "IS_SEND_FAILED")
+    @Column(name = "IS_SEND_FAILED", nullable = false)
     private Boolean isSendFailed;
 
     @Column(name = "EMAIL_HEADER", nullable = false)

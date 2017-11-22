@@ -1,17 +1,25 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.helpers.EmailTemplateHelper;
+import com.shutafin.model.email.EmailNotificationWeb;
+import com.shutafin.model.email.EmailReason;
+import com.shutafin.model.email.UserImageSource;
+import com.shutafin.model.entity.Confirmation;
 import com.shutafin.model.entity.EmailImageSource;
 import com.shutafin.model.entity.EmailNotificationLog;
-import com.shutafin.model.entity.EmailReason;
 import com.shutafin.model.exception.exceptions.EmailNotificationProcessingException;
+import com.shutafin.model.exception.exceptions.EmailProcessingException;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.repository.ConfirmationRepository;
 import com.shutafin.repository.EmailImageSourceRepository;
 import com.shutafin.repository.EmailNotificationLogRepository;
 import com.shutafin.service.EmailNotificationSenderService;
+import com.shutafin.service.EmailTemplateService;
+import com.shutafin.service.EnvironmentConfigurationService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamSource;
@@ -23,10 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -35,29 +40,110 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
     private static final Integer RETRIES_ON_FAILURE = 2;
     private static final Integer SECONDS_BETWEEN_RETRIES_ON_FAILURE = 2;
     private static final String IMAGE_CONTENT_TYPE = "image/jpeg";
+    private static final Integer LINK_HOURS_EXPIRATION = 24;
+    private static final String REGISTRATION_CONFIRMATION_URL = "/#/registration/confirmation/";
+    private static final String RESET_PASSWORD_CONFIRMATION_URL = "/#/reset-password/confirmation/";
+    private static final String CHANGE_EMAIL_CONFIRMATION_URL = "/#/change-email/confirmation/";
+    private static final String URL_PROFILE = "/#/profile/";
+    private static final String URL_SEARCH = "/#/users/search";
 
     private JavaMailSender mailSender;
     private EmailNotificationLogRepository emailNotificationLogRepository;
     private EmailImageSourceRepository emailImageSourceRepository;
+    private EmailTemplateService emailTemplateService;
+    private ConfirmationRepository confirmationRepository;
+    private EnvironmentConfigurationService environmentConfigurationService;
 
     @Autowired
     public EmailNotificationSenderServiceImpl(
             JavaMailSender mailSender,
             EmailNotificationLogRepository emailNotificationLogRepository,
-            EmailImageSourceRepository emailImageSourceRepository) {
+            EmailImageSourceRepository emailImageSourceRepository,
+            EmailTemplateService emailTemplateService,
+            ConfirmationRepository confirmationRepository,
+            EnvironmentConfigurationService environmentConfigurationService) {
         this.mailSender = mailSender;
         this.emailNotificationLogRepository = emailNotificationLogRepository;
         this.emailImageSourceRepository = emailImageSourceRepository;
+        this.emailTemplateService = emailTemplateService;
+        this.confirmationRepository = confirmationRepository;
+        this.environmentConfigurationService = environmentConfigurationService;
     }
 
     @Override
     @Transactional
-    public void sendEmail(EmailMessage emailMessage, EmailReason emailReason) {
+    public void sendEmail(EmailNotificationWeb emailNotificationWeb) {
+
+        EmailReason emailReason = emailNotificationWeb.getEmailReason();
+
+        switch (emailReason) {
+            case CHANGE_EMAIL:
+                sendEmailChangeEmail(emailNotificationWeb);
+                break;
+            case REGISTRATION_CONFIRMATION:
+                sendEmailConfirmation(emailNotificationWeb, REGISTRATION_CONFIRMATION_URL);
+                break;
+            case RESET_PASSWORD:
+                sendEmailConfirmation(emailNotificationWeb, RESET_PASSWORD_CONFIRMATION_URL);
+                break;
+            case MATCHING_CANDIDATES:
+                sendEmailMatchingCandidates(emailNotificationWeb);
+                break;
+            default:
+                throw new EmailProcessingException();
+        }
+
+    }
+
+    private void sendEmailMatchingCandidates(EmailNotificationWeb emailNotificationWeb) {
+
+        EmailMessage emailMessage = getMatchingCandidatesEmailMessage(emailNotificationWeb);
+        sendEmailMessage(emailNotificationWeb, emailMessage);
+
+    }
+
+    private void sendEmailConfirmation(EmailNotificationWeb emailNotificationWeb, String confirmationUrl) {
+
+        Confirmation confirmation = getConfirmation(
+                emailNotificationWeb,
+                null,
+                null);
+
+        EmailMessage emailMessage = getEmailMessage(emailNotificationWeb, confirmation, confirmationUrl);
+        sendEmailMessage(emailNotificationWeb, emailMessage);
+    }
+
+    private void sendEmailChangeEmail(EmailNotificationWeb emailNotificationWeb) {
+
+        EmailMessage emailMessage;
+
+        Confirmation oldEmailObject = getConfirmation(
+                emailNotificationWeb,
+                null,
+                null);
+
+        Confirmation newEmailObject = getConfirmation(
+                emailNotificationWeb,
+                emailNotificationWeb.getNewEmail(),
+                oldEmailObject);
+
+        oldEmailObject.setConnectedConfirmation(newEmailObject);
+        confirmationRepository.save(oldEmailObject);
+
+        emailMessage = getEmailMessage(emailNotificationWeb, oldEmailObject, CHANGE_EMAIL_CONFIRMATION_URL);
+        sendEmailMessage(emailNotificationWeb, emailMessage);
+
+        emailMessage = getEmailMessage(emailNotificationWeb, newEmailObject, CHANGE_EMAIL_CONFIRMATION_URL);
+        sendEmailMessage(emailNotificationWeb, emailMessage);
+    }
+
+    private void sendEmailMessage(EmailNotificationWeb emailNotificationWeb, EmailMessage emailMessage) {
+
         BaseTemplate baseTemplate = emailMessage.getMailTemplate();
         EmailTemplateHelper helper = new EmailTemplateHelper();
         String messageContent = helper.getMessageContent(baseTemplate.getTokenValueMap(), baseTemplate.getHtmlTemplate());
 
-        EmailNotificationLog emailNotificationLog = getEmailNotificationLog(baseTemplate.getEmailHeader(), emailMessage, messageContent, emailReason);
+        EmailNotificationLog emailNotificationLog = getEmailNotificationLog(baseTemplate.getEmailHeader(), emailMessage, messageContent, emailNotificationWeb.getEmailReason());
 
         Map<String, byte[]> imageSources = emailMessage.getImageSources();
         Set<EmailImageSource> emailImageSources = new HashSet<>();
@@ -67,6 +153,68 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
         MimeMessage mimeMessage = getMimeMessage(emailMessage.getEmailTo(), messageContent, baseTemplate.getEmailHeader(), imageSources);
         send(mimeMessage, emailNotificationLog, emailImageSources);
+    }
+
+    private Confirmation getConfirmation(
+            EmailNotificationWeb emailNotificationWeb,
+            String newEmail,
+            Confirmation connectedId) {
+
+        Confirmation confirmation = new Confirmation();
+        confirmation.setUserId(emailNotificationWeb.getUserId());
+        confirmation.setNewEmail(newEmail);
+        confirmation.setConfirmationUUID(UUID.randomUUID().toString());
+        confirmation.setIsConfirmed(Boolean.FALSE);
+        confirmation.setConnectedConfirmation(connectedId);
+        confirmation.setExpiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION));
+        return confirmationRepository.save(confirmation);
+    }
+
+    private EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, Confirmation confirmation, String confirmationUrl) {
+        String serverAddress = environmentConfigurationService.getServerAddress();
+        String urlLink = serverAddress + confirmationUrl + confirmation.getConfirmationUUID();
+        if (confirmation.getNewEmail() == null) {
+            return emailTemplateService.getEmailMessage(emailNotificationWeb, urlLink, null);
+        } else {
+            return emailTemplateService.getEmailMessage(emailNotificationWeb, confirmation.getNewEmail(), urlLink, null);
+        }
+    }
+
+    private EmailMessage getMatchingCandidatesEmailMessage(EmailNotificationWeb emailNotificationWeb) {
+        String urlLink = "";
+        String serverAddress = environmentConfigurationService.getServerAddress();
+        Map<String, byte[]> imageSources = new TreeMap<>();
+
+        for (UserImageSource userImageSource : emailNotificationWeb.getUserImageSources()) {
+            imageSources.put(userImageSource.getUserId().toString(), userImageSource.getImageSource());
+            urlLink = urlLink.concat(getUserImageLink(userImageSource, serverAddress));
+        }
+        urlLink += getSearchLink(serverAddress);
+        return emailTemplateService.getEmailMessage(emailNotificationWeb, urlLink, imageSources);
+    }
+
+    private String getUserImageLink(UserImageSource userImageSource, String serverAddress) {
+        return ""
+                .concat("<p style=\"font-size:14px\"><a href=\"")
+                .concat(serverAddress)
+                .concat(URL_PROFILE)
+                .concat(userImageSource.getUserId().toString())
+                .concat("\"> ")
+                .concat(userImageSource.getFirstName())
+                .concat(" ")
+                .concat(userImageSource.getLastName())
+                .concat(" <br><img src=\"cid:")
+                .concat(userImageSource.getUserId().toString())
+                .concat("\" style=\"width:128px;height:128px;\">")
+                .concat("</a></p>");
+    }
+
+    private String getSearchLink(String serverAddress) {
+        return ""
+                .concat("<p><a href=\"")
+                .concat(serverAddress)
+                .concat(URL_SEARCH)
+                .concat("\">");
     }
 
     @Override
@@ -85,6 +233,36 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         );
 
         send(mimeMessage, emailNotificationLog, emailImageSources);
+    }
+
+    @Override
+    public Long getUserIdFromConfirmation(String link) {
+
+        Confirmation confirmation = confirmationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
+
+        if (confirmation == null) {
+            return 0L;
+        }
+
+        confirmation.setIsConfirmed(true);
+        confirmationRepository.save(confirmation);
+
+        if (confirmation.getConnectedConfirmation() == null) {
+            return confirmation.getUserId();
+        } else {
+            Confirmation connectedConfirmation = confirmation.getConnectedConfirmation();
+            if (connectedConfirmation.getIsConfirmed() == true){
+                return confirmation.getUserId();
+            }else{
+                return 0L;
+            }
+        }
+
+    }
+
+    @Override
+    public Boolean isValidateLink(String link) {
+        return confirmationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date()) != null;
     }
 
     private void send(MimeMessage mimeMessage, EmailNotificationLog emailNotificationLog, Set<EmailImageSource> emailImageSources) {

@@ -92,6 +92,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Transactional(readOnly = true)
     @Override
     public void resetPasswordValidation(String link) {
+        //todo MS-email
         if (resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date()) == null) {
             log.warn("Resource not found exception:");
             log.warn("UrlLink {} was not found", link);

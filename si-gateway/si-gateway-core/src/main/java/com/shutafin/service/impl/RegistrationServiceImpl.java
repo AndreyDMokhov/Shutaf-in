@@ -76,6 +76,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     @Transactional
     public User confirmRegistration(String link) {
+
+        //todo MS-email
         RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.findByUrlLink(link);
 
         if (registrationConfirmation == null) {
@@ -95,6 +97,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     private void sendConfirmRegistrationEmail(User user, UserAccount userAccount) {
+
+        //todo MS-email
         RegistrationConfirmation registrationConfirmation = new RegistrationConfirmation();
         registrationConfirmation.setUser(user);
         registrationConfirmation.setIsConfirmed(false);
@@ -104,7 +108,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         String link = environmentConfigurationService.getServerAddress() + "/#/users/registration/confirmation/" + registrationConfirmation.getUrlLink();
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(registrationConfirmation.getUser(), EmailReason.REGISTRATION_CONFIRMATION, userAccount.getLanguage(), link);
 
-        //todo MS-email
         mailSenderService.sendEmail(emailMessage, EmailReason.REGISTRATION_CONFIRMATION);
     }
 

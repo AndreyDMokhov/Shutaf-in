@@ -8,9 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-/**
- * Created by evgeny on 7/10/2017.
- */
+@Deprecated
 @Entity
 @Table(name = "REGISTRATION_CONFIRMATION")
 @NoArgsConstructor
@@ -18,6 +16,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class RegistrationConfirmation extends AbstractEntity {
+
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
     @OneToOne
     private User user;

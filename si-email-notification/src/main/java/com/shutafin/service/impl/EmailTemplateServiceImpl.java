@@ -1,15 +1,16 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entity.EmailReason;
+import com.shutafin.model.email.EmailNotificationWeb;
+import com.shutafin.model.email.EmailReason;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.model.web.EmailNotificationWeb;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 import static org.apache.commons.lang3.Validate.notBlank;
@@ -65,15 +66,29 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     }
 
     @Override
-    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, EmailReason emailReason) {
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources) {
         return new EmailMessage(
                 emailNotificationWeb.getUserId(),
                 emailNotificationWeb.getEmailTo(),
                 getTemplate(
-                        emailReason,
+                        emailNotificationWeb.getEmailReason(),
                         emailNotificationWeb.getLanguageDescription(),
-                        emailNotificationWeb.getLink()),
-                emailNotificationWeb.getImageSources()
+                        link),
+                imageSources
         );
     }
+
+    @Override
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String email, String link, Map<String, byte[]> imageSources) {
+        return new EmailMessage(
+                emailNotificationWeb.getUserId(),
+                email,
+                getTemplate(
+                        emailNotificationWeb.getEmailReason(),
+                        emailNotificationWeb.getLanguageDescription(),
+                        link),
+                imageSources
+        );
+    }
+
 }
