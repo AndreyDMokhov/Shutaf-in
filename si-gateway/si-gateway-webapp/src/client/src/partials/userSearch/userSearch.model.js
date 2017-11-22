@@ -17,9 +17,15 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         return rest.one('/api/users/search/save/filters').customPOST(params);
     }
+    function getUserInfo(id){
+        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
+        return rest.one('api/images/'+id).customGET();
+    }
 
     return {
         userSearch: userSearch,
-        saveFiltersInDB: saveFiltersInDB
+        saveFiltersInDB: saveFiltersInDB,
+        getUserInfo: getUserInfo
+
     };
 });
