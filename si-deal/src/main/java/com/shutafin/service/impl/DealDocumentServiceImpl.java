@@ -25,7 +25,6 @@ import java.util.Base64;
 @Slf4j
 public class DealDocumentServiceImpl implements DealDocumentService {
 
-    private static final String NAME_SEPARATOR = "_";
     private static final Boolean NEED_FULL_ACCESS = true;
 
     @Value("${windows.base.path}")
@@ -69,6 +68,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         dealDocument.setTitle(dealUserDocumentWeb.getDocumentTitle());
         dealDocument.setPermissionType(permissionType);
         dealDocument.setDocumentType(documentType);
+        dealDocument.setIsDeleted(false);
 
         String documentEncoded = dealUserDocumentWeb.getFileData();
         DocumentStorage documentStorage = createDocumentBackup(dealDocument, documentEncoded);
@@ -86,33 +86,33 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
     @Override
     public DealDocument getDealDocument(Long userId, Long dealDocumentId) {
-        DealDocument dealDocument = dealDocumentRepository.findOne(dealDocumentId);
-        if (dealDocument == null) {
-            log.warn("Resource not found exception:");
-            log.warn("Deal Document with ID {} was not found", dealDocumentId);
-            throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
-        }
-        checkUserPermissionForDealFolder(userId, dealDocument.getDealFolder(), !NEED_FULL_ACCESS);
+        DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, !NEED_FULL_ACCESS);
         return dealDocument;
     }
 
     @Override
     public void deleteDealDocument(Long userId, Long dealDocumentId) {
-        DealDocument dealDocument = getDealDocument(userId, dealDocumentId);
-        documentStorageRepository.delete(dealDocument.getDocumentStorage());
-        dealDocumentRepository.delete(dealDocument);
+        DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
+        dealDocument.setIsDeleted(true);
+        dealDocument.setModifiedByUser(userId);
     }
 
     @Override
     public DealDocument renameDealDocument(Long userId, Long dealDocumentId, String newTitle) {
+        DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
+        dealDocument.setTitle(newTitle);
+        dealDocument.setModifiedByUser(userId);
+        return dealDocument;
+    }
+
+    private DealDocument getDealDocumentWithPermissions(Long userId, Long dealDocumentId, Boolean fullAccess) {
         DealDocument dealDocument = dealDocumentRepository.findOne(dealDocumentId);
         if (dealDocument == null) {
             log.warn("Resource not found exception:");
             log.warn("Deal Document with ID {} was not found", dealDocumentId);
             throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
         }
-        checkUserPermissionForDealFolder(userId, dealDocument.getDealFolder(), NEED_FULL_ACCESS);
-        dealDocument.setTitle(newTitle);
+        checkUserPermissionForDealFolder(userId, dealDocument.getDealFolder(), fullAccess);
         return dealDocument;
     }
 

@@ -3,7 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.DealUserDocumentWeb;
-import com.shutafin.model.web.UserDocumentTitleWeb;
+import com.shutafin.model.web.NewTitleWeb;
 import com.shutafin.service.DealDocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,13 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/documents")
 @Slf4j
-public class UserDocumentController {
+public class DealDocumentController {
 
     @Autowired
     private DealDocumentService dealDocumentService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb addUserDocument(@RequestBody @Valid DealUserDocumentWeb dealUserDocumentWeb, BindingResult result) {
+    public DealUserDocumentWeb addDealDocument(@RequestBody @Valid DealUserDocumentWeb dealUserDocumentWeb, BindingResult result) {
         log.debug("/documents/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
@@ -30,28 +30,28 @@ public class UserDocumentController {
             throw new RuntimeException();
         }
 
-        DealDocument dealDocument = dealDocumentService.addDealDocument(dealUserDocumentWeb, PermissionType.PRIVATE);
+        DealDocument dealDocument = dealDocumentService.addDealDocument(dealUserDocumentWeb, PermissionType.DEAL);
 
-        return getUserDocumentWeb(dealDocument, false);
+        return getDealUserDocumentWeb(dealDocument, false);
     }
 
     @RequestMapping(value = "/{userId}/{docId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb getUserDocument(@PathVariable(value = "userId") Long userId,
-                                               @PathVariable(value = "docId") Long userDocumentId) {
+    public DealUserDocumentWeb getDealDocument(@PathVariable(value = "userId") Long userId,
+                                               @PathVariable(value = "docId") Long dealDocumentId) {
         log.debug("GET /documents/{userId}/{docId}");
-        DealDocument dealDocument = dealDocumentService.getDealDocument(userId, userDocumentId);
-        return getUserDocumentWeb(dealDocument, true);
+        DealDocument dealDocument = dealDocumentService.getDealDocument(userId, dealDocumentId);
+        return getDealUserDocumentWeb(dealDocument, true);
     }
 
     @RequestMapping(value = "/{userId}/{docId}", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb renameUserDocument(@PathVariable(value = "userId") Long userId,
+    public DealUserDocumentWeb renameDealDocument(@PathVariable(value = "userId") Long userId,
                                                   @PathVariable(value = "docId") Long userDocumentId,
-                                                  @RequestBody @Valid UserDocumentTitleWeb documentTitle) {
+                                                  @RequestBody @Valid NewTitleWeb documentTitle) {
         log.debug("POST /documents/{userId}/{docId}");
         DealDocument dealDocument = dealDocumentService.renameDealDocument(userId, userDocumentId, documentTitle.getTitle());
-        return getUserDocumentWeb(dealDocument, false);
+        return getDealUserDocumentWeb(dealDocument, false);
     }
 
     @DeleteMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -61,7 +61,7 @@ public class UserDocumentController {
         dealDocumentService.deleteDealDocument(userId, userDocumentId);
     }
 
-    private DealUserDocumentWeb getUserDocumentWeb(DealDocument dealDocument, Boolean includeEncoded) {
+    private DealUserDocumentWeb getDealUserDocumentWeb(DealDocument dealDocument, Boolean includeEncoded) {
         DealUserDocumentWeb dealUserDocumentWeb = new DealUserDocumentWeb(dealDocument.getId(),
                 dealDocument.getModifiedByUser(),
                 dealDocument.getDealFolder().getId(),
