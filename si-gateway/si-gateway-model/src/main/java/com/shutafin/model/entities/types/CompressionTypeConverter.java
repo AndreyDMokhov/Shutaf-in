@@ -3,6 +3,7 @@ package com.shutafin.model.entities.types;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+@Deprecated
 @Converter(autoApply = true)
 public class CompressionTypeConverter implements AttributeConverter<CompressionType, Integer> {
 

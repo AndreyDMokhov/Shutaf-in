@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import javax.persistence.QueryHint;
 import java.util.List;
 
-
+@Deprecated
 public interface CountryRepository extends BaseJpaRepository<Country, Long> {
 
     @Query("select new com.shutafin.model.web.initialization.CountryResponseDTO  (  cl.country.id,  cl.description  ) from CountryLocale cl where cl.language = :language")

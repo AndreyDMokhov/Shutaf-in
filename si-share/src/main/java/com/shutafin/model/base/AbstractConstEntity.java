@@ -1,8 +1,11 @@
 package com.shutafin.model.base;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

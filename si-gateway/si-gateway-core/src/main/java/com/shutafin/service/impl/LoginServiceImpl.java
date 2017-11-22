@@ -46,6 +46,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Transactional(noRollbackFor = AuthenticationException.class)
+    //TODO: MS-account LoginController.login()
     public User getUserByLoginWebModel(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
         UserAccount userAccount = checkUserAccountStatus(user);

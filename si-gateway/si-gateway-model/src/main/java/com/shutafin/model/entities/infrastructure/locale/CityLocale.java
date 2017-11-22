@@ -11,6 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
+@Deprecated
 @Entity
 @Table(name = "I_CITY_LOCALE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)

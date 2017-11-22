@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.Min;
 import java.util.Date;
 
+@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

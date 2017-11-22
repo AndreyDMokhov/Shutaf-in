@@ -5,7 +5,13 @@ import com.shutafin.core.service.UserImageService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.exception.exceptions.AccountBlockedException;
+import com.shutafin.model.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.exception.exceptions.SystemException;
+import com.shutafin.model.types.AccountStatus;
+import com.shutafin.model.types.CompressionType;
+import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +53,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         if (userImage == null) {
-            userImage = userImageService.addUserImage(userImageWeb, user);
+            userImage = userImageService.addUserImage(userImageWeb, user, PermissionType.PUBLIC, CompressionType.COMPRESSION_RATE_0_7);
         }
 
         if (userAccount != null) {
@@ -65,6 +71,27 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void deleteUserAccountProfileImage(User user) {
         UserAccount userAccount = userAccountRepository.findByUser(user);
         userAccount.setUserImage(null);
+    }
+
+    @Override
+    public UserAccount checkUserAccountStatus(User user) {
+        UserAccount userAccount = userAccountRepository.findByUser(user);
+        if (userAccount == null) {
+            String message = String.format("UserAccount for user with ID %s does not exist", user.getId());
+            log.error(message, user.getId());
+            throw new SystemException(message);
+        }
+        AccountStatus accountStatus = userAccount.getAccountStatus();
+        if (accountStatus == AccountStatus.BLOCKED) {
+            log.warn("UserAccount for userId {} is BLOCKED", user.getId());
+            throw new AccountBlockedException();
+        }
+        if (accountStatus == AccountStatus.NEW) {
+            log.warn("UserAccount for userId {} is not CONFIRMED", user.getId());
+            throw new AccountNotConfirmedException();
+        }
+
+        return userAccount;
     }
 
 }

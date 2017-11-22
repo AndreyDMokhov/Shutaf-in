@@ -4,6 +4,7 @@ import com.shutafin.model.web.BaseResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+@Deprecated
 @Setter
 @Getter
 public class CountryResponseDTO extends BaseResponseDTO {

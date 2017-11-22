@@ -6,7 +6,6 @@ import com.shutafin.core.service.UserLanguageService;
 import com.shutafin.core.service.UserService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.web.user.UserImageWeb;
@@ -47,6 +46,15 @@ public class UserAccountController {
         log.debug("/users/{}/profile-image", userId);
         checkBindingResult(result);
         UserImage image = userAccountService.updateProfileImage(userImageWeb, userService.findUserById(userId));
+        return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().getTime());
+    }
+
+    @GetMapping(value = "/{userId}/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserImageWeb getUserAccountProfileImage(@PathVariable("userId") Long userId) {
+        log.debug("/{userId}/profile-image", userId);
+        User user = userService.findUserById(userId);
+        UserImage image = userAccountService.findUserAccountProfileImage(user);
         return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
                 image.getCreatedDate().getTime());
     }

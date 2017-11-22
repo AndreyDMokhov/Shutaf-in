@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.util.Date;
 
-
+@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

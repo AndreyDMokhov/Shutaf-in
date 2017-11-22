@@ -9,6 +9,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+@Deprecated
 @Entity
 @Table(name = "I_COUNTRY")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)

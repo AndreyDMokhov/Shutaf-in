@@ -1,5 +1,6 @@
 package com.shutafin.model.entities.types;
 
+@Deprecated
 public enum PermissionType implements IdentifiableType<Integer> {
     PUBLIC(1),
     PRIVATE(2),
