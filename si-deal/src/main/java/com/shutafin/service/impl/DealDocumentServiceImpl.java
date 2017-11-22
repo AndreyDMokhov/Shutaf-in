@@ -6,10 +6,11 @@ import com.shutafin.model.types.DocumentType;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.DealUserDocumentWeb;
 import com.shutafin.repository.DealDocumentRepository;
-import com.shutafin.repository.DealFolderRepository;
+import com.shutafin.repository.DealPanelRepository;
 import com.shutafin.repository.DealUserRepository;
 import com.shutafin.repository.DocumentStorageRepository;
 import com.shutafin.service.DealDocumentService;
+import com.shutafin.service.DealService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +41,16 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     private DocumentStorageRepository documentStorageRepository;
 
     @Autowired
-    private DealFolderRepository dealFolderRepository;
+    private DealPanelRepository dealPanelRepository;
 
     @Autowired
     private DealUserRepository dealUserRepository;
 
+    @Autowired
+    private DealService dealService;
+
+    // TODO: add DealPanel during adding document
+    // TODO: add moving document from panel to panel
 
     @Override
     public DealDocument addDealDocument(DealUserDocumentWeb dealUserDocumentWeb, PermissionType permissionType) {
@@ -54,16 +60,17 @@ public class DealDocumentServiceImpl implements DealDocumentService {
             throw new RuntimeException();
         }
 
-        DealFolder dealFolder = dealFolderRepository.findOne(dealUserDocumentWeb.getDealFolderId());
-        if (dealFolder == null) {
+        DealPanel dealPanel = dealPanelRepository.findOne(dealUserDocumentWeb.getDealFolderId());
+        if (dealPanel == null) {
             log.warn("Deal folder with give id does not exist");
             throw new RuntimeException();
         }
 
-        checkUserPermissionForDealFolder(dealUserDocumentWeb.getUserId(), dealFolder, NEED_FULL_ACCESS);
+        dealService.checkDealPermissions(dealPanel.getDeal().getId(),
+                dealUserDocumentWeb.getUserId(), NEED_FULL_ACCESS);
 
         DealDocument dealDocument = new DealDocument();
-        dealDocument.setDealFolder(dealFolder);
+        dealDocument.setDealPanel(dealPanel);
         dealDocument.setModifiedByUser(dealUserDocumentWeb.getUserId());
         dealDocument.setTitle(dealUserDocumentWeb.getDocumentTitle());
         dealDocument.setPermissionType(permissionType);
@@ -78,7 +85,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         dealDocument = dealDocumentRepository.save(dealDocument);
         String localPath = generateDealDocumentLocalPath(dealDocument);
         dealDocument.setLocalPath(localPath);
-        createDealDocumentsDirectory(dealFolder);
+        createDealDocumentsDirectory(dealPanel);
         saveDealDocumentToFileSystem(dealDocument);
 
         return dealDocument;
@@ -112,7 +119,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
             log.warn("Deal Document with ID {} was not found", dealDocumentId);
             throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
         }
-        checkUserPermissionForDealFolder(userId, dealDocument.getDealFolder(), fullAccess);
+        dealService.checkDealPermissions(dealDocument.getDealPanel().getDeal().getId(), userId, fullAccess);
         return dealDocument;
     }
 
@@ -132,22 +139,22 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         return false;
     }
 
-    private String getDealFolderDirectoryPath(DealFolder dealFolder) {
+    private String getDealFolderDirectoryPath(DealPanel dealPanel) {
         StringBuilder basePath = new StringBuilder();
         if (SystemUtils.IS_OS_WINDOWS) {
             basePath.append(windowsBasePath);
         } else {
             basePath.append(unixBasePath);
         }
-        basePath.append(dealFolder.getDeal().getId())
+        basePath.append(dealPanel.getDeal().getId())
                 .append(File.separator)
-                .append(dealFolder.getId())
+                .append(dealPanel.getId())
                 .append(File.separator);
         return basePath.toString();
     }
 
-    private void createDealDocumentsDirectory(DealFolder dealFolder) {
-        String dealFolderDirPath = getDealFolderDirectoryPath(dealFolder);
+    private void createDealDocumentsDirectory(DealPanel dealPanel) {
+        String dealFolderDirPath = getDealFolderDirectoryPath(dealPanel);
         File directory = new File(dealFolderDirPath);
         if (!directory.exists()) {
             directory.mkdirs();
@@ -175,20 +182,9 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     }
 
     private String generateDealDocumentLocalPath(DealDocument dealDocument) {
-        return getDealFolderDirectoryPath(dealDocument.getDealFolder())
+        return getDealFolderDirectoryPath(dealDocument.getDealPanel())
                 + dealDocument.getId()
                 + dealDocument.getDocumentType().getFileExtension();
     }
 
-    private void checkUserPermissionForDealFolder(Long userId, DealFolder dealFolder, Boolean needFullAccess) {
-        Deal deal = dealFolder.getDeal();
-        DealUser dealUser = dealUserRepository.findByDealAndUserId(deal, userId);
-        if (dealUser == null) {
-            log.warn("User has not ever been in this deal");
-            throw new RuntimeException();
-        } else if (dealUser.getDealUserStatus() == DealUserStatus.REMOVED && needFullAccess) {
-            log.warn("User was removed from this deal");
-            throw new RuntimeException();
-        }
-    }
 }

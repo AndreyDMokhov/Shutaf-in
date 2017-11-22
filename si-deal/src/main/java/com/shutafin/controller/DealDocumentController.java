@@ -64,7 +64,7 @@ public class DealDocumentController {
     private DealUserDocumentWeb getDealUserDocumentWeb(DealDocument dealDocument, Boolean includeEncoded) {
         DealUserDocumentWeb dealUserDocumentWeb = new DealUserDocumentWeb(dealDocument.getId(),
                 dealDocument.getModifiedByUser(),
-                dealDocument.getDealFolder().getId(),
+                dealDocument.getDealPanel().getId(),
                 null,
                 dealDocument.getCreatedDate().getTime(),
                 dealDocument.getDocumentType().getCode(),

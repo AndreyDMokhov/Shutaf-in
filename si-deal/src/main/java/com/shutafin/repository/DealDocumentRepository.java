@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface DealDocumentRepository extends BaseJpaRepository<DealDocument, Long> {
-    List<DealDocument> findAllByDealFolderId(Long dealFolderId);
-    List<DealDocument> findAllByDealFolderDealId(Long dealId);
+    List<DealDocument> findAllByDealPanelId(Long dealPanelId);
+    List<DealDocument> findAllByDealPanelDealId(Long dealId);
 }

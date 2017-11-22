@@ -9,12 +9,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "DEAL_FOLDER")
+@Table(name = "DEAL_PANEL")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class DealFolder extends AbstractRemovableEntity {
+public class DealPanel extends AbstractRemovableEntity {
 
     @Column(name = "TITLE", length = 50, nullable = false)
     private String title;

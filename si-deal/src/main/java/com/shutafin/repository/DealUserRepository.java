@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface DealUserRepository extends BaseJpaRepository<DealUser, Long> {
     List<DealUser> findAllByDealId(Long dealId);
-    DealUser findByDealAndUserId(Deal deal, Long userId);
+    DealUser findByDealIdAndUserId(Long dealId, Long userId);
 }
