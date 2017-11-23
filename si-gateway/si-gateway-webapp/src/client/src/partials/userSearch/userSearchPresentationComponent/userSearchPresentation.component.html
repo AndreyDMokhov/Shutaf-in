@@ -13,9 +13,7 @@
     </div>
 
     <h4> {{'Search.results'|translate}} {{vm.userSearchList.length}} </h4>
-    <span ng-show="vm.userSearchList.length==0">
-                    {{'Search.notFound'|translate}}
-                </span>
+    <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
     <div class="panel panel-primary" ng-repeat="user in vm.userSearchList">
         <div class="panel-heading pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
             <h4 class="panel-title">
@@ -26,11 +24,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-3" align="center">
-                    <!--<img ng-src="{{vm.getImage(user)}}"-->
-                         <!--width="100px"-->
-                         <!--height="150px"-->
-                         <!--class="img-responsive pointer">-->
-                    <modal-window-full-image user-profile="user"></modal-window-full-image>
+                    <modal-image class="pointer" user-profile="user"></modal-image>
                 </div>
                 <div class=" col-md-9">
                     <table class="table table-user-information">
@@ -42,13 +36,15 @@
                         <tr ng-if="user.genderId">
                             <td>{{'UserSettings.form.gender' | translate}}</td>
                             <td ng-repeat="gender in vm.genders"
-                                ng-if="gender.id === user.genderId">{{gender.description}}
+                                ng-if="gender.id === user.genderId">
+                                {{gender.description}}
                             </td>
                         </tr>
                         <tr ng-if="user.cityId">
                             <td>{{'UserProfile.city' | translate}}</td>
                             <td ng-repeat="city in vm.cities"
-                                ng-if="city.id === user.cityId">{{city.description}}
+                                ng-if="city.id === user.cityId">
+                                {{city.description}}
                             </td>
                         </tr>
                         </tbody>

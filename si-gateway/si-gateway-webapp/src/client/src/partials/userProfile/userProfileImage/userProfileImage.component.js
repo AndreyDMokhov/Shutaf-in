@@ -42,7 +42,7 @@ app.component('userProfileImage', {
 
         $scope.onLoad = function (e, reader, file, fileList, fileObjects, fileObj) {
 
-                $timeout(function () {
+            $timeout(function () {
                 $scope.myImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
                 setImageSize();
                 vm.deleteButton = true;
@@ -137,18 +137,14 @@ app.component('userProfileImage', {
                 width = img.width;
                 height = img.height;
                 if (width >= 1000 && height >= 1000) {
-                    $scope.selectedSize =
-                        {value: {w: 1000, h: 1000}}
-                    ;
+                    $scope.selectedSize = {value: {w: 1000, h: 1000}} ;
                 }
                 else {
                     if (width >= height) {
-                        $scope.selectedSize =
-                            {value: {w: height, h: height}};
+                        $scope.selectedSize = {value: {w: height, h: height}};
                     }
                     else {
-                        $scope.selectedSize =
-                            {value: {w: width, h: width}};
+                        $scope.selectedSize = {value: {w: width, h: width}};
                     }
                 }
             });

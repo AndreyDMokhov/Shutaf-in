@@ -15,6 +15,8 @@ app.component('userSearchPresentationComponent', {
                           userSearchService) {
 
         var vm = this;
+        vm.genders = $sessionStorage.genders;
+        vm.cities = $sessionStorage.cities;
 
         vm.fullName = $stateParams.name;
 
@@ -27,7 +29,6 @@ app.component('userSearchPresentationComponent', {
                 function (success) {
 
                     vm.userSearchList = success.data.data;
-                    // $sessionStorage.userSearchList = vm.userSearchList;
                 }, function (error) {
                     if (error === undefined || error === null) {
                         notify.set($filter('translate')('Error.SYS'), {type: 'error'});

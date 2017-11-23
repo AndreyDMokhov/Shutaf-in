@@ -5,7 +5,6 @@
                 <div class="panel-heading">
                     <div>
                         <h5 class="panel-title"></h5>
-
                     </div>
                     <div class="row">
                         <div class="col-md-4 text-left panel-title">{{vm.userProfile.firstName}}
@@ -18,7 +17,8 @@
                             <a class="fa fa-pencil"
                                ui-sref="settings.personal"
                                uib-tooltip="{{'UserProfile.edit' | translate}}"
-                               tooltip-placement="bottom" style="float: right; color: white;"
+                               tooltip-placement="bottom"
+                               style="float: right; color: white;"
                                ng-show="vm.isThisMyProfile"></a>
                         </div>
                     </div>
@@ -26,7 +26,11 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-4" align="center">
-            <user-profile-image user-profile="vm.userProfile" is-my-profile="vm.isThisMyProfile" dialog-user-id="vm.dialogUserId"></user-profile-image>
+                            <user-profile-image
+                                    user-profile="vm.userProfile"
+                                    is-my-profile="vm.isThisMyProfile"
+                                    dialog-user-id="vm.dialogUserId">
+                            </user-profile-image>
                         </div>
                         <div class=" col-md-7 col-lg-7 " style="margin-left: 30px">
                             <user-profile-info user-profile="vm.userProfile"></user-profile-info>

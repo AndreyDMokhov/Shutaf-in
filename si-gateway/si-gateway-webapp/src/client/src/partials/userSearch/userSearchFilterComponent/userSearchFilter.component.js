@@ -1,17 +1,14 @@
 'use strict';
 app.component('userSearchFilterComponent', {
     templateUrl: 'partials/userSearch/userSearchFilterComponent/userSearchFilter.component.html',
-    bindings: {
-
-    },
+    bindings: {},
     controllerAs: 'vm',
-    controller: function (
-        $sessionStorage,
-        notify,
-        userSearchModel,
-        $stateParams,
-        $filter,
-        userSearchService) {
+    controller: function ($sessionStorage,
+                          notify,
+                          userSearchModel,
+                          $stateParams,
+                          $filter,
+                          userSearchService) {
 
         var vm = this;
 
@@ -36,6 +33,17 @@ app.component('userSearchFilterComponent', {
         fillAgeRange();
 
 
+        function fillAgeRange() {
+            if (vm.searchData.filterAgeRange !== null) {
+                vm.minRangeSlider.minValue = vm.searchData.filterAgeRange.fromAge;
+                vm.minRangeSlider.maxValue = vm.searchData.filterAgeRange.toAge;
+            }
+            else {
+                vm.minRangeSlider.minValue = 25;
+                vm.minRangeSlider.maxValue = 50;
+            }
+        }
+
         function saveFilters() {
             setAgeRangeData();
             if (!vm.city) {
@@ -44,7 +52,7 @@ app.component('userSearchFilterComponent', {
             if (!vm.gender) {
                 vm.searchData.filterGenderId = null;
             }
-            userSearchModel.saveFiltersInDB(vm.searchData).then(
+            userSearchModel.saveFilters(vm.searchData).then(
                 function (success) {
                     $sessionStorage.filters.filterGenderId = vm.searchData.filterGenderId;
                     $sessionStorage.filters.filterCitiesIds = vm.searchData.filterCitiesIds;
@@ -57,28 +65,17 @@ app.component('userSearchFilterComponent', {
                 });
         }
 
-        function fillAgeRange() {
-            if (vm.searchData.filterAgeRange !== null) {
-                vm.minRangeSlider.minValue = vm.searchData.filterAgeRange.fromAge;
-                vm.minRangeSlider.maxValue = vm.searchData.filterAgeRange.toAge;
-            }
-            else {
-                vm.minRangeSlider.minValue = 25;
-                vm.minRangeSlider.maxValue = 50;
-            }
-        }
-
         function setAgeRangeData() {
             if (!vm.age) {
                 vm.searchData.filterAgeRange = null;
-            }
-            else {
+            } else {
                 vm.searchData.filterAgeRange = {
                     fromAge: vm.minRangeSlider.minValue,
                     toAge: vm.minRangeSlider.maxValue
                 };
             }
         }
+
         vm.saveFilters = saveFilters;
     }
 

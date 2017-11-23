@@ -1,7 +1,12 @@
-app.directive('modalWindowFullImage', function ($uibModal, $log, userSearchModel, $filter, notify) {
+app.directive('modalImage', function (
+    $uibModal,
+    $log,
+    userSearchModel,
+    $filter,
+    notify) {
     return {
         restrict: "E",
-        template: ' <img ng-src="{{getImage()}}" width="100px" height="100px" ng-click="openModalWindowFullImageSize()">',
+        template: ' <img ng-src="{{getImage()}}" width="100px" height="100px" ng-click="openModalImageSize()">',
         scope: {
             userProfile: "="
         },
@@ -20,18 +25,22 @@ app.directive('modalWindowFullImage', function ($uibModal, $log, userSearchModel
             scope.open = function (size, parentSelector) {
                 var modalInstance = $uibModal.open({
                     animation: scope.animationsEnabled,
-                    templateUrl: 'partials/userSearch/modalWindow/modalWindow.template.html',
+                    templateUrl: 'partials/userSearch/modalImage/modalImage.html',
                     controller: function ($uibModalInstance) {
                         var vm = this;
                         vm.currentImage = scope.originImage;
                         vm.fullName = scope.userProfile.firstName + " " + scope.userProfile.lastName;
+
+                        vm.closeModal = function () {
+                            $uibModalInstance.close();
+                        };
 
                     },
                     controllerAs: 'vm',
                     size: 'lg'
                 });
             };
-            scope.openModalWindowFullImageSize = function () {
+            scope.openModalImageSize = function () {
                 userSearchModel.getUserInfo(scope.userProfile.originalUserImageId).then(
                     function (success) {
                         scope.originImage = 'data:image/jpeg;base64,' + success.data.data.image;
