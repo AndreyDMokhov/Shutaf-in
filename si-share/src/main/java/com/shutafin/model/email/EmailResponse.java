@@ -1,4 +1,4 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.email;
 
 
 import lombok.AllArgsConstructor;
@@ -10,10 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+public class EmailResponse {
 
-//si-share EmailResponse
-public class EmailChangedResponse {
-
-    private Boolean isEmailChanged;
+    private Long userId;
+    private String newEmail;
 
 }

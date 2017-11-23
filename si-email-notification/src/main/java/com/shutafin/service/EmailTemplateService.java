@@ -13,6 +13,6 @@ public interface EmailTemplateService {
 
     EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources);
 
-    EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String email, String link, Map<String, byte[]> imageSources);
+    EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources, String newEmail);
 
 }

@@ -33,7 +33,7 @@ public class EmailNotificationWeb {
 
     @NotBlank
     @Length(min = 2, max = 3)
-    private String languageDescription;
+    private String languageCode;
 
     @NotNull
     private EmailReason emailReason;

@@ -3,12 +3,13 @@ package com.shutafin.service.impl;
 import com.shutafin.helpers.EmailTemplateHelper;
 import com.shutafin.model.email.EmailNotificationWeb;
 import com.shutafin.model.email.EmailReason;
+import com.shutafin.model.email.EmailResponse;
 import com.shutafin.model.email.UserImageSource;
-import com.shutafin.model.entity.Confirmation;
+import com.shutafin.model.entity.EmailConfirmation;
 import com.shutafin.model.entity.EmailImageSource;
 import com.shutafin.model.entity.EmailNotificationLog;
 import com.shutafin.model.exception.exceptions.EmailNotificationProcessingException;
-import com.shutafin.model.exception.exceptions.EmailProcessingException;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.repository.ConfirmationRepository;
@@ -26,6 +27,7 @@ import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +57,9 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
     private EnvironmentConfigurationService environmentConfigurationService;
 
     @Autowired
+    Map<String, EmailInterface> mapSendEmail;
+
+    @Autowired
     public EmailNotificationSenderServiceImpl(
             JavaMailSender mailSender,
             EmailNotificationLogRepository emailNotificationLogRepository,
@@ -76,58 +81,43 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
 
         EmailReason emailReason = emailNotificationWeb.getEmailReason();
 
-        switch (emailReason) {
-            case CHANGE_EMAIL:
-                sendEmailChangeEmail(emailNotificationWeb);
-                break;
-            case REGISTRATION_CONFIRMATION:
-                sendEmailConfirmation(emailNotificationWeb, REGISTRATION_CONFIRMATION_URL);
-                break;
-            case RESET_PASSWORD:
-                sendEmailConfirmation(emailNotificationWeb, RESET_PASSWORD_CONFIRMATION_URL);
-                break;
-            case MATCHING_CANDIDATES:
-                sendEmailMatchingCandidates(emailNotificationWeb);
-                break;
-            default:
-                throw new EmailProcessingException();
-        }
+        mapSendEmail.get(emailReason.getPropertyPrefix()).call(emailNotificationWeb);
 
     }
 
-    private void sendEmailMatchingCandidates(EmailNotificationWeb emailNotificationWeb) {
+    public void sendEmailMatchingCandidates(EmailNotificationWeb emailNotificationWeb) {
 
         EmailMessage emailMessage = getMatchingCandidatesEmailMessage(emailNotificationWeb);
         sendEmailMessage(emailNotificationWeb, emailMessage);
 
     }
 
-    private void sendEmailConfirmation(EmailNotificationWeb emailNotificationWeb, String confirmationUrl) {
+    public void sendEmailConfirmation(EmailNotificationWeb emailNotificationWeb, String confirmationUrl) {
 
-        Confirmation confirmation = getConfirmation(
+        EmailConfirmation emailConfirmation = getConfirmation(
                 emailNotificationWeb,
                 null,
                 null);
 
-        EmailMessage emailMessage = getEmailMessage(emailNotificationWeb, confirmation, confirmationUrl);
+        EmailMessage emailMessage = getEmailMessage(emailNotificationWeb, emailConfirmation, confirmationUrl);
         sendEmailMessage(emailNotificationWeb, emailMessage);
     }
 
-    private void sendEmailChangeEmail(EmailNotificationWeb emailNotificationWeb) {
+    public void sendEmailChangeEmail(EmailNotificationWeb emailNotificationWeb) {
 
         EmailMessage emailMessage;
 
-        Confirmation oldEmailObject = getConfirmation(
+        EmailConfirmation oldEmailObject = getConfirmation(
                 emailNotificationWeb,
                 null,
                 null);
 
-        Confirmation newEmailObject = getConfirmation(
+        EmailConfirmation newEmailObject = getConfirmation(
                 emailNotificationWeb,
                 emailNotificationWeb.getNewEmail(),
                 oldEmailObject);
 
-        oldEmailObject.setConnectedConfirmation(newEmailObject);
+        oldEmailObject.setConnectedEmailConfirmation(newEmailObject);
         confirmationRepository.save(oldEmailObject);
 
         emailMessage = getEmailMessage(emailNotificationWeb, oldEmailObject, CHANGE_EMAIL_CONFIRMATION_URL);
@@ -155,29 +145,34 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         send(mimeMessage, emailNotificationLog, emailImageSources);
     }
 
-    private Confirmation getConfirmation(
+    private EmailConfirmation getConfirmation(
             EmailNotificationWeb emailNotificationWeb,
             String newEmail,
-            Confirmation connectedId) {
+            EmailConfirmation connectedId) {
 
-        Confirmation confirmation = new Confirmation();
+        EmailConfirmation confirmation = new EmailConfirmation();
         confirmation.setUserId(emailNotificationWeb.getUserId());
         confirmation.setNewEmail(newEmail);
         confirmation.setConfirmationUUID(UUID.randomUUID().toString());
         confirmation.setIsConfirmed(Boolean.FALSE);
-        confirmation.setConnectedConfirmation(connectedId);
+        confirmation.setConnectedEmailConfirmation(connectedId);
         confirmation.setExpiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION));
+
+//        EmailConfirmation emailConfirmation = EmailConfirmation.builder()
+//                .userId(emailNotificationWeb.getUserId())
+//                .confirmationUUID(UUID.randomUUID().toString())
+//                .isConfirmed(false)
+//                .expiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION))
+//                .newEmail(newEmail)
+//                .connectedEmailConfirmation(connectedId)
+//                .build();
         return confirmationRepository.save(confirmation);
     }
 
-    private EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, Confirmation confirmation, String confirmationUrl) {
+    private EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, EmailConfirmation emailConfirmation, String confirmationUrl) {
         String serverAddress = environmentConfigurationService.getServerAddress();
-        String urlLink = serverAddress + confirmationUrl + confirmation.getConfirmationUUID();
-        if (confirmation.getNewEmail() == null) {
-            return emailTemplateService.getEmailMessage(emailNotificationWeb, urlLink, null);
-        } else {
-            return emailTemplateService.getEmailMessage(emailNotificationWeb, confirmation.getNewEmail(), urlLink, null);
-        }
+        String urlLink = serverAddress + confirmationUrl + emailConfirmation.getConfirmationUUID();
+        return emailTemplateService.getEmailMessage(emailNotificationWeb, urlLink, null, emailConfirmation.getNewEmail());
     }
 
     private EmailMessage getMatchingCandidatesEmailMessage(EmailNotificationWeb emailNotificationWeb) {
@@ -236,33 +231,43 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
     }
 
     @Override
-    public Long getUserIdFromConfirmation(String link) {
+    public EmailResponse getUserIdFromConfirmation(String link) {
 
-        Confirmation confirmation = confirmationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
+        isValidLink(link);
 
-        if (confirmation == null) {
-            return 0L;
+        EmailConfirmation emailConfirmation = confirmationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
+
+        emailConfirmation.setIsConfirmed(true);
+        confirmationRepository.save(emailConfirmation);
+
+        EmailResponse emailResponse = new EmailResponse();
+        emailResponse.setUserId(emailConfirmation.getUserId());
+
+        if (emailConfirmation.getConnectedEmailConfirmation() == null) {
+            return emailResponse;
         }
 
-        confirmation.setIsConfirmed(true);
-        confirmationRepository.save(confirmation);
-
-        if (confirmation.getConnectedConfirmation() == null) {
-            return confirmation.getUserId();
-        } else {
-            Confirmation connectedConfirmation = confirmation.getConnectedConfirmation();
-            if (connectedConfirmation.getIsConfirmed() == true){
-                return confirmation.getUserId();
+        EmailConfirmation connectedEmailConfirmation = emailConfirmation.getConnectedEmailConfirmation();
+        if (connectedEmailConfirmation.getIsConfirmed()) {
+            if (emailConfirmation.getNewEmail() != null){
+                emailResponse.setNewEmail(emailConfirmation.getNewEmail());
             }else{
-                return 0L;
+                emailResponse.setNewEmail(connectedEmailConfirmation.getNewEmail());
             }
+            return emailResponse;
+        }else{
+            emailResponse.setUserId(null);
+            return emailResponse;
         }
-
     }
 
     @Override
-    public Boolean isValidateLink(String link) {
-        return confirmationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date()) != null;
+    public void isValidLink(String link) {
+        if (confirmationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date()) == null) {
+            log.warn("Resource not found exception:");
+            log.warn("UrlLink {} was not found", link);
+            throw new ResourceNotFoundException();
+        }
     }
 
     private void send(MimeMessage mimeMessage, EmailNotificationLog emailNotificationLog, Set<EmailImageSource> emailImageSources) {
@@ -367,6 +372,46 @@ public class EmailNotificationSenderServiceImpl implements EmailNotificationSend
         emailNotificationLog.setEmailReason(emailReason);
         emailNotificationLog.setIsSendFailed(Boolean.FALSE);
         return emailNotificationLogRepository.save(emailNotificationLog);
+    }
+
+    interface EmailInterface {
+        void call(EmailNotificationWeb emailNotificationWeb);
+    }
+
+    @Component("registration")
+    class EmailRegistration implements EmailInterface {
+
+        @Override
+        public void call(EmailNotificationWeb emailNotificationWeb) {
+            sendEmailConfirmation(emailNotificationWeb, REGISTRATION_CONFIRMATION_URL);
+        }
+    }
+
+    @Component("changeEmail")
+    class EmailChangeEmail implements EmailInterface {
+
+        @Override
+        public void call(EmailNotificationWeb emailNotificationWeb) {
+            sendEmailChangeEmail(emailNotificationWeb);
+        }
+    }
+
+    @Component("resetPassword")
+    class EmailResetPassword implements EmailInterface {
+
+        @Override
+        public void call(EmailNotificationWeb emailNotificationWeb) {
+            sendEmailConfirmation(emailNotificationWeb, RESET_PASSWORD_CONFIRMATION_URL);
+        }
+    }
+
+    @Component("matchingCandidates")
+    class EmailMatchingCandidates implements EmailInterface {
+
+        @Override
+        public void call(EmailNotificationWeb emailNotificationWeb) {
+            sendEmailMatchingCandidates(emailNotificationWeb);
+        }
     }
 
 }

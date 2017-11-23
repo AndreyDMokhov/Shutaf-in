@@ -67,25 +67,17 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     @Override
     public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources) {
-        return new EmailMessage(
-                emailNotificationWeb.getUserId(),
-                emailNotificationWeb.getEmailTo(),
-                getTemplate(
-                        emailNotificationWeb.getEmailReason(),
-                        emailNotificationWeb.getLanguageDescription(),
-                        link),
-                imageSources
-        );
+        return getEmailMessage(emailNotificationWeb, link, imageSources, null);
     }
 
     @Override
-    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String email, String link, Map<String, byte[]> imageSources) {
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources, String newEmail) {
         return new EmailMessage(
                 emailNotificationWeb.getUserId(),
-                email,
+                newEmail == null ? emailNotificationWeb.getEmailTo() : newEmail,
                 getTemplate(
                         emailNotificationWeb.getEmailReason(),
-                        emailNotificationWeb.getLanguageDescription(),
+                        emailNotificationWeb.getLanguageCode(),
                         link),
                 imageSources
         );

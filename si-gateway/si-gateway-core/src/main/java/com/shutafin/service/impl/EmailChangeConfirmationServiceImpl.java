@@ -133,6 +133,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     private void updateUserEmail(User user, String newEmail) {
         try {
             user.setEmail(newEmail);
+//            TODO
             userRepository.save(user);
         } catch (ConstraintViolationException e) {
             log.warn("Email not unique validation exception:");

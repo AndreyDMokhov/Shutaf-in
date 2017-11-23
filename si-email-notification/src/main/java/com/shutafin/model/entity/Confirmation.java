@@ -1,18 +1,13 @@
 package com.shutafin.model.entity;
 
 import com.shutafin.model.base.AbstractEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "CONFIRMATION")
-@NoArgsConstructor
-@AllArgsConstructor
+@MappedSuperclass
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 public class Confirmation extends AbstractEntity {
@@ -29,12 +24,4 @@ public class Confirmation extends AbstractEntity {
     @Column(name = "EXPIRES_AT", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date expiresAt;
-
-    @Column(name = "NEW_EMAIL")
-    private String newEmail;
-
-    @JoinColumn(name = "CONNECTED_CONFIRMATION")
-    @OneToOne
-    private Confirmation connectedConfirmation;
-
 }
