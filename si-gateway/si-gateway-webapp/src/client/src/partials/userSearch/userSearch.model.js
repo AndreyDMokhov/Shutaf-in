@@ -12,14 +12,21 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
         }
         return rest.one('/api/users/search').customGET();
     }
-    
-    function saveFiltersInDB(params) {
+
+    function saveFilters(params) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         return rest.one('/api/users/search/save/filters').customPOST(params);
     }
 
+    function getUserInfo(id) {
+        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
+        return rest.one('api/images/' + id).customGET();
+    }
+
     return {
         userSearch: userSearch,
-        saveFiltersInDB: saveFiltersInDB
+        saveFilters: saveFilters,
+        getUserInfo: getUserInfo
+
     };
 });
