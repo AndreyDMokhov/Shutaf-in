@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+@Deprecated
 @Entity
 @Table(name = "IMAGE_PAIR")
 @AllArgsConstructor

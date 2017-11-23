@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "I_GENDER")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
 @NoArgsConstructor
 public class Gender extends AbstractKeyConstEntity{
 

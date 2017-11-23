@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "USER_INFO")
@@ -27,6 +28,10 @@ public class UserInfo extends AbstractBaseEntity {
     @JoinColumn(name = "GENDER_ID")
     @OneToOne
     private Gender gender;
+
+    @Column(name = "DATE_OF_BIRTH")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateOfBirth;
 
     @Column(name = "FACEBOOK_LINK")
     private String facebookLink;

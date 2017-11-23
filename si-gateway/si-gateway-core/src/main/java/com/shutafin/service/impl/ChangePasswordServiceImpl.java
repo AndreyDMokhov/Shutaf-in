@@ -20,6 +20,7 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
 
     @Transactional
     @Override
+    // TODO: MS-account ChangePasswordController.changePassword()
     public void changePassword(ChangePasswordWeb changePasswordWeb, User user) {
         if (!passwordService.isPasswordCorrect(user, changePasswordWeb.getOldPassword())) {
             log.warn("Authentication exception:");

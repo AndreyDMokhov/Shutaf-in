@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "I_GENDER_LOCALE")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

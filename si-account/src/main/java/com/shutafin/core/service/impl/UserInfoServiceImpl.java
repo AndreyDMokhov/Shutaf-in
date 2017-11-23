@@ -2,10 +2,7 @@ package com.shutafin.core.service.impl;
 
 import com.shutafin.core.service.UserImageService;
 import com.shutafin.core.service.UserInfoService;
-import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.entities.UserInfo;
+import com.shutafin.model.entities.*;
 import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.repository.account.UserAccountRepository;
@@ -75,6 +72,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoResponseDTO.setCompany(userInfo.getCompany());
             userInfoResponseDTO.setProfession(userInfo.getProfession());
             userInfoResponseDTO.setPhoneNumber(userInfo.getPhoneNumber());
+            userInfoResponseDTO.setDateOfBirth(userInfo.getDateOfBirth());
         }
 
         UserImage userImage = userAccount.getUserImage();
@@ -86,6 +84,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public UserInfoResponseDTO getUserInfo(Long userId) {
+        return getUserInfo(userRepository.findOne(userId));
+    }
+
+    @Override
     public void updateUserInfo(UserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = userInfoRepository.findByUser(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);
@@ -93,6 +96,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         user = userRepository.findOne(user.getId());
         user.setFirstName(userInfoRequest.getFirstName());
         user.setLastName(userInfoRequest.getLastName());
+
     }
 
     private UserInfo convertToUserInfo(UserInfoRequest userInfoRequest, User user) {
@@ -104,15 +108,16 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private UserInfo setUserInfoFields(UserInfoRequest userInfoRequest, UserInfo userInfo) {
         if (userInfoRequest.getCityId() != null) {
-            userInfo.setCurrentCity(cityRepository.findOne(userInfoRequest.getCityId()).getCity());
+            userInfo.setCurrentCity(cityRepository.findOne(userInfoRequest.getCityId()));
         }
         if (userInfoRequest.getGenderId() != null) {
-            userInfo.setGender(genderRepository.findOne(userInfoRequest.getGenderId()).getGender());
+            userInfo.setGender(genderRepository.findOne(userInfoRequest.getGenderId()));
         }
         userInfo.setFacebookLink(userInfoRequest.getFacebookLink());
         userInfo.setCompany(userInfoRequest.getCompany());
         userInfo.setProfession(userInfoRequest.getProfession());
         userInfo.setPhoneNumber(userInfoRequest.getPhoneNumber());
+        userInfo.setDateOfBirth(userInfoRequest.getDateOfBirth());
         return userInfo;
     }
 

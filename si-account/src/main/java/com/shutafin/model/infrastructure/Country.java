@@ -9,6 +9,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "I_COUNTRY")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
 @NoArgsConstructor
 public class Country extends AbstractKeyConstEntity {
 

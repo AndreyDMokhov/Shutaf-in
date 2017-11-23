@@ -1,12 +1,10 @@
 package com.shutafin.core.service.impl;
 
 
-import com.shutafin.core.service.PasswordService;
-import com.shutafin.core.service.RegistrationService;
-import com.shutafin.core.service.UserImageService;
-import com.shutafin.core.service.UserInfoService;
+import com.shutafin.core.service.*;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.exception.exceptions.validation.EmailNotUniqueValidationException;
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.types.AccountStatus;
@@ -37,18 +35,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private LanguageRepository languageRepository;
 
-//    @Autowired
-//    private EmailNotificationSenderService mailSenderService;
-//
-//    @Autowired
-//    private EmailTemplateService emailTemplateService;
-//
-//    @Autowired
-//    private RegistrationConfirmationRepository registrationConfirmationRepository;
-//
-//    @Autowired
-//    private EnvironmentConfigurationService environmentConfigurationService;
-
     @Autowired
     private PasswordService passwordService;
 
@@ -58,7 +44,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private UserInfoService userInfoService;
 
-
+    @Autowired
+    private UserAccountService userAccountService;
 
     @Override
     @Transactional
@@ -68,7 +55,18 @@ public class RegistrationServiceImpl implements RegistrationService {
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         userImageService.createUserImageDirectory(user);
         userInfoService.createUserInfo(new UserInfoRequest(), user);
+    }
+
+    @Override
+    public User confirmRegistration(Long userId) {
+        User user = userRepository.findOne(userId);
+        if (user == null) {
+            log.warn("User was not found for id: " + userId);
+            throw new AuthenticationException();
+        }
+        UserAccount userAccount = userAccountService.checkUserAccountStatus(user);
         userAccount.setAccountStatus(AccountStatus.CONFIRMED);
+        return user;
     }
 
     private void saveUserCredentials(User user, String password) {

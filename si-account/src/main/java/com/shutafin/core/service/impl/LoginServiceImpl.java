@@ -1,19 +1,14 @@
 package com.shutafin.core.service.impl;
 
-
-
 import com.shutafin.core.service.LoginService;
 import com.shutafin.core.service.PasswordService;
+import com.shutafin.core.service.UserAccountService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserLoginLog;
-import com.shutafin.model.exception.exceptions.AccountBlockedException;
-import com.shutafin.model.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
-import com.shutafin.model.exception.exceptions.SystemException;
 import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.web.user.LoginWebModel;
-import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserLoginLogRepository;
 import com.shutafin.repository.account.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +29,7 @@ public class LoginServiceImpl implements LoginService {
 
     private UserRepository userRepository;
     private PasswordService passwordService;
-    private UserAccountRepository userAccountRepository;
+    private UserAccountService userAccountService;
     private UserLoginLogRepository userLoginLogRepository;
 
     @Autowired
@@ -42,17 +37,17 @@ public class LoginServiceImpl implements LoginService {
             UserLoginLogRepository userLoginLogRepository,
             UserRepository userRepository,
             PasswordService passwordService,
-            UserAccountRepository userAccountRepository) {
+            UserAccountService userAccountService) {
         this.userLoginLogRepository = userLoginLogRepository;
         this.userRepository = userRepository;
         this.passwordService = passwordService;
-        this.userAccountRepository = userAccountRepository;
+        this.userAccountService = userAccountService;
     }
 
     @Transactional(noRollbackFor = AuthenticationException.class)
     public User getUserByLoginWebModel(LoginWebModel loginWeb) {
         User user = findUserByEmail(loginWeb);
-        UserAccount userAccount = checkUserAccountStatus(user);
+        UserAccount userAccount = userAccountService.checkUserAccountStatus(user);
         checkUserPassword(loginWeb, userAccount, user);
         return user;
     }
@@ -64,26 +59,6 @@ public class LoginServiceImpl implements LoginService {
             throw new AuthenticationException();
         }
         return user;
-    }
-
-    private UserAccount checkUserAccountStatus(User user) {
-        UserAccount userAccount = userAccountRepository.findByUser(user);
-        if (userAccount == null) {
-            String message = String.format("UserAccount for user with ID %s does not exist", user.getId());
-            log.error(message, user.getId());
-            throw new SystemException(message);
-        }
-        AccountStatus accountStatus = userAccount.getAccountStatus();
-        if (accountStatus == AccountStatus.BLOCKED) {
-            log.warn("UserAccount for userId {} is BLOCKED", user.getId());
-            throw new AccountBlockedException();
-        }
-        if (accountStatus == AccountStatus.NEW) {
-            log.warn("UserAccount for userId {} is not CONFIRMED", user.getId());
-            throw new AccountNotConfirmedException();
-        }
-
-        return userAccount;
     }
 
     private void checkUserPassword(LoginWebModel loginWeb, UserAccount userAccount, User user) {

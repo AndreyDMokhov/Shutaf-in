@@ -65,6 +65,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     @Transactional
+    // TODO: MS-account RegistrationController.registration()
     public void save(RegistrationRequestWeb registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
         UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
@@ -88,6 +89,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         registrationConfirmation.setIsConfirmed(true);
         registrationConfirmationRepository.save(registrationConfirmation);
 
+        // TODO: MS-account RegistrationController.confirmRegistration()
         UserAccount userAccount = userAccountRepository.findByUser(registrationConfirmation.getUser());
         userAccount.setAccountStatus(AccountStatus.CONFIRMED);
         userAccountRepository.save(userAccount);

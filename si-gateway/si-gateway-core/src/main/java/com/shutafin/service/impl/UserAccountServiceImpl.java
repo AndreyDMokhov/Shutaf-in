@@ -34,6 +34,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     @Transactional
+    // TODO: MS-account UserAccountController.updateUserAccountProfileImage()
     public UserImage updateProfileImage(UserImageWeb userImageWeb, User user) {
         UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findByUser(user);
@@ -60,6 +61,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    // TODO: MS-account UserAccountController.getUserAccountProfileImage()
     public UserImage findUserAccountProfileImage(User user) {
         Long userImageId = userAccountRepository.findUserAccountImageId(user);
 
@@ -67,6 +69,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    // TODO: MS-account UserAccountController.deleteUserAccountProfileImage()
     public void deleteUserAccountProfileImage(User user) {
         UserAccount userAccount = userAccountRepository.findByUser(user);
         userAccount.setUserImage(null);

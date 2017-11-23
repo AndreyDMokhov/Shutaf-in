@@ -7,6 +7,7 @@ import javax.persistence.Converter;
  * Created by Edward Kats.
  * 03 / Jul / 2017
  */
+@Deprecated
 @Converter(autoApply = true)
 public class AccountStatusConverter implements AttributeConverter<AccountStatus, Integer> {
 

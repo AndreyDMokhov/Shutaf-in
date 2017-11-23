@@ -13,6 +13,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "I_CITY")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
