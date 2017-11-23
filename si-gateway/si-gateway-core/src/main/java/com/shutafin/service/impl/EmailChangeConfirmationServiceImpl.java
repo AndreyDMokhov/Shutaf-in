@@ -131,6 +131,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     }
 
     private void updateUserEmail(User user, String newEmail) {
+        // TODO: MS-account EmailChangeController.emailChange()
         try {
             user.setEmail(newEmail);
 //            TODO

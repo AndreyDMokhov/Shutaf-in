@@ -8,7 +8,6 @@ import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserInfoRepository;
 import com.shutafin.repository.account.UserRepository;
-import com.shutafin.repository.filters.FilterCityRepository;
 import com.shutafin.repository.locale.CityRepository;
 import com.shutafin.repository.locale.GenderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     private GenderRepository genderRepository;
     private UserAccountRepository userAccountRepository;
     private UserImageService userImageService;
-    private FilterCityRepository filterCityRepository;
 
     @Autowired
     public UserInfoServiceImpl(
@@ -34,15 +32,13 @@ public class UserInfoServiceImpl implements UserInfoService {
             CityRepository cityRepository,
             GenderRepository genderRepository,
             UserAccountRepository userAccountRepository,
-            UserImageService userImageService,
-            FilterCityRepository filterCityRepository) {
+            UserImageService userImageService) {
         this.userInfoRepository = userInfoRepository;
         this.userRepository = userRepository;
         this.cityRepository = cityRepository;
         this.genderRepository = genderRepository;
         this.userAccountRepository = userAccountRepository;
         this.userImageService = userImageService;
-        this.filterCityRepository = filterCityRepository;
     }
 
     @Override
@@ -101,9 +97,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         user.setFirstName(userInfoRequest.getFirstName());
         user.setLastName(userInfoRequest.getLastName());
 
-        if (userInfoRequest.getCityId() != null && filterCityRepository.getUserFilterCity(user).isEmpty()){
-            filterCityRepository.save(new FilterCity(user, cityRepository.findOne(userInfoRequest.getCityId())));
-        }
     }
 
     private UserInfo convertToUserInfo(UserInfoRequest userInfoRequest, User user) {

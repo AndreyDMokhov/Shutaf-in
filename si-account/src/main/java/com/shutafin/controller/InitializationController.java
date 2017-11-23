@@ -6,7 +6,6 @@ import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.web.locale.CityResponseDTO;
 import com.shutafin.model.web.locale.CountryResponseDTO;
 import com.shutafin.model.web.locale.GenderResponseDTO;
-import com.shutafin.model.web.user.FiltersWeb;
 import com.shutafin.model.web.user.UserInfoResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,9 +36,6 @@ public class InitializationController {
     private UserLanguageService userLanguageService;
 
     @Autowired
-    private UserSearchService userSearchService;
-
-    @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -60,11 +56,6 @@ public class InitializationController {
                 .cities(initializationService.findAllCitiesByLanguage(language))
                 .countries(initializationService.findAllCountriesByLanguage(language))
                 .genders(initializationService.findAllGendersByLanguage(language))
-                .filters(
-                        new FiltersWeb(
-                                userSearchService.getCitiesForFilter(user),
-                                userSearchService.getGenderForFilter(user),
-                                userSearchService.getAgeRangeForFilter(user)))
                 .build();
     }
 }
@@ -78,6 +69,4 @@ class InitializationResponse {
     private List<GenderResponseDTO> genders;
     private List<CountryResponseDTO> countries;
     private List<CityResponseDTO> cities;
-    private FiltersWeb filters;
-
 }

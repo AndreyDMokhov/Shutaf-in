@@ -1,6 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.core.service.RegistrationService;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import lombok.extern.slf4j.Slf4j;
@@ -36,5 +37,10 @@ public class RegistrationController {
         registrationService.save(registrationRequestWeb);
     }
 
+    @GetMapping(value = "/registration/confirm/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public User confirmRegistration(@PathVariable Long userId) {
+        log.debug("/users/registration/confirmation/{userId}");
+        return registrationService.confirmRegistration(userId);
+    }
 
 }

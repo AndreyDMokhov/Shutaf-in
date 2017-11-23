@@ -11,7 +11,6 @@ import javax.persistence.*;
 /**
  * Created by evgeny on 10/1/2017.
  */
-@Deprecated
 @Entity
 @Table(name = "FILTER_AGE_RANGE")
 @NoArgsConstructor
