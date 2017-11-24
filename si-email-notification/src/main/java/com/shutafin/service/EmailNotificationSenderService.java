@@ -1,7 +1,8 @@
 package com.shutafin.service;
 
 import com.shutafin.model.email.EmailNotificationWeb;
-import com.shutafin.model.email.EmailResponse;
+import com.shutafin.model.email.EmailConfirmationResponse;
+import com.shutafin.model.entity.EmailConfirmation;
 import com.shutafin.model.entity.EmailImageSource;
 import com.shutafin.model.entity.EmailNotificationLog;
 
@@ -13,7 +14,7 @@ public interface EmailNotificationSenderService {
 
     void sendEmail(EmailNotificationLog emailNotificationLog, Set<EmailImageSource> emailImageSources);
 
-    EmailResponse getUserIdFromConfirmation(String link);
+    EmailConfirmationResponse getUserIdFromConfirmation(String link);
 
-    void isValidLink(String link);
+    EmailConfirmation getValidLink(String link);
 }

@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.email.EmailNotificationWeb;
-import com.shutafin.model.email.EmailResponse;
+import com.shutafin.model.email.EmailConfirmationResponse;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.service.EmailNotificationSenderService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class EmailNotificationSenderController {
             value = "/confirm/{link}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public EmailResponse confirmLink(@PathVariable String link) {
+    public EmailConfirmationResponse confirmLink(@PathVariable String link) {
         return mailSenderService.getUserIdFromConfirmation(link);
     }
 
@@ -51,7 +51,7 @@ public class EmailNotificationSenderController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public void isValidateLink(@PathVariable String link) {
-        mailSenderService.isValidLink(link);
+        mailSenderService.getValidLink(link);
     }
 
 }

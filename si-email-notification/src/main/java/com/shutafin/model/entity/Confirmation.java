@@ -8,8 +8,8 @@ import java.util.Date;
 
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-@Setter
+@AllArgsConstructor
+@Data
 public class Confirmation extends AbstractEntity {
 
     @Column(name = "USER_ID", nullable = false)
