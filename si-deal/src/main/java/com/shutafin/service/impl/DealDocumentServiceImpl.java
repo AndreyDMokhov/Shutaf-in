@@ -1,13 +1,13 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.*;
-import com.shutafin.model.types.DealUserStatus;
+import com.shutafin.model.entities.DealDocument;
+import com.shutafin.model.entities.DealPanel;
+import com.shutafin.model.entities.DocumentStorage;
 import com.shutafin.model.types.DocumentType;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.DealUserDocumentWeb;
 import com.shutafin.repository.DealDocumentRepository;
 import com.shutafin.repository.DealPanelRepository;
-import com.shutafin.repository.DealUserRepository;
 import com.shutafin.repository.DocumentStorageRepository;
 import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealService;
@@ -18,7 +18,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Base64;
 
 @Service
@@ -46,7 +49,6 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     @Autowired
     private DealService dealService;
 
-    // TODO: add DealPanel during adding document
     // TODO: add moving document from panel to panel
 
     @Override

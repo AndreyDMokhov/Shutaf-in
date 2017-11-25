@@ -1,8 +1,6 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.Deal;
-import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.types.DealStatus;
 import com.shutafin.model.web.DealResponse;
 import com.shutafin.model.web.DealUserWeb;
 import com.shutafin.model.web.DealWeb;
