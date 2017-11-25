@@ -7,6 +7,7 @@ import com.shutafin.repository.base.BaseJpaRepository;
 /**
  * Created by evgeny on 9/9/2017.
  */
+@Deprecated
 public interface VarietyExamKeyRepository extends BaseJpaRepository<VarietyExamKey, Long>, VarietyExamKeyRepositoryCustom {
     VarietyExamKey findByUserExamKey(String userExamKey);
 }

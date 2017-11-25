@@ -7,9 +7,7 @@ import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.initialization.QuestionAnswerElement;
 import com.shutafin.model.web.user.QuestionAnswerRequest;
-import com.shutafin.repository.initialization.locale.QuestionRepository;
 import com.shutafin.repository.initialization.locale.QuestionRepositoryCustom;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -19,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 @Repository
 public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
 

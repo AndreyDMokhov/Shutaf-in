@@ -4,7 +4,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.matching.UserMatchingScore;
 
 import java.util.Map;
-
+@Deprecated
 public interface UserMatchingScoreService {
 
     UserMatchingScore getMatchingScore(User userOrigin, User userToMatch);

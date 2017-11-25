@@ -13,6 +13,7 @@ import javax.persistence.*;
 /**
  * Created by evgeny on 9/5/2017.
  */
+@Deprecated
 @Entity
 @Table(name = "USER_EXAM_KEY")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

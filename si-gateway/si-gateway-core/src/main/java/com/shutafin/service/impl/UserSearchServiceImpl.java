@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//TODO move not @Deprecated methods to account service
+
 @Service
 @Transactional
 public class UserSearchServiceImpl implements UserSearchService {
@@ -57,6 +59,7 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     public List<Integer> getCitiesForFilter(User user) {
+        //todo ms-matching
 
         List<City> cities = filterCityRepository.getUserFilterCity(user);
         if (cities.isEmpty()) {
@@ -71,6 +74,7 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     public Integer getGenderForFilter(User user) {
+        //todo ms-matching
         Gender gender = filterGenderRepository.getUserFilterGender(user);
 
         return gender == null ? null : gender.getId();
@@ -78,6 +82,7 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     public AgeRangeWebDTO getAgeRangeForFilter(User user) {
+        //todo ms-matching
         return filterAgeRangeRepository.getUserFilterAgeRange(user);
     }
 
@@ -89,6 +94,7 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     public UserSearchResponse findUserDataById(Long userId) {
+        //todo ms-account
         User user = userRepository.findOne(userId);
         if (user == null) {
             throw new ResourceNotFoundException();
@@ -116,6 +122,7 @@ public class UserSearchServiceImpl implements UserSearchService {
         return userBaseResponseList;
     }
     private UserSearchResponse getUserResponseDTO(User users) {
+        //todo ms-account
         UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(users);
 
         return new UserSearchResponse(

@@ -11,6 +11,7 @@ import javax.persistence.*;
 /**
  * Created by evgeny on 9/9/2017.
  */
+@Deprecated
 @Entity
 @Table(name = "VARIETY_EXAM_KEY")
 @NoArgsConstructor

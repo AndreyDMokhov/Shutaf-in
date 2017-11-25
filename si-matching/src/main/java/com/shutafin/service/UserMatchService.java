@@ -1,17 +1,14 @@
 package com.shutafin.service;
 
-
-
-import com.shutafin.model.infrastructure.User;
-import com.shutafin.model.DTO.UserQuestionAnswerDTO;
-import com.shutafin.model.DTO.QuestionsListWithAnswersDTO;
-import com.shutafin.model.DTO.QuestionsListWithSelectedAnswersDTO;
+import com.shutafin.model.dto.QuestionsListWithAnswersDTO;
+import com.shutafin.model.dto.QuestionsListWithSelectedAnswersDTO;
+import com.shutafin.model.dto.UserQuestionAnswerDTO;
 
 import java.util.List;
 
 public interface UserMatchService {
-    List<Long> findMatchingUsers(User user);
-    void saveQuestionsAnswers(User user, List<UserQuestionAnswerDTO> questionsAnswers);
-    List<QuestionsListWithAnswersDTO> getUserQuestionsAnswers(User user);
-    List<QuestionsListWithSelectedAnswersDTO> getUserQuestionsSelectedAnswers(User user);
+    List<Long> findMatchingUsers(Long userId);
+    void saveSelectedUserQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers);
+    List<QuestionsListWithAnswersDTO> getQuestionsAnswersByLanguageId(Integer languageId);
+    List<QuestionsListWithSelectedAnswersDTO> getSelectedUserQuestionsAnswers(Long userId);
 }

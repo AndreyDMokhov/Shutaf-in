@@ -28,6 +28,7 @@ import java.util.List;
 /**
  * Created by evgeny on 10/3/2017.
  */
+@Deprecated
 @Service
 @Transactional
 @Slf4j

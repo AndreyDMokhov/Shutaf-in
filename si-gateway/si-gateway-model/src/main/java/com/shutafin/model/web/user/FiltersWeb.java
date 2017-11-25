@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by evgeny on 10/17/2017.
  */
+@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Deprecated
 @Service
 @Transactional
 public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {

@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import javax.persistence.QueryHint;
 import java.util.List;
-
+@Deprecated
 public interface AnswerExtendedRepository extends BaseJpaRepository<AnswerExtended, Integer> {
 
     @QueryHints(value = {

@@ -12,6 +12,7 @@ import javax.persistence.*;
 /**
  * Created by evgeny on 8/10/2017.
  */
+@Deprecated
 @Entity
 @Table(name = "I_ANSWER")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)

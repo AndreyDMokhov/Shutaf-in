@@ -10,6 +10,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Deprecated
 @Repository
 public class FilterAgeRangeRepositoryImpl implements FilterAgeRangeRepositoryCustom {
 
