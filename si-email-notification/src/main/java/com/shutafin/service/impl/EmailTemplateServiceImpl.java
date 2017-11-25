@@ -1,11 +1,14 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.email.EmailNotificationWeb;
-import com.shutafin.model.email.EmailReason;
+import com.shutafin.model.confirmations.EmailNotificationWeb;
+import com.shutafin.model.confirmations.EmailReason;
+import com.shutafin.model.entity.EmailConfirmation;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +25,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     private static final String HEADER_SUFFIX = ".header";
     private static final String SECTION_SUFFIX = ".section";
+
+    @Autowired
+    private DiscoveryRoutingService discoveryRoutingService;
 
     @Override
     public BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, String link) {
@@ -81,6 +87,14 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
                         link),
                 imageSources
         );
+    }
+
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, EmailConfirmation emailConfirmation, String confirmationUrl) {
+
+        String serverAddress = discoveryRoutingService.getExternalRoute();
+        String urlLink = serverAddress + confirmationUrl + emailConfirmation.getConfirmationUUID();
+        return getEmailMessage(emailNotificationWeb, urlLink, null, emailConfirmation.getNewEmail());
+
     }
 
 }

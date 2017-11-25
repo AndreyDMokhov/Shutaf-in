@@ -6,4 +6,5 @@ public interface DiscoveryRoutingService {
 
     String getRoute(RouteDirection direction);
     Map<RouteDirection, String> getServiceRoutes();
+    String getExternalRoute();
 }

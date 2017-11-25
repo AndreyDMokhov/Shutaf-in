@@ -1,9 +1,9 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.email.EmailNotificationWeb;
-import com.shutafin.model.email.EmailConfirmationResponse;
+import com.shutafin.model.confirmations.EmailNotificationWeb;
+import com.shutafin.model.confirmations.EmailConfirmationResponse;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
-import com.shutafin.service.EmailNotificationSenderService;
+import com.shutafin.service.EmailNotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,12 +17,12 @@ import javax.validation.Valid;
 @Slf4j
 public class EmailNotificationSenderController {
 
-    private EmailNotificationSenderService mailSenderService;
+    private EmailNotificationService mailSenderService;
 
     @Autowired
     public EmailNotificationSenderController(
-            EmailNotificationSenderService emailNotificationSenderService) {
-        this.mailSenderService = emailNotificationSenderService;
+            EmailNotificationService emailNotificationService) {
+        this.mailSenderService = emailNotificationService;
     }
 
     @PostMapping(

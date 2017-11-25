@@ -4,7 +4,7 @@ import com.shutafin.model.entity.EmailImageSource;
 import com.shutafin.model.entity.EmailNotificationLog;
 import com.shutafin.repository.EmailImageSourceRepository;
 import com.shutafin.repository.EmailNotificationLogRepository;
-import com.shutafin.service.EmailNotificationSenderService;
+import com.shutafin.service.SenderEmailMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,16 +20,13 @@ import java.util.Set;
 public class ResendFailedEmailNotificationsJob {
 
     private EmailNotificationLogRepository emailNotificationLogRepository;
-    private EmailNotificationSenderService emailNotificationSenderService;
+    private SenderEmailMessageService senderEmailMessageService;
     private EmailImageSourceRepository emailImageSourceRepository;
 
     @Autowired
-    public ResendFailedEmailNotificationsJob(
-            EmailNotificationLogRepository emailNotificationLogRepository,
-            EmailNotificationSenderService emailNotificationSenderService,
-            EmailImageSourceRepository emailImageSourceRepository) {
+    public ResendFailedEmailNotificationsJob(EmailNotificationLogRepository emailNotificationLogRepository, SenderEmailMessageService senderEmailMessageService, EmailImageSourceRepository emailImageSourceRepository) {
         this.emailNotificationLogRepository = emailNotificationLogRepository;
-        this.emailNotificationSenderService = emailNotificationSenderService;
+        this.senderEmailMessageService = senderEmailMessageService;
         this.emailImageSourceRepository = emailImageSourceRepository;
     }
 
@@ -40,7 +37,7 @@ public class ResendFailedEmailNotificationsJob {
         log.info("{} emails to be resend", failedEmailNotificationLogs.size());
         for (EmailNotificationLog emailNotificationLog : failedEmailNotificationLogs) {
             Set<EmailImageSource> imageSources = new HashSet<>(emailImageSourceRepository.findAllByEmailNotificationLog(emailNotificationLog));
-            emailNotificationSenderService.sendEmail(emailNotificationLog, imageSources);
+            senderEmailMessageService.sendEmailMessage(emailNotificationLog, imageSources);
         }
     }
 

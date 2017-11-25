@@ -1,5 +1,4 @@
-package com.shutafin.model.email;
-
+package com.shutafin.model.confirmations;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EmailConfirmationResponse {
+public class UserImageSource {
 
     private Long userId;
-    private String newEmail;
+    private String firstName;
+    private String lastName;
+    private byte[] imageSource;
 
 }

@@ -1,4 +1,4 @@
-package com.shutafin.model.email;
+package com.shutafin.model.confirmations;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

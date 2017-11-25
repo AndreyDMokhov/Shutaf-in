@@ -1,4 +1,4 @@
-package com.shutafin.model.email;
+package com.shutafin.model.confirmations;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package com.shutafin.model.entity;
 
 import com.shutafin.model.base.AbstractEntity;
-import com.shutafin.model.email.EmailReason;
-import com.shutafin.model.email.EmailReasonConverter;
+import com.shutafin.model.confirmations.EmailReason;
+import com.shutafin.model.confirmations.EmailReasonConverter;
 import lombok.*;
 
 import javax.persistence.*;
