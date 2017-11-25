@@ -1,4 +1,4 @@
-package com.shutafin.config;
+package com.shutafin.configuration;
 
 import org.springframework.boot.autoconfigure.web.WebMvcRegistrationsAdapter;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.lang.reflect.Method;
 
 @Configuration
-public class WebConfig {
+public class WebContextConfiguration {
 
     @Bean
     public WebMvcRegistrationsAdapter webMvcRegistrationsHandlerMapping() {
@@ -19,7 +19,7 @@ public class WebConfig {
             @Override
             public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
                 return new RequestMappingHandlerMapping() {
-                    private final static String API_BASE_PATH = "admin";
+                    private final static String API_BASE_PATH = "api";
 
                     @Override
                     protected void registerHandlerMethod(Object handler, Method method, RequestMappingInfo mapping) {
