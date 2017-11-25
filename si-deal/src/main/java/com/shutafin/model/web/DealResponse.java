@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -15,14 +12,11 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DealWeb {
+public class DealResponse {
     private Long dealId;
-
-    @NotNull
-    private Long originUserId;
-
     private String title;
-
-    @NotEmpty
+    private Integer statusId;
     private List<Long> users;
+    private Map<Long, String> panels;
+    private DealPanelResponse firstPanel;
 }

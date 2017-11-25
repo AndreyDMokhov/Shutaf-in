@@ -1,6 +1,8 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.base.AbstractEntity;
+import com.shutafin.model.types.DealUserPermissionType;
+import com.shutafin.model.types.DealUserPermissionTypeConverter;
 import com.shutafin.model.types.DealUserStatus;
 import com.shutafin.model.types.DealUserStatusConverter;
 import lombok.AllArgsConstructor;
@@ -25,7 +27,12 @@ public class DealUser extends AbstractEntity {
     @OneToOne
     private Deal deal;
 
-    @Column(name = "DEAL_STATUS_ID", nullable = false)
+    @Column(name = "DEAL_USER_STATUS_ID", nullable = false)
     @Convert(converter = DealUserStatusConverter.class)
     private DealUserStatus dealUserStatus;
+
+    @Column(name = "DEAL_USER_PERMISSION_ID", nullable = false)
+    @Convert(converter = DealUserPermissionTypeConverter.class)
+    private DealUserPermissionType dealUserPermissionType;
+
 }

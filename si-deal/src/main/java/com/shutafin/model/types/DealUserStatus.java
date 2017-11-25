@@ -1,9 +1,10 @@
 package com.shutafin.model.types;
 
 public enum DealUserStatus implements IdentifiableType<Integer> {
-    ACTIVE(1),
-    REMOVED(2),
-    PENDING(3);
+    PENDING(1),
+    ACTIVE(2),
+    LEAVED(3),
+    REMOVED(4);
 
     private Integer id;
 

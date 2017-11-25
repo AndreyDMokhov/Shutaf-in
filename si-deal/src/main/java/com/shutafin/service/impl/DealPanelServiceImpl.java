@@ -3,13 +3,10 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.Deal;
 import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.entities.DealUser;
-import com.shutafin.model.types.DealUserStatus;
+import com.shutafin.model.web.DealDocumentWeb;
 import com.shutafin.model.web.DealPanelWeb;
 import com.shutafin.repository.DealDocumentRepository;
 import com.shutafin.repository.DealPanelRepository;
-import com.shutafin.repository.DealRepository;
-import com.shutafin.repository.DealUserRepository;
 import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealPanelService;
 import com.shutafin.service.DealService;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,12 +27,6 @@ public class DealPanelServiceImpl implements DealPanelService {
 
     @Autowired
     private DealPanelRepository dealPanelRepository;
-
-    @Autowired
-    private DealRepository dealRepository;
-
-    @Autowired
-    private DealUserRepository dealUserRepository;
 
     @Autowired
     private DealDocumentService dealDocumentService;
@@ -54,7 +46,7 @@ public class DealPanelServiceImpl implements DealPanelService {
 
         DealPanel dealPanel = new DealPanel();
         dealPanel.setDeal(deal);
-        dealPanel.setTitle(dealPanel.getTitle());
+        dealPanel.setTitle(dealPanelWeb.getTitle());
         dealPanel.setModifiedByUser(dealPanelWeb.getUserId());
         dealPanel.setIsDeleted(false);
 
@@ -64,26 +56,40 @@ public class DealPanelServiceImpl implements DealPanelService {
     }
 
     @Override
-    public DealPanel getDealPanel(Long dealFolderId, Long userId) {
-        DealPanel dealPanel = getDealPanelWithPermissions(userId, dealFolderId, !NEED_FULL_ACCESS);
+    public DealPanel getDealPanel(Long dealPanelId, Long userId) {
+        DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, !NEED_FULL_ACCESS);
         return dealPanel;
     }
 
     @Override
-    public DealPanel renameDealPanel(Long dealFolderId, Long userId, String newTitle) {
-        DealPanel dealPanel = getDealPanelWithPermissions(userId, dealFolderId, NEED_FULL_ACCESS);
+    public DealPanel renameDealPanel(Long dealPanelId, Long userId, String newTitle) {
+        DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setTitle(newTitle);
         dealPanel.setModifiedByUser(userId);
         return dealPanel;
     }
 
     @Override
-    public void deleteDealPanel(Long dealFolderId, Long userId) {
-        DealPanel dealPanel = getDealPanelWithPermissions(userId, dealFolderId, NEED_FULL_ACCESS);
+    public void deleteDealPanel(Long dealPanelId, Long userId) {
+        DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setIsDeleted(true);
         dealPanel.setModifiedByUser(userId);
-        List<DealDocument> dealDocuments = dealDocumentRepository.findAllByDealPanelDealId(dealFolderId);
+        List<DealDocument> dealDocuments = dealDocumentRepository.findAllByDealPanelDealId(dealPanelId);
         dealDocuments.forEach(doc -> dealDocumentService.deleteDealDocument(userId, doc.getId()));
+    }
+
+    @Override
+    public List<DealDocumentWeb> getDealPanelDocuments(Long dealPanelId) {
+        List<DealDocument> dealPanelDocuments = dealDocumentRepository.findAllByDealPanelId(dealPanelId);
+        if (!dealPanelDocuments.isEmpty()) {
+            return dealPanelDocuments
+                    .stream().map(dealDocument -> new DealDocumentWeb(dealDocument.getId(),
+                            dealDocument.getTitle(),
+                            dealDocument.getDocumentType().getCode(),
+                            dealDocument.getCreatedDate().getTime()))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 
     private DealPanel getDealPanelWithPermissions(Long userId, Long dealFolderId, Boolean fullAccess) {

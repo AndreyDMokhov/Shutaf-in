@@ -44,9 +44,6 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     private DealPanelRepository dealPanelRepository;
 
     @Autowired
-    private DealUserRepository dealUserRepository;
-
-    @Autowired
     private DealService dealService;
 
     // TODO: add DealPanel during adding document
@@ -62,7 +59,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
         DealPanel dealPanel = dealPanelRepository.findOne(dealUserDocumentWeb.getDealFolderId());
         if (dealPanel == null) {
-            log.warn("Deal folder with give id does not exist");
+            log.warn("Deal folder with given id does not exist");
             throw new RuntimeException();
         }
 

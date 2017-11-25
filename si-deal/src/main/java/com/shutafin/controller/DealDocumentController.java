@@ -21,7 +21,7 @@ public class DealDocumentController {
     @Autowired
     private DealDocumentService dealDocumentService;
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public DealUserDocumentWeb addDealDocument(@RequestBody @Valid DealUserDocumentWeb dealUserDocumentWeb, BindingResult result) {
         log.debug("/documents/");
         if (result.hasErrors()) {
@@ -35,7 +35,7 @@ public class DealDocumentController {
         return getDealUserDocumentWeb(dealDocument, false);
     }
 
-    @RequestMapping(value = "/{userId}/{docId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{userId}/{docId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealUserDocumentWeb getDealDocument(@PathVariable(value = "userId") Long userId,
                                                @PathVariable(value = "docId") Long dealDocumentId) {
         log.debug("GET /documents/{userId}/{docId}");
@@ -43,8 +43,7 @@ public class DealDocumentController {
         return getDealUserDocumentWeb(dealDocument, true);
     }
 
-    @RequestMapping(value = "/{userId}/{docId}", method = RequestMethod.POST,
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
+    @PostMapping(value = "/{userId}/{docId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealUserDocumentWeb renameDealDocument(@PathVariable(value = "userId") Long userId,
                                                   @PathVariable(value = "docId") Long userDocumentId,
@@ -54,7 +53,7 @@ public class DealDocumentController {
         return getDealUserDocumentWeb(dealDocument, false);
     }
 
-    @DeleteMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/{userId}/{docId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserDocument(@RequestParam(value = "userId") Long userId,
                                    @RequestParam(value = "docId") Long userDocumentId) {
         log.debug("DELETE /documents/{userId}/{docId}");
