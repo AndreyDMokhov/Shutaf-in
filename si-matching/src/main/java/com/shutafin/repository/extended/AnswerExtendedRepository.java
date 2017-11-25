@@ -1,7 +1,7 @@
 package com.shutafin.repository.extended;
 
 
-import com.shutafin.model.DTO.AnswerExtendedResponseDTO;
+import com.shutafin.model.dto.AnswerExtendedResponseDTO;
 import com.shutafin.model.entities.extended.AnswerExtended;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +16,7 @@ public interface AnswerExtendedRepository extends BaseJpaRepository<AnswerExtend
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")
     })
-    @Query(value = "select new com.shutafin.model.DTO.AnswerExtendedResponseDTO " +
+    @Query(value = "select new com.shutafin.model.dto.AnswerExtendedResponseDTO " +
             "(ansl.answer.id, ansl.description) " +
             "from AnswerExtendedLocale ansl, AnswerExtended ans " +
             "where ansl.languageId = :languageId and ansl.answer.id = ans.id and ans.question.id = :questionId")

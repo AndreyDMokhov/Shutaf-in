@@ -136,16 +136,17 @@ public class ChatController {
     }
 
     private ChatMessageResponse createChatMessageOutputWeb(ChatMessage chatMessage) {
-        ChatMessageResponse chatMessageOutputWeb = new ChatMessageResponse();
-        chatMessageOutputWeb.setUserId(chatMessage.getUser().getId());
-        chatMessageOutputWeb.setMessageId(chatMessage.getId());
-        chatMessageOutputWeb.setFirstName(chatMessage.getUser().getFirstName());
-        chatMessageOutputWeb.setLastName(chatMessage.getUser().getLastName());
-        chatMessageOutputWeb.setCreateDate(chatMessage.getCreatedDate());
-        chatMessageOutputWeb.setMessage(chatMessage.getMessage());
-        chatMessageOutputWeb.setMessageType(chatMessage.getMessageType().getId());
-        chatMessageOutputWeb.setUsersToNotify(chatMessage.getUsersToNotify());
-        return chatMessageOutputWeb;
+        return ChatMessageResponse
+                .builder()
+                .userId(chatMessage.getUser().getId())
+                .messageId(chatMessage.getId())
+                .firstName(chatMessage.getUser().getFirstName())
+                .lastName(chatMessage.getUser().getLastName())
+                .createDate(chatMessage.getCreatedDate())
+                .message(chatMessage.getMessage())
+                .messageType(chatMessage.getMessageType().getId())
+                .usersToNotify(chatMessage.getUsersToNotify())
+                .build();
     }
 
 }

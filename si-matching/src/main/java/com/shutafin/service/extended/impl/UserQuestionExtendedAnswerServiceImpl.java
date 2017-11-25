@@ -1,7 +1,7 @@
 package com.shutafin.service.extended.impl;
 
 
-import com.shutafin.model.DTO.UserQuestionExtendedAnswersWeb;
+import com.shutafin.model.dto.UserQuestionExtendedAnswersWeb;
 import com.shutafin.model.entities.extended.*;
 import com.shutafin.repository.extended.*;
 import com.shutafin.service.extended.AnswerSimilarityService;

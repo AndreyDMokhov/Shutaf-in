@@ -2,10 +2,11 @@ package com.shutafin.service.filter.filters;
 
 
 
-import com.shutafin.model.DTO.AgeRangeWebDTO;
+import com.shutafin.model.dto.AgeRangeWebDTO;
 import com.shutafin.repository.FilterAgeRangeRepository;
 import com.shutafin.service.filter.UsersFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  */
 //TODO establish connection with account service to get users with right age
 //TODO maybe shell cancel the reverse dependency from users filter age settings?
+@Service
 public class UsersFilterByAgeRange implements UsersFilter {
 
     @Autowired
@@ -26,7 +28,8 @@ public class UsersFilterByAgeRange implements UsersFilter {
         if (ageRangeWebDTO == null) {
             return filteredUsers;
         }
-        return filterAgeRangeRepository.filterUsersFromListByAge(filteredUsers,
+        return filterAgeRangeRepository.filterUsersFromListByAge(
+                filteredUsers,
                 ageRangeWebDTO.getFromAge(),
                 ageRangeWebDTO.getToAge());
     }

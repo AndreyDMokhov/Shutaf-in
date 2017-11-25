@@ -1,7 +1,7 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.DTO.AgeRangeWebDTO;
-import com.shutafin.model.DTO.FiltersWeb;
+import com.shutafin.model.dto.AgeRangeWebDTO;
+import com.shutafin.model.dto.FiltersWeb;
 import com.shutafin.model.entities.FilterAgeRange;
 import com.shutafin.model.entities.FilterCity;
 import com.shutafin.model.entities.FilterGender;
@@ -52,10 +52,10 @@ public class UserFilterServiceImpl implements UserFilterService {
 
     private List<Long> filterMatchedUsers(Long userId, List<Long> matchingUsersList) {
         for (UsersFilter filter : usersFilters) {
-            if(matchingUsersList.isEmpty()){
+            if (matchingUsersList.isEmpty()) {
                 continue;
             }
-            matchingUsersList = filter.doFilter(userId,matchingUsersList);
+            matchingUsersList = filter.doFilter(userId, matchingUsersList);
         }
         return matchingUsersList;
     }
@@ -63,6 +63,9 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Override
     @Transactional
     public void saveUserFilters(Long userId, FiltersWeb filtersWeb) {
+        if (filtersWeb == null) {
+            return;
+        }
         saveUserFilterCity(userId, filtersWeb.getFilterCitiesIds());
         saveUserFilterGender(userId, filtersWeb.getFilterGenderId());
         saveUserFilterAgeRange(userId, filtersWeb.getFilterAgeRange());
@@ -72,7 +75,7 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Transactional
     public void saveUserFilterCity(Long userId, List<Integer> cities) {
         filterCityRepository.deleteByUserId(userId);
-        if (cities != null){
+        if (cities != null) {
             for (Integer cityId : cities) {
                 filterCityRepository.save(new FilterCity(userId, cityId));
             }
@@ -83,7 +86,7 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Transactional
     public void saveUserFilterGender(Long userId, Integer genderId) {
         filterGenderRepository.deleteByUserId(userId);
-        if (genderId != null){
+        if (genderId != null) {
             filterGenderRepository.save(new FilterGender(userId, genderId));
         }
     }
@@ -92,7 +95,7 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Transactional
     public void saveUserFilterAgeRange(Long userId, AgeRangeWebDTO ageRangeWebDTO) {
         filterAgeRangeRepository.deleteByUserId(userId);
-        if (ageRangeWebDTO != null){
+        if (ageRangeWebDTO != null) {
             filterAgeRangeRepository.save(new FilterAgeRange(userId, ageRangeWebDTO.getFromAge(), ageRangeWebDTO.getToAge()));
         }
     }
@@ -113,6 +116,6 @@ public class UserFilterServiceImpl implements UserFilterService {
 
     @Override
     public AgeRangeWebDTO getAgeRangeForFilter(Long userId) {
-         return filterAgeRangeRepository.findAgeRangeByUserId(userId);
+        return filterAgeRangeRepository.findAgeRangeByUserId(userId);
     }
 }

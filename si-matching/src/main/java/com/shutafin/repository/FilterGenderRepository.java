@@ -15,10 +15,8 @@ public interface FilterGenderRepository extends BaseJpaRepository<FilterGender, 
     @Query("SELECT fg.genderId FROM FilterGender fg WHERE fg.userId = :userId")
     Integer findGenderIdByUserId (@Param("userId") Long userId);
 
-    void deleteByUserId(Long userId);
+    @Query("SELECT fg.userId FROM FilterGender fg WHERE fg.userId in (:filteredUsers) AND fg.genderId = :genderId")
+    List<Long> filterUsersFromListByGender(@Param("filteredUsers") List<Long> filteredUsers, @Param("genderId") Integer genderId);
 
-    @Query("SELECT fg.userId FROM FilterGender fg WHERE fg.userId in (:filteredUsers) " +
-            "AND fg.genderId = :genderId")
-    List<Long> filterUsersFromListByGender(@Param("filteredUsers") List<Long> filteredUsers,
-                                         @Param("genderId") Integer genderId);
+    void deleteByUserId(Long userId);
 }

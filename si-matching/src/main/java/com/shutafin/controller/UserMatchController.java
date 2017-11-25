@@ -1,9 +1,9 @@
 package com.shutafin.controller;
 
 
-import com.shutafin.model.DTO.QuestionsListWithAnswersDTO;
-import com.shutafin.model.DTO.QuestionsListWithSelectedAnswersDTO;
-import com.shutafin.model.DTO.UserQuestionAnswerDTO;
+import com.shutafin.model.dto.QuestionsListWithAnswersDTO;
+import com.shutafin.model.dto.QuestionsListWithSelectedAnswersDTO;
+import com.shutafin.model.dto.UserQuestionAnswerDTO;
 import com.shutafin.service.UserMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

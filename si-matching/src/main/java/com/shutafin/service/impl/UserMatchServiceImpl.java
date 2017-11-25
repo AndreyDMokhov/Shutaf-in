@@ -1,8 +1,8 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.DTO.QuestionsListWithAnswersDTO;
-import com.shutafin.model.DTO.QuestionsListWithSelectedAnswersDTO;
-import com.shutafin.model.DTO.UserQuestionAnswerDTO;
+import com.shutafin.model.dto.QuestionsListWithAnswersDTO;
+import com.shutafin.model.dto.QuestionsListWithSelectedAnswersDTO;
+import com.shutafin.model.dto.UserQuestionAnswerDTO;
 import com.shutafin.model.infrastructure.AnswerElement;
 import com.shutafin.model.infrastructure.AnswersForQuestion;
 import com.shutafin.model.infrastructure.SelectedAnswerElement;

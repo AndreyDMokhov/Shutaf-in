@@ -1,4 +1,4 @@
-package com.shutafin.model.DTO;
+package com.shutafin.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserQuestionExtendedAnswersWeb {
-
+public class QuestionsListWithSelectedAnswersDTO {
     private Integer questionId;
-    private Integer questionImportanceId;
-    private List<Integer> answersId;
-
+    private List<Integer> selectedAnswersIds;
 }

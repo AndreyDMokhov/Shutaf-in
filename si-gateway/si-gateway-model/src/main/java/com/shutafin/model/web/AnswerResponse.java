@@ -1,9 +1,6 @@
 package com.shutafin.model.web;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Created by evgeny on 8/23/2017.

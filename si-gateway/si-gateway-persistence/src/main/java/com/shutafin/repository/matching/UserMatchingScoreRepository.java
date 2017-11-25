@@ -5,6 +5,7 @@ import com.shutafin.model.entities.matching.UserMatchingScore;
 import com.shutafin.repository.base.BaseJpaRepository;
 
 import java.util.List;
+
 @Deprecated
 public interface UserMatchingScoreRepository extends BaseJpaRepository<UserMatchingScore, Long> {
 

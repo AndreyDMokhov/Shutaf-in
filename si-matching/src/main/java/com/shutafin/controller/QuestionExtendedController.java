@@ -1,8 +1,8 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.DTO.QuestionExtendedWithAnswersLocaleWeb;
-import com.shutafin.model.DTO.QuestionImportanceDTO;
-import com.shutafin.model.DTO.UserQuestionExtendedAnswersWeb;
+import com.shutafin.model.dto.QuestionExtendedWithAnswersLocaleWeb;
+import com.shutafin.model.dto.QuestionImportanceDTO;
+import com.shutafin.model.dto.UserQuestionExtendedAnswersWeb;
 import com.shutafin.service.extended.QuestionExtendedService;
 import com.shutafin.service.extended.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
  * Created by Rogov on 19.11.2017.
  */
 @RestController
-@RequestMapping("/extended/questions")
+@RequestMapping("/matching/extended/questions")
 public class QuestionExtendedController {
 
     @Autowired

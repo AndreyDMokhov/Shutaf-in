@@ -1,7 +1,7 @@
 package com.shutafin.repository.extended;
 
 
-import com.shutafin.model.DTO.QuestionImportanceDTO;
+import com.shutafin.model.dto.QuestionImportanceDTO;
 import com.shutafin.model.entities.extended.QuestionImportance;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +16,7 @@ public interface QuestionImportanceRepository extends BaseJpaRepository<Question
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")
     })
-    @Query(value = "select new com.shutafin.model.DTO.QuestionImportanceDTO " +
+    @Query(value = "select new com.shutafin.model.dto.QuestionImportanceDTO " +
             "(qi.questionImportance.id, qi.description) " +
             "from QuestionImportanceLocale qi where qi.languageId = :languageId")
     List<QuestionImportanceDTO> getAllQuestionImportanceLocale(@Param("languageId") Integer languageId);

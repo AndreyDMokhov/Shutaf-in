@@ -1,4 +1,4 @@
-package com.shutafin.model.DTO;
+package com.shutafin.model.dto;
 
 
 public class QuestionExtendedResponseDTO extends BaseResponseDTO {

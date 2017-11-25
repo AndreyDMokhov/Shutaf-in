@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
 
-import com.shutafin.model.DTO.UserQuestionExtendedAnswersWeb;
+import com.shutafin.model.dto.UserQuestionExtendedAnswersWeb;
 import com.shutafin.service.extended.UserMatchingScoreService;
 import com.shutafin.service.extended.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;

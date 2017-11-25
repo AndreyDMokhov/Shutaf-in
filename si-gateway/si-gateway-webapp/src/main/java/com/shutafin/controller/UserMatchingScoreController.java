@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
-@Deprecated
+
 @RestController
 @RequestMapping("/matching/extended")
 public class UserMatchingScoreController {

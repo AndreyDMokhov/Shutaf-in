@@ -1,20 +1,14 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserQuestionAnswer;
-import com.shutafin.model.entities.infrastructure.Answer;
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.infrastructure.Question;
+import com.shutafin.model.entities.*;
+import com.shutafin.model.entities.infrastructure.*;
 import com.shutafin.model.entities.match.UserExamKey;
 import com.shutafin.model.entities.match.VarietyExamKey;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.user.QuestionAnswerRequest;
-import com.shutafin.repository.common.UserExamKeyRepository;
-import com.shutafin.repository.common.UserQuestionAnswerRepository;
-import com.shutafin.repository.common.VarietyExamKeyRepository;
-import com.shutafin.repository.initialization.locale.AnswerRepository;
-import com.shutafin.repository.initialization.locale.QuestionRepository;
+import com.shutafin.repository.common.*;
+import com.shutafin.repository.initialization.locale.*;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

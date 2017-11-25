@@ -15,10 +15,8 @@ public interface FilterCityRepository extends BaseJpaRepository<FilterCity, Long
     @Query("SELECT fc.cityId FROM FilterCity fc WHERE fc.userId = :userId ")
     List<Integer> findAllCityIdsByUserId (@Param("userId") Long userId);
 
-    @Query("SELECT fc.userId FROM FilterCity fc WHERE fc.userId in (:filteredUsers) " +
-            "AND fc.cityId in (:cityIds)")
-    List<Long> filterUsersFromListByCity(@Param("filteredUsers") List<Long> filteredUsers,
-                                        @Param("cityId") List<Integer> cityIds);
+    @Query("SELECT fc.userId FROM FilterCity fc WHERE fc.userId in (:filteredUsers) AND fc.cityId in (:cityIds)")
+    List<Long> filterUsersFromListByCity(@Param("filteredUsers") List<Long> filteredUsers, @Param("cityId") List<Integer> cityIds);
 
     void deleteByUserId(Long userId);
 }

@@ -1,19 +1,20 @@
-package com.shutafin.model.DTO;
+package com.shutafin.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserQuestionAnswerDTO {
-    @NotNull
+public class UserQuestionExtendedAnswersWeb {
+
     private Integer questionId;
-    @NotNull
-    private Integer answerId;
+    private Integer questionImportanceId;
+    private List<Integer> answersId;
+
 }

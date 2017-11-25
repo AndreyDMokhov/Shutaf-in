@@ -57,9 +57,9 @@ public class UserSearchServiceImpl implements UserSearchService {
         return getUserResponseDTO(users);
     }
 
-    @Deprecated
     @Override
     public List<Integer> getCitiesForFilter(User user) {
+        //todo ms-matching
 
         List<City> cities = filterCityRepository.getUserFilterCity(user);
         if (cities.isEmpty()) {
@@ -72,17 +72,17 @@ public class UserSearchServiceImpl implements UserSearchService {
                 .collect(Collectors.toList());
     }
 
-    @Deprecated
     @Override
     public Integer getGenderForFilter(User user) {
+        //todo ms-matching
         Gender gender = filterGenderRepository.getUserFilterGender(user);
 
         return gender == null ? null : gender.getId();
     }
 
-    @Deprecated
     @Override
     public AgeRangeWebDTO getAgeRangeForFilter(User user) {
+        //todo ms-matching
         return filterAgeRangeRepository.getUserFilterAgeRange(user);
     }
 
@@ -94,6 +94,7 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     public UserSearchResponse findUserDataById(Long userId) {
+        //todo ms-account
         User user = userRepository.findOne(userId);
         if (user == null) {
             throw new ResourceNotFoundException();
@@ -121,6 +122,7 @@ public class UserSearchServiceImpl implements UserSearchService {
         return userBaseResponseList;
     }
     private UserSearchResponse getUserResponseDTO(User users) {
+        //todo ms-account
         UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(users);
 
         return new UserSearchResponse(

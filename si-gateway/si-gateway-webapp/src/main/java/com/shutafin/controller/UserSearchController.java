@@ -16,8 +16,6 @@ import java.util.List;
 /**
  * Created by evgeny on 10/3/2017.
  */
-//TODO move not @Deprecated service to account service
-
 @RestController
 @RequestMapping("/users")
 public class UserSearchController {

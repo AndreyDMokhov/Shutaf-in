@@ -2,8 +2,8 @@ package com.shutafin.service;
 
 
 
-import com.shutafin.model.DTO.AgeRangeWebDTO;
-import com.shutafin.model.DTO.FiltersWeb;
+import com.shutafin.model.dto.AgeRangeWebDTO;
+import com.shutafin.model.dto.FiltersWeb;
 
 import java.util.List;
 

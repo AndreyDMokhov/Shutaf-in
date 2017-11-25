@@ -3,12 +3,14 @@ package com.shutafin.service.filter.filters;
 import com.shutafin.repository.FilterCityRepository;
 import com.shutafin.service.filter.UsersFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by evgeny on 9/23/2017.
  */
+@Service
 public class UsersFilterByCity implements UsersFilter {
 
     @Autowired

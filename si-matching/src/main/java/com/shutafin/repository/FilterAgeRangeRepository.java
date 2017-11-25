@@ -1,6 +1,6 @@
 package com.shutafin.repository;
 
-import com.shutafin.model.DTO.AgeRangeWebDTO;
+import com.shutafin.model.dto.AgeRangeWebDTO;
 import com.shutafin.model.entities.FilterAgeRange;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +21,7 @@ public interface FilterAgeRangeRepository extends BaseJpaRepository<FilterAgeRan
                                         @Param("fromAge") Integer fromAge,
                                         @Param("toAge") Integer toAge);
 
-    @Query("SELECT new com.shutafin.model.DTO.AgeRangeWebDTO(far.fromAge, far.toAge) " +
+    @Query("SELECT new com.shutafin.model.dto.AgeRangeWebDTO(far.fromAge, far.toAge) " +
             "FROM FilterAgeRange far WHERE far.userId = :userId")
     AgeRangeWebDTO findAgeRangeByUserId(@Param("userId") Long userId);
 }

@@ -1,14 +1,14 @@
-package com.shutafin.model.DTO;
+package com.shutafin.model.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Map;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class QuestionExtendedWithAnswersLocaleWeb {
 
     private Integer questionId;
