@@ -74,7 +74,7 @@ public class DealPanelServiceImpl implements DealPanelService {
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setIsDeleted(true);
         dealPanel.setModifiedByUser(userId);
-        List<DealDocument> dealDocuments = dealDocumentRepository.findAllByDealPanelDealId(dealPanelId);
+        List<DealDocument> dealDocuments = dealDocumentRepository.findAllByDealPanelId(dealPanelId);
         dealDocuments.forEach(doc -> dealDocumentService.deleteDealDocument(userId, doc.getId()));
     }
 
@@ -97,6 +97,10 @@ public class DealPanelServiceImpl implements DealPanelService {
         if (dealPanel == null) {
             log.warn("Resource not found exception:");
             log.warn("Deal panel with ID {} was not found", dealFolderId);
+            throw new RuntimeException(String.format("Deal panel with ID %d was not found", dealFolderId));
+        }
+        if (dealPanel.getIsDeleted()) {
+            log.warn("Deal panel with ID {} was deleted", dealFolderId);
             throw new RuntimeException(String.format("Deal panel with ID %d was not found", dealFolderId));
         }
         dealService.checkDealPermissions(dealPanel.getDeal().getId(), userId, fullAccess);

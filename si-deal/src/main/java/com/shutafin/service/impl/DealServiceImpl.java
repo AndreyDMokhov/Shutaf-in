@@ -1,14 +1,12 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.Deal;
-import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.entities.DealPanel;
 import com.shutafin.model.entities.DealUser;
 import com.shutafin.model.types.DealStatus;
 import com.shutafin.model.types.DealUserPermissionType;
 import com.shutafin.model.types.DealUserStatus;
 import com.shutafin.model.web.*;
-import com.shutafin.repository.DealDocumentRepository;
 import com.shutafin.repository.DealPanelRepository;
 import com.shutafin.repository.DealRepository;
 import com.shutafin.repository.DealUserRepository;
@@ -39,9 +37,6 @@ public class DealServiceImpl implements DealService {
 
     @Autowired
     private DealPanelRepository dealPanelRepository;
-
-    @Autowired
-    private DealDocumentRepository dealDocumentRepository;
 
     @Autowired
     private DealPanelService dealPanelService;
@@ -86,7 +81,7 @@ public class DealServiceImpl implements DealService {
                 .map(dealUser -> dealUser.getUserId())
                 .collect(Collectors.toList()));
 
-        List<DealPanel> dealPanels = dealPanelRepository.findAllByDealId(dealId);
+        List<DealPanel> dealPanels = dealPanelRepository.findAllByDealIdAndIsDeletedFalse(dealId);
         if (!dealPanels.isEmpty()) {
             dealResponse.setPanels(dealPanels.stream()
                     .collect(Collectors.toMap(DealPanel::getId, DealPanel::getTitle)));

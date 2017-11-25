@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface DealPanelRepository extends BaseJpaRepository<DealPanel, Long> {
     List<DealPanel> findAllByDealId(Long dealId);
+    List<DealPanel> findAllByDealIdAndIsDeletedFalse(Long dealId);
 }

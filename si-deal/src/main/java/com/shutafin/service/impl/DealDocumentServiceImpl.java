@@ -116,6 +116,10 @@ public class DealDocumentServiceImpl implements DealDocumentService {
             log.warn("Deal Document with ID {} was not found", dealDocumentId);
             throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
         }
+        if (dealDocument.getIsDeleted()) {
+            log.warn("Deal Document with ID {} was deleted", dealDocumentId);
+            throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
+        }
         dealService.checkDealPermissions(dealDocument.getDealPanel().getDeal().getId(), userId, fullAccess);
         return dealDocument;
     }
