@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Created by evgeny on 10/4/2017.
  */
+@Deprecated
 public class UsersByAgeRangeFiltersChainElement extends UsersFiltersChain {
 
     private FilterAgeRangeRepository filterAgeRangeRepository;

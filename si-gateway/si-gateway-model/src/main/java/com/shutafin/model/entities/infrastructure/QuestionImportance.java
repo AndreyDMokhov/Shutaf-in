@@ -12,7 +12,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
+@Deprecated
 @Entity
 @Table(name = "I_QUESTION_IMPORTANCE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)

@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import javax.persistence.QueryHint;
 import java.util.List;
 
-
+@Deprecated
 public interface QuestionImportanceRepository extends BaseJpaRepository<QuestionImportance, Integer> {
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")

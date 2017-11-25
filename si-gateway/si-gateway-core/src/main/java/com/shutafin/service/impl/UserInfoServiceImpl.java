@@ -31,6 +31,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInitializationRepository userInitializationRepository;
     private UserAccountRepository userAccountRepository;
     private UserImageService userImageService;
+    //TODO moved to matching service
     private FilterCityRepository filterCityRepository;
 
     @Autowired

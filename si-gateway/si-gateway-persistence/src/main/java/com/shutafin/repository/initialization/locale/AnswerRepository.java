@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * Created by evgeny on 8/22/2017.
  */
+@Deprecated
 public interface AnswerRepository extends BaseJpaRepository<Answer, Integer> {
 
     @QueryHints(value = {

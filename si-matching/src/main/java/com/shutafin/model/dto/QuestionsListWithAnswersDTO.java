@@ -1,4 +1,4 @@
-package com.shutafin.model.DTO;
+package com.shutafin.model.dto;
 
 import com.shutafin.model.infrastructure.AnswersForQuestion;
 import lombok.AllArgsConstructor;

@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by evgeny on 8/12/2017.
  */
+@Deprecated
 public interface UserMatchService {
     List<User> findMatchingUsers(User user);
     void saveQuestionsAnswers(User user, List<QuestionAnswerRequest> questionsAnswers);

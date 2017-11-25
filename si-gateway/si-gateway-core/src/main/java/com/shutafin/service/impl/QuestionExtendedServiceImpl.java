@@ -1,9 +1,9 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.infrastructure.Language;
+import com.shutafin.model.web.QuestionExtendedWithAnswersLocaleWeb;
 import com.shutafin.model.web.initialization.AnswerExtendedResponseDTO;
 import com.shutafin.model.web.initialization.QuestionExtendedResponseDTO;
-import com.shutafin.model.web.QuestionExtendedWithAnswersLocaleWeb;
 import com.shutafin.model.web.initialization.QuestionImportanceDTO;
 import com.shutafin.repository.initialization.locale.AnswerExtendedRepository;
 import com.shutafin.repository.initialization.locale.QuestionExtendedRepository;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+@Deprecated
 @Service
 @Transactional
 public class QuestionExtendedServiceImpl implements QuestionExtendedService {
