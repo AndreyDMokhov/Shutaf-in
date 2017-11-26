@@ -6,7 +6,7 @@ app.component('messengerUiComponent', {
     bindings: {},
     controllerAs: 'vm',
 
-    controller: function (messengerModel, $sessionStorage) {
+    controller: function (messengerModel, $sessionStorage, $stateParams) {
 
         var vm = this;
 
@@ -20,6 +20,9 @@ app.component('messengerUiComponent', {
 
         function activate() {
             getUserData();
+            if($stateParams.user !== null){
+                addChat($stateParams.user.userId)
+            }
         }
 
         function getUserData() {
@@ -29,6 +32,7 @@ app.component('messengerUiComponent', {
                     $sessionStorage.users = vm.users;
                 });
         }
+
 
         function addChat(userId) {
             if (!userId) {

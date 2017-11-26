@@ -145,6 +145,7 @@
   "Search.ChooseCity" : "Выберите город",
   "Search.ChooseButton" : "Выбрать",
   "Search.ValueInCityButtonMoreThan3" : "Выбрано",
+  "Search.sendMessage.button" : "Написать",
 
   "SECTION" : "Questions",
   "Questions.title" : "Вопросы",

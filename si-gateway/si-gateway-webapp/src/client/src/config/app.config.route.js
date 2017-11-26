@@ -96,8 +96,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state("chat",
             {
-                template: '<messenger-ui-component></messenger-ui-component>',
-                url: "/chat"
+                url: "/chat",
+                params: {
+                    user: null
+                },
+                template: '<messenger-ui-component></messenger-ui-component>'
             })
     ;
     $urlRouterProvider.otherwise('/home');
