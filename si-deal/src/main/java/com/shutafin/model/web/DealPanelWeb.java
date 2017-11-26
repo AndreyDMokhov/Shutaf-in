@@ -35,7 +35,7 @@ public class DealPanelWeb {
         this.id = id << SHIFT_VALUE;
     }
 
-    public Long getId() {
-        return id >> SHIFT_VALUE;
+    public static Long getShiftValue() {
+        return SHIFT_VALUE;
     }
 }

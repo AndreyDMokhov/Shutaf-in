@@ -57,12 +57,14 @@ public class DealPanelServiceImpl implements DealPanelService {
 
     @Override
     public DealPanel getDealPanel(Long dealPanelId, Long userId) {
+        dealPanelId >>= DealPanelWeb.getShiftValue();
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, !NEED_FULL_ACCESS);
         return dealPanel;
     }
 
     @Override
     public DealPanel renameDealPanel(Long dealPanelId, Long userId, String newTitle) {
+        dealPanelId >>= DealPanelWeb.getShiftValue();
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setTitle(newTitle);
         dealPanel.setModifiedByUser(userId);
@@ -71,6 +73,7 @@ public class DealPanelServiceImpl implements DealPanelService {
 
     @Override
     public void deleteDealPanel(Long dealPanelId, Long userId) {
+        dealPanelId >>= DealPanelWeb.getShiftValue();
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setIsDeleted(true);
         dealPanel.setModifiedByUser(userId);
@@ -80,6 +83,7 @@ public class DealPanelServiceImpl implements DealPanelService {
 
     @Override
     public List<DealDocumentWeb> getDealPanelDocuments(Long dealPanelId) {
+        dealPanelId >>= DealPanelWeb.getShiftValue();
         List<DealDocument> dealPanelDocuments = dealDocumentRepository.findAllByDealPanelId(dealPanelId);
         if (!dealPanelDocuments.isEmpty()) {
             return dealPanelDocuments

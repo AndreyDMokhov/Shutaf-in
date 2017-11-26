@@ -27,8 +27,7 @@ public class DealPanelResponse {
         this.panelId = id << SHIFT_VALUE;
     }
 
-    public Long getPanelId() {
-        return panelId >> SHIFT_VALUE;
+    public static Long getShiftValue() {
+        return SHIFT_VALUE;
     }
-
 }

@@ -27,7 +27,7 @@ public class DealDocumentWeb {
         this.documentId = documentId << SHIFT_VALUE;
     }
 
-    public Long getDocumentId() {
-        return documentId >> SHIFT_VALUE;
+    public static Long getShiftValue() {
+        return SHIFT_VALUE;
     }
 }

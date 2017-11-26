@@ -84,7 +84,11 @@ public class DealServiceImpl implements DealService {
         List<DealPanel> dealPanels = dealPanelRepository.findAllByDealIdAndIsDeletedFalse(dealId);
         if (!dealPanels.isEmpty()) {
             dealResponse.setPanels(dealPanels.stream()
-                    .collect(Collectors.toMap(DealPanel::getId, DealPanel::getTitle)));
+                    .collect(Collectors.toMap(
+                            dealPanel -> dealPanel.getId() << DealPanelWeb.getShiftValue(),
+                            DealPanel::getTitle)
+                    )
+            );
 
             dealResponse.setFirstPanel(getFirstDealPanel(dealPanels));
         }

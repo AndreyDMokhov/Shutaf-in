@@ -21,7 +21,7 @@ public class DealUserDocumentWeb {
     private Long userId;
 
     @NotNull
-    private Long dealFolderId;
+    private Long dealPanelId;
 
     @NotBlank
     private String fileData;
@@ -34,12 +34,12 @@ public class DealUserDocumentWeb {
     @Length(min = 1, max = 50)
     private String documentTitle;
 
-    public DealUserDocumentWeb(Long id, Long userId, Long dealFolderId, String fileData, Long createdDate,
+    public DealUserDocumentWeb(Long id, Long userId, Long dealPanelId, String fileData, Long createdDate,
                                Integer documentTypeId, String documentTitle) {
         setId(id);
         this.userId = userId;
-        this.dealFolderId = dealFolderId;
         this.fileData = fileData;
+        setDealPanelId(dealPanelId);
         this.createdDate = createdDate;
         this.documentTypeId = documentTypeId;
         this.documentTitle = documentTitle;
@@ -49,7 +49,11 @@ public class DealUserDocumentWeb {
         this.id = id << SHIFT_VALUE;
     }
 
-    public Long getId() {
-        return id >> SHIFT_VALUE;
+    public void setDealPanelId(Long dealPanelId) {
+        this.dealPanelId = dealPanelId << DealPanelWeb.getShiftValue();
+    }
+
+    public static Long getShiftValue() {
+        return SHIFT_VALUE;
     }
 }
