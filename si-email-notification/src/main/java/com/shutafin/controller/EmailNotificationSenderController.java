@@ -50,7 +50,7 @@ public class EmailNotificationSenderController {
             value = "/validate/{link}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void isValidateLink(@PathVariable String link) {
+    public void isValidLink(@PathVariable String link, @RequestParam("ctype") Integer confirmationType) {
         mailSenderService.getValidLink(link);
     }
 

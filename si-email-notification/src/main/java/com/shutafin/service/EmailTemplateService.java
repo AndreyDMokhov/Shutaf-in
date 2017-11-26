@@ -2,7 +2,7 @@ package com.shutafin.service;
 
 import com.shutafin.model.confirmations.EmailNotificationWeb;
 import com.shutafin.model.confirmations.EmailReason;
-import com.shutafin.model.entity.EmailConfirmation;
+import com.shutafin.model.entity.ConfirmationNewEmail;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 
@@ -16,6 +16,8 @@ public interface EmailTemplateService {
 
     EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources, String newEmail);
 
-    EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, EmailConfirmation emailConfirmation, String confirmationUrl);
+    EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String newEmail, String confirmationUrl);
+
+    EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String confirmationUrl);
 
 }

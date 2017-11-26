@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Data
-public class Confirmation extends AbstractEntity {
+public class BaseConfirmation extends AbstractEntity {
 
     @Column(name = "USER_ID", nullable = false)
     private Long userId;

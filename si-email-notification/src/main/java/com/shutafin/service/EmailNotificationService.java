@@ -2,7 +2,7 @@ package com.shutafin.service;
 
 import com.shutafin.model.confirmations.EmailConfirmationResponse;
 import com.shutafin.model.confirmations.EmailNotificationWeb;
-import com.shutafin.model.entity.EmailConfirmation;
+import com.shutafin.model.entity.ConfirmationNewEmail;
 
 public interface EmailNotificationService {
 
@@ -10,5 +10,5 @@ public interface EmailNotificationService {
 
     EmailConfirmationResponse getUserIdFromConfirmation(String link);
 
-    EmailConfirmation getValidLink(String link);
+    ConfirmationNewEmail getValidLink(String link);
 }

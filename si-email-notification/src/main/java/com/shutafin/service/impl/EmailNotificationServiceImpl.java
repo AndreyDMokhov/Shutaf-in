@@ -4,9 +4,9 @@ import com.shutafin.service.confirmations.EmailInterface;
 import com.shutafin.model.confirmations.EmailConfirmationResponse;
 import com.shutafin.model.confirmations.EmailNotificationWeb;
 import com.shutafin.model.confirmations.EmailReason;
-import com.shutafin.model.entity.EmailConfirmation;
+import com.shutafin.model.entity.ConfirmationNewEmail;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.service.EmailConfirmationService;
+import com.shutafin.service.ConfirmationNewEmailService;
 import com.shutafin.service.EmailNotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +19,11 @@ import java.util.Map;
 @Slf4j
 public class EmailNotificationServiceImpl implements EmailNotificationService {
 
-    private EmailConfirmationService emailConfirmationService;
+    @Autowired
+    private ConfirmationNewEmailService confirmationNewEmailService;
 
     @Autowired
     private Map<String, EmailInterface> mapSendEmail;
-
-    @Autowired
-    public EmailNotificationServiceImpl(EmailConfirmationService emailConfirmationService) {
-        this.emailConfirmationService = emailConfirmationService;
-    }
 
     @Override
     @Transactional
@@ -41,38 +37,38 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
     @Override
     public EmailConfirmationResponse getUserIdFromConfirmation(String link) {
 
-        EmailConfirmation emailConfirmation = getValidLink(link);
-        emailConfirmation.setIsConfirmed(true);
-        emailConfirmationService.save(emailConfirmation);
+        ConfirmationNewEmail confirmationNewEmail = getValidLink(link);
+        confirmationNewEmail.setIsConfirmed(true);
+        confirmationNewEmailService.save(confirmationNewEmail);
 
         EmailConfirmationResponse emailConfirmationResponse = new EmailConfirmationResponse();
-        emailConfirmationResponse.setUserId(emailConfirmation.getUserId());
+        emailConfirmationResponse.setUserId(confirmationNewEmail.getUserId());
 
-        if (emailConfirmation.getConnectedEmailConfirmation() == null) {
+        if (confirmationNewEmail.getConnectedConfirmationNewEmail() == null) {
             return emailConfirmationResponse;
         }
 
-        EmailConfirmation emailConfirmationConnected = emailConfirmation.getConnectedEmailConfirmation();
-        if (emailConfirmationConnected.getIsConfirmed()) {
+        ConfirmationNewEmail confirmationNewEmailConnected = confirmationNewEmail.getConnectedConfirmationNewEmail();
+        if (confirmationNewEmailConnected.getIsConfirmed()) {
             emailConfirmationResponse.setNewEmail(
-                    emailConfirmation.getNewEmail() == null ?
-                            emailConfirmationConnected.getNewEmail()
+                    confirmationNewEmail.getNewEmail() == null ?
+                            confirmationNewEmailConnected.getNewEmail()
                             :
-                            emailConfirmation.getNewEmail());
+                            confirmationNewEmail.getNewEmail());
         }
         return emailConfirmationResponse;
 
     }
 
     @Override
-    public EmailConfirmation getValidLink(String link) {
-        EmailConfirmation emailConfirmation = emailConfirmationService.getConfirmed(link);
-        if (emailConfirmation == null) {
+    public ConfirmationNewEmail getValidLink(String link) {
+        ConfirmationNewEmail confirmationNewEmail = confirmationNewEmailService.getConfirmed(link);
+        if (confirmationNewEmail == null) {
             log.warn("Resource not found exception:");
             log.warn("UrlLink {} was not found", link);
             throw new ResourceNotFoundException();
         }
-        return emailConfirmation;
+        return confirmationNewEmail;
     }
 
 }
