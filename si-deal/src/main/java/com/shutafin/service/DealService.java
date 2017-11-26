@@ -16,4 +16,5 @@ public interface DealService {
     DealResponse getDeal(Long dealId);
     Deal renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb);
     Deal checkDealPermissions(Long dealId, Long userId, Boolean needFullAccess);
+    void deleteDeal(Long dealId, Long userId);
 }

@@ -92,11 +92,9 @@ public class DealServiceImpl implements DealService {
         return dealResponse;
     }
 
-
-
     @Override
     public Deal renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb) {
-        Deal deal = checkDealPermissions(userId, dealId, NEED_FULL_ACCESS);
+        Deal deal = checkDealPermissions(dealId, userId, NEED_FULL_ACCESS);
         deal.setTitle(newTitleWeb.getTitle());
         deal.setModifiedByUser(userId);
         return deal;
@@ -123,6 +121,21 @@ public class DealServiceImpl implements DealService {
         }
 
         return deal;
+    }
+
+    @Override
+    public void deleteDeal(Long dealId, Long userId) {
+        Deal deal = checkDealPermissions(dealId, userId, NEED_FULL_ACCESS);
+        deal.setDealStatus(DealStatus.ARCHIVE);
+        deal.setModifiedByUser(userId);
+        dealPanelRepository.findAllByDealIdAndIsDeletedFalse(dealId)
+                .forEach(dealPanel -> dealPanelService.deleteDealPanel(dealPanel.getId(), userId));
+        dealUserRepository.findAllByDealId(dealId)
+                .forEach(dealUser ->
+                {
+                    dealUser.setDealUserStatus(DealUserStatus.REMOVED);
+                    dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
+                });
     }
 
     @Override

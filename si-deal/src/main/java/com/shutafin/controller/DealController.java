@@ -1,8 +1,10 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.entities.Deal;
 import com.shutafin.model.web.DealResponse;
 import com.shutafin.model.web.DealUserWeb;
 import com.shutafin.model.web.DealWeb;
+import com.shutafin.model.web.NewTitleWeb;
 import com.shutafin.service.DealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class DealController {
     private DealService dealService;
 
     @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealWeb initiateDeal(@RequestBody @Valid DealWeb dealWeb, BindingResult result) {
+    DealWeb initiateDeal(@RequestBody @Valid DealWeb dealWeb, BindingResult result) {
         log.debug("/deal/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
@@ -34,8 +36,8 @@ public class DealController {
     }
 
     @PutMapping(value = "/{dealId}/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void confirmDealUser(@PathVariable(value = "dealId") Long dealId,
-                                @PathVariable(value = "userId") Long userId) {
+    void confirmDealUser(@PathVariable(value = "dealId") Long dealId,
+                         @PathVariable(value = "userId") Long userId) {
         log.debug("/{dealId}/{userId}");
         dealService.confirmDealUser(dealId, userId);
     }
@@ -50,5 +52,24 @@ public class DealController {
     DealResponse getDeal(@PathVariable(value = "dealId") Long dealId) {
         log.debug("/{dealId}");
         return dealService.getDeal(dealId);
+    }
+
+    @PostMapping(value = "/rename/{dealId}/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    DealWeb renameDeal(@PathVariable(value = "dealId") Long dealId, @PathVariable(value = "userId") Long userId,
+                       @RequestBody @Valid NewTitleWeb newTitle, BindingResult result) {
+        log.debug("POST /rename/{dealId}/{userId}");
+        if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
+            throw new RuntimeException();
+        }
+        Deal deal = dealService.renameDeal(dealId, userId, newTitle);
+        return new DealWeb(deal.getId(), null, deal.getTitle(), null);
+    }
+
+    @DeleteMapping(value = "/{dealId}/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    void deleteDeal(@PathVariable(value = "dealId") Long dealId, @PathVariable(value = "userId") Long userId) {
+        log.debug("DELETE /deal/{dealId}/{userId}");
+        dealService.deleteDeal(dealId, userId);
     }
 }
