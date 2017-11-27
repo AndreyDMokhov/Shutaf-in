@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-md-12">
+        <uib-tabset ui-sref-active="vm.getCurrentStateName()" vertical="true" type="pills">
+            <uib-tab
+                    ng-repeat="file in vm.files"
+                    ng-click="vm.selectedFile(deal)">
+                <uib-tab-heading>
+                    {{pallet.file}}
+
+                </uib-tab-heading>
+            </uib-tab>
+
+        </uib-tabset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-offset-5">
+        <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.removeTab()"><i
+                class="fa fa-times"></i></button>
+        <button ng-click="vm.addTab()" class="btn btn-primary " style="border-radius: 50%" ><i
+                class="fa fa-plus"></i></button>
+
+    </div>
+</div>

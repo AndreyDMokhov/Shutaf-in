@@ -8,6 +8,12 @@
   "SECTION": "HELP",
   "Help.title": "Help",
 
+  "SECTION": "DEAL",
+  "Deal.title":"Deal",
+  "Deal.content.bills": "Bills",
+  "Deal.content.photos": "Photos",
+  "Deal.content.my_place": "My place",
+  "Deal.content.arhives": "NNM",
 
   "SECTION":"HOME",
   "Home.title":"Home",

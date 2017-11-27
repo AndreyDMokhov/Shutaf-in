@@ -8,6 +8,9 @@
   "SECTION": "HELP",
   "Help.title": "Помощь",
 
+  "SECTION": "DEAL",
+  "Deal.title":"Сделка",
+
   "SECTION":"HOME",
   "Home.title":"Домашняя",
   "Home.description":"Это сервис для поиска соседей.",

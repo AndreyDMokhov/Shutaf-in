@@ -55,27 +55,37 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 url: '/login'
             })
         .state('logout', {
-                controller: 'logoutController',
-                url: '/logout'
+            controller: 'logoutController',
+            url: '/logout'
         })
         .state('resetPasswordRequest', {
-                template: '<reset-password-request-component></reset-password-request-component>',
-                url: '/reset-password/request'
+            template: '<reset-password-request-component></reset-password-request-component>',
+            url: '/reset-password/request'
         })
         .state('resetPasswordNewPassword', {
-                url: '/reset-password/confirmation/{link}',
-                template: '<reset-password-confirmation-component></reset-password-confirmation-component>'
+            url: '/reset-password/confirmation/{link}',
+            template: '<reset-password-confirmation-component></reset-password-confirmation-component>'
         })
         .state('userSearch', {
-                templateUrl: 'partials/userSearch/userSearch.html',
-                controller: 'userSearchController',
-                controllerAs: 'vm',
-                url: '/users/search?{name}'
+            templateUrl: 'partials/userSearch/userSearch.html',
+            controller: 'userSearchController',
+            controllerAs: 'vm',
+            url: '/users/search?{name}'
         })
+
         .state('questions', {
-                template:'<questions-component></questions-component>',
-                url: '/questions'
-            })
+            template: '<questions-component></questions-component>',
+            url: '/questions'
+        })
+        /*Deal*/
+        .state('deal', {
+            url: '/deal',
+            template: '<deal-component></deal-component>'
+        })
+        .state('deal.content', {
+            url: '/content',
+            template: '<deal-content-component></deal-content-component>'
+        })
         /* Settings */
         .state('settings', {
             abstract: true,
@@ -83,28 +93,28 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             template: '<settings-component></settings-component>'
         })
         .state('settings.personal', {
-            url:'/personal',
+            url: '/personal',
             template: '<user-settings-component></user-settings-component>'
         })
         .state('settings.changeEmailRequest', {
-            url:'/email',
+            url: '/email',
             template: '<change-email-component></change-email-component>'
 
         })
         .state('settings.changeEmailConfirmation', {
-                controller: 'changeEmailConfirmationController',
-                controllerAs: 'vm',
-                url: '/settings/change-email/confirmation/{link}'
+            controller: 'changeEmailConfirmationController',
+            controllerAs: 'vm',
+            url: '/settings/change-email/confirmation/{link}'
         })
         .state('settings.changePassword', {
-            url:'/password',
+            url: '/password',
             template: '<change-password-component></change-password-component>'
         })
         .state("chat",
-        {
-            template: '<messenger-ui-component></messenger-ui-component>',
-            url: "/chat"
-        })
+            {
+              template: '<messenger-ui-component></messenger-ui-component>',
+                url: "/chat"
+            })
     ;
     $urlRouterProvider.otherwise('/home');
 });
