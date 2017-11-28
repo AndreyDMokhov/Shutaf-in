@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.shutafin</groupId>
-        <artifactId>si-parent</artifactId>
+        <artifactId>si-gateway</artifactId>
         <version>0.1</version>
     </parent>
 
