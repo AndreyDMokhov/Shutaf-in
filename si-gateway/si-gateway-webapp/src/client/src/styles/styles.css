@@ -35,6 +35,6 @@ label.required:after {
 }
 
 div[role="main"] {
-    height: 500px;
+    height: 80vh;
     overflow-y: scroll;
 }
