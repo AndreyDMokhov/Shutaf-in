@@ -1,4 +1,4 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.matching;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,15 +7,11 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by evgeny on 8/22/2017.
- */
-@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuestionAnswerRequest {
+public class UserQuestionAnswerDTO {
     @NotNull
     private Integer questionId;
     @NotNull

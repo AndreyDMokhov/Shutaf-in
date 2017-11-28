@@ -1,6 +1,6 @@
 package com.shutafin.repository;
 
-import com.shutafin.model.dto.UserQuestionAnswerDTO;
+import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.model.infrastructure.SelectedAnswerElement;
 
 import java.util.List;
