@@ -8,9 +8,9 @@ app.directive('sendMessageDirective', function ($state) {
         },
         link: function (scope, element, attrs) {
 
-            scope.sendMessage = function(){
-                $state.go('chat', {user:scope.user});
-            }
+            scope.sendMessage = function () {
+                $state.go('chat', {user: scope.user});
+            };
         }
     };
 });

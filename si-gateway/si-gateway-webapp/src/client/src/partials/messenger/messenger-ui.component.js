@@ -21,7 +21,7 @@ app.component('messengerUiComponent', {
         function activate() {
             getUserData();
             if($stateParams.user !== null){
-                addChat($stateParams.user.userId)
+                addChat($stateParams.user.userId);
             }
         }
 
