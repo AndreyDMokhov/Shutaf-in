@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
 
-import com.shutafin.model.dto.UserQuestionAnswerDTO;
+import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.QuestionsListWithSelectedAnswersDTO;
 import com.shutafin.service.UserMatchService;

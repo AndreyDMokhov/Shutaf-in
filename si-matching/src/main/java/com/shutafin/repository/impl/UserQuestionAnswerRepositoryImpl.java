@@ -1,6 +1,6 @@
 package com.shutafin.repository.impl;
 
-import com.shutafin.model.dto.UserQuestionAnswerDTO;
+import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.model.entities.Answer;
 import com.shutafin.model.entities.Question;
 import com.shutafin.model.entities.UserQuestionAnswer;
