@@ -5,9 +5,4 @@ import org.springframework.stereotype.Component;
 @Component("resetPassword")
 public class EmailResetPasswordComponent extends EmailResetPasswordSender {
 
-    private static final String RESET_PASSWORD_CONFIRMATION_URL = "/#/reset-password/confirmation/";
-
-    public EmailResetPasswordComponent() {
-        super(RESET_PASSWORD_CONFIRMATION_URL);
-    }
 }

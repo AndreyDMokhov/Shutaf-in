@@ -18,19 +18,19 @@
                     </uib-accordion-heading>
                     <div class="form-group"
                          ng-class="{
-                                'has-error': form.newEmail.$invalid && form.newEmail.$dirty,
-                                'has-success': form.newEmail.$valid}">
-                        <label class="required" for="newEmail">{{'Settings.security.form.newEmail' |
+                                'has-error': form.emailChange.$invalid && form.emailChange.$dirty,
+                                'has-success': form.emailChange.$valid}">
+                        <label class="required" for="emailChange">{{'Settings.security.form.emailChange' |
                             translate}}</label>
                         <input type="email"
                                class="form-control"
-                               name="newEmail"
-                               id="newEmail"
-                               ng-model="vm.securitySettings.newEmail"
+                               name="emailChange"
+                               id="emailChange"
+                               ng-model="vm.securitySettings.emailChange"
                                ng-maxlength="50"
                                required/>
 
-                        <p class="help-block" ng-if="form.newEmail.$invalid && form.newEmail.$dirty">
+                        <p class="help-block" ng-if="form.emailChange.$invalid && form.emailChange.$dirty">
                             {{'Settings.security.form.wrongEmail' | translate}}
                         </p>
                     </div>

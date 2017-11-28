@@ -14,24 +14,21 @@ import java.util.UUID;
 @Service
 public class ConfirmationRegistrationServiceImpl implements ConfirmationRegistrationService {
 
-    private static final Integer LINK_HOURS_EXPIRATION = 24;
-
     private ConfirmationRegistrationRepository confirmationRegistrationRepository;
 
     @Autowired
-    public ConfirmationRegistrationServiceImpl(ConfirmationRegistrationRepository confirmationNewEmailRepository) {
-        this.confirmationRegistrationRepository = confirmationNewEmailRepository;
+    public ConfirmationRegistrationServiceImpl(ConfirmationRegistrationRepository confirmationRegistrationRepository) {
+        this.confirmationRegistrationRepository = confirmationRegistrationRepository;
     }
 
     @Override
-    public ConfirmationRegistration get(EmailNotificationWeb emailNotificationWeb, String newEmail, ConfirmationRegistration connectedConfirmation) {
-        return confirmationRegistrationRepository.save(
-                ConfirmationRegistration.builder()
+    public ConfirmationRegistration get(EmailNotificationWeb emailNotificationWeb) {
+        return ConfirmationRegistration.builder()
                         .userId(emailNotificationWeb.getUserId())
                         .confirmationUUID(UUID.randomUUID().toString())
                         .isConfirmed(false)
                         .expiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION))
-                        .build());
+                        .build();
     }
 
     @Override

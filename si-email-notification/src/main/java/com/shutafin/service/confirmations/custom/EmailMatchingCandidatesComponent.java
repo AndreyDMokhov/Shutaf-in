@@ -6,7 +6,7 @@ import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
-import com.shutafin.service.confirmations.EmailInterface;
+import com.shutafin.service.confirmations.BaseEmailInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Component("matchingCandidates")
-public class EmailMatchingCandidatesComponent implements EmailInterface {
+public class EmailMatchingCandidatesComponent implements BaseEmailInterface {
 
     private static final String URL_PROFILE = "/#/profile/";
     private static final String URL_SEARCH = "/#/users/search";

@@ -29,7 +29,7 @@ public class EmailNotificationWeb {
 
     @Email
     @Length(max = 50)
-    private String newEmail;
+    private String emailChange;
 
     @NotBlank
     @Length(min = 2, max = 3)

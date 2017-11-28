@@ -1,12 +1,8 @@
 package com.shutafin.service;
 
-import com.shutafin.model.confirmations.EmailNotificationWeb;
-import com.shutafin.model.entity.BaseConfirmation;
-import com.shutafin.model.entity.ConfirmationNewEmail;
-
 public interface BaseConfirmationService<T> {
 
-    T get(EmailNotificationWeb emailNotificationWeb, String newEmail, T connectedConfirmation);
+    Integer LINK_HOURS_EXPIRATION = 24;
 
     T save(T confirmation);
 

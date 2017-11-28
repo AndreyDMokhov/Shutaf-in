@@ -14,8 +14,6 @@ import java.util.UUID;
 @Service
 public class ConfirmationResetPasswordServiceImpl implements ConfirmationResetPasswordService {
 
-    private static final Integer LINK_HOURS_EXPIRATION = 24;
-
     private ConfirmationResetPasswordRepository confirmationResetPasswordRepository;
 
     @Autowired
@@ -24,7 +22,7 @@ public class ConfirmationResetPasswordServiceImpl implements ConfirmationResetPa
     }
 
     @Override
-    public ConfirmationResetPassword get(EmailNotificationWeb emailNotificationWeb, String newEmail, ConfirmationResetPassword connectedConfirmation) {
+    public ConfirmationResetPassword get(EmailNotificationWeb emailNotificationWeb) {
         return ConfirmationResetPassword.builder()
                         .userId(emailNotificationWeb.getUserId())
                         .confirmationUUID(UUID.randomUUID().toString())

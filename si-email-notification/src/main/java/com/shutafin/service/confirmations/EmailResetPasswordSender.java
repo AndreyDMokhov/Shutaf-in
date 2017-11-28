@@ -7,11 +7,10 @@ import com.shutafin.service.ConfirmationResetPasswordService;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class EmailResetPasswordSender implements EmailInterface {
+public class EmailResetPasswordSender implements BaseEmailInterface {
 
     @Autowired
     private SenderEmailMessageService senderEmailMessageService;
@@ -22,20 +21,11 @@ public class EmailResetPasswordSender implements EmailInterface {
     @Autowired
     private EmailTemplateService emailTemplateService;
 
-    private String confirmationUrl;
-
-    public EmailResetPasswordSender(String confirmationUrl) {
-        if (StringUtils.isEmpty(confirmationUrl)) {
-            log.warn("Link is blank or empty");
-            throw new NullPointerException();
-        }
-        this.confirmationUrl = confirmationUrl;
-    }
-
     public void send(EmailNotificationWeb emailNotificationWeb) {
 
-        ConfirmationResetPassword confirmationResetPassword = confirmationResetPasswordService.get(emailNotificationWeb, null, null);
-        EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, confirmationResetPassword.getConfirmationUUID(), confirmationUrl);
+        ConfirmationResetPassword confirmationResetPassword = confirmationResetPasswordService.get(emailNotificationWeb);
+        confirmationResetPasswordService.save(confirmationResetPassword);
+        EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, confirmationResetPassword.getConfirmationUUID(), CONFIRMATION_URL);
         senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
     }
 }

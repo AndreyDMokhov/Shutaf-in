@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EmailConfirmationResponse {
+public class EmailChangeResponse {
 
     private Long userId;
-    private String newEmail;
+    private String emailChange;
 
 }

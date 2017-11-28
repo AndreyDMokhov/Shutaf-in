@@ -2,7 +2,7 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.confirmations.EmailNotificationWeb;
 import com.shutafin.model.confirmations.EmailReason;
-import com.shutafin.model.entity.ConfirmationNewEmail;
+import com.shutafin.model.entity.ConfirmationEmailChange;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.route.DiscoveryRoutingService;
@@ -77,10 +77,10 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     }
 
     @Override
-    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources, String newEmail) {
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources, String emailChange) {
         return new EmailMessage(
                 emailNotificationWeb.getUserId(),
-                newEmail == null ? emailNotificationWeb.getEmailTo() : newEmail,
+                emailChange == null ? emailNotificationWeb.getEmailTo() : emailChange,
                 getTemplate(
                         emailNotificationWeb.getEmailReason(),
                         emailNotificationWeb.getLanguageCode(),
@@ -89,11 +89,11 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         );
     }
 
-    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String newEmail, String confirmationUrl) {
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String emailChange, String confirmationUrl) {
 
         String serverAddress = discoveryRoutingService.getExternalRoute();
-        String urlLink = serverAddress + confirmationUrl + link;
-        return getEmailMessage(emailNotificationWeb, urlLink, (Map<String, byte[]>) null, newEmail);
+        String urlLink = serverAddress + confirmationUrl + link + "?" + emailNotificationWeb.getEmailReason().getPropertyPrefix();
+        return getEmailMessage(emailNotificationWeb, urlLink, (Map<String, byte[]>) null, emailChange);
 
     }
 
