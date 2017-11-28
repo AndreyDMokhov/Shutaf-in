@@ -5,6 +5,7 @@ import com.shutafin.model.web.BaseResponseDTO;
 /**
  * Created by evgeny on 8/22/2017.
  */
+@Deprecated
 public class AnswerResponseDTO extends BaseResponseDTO {
     private Boolean isUniversal;
 

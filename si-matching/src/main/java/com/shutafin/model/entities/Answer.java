@@ -4,13 +4,15 @@ import com.shutafin.model.AbstractKeyConstEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "I_ANSWER")
-//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-//@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cacheable
 @NoArgsConstructor
 @Getter
 @Setter

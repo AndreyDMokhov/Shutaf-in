@@ -27,6 +27,7 @@ public class MatchingCandidatesEmailNotificationJobService {
     private static final Integer MAX_COUNT_MATCHING_USERS = 3;
 
     private UserAccountRepository userAccountRepository;
+    //TODO moved to matching service
     private UserMatchService userMatchService;
     private EnvironmentConfigurationService environmentConfigurationService;
     private EmailTemplateService emailTemplateService;

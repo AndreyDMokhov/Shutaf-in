@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+@Deprecated
 @Entity
 @Table(name = "I_QUESTION_EXTENDED_LOCALE")
 @AllArgsConstructor

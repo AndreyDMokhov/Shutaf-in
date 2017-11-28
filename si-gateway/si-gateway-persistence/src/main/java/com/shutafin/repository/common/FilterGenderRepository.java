@@ -6,5 +6,6 @@ import com.shutafin.repository.base.BaseJpaRepository;
 /**
  * Created by evgeny on 9/23/2017.
  */
+@Deprecated
 public interface FilterGenderRepository extends BaseJpaRepository<FilterGender, Long>, FilterGenderRepositoryCustom {
 }

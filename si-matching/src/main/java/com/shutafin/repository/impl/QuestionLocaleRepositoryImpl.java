@@ -1,7 +1,7 @@
 package com.shutafin.repository.impl;
 
 
-import com.shutafin.model.DTO.QuestionsListWithAnswersDTO;
+import com.shutafin.model.dto.QuestionsListWithAnswersDTO;
 import com.shutafin.repository.QuestionLocaleRepositoryCustom;
 
 import javax.persistence.EntityManager;

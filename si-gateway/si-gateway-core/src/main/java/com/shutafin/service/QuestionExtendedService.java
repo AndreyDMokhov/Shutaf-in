@@ -5,7 +5,7 @@ import com.shutafin.model.web.QuestionExtendedWithAnswersLocaleWeb;
 import com.shutafin.model.web.initialization.QuestionImportanceDTO;
 
 import java.util.List;
-
+@Deprecated
 public interface QuestionExtendedService {
 
     List<QuestionExtendedWithAnswersLocaleWeb> getQuestionsExtendedWithAnswers(Language language);

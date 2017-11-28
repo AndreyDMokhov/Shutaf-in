@@ -10,7 +10,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-
+@Deprecated
 @Entity
 @Table(name = "USER_MATCHING_SCORE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)

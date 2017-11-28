@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Deprecated
 @Service
 @Transactional
 public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtendedAnswerService {

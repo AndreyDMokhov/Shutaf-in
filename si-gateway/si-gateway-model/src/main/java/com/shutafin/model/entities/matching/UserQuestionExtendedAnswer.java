@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Deprecated
 @Entity
 @Table(name = "USER_EXTENDED_QUESTION_ANSWER")
 @NoArgsConstructor

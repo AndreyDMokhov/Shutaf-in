@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Created by evgeny on 10/3/2017.
  */
+@Deprecated
 public interface UserFilterService {
     List<User> findFilteredUsers(User user);
     void saveUserFilters(User user, FiltersWeb filtersWeb);

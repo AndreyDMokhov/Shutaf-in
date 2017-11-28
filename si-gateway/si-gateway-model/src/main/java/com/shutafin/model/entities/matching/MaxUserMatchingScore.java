@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-
+@Deprecated
 @Entity
 @Table(name = "MAX_USER_MATCHING_SCORE")
 @NoArgsConstructor

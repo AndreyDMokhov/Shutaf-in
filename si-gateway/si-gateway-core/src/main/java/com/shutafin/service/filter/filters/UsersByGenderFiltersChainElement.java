@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Created by evgeny on 9/23/2017.
  */
+@Deprecated
 public class UsersByGenderFiltersChainElement extends UsersFiltersChain {
 
     private FilterGenderRepository filterGenderRepository;

@@ -35,7 +35,7 @@ public class InitializationController {
 
     @Autowired
     private InitializationService initializationService;
-
+    //TODO moved to matching microservice
     @Autowired
     private UserMatchService userMatchService;
 
@@ -48,9 +48,10 @@ public class InitializationController {
     @Autowired
     private UserSearchService userSearchService;
 
+    //TODO moved to matching microservice
     @Autowired
     private QuestionExtendedService questionExtendedService;
-
+    //TODO moved to matching microservice
     @Autowired
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 

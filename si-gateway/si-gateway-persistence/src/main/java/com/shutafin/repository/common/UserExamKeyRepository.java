@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by evgeny on 9/5/2017.
  */
+@Deprecated
 public interface UserExamKeyRepository extends BaseJpaRepository<UserExamKey, Long> {
     void deleteByUser(User user);
     UserExamKey findByUser(User user);
