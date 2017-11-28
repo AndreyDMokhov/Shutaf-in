@@ -9,7 +9,7 @@ import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.types.CompressionType;
 import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.web.user.UserImageWeb;
+import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.ImageStorageRepository;
 import com.shutafin.repository.account.ImagePairRepository;
 import com.shutafin.repository.account.UserImageRepository;
@@ -54,7 +54,7 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     @Transactional
-    public UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
+    public UserImage addUserImage(AccountUserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
         image = convertToJpg(image);
         UserImage userImage = addUserImage(image, user, permissionType);
         if (compressionType != null && compressionType != CompressionType.NO_COMPRESSION) {
@@ -138,7 +138,7 @@ public class UserImageServiceImpl implements UserImageService {
         image.delete();
     }
 
-    private UserImage addUserImage(UserImageWeb image, User user, PermissionType permissionType) {
+    private UserImage addUserImage(AccountUserImageWeb image, User user, PermissionType permissionType) {
         UserImage userImage = new UserImage();
         userImage.setPermissionType(permissionType);
         userImage.setCompressionType(CompressionType.NO_COMPRESSION);
@@ -215,7 +215,7 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @SneakyThrows
-    private UserImageWeb convertToJpg(UserImageWeb userImageWeb) {
+    private AccountUserImageWeb convertToJpg(AccountUserImageWeb userImageWeb) {
         String imageEncoded = userImageWeb.getImage();
 
         byte[] imageData = Base64.getDecoder().decode(imageEncoded);

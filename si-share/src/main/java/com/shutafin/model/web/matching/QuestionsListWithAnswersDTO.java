@@ -1,6 +1,5 @@
-package com.shutafin.model.dto;
+package com.shutafin.model.web.matching;
 
-import com.shutafin.model.infrastructure.AnswersForQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

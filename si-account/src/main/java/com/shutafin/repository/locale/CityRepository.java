@@ -2,7 +2,7 @@ package com.shutafin.repository.locale;
 
 import com.shutafin.model.infrastructure.City;
 import com.shutafin.model.infrastructure.Language;
-import com.shutafin.model.web.locale.CityResponseDTO;
+import com.shutafin.model.web.account.AccountCityResponseDTO;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
@@ -18,6 +18,6 @@ public interface CityRepository extends BaseJpaRepository<City, Integer> {
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")
     })
-    @Query(value = "select new com.shutafin.model.web.locale.CityResponseDTO  (  cl.city.id,  cl.description,  cl.city.country.id as countryId  ) from CityLocale cl where cl.language = :language")
-    List<CityResponseDTO> getLocaleCities(@Param("language") Language language);
+    @Query(value = "select new com.shutafin.model.web.locale.AccountCityResponseDTO  (  cl.city.id,  cl.description,  cl.city.country.id as countryId  ) from CityLocale cl where cl.language = :language")
+    List<AccountCityResponseDTO> getLocaleCities(@Param("language") Language language);
 }

@@ -1,8 +1,8 @@
 package com.shutafin.service;
 
-import com.shutafin.model.dto.QuestionsListWithAnswersDTO;
-import com.shutafin.model.dto.QuestionsListWithSelectedAnswersDTO;
 import com.shutafin.model.dto.UserQuestionAnswerDTO;
+import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
+import com.shutafin.model.web.matching.QuestionsListWithSelectedAnswersDTO;
 
 import java.util.List;
 

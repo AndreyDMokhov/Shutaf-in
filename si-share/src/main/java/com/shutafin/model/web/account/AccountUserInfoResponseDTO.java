@@ -1,17 +1,19 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.account;
 
-import com.shutafin.model.entities.UserImage;
 import lombok.*;
 
 import java.util.Date;
 
+/**
+ * @author Edward Kats
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
 @SuppressWarnings("PMD.TooManyFields")
-public class UserInfoResponseDTO {
+public class AccountUserInfoResponseDTO {
 
     private Long userId;
     private String firstName;
@@ -36,7 +38,20 @@ public class UserInfoResponseDTO {
     private String originalUserImage;
 
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    public UserInfoResponseDTO(Long userId, String firstName, String lastName, String email, Integer languageId, Integer countryId, Integer cityId, Integer genderId, Date dateOfBirth, String facebookLink, String profession, String company, String phoneNumber) {
+    public AccountUserInfoResponseDTO(
+            Long userId,
+            String firstName,
+            String lastName,
+            String email,
+            Integer languageId,
+            Integer countryId,
+            Integer cityId,
+            Integer genderId,
+            Date dateOfBirth,
+            String facebookLink,
+            String profession,
+            String company,
+            String phoneNumber) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,15 +67,14 @@ public class UserInfoResponseDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    public void addUserImage(UserImage userImage) {
-        this.userImageId = userImage.getId();
-        this.userImage = userImage.getImageStorage().getImageEncoded();
+    public void addUserImage(Long userImageId, String imageEncoded) {
+        this.userImageId = userImageId;
+        this.userImage = imageEncoded;
     }
 
-    public void addOriginalUserImage(UserImage originalUserImage) {
-        this.originalUserImageId = originalUserImage.getId();
-        this.originalUserImage = originalUserImage.getImageStorage().getImageEncoded();
+    public void addOriginalUserImage(Long userImageId, String imageEncoded) {
+        this.originalUserImageId = userImageId;
+        this.originalUserImage = imageEncoded;
     }
 }
-
 

@@ -1,6 +1,6 @@
-package com.shutafin.model.validators;
+package com.shutafin.validators;
 
-import com.shutafin.model.annotations.LimitSize;
+import com.shutafin.annotations.annotations.LimitSize;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 

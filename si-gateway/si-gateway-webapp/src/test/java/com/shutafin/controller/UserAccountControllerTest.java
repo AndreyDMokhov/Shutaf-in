@@ -1,12 +1,11 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.account.UserLanguageWeb;
+import com.shutafin.model.web.account.AccountUserLanguageWeb;
+import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.error.errors.InputValidationError;
-import com.shutafin.model.web.initialization.LanguageResponseDTO;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserLanguageService;
 import com.shutafin.system.BaseTestImpl;
@@ -39,7 +38,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     private static final String SESSION_ID_HEADER_NAME = "session_id";
 
 
-    private Language language;
+    private LanguageWeb language;
     private User user;
     private ArrayList<String> expectedError;
 
@@ -55,8 +54,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
         user = createUser();
 
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
-        Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(UserLanguageWeb.class), Mockito.any(User.class));
-        Mockito.when(userLanguageService.findUserLanguage(user)).thenReturn(language);
+        Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(AccountUserLanguageWeb.class), Mockito.any(User.class));
         expectedError = new ArrayList<>();
     }
 
@@ -81,7 +79,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
                 .setUrl(USER_SETTINGS_LANGUAGE_URL)
                 .setHttpMethod(HttpMethod.PUT)
                 .setHeaders(headers)
-                .setRequestObject(new UserLanguageWeb(0))
+                .setRequestObject(new AccountUserLanguageWeb(0))
                 .build();
         APIWebResponse response = getResponse(request);
 
@@ -132,8 +130,8 @@ public class UserAccountControllerTest extends BaseTestImpl {
         return headers;
     }
 
-    private Language createLanguage() {
-        Language language = new Language();
+    private LanguageWeb createLanguage() {
+        LanguageWeb language = new LanguageWeb();
         language.setIsActive(true);
         language.setId(1);
         language.setLanguageNativeName("Русский");

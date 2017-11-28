@@ -1,4 +1,4 @@
-package com.shutafin.model.infrastructure;
+package com.shutafin.model.web.matching;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

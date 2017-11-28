@@ -1,8 +1,8 @@
 package com.shutafin.repository.extended;
 
 
-import com.shutafin.model.dto.QuestionImportanceDTO;
 import com.shutafin.model.entities.extended.QuestionImportance;
+import com.shutafin.model.web.matching.QuestionImportanceDTO;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;

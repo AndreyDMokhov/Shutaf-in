@@ -1,16 +1,12 @@
 package com.shutafin.controller;
 
-import com.shutafin.core.service.*;
+import com.shutafin.core.service.InitializationService;
+import com.shutafin.core.service.UserInfoService;
+import com.shutafin.core.service.UserLanguageService;
+import com.shutafin.core.service.UserService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.infrastructure.Language;
-import com.shutafin.model.web.locale.CityResponseDTO;
-import com.shutafin.model.web.locale.CountryResponseDTO;
-import com.shutafin.model.web.locale.GenderResponseDTO;
-import com.shutafin.model.web.user.UserInfoResponseDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.shutafin.model.web.account.AccountInitializationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,19 +20,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/initialization")
 @Slf4j
-public class InitializationController {
+public class AccountInitializationController {
 
-    @Autowired
     private InitializationService initializationService;
-
-    @Autowired
     private UserInfoService userInfoService;
-
-    @Autowired
     private UserLanguageService userLanguageService;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    public AccountInitializationController(
+            InitializationService initializationService,
+            UserInfoService userInfoService,
+            UserLanguageService userLanguageService,
+            UserService userService) {
+        this.initializationService = initializationService;
+        this.userInfoService = userInfoService;
+        this.userLanguageService = userLanguageService;
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Language> getLanguages() {
@@ -46,11 +47,11 @@ public class InitializationController {
 
 
     @RequestMapping(value = "{userId}/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public InitializationResponse getInitializationResponse(@PathVariable("userId") Long userId) {
+    public AccountInitializationResponse getInitializationResponse(@PathVariable("userId") Long userId) {
         User user = userService.findUserById(userId);
         Language language = userLanguageService.findUserLanguage(user);
 
-        return InitializationResponse
+        return AccountInitializationResponse
                 .builder()
                 .userProfile(userInfoService.getUserInfo(user))
                 .cities(initializationService.findAllCitiesByLanguage(language))
@@ -60,13 +61,3 @@ public class InitializationController {
     }
 }
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Builder
-class InitializationResponse {
-    private UserInfoResponseDTO userProfile;
-    private List<GenderResponseDTO> genders;
-    private List<CountryResponseDTO> countries;
-    private List<CityResponseDTO> cities;
-}

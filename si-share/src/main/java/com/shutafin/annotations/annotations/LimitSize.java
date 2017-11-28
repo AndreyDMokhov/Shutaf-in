@@ -1,6 +1,6 @@
-package com.shutafin.model.annotations;
+package com.shutafin.annotations.annotations;
 
-import com.shutafin.model.validators.LimitSizeConstraintValidator;
+import com.shutafin.validators.LimitSizeConstraintValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

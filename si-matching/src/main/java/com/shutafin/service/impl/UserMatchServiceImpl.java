@@ -1,13 +1,13 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.dto.QuestionsListWithAnswersDTO;
-import com.shutafin.model.dto.QuestionsListWithSelectedAnswersDTO;
 import com.shutafin.model.dto.UserQuestionAnswerDTO;
 import com.shutafin.model.infrastructure.AnswerElement;
-import com.shutafin.model.infrastructure.AnswersForQuestion;
 import com.shutafin.model.infrastructure.SelectedAnswerElement;
 import com.shutafin.model.match.UserExamKey;
 import com.shutafin.model.match.VarietyExamKey;
+import com.shutafin.model.web.matching.AnswersForQuestion;
+import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
+import com.shutafin.model.web.matching.QuestionsListWithSelectedAnswersDTO;
 import com.shutafin.repository.*;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;

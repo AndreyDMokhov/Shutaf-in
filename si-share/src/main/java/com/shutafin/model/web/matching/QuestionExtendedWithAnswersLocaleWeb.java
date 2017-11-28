@@ -1,4 +1,4 @@
-package com.shutafin.model.dto;
+package com.shutafin.model.web.matching;
 
 import lombok.*;
 

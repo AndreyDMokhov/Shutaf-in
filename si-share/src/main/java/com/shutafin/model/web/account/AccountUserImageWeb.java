@@ -1,6 +1,6 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.account;
 
-import com.shutafin.annotations.LimitSize;
+import com.shutafin.annotations.annotations.LimitSize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserImageWeb {
+public class AccountUserImageWeb {
 
     private Long id;
 

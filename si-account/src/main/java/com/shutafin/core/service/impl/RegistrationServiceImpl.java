@@ -26,32 +26,37 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private static final int LANGUAGE_ID = 1;
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
     private LanguageRepository languageRepository;
-
-    @Autowired
     private PasswordService passwordService;
-
-    @Autowired
     private UserImageService userImageService;
-
-    @Autowired
     private UserInfoService userInfoService;
+    private UserAccountService userAccountService;
 
     @Autowired
-    private UserAccountService userAccountService;
+    public RegistrationServiceImpl(
+            UserRepository userRepository,
+            UserAccountRepository userAccountRepository,
+            LanguageRepository languageRepository,
+            PasswordService passwordService,
+            UserImageService userImageService,
+            UserInfoService userInfoService,
+            UserAccountService userAccountService) {
+        this.userRepository = userRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.languageRepository = languageRepository;
+        this.passwordService = passwordService;
+        this.userImageService = userImageService;
+        this.userInfoService = userInfoService;
+        this.userAccountService = userAccountService;
+    }
 
     @Override
     @Transactional
     public void save(RegistrationRequestWeb registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
-        UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
+        saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         userImageService.createUserImageDirectory(user);
         userInfoService.createUserInfo(new UserInfoRequest(), user);
@@ -73,7 +78,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         passwordService.createAndSaveUserPassword(user, password);
     }
 
-    private UserAccount saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb) {
+    private void saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUser(user);
         userAccount.setAccountStatus(AccountStatus.NEW);
@@ -85,7 +90,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         userAccount.setLanguage(language);
         userAccountRepository.save(userAccount);
-        return userAccount;
     }
 
     private User saveUser(RegistrationRequestWeb registrationRequestWeb) {

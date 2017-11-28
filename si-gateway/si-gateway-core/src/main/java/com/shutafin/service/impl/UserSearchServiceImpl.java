@@ -4,9 +4,9 @@ import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.City;
 import com.shutafin.model.entities.infrastructure.Gender;
+import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
 import com.shutafin.model.web.user.AgeRangeWebDTO;
 import com.shutafin.model.web.user.UserBaseResponse;
-import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.model.web.user.UserSearchResponse;
 import com.shutafin.repository.common.FilterAgeRangeRepository;
 import com.shutafin.repository.common.FilterCityRepository;
@@ -29,20 +29,25 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserSearchServiceImpl implements UserSearchService {
 
-    @Autowired
     private UserInfoService userInfoService;
-
-    @Autowired
     private FilterCityRepository filterCityRepository;
-
-    @Autowired
     private FilterGenderRepository filterGenderRepository;
-
-    @Autowired
     private FilterAgeRangeRepository filterAgeRangeRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public UserSearchServiceImpl(
+            UserInfoService userInfoService,
+            FilterCityRepository filterCityRepository,
+            FilterGenderRepository filterGenderRepository,
+            FilterAgeRangeRepository filterAgeRangeRepository,
+            UserRepository userRepository) {
+        this.userInfoService = userInfoService;
+        this.filterCityRepository = filterCityRepository;
+        this.filterGenderRepository = filterGenderRepository;
+        this.filterAgeRangeRepository = filterAgeRangeRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<UserSearchResponse> userSearchByList(List<User> users, String fullName) {
@@ -106,8 +111,8 @@ public class UserSearchServiceImpl implements UserSearchService {
         List<UserBaseResponse> userBaseResponseList = new ArrayList<>();
 
         for (User u : users) {
-
-            UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(u);
+            //todo ms-account fetch all
+            AccountUserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(u.getId());
 
             userBaseResponseList.add(
                     new UserBaseResponse(
@@ -121,9 +126,9 @@ public class UserSearchServiceImpl implements UserSearchService {
 
         return userBaseResponseList;
     }
-    private UserSearchResponse getUserResponseDTO(User users) {
-        //todo ms-account
-        UserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(users);
+    private UserSearchResponse getUserResponseDTO(User user) {
+        //todo ms-account fetch all
+        AccountUserInfoResponseDTO userInfoResponseDTO = userInfoService.getUserInfo(user.getId());
 
         return new UserSearchResponse(
                 userInfoResponseDTO.getUserId(),
