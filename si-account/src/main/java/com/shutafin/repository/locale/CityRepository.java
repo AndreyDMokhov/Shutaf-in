@@ -18,6 +18,6 @@ public interface CityRepository extends BaseJpaRepository<City, Integer> {
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")
     })
-    @Query(value = "select new com.shutafin.model.web.locale.AccountCityResponseDTO  (  cl.city.id,  cl.description,  cl.city.country.id as countryId  ) from CityLocale cl where cl.language = :language")
+    @Query(value = "select new com.shutafin.model.web.account.AccountCityResponseDTO (  cl.city.id,  cl.description,  cl.city.country.id as countryId  ) from CityLocale cl where cl.language = :language")
     List<AccountCityResponseDTO> getLocaleCities(@Param("language") Language language);
 }

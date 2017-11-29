@@ -27,19 +27,13 @@ import javax.validation.Valid;
 @RequestMapping("/users/settings")
 public class UserAccountController {
 
+    @Autowired
     private UserAccountService userAccountService;
+    @Autowired
     private UserLanguageService userLanguageService;
+    @Autowired
     private UserInfoService userInfoService;
 
-    @Autowired
-    public UserAccountController(
-            UserAccountService userAccountService,
-            UserLanguageService userLanguageService,
-            UserInfoService userInfoService) {
-        this.userAccountService = userAccountService;
-        this.userLanguageService = userLanguageService;
-        this.userInfoService = userInfoService;
-    }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,

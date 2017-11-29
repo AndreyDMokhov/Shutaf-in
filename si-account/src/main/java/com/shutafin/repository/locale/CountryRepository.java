@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface CountryRepository extends BaseJpaRepository<Country, Integer> {
 
-    @Query("select new com.shutafin.model.web.locale.AccountCountryResponseDTO  (  cl.country.id,  cl.description  ) from CountryLocale cl where cl.language = :language")
+    @Query("select new com.shutafin.model.web.account.AccountCountryResponseDTO (  cl.country.id,  cl.description  ) from CountryLocale cl where cl.language = :language")
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")
     }, forCounting = false)

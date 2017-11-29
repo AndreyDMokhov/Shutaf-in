@@ -16,7 +16,7 @@ public interface QuestionImportanceRepository extends BaseJpaRepository<Question
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")
     })
-    @Query(value = "select new com.shutafin.model.dto.QuestionImportanceDTO " +
+    @Query(value = "select new com.shutafin.model.web.matching.QuestionImportanceDTO " +
             "(qi.questionImportance.id, qi.description) " +
             "from QuestionImportanceLocale qi where qi.languageId = :languageId")
     List<QuestionImportanceDTO> getAllQuestionImportanceLocale(@Param("languageId") Integer languageId);

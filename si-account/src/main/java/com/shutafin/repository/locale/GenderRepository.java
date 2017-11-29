@@ -18,6 +18,6 @@ public interface GenderRepository extends BaseJpaRepository<Gender, Integer> {
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")
     })
-    @Query("select new com.shutafin.model.web.locale.AccountGenderResponseDTO  (  gl.gender.id,  gl.description  ) from GenderLocale gl where gl.language = :language")
+    @Query("select new com.shutafin.model.web.account.AccountGenderResponseDTO (  gl.gender.id,  gl.description  ) from GenderLocale gl where gl.language = :language")
     List<AccountGenderResponseDTO> getLocaleGenders(@Param("language") Language language);
 }
