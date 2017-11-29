@@ -6,7 +6,7 @@ import com.shutafin.model.web.AnswerResponse;
 import com.shutafin.model.web.QuestionAnswersResponse;
 import com.shutafin.model.web.QuestionSelectedAnswersResponse;
 import com.shutafin.model.web.initialization.QuestionAnswerElement;
-import com.shutafin.model.web.user.QuestionAnswerRequest;
+import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.repository.initialization.locale.QuestionRepositoryCustom;
 import org.springframework.stereotype.Repository;
 
@@ -85,21 +85,21 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 .append(" ) ")
                 .append(" from UserQuestionAnswer cl where cl.user = :user  ");
 
-        List<QuestionAnswerRequest> selectedQuestionsAnswers = entityManager
+        List<UserQuestionAnswerDTO> selectedQuestionsAnswers = entityManager
                 .createQuery(hql.toString())
                 .setParameter("user", user)
                 .setHint("org.hibernate.cacheable", true)
                 .getResultList();
 
         Map<Integer, List<Integer>> questionAnswers = new HashMap<>();
-        for (QuestionAnswerRequest element : selectedQuestionsAnswers) {
+        for (UserQuestionAnswerDTO element : selectedQuestionsAnswers) {
             if (!questionAnswers.containsKey(element.getQuestionId())) {
                 questionAnswers.put(element.getQuestionId(), new ArrayList<>());
             }
             questionAnswers.get(element.getQuestionId()).add(element.getAnswerId());
         }
 
-        for (QuestionAnswerRequest element : selectedQuestionsAnswers) {
+        for (UserQuestionAnswerDTO element : selectedQuestionsAnswers) {
             result.add(new QuestionSelectedAnswersResponse(element.getQuestionId(), questionAnswers.get(element.getQuestionId())));
         }
 
