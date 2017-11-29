@@ -1,6 +1,6 @@
 package com.shutafin.service;
 
-import com.shutafin.model.confirmations.EmailReason;
+import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.entity.EmailNotificationLog;
 import com.shutafin.model.smtp.EmailMessage;
 

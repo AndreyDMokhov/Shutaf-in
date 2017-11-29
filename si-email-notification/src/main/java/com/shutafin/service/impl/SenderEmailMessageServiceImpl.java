@@ -1,12 +1,12 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.helpers.EmailTemplateHelper;
-import com.shutafin.model.confirmations.EmailNotificationWeb;
 import com.shutafin.model.entity.EmailImageSource;
 import com.shutafin.model.entity.EmailNotificationLog;
 import com.shutafin.model.exception.exceptions.EmailNotificationProcessingException;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.service.EmailImageSourceService;
 import com.shutafin.service.EmailNotificationLogService;
 import com.shutafin.service.SenderEmailMessageService;

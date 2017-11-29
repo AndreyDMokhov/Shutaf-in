@@ -1,8 +1,7 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.confirmations.EmailNotificationWeb;
-import com.shutafin.model.confirmations.EmailChangeResponse;
-import com.shutafin.model.confirmations.EmailReason;
+import com.shutafin.model.web.email.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,7 @@ public class EmailNotificationSenderController {
             value = "/send",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void registration(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result) {
+    public void sendEmail(@RequestBody @Valid EmailNotificationWeb emailNotificationWeb, BindingResult result) {
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
@@ -51,8 +50,8 @@ public class EmailNotificationSenderController {
             value = "/validate/{link}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void isValidLink(@PathVariable String link, @RequestParam("reason") EmailReason emailReason) {
-        mailSenderService.getValidLink(link, emailReason);
+    public Boolean isValidLink(@PathVariable String link, @RequestParam("reason") EmailReason emailReason) {
+        return mailSenderService.getValidLink(link, emailReason) != null;
     }
 
 }

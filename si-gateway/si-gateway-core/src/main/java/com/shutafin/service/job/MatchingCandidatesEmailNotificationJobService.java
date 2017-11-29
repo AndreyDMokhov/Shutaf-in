@@ -69,6 +69,7 @@ public class MatchingCandidatesEmailNotificationJobService {
         }
     }
 
+    // TODO: MS-email EmailNotificationSenderController.sendEmail()
     private void sendEmail(UserAccount userAccount, List<User> matchingUsers) {
         String link = "";
         String serverAddress = environmentConfigurationService.getServerAddress();
@@ -88,7 +89,6 @@ public class MatchingCandidatesEmailNotificationJobService {
                 link,
                 imageSources);
 
-        //todo MS-email
         mailSenderService.sendEmail(emailMessage, EmailReason.MATCHING_CANDIDATES);
     }
 

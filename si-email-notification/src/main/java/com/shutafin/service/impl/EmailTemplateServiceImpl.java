@@ -1,10 +1,9 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.confirmations.EmailNotificationWeb;
-import com.shutafin.model.confirmations.EmailReason;
-import com.shutafin.model.entity.ConfirmationEmailChange;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.model.web.email.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
@@ -97,7 +96,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     }
 
-    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String confirmationUrl){
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String confirmationUrl) {
         return getEmailMessage(emailNotificationWeb, link, emailNotificationWeb.getEmailTo(), confirmationUrl);
     }
 

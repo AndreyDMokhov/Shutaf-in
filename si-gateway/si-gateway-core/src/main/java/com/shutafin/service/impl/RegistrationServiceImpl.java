@@ -78,7 +78,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Transactional
     public User confirmRegistration(String link) {
 
-        //todo MS-email
+        // TODO: MS-email EmailNotificationSenderController.sendEmail()
         RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.findByUrlLink(link);
 
         if (registrationConfirmation == null) {
@@ -100,7 +100,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private void sendConfirmRegistrationEmail(User user, UserAccount userAccount) {
 
-        //todo MS-email
+        // TODO: MS-email EmailNotificationSenderController.confirmLink()
         RegistrationConfirmation registrationConfirmation = new RegistrationConfirmation();
         registrationConfirmation.setUser(user);
         registrationConfirmation.setIsConfirmed(false);

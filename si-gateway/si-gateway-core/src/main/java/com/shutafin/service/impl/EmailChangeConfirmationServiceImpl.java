@@ -63,7 +63,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     @Transactional
     public void emailChangeRequest(User user, EmailChangeConfirmationWeb emailChangeConfirmationWeb) {
 
-        //todo MS-email
+        // TODO: MS-email EmailNotificationSenderController.sendEmail()
         if (!passwordService.isPasswordCorrect(user, emailChangeConfirmationWeb.getUserPassword())) {
             log.warn("Authentication exception:");
             log.warn("User password with ID {} is incorrect", user.getId());
@@ -107,7 +107,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     @Transactional
     public EmailChangedResponse emailChangeConfirmation(String link) {
 
-        //todo MS-email
+        // TODO: MS-email EmailNotificationSenderController.confirmLink()
         EmailChangeConfirmation emailChangeConfirmation = emailChangeConfirmationRepository.findByUrlLinkAndExpiresAtBefore(link, new Date());
 
         if (emailChangeConfirmation == null) {

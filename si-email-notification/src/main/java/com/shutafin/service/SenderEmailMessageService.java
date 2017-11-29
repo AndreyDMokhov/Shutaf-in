@@ -1,6 +1,6 @@
 package com.shutafin.service;
 
-import com.shutafin.model.confirmations.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.entity.EmailImageSource;
 import com.shutafin.model.entity.EmailNotificationLog;
 import com.shutafin.model.smtp.EmailMessage;

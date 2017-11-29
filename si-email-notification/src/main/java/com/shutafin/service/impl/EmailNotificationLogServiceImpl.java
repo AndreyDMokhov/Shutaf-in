@@ -1,8 +1,8 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.confirmations.EmailReason;
 import com.shutafin.model.entity.EmailNotificationLog;
 import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.repository.EmailNotificationLogRepository;
 import com.shutafin.service.EmailNotificationLogService;
 import org.springframework.beans.factory.annotation.Autowired;

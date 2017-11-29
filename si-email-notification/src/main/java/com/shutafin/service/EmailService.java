@@ -1,7 +1,7 @@
 package com.shutafin.service;
 
-import com.shutafin.model.confirmations.EmailNotificationWeb;
-import com.shutafin.model.confirmations.EmailReason;
+import com.shutafin.model.web.email.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailReason;
 
 public interface EmailService {
 

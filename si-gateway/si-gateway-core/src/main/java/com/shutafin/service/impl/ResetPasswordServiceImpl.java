@@ -58,6 +58,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Transactional
     @Override
+    // TODO: MS-email EmailNotificationSenderController.sendEmail()
     public void resetPasswordRequest(EmailWeb emailWeb) {
         User user = userRepository.findByEmail(emailWeb.getEmail());
         if (user != null) {
@@ -91,6 +92,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Transactional(readOnly = true)
     @Override
+    // TODO: MS-email EmailNotificationSenderController.isValidLink()
     public void resetPasswordValidation(String link) {
         //todo MS-email
         if (resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date()) == null) {
@@ -102,6 +104,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Transactional
     @Override
+    // TODO: MS-email EmailNotificationSenderController.confirmLink()
     public void passwordChange(PasswordWeb passwordWeb, String link) {
         ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
         if (resetPasswordConfirmation == null) {
