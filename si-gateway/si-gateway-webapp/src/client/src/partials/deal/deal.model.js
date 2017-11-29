@@ -36,15 +36,7 @@ app.factory('dealModel', function (Restangular,
             title: "Photos"
         }
     ];
-    var deals =  [
-        {
-            dealId: 0,
-            title: 'My deal'
-        },
-        {
-            dealId: 1,
-            title: 'Archive'
-        }];
+
 
     function getDeals() {
         var promise = new Promise(function (resolve, err) {

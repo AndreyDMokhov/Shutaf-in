@@ -9,22 +9,74 @@ app.component("dealComponent", {
         var profile = $sessionStorage.userProfile;
         // var userId = profile.userId;
 
-        vm.deals = [];
+        var deals = [
+            {
+                dealId: 0,
+                title: 'My deal',
+                statusId: 2,
+                users: [
+                    {
+                        userId: 1,
+                        userName: "Andrey"
+                    },
+                    {
+                        userId: 2,
+                        userName: "Oksana"
+                    }
+                ]
+
+            },
+            {
+                dealId: 1,
+                title: 'Archive',
+                statusId: 3,
+                users: [
+                    {
+                        userId: 1,
+                        userName: "Ivan"
+                    },
+                    {
+                        userId: 2,
+                        userName: "Maria"
+                    }
+                ]
+            }];   //$sessionStorage.deals
+        vm.dealTitle = [];
+        vm.dealsUsers = [];
         vm.tabs = [];
 
-        function init() {
+        function getDealsTitle() {
+            var titles = [];
+            for (var i = 0; i < deals.length; i++) {
+                titles.push({
+                    'dealId': deals[i].dealId,
+                    'title': deals[i].title,
+                    'statusId': deals[i].statusId
+                });
+            }
+            return titles;
+        }
+
+        function getDealsUsers(dealId) {
             debugger;
-            dealModel.getDeals().then(
-                function (success) {
-               /* if(success.data.data === null){
-                    $state.go('error', {code: 404});
-                }*/
-                vm.deals = success.data.data;
-                console.log(vm.deals);
-            });
+            var users = [];
+            for(var i=0; i<deals.length; i++){
+                if(deals[i].dealId === dealId){
+                    users = deals[i].users;
+                }
+            }
+
+            console.log(users);
+            return users;
+        }
+
+        function init() {
+
+            vm.dealTitle = getDealsTitle();
+            vm.dealsUsers = getDealsUsers(0);
 
 
-        };
+        }
 
 
         /* dealModel.dealTabsGet(userId).then(

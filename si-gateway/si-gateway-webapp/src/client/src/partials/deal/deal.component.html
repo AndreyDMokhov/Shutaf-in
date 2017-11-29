@@ -4,7 +4,7 @@
     <div class="col-md-12">
         <uib-tabset ui-sref-active="vm.getCurrentStateName()" vertical="false" type="pills">
             <uib-tab
-                    ng-repeat="deal in vm.deals"
+                    ng-repeat="deal in vm.dealTitle"
                     index="deal.state"
                     ng-click="vm.selectedDeal(deal)">
                 <uib-tab-heading>
@@ -17,6 +17,18 @@
     </div>
 </div>
 <hr>
+<div class="row">
+    <div class="col-md-3">
+        <uib-tabset vertcal="false" type="pills">
+            <uib-tab ng-repeat="user in vm.dealsUsers"
+                     index="deal.state">
+                <uib-tab-heading>
+                    {{user.userName}}
+                </uib-tab-heading>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-3">
         <uib-tabset ui-sref-active="vm.getCurrentStateName()" vertical="true" type="pills">
@@ -44,6 +56,7 @@
 
     <div class="col-md-9" ui-view></div>
 </div>
+<!-- =================================== Modal dialog ===============================================-->
 <div class="modal-dialog">
     <script type="text/ng-template" id="ModalContent.html">
         <div class="modal-header">
