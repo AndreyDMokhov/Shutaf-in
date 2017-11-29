@@ -3,7 +3,7 @@ package com.shutafin.service.response.reset_password;
 import com.shutafin.model.entity.reset_password.ConfirmationResetPassword;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.email.response.ResetPasswordResponse;
-import com.shutafin.service.ConfirmationResetPasswordService;
+import com.shutafin.service.confirmation.ConfirmationResetPasswordService;
 import com.shutafin.service.response.BaseConfirmationResponseInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

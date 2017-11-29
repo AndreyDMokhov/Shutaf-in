@@ -3,7 +3,7 @@ package com.shutafin.service.response.email_change;
 import com.shutafin.model.entity.email_change.ConfirmationEmailChange;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.email.response.EmailChangeResponse;
-import com.shutafin.service.ConfirmationEmailChangeService;
+import com.shutafin.service.confirmation.ConfirmationEmailChangeService;
 import com.shutafin.service.response.BaseConfirmationResponseInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

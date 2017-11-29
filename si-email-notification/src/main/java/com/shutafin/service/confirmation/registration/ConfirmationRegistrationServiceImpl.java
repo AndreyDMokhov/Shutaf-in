@@ -1,9 +1,9 @@
-package com.shutafin.service.impl.registration;
+package com.shutafin.service.confirmation.registration;
 
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.entity.registration.ConfirmationRegistration;
 import com.shutafin.repository.registration.ConfirmationRegistrationRepository;
-import com.shutafin.service.ConfirmationRegistrationService;
+import com.shutafin.service.confirmation.ConfirmationRegistrationService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

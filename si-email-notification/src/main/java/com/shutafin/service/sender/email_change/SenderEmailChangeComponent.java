@@ -3,7 +3,7 @@ package com.shutafin.service.sender.email_change;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.entity.email_change.ConfirmationEmailChange;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.service.ConfirmationEmailChangeService;
+import com.shutafin.service.confirmation.ConfirmationEmailChangeService;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
 import com.shutafin.service.sender.BaseEmailInterface;

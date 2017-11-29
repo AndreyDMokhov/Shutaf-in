@@ -3,7 +3,7 @@ package com.shutafin.service.sender.registration;
 import com.shutafin.model.entity.registration.ConfirmationRegistration;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.email.EmailNotificationWeb;
-import com.shutafin.service.ConfirmationRegistrationService;
+import com.shutafin.service.confirmation.ConfirmationRegistrationService;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
 import com.shutafin.service.sender.BaseEmailInterface;

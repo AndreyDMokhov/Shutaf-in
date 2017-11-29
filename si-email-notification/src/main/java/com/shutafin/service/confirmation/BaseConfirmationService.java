@@ -1,4 +1,4 @@
-package com.shutafin.service;
+package com.shutafin.service.confirmation;
 
 public interface BaseConfirmationService<T> {
 

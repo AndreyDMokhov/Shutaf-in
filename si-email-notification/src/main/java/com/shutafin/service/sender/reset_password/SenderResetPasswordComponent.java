@@ -3,7 +3,7 @@ package com.shutafin.service.sender.reset_password;
 import com.shutafin.model.entity.reset_password.ConfirmationResetPassword;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.email.EmailNotificationWeb;
-import com.shutafin.service.ConfirmationResetPasswordService;
+import com.shutafin.service.confirmation.ConfirmationResetPasswordService;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
 import com.shutafin.service.sender.BaseEmailInterface;

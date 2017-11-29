@@ -1,9 +1,9 @@
-package com.shutafin.service.impl.email_change;
+package com.shutafin.service.confirmation.email_change;
 
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.entity.email_change.ConfirmationEmailChange;
 import com.shutafin.repository.email_change.ConfirmationEmailChangeRepository;
-import com.shutafin.service.ConfirmationEmailChangeService;
+import com.shutafin.service.confirmation.ConfirmationEmailChangeService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

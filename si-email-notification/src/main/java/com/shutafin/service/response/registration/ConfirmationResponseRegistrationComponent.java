@@ -3,7 +3,7 @@ package com.shutafin.service.response.registration;
 import com.shutafin.model.entity.registration.ConfirmationRegistration;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.email.response.RegistrationResponse;
-import com.shutafin.service.ConfirmationRegistrationService;
+import com.shutafin.service.confirmation.ConfirmationRegistrationService;
 import com.shutafin.service.response.BaseConfirmationResponseInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
