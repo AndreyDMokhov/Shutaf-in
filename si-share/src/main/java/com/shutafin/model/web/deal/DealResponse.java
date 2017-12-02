@@ -1,4 +1,4 @@
-package com.shutafin.model.web;
+package com.shutafin.model.web.deal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

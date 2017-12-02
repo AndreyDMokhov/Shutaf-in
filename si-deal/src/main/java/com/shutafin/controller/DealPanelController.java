@@ -1,9 +1,9 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.web.DealPanelResponse;
-import com.shutafin.model.web.DealPanelWeb;
-import com.shutafin.model.web.NewTitleWeb;
+import com.shutafin.model.web.deal.DealPanelResponse;
+import com.shutafin.model.web.deal.DealPanelWeb;
+import com.shutafin.model.web.deal.NewTitleWeb;
 import com.shutafin.service.DealPanelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/deal/panel")
@@ -54,8 +55,8 @@ public class DealPanelController {
     }
 
     @DeleteMapping(value = "/{userId}/{panelId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteDealPanel(@RequestParam(value = "userId") Long userId,
-                                @RequestParam(value = "panelId") Long dealPanelId) {
+    public void deleteDealPanel(@PathVariable(value = "userId") Long userId,
+                                @PathVariable(value = "panelId") Long dealPanelId) {
         log.debug("DELETE /deal/panel/{userId}/{panelId}");
         dealPanelService.deleteDealPanel(dealPanelId, userId);
     }
@@ -66,6 +67,8 @@ public class DealPanelController {
         dealPanelResponse.setTitle(dealPanel.getTitle());
         if (includeDocuments) {
             dealPanelResponse.setDocuments(dealPanelService.getDealPanelDocuments(dealPanel.getId()));
+        } else {
+            dealPanelResponse.setDocuments(new ArrayList<>());
         }
         return dealPanelResponse;
     }

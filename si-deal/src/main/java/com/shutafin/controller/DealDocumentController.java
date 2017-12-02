@@ -2,8 +2,8 @@ package com.shutafin.controller;
 
 import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.web.DealUserDocumentWeb;
-import com.shutafin.model.web.NewTitleWeb;
+import com.shutafin.model.web.deal.DealUserDocumentWeb;
+import com.shutafin.model.web.deal.NewTitleWeb;
 import com.shutafin.service.DealDocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/documents")
+@RequestMapping("/deal/documents")
 @Slf4j
 public class DealDocumentController {
 

@@ -1,10 +1,10 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.Deal;
-import com.shutafin.model.web.DealResponse;
-import com.shutafin.model.web.DealUserWeb;
-import com.shutafin.model.web.DealWeb;
-import com.shutafin.model.web.NewTitleWeb;
+import com.shutafin.model.web.deal.DealResponse;
+import com.shutafin.model.web.deal.DealUserWeb;
+import com.shutafin.model.web.deal.DealWeb;
+import com.shutafin.model.web.deal.NewTitleWeb;
 import com.shutafin.service.DealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

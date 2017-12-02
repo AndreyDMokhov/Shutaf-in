@@ -1,19 +1,20 @@
-package com.shutafin.model.web;
+package com.shutafin.model.web.deal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+import java.util.List;
+
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class DealUserWeb {
+public class DealPanelResponse {
 
-    private Long dealId;
-
+    private Long panelId;
     private String title;
+    List<DealDocumentWeb> documents;
 
-    private Integer statusId;
 }

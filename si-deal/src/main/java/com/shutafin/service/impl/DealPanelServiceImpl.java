@@ -3,8 +3,8 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.Deal;
 import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.web.DealDocumentWeb;
-import com.shutafin.model.web.DealPanelWeb;
+import com.shutafin.model.web.deal.DealDocumentWeb;
+import com.shutafin.model.web.deal.DealPanelWeb;
 import com.shutafin.repository.DealDocumentRepository;
 import com.shutafin.repository.DealPanelRepository;
 import com.shutafin.service.DealDocumentService;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,14 +58,12 @@ public class DealPanelServiceImpl implements DealPanelService {
 
     @Override
     public DealPanel getDealPanel(Long dealPanelId, Long userId) {
-        dealPanelId >>= DealPanelWeb.getShiftValue();
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, !NEED_FULL_ACCESS);
         return dealPanel;
     }
 
     @Override
     public DealPanel renameDealPanel(Long dealPanelId, Long userId, String newTitle) {
-        dealPanelId >>= DealPanelWeb.getShiftValue();
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setTitle(newTitle);
         dealPanel.setModifiedByUser(userId);
@@ -73,7 +72,6 @@ public class DealPanelServiceImpl implements DealPanelService {
 
     @Override
     public void deleteDealPanel(Long dealPanelId, Long userId) {
-        dealPanelId >>= DealPanelWeb.getShiftValue();
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setIsDeleted(true);
         dealPanel.setModifiedByUser(userId);
@@ -83,7 +81,6 @@ public class DealPanelServiceImpl implements DealPanelService {
 
     @Override
     public List<DealDocumentWeb> getDealPanelDocuments(Long dealPanelId) {
-        dealPanelId >>= DealPanelWeb.getShiftValue();
         List<DealDocument> dealPanelDocuments = dealDocumentRepository.findAllByDealPanelId(dealPanelId);
         if (!dealPanelDocuments.isEmpty()) {
             return dealPanelDocuments
@@ -93,7 +90,7 @@ public class DealPanelServiceImpl implements DealPanelService {
                             dealDocument.getCreatedDate().getTime()))
                     .collect(Collectors.toList());
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private DealPanel getDealPanelWithPermissions(Long userId, Long dealFolderId, Boolean fullAccess) {

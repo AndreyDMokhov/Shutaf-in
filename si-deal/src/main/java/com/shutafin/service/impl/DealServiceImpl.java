@@ -6,7 +6,7 @@ import com.shutafin.model.entities.DealUser;
 import com.shutafin.model.types.DealStatus;
 import com.shutafin.model.types.DealUserPermissionType;
 import com.shutafin.model.types.DealUserStatus;
-import com.shutafin.model.web.*;
+import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.DealPanelRepository;
 import com.shutafin.repository.DealRepository;
 import com.shutafin.repository.DealUserRepository;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,12 +86,14 @@ public class DealServiceImpl implements DealService {
         if (!dealPanels.isEmpty()) {
             dealResponse.setPanels(dealPanels.stream()
                     .collect(Collectors.toMap(
-                            dealPanel -> dealPanel.getId() << DealPanelWeb.getShiftValue(),
+                            DealPanel::getId,
                             DealPanel::getTitle)
                     )
             );
 
             dealResponse.setFirstPanel(getFirstDealPanel(dealPanels));
+        } else {
+            dealResponse.setPanels(new HashMap<>());
         }
 
         return dealResponse;

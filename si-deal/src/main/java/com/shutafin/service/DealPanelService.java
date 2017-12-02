@@ -1,8 +1,8 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.web.DealDocumentWeb;
-import com.shutafin.model.web.DealPanelWeb;
+import com.shutafin.model.web.deal.DealDocumentWeb;
+import com.shutafin.model.web.deal.DealPanelWeb;
 
 import java.util.List;
 

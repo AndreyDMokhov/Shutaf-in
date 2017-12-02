@@ -5,9 +5,9 @@ import com.shutafin.model.entities.DealPanel;
 import com.shutafin.model.entities.DocumentStorage;
 import com.shutafin.model.types.DocumentType;
 import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.web.DealDocumentWeb;
-import com.shutafin.model.web.DealPanelWeb;
-import com.shutafin.model.web.DealUserDocumentWeb;
+import com.shutafin.model.web.deal.DealDocumentWeb;
+import com.shutafin.model.web.deal.DealPanelWeb;
+import com.shutafin.model.web.deal.DealUserDocumentWeb;
 import com.shutafin.repository.DealDocumentRepository;
 import com.shutafin.repository.DealPanelRepository;
 import com.shutafin.repository.DocumentStorageRepository;
@@ -61,8 +61,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
             throw new RuntimeException();
         }
 
-        Long dealPanelId = dealUserDocumentWeb.getDealPanelId() >> DealPanelWeb.getShiftValue();
-        DealPanel dealPanel = dealPanelRepository.findOne(dealPanelId);
+        DealPanel dealPanel = dealPanelRepository.findOne(dealUserDocumentWeb.getDealPanelId());
         if (dealPanel == null) {
             log.warn("Deal panel with given id does not exist");
             throw new RuntimeException();
@@ -95,14 +94,12 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
     @Override
     public DealDocument getDealDocument(Long userId, Long dealDocumentId) {
-        dealDocumentId >>= DealDocumentWeb.getShiftValue();
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, !NEED_FULL_ACCESS);
         return dealDocument;
     }
 
     @Override
     public void deleteDealDocument(Long userId, Long dealDocumentId) {
-        dealDocumentId >>= DealDocumentWeb.getShiftValue();
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
         dealDocument.setIsDeleted(true);
         dealDocument.setModifiedByUser(userId);
@@ -110,7 +107,6 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
     @Override
     public DealDocument renameDealDocument(Long userId, Long dealDocumentId, String newTitle) {
-        dealDocumentId >>= DealDocumentWeb.getShiftValue();
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
         dealDocument.setTitle(newTitle);
         dealDocument.setModifiedByUser(userId);

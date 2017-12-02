@@ -1,10 +1,10 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.Deal;
-import com.shutafin.model.web.DealResponse;
-import com.shutafin.model.web.DealUserWeb;
-import com.shutafin.model.web.DealWeb;
-import com.shutafin.model.web.NewTitleWeb;
+import com.shutafin.model.web.deal.DealResponse;
+import com.shutafin.model.web.deal.DealUserWeb;
+import com.shutafin.model.web.deal.DealWeb;
+import com.shutafin.model.web.deal.NewTitleWeb;
 
 import java.util.List;
 
