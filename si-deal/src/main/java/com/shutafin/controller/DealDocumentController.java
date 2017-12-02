@@ -19,6 +19,8 @@ import javax.validation.Valid;
 @Slf4j
 public class DealDocumentController {
 
+    private static final Long SHIFT_VALUE = 131L;
+
     @Autowired
     private DealDocumentService dealDocumentService;
 
@@ -63,7 +65,8 @@ public class DealDocumentController {
     }
 
     private InternalDealUserDocumentWeb getDealUserDocumentWeb(DealDocument dealDocument, Boolean includeEncoded) {
-        InternalDealUserDocumentWeb dealUserDocumentWeb = new InternalDealUserDocumentWeb(dealDocument.getId(),
+        InternalDealUserDocumentWeb dealUserDocumentWeb = new InternalDealUserDocumentWeb(
+                dealDocument.getId() << SHIFT_VALUE,
                 dealDocument.getModifiedByUser(),
                 dealDocument.getDealPanel().getId(),
                 null,

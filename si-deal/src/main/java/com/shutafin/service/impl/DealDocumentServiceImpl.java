@@ -33,6 +33,7 @@ import java.util.Base64;
 public class DealDocumentServiceImpl implements DealDocumentService {
 
     private static final Boolean NEED_FULL_ACCESS = true;
+    private static final Long SHIFT_VALUE = 131L;
 
     @Value("${windows.base.path}")
     private String windowsBasePath;
@@ -95,12 +96,14 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
     @Override
     public DealDocument getDealDocument(Long userId, Long dealDocumentId) {
+        dealDocumentId >>= SHIFT_VALUE;
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, !NEED_FULL_ACCESS);
         return dealDocument;
     }
 
     @Override
     public void deleteDealDocument(Long userId, Long dealDocumentId) {
+        dealDocumentId >>= SHIFT_VALUE;
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
         dealDocument.setIsDeleted(true);
         dealDocument.setModifiedByUser(userId);
@@ -108,6 +111,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
     @Override
     public DealDocument renameDealDocument(Long userId, Long dealDocumentId, String newTitle) {
+        dealDocumentId >>= SHIFT_VALUE;
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
         dealDocument.setTitle(newTitle);
         dealDocument.setModifiedByUser(userId);
