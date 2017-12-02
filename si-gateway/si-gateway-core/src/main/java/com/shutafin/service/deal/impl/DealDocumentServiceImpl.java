@@ -2,6 +2,7 @@ package com.shutafin.service.deal.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.deal.DealUserDocumentWeb;
+import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
 import com.shutafin.model.web.deal.NewTitleWeb;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
@@ -29,10 +30,17 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
     @Override
     public DealUserDocumentWeb addDealDocument(DealUserDocumentWeb dealUserDocumentWeb, User user) {
-        dealUserDocumentWeb.setUserId(user.getId());
+        InternalDealUserDocumentWeb internalDealUserDocumentWeb = new InternalDealUserDocumentWeb();
+        internalDealUserDocumentWeb.setUserId(user.getId());
+        internalDealUserDocumentWeb.setDealPanelId(dealUserDocumentWeb.getDealPanelId());
+        internalDealUserDocumentWeb.setDocumentTitle(dealUserDocumentWeb.getDocumentTitle());
+        internalDealUserDocumentWeb.setDocumentTypeId(dealUserDocumentWeb.getDocumentTypeId());
+        internalDealUserDocumentWeb.setFileData(dealUserDocumentWeb.getFileData());
         String dealUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/documents/";
-        return internalRestTemplateService.getResponse(HttpMethod.POST, dealUrl, null, dealUserDocumentWeb,
-                DealUserDocumentWeb.class);
+        internalDealUserDocumentWeb = internalRestTemplateService.getResponse(HttpMethod.POST, dealUrl, null, internalDealUserDocumentWeb,
+                InternalDealUserDocumentWeb.class);
+        dealUserDocumentWeb.setId(internalDealUserDocumentWeb.getId());
+        return dealUserDocumentWeb;
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.deal.DealDocumentWeb;
 import com.shutafin.model.web.deal.DealPanelWeb;
 import com.shutafin.model.web.deal.DealUserDocumentWeb;
+import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
 import com.shutafin.repository.DealDocumentRepository;
 import com.shutafin.repository.DealPanelRepository;
 import com.shutafin.repository.DocumentStorageRepository;
@@ -54,7 +55,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     // TODO: add moving document from panel to panel
 
     @Override
-    public DealDocument addDealDocument(DealUserDocumentWeb dealUserDocumentWeb, PermissionType permissionType) {
+    public DealDocument addDealDocument(InternalDealUserDocumentWeb dealUserDocumentWeb, PermissionType permissionType) {
         DocumentType documentType = DocumentType.getById(dealUserDocumentWeb.getDocumentTypeId());
         if (!fileSignatureCorrect(dealUserDocumentWeb, documentType)) {
             log.warn("File content differs from document type or file is corrupted");
@@ -135,7 +136,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         return documentStorageRepository.save(documentStorage);
     }
 
-    private boolean fileSignatureCorrect(DealUserDocumentWeb dealUserDocumentWeb, DocumentType documentType) {
+    private boolean fileSignatureCorrect(InternalDealUserDocumentWeb dealUserDocumentWeb, DocumentType documentType) {
         for (String fileSignature : documentType.getFileSignature()) {
             if (dealUserDocumentWeb.getFileData().startsWith(fileSignature)) {
                 return true;

@@ -1,10 +1,7 @@
 package com.shutafin.service.deal.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.deal.DealResponse;
-import com.shutafin.model.web.deal.DealUserWeb;
-import com.shutafin.model.web.deal.DealWeb;
-import com.shutafin.model.web.deal.NewTitleWeb;
+import com.shutafin.model.web.deal.*;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import com.shutafin.service.InternalRestTemplateService;
@@ -33,8 +30,15 @@ public class DealServiceImpl implements DealService {
     @Override
     public DealWeb initiateDeal(DealWeb dealWeb, User user) {
         String dealUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
-        dealWeb.setOriginUserId(user.getId());
-        return internalRestTemplateService.getResponse(HttpMethod.POST, dealUrl, null, dealWeb, DealWeb.class);
+        InternalDealWeb internalDealWeb = new InternalDealWeb();
+        internalDealWeb.setOriginUserId(user.getId());
+        internalDealWeb.setTitle(dealWeb.getTitle());
+        internalDealWeb.setUsers(dealWeb.getUsers());
+        internalDealWeb = internalRestTemplateService.getResponse(HttpMethod.POST, dealUrl, null, internalDealWeb,
+                InternalDealWeb.class);
+        dealWeb.setDealId(internalDealWeb.getDealId());
+        dealWeb.setTitle(internalDealWeb.getTitle());
+        return dealWeb;
     }
 
     @Override

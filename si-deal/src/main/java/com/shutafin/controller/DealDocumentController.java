@@ -3,6 +3,7 @@ package com.shutafin.controller;
 import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.deal.DealUserDocumentWeb;
+import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
 import com.shutafin.model.web.deal.NewTitleWeb;
 import com.shutafin.service.DealDocumentService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,8 @@ public class DealDocumentController {
     private DealDocumentService dealDocumentService;
 
     @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb addDealDocument(@RequestBody @Valid DealUserDocumentWeb dealUserDocumentWeb, BindingResult result) {
+    public InternalDealUserDocumentWeb addDealDocument(@RequestBody @Valid InternalDealUserDocumentWeb dealUserDocumentWeb,
+                                                       BindingResult result) {
         log.debug("/documents/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
@@ -36,7 +38,7 @@ public class DealDocumentController {
     }
 
     @GetMapping(value = "/{userId}/{docId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb getDealDocument(@PathVariable(value = "userId") Long userId,
+    public InternalDealUserDocumentWeb getDealDocument(@PathVariable(value = "userId") Long userId,
                                                @PathVariable(value = "docId") Long dealDocumentId) {
         log.debug("GET /documents/{userId}/{docId}");
         DealDocument dealDocument = dealDocumentService.getDealDocument(userId, dealDocumentId);
@@ -45,7 +47,7 @@ public class DealDocumentController {
 
     @PostMapping(value = "/{userId}/{docId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb renameDealDocument(@PathVariable(value = "userId") Long userId,
+    public InternalDealUserDocumentWeb renameDealDocument(@PathVariable(value = "userId") Long userId,
                                                   @PathVariable(value = "docId") Long userDocumentId,
                                                   @RequestBody @Valid NewTitleWeb documentTitle) {
         log.debug("POST /documents/{userId}/{docId}");
@@ -60,8 +62,8 @@ public class DealDocumentController {
         dealDocumentService.deleteDealDocument(userId, userDocumentId);
     }
 
-    private DealUserDocumentWeb getDealUserDocumentWeb(DealDocument dealDocument, Boolean includeEncoded) {
-        DealUserDocumentWeb dealUserDocumentWeb = new DealUserDocumentWeb(dealDocument.getId(),
+    private InternalDealUserDocumentWeb getDealUserDocumentWeb(DealDocument dealDocument, Boolean includeEncoded) {
+        InternalDealUserDocumentWeb dealUserDocumentWeb = new InternalDealUserDocumentWeb(dealDocument.getId(),
                 dealDocument.getModifiedByUser(),
                 dealDocument.getDealPanel().getId(),
                 null,

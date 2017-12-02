@@ -1,6 +1,5 @@
 package com.shutafin.model.web.deal;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DealWeb {
+public class InternalDealWeb {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long dealId;
+    private Long originUserId;
     private String title;
 
     @NotEmpty

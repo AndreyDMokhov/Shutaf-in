@@ -43,7 +43,7 @@ public class DealServiceImpl implements DealService {
     private DealPanelService dealPanelService;
 
     @Override
-    public DealWeb initiateDeal(DealWeb dealWeb) {
+    public InternalDealWeb initiateDeal(InternalDealWeb dealWeb) {
         Deal deal = new Deal();
         deal.setDealStatus(DealStatus.INITIATED);
         deal.setTitle(dealWeb.getTitle() == null ? DEFAULT_DEAL_TITLE : dealWeb.getTitle());
