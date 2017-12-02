@@ -52,7 +52,7 @@ public class DealController {
     }
 
     @PostMapping(value = "/rename/{dealId}/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    DealWeb renameDeal(@PathVariable(value = "dealId") Long dealId, @PathVariable(value = "userId") Long userId,
+    InternalDealWeb renameDeal(@PathVariable(value = "dealId") Long dealId, @PathVariable(value = "userId") Long userId,
                        @RequestBody @Valid NewTitleWeb newTitle, BindingResult result) {
         log.debug("POST /rename/{dealId}/{userId}");
         if (result.hasErrors()) {
@@ -61,7 +61,7 @@ public class DealController {
             throw new RuntimeException();
         }
         Deal deal = dealService.renameDeal(dealId, userId, newTitle);
-        return new DealWeb(deal.getId(), null, deal.getTitle(), null);
+        return new InternalDealWeb(deal.getId(), null, deal.getTitle(), null);
     }
 
     @DeleteMapping(value = "/{dealId}/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
