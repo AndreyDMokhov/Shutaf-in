@@ -3,7 +3,7 @@ package com.shutafin.controller;
 
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
-import com.shutafin.model.web.matching.QuestionsListWithSelectedAnswersDTO;
+import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
 import com.shutafin.service.UserMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -36,7 +36,7 @@ public class UserMatchController {
     }
 
     @GetMapping(value = "/questionnaire/answers/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<QuestionsListWithSelectedAnswersDTO> getSelectedUserQuestionsAnswers(@PathVariable("userId") Long userId) {
+    public List<MatchingQuestionsSelectedAnswersDTO> getSelectedUserQuestionsAnswers(@PathVariable("userId") Long userId) {
         return userMatchService.getSelectedUserQuestionsAnswers(userId);
     }
 

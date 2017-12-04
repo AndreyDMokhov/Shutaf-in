@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class MatchingInitializationResponse {
     private List<QuestionsListWithAnswersDTO> questionAnswersResponses;
-    private List<QuestionsListWithSelectedAnswersDTO> selectedAnswersResponses;
+    private List<MatchingQuestionsSelectedAnswersDTO> selectedAnswersResponses;
     private List<QuestionExtendedWithAnswersLocaleWeb> questionExtendedWithAnswers;
     private List<QuestionImportanceDTO> questionImportanceList;
     private List<UserQuestionExtendedAnswersWeb> selectedExtendedAnswersResponses;

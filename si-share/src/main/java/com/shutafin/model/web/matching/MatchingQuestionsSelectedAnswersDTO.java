@@ -1,4 +1,4 @@
-package com.shutafin.model.web;
+package com.shutafin.model.web.matching;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,15 +7,11 @@ import lombok.Setter;
 
 import java.util.List;
 
-/**
- * Created by evgeny on 9/12/2017.
- */
-@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class QuestionSelectedAnswersResponse {
+public class MatchingQuestionsSelectedAnswersDTO {
     private Integer questionId;
     private List<Integer> selectedAnswersIds;
 }

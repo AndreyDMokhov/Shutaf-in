@@ -1,8 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.ImageStorage;
-import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.model.web.error.ErrorType;
@@ -19,9 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -36,9 +31,6 @@ public class UserImageControllerTest extends BaseTestImpl {
     private static final Long INVALID_USER_IMAGE_ID = 99L;
     private static final String VALID_IMAGE_IN_BASE64 = "valid image in base64";
 
-
-    private User validUser;
-    private UserImage validUserImage;
 
     @MockBean
     public UserImageService userImageService;
@@ -232,28 +224,8 @@ public class UserImageControllerTest extends BaseTestImpl {
     }
 
 
-    private User createUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setFirstName("User");
-        user.setLastName("Valid");
-        user.setEmail("valid@mail.com");
-        user.setCreatedDate(Date.from(Instant.now()));
-        return user;
-    }
 
-    private UserImage createUserImage() {
-        UserImage userImage = new UserImage();
-        userImage.setId(1L);
-        userImage.setUser(validUser);
-        userImage.setLocalPath("");
-        ImageStorage imageStorage = new ImageStorage();
-        imageStorage.setId(1L);
-        imageStorage.setUserImage(userImage);
-        imageStorage.setImageEncoded(VALID_IMAGE_IN_BASE64);
-        userImage.setImageStorage(imageStorage);
-        userImage.setCreatedDate(Date.from(Instant.now()));
-        return userImage;
-    }
+
+
 
 }

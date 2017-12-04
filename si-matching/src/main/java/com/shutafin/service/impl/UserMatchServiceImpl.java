@@ -7,7 +7,7 @@ import com.shutafin.model.match.UserExamKey;
 import com.shutafin.model.match.VarietyExamKey;
 import com.shutafin.model.web.matching.AnswersForQuestion;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
-import com.shutafin.model.web.matching.QuestionsListWithSelectedAnswersDTO;
+import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
 import com.shutafin.repository.*;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
@@ -144,15 +144,15 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional
-    public List<QuestionsListWithSelectedAnswersDTO> getSelectedUserQuestionsAnswers(Long userId) {
-        List<QuestionsListWithSelectedAnswersDTO> result = new ArrayList<>();
+    public List<MatchingQuestionsSelectedAnswersDTO> getSelectedUserQuestionsAnswers(Long userId) {
+        List<MatchingQuestionsSelectedAnswersDTO> result = new ArrayList<>();
         List<SelectedAnswerElement> selectedQuestionsAnswers = userQuestionAnswerRepository.findAllByUserId(userId);
 
         selectedQuestionsAnswers.stream()
                 .collect(Collectors.groupingBy(
                         SelectedAnswerElement::getQuestionId,
                         Collectors.mapping(SelectedAnswerElement::getAnswerId, Collectors.toList())))
-                .forEach((key, value) -> result.add(new QuestionsListWithSelectedAnswersDTO(key, value)));
+                .forEach((key, value) -> result.add(new MatchingQuestionsSelectedAnswersDTO(key, value)));
 
         return result;
     }
