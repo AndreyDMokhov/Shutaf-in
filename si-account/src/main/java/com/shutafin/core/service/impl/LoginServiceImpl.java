@@ -8,7 +8,7 @@ import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserLoginLog;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.types.AccountStatus;
-import com.shutafin.model.web.user.LoginWebModel;
+import com.shutafin.model.web.account.AccountLoginRequest;
 import com.shutafin.repository.account.UserLoginLogRepository;
 import com.shutafin.repository.account.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -45,14 +45,14 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Transactional(noRollbackFor = AuthenticationException.class)
-    public User getUserByLoginWebModel(LoginWebModel loginWeb) {
+    public User getUserByLoginWebModel(AccountLoginRequest loginWeb) {
         User user = findUserByEmail(loginWeb);
         UserAccount userAccount = userAccountService.checkUserAccountStatus(user);
         checkUserPassword(loginWeb, userAccount, user);
         return user;
     }
 
-    private User findUserByEmail(LoginWebModel loginWeb) {
+    private User findUserByEmail(AccountLoginRequest loginWeb) {
         User user = userRepository.findByEmail(loginWeb.getEmail());
         if (user == null) {
             log.warn("Users was not found by email {}", loginWeb.getEmail());
@@ -61,7 +61,7 @@ public class LoginServiceImpl implements LoginService {
         return user;
     }
 
-    private void checkUserPassword(LoginWebModel loginWeb, UserAccount userAccount, User user) {
+    private void checkUserPassword(AccountLoginRequest loginWeb, UserAccount userAccount, User user) {
         if (!passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
             saveUserLoginLogEntry(user, false);
             countLoginFailsAndBlockAccountIfMoreThanMax(user, userAccount);
@@ -82,8 +82,10 @@ public class LoginServiceImpl implements LoginService {
         Date timeNow = DateTime.now().toDate();
         Date timeDelay = DateTime.now().minusMinutes(MAX_TRIES_FOR_MINUTES).toDate();
         UserLoginLog lastSuccessLoginLog = userLoginLogRepository.findTopByIsLoginSuccessOrderByIdDesc(true);
-        Long countTries = userLoginLogRepository.findAllByUserAndCreatedDateBetween(user, timeDelay, timeNow)
-                .filter(log -> log.getId() > lastSuccessLoginLog.getId()).count();
+        Long countTries = userLoginLogRepository
+                .findAllByUserAndCreatedDateBetween(user, timeDelay, timeNow)
+                .filter(log -> log.getId() > lastSuccessLoginLog.getId())
+                .count();
         if (countTries >= AMOUNT_OF_ALLOWED_MAX_TRIES) {
             userAccount.setAccountStatus(AccountStatus.BLOCKED);
         }

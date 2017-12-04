@@ -9,7 +9,7 @@ import com.shutafin.model.exception.exceptions.validation.EmailNotUniqueValidati
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.types.AccountType;
-import com.shutafin.model.web.user.RegistrationRequestWeb;
+import com.shutafin.model.web.account.AccountRegistrationRequest;
 import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.account.UserAccountRepository;
@@ -54,7 +54,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     @Transactional
-    public void save(RegistrationRequestWeb registrationRequestWeb) {
+    public void save(AccountRegistrationRequest registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
         saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
@@ -78,7 +78,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         passwordService.createAndSaveUserPassword(user, password);
     }
 
-    private void saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb) {
+    private void saveUserAccount(User user, AccountRegistrationRequest registrationRequestWeb) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUser(user);
         userAccount.setAccountStatus(AccountStatus.NEW);
@@ -92,7 +92,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         userAccountRepository.save(userAccount);
     }
 
-    private User saveUser(RegistrationRequestWeb registrationRequestWeb) {
+    private User saveUser(AccountRegistrationRequest registrationRequestWeb) {
         User user = new User();
         user.setFirstName(registrationRequestWeb.getFirstName());
         user.setLastName(registrationRequestWeb.getLastName());

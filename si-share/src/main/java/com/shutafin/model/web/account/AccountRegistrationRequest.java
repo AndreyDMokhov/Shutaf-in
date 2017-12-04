@@ -1,4 +1,4 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegistrationRequestWeb {
+public class AccountRegistrationRequest {
 
     @NotBlank
     @Length(min=3, max=50)

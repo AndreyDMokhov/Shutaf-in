@@ -1,19 +1,19 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.account;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * @author Edward Kats
+ */
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class LoginWebModel {
-
+@Data
+public class AccountLoginRequest {
     @Email
     @Length(max = 50)
     @NotBlank
@@ -22,6 +22,4 @@ public class LoginWebModel {
     @NotBlank
     @Length(min = 8, max = 25)
     private String password;
-
-
 }

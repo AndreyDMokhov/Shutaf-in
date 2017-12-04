@@ -3,7 +3,8 @@ package com.shutafin.controller;
 import com.shutafin.core.service.RegistrationService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
-import com.shutafin.model.web.user.RegistrationRequestWeb;
+import com.shutafin.model.web.account.AccountRegistrationRequest;
+import com.shutafin.model.web.account.AccountUserWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,7 +27,7 @@ public class RegistrationController {
 
 
     @PostMapping(value = "/registration/request", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
+    public void registration(@RequestBody @Valid AccountRegistrationRequest registrationRequestWeb,
                              BindingResult result) {
         log.debug("/users/registration/request");
         if (result.hasErrors()) {
@@ -38,9 +39,16 @@ public class RegistrationController {
     }
 
     @GetMapping(value = "/registration/confirm/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public User confirmRegistration(@PathVariable Long userId) {
+    public AccountUserWeb confirmRegistration(@PathVariable Long userId) {
         log.debug("/users/registration/confirmation/{userId}");
-        return registrationService.confirmRegistration(userId);
+        User user = registrationService.confirmRegistration(userId);
+
+        return AccountUserWeb
+                .builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .id(user.getId())
+                .build();
     }
 
 }

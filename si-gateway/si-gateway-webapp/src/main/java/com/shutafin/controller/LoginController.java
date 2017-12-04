@@ -1,8 +1,8 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.validation.InputValidationException;
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.LoginWebModel;
+import com.shutafin.model.web.account.AccountLoginRequest;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.processors.annotations.response.SessionResponse;
 import com.shutafin.service.LoginService;
@@ -23,19 +23,16 @@ import javax.validation.Valid;
 @Slf4j
 public class LoginController {
 
+    @Autowired
     private LoginService loginWebService;
 
-    @Autowired
-    public LoginController(LoginService loginWebService) {
-        this.loginWebService = loginWebService;
-    }
 
-    public LoginController() {
-    }
+    //todo ms-gateway @SessionResponse
 
     @SessionResponse
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public User login(@RequestBody @Valid LoginWebModel loginWeb, BindingResult result) {
+    public AccountUserWeb login(@RequestBody @Valid AccountLoginRequest loginWeb,
+                                BindingResult result) {
         log.debug("/login/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
