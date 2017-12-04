@@ -80,7 +80,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         /*Deal*/
         .state('deal', {
             url: '/deal',
-            template: '<deal-component></deal-component>'
+            template: '<deal-presentation-component></deal-presentation-component>'
         })
         .state('deal.content', {
             url: '/content',

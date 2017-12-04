@@ -1,0 +1,46 @@
+
+<div class="row">
+
+    <div class="col-md-3">
+        <uib-tabset ui-sref-active="vm.getSelectedPallet()" vertical="true" type="pills">
+            <uib-tab
+                    ng-repeat="pallet in vm.pallets"
+                    ng-click="vm.selectPallet(pallet)">
+                <uib-tab-heading>
+
+                    {{pallet.title}}
+
+                </uib-tab-heading>
+            </uib-tab>
+        </uib-tabset>
+        <div class="col-md-offset-6 pull-right" style="margin-top: 10px">
+            <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.removePallet()" disable><i
+                    class="fa fa-times"></i></button>
+            <button ng-click="vm.addPallet(vm.dealId)" class="btn btn-primary " style="border-radius: 50%" ><i
+                    class="fa fa-plus"></i></button>
+
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div ng-if="vm.palletClicked">
+        <pallet-component documents="vm.documents"></pallet-component>
+        </div>
+    </div>
+</div>
+
+<!-- =================================== Modal dialog ===============================================-->
+<div class="modal-dialog">
+    <script type="text/ng-template" id="ModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">New tabs name</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <label for="newTabName">New name</label>
+            <input ng-model="vm.newTabName" id="newTabName" name="newTabName">
+        </div>
+        <div class="modal-footer ">
+            <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
+        </div>
+    </script>
+</div>
