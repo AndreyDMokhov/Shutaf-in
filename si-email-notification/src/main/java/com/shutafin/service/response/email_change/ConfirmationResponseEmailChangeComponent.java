@@ -2,7 +2,7 @@ package com.shutafin.service.response.email_change;
 
 import com.shutafin.model.entity.email_change.ConfirmationEmailChange;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.web.email.response.EmailChangeResponse;
+import com.shutafin.model.web.email.response.ChangeEmailResponse;
 import com.shutafin.service.confirmation.ConfirmationEmailChangeService;
 import com.shutafin.service.response.BaseConfirmationResponseInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 
 @Component("changeEmailConfirmationResponse")
 @Slf4j
-public class ConfirmationResponseEmailChangeComponent implements BaseConfirmationResponseInterface<EmailChangeResponse> {
+public class ConfirmationResponseEmailChangeComponent implements BaseConfirmationResponseInterface<ChangeEmailResponse> {
 
     @Autowired
     private ConfirmationEmailChangeService confirmationEmailChangeService;
 
     @Override
-    public EmailChangeResponse getResponse(String link) {
+    public ChangeEmailResponse getResponse(String link) {
 
         ConfirmationEmailChange confirmationEmailChange = confirmationEmailChangeService.getConfirmed(link);
         if (confirmationEmailChange == null) {
@@ -29,7 +29,7 @@ public class ConfirmationResponseEmailChangeComponent implements BaseConfirmatio
         confirmationEmailChange.setIsConfirmed(true);
         confirmationEmailChangeService.save(confirmationEmailChange);
 
-        EmailChangeResponse emailChangeResponse = new EmailChangeResponse();
+        ChangeEmailResponse emailChangeResponse = new ChangeEmailResponse();
         emailChangeResponse.setUserId(confirmationEmailChange.getUserId());
 
         if (confirmationEmailChange.getConnectedConfirmationEmailChange() == null) {

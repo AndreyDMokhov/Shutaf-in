@@ -1,6 +1,6 @@
 package com.shutafin.service.validation;
 
-public interface BaseValidLinkInterface<T> {
+public interface BaseValidationLinkInterface<T> {
 
     T validate(String link);
 

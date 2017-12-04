@@ -4,6 +4,7 @@ import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.UserImageSource;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.route.DiscoveryRoutingService;
+import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
 import com.shutafin.service.sender.BaseEmailInterface;
@@ -41,7 +42,7 @@ public class SenderMatchingCandidatesComponent implements BaseEmailInterface {
     private EmailMessage getMatchingCandidatesEmailMessage(EmailNotificationWeb emailNotificationWeb) {
 
         String urlLink = "";
-        String serverAddress = discoveryRoutingService.getExternalRoute();
+        String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
         Map<String, byte[]> imageSources = new TreeMap<>();
 
         for (UserImageSource userImageSource : emailNotificationWeb.getUserImageSources()) {

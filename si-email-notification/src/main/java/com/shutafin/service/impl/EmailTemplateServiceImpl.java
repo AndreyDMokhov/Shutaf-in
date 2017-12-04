@@ -5,6 +5,7 @@ import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.route.DiscoveryRoutingService;
+import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
 
-    @Override
-    public BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, String link) {
+    private BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, String link) {
         notNull(emailReason);
         notNull(languageDescription);
         notBlank(link);
@@ -90,8 +90,8 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String emailChange, String confirmationUrl) {
 
-        String serverAddress = discoveryRoutingService.getExternalRoute();
-        String urlLink = serverAddress + confirmationUrl + link + "?" + emailNotificationWeb.getEmailReason().getPropertyPrefix();
+        String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
+        String urlLink = serverAddress + confirmationUrl + link;
         return getEmailMessage(emailNotificationWeb, urlLink, (Map<String, byte[]>) null, emailChange);
 
     }

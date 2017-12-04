@@ -37,15 +37,6 @@ public class DiscoveryRoutingServiceImpl implements DiscoveryRoutingService {
         return substituteIpWithDns(instances.get(0).getUri()) + (prefix == null ? "" : prefix);
     }
 
-    @Override
-    public String getExternalRoute(){
-        List<ServiceInstance> instances = discoveryClient.getInstances(RouteDirection.SI_GATEWAY.getServiceId());
-        if (instances == null || instances.isEmpty()) {
-            return null;
-        }
-
-        return substituteIpWithDns(instances.get(0).getUri());
-    }
 
     @Override
     public Map<RouteDirection, String> getServiceRoutes() {
