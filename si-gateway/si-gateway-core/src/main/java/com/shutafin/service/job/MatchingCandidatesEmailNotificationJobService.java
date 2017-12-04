@@ -97,7 +97,7 @@ public class MatchingCandidatesEmailNotificationJobService {
         if (userAccountService.findUserAccountProfileImage(matchingUser) == null) {
             image = userImageService.getDefaultImageBase64();
         } else {
-            image = userAccountService.findUserAccountProfileImage(matchingUser).getImageStorage().getImageEncoded();
+            image = userAccountService.findUserAccountProfileImage(matchingUser).getImage();
         }
         return Base64.getDecoder().decode(image);
     }

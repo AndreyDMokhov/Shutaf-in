@@ -1,14 +1,13 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.web.user.UserImageWeb;
+import com.shutafin.model.web.account.AccountUserImageWeb;
 
 
 public interface UserAccountService {
 
-    UserImage updateProfileImage(UserImageWeb userImageWeb, User user);
-    UserImage findUserAccountProfileImage(User user);
+    AccountUserImageWeb updateProfileImage(AccountUserImageWeb userImageWeb, User user);
+    AccountUserImageWeb findUserAccountProfileImage(User user);
     void deleteUserAccountProfileImage(User user);
 
 }

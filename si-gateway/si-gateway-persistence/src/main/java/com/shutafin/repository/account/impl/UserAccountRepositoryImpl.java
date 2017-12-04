@@ -29,6 +29,18 @@ public class UserAccountRepositoryImpl implements UserAccountRepositoryCustom {
     }
 
     @Override
+    public Language findUserLanguage(Long userId) {
+        StringBuilder hql = new StringBuilder()
+                .append("select u.language from UserAccount u ")
+                .append(" where ")
+                .append(" u.user.id = :userId ");
+        return (Language) entityManager
+                .createQuery(hql.toString())
+                .setParameter("userId", userId)
+                .getSingleResult();
+    }
+
+    @Override
     public void updateUserLanguage(Language language, User user) {
         entityManager
                 .createQuery("UPDATE UserAccount SET language = :language WHERE user = :user")

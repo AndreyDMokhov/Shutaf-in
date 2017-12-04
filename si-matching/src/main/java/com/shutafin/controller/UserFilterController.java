@@ -53,7 +53,7 @@ public class UserFilterController {
         return userFilterService.getGenderForFilter(userId);
     }
 
-    @RequestMapping(value = "/age-range/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/age-range/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AgeRangeWebDTO getAgeRangeForFilter(@PathVariable("userId") Long userId) {
         return userFilterService.getAgeRangeForFilter(userId);
     }

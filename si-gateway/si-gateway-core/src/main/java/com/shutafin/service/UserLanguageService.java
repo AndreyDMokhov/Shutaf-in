@@ -1,13 +1,11 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.web.account.UserLanguageWeb;
+import com.shutafin.model.web.account.AccountUserLanguageWeb;
 
 /**
  * Created by evgeny on 6/26/2017.
  */
 public interface UserLanguageService {
-    Language findUserLanguage(User user);
-    void updateUserLanguage(UserLanguageWeb userAccount, User user);
+    void updateUserLanguage(AccountUserLanguageWeb userAccount, User user);
 }

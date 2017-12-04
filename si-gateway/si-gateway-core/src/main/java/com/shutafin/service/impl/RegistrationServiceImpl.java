@@ -1,26 +1,25 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.exception.exceptions.validation.EmailNotUniqueValidationException;
 import com.shutafin.model.entities.RegistrationConfirmation;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.types.AccountStatus;
-import com.shutafin.model.entities.types.AccountType;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.model.web.user.UserInfoRequest;
+import com.shutafin.model.web.account.AccountRegistrationRequest;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.repository.account.RegistrationConfirmationRepository;
-import com.shutafin.repository.account.UserAccountRepository;
-import com.shutafin.repository.common.UserRepository;
-import com.shutafin.repository.initialization.LanguageRepository;
-import com.shutafin.service.*;
+import com.shutafin.route.DiscoveryRoutingService;
+import com.shutafin.route.RouteDirection;
+import com.shutafin.service.EmailNotificationSenderService;
+import com.shutafin.service.EmailTemplateService;
+import com.shutafin.service.EnvironmentConfigurationService;
+import com.shutafin.service.RegistrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
@@ -29,16 +28,6 @@ import java.util.UUID;
 @Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
 
-    private static final int LANGUAGE_ID = 1;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserAccountRepository userAccountRepository;
-
-    @Autowired
-    private LanguageRepository languageRepository;
 
     @Autowired
     private EmailNotificationSenderService mailSenderService;
@@ -53,32 +42,22 @@ public class RegistrationServiceImpl implements RegistrationService {
     private EnvironmentConfigurationService environmentConfigurationService;
 
     @Autowired
-    private PasswordService passwordService;
-
-    @Autowired
-    private UserImageService userImageService;
-
-    @Autowired
-    private UserInfoService userInfoService;
-
+    private DiscoveryRoutingService routingService;
 
     @Override
-    @Transactional
-    // TODO: MS-account RegistrationController.registration()
-    public void save(RegistrationRequestWeb registrationRequestWeb) {
-        User user = saveUser(registrationRequestWeb);
-        UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
-        saveUserCredentials(user, registrationRequestWeb.getPassword());
-        userImageService.createUserImageDirectory(user);
-        userInfoService.createUserInfo(new UserInfoRequest(), user);
-        sendConfirmRegistrationEmail(user, userAccount);
+    public void save(AccountRegistrationRequest registrationRequestWeb) {
+
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "/users/registration/request";
+        new RestTemplate().postForEntity(url, registrationRequestWeb, Void.class);
+
+        //todo ms-email
+//        sendConfirmRegistrationEmail(user, userAccount);
     }
 
     @Override
     @Transactional
-    public User confirmRegistration(String link) {
-
-        // TODO: MS-email EmailNotificationSenderController.sendEmail()
+    public AccountUserWeb confirmRegistration(String link) {
+        //todo ms-email
         RegistrationConfirmation registrationConfirmation = registrationConfirmationRepository.findByUrlLink(link);
 
         if (registrationConfirmation == null) {
@@ -90,12 +69,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         registrationConfirmation.setIsConfirmed(true);
         registrationConfirmationRepository.save(registrationConfirmation);
 
-        // TODO: MS-account RegistrationController.confirmRegistration()
-        UserAccount userAccount = userAccountRepository.findByUser(registrationConfirmation.getUser());
-        userAccount.setAccountStatus(AccountStatus.CONFIRMED);
-        userAccountRepository.save(userAccount);
 
-        return registrationConfirmation.getUser();
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/registration/confirm/%d", registrationConfirmation.getUser().getId());
+
+        return new RestTemplate().getForEntity(url, AccountUserWeb.class).getBody();
     }
 
     private void sendConfirmRegistrationEmail(User user, UserAccount userAccount) {
@@ -113,37 +91,4 @@ public class RegistrationServiceImpl implements RegistrationService {
         mailSenderService.sendEmail(emailMessage, EmailReason.REGISTRATION_CONFIRMATION);
     }
 
-    private void saveUserCredentials(User user, String password) {
-        passwordService.createAndSaveUserPassword(user, password);
-    }
-
-    private UserAccount saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb) {
-        UserAccount userAccount = new UserAccount();
-        userAccount.setUser(user);
-        userAccount.setAccountStatus(AccountStatus.NEW);
-        userAccount.setAccountType(AccountType.REGULAR);
-
-        Language language = languageRepository.findOne(registrationRequestWeb.getUserLanguageId());
-        if (language == null) {
-            language = languageRepository.findOne(LANGUAGE_ID);
-        }
-        userAccount.setLanguage(language);
-        userAccountRepository.save(userAccount);
-        return userAccount;
-    }
-
-    private User saveUser(RegistrationRequestWeb registrationRequestWeb) {
-        User user = new User();
-        user.setFirstName(registrationRequestWeb.getFirstName());
-        user.setLastName(registrationRequestWeb.getLastName());
-        String email = registrationRequestWeb.getEmail();
-        if (userRepository.findByEmail(email) != null) {
-            log.warn("Email not unique validation exception:");
-            log.warn("Email already exists");
-            throw new EmailNotUniqueValidationException("Email " + email + " already exists");
-        }
-        user.setEmail(email);
-        userRepository.save(user);
-        return user;
-    }
 }

@@ -1,14 +1,17 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.web.account.UserLanguageWeb;
-import com.shutafin.repository.account.UserAccountRepository;
-import com.shutafin.repository.initialization.LanguageRepository;
+import com.shutafin.model.web.account.AccountUserLanguageWeb;
+import com.shutafin.route.DiscoveryRoutingService;
+import com.shutafin.route.RouteDirection;
 import com.shutafin.service.UserLanguageService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
 
 /**
  * Created by evgeny on 6/26/2017.
@@ -17,28 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserLanguageServiceImpl implements UserLanguageService {
 
-    @Autowired
-    private UserAccountRepository userAccountRepository;
 
     @Autowired
-    private LanguageRepository languageRepository;
+    private DiscoveryRoutingService discoveryRoutingService;
 
 
     @Override
-    @Transactional(readOnly = true)
-    public Language findUserLanguage(User user) {
-        if (user != null) {
-            return userAccountRepository.findUserLanguage(user);
-        }
-        return null;
-    }
-
-    @Override
-    @Transactional
-    // TODO: MS-account UserAccountController.update()
-    public void updateUserLanguage(UserLanguageWeb userLanguageWeb, User user) {
-        Language language = languageRepository.findOne(userLanguageWeb.getId());
-        userAccountRepository.updateUserLanguage(language, user);
+    @SneakyThrows
+    public void updateUserLanguage(AccountUserLanguageWeb userLanguageWeb, User user) {
+        String url = discoveryRoutingService.getRoute(RouteDirection.SI_ACCOUNT) + String.format("/users/%d/language", user.getId());
+        new RestTemplate().put(url, userLanguageWeb, new HashMap<>());
     }
 
 }
