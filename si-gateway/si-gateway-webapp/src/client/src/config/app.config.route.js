@@ -67,7 +67,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/users/search?{name}'
         })
         .state('questions', {
-            template:'<questions-component></questions-component>',
+            template: '<questions-component></questions-component>',
             url: '/questions'
         })
         /* Settings */
@@ -77,11 +77,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             template: '<settings-component></settings-component>'
         })
         .state('settings.personal', {
-            url:'/personal',
+            url: '/personal',
             template: '<user-settings-component></user-settings-component>'
         })
         .state('settings.changeEmailRequest', {
-            url:'/email',
+            url: '/email',
             template: '<change-email-component></change-email-component>'
 
         })
@@ -91,17 +91,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/settings/change-email/confirmation/{link}'
         })
         .state('settings.changePassword', {
-            url:'/password',
+            url: '/password',
             template: '<change-password-component></change-password-component>'
         })
-        .state("chat",
-            {
-                url: "/chat",
-                params: {
-                    user: null
-                },
-                template: '<messenger-ui-component></messenger-ui-component>'
-            })
+        .state("chat", {
+            url: "/chat",
+            template: '<messenger-ui-component></messenger-ui-component>'
+        })
     ;
     $urlRouterProvider.otherwise('/home');
 });

@@ -1,4 +1,4 @@
-app.directive('sendMessageDirective', function ($state) {
+app.directive('sendMessageDirective', function ($state, messengerManagementService) {
     return {
         restrict: "E",
         template: '<button ng-click="sendMessage()" class="btn btn-primary button-size-font">' +
@@ -9,7 +9,8 @@ app.directive('sendMessageDirective', function ($state) {
         link: function (scope, element, attrs) {
 
             scope.sendMessage = function () {
-                $state.go('chat', {user: scope.user});
+                $state.go('chat');
+                messengerManagementService.sendMessage(scope.user);
             };
         }
     };

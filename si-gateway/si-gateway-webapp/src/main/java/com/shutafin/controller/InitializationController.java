@@ -1,5 +1,6 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.web.QuestionAnswersResponse;
@@ -55,6 +56,9 @@ public class InitializationController {
     @Autowired
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
+    @Autowired
+    private ChatInfoService chatInfoService;
+
 
     @NoAuthentication
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -79,6 +83,7 @@ public class InitializationController {
                 .questionExtendedWithAnswers(questionExtendedService.getQuestionsExtendedWithAnswers(language))
                 .questionImportanceList(questionExtendedService.getQuestionImportanceList(language))
                 .selectedExtendedAnswersResponses(userQuestionExtendedAnswerService.getSelectedQuestionExtendedAnswers(user))
+                .listOfChats(chatInfoService.getListChats(user))
                 .filters(
                         new FiltersWeb(
                                 userSearchService.getCitiesForFilter(user),
@@ -102,6 +107,7 @@ class InitializationResponse {
     private List<QuestionExtendedWithAnswersLocaleWeb> questionExtendedWithAnswers;
     private List<QuestionImportanceDTO> questionImportanceList;
     private List<UserQuestionExtendedAnswersWeb> selectedExtendedAnswersResponses;
+    private List<ChatWithUsersListDTO> listOfChats;
     private FiltersWeb filters;
 
 }

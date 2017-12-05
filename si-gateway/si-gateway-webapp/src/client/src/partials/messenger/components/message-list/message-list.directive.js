@@ -1,12 +1,17 @@
-app.directive('messageListDirective', function () {
+app.directive('messageListDirective', function (messengerCurrentDataService) {
     return {
         restrict: "E",
         scope: {
-            messages: '='
         },
         templateUrl: 'partials/messenger/components/message-list/message-list.html',
 
         link: function (scope, element, attrs) {
+
+            scope.messages = [];
+
+            function init() {
+                messengerCurrentDataService.registerMessagesObserver(updateMessages);
+            }
 
             var messageList = angular.element(element[0].children[0]);
 
@@ -19,16 +24,14 @@ app.directive('messageListDirective', function () {
 
             function scrollToBottom() {
                 messageList.scrollTop(messageList.prop('scrollHeight'));
-             }
+            }
 
-            scope.$watchCollection('messages', function (val) {
-                if (!val || Object.keys(val).length === 0) {
-                    return;
-                }
-                if (val) {
+            function updateMessages() {
+                scope.messages = messengerCurrentDataService.messages;
+                if (scope.messages.length > 0) {
                     prepareChatWindow();
                 }
-            });
+            }
 
             function markMessageItems() {
                 for (var i = 0; i < scope.messages.length; i++) {
@@ -42,6 +45,8 @@ app.directive('messageListDirective', function () {
                 scope.messages[index].isNew = false;
                 messageList[0].children[index].style.backgroundColor = '#FAFAFA';
             };
+
+            init();
         }
     };
 });

@@ -1,9 +1,7 @@
 package com.shutafin.service.impl.chat;
 
-import com.shutafin.model.entities.Chat;
-import com.shutafin.model.entities.ChatMessage;
-import com.shutafin.model.entities.ChatUser;
-import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.*;
+import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatUserRepository;
 import com.shutafin.service.ChatInfoService;
@@ -30,22 +28,14 @@ public class ChatInfoServiceImpl implements ChatInfoService {
     @Autowired
     private ChatMessageRepository chatMessageRepository;
 
-
     @Override
     @Transactional(readOnly = true)
-    public List<Chat> getListChats(User user) {
-        return chatUserRepository.findChatActiveUsers(user);
-    }
-
-
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<User> getListUsersByChatId(Chat chat, User user) {
-        List<ChatUser> chatUsers = chatUserRepository.findChatUsersByChatAndIsActiveUserTrue(chat);
-        return chatUsers.stream().map(ChatUser::getUser)
-                .filter(x -> !x.getId().equals(user.getId()))
-                .collect(Collectors.toList());
+    public List<ChatWithUsersListDTO> getListChats(User user) {
+        List<ChatWithUsersListDTO> chats = chatUserRepository.findChatsWithActiveUsers(user);
+        for (ChatWithUsersListDTO chat : chats) {
+            chat.setUsersInChat(chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), user.getId()));
+        }
+        return chats;
     }
 
     @Override
