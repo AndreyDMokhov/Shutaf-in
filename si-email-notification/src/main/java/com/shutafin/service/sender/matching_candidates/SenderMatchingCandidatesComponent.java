@@ -35,46 +35,8 @@ public class SenderMatchingCandidatesComponent implements BaseEmailInterface {
 
     @Override
     public void send(EmailNotificationWeb emailNotificationWeb) {
-        EmailMessage emailMessage = getMatchingCandidatesEmailMessage(emailNotificationWeb);
+        EmailMessage emailMessage = emailTemplateService.getEmailMessageMatchingCandidates(emailNotificationWeb, URL_PROFILE, URL_SEARCH);
         senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
     }
 
-    private EmailMessage getMatchingCandidatesEmailMessage(EmailNotificationWeb emailNotificationWeb) {
-
-        String urlLink = "";
-        String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
-        Map<String, byte[]> imageSources = new TreeMap<>();
-
-        for (UserImageSource userImageSource : emailNotificationWeb.getUserImageSources()) {
-            imageSources.put(userImageSource.getUserId().toString(), userImageSource.getImageSource());
-            urlLink = urlLink.concat(getUserImageLink(userImageSource, serverAddress));
-        }
-        urlLink += getSearchLink(serverAddress);
-        return emailTemplateService.getEmailMessage(emailNotificationWeb, urlLink, imageSources);
-
-    }
-
-    private String getUserImageLink(UserImageSource userImageSource, String serverAddress) {
-        return ""
-                .concat("<p style=\"font-size:14px\"><a href=\"")
-                .concat(serverAddress)
-                .concat(URL_PROFILE)
-                .concat(userImageSource.getUserId().toString())
-                .concat("\"> ")
-                .concat(userImageSource.getFirstName())
-                .concat(" ")
-                .concat(userImageSource.getLastName())
-                .concat(" <br><img src=\"cid:")
-                .concat(userImageSource.getUserId().toString())
-                .concat("\" style=\"width:128px;height:128px;\">")
-                .concat("</a></p>");
-    }
-
-    private String getSearchLink(String serverAddress) {
-        return ""
-                .concat("<p><a href=\"")
-                .concat(serverAddress)
-                .concat(URL_SEARCH)
-                .concat("\">");
-    }
 }

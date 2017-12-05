@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 @Component("changeEmail")
 public class SenderEmailChangeComponent implements BaseEmailInterface {
 
+    private static final String EMAIL_CHANGE_CONFIRMATION_URL = "/#/settings/change-email/confirmation/";
+
     private SenderEmailMessageService senderEmailMessageService;
     private ConfirmationEmailChangeService confirmationEmailChangeService;
     private EmailTemplateService emailTemplateService;
@@ -35,10 +37,10 @@ public class SenderEmailChangeComponent implements BaseEmailInterface {
         confirmationEmailChangeService.save(emailOldObject);
         confirmationEmailChangeService.save(emailChangeObject);
 
-        emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, emailOldObject.getConfirmationUUID(), emailOldObject.getEmailChange(), CONFIRMATION_URL);
+        emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, emailOldObject.getConfirmationUUID(), emailOldObject.getEmailChange(), EMAIL_CHANGE_CONFIRMATION_URL);
         senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
 
-        emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, emailChangeObject.getConfirmationUUID(), emailChangeObject.getEmailChange(), CONFIRMATION_URL);
+        emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, emailChangeObject.getConfirmationUUID(), emailChangeObject.getEmailChange(), EMAIL_CHANGE_CONFIRMATION_URL);
         senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
     }
 }

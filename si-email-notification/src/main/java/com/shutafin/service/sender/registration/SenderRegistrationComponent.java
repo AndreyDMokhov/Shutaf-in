@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 @Component("registration")
 public class SenderRegistrationComponent implements BaseEmailInterface {
 
+    private static final String REGISTRATION_CONFIRMATION_URL = "/#/users/registration/confirmation/";
+
     @Autowired
     private ConfirmationRegistrationService confirmationRegistrationService;
 
@@ -26,7 +28,7 @@ public class SenderRegistrationComponent implements BaseEmailInterface {
 
         ConfirmationRegistration confirmationRegistration = confirmationRegistrationService.get(emailNotificationWeb);
         confirmationRegistrationService.save(confirmationRegistration);
-        EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, confirmationRegistration.getConfirmationUUID(), CONFIRMATION_URL);
+        EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, confirmationRegistration.getConfirmationUUID(), REGISTRATION_CONFIRMATION_URL);
         senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
     }
 }

@@ -4,6 +4,7 @@ import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
+import com.shutafin.model.web.email.UserImageSource;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -88,6 +90,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         );
     }
 
+    @Override
     public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String emailChange, String confirmationUrl) {
 
         String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
@@ -96,8 +99,49 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     }
 
+    @Override
     public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String confirmationUrl) {
         return getEmailMessage(emailNotificationWeb, link, emailNotificationWeb.getEmailTo(), confirmationUrl);
+    }
+
+    @Override
+    public EmailMessage getEmailMessageMatchingCandidates(EmailNotificationWeb emailNotificationWeb, String urlProfile, String urlSearch) {
+
+        String urlLink = "";
+        String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
+        Map<String, byte[]> imageSources = new TreeMap<>();
+
+        for (UserImageSource userImageSource : emailNotificationWeb.getUserImageSources()) {
+            imageSources.put(userImageSource.getUserId().toString(), userImageSource.getImageSource());
+            urlLink = urlLink.concat(getUserImageLink(userImageSource, serverAddress, urlProfile));
+        }
+        urlLink += getSearchLink(serverAddress, urlSearch);
+        return getEmailMessage(emailNotificationWeb, urlLink, imageSources);
+
+    }
+
+    private String getUserImageLink(UserImageSource userImageSource, String serverAddress, String urlProfile) {
+        return ""
+                .concat("<p style=\"font-size:14px\"><a href=\"")
+                .concat(serverAddress)
+                .concat(urlProfile)
+                .concat(userImageSource.getUserId().toString())
+                .concat("\"> ")
+                .concat(userImageSource.getFirstName())
+                .concat(" ")
+                .concat(userImageSource.getLastName())
+                .concat(" <br><img src=\"cid:")
+                .concat(userImageSource.getUserId().toString())
+                .concat("\" style=\"width:128px;height:128px;\">")
+                .concat("</a></p>");
+    }
+
+    private String getSearchLink(String serverAddress, String urlSearch) {
+        return ""
+                .concat("<p><a href=\"")
+                .concat(serverAddress)
+                .concat(urlSearch)
+                .concat("\">");
     }
 
 }

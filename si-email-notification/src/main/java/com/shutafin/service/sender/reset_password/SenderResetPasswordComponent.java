@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 @Component("resetPassword")
 public class SenderResetPasswordComponent implements BaseEmailInterface {
 
+    private static final String RESET_PASSWORD_CONFIRMATION_URL = "/#/reset-password/confirmation/";
+
     @Autowired
     private SenderEmailMessageService senderEmailMessageService;
 
@@ -26,7 +28,7 @@ public class SenderResetPasswordComponent implements BaseEmailInterface {
 
         ConfirmationResetPassword confirmationResetPassword = confirmationResetPasswordService.get(emailNotificationWeb);
         confirmationResetPasswordService.save(confirmationResetPassword);
-        EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, confirmationResetPassword.getConfirmationUUID(), CONFIRMATION_URL);
+        EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, confirmationResetPassword.getConfirmationUUID(), RESET_PASSWORD_CONFIRMATION_URL);
         senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
     }
 }

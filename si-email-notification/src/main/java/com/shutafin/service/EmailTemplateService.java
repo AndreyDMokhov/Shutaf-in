@@ -15,4 +15,6 @@ public interface EmailTemplateService {
 
     EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String confirmationUrl);
 
+    EmailMessage getEmailMessageMatchingCandidates(EmailNotificationWeb emailNotificationWeb, String urlProfile, String urlSearch);
+
 }
