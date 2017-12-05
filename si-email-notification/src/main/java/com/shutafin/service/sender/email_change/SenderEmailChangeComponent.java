@@ -10,7 +10,7 @@ import com.shutafin.service.sender.BaseEmailInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component("changeEmail")
+@Component("emailChange")
 public class SenderEmailChangeComponent implements BaseEmailInterface {
 
     private static final String EMAIL_CHANGE_CONFIRMATION_URL = "/#/settings/change-email/confirmation/";

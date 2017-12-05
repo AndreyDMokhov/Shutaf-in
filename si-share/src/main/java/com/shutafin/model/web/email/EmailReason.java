@@ -1,6 +1,6 @@
 package com.shutafin.model.web.email;
 
-import com.shutafin.model.web.email.response.ChangeEmailResponse;
+import com.shutafin.model.web.email.response.EmailChangeResponse;
 import com.shutafin.model.web.email.response.RegistrationResponse;
 import com.shutafin.model.web.email.response.ResetPasswordResponse;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public enum EmailReason {
     REGISTRATION(1, "registration", RegistrationResponse.class),
-    CHANGE_EMAIL(2, "changeEmail", ChangeEmailResponse.class),
+    EMAIL_CHANGE(2, "emailChange", EmailChangeResponse.class),
     CHANGE_PASSWORD(3, "changePassword", Void.class),
     RESET_PASSWORD(4, "resetPassword", ResetPasswordResponse.class),
     MATCHING_CANDIDATES(5, "matchingCandidates", Void.class);
