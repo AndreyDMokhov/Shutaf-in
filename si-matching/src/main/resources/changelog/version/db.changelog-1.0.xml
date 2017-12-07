@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="1" author="edwardKats">
+        <createTable tableName="I_QUESTION">
+            <column name="ID" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="IS_ACTIVE" type="bit">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_ANSWER">
+
+            <column name="ID" autoIncrement="true" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="IS_UNIVERSAL" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION"
+                             referencedColumnNames="ID"
+                foreignKeyName="I_ANSWER_QUESTION_ID_I_QUESTION_ID"/>
+            </column>
+
+        </createTable>
+        <createTable tableName="USER_QUESTION_ANSWER">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                referencedTableName="I_QUESTION"
+                referencedColumnNames="ID"
+                foreignKeyName="USER_QUESTION_ANSWER_QUESTION_ID_I_QUESTION_ID"/>
+            </column>
+
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedColumnNames="ID"
+                             referencedTableName="I_ANSWER"
+                             foreignKeyName="USER_QUESTION_ANSWER_ANSWER_ID_I_ANSWER_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_ANSWER_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER"
+                             referencedColumnNames="ID"
+                            foreignKeyName="I_ANSWER_LOCALE_ANSWER_ID_I_ANSWER_ID"/>
+            </column>
+        </createTable>
+        <createTable tableName="I_QUESTION_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION"
+                             referencedColumnNames="ID"
+                foreignKeyName="I_QUESTION_LOCALE_QUESTION_ID_I_QUESTION_ID"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
