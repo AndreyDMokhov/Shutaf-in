@@ -16,9 +16,6 @@ import javax.persistence.*;
 @Setter
 public class QuestionExtendedLocale extends AbstractLocalizedConstEntity {
 
-    @Column(name = "DESCRIPTION", nullable = false, unique = true)
-    private String description;
-
     @JoinColumn(name = "QUESTION_ID", nullable = false)
     @ManyToOne
     private QuestionExtended question;
