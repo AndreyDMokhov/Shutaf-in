@@ -95,6 +95,10 @@
             </column>
         </createTable>
 
+    </changeSet>
+
+    <changeSet id="2" author="evgenyYablokov">
+
         <createTable tableName="FILTER_AGE_RANGE">
             <column name="ID" type="int" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -150,11 +154,11 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="EXAM_KEY" type="varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci">
+            <column name="EXAM_KEY" type="varchar(150)">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="EXAM_KEY_REGEXP" type="varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci">
+            <column name="EXAM_KEY_REGEXP" type="varchar(150)">
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -164,7 +168,7 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
-            <column name="EXAM_KEY" type="varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci">
+            <column name="EXAM_KEY" type="varchar(150)">
                 <constraints nullable="true"/>
             </column>
         </createTable>
