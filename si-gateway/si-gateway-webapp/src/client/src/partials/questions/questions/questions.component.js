@@ -1,5 +1,5 @@
 app.component('questionsComponent', {
-    templateUrl: 'partials/questions/questions.component.html',
+    templateUrl: 'partials/questions/questions/questions.component.html',
     controllerAs: 'vm',
     controller: function ($scope,
                           $state,

@@ -27,14 +27,12 @@
                 </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
-                    <a ui-sref="questions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
+                    <a ui-sref="questionsTab.questions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
                         <span class="fa fa-book header-icon-size"></span>
                         &nbsp;
                         {{'Questions.title' | translate}}
                     </a>
                 </li>
-
-
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : ('userSearch' | includedByState)}">
                     <form class="header-search" id="userSearchForm">
