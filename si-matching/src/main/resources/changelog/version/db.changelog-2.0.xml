@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="2" author="evgenyYablokov">
+
+        <createTable tableName="FILTER_AGE_RANGE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="FROM_AGE" type="int">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="TO_AGE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="FILTER_CITY">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CITY_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="FILTER_GENDER">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="GENDER_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_EXAM_KEY">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="EXAM_KEY" type="varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="EXAM_KEY_REGEXP" type="varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="VARIETY_EXAM_KEY">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="EXAM_KEY" type="varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_QUESTION_EXTENDED">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_QUESTION_EXTENDED_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="I_QUESTION_EXTENDED_LOCALE_QUESTION_ID_I_QUESTION_EXTENDED_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_QUESTION_IMPORTANCE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="WEIGHT" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_QUESTION_IMPORTANCE_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_IMPORTANCE_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_IMPORTANCE"
+                             referencedColumnNames="ID"
+                             foreignKeyName="I_QUEST_IMPORT_LOC_QUESTION_IMP_ID_I_QUESTION_IMP_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_ANSWER_EXTENDED">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="I_ANSWER_EXTENDED_QUESTION_ID_I_QUESTION_EXTENDED_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_ANSWER_EXTENDED_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="I_ANSWER_EXTENDED_LOCALE_ANSWER_ID_I_ANSWER_EXTENDED_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ANSWER_SIMILARITY">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="ANSWER_SIMILARITY_ANSWER_ID_I_ANSWER_EXTENDED_ID"/>
+            </column>
+            <column name="ANSWER_TO_COMPARE_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="ANSWER_SIMILARITY_ANSWER_TO_COMPARE_ID_I_ANSWER_EXTENDED_ID"/>
+            </column>
+            <column name="SIMILARITY_SCORE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="MAX_USER_MATCHING_SCORE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="SCORE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_MATCHING_SCORE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="USER_ORIGIN_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="USER_TO_MATCH_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="SCORE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_EXTENDED_QUESTION_ANSWER">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="USER_EXTENDED_QUESTION_ANSWER_QUESTION_ID_I_QUESTION_EXTENDED_ID"/>
+            </column>
+
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="USER_EXTENDED_QUESTION_ANSWER_ANSWER_ID_I_ANSWER_EXTENDED_ID"/>
+            </column>
+
+            <column name="QUESTION_IMPORTANCE_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_IMPORTANCE"
+                             referencedColumnNames="ID"
+                             foreignKeyName="USER_EXT_QUESTION_ANSWER_QUESTION_IMP_ID_I_QUESTION_IMP_ID"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
