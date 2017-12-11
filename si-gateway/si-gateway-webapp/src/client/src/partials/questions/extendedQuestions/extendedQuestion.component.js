@@ -7,72 +7,70 @@ app.component('extendedQuestionComponent', {
         selectedAnswers: '='
     },
     controller: function ($sessionStorage, $state) {
-        console.log(this.listQuestions);
-        console.log(this.selectedAnswers);
-        this.disableSubmit = true;
-        var questions = this.listQuestions;
-        // this.selectedBrands =[true, false, true];
-        this.selectedBrands =[];
+        var vm = this;
+        vm.questionImportance = $sessionStorage.questionImportance;
 
-        this.currentPage = 1;
-        this.currentQuestion = questions[this.currentPage - 1];
-        console.log(this.currentQuestion.answers);
-        // selectSearchFields = Object.keys(this.cars[0]);
-        var answers = this.selectedAnswers;
-        this.currentAnswer = findById(answers, this.currentQuestion.questionId);
-        var previousAnswer = this.currentAnswer;
-        var previousQuestionId = this.currentQuestion.questionId;
-        var numberOfAnswers = new Array();
+        var questions = vm.listQuestions;
+        var answers = getanswersArrayInOrder(questions, vm.selectedAnswers);
+        vm.AnswersWithIDForCurrentPage = [];
+        vm.currentPage = 1;
+        vm.previousPage = 1;
+        var fullQuestionObjectForCurrentPage = questions[vm.currentPage - 1];
+        var fullAnswerObjectForCurrentPage = answers[vm.currentPage - 1];
+        var valuesOfCheckboxesCurrentPage = [];
+        vm.selectedCheckboxes = getArrayofAlreadyAnswersForCurrentPage(fullQuestionObjectForCurrentPage.answers, vm.currentPage);
+        vm.AnswersWithIDForCurrentPage = getArrayOfAnswersWithIDForCurrentPage(fullQuestionObjectForCurrentPage.answers);
+        vm.variantsOfAnswersImportance = answers[vm.currentPage - 1].questionImportanceId === null ? 1 : answers[vm.currentPage - 1].questionImportanceId;
 
-        // var flag = true;
-        // checkIfNull();
-
-        this.newValue = function () {
-            // checkIfNull();
-            addToNumberOfAnswers(this.currentQuestion.questionId);
-
+        vm.pageChanged = function () {
+            addImportanceIdToAnswers();
+            valuesOfCheckboxesCurrentPage = [];
+            var indexArray = vm.currentPage - 1;
+            fullQuestionObjectForCurrentPage = questions[indexArray];
+            fullAnswerObjectForCurrentPage = answers[indexArray];
+            vm.selectedCheckboxes = getArrayofAlreadyAnswersForCurrentPage(fullQuestionObjectForCurrentPage.answers, vm.currentPage);
+            vm.variantsOfAnswersImportance = answers[indexArray].questionImportanceId === null ? 1 : answers[indexArray].questionImportanceId;
+            vm.AnswersWithIDForCurrentPage = getArrayOfAnswersWithIDForCurrentPage(fullQuestionObjectForCurrentPage.answers);
+            vm.previousPage = vm.currentPage;
         };
-        this.pageChanged = function () {
-            this.selectedBrands=[];
-            var indexArray = this.currentPage - 1;
-            this.currentQuestion = questions[indexArray];
-            answers[findPosition(answers, previousQuestionId)].answerId = this.currentAnswer;
-            this.currentAnswer = answers[findPosition(answers, this.currentQuestion.questionId)].answerId;
-            previousAnswer = this.currentAnswer;
-            previousQuestionId = this.currentQuestion.questionId;
+
+        vm.getValuesOfCheckBox = function (trueFalse, numberAnsw) {
+            if (trueFalse) {
+                valuesOfCheckboxesCurrentPage.push(parseInt(numberAnsw));
+            }
+            else {
+                var index = valuesOfCheckboxesCurrentPage.indexOf(parseInt(numberAnsw));
+                if (index > -1) {
+                    valuesOfCheckboxesCurrentPage.splice(index, 1);
+                }
+            }
+        };
+
+        function getArrayOfAnswersWithIDForCurrentPage(answers) {
+            var arr = [];
+            for (var i in answers) {
+                var element = {id: i, answer: answers[i]};
+                arr.push(element);
+            }
+            return arr;
+        }
+
+        vm.save = function () {
+            addImportanceIdToAnswers();
             this.putAnswers(answers);
+            this.sendData();
+            $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
+
+
         };
 
-        // this.save = function () {
-        //     answers[findPosition(answers, previousQuestionId)].answerId = this.currentAnswer;
-        //     this.sendData();
-        //     this.putAnswers(answers);
-        //     $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
-        // };
-        this.save = function () {
-            // for(var i in this.currentQuestion.answers){
-            //     console.log(i);
-            //     // alert(i); // alerts key
-            //     // alert(this.currentQuestion.answers[i]); //alerts key's value
-            // }
-            // var arr1 = Object.keys(this.currentQuestion.answers);
-            // console.log(arr1);
-
-            console.log(Object.keys(this.currentQuestion.answers));
-            console.log(Object.values(this.currentQuestion.answers));
-
-            console.log(Object.keys(this.currentQuestion.answers).length);
-
-            console.log(this.selectedBrands);
-        };
-
-        this.totalItems = questions.length;
-        this.itemsPerPage = 1;
+        vm.totalItems = questions.length;
+        vm.itemsPerPage = 1;
 
         function findById(source, id) {
             for (var i = 0; i < source.length; i++) {
                 if (source[i].questionId === id) {
-                    return source[i].answerId;
+                    return source[i].answersId;
 
                 }
             }
@@ -86,24 +84,41 @@ app.component('extendedQuestionComponent', {
             }
         }
 
-        // function checkIfNull() {
-        //     for (var i = 0; i < answers.length; i++) {
-        //         if (answers[i].answerId === null) {
-        //             flag = false;
-        //         }
-        //     }
-        // }
-
-        function addToNumberOfAnswers(value) {
-            for (var i = 0; i < numberOfAnswers.length; i++) {
-                if (numberOfAnswers[i] === value) {
-                    return;
+        function getArrayofAlreadyAnswersForCurrentPage(fullQuestionObjectForCurrentPage, currentPage) {
+            var ooobb = [];
+            var obj1 = Object.keys(fullQuestionObjectForCurrentPage);
+            for (var i = 0; i < obj1.length; i++) {
+                if (answers[currentPage - 1].answersId === null || !(answers[currentPage - 1].answersId).includes(parseInt(obj1[i]))) {
+                    ooobb[i] = null;
                 }
+                else {
+                    ooobb[i] = obj1[i];
+                    valuesOfCheckboxesCurrentPage.push(parseInt(obj1[i]));
+                }
+                ;
             }
-            numberOfAnswers.push(value);
+            return ooobb;
         }
 
+        function getanswersArrayInOrder(questions, answers) {
+            var arr = [];
+            for (var i = 0; i < questions.length; i++) {
+                for (var j = 0; j < questions.length; j++) {
+                    if (answers[j].questionId === (questions[i].questionId)) {
+                        arr.push(answers[j]);
+                    }
+                }
+            }
+            return arr;
+        }
 
+        function addImportanceIdToAnswers() {
+            answers[vm.previousPage - 1].answersId = valuesOfCheckboxesCurrentPage;
+            if (valuesOfCheckboxesCurrentPage.length) {
+                answers[vm.previousPage - 1].questionImportanceId = vm.variantsOfAnswersImportance;
+            }
+            else answers[vm.previousPage - 1].questionImportanceId = null;
+        }
     }
 
 });

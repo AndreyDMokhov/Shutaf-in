@@ -14,3 +14,7 @@
 .cardContainer {
     padding: 2px 16px;
 }
+
+ul.pagin {
+    margin: 0;
+}

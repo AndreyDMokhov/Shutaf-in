@@ -153,6 +153,9 @@
   "Questions.button.save" : "Сохранить",
   "Questions.delimiter": "из",
   "Questions.confirm" : "Ответы успешно сохранены",
+  "Questions.questions" : "Вопросы",
+  "Questions.extendedQuestions" : "Дополнительные вопросы",
+
 
   "SECTION": "CHAT",
   "Chat.title": "Чат",
