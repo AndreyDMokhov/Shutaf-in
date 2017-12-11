@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+@Deprecated
 @Entity
 @Table(name = "RESET_PASSWORD_CONFIRMATION")
 @NoArgsConstructor

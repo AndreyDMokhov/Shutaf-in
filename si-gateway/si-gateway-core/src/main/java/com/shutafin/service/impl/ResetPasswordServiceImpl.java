@@ -58,6 +58,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Transactional
     @Override
+    // TODO: MS-email EmailNotificationSenderController.sendEmail()
     public void resetPasswordRequest(EmailWeb emailWeb) {
         User user = userRepository.findByEmail(emailWeb.getEmail());
         if (user != null) {
@@ -80,6 +81,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private void sendMessage(User user, Language language, String uuid) {
         String link = createLink(uuid);
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(user, EmailReason.RESET_PASSWORD, language, link);
+
+        //todo MS-email
         mailSenderService.sendEmail(emailMessage, EmailReason.RESET_PASSWORD);
     }
 
@@ -89,7 +92,9 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Transactional(readOnly = true)
     @Override
+    // TODO: MS-email EmailNotificationSenderController.isValidLink()
     public void resetPasswordValidation(String link) {
+        //todo MS-email
         if (resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date()) == null) {
             log.warn("Resource not found exception:");
             log.warn("UrlLink {} was not found", link);
@@ -99,6 +104,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Transactional
     @Override
+    // TODO: MS-email EmailNotificationSenderController.confirmLink()
     public void passwordChange(PasswordWeb passwordWeb, String link) {
         ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
         if (resetPasswordConfirmation == null) {

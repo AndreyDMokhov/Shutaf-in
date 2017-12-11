@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="anatoliy" id="1">
+        <createTable tableName="EMAIL_NOTIFICATION_LOG">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL_CONTENT" type="LONGTEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL_HEADER" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL_REASON_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL_TO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_SEND_FAILED" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="anatoliy" id="2">
+        <createTable tableName="EMAIL_IMAGE_SOURCE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTENT_ID" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IMAGE_SOURCE" type="MEDIUMBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL_NOTIFICATION_LOG_ID" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="FK_EMAIL_IMAGE_SOURCE_EMAIL_NOTIFICATION_LOG_ID"
+                             referencedColumnNames="ID"
+                             referencedTableName="EMAIL_NOTIFICATION_LOG"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="anatoliy" id="3">
+        <createTable tableName="CONFIRMATION_REGISTRATION">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIRMATION_UUID" type="VARCHAR(50)">
+                <constraints nullable="false" uniqueConstraintName="UK_CONFIRMATION_UUID"/>
+            </column>
+            <column name="EXPIRES_AT" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_CONFIRMED" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="anatoliy" id="4">
+        <createTable tableName="CONFIRMATION_RESET_PASSWORD">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIRMATION_UUID" type="VARCHAR(50)">
+                <constraints nullable="false" uniqueConstraintName="UK_CONFIRMATION_UUID"/>
+            </column>
+            <column name="EXPIRES_AT" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_CONFIRMED" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="anatoliy" id="5">
+        <createTable tableName="CONFIRMATION_EMAIL_CHANGE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIRMATION_UUID" type="VARCHAR(50)">
+                <constraints nullable="false" uniqueConstraintName="UK_CONFIRMATION_UUID"/>
+            </column>
+            <column name="EXPIRES_AT" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_CONFIRMED" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL_CHANGE" type="VARCHAR(255)"/>
+            <column name="CONNECTED_CONFIRMATION" type="BIGINT">
+                <constraints nullable="true"
+                             foreignKeyName="FK_CONFIRMATION_EMAIL_CHANGE_CONNECTED_CONFIRMATION_ID"
+                             referencedColumnNames="ID"
+                             referencedTableName="CONFIRMATION_EMAIL_CHANGE"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
+

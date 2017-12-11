@@ -6,7 +6,7 @@ import com.shutafin.repository.base.BaseJpaRepository;
 
 import java.util.Date;
 
-
+@Deprecated
 public interface EmailChangeConfirmationRepository extends BaseJpaRepository<EmailChangeConfirmation, Long> {
 
     EmailChangeConfirmation findByUrlLinkAndExpiresAtBefore(String link, Date currentDate);

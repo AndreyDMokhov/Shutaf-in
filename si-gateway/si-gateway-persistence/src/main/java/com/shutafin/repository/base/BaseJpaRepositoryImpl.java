@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
 
+@Deprecated
 public class BaseJpaRepositoryImpl<T, ID extends Serializable>
         extends SimpleJpaRepository<T, ID>
         implements BaseJpaRepository<T, ID> {

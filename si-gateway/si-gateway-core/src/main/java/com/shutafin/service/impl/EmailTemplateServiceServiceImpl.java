@@ -19,6 +19,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 @Service
 @Slf4j
+@Deprecated
 public class EmailTemplateServiceServiceImpl implements EmailTemplateService {
 
     private static final String HEADER_SUFFIX = ".header";

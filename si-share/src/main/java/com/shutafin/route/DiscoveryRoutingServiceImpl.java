@@ -37,6 +37,7 @@ public class DiscoveryRoutingServiceImpl implements DiscoveryRoutingService {
         return substituteIpWithDns(instances.get(0).getUri()) + (prefix == null ? "" : prefix);
     }
 
+
     @Override
     public Map<RouteDirection, String> getServiceRoutes() {
         Map<RouteDirection, String> map = new HashMap<>();

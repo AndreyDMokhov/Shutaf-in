@@ -2,15 +2,21 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.model.entity.EmailReason;
-import com.shutafin.model.web.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailReason;
+import com.shutafin.model.web.email.UserImageSource;
+import com.shutafin.route.DiscoveryRoutingService;
+import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -22,8 +28,10 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     private static final String HEADER_SUFFIX = ".header";
     private static final String SECTION_SUFFIX = ".section";
 
-    @Override
-    public BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, String link) {
+    @Autowired
+    private DiscoveryRoutingService discoveryRoutingService;
+
+    private BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, String link) {
         notNull(emailReason);
         notNull(languageDescription);
         notBlank(link);
@@ -65,14 +73,75 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     }
 
     @Override
-    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, EmailReason emailReason) {
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources) {
+        return getEmailMessage(emailNotificationWeb, link, imageSources, null);
+    }
+
+    @Override
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, Map<String, byte[]> imageSources, String emailChange) {
         return new EmailMessage(
                 emailNotificationWeb.getUserId(),
-                emailNotificationWeb.getEmailTo(),
+                emailChange == null ? emailNotificationWeb.getEmailTo() : emailChange,
                 getTemplate(
-                        emailReason,
-                        emailNotificationWeb.getLanguageDescription(),
-                        emailNotificationWeb.getLink()
-                ));
+                        emailNotificationWeb.getEmailReason(),
+                        emailNotificationWeb.getLanguageCode(),
+                        link),
+                imageSources
+        );
     }
+
+    @Override
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String emailChange, String confirmationUrl) {
+
+        String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
+        String urlLink = serverAddress + confirmationUrl + link;
+        return getEmailMessage(emailNotificationWeb, urlLink, (Map<String, byte[]>) null, emailChange);
+
+    }
+
+    @Override
+    public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String confirmationUrl) {
+        return getEmailMessage(emailNotificationWeb, link, emailNotificationWeb.getEmailTo(), confirmationUrl);
+    }
+
+    @Override
+    public EmailMessage getEmailMessageMatchingCandidates(EmailNotificationWeb emailNotificationWeb, String urlProfile, String urlSearch) {
+
+        String urlLink = "";
+        String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
+        Map<String, byte[]> imageSources = new TreeMap<>();
+
+        for (UserImageSource userImageSource : emailNotificationWeb.getUserImageSources()) {
+            imageSources.put(userImageSource.getUserId().toString(), userImageSource.getImageSource());
+            urlLink = urlLink.concat(getUserImageLink(userImageSource, serverAddress, urlProfile));
+        }
+        urlLink += getSearchLink(serverAddress, urlSearch);
+        return getEmailMessage(emailNotificationWeb, urlLink, imageSources);
+
+    }
+
+    private String getUserImageLink(UserImageSource userImageSource, String serverAddress, String urlProfile) {
+        return ""
+                .concat("<p style=\"font-size:14px\"><a href=\"")
+                .concat(serverAddress)
+                .concat(urlProfile)
+                .concat(userImageSource.getUserId().toString())
+                .concat("\"> ")
+                .concat(userImageSource.getFirstName())
+                .concat(" ")
+                .concat(userImageSource.getLastName())
+                .concat(" <br><img src=\"cid:")
+                .concat(userImageSource.getUserId().toString())
+                .concat("\" style=\"width:128px;height:128px;\">")
+                .concat("</a></p>");
+    }
+
+    private String getSearchLink(String serverAddress, String urlSearch) {
+        return ""
+                .concat("<p><a href=\"")
+                .concat(serverAddress)
+                .concat(urlSearch)
+                .concat("\">");
+    }
+
 }
