@@ -62,6 +62,8 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     @Override
     @Transactional
     public void emailChangeRequest(User user, EmailChangeConfirmationWeb emailChangeConfirmationWeb) {
+
+        // TODO: MS-email EmailNotificationSenderController.sendEmail()
         if (!passwordService.isPasswordCorrect(user, emailChangeConfirmationWeb.getUserPassword())) {
             log.warn("Authentication exception:");
             log.warn("User password with ID {} is incorrect", user.getId());
@@ -104,6 +106,8 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
     @Override
     @Transactional
     public EmailChangedResponse emailChangeConfirmation(String link) {
+
+        // TODO: MS-email EmailNotificationSenderController.confirmLink()
         EmailChangeConfirmation emailChangeConfirmation = emailChangeConfirmationRepository.findByUrlLinkAndExpiresAtBefore(link, new Date());
 
         if (emailChangeConfirmation == null) {
@@ -130,6 +134,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
         // TODO: MS-account EmailChangeController.emailChange()
         try {
             user.setEmail(newEmail);
+//            TODO
             userRepository.save(user);
         } catch (ConstraintViolationException e) {
             log.warn("Email not unique validation exception:");
@@ -162,6 +167,8 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
                     userAccount.getLanguage(),
                     link);
         }
+
+        //todo MS-email
         mailSenderService.sendEmail(emailMessage, EmailReason.CHANGE_EMAIL);
 
     }

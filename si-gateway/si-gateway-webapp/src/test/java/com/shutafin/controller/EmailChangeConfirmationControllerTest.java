@@ -42,15 +42,15 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     private static final String EMAIL_CHANGE_CONFIRMATION_URL = "/users/account/change-email-confirmation/";
     private static final String VALID_SESSION_ID = "validsessionid";
     private static final String INVALID_SESSION_ID = "invalidsessionid";
-    private static final String EMAIL_CHANGE_VALID_JSON_BODY = "{\"userPassword\": \"11111111\", \"newEmail\": \"aaa@aaaa\"}";
+    private static final String EMAIL_CHANGE_VALID_JSON_BODY = "{\"userPassword\": \"11111111\", \"emailChange\": \"aaa@aaaa\"}";
 
     private static final String INP_PASSWORD_NOT_BLANK = "INP.userPassword.NotBlank";
-    private static final String INP_NEW_EMAIL_NOT_BLANK = "INP.newEmail.NotBlank";
+    private static final String INP_NEW_EMAIL_NOT_BLANK = "INP.emailChange.NotBlank";
 
     private static final String INP_PASSWORD_LENGTH = "INP.userPassword.Length";
-    private static final String INP_NEW_EMAIL_LENGTH = "INP.newEmail.Length";
+    private static final String INP_NEW_EMAIL_LENGTH = "INP.emailChange.Length";
 
-    private static final String INP_NEW_EMAIL_EMAIL = "INP.newEmail.Email";
+    private static final String INP_NEW_EMAIL_EMAIL = "INP.emailChange.Email";
 
     private List<String> errorList;
     private User validUser;
@@ -142,7 +142,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     @Test
     public void emailChangeRequest_AllFieldsNull(){
-        String emailChangeRequestRequestWebJson = "{\"userPassword\":null,\"newEmail\":null}";
+        String emailChangeRequestRequestWebJson = "{\"userPassword\":null,\"emailChange\":null}";
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_NEW_EMAIL_NOT_BLANK);
         testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
@@ -150,7 +150,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     @Test
     public void emailChangeRequest_AllEmptyFields(){
-        String emailChangeRequestRequestWebJson = "{\"userPassword\":\"\",\"newEmail\":\"\"}";
+        String emailChangeRequestRequestWebJson = "{\"userPassword\":\"\",\"emailChange\":\"\"}";
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_NEW_EMAIL_NOT_BLANK);
         testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
@@ -158,7 +158,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     @Test
     public void emailChangeRequest_AllWhitespaceFields(){
-        String emailChangeRequestRequestWebJson = "{\"userPassword\":\" \",\"newEmail\":\" \"}";
+        String emailChangeRequestRequestWebJson = "{\"userPassword\":\" \",\"emailChange\":\" \"}";
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_NEW_EMAIL_NOT_BLANK);
         errorList.add(INP_NEW_EMAIL_EMAIL);
@@ -168,7 +168,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     @Test
     public void emailChangeRequest_ExceededMaxLength(){
         String emailChangeRequestRequestWebJson = "{\"userPassword\":\"iiiiiiiiiivvvvvvvvvvaaaaaaaaaannnnnnnnnnoooooooooov\"," +
-                "\"newEmail\":\"iiiiiiiiiivvvvvvvvvvaaaaaaaaaannnnnnnnnnoooooooooov\"}";
+                "\"emailChange\":\"iiiiiiiiiivvvvvvvvvvaaaaaaaaaannnnnnnnnnoooooooooov\"}";
         errorList.add(INP_PASSWORD_LENGTH);
         errorList.add(INP_NEW_EMAIL_LENGTH);
         errorList.add(INP_NEW_EMAIL_EMAIL);
@@ -177,7 +177,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     @Test
     public void emailChangeRequest_IllegalEmail(){
-        String emailChangeRequestRequestWebJson = "{\"userPassword\":\"alex\",\"newEmail\":\"gmail\"}";
+        String emailChangeRequestRequestWebJson = "{\"userPassword\":\"alex\",\"emailChange\":\"gmail\"}";
         errorList.add(INP_NEW_EMAIL_EMAIL);
         testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
     }

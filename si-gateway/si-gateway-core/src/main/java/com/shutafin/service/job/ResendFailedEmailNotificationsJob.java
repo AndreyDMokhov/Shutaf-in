@@ -16,11 +16,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by evgeny on 10/11/2017.
- */
 @Component
 @Slf4j
+@Deprecated
 public class ResendFailedEmailNotificationsJob {
 
 

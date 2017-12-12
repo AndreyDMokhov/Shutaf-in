@@ -2,9 +2,9 @@ package com.shutafin.core.service.impl;
 
 import com.shutafin.core.service.InitializationService;
 import com.shutafin.model.infrastructure.Language;
-import com.shutafin.model.web.locale.CityResponseDTO;
-import com.shutafin.model.web.locale.CountryResponseDTO;
-import com.shutafin.model.web.locale.GenderResponseDTO;
+import com.shutafin.model.web.account.AccountCityResponseDTO;
+import com.shutafin.model.web.account.AccountCountryResponseDTO;
+import com.shutafin.model.web.account.AccountGenderResponseDTO;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.locale.CityRepository;
 import com.shutafin.repository.locale.CountryRepository;
@@ -44,17 +44,17 @@ public class InitializationServiceImpl implements InitializationService {
     }
 
     @Override
-    public List<GenderResponseDTO> findAllGendersByLanguage(Language language) {
+    public List<AccountGenderResponseDTO> findAllGendersByLanguage(Language language) {
         return genderRepository.getLocaleGenders(language);
     }
 
     @Override
-    public List<CountryResponseDTO> findAllCountriesByLanguage(Language language) {
+    public List<AccountCountryResponseDTO> findAllCountriesByLanguage(Language language) {
         return countryRepository.getLocaleCountries(language);
     }
 
     @Override
-    public List<CityResponseDTO> findAllCitiesByLanguage(Language language) {
+    public List<AccountCityResponseDTO> findAllCitiesByLanguage(Language language) {
         return cityRepository.getLocaleCities(language);
     }
 

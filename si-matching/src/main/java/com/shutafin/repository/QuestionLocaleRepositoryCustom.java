@@ -1,6 +1,7 @@
 package com.shutafin.repository;
 
-import com.shutafin.model.dto.QuestionsListWithAnswersDTO;
+
+import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 
 import java.util.List;
 

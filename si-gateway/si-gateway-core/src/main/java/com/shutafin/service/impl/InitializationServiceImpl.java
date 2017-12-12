@@ -1,18 +1,17 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.web.initialization.CityResponseDTO;
-import com.shutafin.model.web.initialization.CountryResponseDTO;
-import com.shutafin.model.web.initialization.GenderResponseDTO;
-import com.shutafin.repository.initialization.LanguageRepository;
+import com.shutafin.model.web.account.AccountInitializationResponse;
+import com.shutafin.model.web.common.LanguageWeb;
+import com.shutafin.model.web.initialization.InitializationResponse;
+import com.shutafin.model.web.matching.MatchingInitializationResponse;
+import com.shutafin.route.DiscoveryRoutingService;
+import com.shutafin.route.RouteDirection;
 import com.shutafin.service.InitializationService;
-import com.shutafin.repository.initialization.locale.CityRepository;
-import com.shutafin.repository.initialization.locale.CountryRepository;
-import com.shutafin.repository.initialization.locale.GenderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -20,45 +19,42 @@ import java.util.List;
 @Transactional
 public class InitializationServiceImpl implements InitializationService {
 
-    private LanguageRepository languageRepository;
-    private GenderRepository genderRepository;
-    private CountryRepository countryRepository;
-    private CityRepository cityRepository;
 
     @Autowired
-    public InitializationServiceImpl(
-            LanguageRepository languageRepository,
-            GenderRepository genderRepository,
-            CountryRepository countryRepository,
-            CityRepository cityRepository) {
-        this.languageRepository = languageRepository;
-        this.genderRepository = genderRepository;
-        this.countryRepository = countryRepository;
-        this.cityRepository = cityRepository;
-    }
+    private DiscoveryRoutingService discoveryRoutingService;
+
 
     @Override
     @Transactional(readOnly = true)
-    // TODO: MS-account InitializationController.getLanguages()
-    public List<Language> findAllLanguages() {
-
-        return languageRepository.findAll();
+    public List<LanguageWeb> findAllLanguages() {
+        String url = discoveryRoutingService.getRoute(RouteDirection.SI_ACCOUNT) + "/initialization/languages";
+        ResponseEntity<List> languages = new RestTemplate().getForEntity(url, List.class);
+        return languages.getBody();
     }
 
-    // TODO: MS-account InitializationController.getInitializationResponse()
-    @Override
-    public List<GenderResponseDTO> findAllGendersByLanguage(Language language) {
-        return genderRepository.getLocaleGenders(language);
-    }
+
 
     @Override
-    public List<CountryResponseDTO> findAllCountriesByLanguage(Language language) {
-        return countryRepository.getLocaleCountries(language);
+    public InitializationResponse getInitializationResponse(Long userId) {
+        String accountUrl = getAccountInitializationUrl(userId);
+
+        ResponseEntity<AccountInitializationResponse> accountInitialization = new RestTemplate().getForEntity(accountUrl, AccountInitializationResponse.class);
+
+        String matchingUrl = getMatchingInitializationUrl(accountInitialization.getBody().getUserProfile().getLanguageId(), userId);
+        ResponseEntity<MatchingInitializationResponse> matchingInitialization = new RestTemplate().getForEntity(matchingUrl, MatchingInitializationResponse.class);
+
+        return InitializationResponse
+                .builder()
+                .accountInitialization(accountInitialization.getBody())
+                .matchingInitializationResponse(matchingInitialization.getBody())
+                .build();
     }
 
-    @Override
-    public List<CityResponseDTO> findAllCitiesByLanguage(Language language) {
-        return cityRepository.getLocaleCities(language);
+    private String getAccountInitializationUrl(Long userId) {
+        return discoveryRoutingService.getRoute(RouteDirection.SI_ACCOUNT) + String.format("/initialization/%d/all", userId);
     }
 
+    private String getMatchingInitializationUrl(Integer languageId, Long userId) {
+        return discoveryRoutingService.getRoute(RouteDirection.SI_MATCHING) + String.format("/initialization/%d/all/%d", userId, languageId);
+    }
 }

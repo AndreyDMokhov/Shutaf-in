@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+    // MS-matching
 @Component
 public class MatchingCandidatesEmailNotificationJobService {
 
@@ -53,7 +54,7 @@ public class MatchingCandidatesEmailNotificationJobService {
     }
 
 
-//    @Scheduled(cron = "0 0 0 * * *")
+    //    @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void sendEmailNotification() {
         List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(AccountStatus.CONFIRMED, AccountType.REGULAR);
@@ -68,6 +69,7 @@ public class MatchingCandidatesEmailNotificationJobService {
         }
     }
 
+    // TODO: MS-email EmailNotificationSenderController.sendEmail()
     private void sendEmail(UserAccount userAccount, List<User> matchingUsers) {
         String link = "";
         String serverAddress = environmentConfigurationService.getServerAddress();
@@ -95,7 +97,7 @@ public class MatchingCandidatesEmailNotificationJobService {
         if (userAccountService.findUserAccountProfileImage(matchingUser) == null) {
             image = userImageService.getDefaultImageBase64();
         } else {
-            image = userAccountService.findUserAccountProfileImage(matchingUser).getImageStorage().getImageEncoded();
+            image = userAccountService.findUserAccountProfileImage(matchingUser).getImage();
         }
         return Base64.getDecoder().decode(image);
     }

@@ -2,12 +2,11 @@ package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.web.account.UserLanguageWeb;
-import com.shutafin.model.web.user.UserInfoResponseDTO;
+import com.shutafin.model.web.account.AccountUserImageWeb;
+import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
+import com.shutafin.model.web.account.AccountUserLanguageWeb;
 import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
-import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.service.UserAccountService;
 import com.shutafin.service.UserInfoService;
 import com.shutafin.service.UserLanguageService;
@@ -30,23 +29,19 @@ public class UserAccountController {
 
     @Autowired
     private UserAccountService userAccountService;
-
     @Autowired
     private UserLanguageService userLanguageService;
-
     @Autowired
     private UserInfoService userInfoService;
 
 
     @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
-                                                      @RequestBody @Valid UserImageWeb userImageWeb,
-                                                      BindingResult result) {
+    public AccountUserImageWeb updateUserAccountProfileImage(@AuthenticatedUser User user,
+                                                             @RequestBody @Valid AccountUserImageWeb userImageWeb,
+                                                             BindingResult result) {
         log.debug("/users/settings/image update");
         checkBindingResult(result);
-        UserImage image = userAccountService.updateProfileImage(userImageWeb, user);
-        return new UserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
+        return userAccountService.updateProfileImage(userImageWeb, user);
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -56,7 +51,7 @@ public class UserAccountController {
     }
 
     @RequestMapping(value = "/language", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void update(@RequestBody @Valid UserLanguageWeb userLanguageWeb,
+    public void update(@RequestBody @Valid AccountUserLanguageWeb userLanguageWeb,
                        BindingResult result,
                        @AuthenticatedUser User user) {
         log.debug("/users/settings/language");
@@ -66,9 +61,9 @@ public class UserAccountController {
 
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserInfoResponseDTO getUserInfo(@AuthenticatedUser User user) {
+    public AccountUserInfoResponseDTO getUserInfo(@AuthenticatedUser User user) {
 
-        return userInfoService.getUserInfo(user);
+        return userInfoService.getUserInfo(user.getId());
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})

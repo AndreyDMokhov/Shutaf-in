@@ -7,10 +7,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-/**
- * Created by Edward Kats.
- * 03 / Jul / 2017
- */
 @Entity
 @Table(name = "EMAIL_NOTIFICATION_LOG")
 @AllArgsConstructor
@@ -18,6 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
+@Deprecated
 public class EmailNotificationLog extends AbstractEntity {
 
     @JoinColumn(name = "USER_ID")

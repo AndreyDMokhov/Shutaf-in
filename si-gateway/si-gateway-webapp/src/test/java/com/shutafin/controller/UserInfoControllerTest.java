@@ -2,8 +2,8 @@ package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
+import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
 import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.user.UserInfoResponseDTO;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserInfoService;
 import com.shutafin.system.BaseTestImpl;
@@ -59,21 +59,21 @@ public class UserInfoControllerTest extends BaseTestImpl {
         user.setLastName("bbb");
         user.setEmail("1@1.com");
 
-        UserInfoResponseDTO userInfoResponseDTO = new UserInfoResponseDTO();
+        AccountUserInfoResponseDTO userInfoResponseDTO = new AccountUserInfoResponseDTO();
         userInfoResponseDTO.setFirstName("aaa");
         userInfoResponseDTO.setLastName("bbb");
         userInfoResponseDTO.setLanguageId(1);
 
 
         when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
-        when(userInfoService.getUserInfo(user)).thenReturn(userInfoResponseDTO);
+        when(userInfoService.getUserInfo(user.getId())).thenReturn(userInfoResponseDTO);
 
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(INITIALIZATION_REQUEST_URL)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(headers)
-                .setResponseClass(UserInfoResponseDTO.class)
+                .setResponseClass(AccountUserInfoResponseDTO.class)
                 .build();
         APIWebResponse response = getResponse(request);
         Assert.assertNull(response.getError());
