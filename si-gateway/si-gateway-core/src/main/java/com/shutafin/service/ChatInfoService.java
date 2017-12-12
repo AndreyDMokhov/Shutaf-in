@@ -13,6 +13,6 @@ import java.util.List;
  * Chat "getters"
  */
 public interface ChatInfoService {
-    List<ChatWithUsersListDTO> getListChats(User user);
+    List<ChatWithUsersListDTO> getListChats(Long userId);
     List<ChatMessage> getListMessages(Chat chat, User user);
 }

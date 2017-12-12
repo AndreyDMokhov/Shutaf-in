@@ -30,10 +30,10 @@ public class ChatInfoServiceImpl implements ChatInfoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ChatWithUsersListDTO> getListChats(User user) {
-        List<ChatWithUsersListDTO> chats = chatUserRepository.findChatsWithActiveUsers(user);
+    public List<ChatWithUsersListDTO> getListChats(Long userId) {
+        List<ChatWithUsersListDTO> chats = chatUserRepository.findChatsWithActiveUsers(userId);
         for (ChatWithUsersListDTO chat : chats) {
-            chat.setUsersInChat(chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), user.getId()));
+            chat.setUsersInChat(chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), userId));
         }
         return chats;
     }

@@ -18,8 +18,8 @@ public interface ChatUserRepository extends BaseJpaRepository<ChatUser, Long> {
 
     @Query("select new com.shutafin.model.web.chat.ChatWithUsersListDTO" +
             "(c.chat.id, c.chat.chatTitle, c.chat.hasNoTitle) " +
-            "from ChatUser c where c.user = :user AND c.isActiveUser = TRUE ")
-    List<ChatWithUsersListDTO> findChatsWithActiveUsers(@Param("user") User user);
+            "from ChatUser c where c.user.id = :userId AND c.isActiveUser = TRUE ")
+    List<ChatWithUsersListDTO> findChatsWithActiveUsers(@Param("user") Long userId);
 
     @Query("select new com.shutafin.model.web.chat.ChatUserDTO " +
             "(c.user.id, c.user.firstName, c.user.lastName) " +

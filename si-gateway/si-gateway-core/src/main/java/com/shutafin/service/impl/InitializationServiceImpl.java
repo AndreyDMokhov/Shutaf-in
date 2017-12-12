@@ -6,6 +6,7 @@ import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.model.web.matching.MatchingInitializationResponse;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
+import com.shutafin.service.ChatInfoService;
 import com.shutafin.service.InitializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class InitializationServiceImpl implements InitializationService {
 
     @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
+
+    @Autowired
+    private ChatInfoService chatInfoService;
 
 
     @Override
@@ -47,6 +51,7 @@ public class InitializationServiceImpl implements InitializationService {
                 .builder()
                 .accountInitialization(accountInitialization.getBody())
                 .matchingInitializationResponse(matchingInitialization.getBody())
+                .listOfChats(chatInfoService.getListChats(userId))
                 .build();
     }
 

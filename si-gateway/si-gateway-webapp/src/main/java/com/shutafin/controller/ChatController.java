@@ -86,7 +86,7 @@ public class ChatController {
 
     @GetMapping(value = "/get/chats")
     public List<ChatWithUsersListDTO> getChats(@AuthenticatedUser User user) {
-        return chatInfoService.getListChats(user);
+        return chatInfoService.getListChats(user.getId());
     }
 
     @WebSocketAuthentication
