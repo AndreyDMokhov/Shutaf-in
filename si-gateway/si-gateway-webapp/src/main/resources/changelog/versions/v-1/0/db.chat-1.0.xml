@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="chat-1.0" author="mihailRogov">
+        <createTable tableName="CHAT">
+            <column name="ID" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="CHAT_TITLE" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="HAS_NO_TITLE" type="bit">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
