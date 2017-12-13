@@ -144,7 +144,8 @@
   "Search.ChooseGender" : "Выберите пол",
   "Search.ChooseCity" : "Выберите город",
   "Search.ChooseButton" : "Выбрать",
-  "Search.ValueInCityButtonMoreThan3" : "Выбрано",
+  "Search.filter.button.selected" : "Выбрано",
+  "Search.sendMessage.button" : "Отправить сообщение",
 
   "SECTION" : "Questions",
   "Questions.title" : "Вопросы",

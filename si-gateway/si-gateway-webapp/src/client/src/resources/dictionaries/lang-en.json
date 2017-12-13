@@ -142,7 +142,8 @@
   "Search.ChooseGender" : "Choose gender",
   "Search.ChooseCity" : "Choose city",
   "Search.ChooseButton" : "Click to choose",
-  "Search.ValueInCityButtonMoreThan3" : "selected",
+  "Search.filter.button.selected" : "Selected",
+  "Search.sendMessage.button" : "Send message",
 
 
   "SECTION" : "Questions",

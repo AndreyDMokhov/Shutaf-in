@@ -1,12 +1,11 @@
 package com.shutafin.service.impl.chat;
 
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.entities.Chat;
-import com.shutafin.model.entities.ChatMessage;
-import com.shutafin.model.entities.ChatUser;
-import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.*;
 import com.shutafin.model.entities.types.ChatMessageType;
 import com.shutafin.model.web.chat.ChatMessageRequest;
+import com.shutafin.model.web.chat.ChatUserDTO;
+import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatRepository;
 import com.shutafin.repository.common.ChatUserRepository;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     @Transactional
-    public Chat createNewChat(String chatTitle, User chatOwner, Long chatMemberUserId) {
+    public ChatWithUsersListDTO createNewChat(String chatTitle, User chatOwner, Long chatMemberUserId) {
         Chat chat = new Chat();
         chat.setChatTitle(chatTitle);
         if (chatTitle == null || chatTitle.equals("null")) {
@@ -52,7 +52,16 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         chatRepository.save(chat);
         addChatUserToChat(chat, chatOwner.getId());
         addChatUserToChat(chat, chatMemberUserId);
-        return chat;
+        //TODO moved to Account MS
+        List<User> users = Arrays.asList(userRepository.findOne(chatMemberUserId));
+        return getChatWithUsersListDTO(chat, users);
+    }
+
+    private ChatWithUsersListDTO getChatWithUsersListDTO(Chat chat, List<User> users) {
+        List<ChatUserDTO> chatUserDTOs = users.stream()
+                .map(u->new ChatUserDTO(u.getId(),u.getFirstName(),u.getLastName()))
+                .collect(Collectors.toList());
+        return new ChatWithUsersListDTO(chat.getId(),chat.getChatTitle(),chat.getHasNoTitle(),chatUserDTOs);
     }
 
     @Override
@@ -113,11 +122,14 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     }
 
     @Override
-    public Chat renameChat(Chat chat, String chatTitle) {
+    public ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, User user) {
         chat.setChatTitle(chatTitle);
         chat.setHasNoTitle(false);
         chatRepository.save(chat);
-        return chat;
+        ChatWithUsersListDTO chatWithUsersListDTO = new ChatWithUsersListDTO(chat.getId(),chat.getChatTitle(),chat.getHasNoTitle());
+        chatWithUsersListDTO.setUsersInChat(chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), user.getId()));
+        return chatWithUsersListDTO;
+
     }
 
     private List<Long> getPermittedUsers(Chat chat) {
@@ -130,6 +142,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     }
 
     private User getUserById(Long userId) {
+        //TODO moved to Account MS
         User user = userRepository.findOne(userId);
         if (user == null) {
             throw new ResourceNotFoundException();

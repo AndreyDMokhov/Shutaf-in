@@ -31,10 +31,6 @@ app.factory('messengerModel', function (Restangular, $sessionStorage) {
         return rest.one('/' + chatId + '/remove/chat').customGET();
     }
 
-    function getActiveUsersInChat(chatId) {
-        return rest.all('/' + chatId + '/get/users').customGET();
-    }
-
     function addUserToChat(chatId, userId) {
         return rest.one('/' + chatId + '/add/user/' + userId).customGET();
     }
@@ -52,7 +48,6 @@ app.factory('messengerModel', function (Restangular, $sessionStorage) {
         getChats: getChats,
         getAllMessages: getAllMessages,
         removeUserFromChat: removeUserFromChat,
-        getActiveUsersInChat: getActiveUsersInChat,
         addUserToChat: addUserToChat,
         removeChat: removeChat,
         updateMessagesAsRead: updateMessagesAsRead,

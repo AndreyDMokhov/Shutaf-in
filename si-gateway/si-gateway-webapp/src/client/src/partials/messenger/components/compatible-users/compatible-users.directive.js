@@ -1,20 +1,18 @@
-app.directive('compatibleUsersDirective', function ($state) {
+app.directive('compatibleUsersDirective', function ($state, messengerManagementService) {
     return {
         restrict: "E",
         scope: {
-            users: '=',
-            addChat:'&',
-            addUserToChat:'&'
+            users: '='
         },
         templateUrl: 'partials/messenger/components/compatible-users/compatible-users.html',
 
         link: function (scope, element, attrs) {
 
-            scope.createChat = function (currUserId) {
-                scope.addChat({userId:currUserId});
+            scope.createChat = function (user) {
+                messengerManagementService.sendMessage(user);
             };
-            scope.addNewUserToChat = function (currUserId) {
-                scope.addUserToChat({userId:currUserId});
+            scope.addNewUserToChat = function (user) {
+                messengerManagementService.addUserToChat(user);
             };
             scope.changeStateToUserSearch = function () {
                 $state.go('userSearch');

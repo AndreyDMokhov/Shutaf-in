@@ -1,4 +1,4 @@
-app.factory('initializationService', function (Restangular, $q, $sessionStorage, notify, $filter, languageService, webSocketService) {
+app.factory('initializationService', function (messengerChannelService,Restangular, $q, $sessionStorage, notify, $filter, languageService, webSocketService) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
     });
@@ -33,10 +33,12 @@ app.factory('initializationService', function (Restangular, $q, $sessionStorage,
                 $sessionStorage.questionsExtended = success.data.matchingInitializationResponse.questionExtendedWithAnswers;
                 $sessionStorage.questionImportance = success.data.matchingInitializationResponse.questionImportanceList;
                 $sessionStorage.selectedExtendedAnswers = success.data.matchingInitializationResponse.selectedExtendedAnswersResponses;
+                $sessionStorage.listOfChats = success.data.matchingInitializationResponse.listOfChats;
 
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
                 $sessionStorage.filters = success.data.filters;
                 webSocketService.getConnection();
+                messengerChannelService.initWsConnection();
                 deferred.resolve(success.data);
             }, function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
