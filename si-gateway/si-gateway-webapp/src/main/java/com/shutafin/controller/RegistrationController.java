@@ -44,7 +44,7 @@ public class RegistrationController {
         registrationService.save(registrationRequestWeb);
     }
 
-    @SessionResponse
+//    @SessionResponse
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
     public AccountUserWeb confirmRegistration(@PathVariable String link) {
         log.debug("/users/registration/confirmation/{link}");
