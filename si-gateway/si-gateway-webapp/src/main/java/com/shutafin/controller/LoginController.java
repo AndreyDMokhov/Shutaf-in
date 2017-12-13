@@ -29,7 +29,7 @@ public class LoginController {
 
     //todo ms-gateway @SessionResponse
 
-    @SessionResponse
+//    @SessionResponse
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserWeb login(@RequestBody @Valid AccountLoginRequest loginWeb,
                                 BindingResult result) {
