@@ -11,10 +11,7 @@
             </column>
 
             <column name="USER_ID" type="bigint">
-                <constraints nullable="false"
-                             referencedTableName="USER"
-                             referencedColumnNames="ID"
-                             foreignKeyName="FK_USER_LOGIN_LOG_USER_ID_USER"/>
+                <constraints nullable="false"/>
             </column>
 
             <column name="IS_LOGIN_SUCCESS" type="bit">
