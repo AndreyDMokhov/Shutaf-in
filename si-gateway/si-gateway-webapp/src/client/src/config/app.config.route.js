@@ -37,15 +37,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('users',
             {
                 templateUrl: 'partials/users/users.html',
-                controller: 'usersController',
-                controllerAs: 'vm',
                 url: '/users'
             })
         .state('userProfile',
             {
-                templateUrl: 'partials/userProfile/userProfile.html',
-                controller: 'userProfileController',
-                controllerAs: 'vm',
+                template: '<user-profile-component></user-profile-component>',
                 url: '/profile/{id:int}'
             })
 
@@ -67,14 +63,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             template: '<reset-password-confirmation-component></reset-password-confirmation-component>'
         })
         .state('userSearch', {
-            templateUrl: 'partials/userSearch/userSearch.html',
-            controller: 'userSearchController',
-            controllerAs: 'vm',
+            template: '<user-search-component></user-search-component>',
             url: '/users/search?{name}'
         })
-
         .state('questions', {
-            template: '<questions-component></questions-component>',
+            template:'<questions-component></questions-component>',
             url: '/questions'
         })
         /*Deal*/
@@ -112,7 +105,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state("chat",
             {
-              template: '<messenger-ui-component></messenger-ui-component>',
+                template: '<messenger-ui-component></messenger-ui-component>',
                 url: "/chat"
             })
     ;

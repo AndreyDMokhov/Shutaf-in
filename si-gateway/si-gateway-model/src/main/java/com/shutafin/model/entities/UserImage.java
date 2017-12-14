@@ -9,6 +9,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+@Deprecated
 @Entity
 @Table(name = "USER_IMAGE")
 @AllArgsConstructor

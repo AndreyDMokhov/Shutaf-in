@@ -10,7 +10,6 @@ import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +26,7 @@ public class MatchingCandidatesEmailNotificationJobService {
     private static final Integer MAX_COUNT_MATCHING_USERS = 3;
 
     private UserAccountRepository userAccountRepository;
+    //TODO moved to matching service
     private UserMatchService userMatchService;
     private EnvironmentConfigurationService environmentConfigurationService;
     private EmailTemplateService emailTemplateService;

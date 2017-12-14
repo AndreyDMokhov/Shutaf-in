@@ -11,6 +11,7 @@ import javax.persistence.*;
 /**
  * Created by evgeny on 6/19/2017.
  */
+@Deprecated
 @Entity
 @Table(name = "USER_CREDENTIALS")
 @NoArgsConstructor

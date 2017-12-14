@@ -6,6 +6,7 @@ import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+@Deprecated
 public interface ImagePairRepository  extends BaseJpaRepository<ImagePair, Long> {
 
     @Query("select ip.compressedImage from ImagePair ip where ip.originalImage = :userImage")

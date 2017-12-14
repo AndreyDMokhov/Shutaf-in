@@ -7,6 +7,7 @@ import com.shutafin.repository.base.BaseJpaRepository;
 /**
  * Created by evgeny on 6/19/2017.
  */
+@Deprecated
 public interface UserCredentialsRepository extends BaseJpaRepository<UserCredentials, Long> {
 
     UserCredentials findByUser(User user);

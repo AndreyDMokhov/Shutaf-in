@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Deprecated
 @Repository
 public class FilterCityRepositoryImpl implements FilterCityRepositoryCustom {
 

@@ -6,15 +6,19 @@ import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.types.AccountStatusConverter;
 import com.shutafin.model.types.AccountType;
 import com.shutafin.model.types.AccountTypeConverter;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "USER_ACCOUNT")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

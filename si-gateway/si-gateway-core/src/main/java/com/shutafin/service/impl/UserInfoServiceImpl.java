@@ -31,6 +31,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInitializationRepository userInitializationRepository;
     private UserAccountRepository userAccountRepository;
     private UserImageService userImageService;
+    //TODO moved to matching service
     private FilterCityRepository filterCityRepository;
 
     @Autowired
@@ -60,6 +61,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    // TODO: MS-account UserAccountController.getUserInfo()
     public UserInfoResponseDTO getUserInfo(User user) {
         if (user == null) {
             return null;
@@ -79,11 +81,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    // TODO: MS-account UserAccountController.getUserInfo()
     public UserInfoResponseDTO getUserInfo(Long userId){
         return getUserInfo(userRepository.findOne(userId));
     }
 
     @Override
+    // TODO: MS-account UserAccountController.updateUserInfo()
     public void updateUserInfo(UserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = userInfoRepository.findByUser(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-
+@Deprecated
 @Service
 @Transactional
 public class CoreMatchingServiceImpl implements CoreMatchingService {

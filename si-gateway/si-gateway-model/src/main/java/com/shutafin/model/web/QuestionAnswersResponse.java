@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * Created by evgeny on 8/23/2017.
  */
+@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

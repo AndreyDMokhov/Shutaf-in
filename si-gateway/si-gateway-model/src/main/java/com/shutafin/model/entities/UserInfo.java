@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+@Deprecated
 @Entity
 @Table(name = "USER_INFO")
 @AllArgsConstructor

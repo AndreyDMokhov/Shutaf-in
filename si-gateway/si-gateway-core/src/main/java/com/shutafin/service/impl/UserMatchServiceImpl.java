@@ -20,6 +20,7 @@ import java.util.*;
 /**
  * Created by evgeny on 8/12/2017.
  */
+@Deprecated
 @Service
 @Transactional
 @Slf4j

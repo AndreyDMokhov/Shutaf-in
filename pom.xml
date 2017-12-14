@@ -24,6 +24,7 @@
         <module>si-email-notification</module>
         <module>si-matching</module>
         <module>si-account</module>
+        <module>si-deal</module>
     </modules>
 
     <dependencyManagement>

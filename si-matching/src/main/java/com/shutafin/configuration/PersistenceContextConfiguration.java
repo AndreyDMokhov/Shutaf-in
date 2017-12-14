@@ -27,8 +27,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableCaching
-@EnableJpaRepositories(basePackages = "com.shutafin",
-        repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
+@EnableJpaRepositories(basePackages = "com.shutafin", repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
 public class PersistenceContextConfiguration {
 
     @Autowired
@@ -79,7 +78,7 @@ public class PersistenceContextConfiguration {
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(Boolean.parseBoolean(environment.getRequiredProperty("spring.jpa.show-sql")));
-
+        vendorAdapter.setGenerateDdl(true);
         return vendorAdapter;
     }
 

@@ -10,6 +10,7 @@ import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
 
+@Deprecated
 @Entity
 @Table(name = "USER")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
