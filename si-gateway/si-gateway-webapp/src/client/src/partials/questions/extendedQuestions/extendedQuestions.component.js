@@ -18,8 +18,9 @@ app.component('extendedQuestionsComponent', {
             $sessionStorage.selectedExtendedAnswers = answers;
 
             for (var i = 0; i < answers.length; i++) {
-                if (answers[i].questionImportanceId != null){
-                    answersToSend.push(answers[i]);}
+                if (answers[i].questionImportanceId != null) {
+                    answersToSend.push(answers[i]);
+                }
             }
         }
 
@@ -34,6 +35,7 @@ app.component('extendedQuestionsComponent', {
             );
 
         }
+
         vm.sendData = sendData;
         vm.putAnswersToSessionStorage = putAnswersToSessionStorage;
     }
