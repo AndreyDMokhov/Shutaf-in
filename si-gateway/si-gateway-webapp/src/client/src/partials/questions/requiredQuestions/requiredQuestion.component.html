@@ -13,7 +13,7 @@
             </label>
         </div>
         <br>
-        <ul uib-pagination total-items="$ctrl.totalItems" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"
+        <ul uib-pagination class="question-pagination" total-items="$ctrl.totalItems" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"
             previous-text="{{'Questions.button.back'|translate}}" next-text="{{'Questions.button.next'|translate}}"
             items-per-page="$ctrl.itemsPerPage"></ul>
         <button class="btn btn-default pull-right" ng-click="$ctrl.save()" ng-disabled="$ctrl.disableSubmit">

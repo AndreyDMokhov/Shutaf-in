@@ -1,5 +1,5 @@
 app.component('questionComponent', {
-    templateUrl: 'partials/questions/questions/question.component.html',
+    templateUrl: 'partials/questions/requiredQuestions/requiredQuestion.component.html',
     bindings: {
         sendData: '=',
         putAnswers: '=',

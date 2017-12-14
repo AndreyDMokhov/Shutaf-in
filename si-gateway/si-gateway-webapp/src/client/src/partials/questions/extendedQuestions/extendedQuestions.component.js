@@ -1,9 +1,9 @@
-app.component('extendedQuestions', {
+app.component('extendedQuestionsComponent', {
     templateUrl: 'partials/questions/extendedQuestions/extendedQuestions.component.html',
     controllerAs: 'vm',
     controller: function ($scope,
                           $state,
-                          extendedQuestionsFactory,
+                          extendedQuestionsModel,
                           notify,
                           $sessionStorage,
                           $filter,
@@ -18,14 +18,13 @@ app.component('extendedQuestions', {
             $sessionStorage.selectedExtendedAnswers = answers;
 
             for (var i = 0; i < answers.length; i++) {
-                if (answers[i].questionImportanceId != null)
-                    answersToSend.push(answers[i]);
+                if (answers[i].questionImportanceId != null){
+                    answersToSend.push(answers[i]);}
             }
         }
 
-        //
         function sendData() {
-            extendedQuestionsFactory.sendAnswers(answersToSend).then(
+            extendedQuestionsModel.sendAnswers(answersToSend).then(
                 function (success) {
                     notify.set($filter('translate')('Questions.confirm'), {type: 'success'});
                 },
@@ -34,10 +33,7 @@ app.component('extendedQuestions', {
                 }
             );
 
-            // return 'hi';
         }
-
-        //
         vm.sendData = sendData;
         vm.putAnswersToSessionStorage = putAnswersToSessionStorage;
     }

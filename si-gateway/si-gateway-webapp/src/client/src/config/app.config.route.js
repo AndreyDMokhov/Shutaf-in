@@ -67,17 +67,17 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/users/search?{name}'
         })
         .state('questionsTab', {
-            anstract: true,
+            abstract: true,
             templateUrl:'partials/questions/questionsTab.html',
-            url: '/questionsTab'
-        })
-        .state('questionsTab.questions', {
-            template:'<questions-component></questions-component>',
             url: '/questions'
         })
+        .state('questionsTab.requiredQuestions', {
+            template:'<required-questions-component></required-questions-component>',
+            url: '/required-questions'
+        })
         .state('questionsTab.extendedQuestions', {
-            template:'<extended-questions></extended-questions>',
-            url: '/extendedQuestions'
+            template:'<extended-questions-component></extended-questions-component>',
+            url: '/extended-questions'
         })
         /* Settings */
         .state('settings', {

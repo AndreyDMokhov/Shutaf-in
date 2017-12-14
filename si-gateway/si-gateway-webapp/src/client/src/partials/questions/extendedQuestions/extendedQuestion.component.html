@@ -1,8 +1,7 @@
 <div class="quiz-area card ">
     <div class="cardContainer">
-        <h2>{{$ctrl.variantsOfAnswers.questionDescription}}</h2>
-        <!--<div ng-repeat="answ in $ctrl.variantsOfAnswers.answers ">-->
-        <div ng-repeat="answ in $ctrl.AnswersWithIDForCurrentPage ">
+        <h2 style="text-align: center">{{$ctrl.currentQuestion}}</h2>
+        <div ng-repeat="answ in $ctrl.answersWithIDForCurrentPage ">
             <label>
                 <input type="checkbox"
                        ng-model="$ctrl.selectedCheckboxes[$index]"
@@ -13,7 +12,6 @@
             </label>
         </div>
         <br>
-        <!--value="answer.answerId"-->
         <div>
             <label ng-repeat="item in $ctrl.questionImportance" class="radio-inline">
                 <input type="radio" name="optradio"
@@ -23,36 +21,12 @@
         </div>
 
         <br>
-        <ul class="pagin" uib-pagination total-items="$ctrl.totalItems" ng-model="$ctrl.currentPage"
+        <ul class="question-pagination" uib-pagination total-items="$ctrl.totalItems" ng-model="$ctrl.currentPage"
             ng-change="$ctrl.pageChanged()"
             previous-text="{{'Questions.button.back'|translate}}" next-text="{{'Questions.button.next'|translate}}"
             items-per-page="$ctrl.itemsPerPage"></ul>
         <button class="btn btn-default pull-right" ng-click="$ctrl.save()">
             {{"Questions.button.save"|translate}}
         </button>
-
-
     </div>
 </div>
-
-<!--style="border: 2px solid red"-->
-
-
-<!--<div class="quiz-area card ">-->
-<!--<div class="cardContainer">-->
-<!--<h2 style="text-align: center">{{$ctrl.variantsOfAnswers.description}} </h2>-->
-<!--<div class="radio" ng-repeat="answer in $ctrl.variantsOfAnswers.answers">-->
-<!---->
-<!--<input type="radio" name="answer.description"-->
-<!--ng-model="$ctrl.currentAnswer"-->
-<!--ng-value="answer.answerId"-->
-<!--value="answer.answerId"-->
-<!--ng-change='$ctrl.newValue();'-->
-<!--&gt;-->
-<!--{{answer.description}}-->
-<!---->
-<!--</div>-->
-<!--<br>-->
-
-<!--</div>-->
-<!--</div>-->

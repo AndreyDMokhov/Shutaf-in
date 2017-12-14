@@ -27,7 +27,7 @@
                 </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
-                    <a ui-sref="questionsTab.questions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
+                    <a ui-sref="questionsTab.requiredQuestions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
                         <span class="fa fa-book header-icon-size"></span>
                         &nbsp;
                         {{'Questions.title' | translate}}

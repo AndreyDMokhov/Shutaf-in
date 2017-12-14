@@ -12,30 +12,32 @@ app.component('extendedQuestionComponent', {
 
         var questions = vm.listQuestions;
         var answers = getanswersArrayInOrder(questions, vm.selectedAnswers);
-        vm.AnswersWithIDForCurrentPage = [];
+        vm.answersWithIDForCurrentPage = [];
         vm.currentPage = 1;
         vm.previousPage = 1;
         var fullQuestionObjectForCurrentPage = questions[vm.currentPage - 1];
+        vm.currentQuestion = fullQuestionObjectForCurrentPage.questionDescription;
         var fullAnswerObjectForCurrentPage = answers[vm.currentPage - 1];
         var valuesOfCheckboxesCurrentPage = [];
         vm.selectedCheckboxes = getArrayofAlreadyAnswersForCurrentPage(fullQuestionObjectForCurrentPage.answers, vm.currentPage);
-        vm.AnswersWithIDForCurrentPage = getArrayOfAnswersWithIDForCurrentPage(fullQuestionObjectForCurrentPage.answers);
+        vm.answersWithIDForCurrentPage = getArrayOfanswersWithIDForCurrentPage(fullQuestionObjectForCurrentPage.answers);
         vm.variantsOfAnswersImportance = answers[vm.currentPage - 1].questionImportanceId === null ? 1 : answers[vm.currentPage - 1].questionImportanceId;
 
-        vm.pageChanged = function () {
+        function pageChanged() {
             addImportanceIdToAnswers();
             valuesOfCheckboxesCurrentPage = [];
             var indexArray = vm.currentPage - 1;
             fullQuestionObjectForCurrentPage = questions[indexArray];
+            vm.currentQuestion = fullQuestionObjectForCurrentPage.questionDescription;
             fullAnswerObjectForCurrentPage = answers[indexArray];
             vm.selectedCheckboxes = getArrayofAlreadyAnswersForCurrentPage(fullQuestionObjectForCurrentPage.answers, vm.currentPage);
             vm.variantsOfAnswersImportance = answers[indexArray].questionImportanceId === null ? 1 : answers[indexArray].questionImportanceId;
-            vm.AnswersWithIDForCurrentPage = getArrayOfAnswersWithIDForCurrentPage(fullQuestionObjectForCurrentPage.answers);
+            vm.answersWithIDForCurrentPage = getArrayOfanswersWithIDForCurrentPage(fullQuestionObjectForCurrentPage.answers);
             vm.previousPage = vm.currentPage;
         };
 
-        vm.getValuesOfCheckBox = function (trueFalse, numberAnsw) {
-            if (trueFalse) {
+        function getValuesOfCheckBox(ifCheckBoxSelected, numberAnsw) {
+            if (ifCheckBoxSelected) {
                 valuesOfCheckboxesCurrentPage.push(parseInt(numberAnsw));
             }
             else {
@@ -46,7 +48,7 @@ app.component('extendedQuestionComponent', {
             }
         };
 
-        function getArrayOfAnswersWithIDForCurrentPage(answers) {
+        function getArrayOfanswersWithIDForCurrentPage(answers) {
             var arr = [];
             for (var i in answers) {
                 var element = {id: i, answer: answers[i]};
@@ -55,7 +57,7 @@ app.component('extendedQuestionComponent', {
             return arr;
         }
 
-        vm.save = function () {
+        function save() {
             addImportanceIdToAnswers();
             this.putAnswers(answers);
             this.sendData();
@@ -71,7 +73,6 @@ app.component('extendedQuestionComponent', {
             for (var i = 0; i < source.length; i++) {
                 if (source[i].questionId === id) {
                     return source[i].answersId;
-
                 }
             }
         }
@@ -85,19 +86,19 @@ app.component('extendedQuestionComponent', {
         }
 
         function getArrayofAlreadyAnswersForCurrentPage(fullQuestionObjectForCurrentPage, currentPage) {
-            var ooobb = [];
-            var obj1 = Object.keys(fullQuestionObjectForCurrentPage);
-            for (var i = 0; i < obj1.length; i++) {
-                if (answers[currentPage - 1].answersId === null || !(answers[currentPage - 1].answersId).includes(parseInt(obj1[i]))) {
-                    ooobb[i] = null;
+            var arrayOfExistingAnswers = [];
+            var arrayOfIdOfAnswersForCurrentQuestion = Object.keys(fullQuestionObjectForCurrentPage);
+            for (var i = 0; i < arrayOfIdOfAnswersForCurrentQuestion.length; i++) {
+                if (answers[currentPage - 1].answersId === null || !(answers[currentPage - 1].answersId).includes(parseInt(arrayOfIdOfAnswersForCurrentQuestion[i]))) {
+                    arrayOfExistingAnswers[i] = null;
                 }
                 else {
-                    ooobb[i] = obj1[i];
-                    valuesOfCheckboxesCurrentPage.push(parseInt(obj1[i]));
+                    arrayOfExistingAnswers[i] = arrayOfIdOfAnswersForCurrentQuestion[i];
+                    valuesOfCheckboxesCurrentPage.push(parseInt(arrayOfIdOfAnswersForCurrentQuestion[i]));
                 }
                 ;
             }
-            return ooobb;
+            return arrayOfExistingAnswers;
         }
 
         function getanswersArrayInOrder(questions, answers) {
@@ -117,8 +118,14 @@ app.component('extendedQuestionComponent', {
             if (valuesOfCheckboxesCurrentPage.length) {
                 answers[vm.previousPage - 1].questionImportanceId = vm.variantsOfAnswersImportance;
             }
-            else answers[vm.previousPage - 1].questionImportanceId = null;
-        }
+            else {
+                answers[vm.previousPage - 1].questionImportanceId = null;
+            }
+        };
+
+        vm.pageChanged = pageChanged;
+        vm.getValuesOfCheckBox = getValuesOfCheckBox;
+        vm.save = save;
     }
 
 });
