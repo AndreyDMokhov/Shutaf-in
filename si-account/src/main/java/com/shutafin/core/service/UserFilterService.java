@@ -1,9 +1,8 @@
-package com.shutafin.service;
+package com.shutafin.core.service;
 
-
-
-import com.shutafin.model.dto.AgeRangeWebDTO;
-import com.shutafin.model.dto.FiltersWeb;
+import com.shutafin.model.User;
+import com.shutafin.model.web.user.AgeRangeWebDTO;
+import com.shutafin.model.web.user.FiltersWeb;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
  * Created by evgeny on 10/3/2017.
  */
 public interface UserFilterService {
-    List<Long> findFilteredUsers(Long userId);
+    List<User> filterMatchedUsers(Long userId, List<Long> matchedUsersList);
     void saveUserFilters(Long userId, FiltersWeb filtersWeb);
     void saveUserFilterCity(Long userId, List<Integer> cities);
     void saveUserFilterGender(Long userId, Integer genderId);

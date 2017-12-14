@@ -1,6 +1,7 @@
 package com.shutafin.repository;
 
-import com.shutafin.model.entities.FilterCity;
+
+import com.shutafin.model.filter.FilterCity;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,10 +13,10 @@ import java.util.List;
  */
 public interface FilterCityRepository extends BaseJpaRepository<FilterCity, Long>{
 
-    @Query("SELECT fc.cityId FROM FilterCity fc WHERE fc.userId = :userId ")
-    List<Integer> findAllCityIdsByUserId (@Param("userId") Long userId);
+    @Query("SELECT fc.city.id FROM FilterCity fc WHERE fc.user.id = :userId ")
+    List<Integer> findAllCityIdsByUserId(@Param("userId") Long userId);
 
-    @Query("SELECT fc.userId FROM FilterCity fc WHERE fc.userId in (:filteredUsers) AND fc.cityId in (:cityIds)")
+    @Query("SELECT fc.user.id FROM FilterCity fc WHERE fc.user.id in (:filteredUsers) AND fc.city.id in (:cityIds)")
     List<Long> filterUsersFromListByCity(@Param("filteredUsers") List<Long> filteredUsers, @Param("cityId") List<Integer> cityIds);
 
     void deleteByUserId(Long userId);

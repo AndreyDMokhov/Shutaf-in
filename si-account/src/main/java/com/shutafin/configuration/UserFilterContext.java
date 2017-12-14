@@ -1,8 +1,9 @@
 package com.shutafin.configuration;
 
-import com.shutafin.service.filter.filters.UsersFilterByAgeRange;
-import com.shutafin.service.filter.filters.UsersFilterByCity;
-import com.shutafin.service.filter.filters.UsersFilterByGender;
+
+import com.shutafin.core.service.filter.filters.UsersFilterByAgeRange;
+import com.shutafin.core.service.filter.filters.UsersFilterByCity;
+import com.shutafin.core.service.filter.filters.UsersFilterByGender;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by Rogov on 18.11.2017.
  */
 @Configuration
-public class MatchingApplicationContext {
+public class UserFilterContext {
 
     @Bean
     public UsersFilterByGender usersFilterByGender(){
