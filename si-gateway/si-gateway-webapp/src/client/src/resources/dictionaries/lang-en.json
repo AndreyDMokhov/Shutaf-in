@@ -152,7 +152,7 @@
   "Questions.button.save" : "Save",
   "Questions.delimiter": "from",
   "Questions.confirm" : "Answers were saved",
-  "Questions.questions" : "Questions",
+  "Questions.requiredQuestions" : "Required questions",
   "Questions.extendedQuestions" : "Extended questions",
 
   "SECTION": "CHAT",

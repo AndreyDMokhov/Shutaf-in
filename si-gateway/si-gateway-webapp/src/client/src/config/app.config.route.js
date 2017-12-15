@@ -68,7 +68,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('questionsTab', {
             abstract: true,
-            templateUrl:'partials/questions/questionsTab.html',
+            template: '<questions-tab></questions-tab>  ',
             url: '/questions'
         })
         .state('questionsTab.requiredQuestions', {

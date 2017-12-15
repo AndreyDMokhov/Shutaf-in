@@ -1,3 +1,4 @@
+"use strict";
 app.component('requiredQuestionsComponent', {
     templateUrl: 'partials/questions/requiredQuestions/requiredQuestions.component.html',
     controllerAs: 'vm',
@@ -9,8 +10,7 @@ app.component('requiredQuestionsComponent', {
                           $filter,
                           browserTitle) {
         var vm = this;
-        browserTitle.setBrowserTitleByFilterName('Questions.title');
-
+        browserTitle.setBrowserTitleByFilterName('Questions.requiredQuestions');
         vm.questions = $sessionStorage.questions;
         vm.selectedAnswers = $sessionStorage.selectedAnswers;
 

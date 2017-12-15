@@ -1,3 +1,4 @@
+"use strict";
 app.component('questionComponent', {
     templateUrl: 'partials/questions/requiredQuestions/requiredQuestion.component.html',
     bindings: {
@@ -45,7 +46,13 @@ app.component('questionComponent', {
             answers[findPosition(answers, previousQuestionId)].answerId = this.currentAnswer;
             this.sendData();
             this.putAnswers(answers);
-            $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
+            if ($sessionStorage.showExtendedQuestions) {
+                $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
+            }
+            else {
+                $sessionStorage.showExtendedQuestions = true;
+                $state.go('questionsTab.extendedQuestions', {}, {reload: true});
+            }
         };
 
         this.totalItems = questions.length;

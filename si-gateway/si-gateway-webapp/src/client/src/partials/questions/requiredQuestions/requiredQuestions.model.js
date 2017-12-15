@@ -1,3 +1,4 @@
+"use strict";
 app.factory('quizModel', function (Restangular, $sessionStorage) {
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);

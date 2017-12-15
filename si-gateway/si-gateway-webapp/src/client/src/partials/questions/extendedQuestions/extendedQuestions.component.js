@@ -1,3 +1,4 @@
+"use strict";
 app.component('extendedQuestionsComponent', {
     templateUrl: 'partials/questions/extendedQuestions/extendedQuestions.component.html',
     controllerAs: 'vm',
@@ -9,7 +10,7 @@ app.component('extendedQuestionsComponent', {
                           $filter,
                           browserTitle) {
         var vm = this;
-        browserTitle.setBrowserTitleByFilterName('Questions.title');
+        browserTitle.setBrowserTitleByFilterName('Questions.extendedQuestions');
         vm.questions = $sessionStorage.questionsExtended;
         vm.selectedAnswers = $sessionStorage.selectedExtendedAnswers;
         var answersToSend = [];

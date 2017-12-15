@@ -1,3 +1,4 @@
+"use strict";
 app.component('extendedQuestionComponent', {
     templateUrl: 'partials/questions/extendedQuestions/extendedQuestion.component.html',
     bindings: {

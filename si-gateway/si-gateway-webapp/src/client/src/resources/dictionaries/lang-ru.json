@@ -153,7 +153,7 @@
   "Questions.button.save" : "Сохранить",
   "Questions.delimiter": "из",
   "Questions.confirm" : "Ответы успешно сохранены",
-  "Questions.questions" : "Вопросы",
+  "Questions.requiredQuestions" : "Обязательные вопросы",
   "Questions.extendedQuestions" : "Дополнительные вопросы",
 
 
