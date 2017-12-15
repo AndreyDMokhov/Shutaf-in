@@ -271,4 +271,8 @@
         <addForeignKeyConstraint baseColumnNames="CITY_ID" baseTableName="i_city_locale" constraintName="I_CITY_LOCALE_CITY_ID_I_CITY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_city"/>
     </changeSet>
 
+    <changeSet id="4" author="edward">
+        <sqlFile path="changelog//version/initialization_data-1.0.sql" />
+    </changeSet>
+
 </databaseChangeLog>

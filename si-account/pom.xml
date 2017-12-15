@@ -73,11 +73,10 @@
             <version>2.6.1</version>
             <scope>compile</scope>
         </dependency>
-        <!--TODO uncomment after liquibase migration-->
-        <!--<dependency>-->
-            <!--<groupId>org.liquibase</groupId>-->
-            <!--<artifactId>liquibase-core</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
