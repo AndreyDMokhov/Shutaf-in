@@ -52,7 +52,7 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
     function findActiveChatWithUser(user) {
         return vm.listOfChats
             .filter(function (chat) {
-                return chat.usersInChat.length === 1 && isUserActiveInChat(chat, user)
+                return chat.usersInChat.length === 1 && isUserActiveInChat(chat, user);
             });
     }
 

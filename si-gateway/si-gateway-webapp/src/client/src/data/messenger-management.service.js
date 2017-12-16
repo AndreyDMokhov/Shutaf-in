@@ -5,7 +5,7 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
     function activateMessenger() {
         messengerChannelService.notifyListOfChatObservers();
         if (messengerCurrentDataService.currentChat.id) {
-            activateChannel(messengerCurrentDataService.currentChat)
+            activateChannel(messengerCurrentDataService.currentChat);
         }
     }
 

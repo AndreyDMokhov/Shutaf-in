@@ -19,7 +19,7 @@ app.component('channelComponent', {
                 checkChatTitlesList();
             }
             else{
-                checkOneChatTitle(chatData)
+                checkOneChatTitle(chatData);
             }
         }
 
