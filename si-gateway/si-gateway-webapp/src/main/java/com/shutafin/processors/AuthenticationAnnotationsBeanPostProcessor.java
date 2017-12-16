@@ -75,7 +75,7 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
 
                     AuthenticatedUserType type = authenticatedUser.value();
 
-                    if (type == AuthenticatedUserType.USER &&
+                    if (type == AuthenticatedUserType.USER_ID &&
                             parameter.getType().equals(Long.class)) {
                         args[i] = userId;
                     }

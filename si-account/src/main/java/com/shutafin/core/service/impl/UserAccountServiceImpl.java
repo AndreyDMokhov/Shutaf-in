@@ -6,6 +6,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.AccountBlockedException;
+import com.shutafin.model.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
 import com.shutafin.model.types.AccountStatus;
@@ -85,10 +86,10 @@ public class UserAccountServiceImpl implements UserAccountService {
             log.warn("UserAccount for userId {} is BLOCKED", user.getId());
             throw new AccountBlockedException();
         }
-//        if (accountStatus == AccountStatus.NEW) {
-//            log.warn("UserAccount for userId {} is not CONFIRMED", user.getId());
-//            throw new AccountNotConfirmedException();
-//        }
+        if (accountStatus == AccountStatus.NEW) {
+            log.warn("UserAccount for userId {} is not CONFIRMED", user.getId());
+            throw new AccountNotConfirmedException();
+        }
 
         return userAccount;
     }

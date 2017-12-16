@@ -34,8 +34,8 @@ public class InitializationController {
 
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public InitializationResponse getInitializationResponse(@AuthenticatedUser User user) {
-        return initializationService.getInitializationResponse(user.getId());
+    public InitializationResponse getInitializationResponse(@AuthenticatedUser Long userId) {
+        return initializationService.getInitializationResponse(userId);
     }
 }
 
