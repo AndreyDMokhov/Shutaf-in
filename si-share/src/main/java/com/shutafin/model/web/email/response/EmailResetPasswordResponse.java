@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RegistrationResponse {
+public class EmailResetPasswordResponse {
 
     private Long userId;
 

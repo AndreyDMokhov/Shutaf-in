@@ -4,7 +4,7 @@ import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
-import com.shutafin.model.web.email.UserImageSource;
+import com.shutafin.model.web.email.EmailUserImageSource;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
@@ -111,27 +111,27 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
         Map<String, byte[]> imageSources = new TreeMap<>();
 
-        for (UserImageSource userImageSource : emailNotificationWeb.getUserImageSources()) {
-            imageSources.put(userImageSource.getUserId().toString(), userImageSource.getImageSource());
-            urlLink = urlLink.concat(getUserImageLink(userImageSource, serverAddress, urlProfile));
+        for (EmailUserImageSource emailUserImageSource : emailNotificationWeb.getEmailUserImageSources()) {
+            imageSources.put(emailUserImageSource.getUserId().toString(), emailUserImageSource.getImageSource());
+            urlLink = urlLink.concat(getUserImageLink(emailUserImageSource, serverAddress, urlProfile));
         }
         urlLink += getSearchLink(serverAddress, urlSearch);
         return getEmailMessage(emailNotificationWeb, urlLink, imageSources);
 
     }
 
-    private String getUserImageLink(UserImageSource userImageSource, String serverAddress, String urlProfile) {
+    private String getUserImageLink(EmailUserImageSource emailUserImageSource, String serverAddress, String urlProfile) {
         return ""
                 .concat("<p style=\"font-size:14px\"><a href=\"")
                 .concat(serverAddress)
                 .concat(urlProfile)
-                .concat(userImageSource.getUserId().toString())
+                .concat(emailUserImageSource.getUserId().toString())
                 .concat("\"> ")
-                .concat(userImageSource.getFirstName())
+                .concat(emailUserImageSource.getFirstName())
                 .concat(" ")
-                .concat(userImageSource.getLastName())
+                .concat(emailUserImageSource.getLastName())
                 .concat(" <br><img src=\"cid:")
-                .concat(userImageSource.getUserId().toString())
+                .concat(emailUserImageSource.getUserId().toString())
                 .concat("\" style=\"width:128px;height:128px;\">")
                 .concat("</a></p>");
     }
