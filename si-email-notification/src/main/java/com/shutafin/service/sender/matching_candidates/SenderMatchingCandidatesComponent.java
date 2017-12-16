@@ -1,18 +1,13 @@
 package com.shutafin.service.sender.matching_candidates;
 
-import com.shutafin.model.web.email.EmailNotificationWeb;
-import com.shutafin.model.web.email.UserImageSource;
 import com.shutafin.model.smtp.EmailMessage;
+import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.route.DiscoveryRoutingService;
-import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
 import com.shutafin.service.sender.BaseEmailInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 @Component("matchingCandidates")
 public class SenderMatchingCandidatesComponent implements BaseEmailInterface {

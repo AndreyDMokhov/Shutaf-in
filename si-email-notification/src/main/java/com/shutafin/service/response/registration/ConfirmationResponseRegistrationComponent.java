@@ -2,7 +2,7 @@ package com.shutafin.service.response.registration;
 
 import com.shutafin.model.entity.registration.ConfirmationRegistration;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.web.email.response.RegistrationResponse;
+import com.shutafin.model.web.email.response.EmailRegistrationResponse;
 import com.shutafin.service.confirmation.ConfirmationRegistrationService;
 import com.shutafin.service.response.BaseConfirmationResponseInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 
 @Component("registrationConfirmationResponse")
 @Slf4j
-public class ConfirmationResponseRegistrationComponent implements BaseConfirmationResponseInterface<RegistrationResponse> {
+public class ConfirmationResponseRegistrationComponent implements BaseConfirmationResponseInterface<EmailRegistrationResponse> {
 
     @Autowired
     private ConfirmationRegistrationService confirmationRegistrationService;
 
     @Override
-    public RegistrationResponse getResponse(String link) {
+    public EmailRegistrationResponse getResponse(String link) {
 
         ConfirmationRegistration confirmationRegistration = confirmationRegistrationService.getConfirmed(link);
         if (confirmationRegistration == null) {
@@ -29,9 +29,9 @@ public class ConfirmationResponseRegistrationComponent implements BaseConfirmati
         confirmationRegistration.setIsConfirmed(true);
         confirmationRegistrationService.save(confirmationRegistration);
 
-        RegistrationResponse registrationResponse = new RegistrationResponse();
-        registrationResponse.setUserId(confirmationRegistration.getUserId());
-        return registrationResponse;
+        EmailRegistrationResponse emailRegistrationResponse = new EmailRegistrationResponse();
+        emailRegistrationResponse.setUserId(confirmationRegistration.getUserId());
+        return emailRegistrationResponse;
     }
 
 }

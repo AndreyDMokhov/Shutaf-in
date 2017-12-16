@@ -1,7 +1,6 @@
 package com.shutafin.processors;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.entities.User;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUserType;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
@@ -60,9 +59,9 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
                                 .getProtocolTypeResolver(method.getAnnotation(WebSocketAuthentication.class), args);
                 String sessionId = protocolTypeResolver.getSessionIdFromProtocol();
 
-                User user = sessionManagementService.findUserWithValidSession(sessionId);
+                Long userId = sessionManagementService.findUserWithValidSession(sessionId);
 
-                if (user == null) {
+                if (userId == null) {
                     throw new AuthenticationException();
                 }
 
@@ -74,12 +73,11 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
                         continue;
                     }
 
-
                     AuthenticatedUserType type = authenticatedUser.value();
 
-                    if (type == AuthenticatedUserType.USER &&
-                            parameter.getType().equals(User.class)) {
-                        args[i] = user;
+                    if (type == AuthenticatedUserType.USER_ID &&
+                            parameter.getType().equals(Long.class)) {
+                        args[i] = userId;
                     }
 
                     if (type == AuthenticatedUserType.SESSION_ID &&
@@ -95,7 +93,7 @@ public class AuthenticationAnnotationsBeanPostProcessor implements BeanPostProce
 
     }
 
-    private Object executeMethod(Method method, Object bean, Object ... args) throws Throwable {
+    private Object executeMethod(Method method, Object bean, Object... args) throws Throwable {
         try {
             return method.invoke(bean, args);
         } catch (InvocationTargetException e) {

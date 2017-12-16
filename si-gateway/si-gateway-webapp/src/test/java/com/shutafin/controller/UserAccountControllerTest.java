@@ -53,7 +53,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
         language = createLanguage();
         user = createUser();
 
-        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
+        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(1L);
         Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(AccountUserLanguageWeb.class), Mockito.any(User.class));
         expectedError = new ArrayList<>();
     }

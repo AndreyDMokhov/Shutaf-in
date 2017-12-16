@@ -46,7 +46,7 @@ public class AccountInitializationController {
     }
 
 
-    @RequestMapping(value = "{userId}/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "{userId}/all", method = RequestMethod.GET)
     public AccountInitializationResponse getInitializationResponse(@PathVariable("userId") Long userId) {
         User user = userService.findUserById(userId);
         Language language = userLanguageService.findUserLanguage(user);

@@ -21,7 +21,7 @@ public class LogoutController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public void logout(@AuthenticatedUser(value = AuthenticatedUserType.SESSION_ID) String sessionId,
-                       @AuthenticatedUser(value = AuthenticatedUserType.USER) User user) {
+                       @AuthenticatedUser(value = AuthenticatedUserType.USER_ID) User user) {
         log.debug("/logout/");
         logoutService.logout(sessionId, user);
     }

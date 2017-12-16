@@ -1,7 +1,7 @@
 package com.shutafin.processors;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.entities.User;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.processors.annotations.response.SessionResponse;
 import com.shutafin.processors.annotations.response.SessionResponseType;
 import com.shutafin.service.SessionManagementService;
@@ -64,8 +64,8 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
             if (annotation == null) {
                 continue;
             }
-            if (annotation.value() == SessionResponseType.NEW_SESSION && !method.getReturnType().equals(User.class)) {
-                throw new IllegalArgumentException("The SessionResponseType parameter is set to False or the returned class is not User.");
+            if (annotation.value() == SessionResponseType.NEW_SESSION && !method.getReturnType().equals(AccountUserWeb.class)) {
+                throw new IllegalArgumentException("The SessionResponseType parameter is set to False or the returned class is not AccountUserWeb.");
             }
         }
 
@@ -76,11 +76,11 @@ public class SessionResponseAnnotationBeanPostProcessor implements BeanPostProce
                     return executeMethod(method, bean, args);
                 }
                 Object retVal = executeMethod(method, bean, args);
-                User user = (User) retVal;
-                if (user == null) {
+                AccountUserWeb accountUserWeb = (AccountUserWeb) retVal;
+                if (accountUserWeb == null) {
                     throw new AuthenticationException();
                 }
-                String sessionId = sessionManagementService.generateNewSession(user);
+                String sessionId = sessionManagementService.generateNewSession(accountUserWeb);
 
                 HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
                 response.setHeader(SESSION_ID_HEADER_TOKEN, sessionId);
