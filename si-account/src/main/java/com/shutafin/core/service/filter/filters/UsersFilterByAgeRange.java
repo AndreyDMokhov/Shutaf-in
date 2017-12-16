@@ -6,6 +6,7 @@ import com.shutafin.model.web.user.AgeRangeWebDTO;
 import com.shutafin.repository.FilterAgeRangeRepository;
 import com.shutafin.repository.account.UserInfoRepository;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +34,11 @@ public class UsersFilterByAgeRange implements UsersFilter {
             return filteredUsers;
         }
         List<Long> filteredUsersByAgeRange = filterUsersInUserInfoByUserIds(filteredUsers, ageRangeWebDTO);
-
-        return filterAgeRangeRepository.filterUsersFromListByAge(
-                filteredUsersByAgeRange,
-                ageRangeWebDTO.getFromAge(),
-                ageRangeWebDTO.getToAge());
+        LocalDate userBirthDate = new LocalDate(userInfoRepository.findOne(userId).getDateOfBirth());
+        Integer userAge = org.joda.time.Years.yearsBetween(userBirthDate, LocalDate.now()).getYears();
+        filteredUsersByAgeRange = filterAgeRangeRepository.filterUsersFromListByAge(
+                filteredUsersByAgeRange, userAge);
+        return filteredUsersByAgeRange;
     }
 
     private List<Long> filterUsersInUserInfoByUserIds(List<Long> filteredUsers, AgeRangeWebDTO ageRangeWebDTO) {

@@ -25,12 +25,12 @@ public class UserFilterController {
         this.userFilterService = userFilterService;
     }
 
-    @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<User> getFilteredUsers(@PathVariable("userId") Long userId, @RequestBody List<Long> matchedUsersList) {
         return userFilterService.filterMatchedUsers(userId, matchedUsersList);
     }
 
-    @PostMapping(value = "/filters/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/save/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilters(@PathVariable("userId") Long userId, @RequestBody @Valid FiltersWeb filtersWeb) {
         userFilterService.saveUserFilters(userId, filtersWeb);
     }
