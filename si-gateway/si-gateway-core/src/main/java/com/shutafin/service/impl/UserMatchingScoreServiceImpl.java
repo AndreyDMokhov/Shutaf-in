@@ -38,7 +38,7 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
 
     @Override
     public Map<Long, Integer> getUserMatchingScores(User userOrigin) {
-        List<User> usersToMatch = userMatchService.findMatchingUsers(userOrigin);
+        List<User> usersToMatch = userMatchService.findMatchingUsers(userOrigin.getId());
         Map<Long, Integer> userMatchingScores = new HashMap<>();
         for (User userToMatch : usersToMatch) {
             UserMatchingScore score = getMatchingScore(userOrigin, userToMatch);

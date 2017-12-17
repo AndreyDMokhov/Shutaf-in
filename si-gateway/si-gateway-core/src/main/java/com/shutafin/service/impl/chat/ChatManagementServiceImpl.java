@@ -1,15 +1,19 @@
 package com.shutafin.service.impl.chat;
 
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.entities.*;
+import com.shutafin.model.entities.Chat;
+import com.shutafin.model.entities.ChatMessage;
+import com.shutafin.model.entities.ChatUser;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.types.ChatMessageType;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.model.web.chat.ChatMessageRequest;
-import com.shutafin.model.web.chat.ChatUserDTO;
 import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatRepository;
 import com.shutafin.repository.common.ChatUserRepository;
 import com.shutafin.repository.common.UserRepository;
+import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.service.ChatManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,10 +43,13 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserAccountControllerSender userAccountControllerSender;
+
 
     @Override
     @Transactional
-    public ChatWithUsersListDTO createNewChat(String chatTitle, User chatOwner, Long chatMemberUserId) {
+    public ChatWithUsersListDTO createNewChat(String chatTitle, Long chatOwnerId, Long chatMemberUserId) {
         Chat chat = new Chat();
         chat.setChatTitle(chatTitle);
         if (chatTitle == null || chatTitle.equals("null")) {
@@ -50,7 +57,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         }
         chat.setChatTitle(chatTitle);
         chatRepository.save(chat);
-        addChatUserToChat(chat, chatOwner.getId());
+        addChatUserToChat(chat, chatOwnerId);
         addChatUserToChat(chat, chatMemberUserId);
         //TODO moved to Account MS
         List<User> users = Arrays.asList(userRepository.findOne(chatMemberUserId));
@@ -58,10 +65,10 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     }
 
     private ChatWithUsersListDTO getChatWithUsersListDTO(Chat chat, List<User> users) {
-        List<ChatUserDTO> chatUserDTOs = users.stream()
-                .map(u->new ChatUserDTO(u.getId(),u.getFirstName(),u.getLastName()))
+        List<AccountUserWeb> chatUserDTOs = users.stream()
+                .map(u -> new AccountUserWeb(u.getId(), u.getFirstName(), u.getLastName()))
                 .collect(Collectors.toList());
-        return new ChatWithUsersListDTO(chat.getId(),chat.getChatTitle(),chat.getHasNoTitle(),chatUserDTOs);
+        return new ChatWithUsersListDTO(chat.getId(), chat.getChatTitle(), chat.getHasNoTitle(), chatUserDTOs);
     }
 
     @Override
@@ -95,7 +102,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     private ChatMessage createChatMessage(ChatUser chatUser, ChatMessageRequest message) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setChat(chatUser.getChat());
-        chatMessage.setUser(chatUser.getUser());
+        chatMessage.setUserId(chatUser.getUserId());
         chatMessage.setMessage(message.getMessage());
         ChatMessageType chatMessageType = ChatMessageType.getById(message.getMessageType());
         if (chatMessageType == null) {
@@ -104,7 +111,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         chatMessage.setMessageType(chatMessageType);
 
         List<Long> permittedUsersIdList = getPermittedUsers(chatUser.getChat());
-        List<Long> usersToNotifyIdList = getUsersToNotify(permittedUsersIdList, chatUser.getUser().getId());
+        List<Long> usersToNotifyIdList = getUsersToNotify(permittedUsersIdList, chatUser.getUserId());
         chatMessage.setPermittedUsers(permittedUsersIdList);
         chatMessage.setUsersToNotify(usersToNotifyIdList);
         chatMessageRepository.save(chatMessage);
@@ -112,22 +119,26 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     }
 
     @Override
-    public void updateMessagesAsRead(List<Long> messagesIdList, User user) {
+    public void updateMessagesAsRead(List<Long> messagesIdList, Long userId) {
         List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByMessageIdList(messagesIdList);
         for (ChatMessage chatMessage : chatMessages) {
-            List<Long> usersToNotifyIdList = getUsersToNotify(chatMessage.getUsersToNotify(), user.getId());
+            List<Long> usersToNotifyIdList = getUsersToNotify(chatMessage.getUsersToNotify(), userId);
             chatMessage.setUsersToNotify(usersToNotifyIdList);
             chatMessageRepository.save(chatMessage);
         }
     }
 
     @Override
-    public ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, User user) {
+    public ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, Long userId) {
         chat.setChatTitle(chatTitle);
         chat.setHasNoTitle(false);
         chatRepository.save(chat);
-        ChatWithUsersListDTO chatWithUsersListDTO = new ChatWithUsersListDTO(chat.getId(),chat.getChatTitle(),chat.getHasNoTitle());
-        chatWithUsersListDTO.setUsersInChat(chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), user.getId()));
+        ChatWithUsersListDTO chatWithUsersListDTO = new ChatWithUsersListDTO(chat.getId(), chat.getChatTitle(), chat.getHasNoTitle());
+
+        List<Long> activeUsersIds = chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), userId);
+        List<AccountUserWeb> users = userAccountControllerSender.getBaseUserInfos(activeUsersIds);
+        chatWithUsersListDTO.setUsersInChat(users);
+
         return chatWithUsersListDTO;
 
     }
@@ -136,8 +147,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         List<ChatUser> chatUsers = chatUserRepository.findChatUsersByChatAndIsActiveUserTrue(chat);
         return chatUsers
                 .stream()
-                .map(ChatUser::getUser)
-                .map(User::getId)
+                .map(ChatUser::getUserId)
                 .collect(Collectors.toList());
     }
 
@@ -151,10 +161,9 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     }
 
     private ChatUser createChatUserAndSetIsActiveTrue(Chat chat, Long userId) {
-        User user = getUserById(userId);
         ChatUser chatUser = new ChatUser();
         chatUser.setChat(chat);
-        chatUser.setUser(user);
+        chatUser.setUserId(userId);
         chatUser = setIsActiveTrue(chatUser);
         return chatUser;
     }

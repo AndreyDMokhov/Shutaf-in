@@ -1,6 +1,6 @@
 package com.shutafin.processors.annotations.authentication;
 
 public enum AuthenticatedUserType {
-    USER,
+    USER_ID,
     SESSION_ID
 }

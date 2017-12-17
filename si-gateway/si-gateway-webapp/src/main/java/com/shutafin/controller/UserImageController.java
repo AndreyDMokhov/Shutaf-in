@@ -1,7 +1,6 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.validation.InputValidationException;
-import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
@@ -25,13 +24,13 @@ public class UserImageController {
     private UserImageService userImageService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getUserImage(@AuthenticatedUser User user, @PathVariable(value = "id") Long userImageId) {
+    public AccountUserImageWeb getUserImage(@AuthenticatedUser Long userId, @PathVariable(value = "id") Long userImageId) {
         log.debug("/images/{id}");
-        return userImageService.getUserImage(user, userImageId);
+        return userImageService.getUserImage(userId, userImageId);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb addUserImage(@AuthenticatedUser User user,
+    public AccountUserImageWeb addUserImage(@AuthenticatedUser Long userId,
                                             @RequestBody @Valid AccountUserImageWeb image,
                                             BindingResult result) {
         log.debug("/images/");
@@ -41,20 +40,20 @@ public class UserImageController {
             throw new InputValidationException(result);
         }
 
-        return userImageService.addUserImage(image, user);
+        return userImageService.addUserImage(image, userId);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserImage(@AuthenticatedUser User user,
+    public void deleteUserImage(@AuthenticatedUser Long userId,
                                 @PathVariable(value = "id") Long userImageId) {
         log.debug("/images/{id}");
-        userImageService.deleteUserImage(user, userImageId);
+        userImageService.deleteUserImage(userId, userImageId);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<AccountUserImageWeb> getAllUserImages(@AuthenticatedUser User user) {
+    public List<AccountUserImageWeb> getAllUserImages(@AuthenticatedUser Long userId) {
         log.debug("/images/");
-        List<UserImage> allUserImages = userImageService.getAllUserImages(user);
+        List<UserImage> allUserImages = userImageService.getAllUserImages(userId);
         return allUserImages
                 .stream()
                 .map(x -> new AccountUserImageWeb(

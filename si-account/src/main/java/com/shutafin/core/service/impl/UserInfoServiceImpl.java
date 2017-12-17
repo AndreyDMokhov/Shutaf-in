@@ -5,8 +5,8 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.UserInfo;
+import com.shutafin.model.web.account.AccountUserInfoRequest;
 import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
-import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserInfoRepository;
 import com.shutafin.repository.account.UserRepository;
@@ -41,7 +41,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void createUserInfo(UserInfoRequest userInfoRequest, User user) {
+    public void createUserInfo(AccountUserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = convertToUserInfo(userInfoRequest, user);
         userInfoRepository.save(userInfo);
     }
@@ -88,7 +88,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void updateUserInfo(UserInfoRequest userInfoRequest, User user) {
+    public void updateUserInfo(AccountUserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = userInfoRepository.findByUser(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);
 
@@ -98,14 +98,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     }
 
-    private UserInfo convertToUserInfo(UserInfoRequest userInfoRequest, User user) {
+    private UserInfo convertToUserInfo(AccountUserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = new UserInfo();
         userInfo.setUser(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);
         return userInfo;
     }
 
-    private UserInfo setUserInfoFields(UserInfoRequest userInfoRequest, UserInfo userInfo) {
+    private UserInfo setUserInfoFields(AccountUserInfoRequest userInfoRequest, UserInfo userInfo) {
         if (userInfoRequest.getCityId() != null) {
             userInfo.setCurrentCity(cityRepository.findOne(userInfoRequest.getCityId()));
         }

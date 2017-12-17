@@ -1,19 +1,16 @@
-package com.shutafin.model.web.chat;
+package com.shutafin.model.web.email.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class ChatUserDTO {
+public class EmailRegistrationResponse {
 
     private Long userId;
 
-    private String firstName;
-
-    private String lastName;
 }

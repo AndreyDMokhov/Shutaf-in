@@ -1,4 +1,4 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @AllArgsConstructor
 @Setter
 @Getter
-public class ChangePasswordWeb {
+public class AccountChangePasswordWeb {
 
     @NotBlank
     @Length(min = 8, max = 25)

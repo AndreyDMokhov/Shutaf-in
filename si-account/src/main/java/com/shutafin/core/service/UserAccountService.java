@@ -12,4 +12,5 @@ public interface UserAccountService {
     UserImage findUserAccountProfileImage(User user);
     void deleteUserAccountProfileImage(User user);
     UserAccount checkUserAccountStatus(User user);
+    UserAccount findUserAccountByUser(User user);
 }

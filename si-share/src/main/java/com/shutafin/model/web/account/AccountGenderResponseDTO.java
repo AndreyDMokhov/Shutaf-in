@@ -1,5 +1,7 @@
 package com.shutafin.model.web.account;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shutafin.model.web.BaseResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AccountGenderResponseDTO extends BaseResponseDTO {
-    public AccountGenderResponseDTO(Integer id, String description) {
+
+    @JsonCreator
+    public AccountGenderResponseDTO(@JsonProperty("id") Integer id, @JsonProperty("description") String description) {
         super(id, description);
     }
 }

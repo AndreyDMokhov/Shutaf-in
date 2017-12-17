@@ -1,24 +1,23 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@NoArgsConstructor
 @Getter
-public class ChangePasswordWeb {
+@Setter
+public class AccountEmailRequest {
 
     @NotBlank
-    @Length(min = 8, max = 25)
-    private String oldPassword;
+    @Email
+    @Length(max=50)
+    private String email;
 
-    @NotBlank
-    @Length(min = 8, max = 25)
-    private String newPassword;
 
 }

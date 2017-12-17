@@ -8,7 +8,9 @@ import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserInfoService;
 import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
@@ -34,12 +36,12 @@ public class UserInfoControllerTest extends BaseTestImpl {
     private SessionManagementService sessionManagementService;
 
     @Before
-    public void setUp(){
+    public void setUp() {
 
     }
 
     @Test
-    public void userSessionDoesNotExist(){
+    public void userSessionDoesNotExist() {
         Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION)).thenReturn(null);
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
@@ -53,7 +55,7 @@ public class UserInfoControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void userSessionExists(){
+    public void userSessionExists() {
         User user = new User();
         user.setFirstName("aaa");
         user.setLastName("bbb");
@@ -65,7 +67,7 @@ public class UserInfoControllerTest extends BaseTestImpl {
         userInfoResponseDTO.setLanguageId(1);
 
 
-        when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(user);
+        when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(1L);
         when(userInfoService.getUserInfo(user.getId())).thenReturn(userInfoResponseDTO);
 
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);

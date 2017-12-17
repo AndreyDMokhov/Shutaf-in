@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface ChatInfoService {
     List<ChatWithUsersListDTO> getListChats(Long userId);
-    List<ChatMessage> getListMessages(Chat chat, User user);
+    List<ChatMessage> getListMessages(Chat chat, Long userId);
 }

@@ -1,9 +1,6 @@
 package com.shutafin.model.web.email;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -16,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class EmailNotificationWeb {
 
     @Min(1)
@@ -38,5 +36,5 @@ public class EmailNotificationWeb {
     @NotNull
     private EmailReason emailReason;
 
-    private Set<UserImageSource> userImageSources;
+    private Set<EmailUserImageSource> emailUserImageSources;
 }

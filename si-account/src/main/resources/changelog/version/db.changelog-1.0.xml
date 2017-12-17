@@ -242,7 +242,7 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="USER_IMAGE_ID" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -272,7 +272,7 @@
     </changeSet>
 
     <changeSet id="4" author="edward">
-        <sqlFile path="changelog//version/initialization_data-1.0.sql" />
+        <sqlFile path="changelog//version/initialization_data-1.0.sql"/>
     </changeSet>
 
 

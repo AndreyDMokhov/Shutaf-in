@@ -1,8 +1,8 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
-import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +38,8 @@ public class EmailNotificationSenderController {
         mailSenderService.sendEmail(emailNotificationWeb);
     }
 
-    @GetMapping(
-            value = "/confirm/{link}",
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Object confirmLink(@PathVariable String link, @RequestParam("reason") EmailReason emailReason) {
+    @GetMapping("/confirm")
+    public Object confirmLink(@RequestParam("link") String link, @RequestParam("reason") EmailReason emailReason) {
         return mailSenderService.getConfirmationResponse(link, emailReason);
     }
 

@@ -56,7 +56,7 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Transactional(readOnly = true)
     public List<User> findFilteredUsers(User user) {
 
-        List<User> matchingUsersList = userMatchService.findMatchingUsers(user);
+        List<User> matchingUsersList = userMatchService.findMatchingUsers(user.getId());
 
         //Call chain of responsibility
         UsersFiltersChain usersFiltersChain = createFilterChain(user);

@@ -22,7 +22,7 @@ public class LogoutServiceImpl implements LogoutService {
 
 
     @Override
-    public void logout(String sessionId, User user) {
+    public void logout(String sessionId) {
 
         UserSession userSession = userSessionRepository.findBySessionId(sessionId);
 

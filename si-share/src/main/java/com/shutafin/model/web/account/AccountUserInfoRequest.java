@@ -1,4 +1,4 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.account;
 
 
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserInfoRequest {
+public class AccountUserInfoRequest {
 
     @NotBlank
     @Length(min=3, max=50)

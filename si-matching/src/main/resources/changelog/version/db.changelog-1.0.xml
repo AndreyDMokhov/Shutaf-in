@@ -633,4 +633,10 @@
 
     </changeSet>
 
+    <changeSet id="4" author="edwardKats">
+        <delete tableName="I_QUESTION_LOCALE">
+            <where>QUESTION_ID = 5</where>
+        </delete>
+    </changeSet>
+
 </databaseChangeLog>

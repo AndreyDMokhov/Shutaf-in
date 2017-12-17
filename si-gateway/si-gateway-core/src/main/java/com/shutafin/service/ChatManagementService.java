@@ -12,10 +12,10 @@ import java.util.List;
  * Chat modifiers
  */
 public interface ChatManagementService {
-    ChatWithUsersListDTO createNewChat(String chatTitle, User chatOwner, Long chatMemberUserId);
+    ChatWithUsersListDTO createNewChat(String chatTitle, Long chatOwner, Long chatMemberUserId);
     void addChatUserToChat(Chat chat, Long userId);
     void removeChatUserFromChat(Chat chat, Long userId);
     ChatMessage saveChatMessage(ChatUser chatUser, ChatMessageRequest message);
-    void updateMessagesAsRead(List<Long> messagesIdList, User user);
-    ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, User user);
+    void updateMessagesAsRead(List<Long> messagesIdList, Long chatOwner);
+    ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, Long chatOwner);
     }

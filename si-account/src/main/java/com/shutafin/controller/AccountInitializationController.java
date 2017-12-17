@@ -7,6 +7,7 @@ import com.shutafin.core.service.UserService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.web.account.AccountInitializationResponse;
+import com.shutafin.model.web.common.LanguageWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -40,13 +41,13 @@ public class AccountInitializationController {
     }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Language> getLanguages() {
+    public List<LanguageWeb> getLanguages() {
         log.debug("/initialization/languages");
         return initializationService.findAllLanguages();
     }
 
 
-    @RequestMapping(value = "{userId}/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "{userId}/all", method = RequestMethod.GET)
     public AccountInitializationResponse getInitializationResponse(@PathVariable("userId") Long userId) {
         User user = userService.findUserById(userId);
         Language language = userLanguageService.findUserLanguage(user);

@@ -1,4 +1,4 @@
-package com.shutafin.model.web.user;
+package com.shutafin.model.web.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,17 +8,19 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-@Deprecated
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@AllArgsConstructor
 @Setter
-public class EmailWeb {
+@Getter
+public class AccountEmailChangeWeb {
+
+    @NotBlank
+    @Length(max=50)
+    private String userPassword;
 
     @NotBlank
     @Email
     @Length(max=50)
-    private String email;
-
+    private String newEmail;
 
 }
