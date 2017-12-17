@@ -1,12 +1,11 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.Deal;
-import com.shutafin.model.entities.DealDocument;
-import com.shutafin.model.entities.DealPanel;
+import com.shutafin.model.entities.*;
+import com.shutafin.model.types.DealUserPermissionType;
+import com.shutafin.model.types.DealUserStatus;
 import com.shutafin.model.web.deal.DealDocumentWeb;
 import com.shutafin.model.web.deal.DealPanelWeb;
-import com.shutafin.repository.DealDocumentRepository;
-import com.shutafin.repository.DealPanelRepository;
+import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealPanelService;
 import com.shutafin.service.DealService;
@@ -38,6 +37,14 @@ public class DealPanelServiceImpl implements DealPanelService {
     @Autowired
     private DealService dealService;
 
+    @Autowired
+    private DealUserRepository dealUserRepository;
+
+    @Autowired
+    private DealPanelUserRepository dealPanelUserRepository;
+
+    @Autowired
+    private DealDocumentUserRepository dealDocumentUserRepository;
 
     @Override
     public DealPanel addDealPanel(DealPanelWeb dealPanelWeb) {
@@ -51,8 +58,15 @@ public class DealPanelServiceImpl implements DealPanelService {
         dealPanel.setModifiedByUser(dealPanelWeb.getUserId());
         dealPanel.setIsDeleted(false);
 
-        dealPanelRepository.save(dealPanel);
+        dealPanel = dealPanelRepository.save(dealPanel);
 
+        List<DealUser> activeDealUsers = dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(),
+                DealUserStatus.ACTIVE);
+        for (DealUser dealUser : activeDealUsers) {
+            DealPanelUser dealPanelUser = new DealPanelUser(dealUser.getUserId(), dealPanel,
+                    DealUserPermissionType.CREATE);
+            dealPanelUserRepository.save(dealPanelUser);
+        }
         return dealPanel;
     }
 
@@ -75,16 +89,24 @@ public class DealPanelServiceImpl implements DealPanelService {
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setIsDeleted(true);
         dealPanel.setModifiedByUser(userId);
-        List<DealDocument> dealDocuments = dealDocumentRepository.findAllByDealPanelId(dealPanelId);
+        List<DealDocument> dealDocuments = dealDocumentRepository.findAllByDealPanelIdAndIsDeletedFalse(dealPanelId);
         dealDocuments.forEach(doc -> dealDocumentService.deleteDealDocument(userId, doc.getId()));
+
+        List<DealPanelUser> dealPanelUsers = dealPanelUserRepository.
+                findAllByDealPanelIdAndDealUserPermissionType(dealPanelId, DealUserPermissionType.CREATE);
+        dealPanelUsers.forEach(d -> d.setDealUserPermissionType(DealUserPermissionType.NO_READ));
     }
 
     @Override
-    public List<DealDocumentWeb> getDealPanelDocuments(Long dealPanelId) {
+    public List<DealDocumentWeb> getDealPanelDocuments(Long dealPanelId, Long userId) {
         List<DealDocument> dealPanelDocuments = dealDocumentRepository.findAllByDealPanelId(dealPanelId);
         if (!dealPanelDocuments.isEmpty()) {
             return dealPanelDocuments
-                    .stream().map(dealDocument -> new DealDocumentWeb(dealDocument.getId(),
+                    .stream()
+                    .filter(dealDocument ->
+                            dealDocumentUserRepository.findByDealDocumentIdAndUserId(dealDocument.getId(), userId)
+                                    .getDealUserPermissionType() != DealUserPermissionType.NO_READ)
+                    .map(dealDocument -> new DealDocumentWeb(dealDocument.getId(),
                             dealDocument.getTitle(),
                             dealDocument.getDocumentType().getCode(),
                             dealDocument.getCreatedDate().getTime()))
@@ -93,16 +115,20 @@ public class DealPanelServiceImpl implements DealPanelService {
         return new ArrayList<>();
     }
 
-    private DealPanel getDealPanelWithPermissions(Long userId, Long dealFolderId, Boolean fullAccess) {
-        DealPanel dealPanel = dealPanelRepository.findOne(dealFolderId);
+    private DealPanel getDealPanelWithPermissions(Long userId, Long dealPanelId, Boolean fullAccess) {
+        DealPanel dealPanel = dealPanelRepository.findOne(dealPanelId);
         if (dealPanel == null) {
-            log.warn("Resource not found exception:");
-            log.warn("Deal panel with ID {} was not found", dealFolderId);
-            throw new RuntimeException(String.format("Deal panel with ID %d was not found", dealFolderId));
+            log.warn("Deal panel with ID {} was not found", dealPanelId);
+            throw new RuntimeException(String.format("Deal panel with ID %d was not found", dealPanelId));
         }
-        if (dealPanel.getIsDeleted()) {
-            log.warn("Deal panel with ID {} was deleted", dealFolderId);
-            throw new RuntimeException(String.format("Deal panel with ID %d was not found", dealFolderId));
+        DealPanelUser dealPanelUser = dealPanelUserRepository.findByDealPanelIdAndUserId(dealPanelId, userId);
+        if (dealPanelUser == null || dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
+            log.warn("User with ID {} does not have permissions", userId);
+            throw new RuntimeException(String.format("User panel with ID %d was not found", dealPanelId));
+        }
+        if (dealPanel.getIsDeleted() && dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
+            log.warn("Deal panel with ID {} was deleted", dealPanelId);
+            throw new RuntimeException(String.format("Deal panel with ID %d was not found", dealPanelId));
         }
         dealService.checkDealPermissions(dealPanel.getDeal().getId(), userId, fullAccess);
         return dealPanel;

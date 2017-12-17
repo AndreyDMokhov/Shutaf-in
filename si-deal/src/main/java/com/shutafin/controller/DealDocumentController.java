@@ -58,15 +58,15 @@ public class DealDocumentController {
     }
 
     @DeleteMapping(value = "/{userId}/{docId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserDocument(@RequestParam(value = "userId") Long userId,
-                                   @RequestParam(value = "docId") Long userDocumentId) {
+    public void deleteUserDocument(@PathVariable(value = "userId") Long userId,
+                                   @PathVariable(value = "docId") Long userDocumentId) {
         log.debug("DELETE /documents/{userId}/{docId}");
         dealDocumentService.deleteDealDocument(userId, userDocumentId);
     }
 
     private InternalDealUserDocumentWeb getDealUserDocumentWeb(DealDocument dealDocument, Boolean includeEncoded) {
         InternalDealUserDocumentWeb dealUserDocumentWeb = new InternalDealUserDocumentWeb(
-                dealDocument.getId() << SHIFT_VALUE,
+                dealDocument.getId(),// << SHIFT_VALUE,
                 dealDocument.getModifiedByUser(),
                 dealDocument.getDealPanel().getId(),
                 null,

@@ -12,5 +12,5 @@ public interface DealPanelService {
     DealPanel getDealPanel(Long dealPanelId, Long userId);
     DealPanel renameDealPanel(Long dealPanelId, Long userId, String newTitle);
     void deleteDealPanel(Long dealPanelId, Long userId);
-    List<DealDocumentWeb> getDealPanelDocuments(Long dealPanelId);
+    List<DealDocumentWeb> getDealPanelDocuments(Long dealPanelId, Long userId);
 }

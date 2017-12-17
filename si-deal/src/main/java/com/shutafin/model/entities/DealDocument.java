@@ -32,8 +32,4 @@ public class DealDocument extends AbstractDealFile {
     @Column(name = "IS_DELETED", nullable = false)
     private Boolean isDeleted;
 
-    @JoinColumn(name = "DEAL_PANEL_ID", nullable = false)
-    @OneToOne
-    private DealPanel dealPanel;
-
 }

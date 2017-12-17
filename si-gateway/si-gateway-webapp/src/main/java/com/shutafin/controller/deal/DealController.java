@@ -42,6 +42,19 @@ public class DealController {
         dealService.confirmDealUser(dealId, user);
     }
 
+    @PutMapping(value = "/leave/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void leaveDeal(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId) {
+        log.debug("/leave/{dealId}");
+        dealService.leaveDeal(dealId, user);
+    }
+
+    @PutMapping(value = "/remove/{dealId}/{userToRemoveId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void removeDealUser(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId,
+                               @PathVariable(value = "userToRemoveId") Long userToRemoveId) {
+        log.debug("/remove/{dealId}/{userToRemoveId}");
+        dealService.removeDealUser(dealId, user, userToRemoveId);
+    }
+
     @GetMapping(value = "/all", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<DealUserWeb> getAllUserDeals(@AuthenticatedUser User user) {
         log.debug("/all");
@@ -51,7 +64,7 @@ public class DealController {
     @GetMapping(value = "{dealId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealResponse getDeal(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId) {
         log.debug("/{dealId}");
-        return dealService.getDeal(dealId);
+        return dealService.getDeal(dealId, user);
     }
 
     @PostMapping(value = "/rename/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})

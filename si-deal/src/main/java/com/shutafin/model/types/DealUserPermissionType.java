@@ -2,7 +2,8 @@ package com.shutafin.model.types;
 
 public enum DealUserPermissionType implements IdentifiableType<Integer> {
     CREATE(1),
-    READ_ONLY(2);
+    READ_ONLY(2),
+    NO_READ(3);
 
     private Integer id;
 
