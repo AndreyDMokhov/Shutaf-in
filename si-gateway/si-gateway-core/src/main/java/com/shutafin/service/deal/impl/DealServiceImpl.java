@@ -21,15 +21,21 @@ import java.util.Map;
 @Slf4j
 public class DealServiceImpl implements DealService {
 
-    @Autowired
+    private static String dealUrl;
+
     private DiscoveryRoutingService discoveryRoutingService;
+    private InternalRestTemplateService internalRestTemplateService;
 
     @Autowired
-    private InternalRestTemplateService internalRestTemplateService;
+    public DealServiceImpl(DiscoveryRoutingService discoveryRoutingService,
+                           InternalRestTemplateService internalRestTemplateService) {
+        this.discoveryRoutingService = discoveryRoutingService;
+        this.internalRestTemplateService = internalRestTemplateService;
+        dealUrl = this.discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
+    }
 
     @Override
     public DealWeb initiateDeal(DealWeb dealWeb, User user) {
-        String dealUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
         InternalDealWeb internalDealWeb = new InternalDealWeb();
         internalDealWeb.setOriginUserId(user.getId());
         internalDealWeb.setTitle(dealWeb.getTitle());
@@ -43,7 +49,6 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void confirmDealUser(Long dealId, User user) {
-        String dealUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
         String requestUrl = dealUrl + "{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);
@@ -52,8 +57,25 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
+    public void leaveDeal(Long dealId, User user) {
+        String requestUrl = dealUrl + "leave/{dealId}/{userId}";
+        Map<String, Long> uriVariables = new HashMap<>();
+        uriVariables.put("dealId", dealId);
+        uriVariables.put("userId", user.getId());
+        internalRestTemplateService.getResponse(HttpMethod.PUT, requestUrl, uriVariables, null, null);
+    }
+
+    @Override
+    public void removeDealUser(Long dealId, User userOrigin, Long userToRemoveId) {
+        String requestUrl = dealUrl + "remove";
+        InternalDealRemoveUserWeb internalDealRemoveUserWeb = new InternalDealRemoveUserWeb(dealId, userOrigin.getId(),
+                userToRemoveId);
+        internalRestTemplateService.getResponse(HttpMethod.PUT, requestUrl, null, internalDealRemoveUserWeb,
+                null);
+    }
+
+    @Override
     public List<DealUserWeb> getAllUserDeals(User user) {
-        String dealUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
         String requestUrl = dealUrl + "all/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("userId", user.getId());
@@ -62,18 +84,17 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public DealResponse getDeal(Long dealId) {
-        String dealUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
-        String requestUrl = dealUrl + "{dealId}";
+    public DealResponse getDeal(Long dealId, User user) {
+        String requestUrl = dealUrl + "{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);
+        uriVariables.put("userId", user.getId());
         return internalRestTemplateService.getResponse(HttpMethod.GET, requestUrl, uriVariables, null,
                 DealResponse.class);
     }
 
     @Override
     public DealWeb renameDeal(Long dealId, User user, NewTitleWeb newTitleWeb) {
-        String dealUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
         String requestUrl = dealUrl + "rename/{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);
@@ -84,7 +105,6 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void deleteDeal(Long dealId, User user) {
-        String dealUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
         String requestUrl = dealUrl + "{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);

@@ -39,16 +39,28 @@ public class DealController {
         dealService.confirmDealUser(dealId, userId);
     }
 
+    @PutMapping(value = "/leave/{dealId}/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    void leaveDeal(@PathVariable(value = "dealId") Long dealId, @PathVariable(value = "userId") Long userId) {
+        log.debug("/leave/{dealId}/{userId}");
+        dealService.leaveDeal(dealId, userId);
+    }
+
+    @PutMapping(value = "/remove", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    void removeDealUser(@RequestBody InternalDealRemoveUserWeb internalDealRemoveUserWeb) {
+        log.debug("/remove");
+        dealService.removeDealUser(internalDealRemoveUserWeb);
+    }
+
     @GetMapping(value = "/all/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     List<DealUserWeb> getAllUserDeals(@PathVariable(value = "userId") Long userId) {
         log.debug("/all/{userId}");
         return dealService.getAllUserDeals(userId);
     }
 
-    @GetMapping(value = "{dealId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    DealResponse getDeal(@PathVariable(value = "dealId") Long dealId) {
-        log.debug("/{dealId}");
-        return dealService.getDeal(dealId);
+    @GetMapping(value = "/{dealId}/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    DealResponse getDeal(@PathVariable(value = "dealId") Long dealId, @PathVariable(value = "userId") Long userId) {
+        log.debug("GET /{dealId}/{userId}");
+        return dealService.getDeal(dealId, userId);
     }
 
     @PostMapping(value = "/rename/{dealId}/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})

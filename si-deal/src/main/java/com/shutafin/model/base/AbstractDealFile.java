@@ -16,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AbstractDealFile extends AbstractRemovableEntity {
 
-    @JoinColumn(name = "DEAL_FOLDER_ID", nullable = false)
+    @JoinColumn(name = "DEAL_PANEL_ID", nullable = false)
     @OneToOne
     private DealPanel dealPanel;
 

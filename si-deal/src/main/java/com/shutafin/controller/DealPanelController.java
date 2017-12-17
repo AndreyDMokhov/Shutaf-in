@@ -33,7 +33,7 @@ public class DealPanelController {
 
         DealPanel dealPanel = dealPanelService.addDealPanel(dealPanelWeb);
 
-        return getDealPanelResponse(dealPanel, false);
+        return getDealPanelResponse(dealPanel, dealPanelWeb.getUserId(), false);
     }
 
     @GetMapping(value = "/{userId}/{panelId}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -41,7 +41,7 @@ public class DealPanelController {
                                           @PathVariable(value = "panelId") Long dealPanelId) {
         log.debug("GET /deal/panel/{userId}/{panelId}");
         DealPanel dealPanel = dealPanelService.getDealPanel(dealPanelId, userId);
-        return getDealPanelResponse(dealPanel, true);
+        return getDealPanelResponse(dealPanel, userId, true);
     }
 
     @PostMapping(value = "/{userId}/{panelId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -51,7 +51,7 @@ public class DealPanelController {
                                              @RequestBody @Valid NewTitleWeb panelTitle) {
         log.debug("POST /deal/panel/{userId}/{panelId}");
         DealPanel dealPanel = dealPanelService.renameDealPanel(dealPanelId, userId, panelTitle.getTitle());
-        return getDealPanelResponse(dealPanel, false);
+        return getDealPanelResponse(dealPanel, userId, false);
     }
 
     @DeleteMapping(value = "/{userId}/{panelId}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -61,12 +61,12 @@ public class DealPanelController {
         dealPanelService.deleteDealPanel(dealPanelId, userId);
     }
 
-    private DealPanelResponse getDealPanelResponse(DealPanel dealPanel, Boolean includeDocuments) {
+    private DealPanelResponse getDealPanelResponse(DealPanel dealPanel, Long userId, Boolean includeDocuments) {
         DealPanelResponse dealPanelResponse = new DealPanelResponse();
         dealPanelResponse.setPanelId(dealPanel.getId());
         dealPanelResponse.setTitle(dealPanel.getTitle());
         if (includeDocuments) {
-            dealPanelResponse.setDocuments(dealPanelService.getDealPanelDocuments(dealPanel.getId()));
+            dealPanelResponse.setDocuments(dealPanelService.getDealPanelDocuments(dealPanel.getId(), userId));
         } else {
             dealPanelResponse.setDocuments(new ArrayList<>());
         }

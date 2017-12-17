@@ -1,17 +1,15 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.DealDocument;
-import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.entities.DocumentStorage;
+import com.shutafin.model.entities.*;
+import com.shutafin.model.types.DealUserPermissionType;
+import com.shutafin.model.types.DealUserStatus;
 import com.shutafin.model.types.DocumentType;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.deal.DealDocumentWeb;
 import com.shutafin.model.web.deal.DealPanelWeb;
 import com.shutafin.model.web.deal.DealUserDocumentWeb;
 import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
-import com.shutafin.repository.DealDocumentRepository;
-import com.shutafin.repository.DealPanelRepository;
-import com.shutafin.repository.DocumentStorageRepository;
+import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 @Transactional
@@ -52,6 +51,12 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
     @Autowired
     private DealService dealService;
+
+    @Autowired
+    private DealUserRepository dealUserRepository;
+
+    @Autowired
+    private DealDocumentUserRepository dealDocumentUserRepository;
 
     // TODO: add moving document from panel to panel
 
@@ -91,27 +96,40 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         createDealDocumentsDirectory(dealPanel);
         saveDealDocumentToFileSystem(dealDocument);
 
+        Deal deal = dealPanel.getDeal();
+        List<DealUser> activeDealUsers = dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(),
+                DealUserStatus.ACTIVE);
+        for (DealUser dealUser : activeDealUsers) {
+            DealDocumentUser dealDocumentUser = new DealDocumentUser(dealUser.getUserId(), dealDocument,
+                    DealUserPermissionType.CREATE);
+            dealDocumentUserRepository.save(dealDocumentUser);
+        }
+
         return dealDocument;
     }
 
     @Override
     public DealDocument getDealDocument(Long userId, Long dealDocumentId) {
-        dealDocumentId >>= SHIFT_VALUE;
+//        dealDocumentId >>= SHIFT_VALUE;
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, !NEED_FULL_ACCESS);
         return dealDocument;
     }
 
     @Override
     public void deleteDealDocument(Long userId, Long dealDocumentId) {
-        dealDocumentId >>= SHIFT_VALUE;
+//        dealDocumentId >>= SHIFT_VALUE;
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
         dealDocument.setIsDeleted(true);
         dealDocument.setModifiedByUser(userId);
+
+        List<DealDocumentUser> dealDocumentUsers = dealDocumentUserRepository.
+                findAllByDealDocumentIdAndDealUserPermissionType(dealDocumentId, DealUserPermissionType.CREATE);
+        dealDocumentUsers.forEach(d -> d.setDealUserPermissionType(DealUserPermissionType.NO_READ));
     }
 
     @Override
     public DealDocument renameDealDocument(Long userId, Long dealDocumentId, String newTitle) {
-        dealDocumentId >>= SHIFT_VALUE;
+//        dealDocumentId >>= SHIFT_VALUE;
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
         dealDocument.setTitle(newTitle);
         dealDocument.setModifiedByUser(userId);
@@ -121,11 +139,16 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     private DealDocument getDealDocumentWithPermissions(Long userId, Long dealDocumentId, Boolean fullAccess) {
         DealDocument dealDocument = dealDocumentRepository.findOne(dealDocumentId);
         if (dealDocument == null) {
-            log.warn("Resource not found exception:");
             log.warn("Deal Document with ID {} was not found", dealDocumentId);
             throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
         }
-        if (dealDocument.getIsDeleted()) {
+        DealDocumentUser dealDocumentUser = dealDocumentUserRepository.
+                findByDealDocumentIdAndUserId(dealDocumentId, userId);
+        if (dealDocumentUser == null || dealDocumentUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
+            log.warn("User with ID {} does not have permissions", userId);
+            throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
+        }
+        if (dealDocument.getIsDeleted() && dealDocumentUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
             log.warn("Deal Document with ID {} was deleted", dealDocumentId);
             throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
         }
