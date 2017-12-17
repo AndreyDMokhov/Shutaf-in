@@ -5,6 +5,7 @@ import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.web.account.AccountCityResponseDTO;
 import com.shutafin.model.web.account.AccountCountryResponseDTO;
 import com.shutafin.model.web.account.AccountGenderResponseDTO;
+import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.locale.CityRepository;
 import com.shutafin.repository.locale.CountryRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,9 +40,17 @@ public class InitializationServiceImpl implements InitializationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Language> findAllLanguages() {
+    public List<LanguageWeb> findAllLanguages() {
 
-        return languageRepository.findAll();
+        return languageRepository
+                .findAll()
+                .stream()
+                .map(x -> new LanguageWeb(
+                        x.getId(),
+                        x.getDescription(),
+                        x.getLanguageNativeName(),
+                        x.getIsActive()))
+                .collect(Collectors.toList());
     }
 
     @Override

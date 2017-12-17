@@ -9,6 +9,7 @@ import com.shutafin.model.entities.UserLoginLog;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.web.account.AccountLoginRequest;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.repository.account.UserLoginLogRepository;
 import com.shutafin.repository.account.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -45,11 +46,14 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Transactional(noRollbackFor = AuthenticationException.class)
-    public User getUserByLoginWebModel(AccountLoginRequest loginWeb) {
+    public AccountUserWeb getUserByLoginWebModel(AccountLoginRequest loginWeb) {
         User user = findUserByEmail(loginWeb);
         UserAccount userAccount = userAccountService.checkUserAccountStatus(user);
         checkUserPassword(loginWeb, userAccount, user);
-        return user;
+        return new AccountUserWeb(
+                user.getId(),
+                user.getLastName(),
+                user.getFirstName());
     }
 
     private User findUserByEmail(AccountLoginRequest loginWeb) {

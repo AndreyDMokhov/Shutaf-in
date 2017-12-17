@@ -1,9 +1,9 @@
 package com.shutafin.controller;
 
 import com.shutafin.core.service.LoginService;
-import com.shutafin.model.entities.User;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountLoginRequest;
+import com.shutafin.model.web.account.AccountUserWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,7 +28,7 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public User login(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
+    public AccountUserWeb login(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
         log.debug("/login/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");

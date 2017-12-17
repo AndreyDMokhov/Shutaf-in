@@ -94,4 +94,8 @@ public class UserAccountServiceImpl implements UserAccountService {
         return userAccount;
     }
 
+    @Override
+    public UserAccount findUserAccountByUser(User user) {
+        return userAccountRepository.findByUser(user);
+    }
 }

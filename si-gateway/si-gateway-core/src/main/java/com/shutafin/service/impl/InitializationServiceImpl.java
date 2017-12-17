@@ -4,15 +4,13 @@ import com.shutafin.model.web.account.AccountInitializationResponse;
 import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.model.web.matching.MatchingInitializationResponse;
-import com.shutafin.route.DiscoveryRoutingService;
-import com.shutafin.route.RouteDirection;
+import com.shutafin.sender.account.AccountInitializationControllerSender;
+import com.shutafin.sender.matching.MatchingInitializationControllerSender;
 import com.shutafin.service.ChatInfoService;
 import com.shutafin.service.InitializationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -22,44 +20,38 @@ public class InitializationServiceImpl implements InitializationService {
 
 
     @Autowired
-    private DiscoveryRoutingService discoveryRoutingService;
+    private AccountInitializationControllerSender accountInitializationControllerSender;
 
     @Autowired
     private ChatInfoService chatInfoService;
+
+    @Autowired
+    private MatchingInitializationControllerSender matchingInitializationControllerSender;
 
 
     @Override
     @Transactional(readOnly = true)
     public List<LanguageWeb> findAllLanguages() {
-        String url = discoveryRoutingService.getRoute(RouteDirection.SI_ACCOUNT) + "/initialization/languages";
-        ResponseEntity<List> languages = new RestTemplate().getForEntity(url, List.class);
-        return languages.getBody();
+        return accountInitializationControllerSender.getLanguages();
     }
-
 
 
     @Override
     public InitializationResponse getInitializationResponse(Long userId) {
-        String accountUrl = getAccountInitializationUrl(userId);
 
-        ResponseEntity<AccountInitializationResponse> accountInitialization = new RestTemplate().getForEntity(accountUrl, AccountInitializationResponse.class);
+        AccountInitializationResponse accountInitialization = accountInitializationControllerSender.getInitializationResponse(userId);
 
-        String matchingUrl = getMatchingInitializationUrl(accountInitialization.getBody().getUserProfile().getLanguageId(), userId);
-        ResponseEntity<MatchingInitializationResponse> matchingInitialization = new RestTemplate().getForEntity(matchingUrl, MatchingInitializationResponse.class);
+        MatchingInitializationResponse matchingInitialization = matchingInitializationControllerSender.getInitializationResponse(
+                userId,
+                accountInitialization
+                        .getUserProfile()
+                        .getLanguageId());
 
         return InitializationResponse
                 .builder()
-                .accountInitialization(accountInitialization.getBody())
-                .matchingInitializationResponse(matchingInitialization.getBody())
-                .listOfChats(chatInfoService.getListChats(userId))
+                .accountInitialization(accountInitialization)
+                .matchingInitializationResponse(matchingInitialization)
+//                .listOfChats(chatInfoService.getListChats(userId))
                 .build();
-    }
-
-    private String getAccountInitializationUrl(Long userId) {
-        return discoveryRoutingService.getRoute(RouteDirection.SI_ACCOUNT) + String.format("/initialization/%d/all", userId);
-    }
-
-    private String getMatchingInitializationUrl(Integer languageId, Long userId) {
-        return discoveryRoutingService.getRoute(RouteDirection.SI_MATCHING) + String.format("/initialization/%d/all/%d", userId, languageId);
     }
 }

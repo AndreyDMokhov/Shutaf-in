@@ -7,11 +7,8 @@ import com.shutafin.core.service.UserService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
-import com.shutafin.model.web.account.AccountUserImageWeb;
-import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
-import com.shutafin.model.web.account.AccountUserLanguageWeb;
+import com.shutafin.model.web.account.*;
 import com.shutafin.model.web.common.LanguageWeb;
-import com.shutafin.model.web.user.UserInfoRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -50,7 +47,6 @@ public class UserAccountController {
         log.debug("/users/{}/profile-image", userId);
         checkBindingResult(result);
 
-        //todo ms-account
         UserImage image = userAccountService.updateProfileImage(userImageWeb, userService.findUserById(userId));
         return new AccountUserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
                 image.getCreatedDate().getTime());
@@ -76,7 +72,7 @@ public class UserAccountController {
 
 
     @PutMapping(value = "/{userId}/language", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void update(@RequestBody @Valid AccountUserLanguageWeb userLanguageWeb,
+    public void updateUserLanguage(@RequestBody @Valid AccountUserLanguageWeb userLanguageWeb,
                        BindingResult result,
                        @PathVariable("userId") Long userId) {
         log.debug("/users/settings/language");
@@ -95,13 +91,18 @@ public class UserAccountController {
         return userInfoService.getUserInfo(userService.findUserById(userId));
     }
 
-    @PostMapping(value = "/{userId}/info", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{userId}/info", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void updateUserInfo(@PathVariable("userId") Long userId,
-                               @RequestBody @Valid UserInfoRequest userInfoRequest,
+                               @RequestBody @Valid AccountUserInfoRequest userInfoRequest,
                                BindingResult result) {
 
         checkBindingResult(result);
         userInfoService.updateUserInfo(userInfoRequest, userService.findUserById(userId));
+    }
+
+    @GetMapping(value = "/{userId}/info-base")
+    public AccountUserWeb getBaseInfo(@PathVariable("userId") Long userId) {
+        return userService.getAccountUserWebById(userId);
     }
 
     private void checkBindingResult(BindingResult result) {

@@ -10,9 +10,9 @@ import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.types.AccountType;
 import com.shutafin.model.web.account.AccountRegistrationRequest;
+import com.shutafin.model.web.account.AccountUserInfoRequest;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
-import com.shutafin.model.web.user.UserInfoRequest;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserRepository;
@@ -61,7 +61,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         userImageService.createUserImageDirectory(user);
-        userInfoService.createUserInfo(new UserInfoRequest(), user);
+        userInfoService.createUserInfo(new AccountUserInfoRequest(), user);
         return EmailNotificationWeb
                 .builder()
                 .userId(user.getId())
@@ -78,7 +78,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             log.warn("User was not found for id: " + userId);
             throw new AuthenticationException();
         }
-        UserAccount userAccount = userAccountService.checkUserAccountStatus(user);
+        UserAccount userAccount = userAccountService.findUserAccountByUser(user);
         userAccount.setAccountStatus(AccountStatus.CONFIRMED);
         return user;
     }

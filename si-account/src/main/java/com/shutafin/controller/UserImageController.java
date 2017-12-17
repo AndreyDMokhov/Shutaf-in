@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/users")
 @Slf4j
 public class UserImageController {
 
@@ -31,7 +31,7 @@ public class UserImageController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/{userImageId}/users/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{userId}/images/{userImageId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb getUserImage(@PathVariable("userId") Long userId,
                                             @PathVariable(value = "userImageId") Long userImageId) {
         log.debug("/images/{id}");
@@ -42,8 +42,8 @@ public class UserImageController {
                 image.getCreatedDate().getTime());
     }
 
-    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb addUserImage(@RequestParam("userId") Long userId,
+    @PostMapping(value = "/{userId}/images", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb addUserImage(@PathVariable("userId") Long userId,
                                      @RequestBody @Valid AccountUserImageWeb image, BindingResult result) {
         log.debug("/images/");
         if (result.hasErrors()) {
@@ -63,7 +63,7 @@ public class UserImageController {
                 userImage.getCreatedDate().getTime());
     }
 
-    @DeleteMapping(value = "/{userImageId}/users/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/{userId}/images/{userImageId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserImage(@PathVariable("userId") Long userId,
                                 @PathVariable(value = "userImageId") Long userImageId) {
         log.debug("/images/{id}");

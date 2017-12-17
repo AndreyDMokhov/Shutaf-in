@@ -25,7 +25,7 @@ public class UserMatchController {
         return userMatchService.findMatchingUsers(userId);
     }
 
-    @PutMapping(value = "/save/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/save/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveSelectedUserQuestionsAnswers(@PathVariable("userId") Long userId, @RequestBody @Valid List<UserQuestionAnswerDTO> questionsAnswers) {
         userMatchService.saveSelectedUserQuestionsAnswers(userId, questionsAnswers);
     }
