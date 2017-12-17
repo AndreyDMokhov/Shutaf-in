@@ -6,7 +6,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.EmailReason;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.model.web.user.EmailWeb;
+import com.shutafin.model.web.account.AccountEmailRequest;
 import com.shutafin.model.web.user.PasswordWeb;
 import com.shutafin.repository.account.ResetPasswordConfirmationRepository;
 import com.shutafin.repository.account.UserAccountRepository;
@@ -59,7 +59,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Transactional
     @Override
     // TODO: MS-email EmailNotificationSenderController.sendEmail()
-    public void resetPasswordRequest(EmailWeb emailWeb) {
+    public void resetPasswordRequest(AccountEmailRequest emailWeb) {
         User user = userRepository.findByEmail(emailWeb.getEmail());
         if (user != null) {
             ResetPasswordConfirmation resetPasswordConfirmation = saveResetPasswordConfirmation(user);

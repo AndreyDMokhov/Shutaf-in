@@ -35,7 +35,7 @@ public class LogoutControllerTest extends BaseTestImpl {
 
     @Before
     public void setUp() {
-        Mockito.doNothing().when(logoutService).logout(anyString(), any(User.class));
+        Mockito.doNothing().when(logoutService).logout(anyString());
         Mockito.when(sessionManagementService.findUserWithValidSession(anyString())).thenReturn(1L);
     }
 
