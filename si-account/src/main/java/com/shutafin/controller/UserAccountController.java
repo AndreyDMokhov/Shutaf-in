@@ -16,6 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Slf4j
@@ -55,9 +57,7 @@ public class UserAccountController {
     @GetMapping(value = "/{userId}/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb getUserAccountProfileImage(@PathVariable("userId") Long userId) {
         log.debug("/{userId}/profile-image", userId);
-        //todo ms-account
         User user = userService.findUserById(userId);
-        //todo ms-account
         UserImage image = userAccountService.findUserAccountProfileImage(user);
         return new AccountUserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
                 image.getCreatedDate().getTime());
@@ -103,6 +103,15 @@ public class UserAccountController {
     @GetMapping(value = "/{userId}/info-base")
     public AccountUserWeb getBaseInfo(@PathVariable("userId") Long userId) {
         return userService.getAccountUserWebById(userId);
+    }
+
+    @GetMapping(value = "/info-base")
+    public List<AccountUserWeb> getBaseInfos(@RequestParam("userIds") List<Long> userIds) {
+        List<AccountUserWeb> accountUserWebs = new ArrayList<>();
+        for (Long userId : userIds) {
+            accountUserWebs.add(getBaseInfo(userId));
+        }
+        return accountUserWebs;
     }
 
     private void checkBindingResult(BindingResult result) {

@@ -38,8 +38,6 @@ public class UserAccountControllerTest extends BaseTestImpl {
     private static final String SESSION_ID_HEADER_NAME = "session_id";
 
 
-    private LanguageWeb language;
-    private User user;
     private ArrayList<String> expectedError;
 
     @MockBean
@@ -50,11 +48,9 @@ public class UserAccountControllerTest extends BaseTestImpl {
 
     @Before
     public void setUp() {
-        language = createLanguage();
-        user = createUser();
 
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(1L);
-        Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(AccountUserLanguageWeb.class), Mockito.any(User.class));
+        Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(AccountUserLanguageWeb.class), Mockito.any(Long.class));
         expectedError = new ArrayList<>();
     }
 

@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUserType;
 import com.shutafin.service.LogoutService;
@@ -20,9 +19,8 @@ public class LogoutController {
     private LogoutService logoutService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public void logout(@AuthenticatedUser(value = AuthenticatedUserType.SESSION_ID) String sessionId,
-                       @AuthenticatedUser(value = AuthenticatedUserType.USER_ID) User user) {
+    public void logout(@AuthenticatedUser(value = AuthenticatedUserType.SESSION_ID) String sessionId) {
         log.debug("/logout/");
-        logoutService.logout(sessionId, user);
+        logoutService.logout(sessionId);
     }
 }

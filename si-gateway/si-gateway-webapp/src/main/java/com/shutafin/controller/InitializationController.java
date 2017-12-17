@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;

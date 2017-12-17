@@ -62,7 +62,7 @@ public class MatchingCandidatesEmailNotificationJobService {
             User user = userAccount.getUser();
             //todo switch to general matching
             //todo add account status condition = matching completed
-            List<User> matchingUsers = userMatchService.findMatchingUsers(user);
+            List<User> matchingUsers = userMatchService.findMatchingUsers(user.getId());
             if (!matchingUsers.isEmpty()) {
                 sendEmail(userAccount, matchingUsers);
             }
@@ -94,10 +94,10 @@ public class MatchingCandidatesEmailNotificationJobService {
 
     private byte[] getUserImage(User matchingUser) {
         String image;
-        if (userAccountService.findUserAccountProfileImage(matchingUser) == null) {
+        if (userAccountService.findUserAccountProfileImage(matchingUser.getId()) == null) {
             image = userImageService.getDefaultImageBase64();
         } else {
-            image = userAccountService.findUserAccountProfileImage(matchingUser).getImage();
+            image = userAccountService.findUserAccountProfileImage(matchingUser.getId()).getImage();
         }
         return Base64.getDecoder().decode(image);
     }

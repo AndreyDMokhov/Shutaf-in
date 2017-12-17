@@ -44,7 +44,7 @@ public class UserImageController {
 
     @PostMapping(value = "/{userId}/images", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb addUserImage(@PathVariable("userId") Long userId,
-                                     @RequestBody @Valid AccountUserImageWeb image, BindingResult result) {
+                                            @RequestBody @Valid AccountUserImageWeb image, BindingResult result) {
         log.debug("/images/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");

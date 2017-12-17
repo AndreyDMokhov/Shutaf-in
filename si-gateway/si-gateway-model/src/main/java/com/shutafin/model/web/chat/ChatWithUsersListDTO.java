@@ -1,5 +1,6 @@
 package com.shutafin.model.web.chat;
 
+import com.shutafin.model.web.account.AccountUserWeb;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,5 @@ public class ChatWithUsersListDTO {
 
     private Boolean hasNoTitle;
 
-    private List<ChatUserDTO> usersInChat;
+    private List<AccountUserWeb> usersInChat;
 }

@@ -27,12 +27,13 @@ public class UserSearchController {
     private UserSearchService userSearchService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<UserSearchResponse> getMatchingUsers(@RequestParam(value = "name", required = false) String fullName, @AuthenticatedUser User user) {
+    public List<UserSearchResponse> getMatchingUsers(@RequestParam(value = "name", required = false) String fullName,
+                                                     @AuthenticatedUser User user) {
         return userSearchService.userSearchByList(userFilterService.findFilteredUsers(user), fullName);
     }
 
     @RequestMapping(value = "/search/{user_id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserSearchResponse getUserById(@PathVariable("user_id") Long userId, @AuthenticatedUser User user) {
+    public UserSearchResponse getUserById(@PathVariable("user_id") Long userId) {
         return userSearchService.findUserDataById(userId);
     }
 

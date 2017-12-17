@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Component
 public class UserAccountControllerSender {
 
@@ -66,8 +69,20 @@ public class UserAccountControllerSender {
 
     public AccountUserWeb getBaseUserInfo(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
-                String.format("/users/%d/base-info", userId);
+                String.format("/users/%d/info-base", userId);
 
         return new RestTemplate().getForEntity(url, AccountUserWeb.class).getBody();
+    }
+
+    public List<AccountUserWeb> getBaseUserInfos(List<Long> userIds) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                "/users/info-base";
+
+        return new RestTemplate().getForEntity(
+                url,
+                List.class,
+                new HashMap<String, Object>() {{
+                    put("userIds", userIds);
+                }}).getBody();
     }
 }

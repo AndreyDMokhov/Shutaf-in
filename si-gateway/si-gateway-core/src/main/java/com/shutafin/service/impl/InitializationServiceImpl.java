@@ -51,7 +51,7 @@ public class InitializationServiceImpl implements InitializationService {
                 .builder()
                 .accountInitialization(accountInitialization)
                 .matchingInitializationResponse(matchingInitialization)
-//                .listOfChats(chatInfoService.getListChats(userId))
+                .listOfChats(chatInfoService.getListChats(userId))
                 .build();
     }
 }
