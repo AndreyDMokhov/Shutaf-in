@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 @Deprecated
 @Service
@@ -38,13 +36,15 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
 
     @Override
     public Map<Long, Integer> getUserMatchingScores(User userOrigin) {
-        List<User> usersToMatch = userMatchService.findMatchingUsers(userOrigin.getId());
+//        moved to ms
+/*        List<User> usersToMatch = userMatchService.findMatchingUsers(userOrigin.getId());
         Map<Long, Integer> userMatchingScores = new HashMap<>();
         for (User userToMatch : usersToMatch) {
             UserMatchingScore score = getMatchingScore(userOrigin, userToMatch);
             userMatchingScores.put(userToMatch.getId(), score.getScore());
         }
-        return userMatchingScores;
+        return userMatchingScores;*/
+        return null;
     }
 
     @Override

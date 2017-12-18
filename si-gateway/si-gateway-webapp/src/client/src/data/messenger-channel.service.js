@@ -23,7 +23,7 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
             callback(channel);
         });
     }
-
+    //TODO add handler for case if listOfChats is empty
     function notifyListOfChatObservers(chatData) {
         $sessionStorage.listOfChats = vm.listOfChats;
         angular.forEach(vm.listOfChatsCallbacks, function (callback) {

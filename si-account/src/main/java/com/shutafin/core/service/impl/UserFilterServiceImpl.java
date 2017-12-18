@@ -3,15 +3,17 @@ package com.shutafin.core.service.impl;
 
 import com.shutafin.core.service.UserFilterService;
 import com.shutafin.core.service.filter.UsersFilter;
-import com.shutafin.model.User;
 import com.shutafin.model.filter.FilterAgeRange;
 import com.shutafin.model.filter.FilterCity;
 import com.shutafin.model.filter.FilterGender;
-import com.shutafin.model.web.user.AgeRangeWebDTO;
-import com.shutafin.model.web.user.FiltersWeb;
+import com.shutafin.model.web.common.AgeRangeWebDTO;
+import com.shutafin.model.web.common.FiltersWeb;
+import com.shutafin.model.web.common.UserFilterRequest;
+import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.repository.FilterAgeRangeRepository;
 import com.shutafin.repository.FilterCityRepository;
 import com.shutafin.repository.FilterGenderRepository;
+import com.shutafin.repository.account.UserInfoRepository;
 import com.shutafin.repository.account.UserRepository;
 import com.shutafin.repository.locale.CityRepository;
 import com.shutafin.repository.locale.GenderRepository;
@@ -19,9 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by evgeny on 10/3/2017.
@@ -37,41 +40,47 @@ public class UserFilterServiceImpl implements UserFilterService {
     private UserRepository userRepository;
     private CityRepository cityRepository;
     private GenderRepository genderRepository;
+    private UserInfoRepository userInfoRepository;
     private List<UsersFilter> usersFilters;
 
     @Autowired
-    public UserFilterServiceImpl(GenderRepository genderRepository, CityRepository cityRepository, FilterCityRepository filterCityRepository, FilterGenderRepository filterGenderRepository, FilterAgeRangeRepository filterAgeRangeRepository, UserRepository userRepository, List<UsersFilter> usersFilters) {
+    public UserFilterServiceImpl(UserInfoRepository userInfoRepository, GenderRepository genderRepository, CityRepository cityRepository, FilterCityRepository filterCityRepository, FilterGenderRepository filterGenderRepository, FilterAgeRangeRepository filterAgeRangeRepository, UserRepository userRepository, List<UsersFilter> usersFilters) {
         this.filterCityRepository = filterCityRepository;
         this.filterGenderRepository = filterGenderRepository;
         this.filterAgeRangeRepository = filterAgeRangeRepository;
         this.userRepository = userRepository;
         this.cityRepository = cityRepository;
         this.genderRepository = genderRepository;
+        this.userInfoRepository = userInfoRepository;
         this.usersFilters = usersFilters;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> filterMatchedUsers(Long userId, List<Long> matchedUsersList) {
+    public List<UserSearchResponse> filterMatchedUsers(Long userId, UserFilterRequest userFilterRequest) {
+        List<Long> filteredUsersId = userFilterRequest.getUserIds();
+
+        if (!StringUtils.isEmpty(userFilterRequest.getFullName())) {
+            filteredUsersId = userRepository.findAllByFullName(filteredUsersId, userFilterRequest.getFullName());
+        }
+
+        filteredUsersId = applyFilters(userId, userFilterRequest.getUserIds());
+
+        if (filteredUsersId.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return userInfoRepository.getUserSearchListByUserId(filteredUsersId);
+    }
+
+    private List<Long> applyFilters(Long userId, List<Long> matchedUsersList) {
         for (UsersFilter filter : usersFilters) {
             if (matchedUsersList.isEmpty()) {
                 continue;
             }
             matchedUsersList = filter.doFilter(userId, matchedUsersList);
         }
-        return getUsersList(matchedUsersList);
-    }
-
-    private List<User> getUsersList(List<Long> matchedUsersList){
-        return matchedUsersList.stream().map(id->{
-            com.shutafin.model.entities.User userEntity = userRepository.findOne(id);
-            return new User(userEntity.getId(),
-                    userEntity.getFirstName(),
-                    userEntity.getLastName(),
-                    userEntity.getEmail(),
-                    userEntity.getCreatedDate().getTime(),
-                    userEntity.getUpdatedDate().getTime());
-        }).collect(Collectors.toList());
+        return matchedUsersList;
     }
 
     @Override
@@ -112,6 +121,15 @@ public class UserFilterServiceImpl implements UserFilterService {
         if (ageRangeWebDTO != null) {
             filterAgeRangeRepository.save(new FilterAgeRange(userRepository.findOne(userId), ageRangeWebDTO.getFromAge(), ageRangeWebDTO.getToAge()));
         }
+    }
+
+    @Override
+    public FiltersWeb getUserFilters(Long userId) {
+        FiltersWeb filtersWeb = new FiltersWeb();
+        filtersWeb.setFilterAgeRange(getAgeRangeForFilter(userId));
+        filtersWeb.setFilterCitiesIds(getCitiesForFilter(userId));
+        filtersWeb.setFilterGenderId(getGenderForFilter(userId));
+        return filtersWeb;
     }
 
     @Override

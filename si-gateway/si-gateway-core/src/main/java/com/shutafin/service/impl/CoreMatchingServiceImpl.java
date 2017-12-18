@@ -127,9 +127,10 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     }
 
     private void evaluateUserMatchingScores(User userOrigin) {
-        for (User userToMatch : userMatchService.findMatchingUsers(userOrigin.getId())) {
-            evaluateUserMatchingScore(userOrigin, userToMatch);
-        }
+        //TODO on ms-matching
+//        for (User userToMatch : userMatchService.findMatchingUsers(userOrigin.getId())) {
+//            evaluateUserMatchingScore(userOrigin, userToMatch);
+//        }
     }
 
     private Boolean isUserHasAnswers(User user) {

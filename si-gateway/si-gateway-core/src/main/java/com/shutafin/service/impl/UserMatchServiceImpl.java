@@ -1,6 +1,5 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
@@ -28,15 +27,12 @@ public class UserMatchServiceImpl implements UserMatchService {
     @Override
     @Transactional(readOnly = true)
     //todo MS-MATCHING
-    public List<User> findMatchingUsers(Long userId) {
+    public List<Long> findMatchingUsers(Long userId) {
         if (userId == null) {
             return new ArrayList<>();
         }
 
-        List<Long> matchingUsers = userMatchControllerSender.getMatchingUsers(userId);
-
-
-        return null;
+        return userMatchControllerSender.getMatchingUsers(userId);
     }
 
     @Override
