@@ -59,7 +59,7 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
 
     private Double calculateMatchingScore(User userOrigin, User userToMatch) {
 
-        if (!isUserHasAnswers(userOrigin) || !isUserHasAnswers(userToMatch)) {
+/*        if (!isUserHasAnswers(userOrigin) || !isUserHasAnswers(userToMatch)) {
             return BASIC_MATCHING_SCORE;
         }
 
@@ -93,7 +93,8 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
         }
 
         return Math.sqrt(totalScore / maxPossibleScoreOrigin * crossScore / maxPossibleScoreToMatch)
-                * (100 - BASIC_MATCHING_SCORE) + BASIC_MATCHING_SCORE;
+                * (100 - BASIC_MATCHING_SCORE) + BASIC_MATCHING_SCORE;*/
+        return null;
     }
 
     private Integer getAnswerSimilarityScore(Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers,
@@ -127,9 +128,9 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     }
 
     private void evaluateUserMatchingScores(User userOrigin) {
-        for (User userToMatch : userMatchService.findMatchingUsers(userOrigin.getId())) {
-            evaluateUserMatchingScore(userOrigin, userToMatch);
-        }
+//        for (User userToMatch : userMatchService.findMatchingUsers(userOrigin.getId())) {
+//            evaluateUserMatchingScore(userOrigin, userToMatch);
+//        }
     }
 
     private Boolean isUserHasAnswers(User user) {

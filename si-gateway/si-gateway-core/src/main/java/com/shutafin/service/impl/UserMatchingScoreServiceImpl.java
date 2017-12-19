@@ -1,54 +1,41 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.matching.UserMatchingScore;
-import com.shutafin.repository.matching.UserMatchingScoreRepository;
-import com.shutafin.service.CoreMatchingService;
-import com.shutafin.service.UserMatchService;
+import com.shutafin.model.web.matching.UserMatchingScoreDTO;
+import com.shutafin.sender.matching.UserMatchingScoreControllerSender;
 import com.shutafin.service.UserMatchingScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-@Deprecated
+
 @Service
 @Transactional
 public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
 
-    @Autowired
-    private CoreMatchingService coreMatchingService;
+    private UserMatchingScoreControllerSender userMatchingScoreControllerSender;
 
     @Autowired
-    private UserMatchService userMatchService;
-
-    @Autowired
-    private UserMatchingScoreRepository userMatchingScoreRepository;
-
-    @Override
-    public UserMatchingScore getMatchingScore(User userOrigin, User userToMatch) {
-        UserMatchingScore score = userMatchingScoreRepository.findByUserOriginAndUserToMatch(userOrigin, userToMatch);
-        if (score == null) {
-            score = coreMatchingService.evaluateUserMatchingScore(userOrigin, userToMatch);
-        }
-        return score;
+    public UserMatchingScoreServiceImpl(UserMatchingScoreControllerSender userMatchingScoreControllerSender) {
+        this.userMatchingScoreControllerSender = userMatchingScoreControllerSender;
     }
 
     @Override
-    public Map<Long, Integer> getUserMatchingScores(User userOrigin) {
-        List<User> usersToMatch = userMatchService.findMatchingUsers(userOrigin.getId());
-        Map<Long, Integer> userMatchingScores = new HashMap<>();
-        for (User userToMatch : usersToMatch) {
-            UserMatchingScore score = getMatchingScore(userOrigin, userToMatch);
-            userMatchingScores.put(userToMatch.getId(), score.getScore());
-        }
-        return userMatchingScores;
+    public UserMatchingScoreDTO getMatchingScore(Long userOrigin, Long userToMatch) {
+        return userMatchingScoreControllerSender.getOneMatchingScore(userOrigin, userToMatch);
     }
 
     @Override
-    public Long deleteUserMatchingScores(User user) {
-        return userMatchingScoreRepository.deleteAllByUserOriginOrUserToMatch(user, user);
+    public Map<Long, Integer> getUserMatchingScores(Long userOrigin) {
+        if (userOrigin == null) {
+            return new HashMap<>();
+        }
+        return userMatchingScoreControllerSender.getUserMatchingScores(userOrigin);
+    }
+
+    @Override
+    public Long deleteUserMatchingScores(Long userId) {
+        return userMatchingScoreControllerSender.deleteUserMatchingScores(userId);
     }
 }
