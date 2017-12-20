@@ -1,10 +1,9 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.FiltersWeb;
-import com.shutafin.model.web.user.UserSearchResponse;
+import com.shutafin.model.web.common.FiltersWeb;
+import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
-import com.shutafin.service.UserFilterService;
+import com.shutafin.service.UserMatchService;
 import com.shutafin.service.UserSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,17 +18,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserSearchController {
-
     @Autowired
-    private UserFilterService userFilterService;
+    private UserMatchService userMatchService;
 
     @Autowired
     private UserSearchService userSearchService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getMatchingUsers(@RequestParam(value = "name", required = false) String fullName,
-                                                     @AuthenticatedUser User user) {
-        return userSearchService.userSearchByList(userFilterService.findFilteredUsers(user), fullName);
+                                                     @AuthenticatedUser Long authenticatedUserId) {
+        return userSearchService.userSearchByList(authenticatedUserId, userMatchService.findMatchingUsers(authenticatedUserId), fullName);
     }
 
     @RequestMapping(value = "/search/{user_id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -38,8 +36,7 @@ public class UserSearchController {
     }
 
     @RequestMapping(value = "/search/save/filters", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<UserSearchResponse> saveUserFilters(@AuthenticatedUser User user, @RequestBody @Valid FiltersWeb filtersWeb) {
-        userFilterService.saveUserFilters(user, filtersWeb);
-        return userSearchService.userSearchByList(userFilterService.findFilteredUsers(user));
+    public List<UserSearchResponse> saveUserFilters(@AuthenticatedUser Long authenticatedUserId, @RequestBody @Valid FiltersWeb filtersWeb) {
+        return userSearchService.userSearchByList(authenticatedUserId, userMatchService.findMatchingUsers(authenticatedUserId), filtersWeb);
     }
 }

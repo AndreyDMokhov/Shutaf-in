@@ -11,6 +11,7 @@ import javax.validation.constraints.Min;
 /**
  * Created by evgeny on 10/2/2017.
  */
+@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

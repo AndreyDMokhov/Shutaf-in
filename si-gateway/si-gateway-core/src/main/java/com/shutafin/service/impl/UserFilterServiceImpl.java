@@ -55,13 +55,14 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Override
     @Transactional(readOnly = true)
     public List<User> findFilteredUsers(User user) {
-
-        List<User> matchingUsersList = userMatchService.findMatchingUsers(user.getId());
+//        moved to ms
+//        List<User> matchingUsersList = userMatchService.findMatchingUsers(user.getId());
 
         //Call chain of responsibility
         UsersFiltersChain usersFiltersChain = createFilterChain(user);
 
-        return usersFiltersChain.doMatch(matchingUsersList);
+//        return usersFiltersChain.doMatch(matchingUsersList);
+        return null;
     }
 
     private UsersFiltersChain createFilterChain(User user) {

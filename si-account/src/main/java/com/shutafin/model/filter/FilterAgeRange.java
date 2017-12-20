@@ -1,14 +1,13 @@
-package com.shutafin.model.entities;
+package com.shutafin.model.filter;
 
-import com.shutafin.model.AbstractBaseEntity;
+import com.shutafin.model.base.AbstractBaseEntity;
+import com.shutafin.model.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by evgeny on 10/1/2017.
@@ -21,8 +20,9 @@ import javax.persistence.Table;
 @Setter
 public class FilterAgeRange extends AbstractBaseEntity {
 
-    @Column(name = "USER_ID", nullable = false)
-    private Long userId;
+    @JoinColumn(name = "USER_ID", nullable = false)
+    @OneToOne
+    private User user;
 
     @Column(name = "FROM_AGE", nullable = false)
     private Integer fromAge;

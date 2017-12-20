@@ -35,9 +35,10 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 $sessionStorage.selectedExtendedAnswers = success.data.matchingInitializationResponse.selectedExtendedAnswersResponses;
                 $sessionStorage.listOfChats = success.data.matchingInitializationResponse.listOfChats;
                 $sessionStorage.showExtendedQuestions = showExtendedQuestions();
+                $sessionStorage.filters = success.data.accountInitialization.filters;
 
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
-                $sessionStorage.filters = success.data.filters;
+
                 webSocketService.getConnection();
                 messengerChannelService.initWsConnection();
                 deferred.resolve(success.data);

@@ -2,7 +2,8 @@ package com.shutafin.repository.account;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.repository.base.BaseJpaRepository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,5 +12,10 @@ import java.util.List;
 public interface UserRepository extends BaseJpaRepository<User, Long> {
 
     User findByEmail(String email);
-    List<User> findAllByFirstNameInAndLastNameIn(List<String> firstNames, List<String> lastNames);
+
+    @Query("SELECT u.id FROM User u WHERE u.id in (:usersIdList) AND " +
+            "concat(u.firstName, ' ', u.lastName) = :fullName " +
+            "OR concat(u.lastName, ' ', u.firstName) = :fullName ")
+    List<Long> findAllByFullName(@Param("usersIdList") List<Long> usersIdList,
+                                 @Param("fullName") String fullName);
 }

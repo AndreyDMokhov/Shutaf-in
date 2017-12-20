@@ -1,9 +1,12 @@
 package com.shutafin.controller;
 
 
-import com.shutafin.model.dto.AgeRangeWebDTO;
-import com.shutafin.model.dto.FiltersWeb;
-import com.shutafin.service.UserFilterService;
+
+import com.shutafin.core.service.UserFilterService;
+import com.shutafin.model.web.common.AgeRangeWebDTO;
+import com.shutafin.model.web.common.FiltersWeb;
+import com.shutafin.model.web.common.UserFilterRequest;
+import com.shutafin.model.web.common.UserSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,32 +19,42 @@ import java.util.List;
 @RequestMapping("/filters")
 public class UserFilterController {
 
-    @Autowired
-    private UserFilterService userFilterService;
+    private final UserFilterService userFilterService;
 
-    @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Long> getFilteredUsers(@PathVariable("userId") Long userId) {
-        return userFilterService.findFilteredUsers(userId);
+    @Autowired
+    public UserFilterController(UserFilterService userFilterService) {
+        this.userFilterService = userFilterService;
     }
 
-    @PostMapping(value = "/filters/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "filter/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<UserSearchResponse> getFilteredUsers(@PathVariable("userId") Long userId,
+                                                     @RequestBody UserFilterRequest userFilterRequest) {
+        return userFilterService.filterMatchedUsers(userId, userFilterRequest);
+    }
+
+    @PutMapping(value = "/save/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilters(@PathVariable("userId") Long userId, @RequestBody @Valid FiltersWeb filtersWeb) {
         userFilterService.saveUserFilters(userId, filtersWeb);
     }
 
-    @PostMapping(value = "/city/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/city/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilterCity(@PathVariable("userId") Long userId, @RequestBody List<Integer> cities) {
         userFilterService.saveUserFilterCity(userId, cities);
     }
 
-    @PostMapping(value = "/gender/{userId}/{genderId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/gender/{userId}/{genderId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilterGender(@PathVariable("userId") Long userId, @PathVariable("genderId") Integer genderId) {
         userFilterService.saveUserFilterGender(userId, genderId);
     }
 
-    @PostMapping(value = "/age-range/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/age-range/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilterAgeRange(@PathVariable("userId") Long userId, @RequestBody @Valid AgeRangeWebDTO ageRangeWebDTO) {
         userFilterService.saveUserFilterAgeRange(userId, ageRangeWebDTO);
+    }
+
+    @GetMapping(value = "/get/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public FiltersWeb getUserFilters(@PathVariable("userId") Long userId) {
+        return userFilterService.getUserFilters(userId);
     }
 
     @GetMapping(value = "/city/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
