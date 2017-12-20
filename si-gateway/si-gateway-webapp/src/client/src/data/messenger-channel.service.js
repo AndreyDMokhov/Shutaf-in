@@ -50,6 +50,9 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
     }
 
     function findActiveChatWithUser(user) {
+        if(!vm.listOfChats){
+            return;
+        }
         return vm.listOfChats
             .filter(function (chat) {
                 return chat.usersInChat.length === 1 && isUserActiveInChat(chat, user);

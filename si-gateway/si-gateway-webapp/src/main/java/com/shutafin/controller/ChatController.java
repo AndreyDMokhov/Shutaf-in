@@ -18,6 +18,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,6 +45,9 @@ public class ChatController {
 
     @Autowired
     private UserSearchService userSearchService;
+
+    @Autowired
+    private SessionManagementService sessionManagementService;
 
     @GetMapping(value = "/new/{chat_title}/{user_id}")
     public ChatWithUsersListDTO addChat(@PathVariable("chat_title") String chatTitle,
@@ -96,8 +101,12 @@ public class ChatController {
     @MessageMapping("/api/chat/{chat_id}/message")
     @SendTo("/api/subscribe/chat/{chat_id}")
     public ChatMessageResponse send(@DestinationVariable("chat_id") Long chatId,
-                                    Message<ChatMessageRequest> message,
-                                    @AuthenticatedUser Long authenticatedUserId) {
+                                    Message<ChatMessageRequest> message) {
+
+        StompHeaderAccessor accessor =
+                MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        sessionManagementService.validate(accessor.getFirstNativeHeader("session_id"));
+        Long authenticatedUserId = sessionManagementService.findUserWithValidSession(accessor.getFirstNativeHeader("session_id"));
 
         ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, authenticatedUserId);
         ChatMessageRequest chatMessageRequest = message.getPayload();
