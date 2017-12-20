@@ -20,7 +20,6 @@ app.service('messengerCurrentDataService', function (messengerModel) {
         vm.currentChat = {};
         notifyObservers(vm.currentChatCallbacks);
         removeMessages();
-        // removeUsersInChatList();
     }
 
     /**END*/

@@ -33,7 +33,7 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 $sessionStorage.questionsExtended = success.data.matchingInitializationResponse.questionExtendedWithAnswers;
                 $sessionStorage.questionImportance = success.data.matchingInitializationResponse.questionImportanceList;
                 $sessionStorage.selectedExtendedAnswers = success.data.matchingInitializationResponse.selectedExtendedAnswersResponses;
-                $sessionStorage.listOfChats = success.data.matchingInitializationResponse.listOfChats;
+                $sessionStorage.listOfChats = success.data.listOfChats;
                 $sessionStorage.filters = success.data.accountInitialization.filters;
 
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);

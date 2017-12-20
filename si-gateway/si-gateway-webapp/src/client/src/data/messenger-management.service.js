@@ -18,9 +18,8 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
         /** Checks criteria for opening existing chat with user*/
         if (activeChat && activeChat.length > 0) {
             activateChannel(activeChat[0]);
-            return;
         }
-        addChat(userData);
+        else{addChat(userData);}
     }
 
     function addChat(userData) {

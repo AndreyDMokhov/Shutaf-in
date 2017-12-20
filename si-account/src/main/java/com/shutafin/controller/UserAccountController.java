@@ -105,8 +105,8 @@ public class UserAccountController {
         return userService.getAccountUserWebById(userId);
     }
 
-    @GetMapping(value = "/info-base")
-    public List<AccountUserWeb> getBaseInfos(@RequestParam("userIds") List<Long> userIds) {
+    @PostMapping(value = "/info-base")
+    public List<AccountUserWeb> getBaseInfos(@RequestBody List<Long> userIds) {
         List<AccountUserWeb> accountUserWebs = new ArrayList<>();
         for (Long userId : userIds) {
             accountUserWebs.add(getBaseInfo(userId));
