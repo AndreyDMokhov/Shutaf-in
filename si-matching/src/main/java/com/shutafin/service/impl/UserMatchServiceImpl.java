@@ -64,7 +64,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         return matchingUsersList;
     }
 
-    public List<String> getRegExpKeysForMatch(String examKeyRegExp, List<VarietyExamKey> varietyExamKey) {
+    private List<String> getRegExpKeysForMatch(String examKeyRegExp, List<VarietyExamKey> varietyExamKey) {
         Set<String> res = new HashSet<>();
 
         List<String> keys = varietyExamKey.stream()

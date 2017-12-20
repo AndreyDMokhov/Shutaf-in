@@ -1,5 +1,6 @@
 package com.shutafin.sender.matching;
 
+import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
@@ -27,5 +28,19 @@ public class UserMatchingScoreControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
                 String.format("/matching/extended/%d", userId);
         new RestTemplate().postForEntity(url, questionExtendedAnswersWeb, Void.class);
+    }
+
+    public UserMatchingScoreDTO getOneMatchingScore(Long userOrigin, Long userToMatch) {
+        String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
+                String.format("/matching/extended/delete/%d/%d", userOrigin, userToMatch);
+
+        return new RestTemplate().getForEntity(url, UserMatchingScoreDTO.class).getBody();
+    }
+
+    public Long deleteUserMatchingScores(Long userId) {
+        String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
+                String.format("/matching/extended/delete/%d", userId);
+
+        return new RestTemplate().getForEntity(url, Long.class).getBody();
     }
 }
