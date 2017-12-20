@@ -77,7 +77,7 @@ public class UserAccountControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 "/users/info-base";
 
-        //TODO didn't work
+        //TODO didn't work with get method
 //        return new RestTemplate().getForEntity(
 //                url,
 //                List.class,

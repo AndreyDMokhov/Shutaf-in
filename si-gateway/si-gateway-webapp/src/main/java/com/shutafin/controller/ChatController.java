@@ -97,12 +97,12 @@ public class ChatController {
         return chatInfoService.getListChats(authenticatedUserId);
     }
 
+//TODO repair AuthenticationAnnotationsBPP or use Spring Security
     @WebSocketAuthentication
     @MessageMapping("/api/chat/{chat_id}/message")
     @SendTo("/api/subscribe/chat/{chat_id}")
     public ChatMessageResponse send(@DestinationVariable("chat_id") Long chatId,
                                     Message<ChatMessageRequest> message) {
-
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         sessionManagementService.validate(accessor.getFirstNativeHeader("session_id"));

@@ -9,6 +9,8 @@ angular.module('app').directive('userAvatar', function (Restangular, $sessionSto
         },
         link: function (scope, element, attrs) {
 
+            //TODO unite with modalImage directive
+
             var rest = Restangular.withConfig(function (RestangularProvider) {
                 RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
             });
@@ -17,16 +19,18 @@ angular.module('app').directive('userAvatar', function (Restangular, $sessionSto
             scope.currentUser = {};
 
             scope.getUserImage = function() {
-                if (!scope.userId) {
-                    return scope.image = '../../images/default_avatar.png';
-                }
-                scope.image = findUserImage();
-                if (!scope.image) {
-                    return scope.image = '../../images/default_avatar.png';
-                }
-                else {
-                    return scope.image = 'data:image/jpeg;base64,' + scope.image;
-                }
+
+                // if (!scope.userId) {
+                //     return scope.image = '../../images/default_avatar.png';
+                // }
+                // scope.image = findUserImage();
+                // if (!scope.image) {
+                //     return scope.image = '../../images/default_avatar.png';
+                // }
+                // else {
+                //     return scope.image = 'data:image/jpeg;base64,' + scope.image;
+                // }
+                return scope.image = '../../images/default_avatar.png';
             };
             //TODO move image getting logic fully to this directive
             function findUserImage() {
