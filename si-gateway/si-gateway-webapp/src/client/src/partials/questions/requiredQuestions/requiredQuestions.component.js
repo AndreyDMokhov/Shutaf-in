@@ -1,5 +1,6 @@
-app.component('questionsComponent', {
-    templateUrl: 'partials/questions/questions.component.html',
+"use strict";
+app.component('requiredQuestionsComponent', {
+    templateUrl: 'partials/questions/requiredQuestions/requiredQuestions.component.html',
     controllerAs: 'vm',
     controller: function ($scope,
                           $state,
@@ -9,8 +10,7 @@ app.component('questionsComponent', {
                           $filter,
                           browserTitle) {
         var vm = this;
-        browserTitle.setBrowserTitleByFilterName('Questions.title');
-
+        browserTitle.setBrowserTitleByFilterName('Questions.requiredQuestions');
         vm.questions = $sessionStorage.questions;
         vm.selectedAnswers = $sessionStorage.selectedAnswers;
 

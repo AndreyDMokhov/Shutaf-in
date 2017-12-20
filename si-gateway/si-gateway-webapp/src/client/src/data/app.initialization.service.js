@@ -34,6 +34,7 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 $sessionStorage.questionImportance = success.data.matchingInitializationResponse.questionImportanceList;
                 $sessionStorage.selectedExtendedAnswers = success.data.matchingInitializationResponse.selectedExtendedAnswersResponses;
                 $sessionStorage.listOfChats = success.data.matchingInitializationResponse.listOfChats;
+                $sessionStorage.showExtendedQuestions = showExtendedQuestions();
 
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
                 $sessionStorage.filters = success.data.filters;
@@ -54,10 +55,18 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 answers.push({"questionId": data[i].questionId, "answerId": data[i].selectedAnswersIds[0]});
             }
             else {
-                answers.push({"questionId": i+1, "answerId": null});
+                answers.push({"questionId": i + 1, "answerId": null});
             }
         }
         return answers;
+    }
+    function showExtendedQuestions() {
+        if( $sessionStorage.selectedAnswers[0].answerId === null){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     return {

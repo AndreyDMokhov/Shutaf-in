@@ -66,9 +66,18 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             template: '<user-search-component></user-search-component>',
             url: '/users/search?{name}'
         })
-        .state('questions', {
-            template: '<questions-component></questions-component>',
+        .state('questionsTab', {
+            abstract: true,
+            template: '<questions-tab></questions-tab>  ',
             url: '/questions'
+        })
+        .state('questionsTab.requiredQuestions', {
+            template:'<required-questions-component></required-questions-component>',
+            url: '/required-questions'
+        })
+        .state('questionsTab.extendedQuestions', {
+            template:'<extended-questions-component></extended-questions-component>',
+            url: '/extended-questions'
         })
         /* Settings */
         .state('settings', {
