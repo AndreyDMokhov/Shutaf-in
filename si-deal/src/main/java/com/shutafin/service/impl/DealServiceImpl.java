@@ -54,6 +54,8 @@ public class DealServiceImpl implements DealService {
         deal.setModifiedByUser(dealWeb.getOriginUserId());
         dealRepository.save(deal);
 
+        dealWeb.getUsers().remove(dealWeb.getOriginUserId());
+
         for (Long userId : dealWeb.getUsers()) {
             DealUser dealUser = new DealUser(userId, deal, DealUserStatus.PENDING, DealUserPermissionType.READ_ONLY);
             dealUserRepository.save(dealUser);
