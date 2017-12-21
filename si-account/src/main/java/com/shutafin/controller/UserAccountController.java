@@ -105,7 +105,6 @@ public class UserAccountController {
         return userService.getAccountUserWebById(userId);
     }
 
-    //TODO @GetMapping didn't work with @RequestMapping("userIds") List<Long> userIds
     @PostMapping(value = "/info-base")
     public List<AccountUserWeb> getBaseInfos(@RequestBody List<Long> userIds) {
         List<AccountUserWeb> accountUserWebs = new ArrayList<>();

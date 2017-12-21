@@ -18,11 +18,10 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.OnError;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +45,6 @@ public class ChatController {
     @Autowired
     private UserSearchService userSearchService;
 
-    @Autowired
-    private SessionManagementService sessionManagementService;
 
     @GetMapping(value = "/new/{chat_title}/{user_id}")
     public ChatWithUsersListDTO addChat(@PathVariable("chat_title") String chatTitle,
@@ -97,16 +94,12 @@ public class ChatController {
         return chatInfoService.getListChats(authenticatedUserId);
     }
 
-//TODO repair AuthenticationAnnotationsBPP or use Spring Security
     @WebSocketAuthentication
     @MessageMapping("/api/chat/{chat_id}/message")
     @SendTo("/api/subscribe/chat/{chat_id}")
     public ChatMessageResponse send(@DestinationVariable("chat_id") Long chatId,
-                                    Message<ChatMessageRequest> message) {
-        StompHeaderAccessor accessor =
-                MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        sessionManagementService.validate(accessor.getFirstNativeHeader("session_id"));
-        Long authenticatedUserId = sessionManagementService.findUserWithValidSession(accessor.getFirstNativeHeader("session_id"));
+                                    Message<ChatMessageRequest> message,
+                                    @AuthenticatedUser Long authenticatedUserId) {
 
         ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, authenticatedUserId);
         ChatMessageRequest chatMessageRequest = message.getPayload();
@@ -125,7 +118,7 @@ public class ChatController {
     }
     @GetMapping(value = "/allUsers")
     public List<UserBaseResponse> getUsers(@AuthenticatedUser Long authenticatedUserId) {
-        return userSearchService.userBaseResponseByList(userMatchService.findMatchingUsers(authenticatedUserId));
+        return userSearchService.userBaseResponseByList(authenticatedUserId, userMatchService.findMatchingUsers(authenticatedUserId));
     }
 
     @PutMapping(value = "/updateMessagesAsRead", consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -139,6 +132,11 @@ public class ChatController {
                 .stream()
                 .map(this::createChatMessageOutputWeb)
                 .collect(Collectors.toList());
+    }
+
+    @OnError
+    public void onError(Throwable t) {
+
     }
 
     private ChatMessageResponse createChatMessageOutputWeb(ChatMessage chatMessage) {

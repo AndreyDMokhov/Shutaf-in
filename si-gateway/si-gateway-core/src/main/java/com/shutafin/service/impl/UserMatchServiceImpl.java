@@ -26,7 +26,6 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     @Transactional(readOnly = true)
-    //todo MS-MATCHING
     public List<Long> findMatchingUsers(Long userId) {
         if (userId == null) {
             return new ArrayList<>();

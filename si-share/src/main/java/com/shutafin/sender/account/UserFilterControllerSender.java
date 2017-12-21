@@ -2,7 +2,7 @@ package com.shutafin.sender.account;
 
 import com.shutafin.model.web.common.AgeRangeWebDTO;
 import com.shutafin.model.web.common.FiltersWeb;
-import com.shutafin.model.web.common.UserFilterRequest;
+import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
@@ -18,11 +18,11 @@ public class UserFilterControllerSender {
     @Autowired
     private DiscoveryRoutingService routingService;
 
-    public List<UserSearchResponse> getFilteredUsers(Long userId, UserFilterRequest userFilterRequest) {
+    public List<UserSearchResponse> getFilteredUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/filter/%d", userId);
 
-       return new RestTemplate().postForEntity(url, userFilterRequest, List.class).getBody();
+       return new RestTemplate().postForEntity(url, accountUserFilterRequest, List.class).getBody();
     }
 
     public void saveUserFilters(Long userId, FiltersWeb filtersWeb) {

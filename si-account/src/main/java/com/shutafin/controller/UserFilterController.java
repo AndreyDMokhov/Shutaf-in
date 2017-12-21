@@ -5,7 +5,7 @@ package com.shutafin.controller;
 import com.shutafin.core.service.UserFilterService;
 import com.shutafin.model.web.common.AgeRangeWebDTO;
 import com.shutafin.model.web.common.FiltersWeb;
-import com.shutafin.model.web.common.UserFilterRequest;
+import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,8 +28,8 @@ public class UserFilterController {
 
     @PostMapping(value = "filter/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getFilteredUsers(@PathVariable("userId") Long userId,
-                                                     @RequestBody UserFilterRequest userFilterRequest) {
-        return userFilterService.filterMatchedUsers(userId, userFilterRequest);
+                                                     @RequestBody AccountUserFilterRequest accountUserFilterRequest) {
+        return userFilterService.filterMatchedUsers(userId, accountUserFilterRequest);
     }
 
     @PutMapping(value = "/save/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})

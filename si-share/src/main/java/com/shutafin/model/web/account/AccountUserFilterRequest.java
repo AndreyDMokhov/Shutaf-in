@@ -1,4 +1,4 @@
-package com.shutafin.model.web.common;
+package com.shutafin.model.web.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserFilterRequest {
+public class AccountUserFilterRequest {
 
     private List<Long> userIds;
     private String fullName;

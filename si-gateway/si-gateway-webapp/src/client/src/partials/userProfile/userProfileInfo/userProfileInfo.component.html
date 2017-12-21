@@ -2,7 +2,7 @@
     <tbody>
     <tr ng-hide="!vm.userProfile.dateOfBirth">
         <td>{{'UserProfile.dateOfBirth' | translate}}</td>
-        <td>{{vm.userProfile.dateOfBirth | date: 'dd / MM / yyyy'}}</td>
+        <td>{{vm.userProfile.dateOfBirth | date: 'dd-MM-yyyy'}}</td>
     </tr>
     <tr ng-hide="!vm.userProfile.countryId">
         <td>{{'UserSettings.form.country' | translate}}</td>

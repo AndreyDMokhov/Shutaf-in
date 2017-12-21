@@ -8,7 +8,7 @@ import com.shutafin.model.filter.FilterCity;
 import com.shutafin.model.filter.FilterGender;
 import com.shutafin.model.web.common.AgeRangeWebDTO;
 import com.shutafin.model.web.common.FiltersWeb;
-import com.shutafin.model.web.common.UserFilterRequest;
+import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.repository.FilterAgeRangeRepository;
 import com.shutafin.repository.FilterCityRepository;
@@ -57,14 +57,14 @@ public class UserFilterServiceImpl implements UserFilterService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserSearchResponse> filterMatchedUsers(Long userId, UserFilterRequest userFilterRequest) {
-        List<Long> filteredUsersId = userFilterRequest.getUserIds();
+    public List<UserSearchResponse> filterMatchedUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+        List<Long> filteredUsersId = accountUserFilterRequest.getUserIds();
 
-        if (!StringUtils.isEmpty(userFilterRequest.getFullName())) {
-            filteredUsersId = userRepository.findAllByFullName(filteredUsersId, userFilterRequest.getFullName());
+        if (!StringUtils.isEmpty(accountUserFilterRequest.getFullName())) {
+            filteredUsersId = userRepository.findAllByFullName(filteredUsersId, accountUserFilterRequest.getFullName());
         }
 
-        filteredUsersId = applyFilters(userId, userFilterRequest.getUserIds());
+        filteredUsersId = applyFilters(userId, accountUserFilterRequest.getUserIds());
 
         if (filteredUsersId.isEmpty()) {
             return new ArrayList<>();
