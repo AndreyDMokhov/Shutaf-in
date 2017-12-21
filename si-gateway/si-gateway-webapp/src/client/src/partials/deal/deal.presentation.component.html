@@ -6,10 +6,8 @@
 
                     ng-repeat="deal in vm.deals"
                     ng-click="vm.selectedDeal(deal)">
-                <uib-tab-heading>
-
+                <uib-tab-heading >
                     {{deal.title}}
-
                 </uib-tab-heading>
             </uib-tab>
         </uib-tabset>
@@ -20,7 +18,7 @@
 <div class="row">
     <div class="col-md-12">
         <div ng-if="vm.dealTabClicked">
-            <deal-component deal-id="vm.dealId" deal-status="vm.dealStatus"></deal-component>
+            <deal-component deal-info="vm.dealInfo" ></deal-component>
         </div>
     </div>
 </div>

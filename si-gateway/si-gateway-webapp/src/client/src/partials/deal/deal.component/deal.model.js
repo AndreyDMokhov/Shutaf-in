@@ -1,6 +1,11 @@
 "use strict";
-app.factory('dealModel', function () {
+app.factory('dealModel', function (Restangular, $sessionStorage) {
 
+    var rest = Restangular.withConfig(function (RestangularProvider) {
+        RestangularProvider.setFullResponse(true);
+        RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
+        RestangularProvider.setBaseUrl('api/deal/');
+    });
     var pallet =
         [
             [
@@ -81,23 +86,17 @@ app.factory('dealModel', function () {
         ];
 
     function getPanels(dealId) {
-        return pallet[dealId];
+        return rest.one();
     }
 
-    function addPallet(dealId, namePallet) {
-
-        pallet[dealId].push(
-            {
-                panelId: getRandomInt(0, 10000000000),
-                title: namePallet,
-                documents: []
-            });
-        return pallet;
+    function addPallet(params) {
+        return rest.one('panel/').customPOST(params);
     }
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
+
 
     return {
         addPallet: addPallet,

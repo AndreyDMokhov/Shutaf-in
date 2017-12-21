@@ -1,30 +1,41 @@
 app.component('dealComponent', {
     templateUrl: 'partials/deal/deal.component/deal.component.html',
     bindings: {
-        dealId: '<',
-        dealStatus: '<'
+        dealInfo: '<'
+
     },
     controllerAs: 'vm',
     controller: function (dealModel, $uibModal) {
 
         var vm = this;
-        var namePallet = "Pallet";
+        var namePanelDef = "Pallet";
+        var ACTIVE = 2;                   //?????????????????/
 
+        vm.isDealStatusActive = function () {
+
+            return vm.statusDeal === ACTIVE;
+        };
+        vm.$onInit = function () {
+
+            console.log(vm.dealInfo);
+            vm.statusDeal = vm.dealInfo.statusId;
+            vm.pallets = vm.dealInfo.panels;
+
+        };
         vm.$onChanges = function () {
-
-            debugger;
-            vm.pallets = dealModel.getPanels(vm.dealId);
+            vm.statusDeal = vm.dealInfo.statusId;
+            vm.pallets = vm.dealInfo.panels;
         };
 
         vm.selectPallet = function (pallet) {
-           vm.palletClicked=true;
-           vm.documents = pallet.documents;
+            vm.palletClicked = true;
+            vm.documents = pallet.documents;
         };
 
         vm.addPallet = function (dealId) {
 
             modalInput(dealId);
-            debugger;
+
 
         };
 
@@ -35,10 +46,19 @@ app.component('dealComponent', {
                 resolve: {}
             });
             modalInstance.result.then(function (newName) {
-                namePallet = newName;
-                dealModel.addPallet(dealId, namePallet);
+                if (newName === undefined) {
+                    newName = namePanelDef;
+                }
 
-            }, function () {});
+                var params = {dealId: dealId, title: newName};
+                dealModel.addPallet(params).then(function (success) {
+                    debugger;
+                    console.log(success);
+                    //vm.pallets.push(success);
+                });
+
+            }, function () {
+            });
         }
 
     }
@@ -47,7 +67,6 @@ app.component('dealComponent', {
 app.component('modalComponent', {
     templateUrl: 'ModalContent.html',
     bindings: {
-
         close: '&',
         dismiss: '&'
     },
@@ -62,7 +81,7 @@ app.component('modalComponent', {
         };
 
         vm.cancel = function () {
-            console.log("Hi");
+
             vm.dismiss({$value: 'cancel'});
         };
 

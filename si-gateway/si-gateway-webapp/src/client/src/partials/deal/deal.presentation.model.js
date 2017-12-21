@@ -1,25 +1,28 @@
 "use strict";
-app.factory('dealPresentationModel', function () {
+app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
 
+    var rest = Restangular.withConfig(function (RestangularProvider) {
+        RestangularProvider.setFullResponse(true);
+        RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
+        RestangularProvider.setBaseUrl('api/deal');
+    });
 
-    var deals = [
-        {
-            dealId: 0,
-            title: 'My deal',
-            statusId: 2
-        },
-        {
-            dealId: 1,
-            title: 'Archive',
-            statusId: 3
-
-        }];
 
     function getDeals() {
-        return deals;
+
+        return rest.one("/all").get();
     }
 
+    function getDealInfo(dealId) {
+        return rest.one('/' +dealId).customGET();
+    }
+
+
+
+
     return {
-        getDeals: getDeals
+        getDeals: getDeals,
+        getDealInfo: getDealInfo
+
     };
 });

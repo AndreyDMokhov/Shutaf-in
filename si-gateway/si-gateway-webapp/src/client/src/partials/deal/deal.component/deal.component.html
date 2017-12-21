@@ -4,26 +4,28 @@
     <div class="col-md-3">
         <uib-tabset ui-sref-active="vm.getSelectedPallet()" vertical="true" type="pills">
             <uib-tab
-                    ng-repeat="pallet in vm.pallets"
+                    ng-repeat="pallet in vm.pallets track by $index"
                     ng-click="vm.selectPallet(pallet)">
                 <uib-tab-heading>
 
-                    {{pallet.title}}
+                    {{pallet}}
 
                 </uib-tab-heading>
             </uib-tab>
         </uib-tabset>
-        <div class="col-md-offset-6 pull-right" style="margin-top: 10px">
-            <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.removePallet()" disable><i
+        <div  ng-if="vm.isDealStatusActive()" class="col-md-offset-6 pull-right"  style="margin-top: 10px">
+            <button  class="btn btn-primary " style="border-radius: 50%" ng-click="vm.removePallet()" ><i
                     class="fa fa-times"></i></button>
-            <button ng-click="vm.addPallet(vm.dealId)" class="btn btn-primary " style="border-radius: 50%" ><i
+            <button  class="btn btn-primary " style="border-radius: 50%" ng-click="vm.renamePallet()" ><i
+                    class="fa fa-edit"></i></button>
+            <button ng-click="vm.addPallet(vm.dealInfo.dealId)" class="btn btn-primary " style="border-radius: 50%" ><i
                     class="fa fa-plus"></i></button>
 
         </div>
     </div>
     <div class="col-md-9">
         <div ng-if="vm.palletClicked">
-        <pallet-component documents="vm.documents"></pallet-component>
+        <pallet-component documents="vm.documents" status-deal="vm.statusDeal"></pallet-component>
         </div>
     </div>
 </div>

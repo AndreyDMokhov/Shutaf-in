@@ -6,22 +6,32 @@ app.component("dealPresentationComponent", {
 
         var vm = this;
         vm.deals = [];
+        vm.dealInfo = {};
 
         vm.selectedDeal = function (deal) {
 
-            vm.dealId = deal.dealId;
-            vm.dealStatus = deal.statusId;
-            vm.dealTabClicked=true;
+            dealPresentationModel.getDealInfo(deal.dealId).then(
+                function (success) {
+                    vm.dealInfo = success.data.data;
+                    vm.dealTabClicked=true;
+
+                },
+                function (err) {
+                    console.log(err);
+
+                });
         };
 
         function getDeal() {
-          return dealPresentationModel.getDeals();
+            dealPresentationModel.getDeals().then(function (success) {
+                vm.deals = success.data.data;
+                console.log(vm.deals);
+            });
         }
 
         function init() {
             vm.deals = getDeal();
         }
-
 
         init();
     }
