@@ -94,7 +94,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             template: '<change-email-component></change-email-component>'
 
         })
-        .state('settings.changeEmailConfirmation', {
+        .state('changeEmailConfirmation', {
             controller: 'changeEmailConfirmationController',
             controllerAs: 'vm',
             url: '/settings/change-email/confirmation/{link}'

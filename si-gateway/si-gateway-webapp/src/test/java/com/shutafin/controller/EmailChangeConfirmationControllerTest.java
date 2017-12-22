@@ -5,8 +5,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.error.errors.InputValidationError;
-import com.shutafin.model.web.user.EmailChangeConfirmationWeb;
-import com.shutafin.model.web.user.EmailChangedResponse;
+import com.shutafin.model.web.user.GatewayEmailChangedResponse;
 import com.shutafin.service.EmailChangeConfirmationService;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.system.BaseTestImpl;
@@ -60,10 +59,10 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         errorList = new ArrayList<>();
 
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
-        Mockito.doNothing().when(emailChangeConfirmationService)
-                .emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
+//        Mockito.doNothing().when(emailChangeConfirmationService)
+//                .emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
         Mockito.when(emailChangeConfirmationService.
-                emailChangeConfirmation(anyString())).thenReturn(new EmailChangedResponse());
+                emailChangeConfirmation(anyString())).thenReturn(new GatewayEmailChangedResponse());
     }
 
     @Test

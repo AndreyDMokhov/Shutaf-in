@@ -10,9 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-
-//si-share EmailResponse
-public class EmailChangedResponse {
+public class GatewayEmailChangedResponse {
 
     private Boolean isEmailChanged;
 
