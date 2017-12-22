@@ -6,7 +6,9 @@
     </tr>
     <tr ng-hide="!vm.userProfile.countryId">
         <td>{{'UserSettings.form.country' | translate}}</td>
-        <td><span>Israel</span></td>
+        <td ng-repeat="country in vm.countries"
+            ng-if="country.id === vm.userProfile.countryId">{{country.description}}
+        </td>
     </tr>
     <tr ng-hide="!vm.userProfile.cityId">
         <td>{{'UserProfile.city' | translate}}</td>

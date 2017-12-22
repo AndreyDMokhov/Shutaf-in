@@ -45,7 +45,7 @@ public class UserImageController {
     @GetMapping(value = "/{userId}/images", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb getUserImageByUserId(@PathVariable("userId") Long userId) {
         log.debug("/images/byId/{id}");
-        UserImage image = userImageService.getUserImage(userId);
+        UserImage image = userImageService.getUserImage(userService.findUserById(userId));
         return new AccountUserImageWeb(
                 image.getId(),
                 image.getImageStorage().getImageEncoded(),
@@ -55,7 +55,7 @@ public class UserImageController {
     @GetMapping(value = "/{userId}/images/original", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb getOriginalUserImageByUserId(@PathVariable("userId") Long userId) {
         log.debug("/images/original/{id}");
-        UserImage image = userImageService.getOriginalUserImage(userId);
+        UserImage image = userImageService.getOriginalUserImage(userService.findUserById(userId));
         return new AccountUserImageWeb(
                 image.getId(),
                 image.getImageStorage().getImageEncoded(),

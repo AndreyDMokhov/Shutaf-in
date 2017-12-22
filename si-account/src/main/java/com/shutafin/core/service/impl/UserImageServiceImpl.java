@@ -5,7 +5,6 @@ import com.shutafin.core.service.ImageCompressService;
 import com.shutafin.core.service.UserImageService;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.types.CompressionType;
@@ -90,12 +89,8 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
-    public UserImage getUserImage(Long userId) {
-        UserAccount userAccount = userAccountRepository.findByUserId(userId);
-        if(userAccount.getUserImage()==null){
-            return new UserImage();
-        }
-        return userAccount.getUserImage();
+    public UserImage getUserImage(User user) {
+        return getUserImage(user, userAccountRepository.findDefaultUserImageIdByUserId(user.getId()));
     }
 
     @Override
@@ -127,8 +122,8 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
-    public UserImage getOriginalUserImage(Long userId) {
-        return getOriginalUserImage(getUserImage(userId));
+    public UserImage getOriginalUserImage(User user) {
+        return getOriginalUserImage(getUserImage(user));
     }
 
     @Override

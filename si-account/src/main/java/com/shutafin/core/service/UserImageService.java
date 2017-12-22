@@ -12,12 +12,12 @@ public interface UserImageService {
 
     UserImage addUserImage(AccountUserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType);
     UserImage getUserImage(User user, Long userImageId);
-    UserImage getUserImage(Long userId);
+    UserImage getUserImage(User user);
     void deleteUserImage(User user, Long userImageId);
     void createUserImageDirectory(User user);
     List<UserImage> getAllUserImages(User user);
     UserImage getOriginalUserImage(UserImage compressedUserImage);
-    UserImage getOriginalUserImage(Long userId);
+    UserImage getOriginalUserImage(User user);
     UserImage getCompressedUserImage(UserImage originalUserImage);
     String getDefaultImageBase64();
 }
