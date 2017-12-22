@@ -1,0 +1,38 @@
+/*.bg{*/
+    /*background: url("../images/jerusalem.jpg") no-repeat center center fixed;*/
+    /*height:100vh;*/
+    /*-webkit-background-size: cover;*/
+    /*-moz-background-size: cover;*/
+    /*-o-background-size: cover;*/
+    /*background-size: cover;*/
+    /*color: white;*/
+    /*!*text-align: center;*!*/
+/*}*/
+.form-container{
+    padding: 10px 20px;
+    margin-top:6vh;
+    margin-bottom: 7vh;
+    -webkit-box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
+    box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
+}
+.form-container.login{
+    margin-top: 10vh;
+}
+.entry-card-button{
+    margin: 0 0 3% 0;
+}
+.entry-card-button.login{
+    margin: 7% 0 7% 0;
+}
+.forgot{
+    color: black;
+}
+h2{
+    text-align: center;
+}
+.forgot:hover{
+    color: black;
+    font-weight: bold;
+
+}

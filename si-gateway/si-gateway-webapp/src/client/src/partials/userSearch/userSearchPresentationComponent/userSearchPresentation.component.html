@@ -6,7 +6,7 @@
                    ng-model="vm.fullName"
                    ng-maxlength="50"
                    placeholder="{{'Search.request' | translate}}"/>
-            <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary button-size-font">
+            <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary btn-sm">
                 {{"Search.button" | translate}}
             </button>
         </form>
@@ -14,7 +14,7 @@
 
     <h4> {{'Search.results'|translate}} {{vm.userSearchList.length}} </h4>
     <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
-    <div class="panel panel-primary" ng-repeat="user in vm.userSearchList">
+    <div class="panel panel-custom" ng-repeat="user in vm.userSearchList">
         <div class="panel-heading pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
             <h4 class="panel-title">
                 {{ user.firstName }} {{ user.lastName }}

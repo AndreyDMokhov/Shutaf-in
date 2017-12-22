@@ -1,4 +1,4 @@
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-default" >
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li ng-class="{active : ('userProfile' | includedByState)}">
@@ -11,7 +11,7 @@
                        uib-tooltip="{{'UserProfile.title' | translate}}"
                        tooltip-placement="bottom">
                         <span>
-                            <img class="logo-center" src="{{vm.getUserImage()}}" width="28" height="28">
+                            <img class="logo-center" style="padding: 0" src="{{vm.getUserImage()}}" width="28" height="28">
                         </span>
                         &nbsp;
                         {{$root.brand}}

@@ -1,10 +1,21 @@
+//@var: @a;
+//@a: 15px;
+//
+//.myclass {
+//  font-size: @var;
+//  @a:10px;
+//  color: green;
+//}
+
 /*main color light grey - #f8f8f8*/
 /*main color grey - #BABABA*/
 /*color for panels red #A15151  */
 /*white #FCFCFC*/
+
 /*btn-success:hover,*/
 /*bcg: #2ED032;*/
 /*bc: #28B62C;*/
+
 /*dark primary color #689F38*/
 /*light primary color #DCEDC8*/
 /*primary color   #8BC34A*/
@@ -13,86 +24,120 @@
 /*primary text #212121*/
 /*secondary text #757575*/
 /*divider color #BDBDBD*/
+@dark-primary-color: #689F38;
+@light-primary-color: #DCEDC8;
+@primary-color: #8BC34A;
+@text-and-icons: #212121;
+@accent-color: #00BCD4;
+@primary-text: #212121;
+@secondary-text: #757575;
+@divider-color: #BDBDBD;
+
 .pointer {
   cursor: pointer;
 }
+
 .divider-vertical {
   height: 9vh;
   margin: 0 9px;
-  border-left: 1px solid #DCEDC8;
+  border-left: 1px solid @light-primary-color;
   border-right: 1px solid #FFF;
 }
+
 .header-icon-size {
-  font-size: 1.15em;
+  font-size: 1.15em
 }
+
 label.required:after {
   content: " *";
   color: red;
 }
+
 .spinnerResetPassword {
   text-align: center;
   display: inline-block;
-  width: 100%;
+  width: 100%
 }
+
 .fa-chevron-down {
   transform: rotate(0deg);
   transition: all 0.1s 0.1s;
 }
+
 .fa-chevron-down.open {
   transform: rotate(90deg);
   transition: all 0.1s 0.1s;
 }
+
 div[role="main"] {
   height: 82vh;
   overflow-y: scroll;
 }
+
 .margin-top {
   margin-top: 5vh;
 }
+//************Navbar***********
 .navbar {
   margin-bottom: 0;
   height: 9vh;
   border-width: 0 0 2px 0;
 }
+
 .navbar-default {
-  background-color: #689F38;
-  border-color: #DCEDC8;
+  background-color: @dark-primary-color;
+  border-color: @light-primary-color;
 }
+
 .navbar.navbar-fixed-bottom {
   border-width: 2px 0 0 0;
 }
+
 .navbar-default .navbar-nav > li > a {
-  color: #212121;
+  color: @text-and-icons;
 }
+
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  color: #DCEDC8;
+  color: @light-primary-color;
   background-color: transparent;
 }
+
+//************Panel***********
 .panel-custom {
   border-color: #653333;
   /*border: 0 1px 4px 1px solid  #727272;*/
   border-width: 1px 1px 4px 1px;
+
 }
+
 .panel-custom > .panel-heading {
-  color: #212121;
-  background-color: #8BC34A;
+  color: @text-and-icons;
+  background-color: @primary-color;
   /*border-color: transparent;*/
   font-weight: bold;
 }
+
 .panel-custom > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: transparent;
 }
+
 .panel-custom > .panel-heading .badge {
-  color: #689F38;
-  background-color: #212121;
+  color: @dark-primary-color;
+  background-color: @text-and-icons;
 }
+
 .panel-custom > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: transparent;
 }
+
+
+
+//************Buttons***********
+
 .btn-success {
-  color: #DCEDC8;
-  background-color: #00BCD4;
+  color: @light-primary-color;
+  background-color: @accent-color;;
   border-color: transparent;
   font-size: 14px;
 }
