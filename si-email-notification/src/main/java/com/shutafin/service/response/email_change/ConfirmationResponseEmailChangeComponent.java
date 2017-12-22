@@ -32,9 +32,6 @@ public class ConfirmationResponseEmailChangeComponent implements BaseConfirmatio
         EmailChangeResponse emailChangeResponse = new EmailChangeResponse();
         emailChangeResponse.setUserId(confirmationEmailChange.getUserId());
 
-        if (confirmationEmailChange.getConnectedConfirmationEmailChange() == null) {
-            return emailChangeResponse;
-        }
 
         ConfirmationEmailChange confirmationEmailChangeConnected = confirmationEmailChange.getConnectedConfirmationEmailChange();
         if (confirmationEmailChangeConnected.getIsConfirmed()) {

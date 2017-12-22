@@ -3,6 +3,7 @@ package com.shutafin.service.impl;
 import com.shutafin.model.web.account.AccountRegistrationRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.model.web.email.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.web.email.response.EmailRegistrationResponse;
 import com.shutafin.sender.account.RegistrationControllerSender;
 import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
@@ -32,9 +33,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public AccountUserWeb confirmRegistrationUser(String link) {
-        EmailRegistrationResponse emailRegistrationResponse = emailNotificationSenderControllerSender.confirmLink(link);
+        EmailRegistrationResponse registrationResponse = (EmailRegistrationResponse) emailNotificationSenderControllerSender.confirmLink(link, EmailReason.REGISTRATION);
 
-        return registrationControllerSender.confirmRegistration(emailRegistrationResponse.getUserId());
+        return registrationControllerSender.confirmRegistration(registrationResponse.getUserId());
     }
 
 }

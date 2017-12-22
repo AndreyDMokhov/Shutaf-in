@@ -2,7 +2,6 @@ package com.shutafin.sender.email;
 
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
-import com.shutafin.model.web.email.response.EmailRegistrationResponse;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,8 @@ public class EmailNotificationSenderControllerSender {
         new RestTemplate().postForEntity(url, emailNotificationWeb, Void.class);
     }
 
-    public EmailRegistrationResponse confirmLink(String link) {
-        String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/confirm?link=" + link + "&reason=" + EmailReason.REGISTRATION;
-        return new RestTemplate().getForEntity(url, EmailRegistrationResponse.class).getBody();
+    public Object confirmLink(String link, EmailReason emailReason) {
+        String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/confirm?link=" + link + "&reason=" + emailReason;
+        return new RestTemplate().getForEntity(url, emailReason.getResponseObject()).getBody();
     }
 }

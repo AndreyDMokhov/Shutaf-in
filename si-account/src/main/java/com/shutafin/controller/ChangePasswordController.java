@@ -25,7 +25,8 @@ public class ChangePasswordController {
 
     @PutMapping(value = "{userId}/change-password", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void changePassword(@RequestBody @Valid AccountChangePasswordWeb changePasswordWeb,
-                               BindingResult result, @PathVariable("userId") Long userId) {
+                               BindingResult result,
+                               @PathVariable("userId") Long userId) {
         log.debug("users/password/change");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
