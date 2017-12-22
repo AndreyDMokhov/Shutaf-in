@@ -1,7 +1,6 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.validation.InputValidationException;
-import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserImageService;
@@ -12,8 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/images")
@@ -60,18 +57,5 @@ public class UserImageController {
                                 @PathVariable(value = "id") Long userImageId) {
         log.debug("/images/{id}");
         userImageService.deleteUserImage(authenticatedUserId, userImageId);
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<AccountUserImageWeb> getAllUserImages(@AuthenticatedUser Long authenticatedUserId) {
-        log.debug("/images/");
-        List<UserImage> allUserImages = userImageService.getAllUserImages(authenticatedUserId);
-        return allUserImages
-                .stream()
-                .map(x -> new AccountUserImageWeb(
-                        x.getId(),
-                        x.getImageStorage().getImageEncoded(),
-                        x.getCreatedDate().getTime()))
-                .collect(Collectors.toList());
     }
 }

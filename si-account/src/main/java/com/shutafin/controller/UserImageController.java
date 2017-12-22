@@ -39,7 +39,10 @@ public class UserImageController {
         return new AccountUserImageWeb(
                 image.getId(),
                 image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
+                image.getCreatedDate().getTime(),
+                image.getUser().getFirstName(),
+                image.getUser().getLastName(),
+                image.getUser().getId());
     }
 
     @GetMapping(value = "/{userId}/images", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -49,7 +52,10 @@ public class UserImageController {
         return new AccountUserImageWeb(
                 image.getId(),
                 image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
+                image.getCreatedDate().getTime(),
+                image.getUser().getFirstName(),
+                image.getUser().getLastName(),
+                image.getUser().getId());
     }
 
     @GetMapping(value = "/{userId}/images/original", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -59,7 +65,10 @@ public class UserImageController {
         return new AccountUserImageWeb(
                 image.getId(),
                 image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
+                image.getCreatedDate().getTime(),
+                image.getUser().getFirstName(),
+                image.getUser().getLastName(),
+                image.getUser().getId());
     }
 
     @PostMapping(value = "/{userId}/images", consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -80,7 +89,10 @@ public class UserImageController {
         return new AccountUserImageWeb(
                 userImage.getId(),
                 null,
-                userImage.getCreatedDate().getTime());
+                userImage.getCreatedDate().getTime(),
+                userImage.getUser().getFirstName(),
+                userImage.getUser().getLastName(),
+                userImage.getUser().getId());
     }
 
     @DeleteMapping(value = "/{userId}/images/{userImageId}", produces = {MediaType.APPLICATION_JSON_VALUE})

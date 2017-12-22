@@ -50,8 +50,13 @@ public class UserAccountController {
         checkBindingResult(result);
 
         UserImage image = userAccountService.updateProfileImage(userImageWeb, userService.findUserById(userId));
-        return new AccountUserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
+        return new AccountUserImageWeb(
+                image.getId(),
+                image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().getTime(),
+                image.getUser().getFirstName(),
+                image.getUser().getLastName(),
+                image.getUser().getId());
     }
 
     @GetMapping(value = "/{userId}/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -59,8 +64,13 @@ public class UserAccountController {
         log.debug("/{userId}/profile-image", userId);
         User user = userService.findUserById(userId);
         UserImage image = userAccountService.findUserAccountProfileImage(user);
-        return new AccountUserImageWeb(image.getId(), image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime());
+        return new AccountUserImageWeb(
+                image.getId(),
+                image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().getTime(),
+                image.getUser().getFirstName(),
+                image.getUser().getLastName(),
+                image.getUser().getId());
     }
 
     @DeleteMapping(value = "/{userId}/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
