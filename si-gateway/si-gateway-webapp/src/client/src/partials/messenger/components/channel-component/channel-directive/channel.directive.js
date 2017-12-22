@@ -17,14 +17,18 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
             var messageIdList = [];
             var chatElement = angular.element(element[0].children[0]);
 
-            //TODO: move the whole messages logic to service
-            function registerInit() {
-                messengerChannelService.registerInitChannelObservers(init);
-            }
+            //TODO: move the whole messaging logic to service
 
             function init() {
+                if (!messengerChannelService.isSubscribed()) {
+                    setTimeout(function () {
+                        init();
+                    }, 25);
+                }
+                else {
                     messengerChannelService.registerChannelObserver(activateChannel);
-                    messengerChannelService.registerChannelMessagesCallbacks(addChatMessage, scope.chatData.id);
+                    messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData.id);
+                }
             }
 
             function activateChannel(channel) {
@@ -113,7 +117,7 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
             };
 
             getAllMessages();
-            registerInit();
+            init();
         }
     };
 });

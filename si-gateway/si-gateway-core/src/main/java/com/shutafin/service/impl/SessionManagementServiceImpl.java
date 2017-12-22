@@ -56,7 +56,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Transactional
     public String generateNewSession(AccountUserWeb accountUserWeb) {
         UserSession userSession = new UserSession();
-        userSession.setUserId(accountUserWeb.getId());
+        userSession.setUserId(accountUserWeb.getUserId());
         userSession.setIsValid(IS_TRUE);
         userSession.setSessionId(UUID.randomUUID().toString());
         userSession.setIsExpirable(IS_FALSE);

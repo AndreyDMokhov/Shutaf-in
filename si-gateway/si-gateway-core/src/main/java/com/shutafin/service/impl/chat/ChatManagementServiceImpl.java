@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,12 +53,10 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         addChatUserToChat(chat, chatOwnerId);
         addChatUserToChat(chat, chatMemberUserId);
 
-        AccountUserWeb accountUserWeb = userAccountControllerSender.getBaseUserInfo(chatMemberUserId);
-
         return new ChatWithUsersListDTO(chat.getId(),
                 chat.getChatTitle(),
                 chat.getHasNoTitle(),
-                Collections.singletonList(accountUserWeb));
+                chatUserRepository.findAllByUserId (chat.getId(), chatOwnerId));
     }
 
 
@@ -94,7 +91,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     private ChatMessage createChatMessage(ChatUser chatUser, ChatMessageRequest message) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setChat(chatUser.getChat());
-        chatMessage.setUserId(chatUser.getUserId());
+        chatMessage.setChatUser(chatUser);
         chatMessage.setMessage(message.getMessage());
         ChatMessageType chatMessageType = ChatMessageType.getById(message.getMessageType());
         if (chatMessageType == null) {
@@ -127,8 +124,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         chatRepository.save(chat);
         ChatWithUsersListDTO chatWithUsersListDTO = new ChatWithUsersListDTO(chat.getId(), chat.getChatTitle(), chat.getHasNoTitle());
 
-        List<Long> activeUsersIds = chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), userId);
-        List<AccountUserWeb> users = userAccountControllerSender.getBaseUserInfos(activeUsersIds);
+        List<AccountUserWeb> users = chatUserRepository.findAllByUserId(chat.getId(), userId);
         chatWithUsersListDTO.setUsersInChat(users);
 
         return chatWithUsersListDTO;
@@ -147,6 +143,9 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         ChatUser chatUser = new ChatUser();
         chatUser.setChat(chat);
         chatUser.setUserId(userId);
+        AccountUserWeb accountUserWeb = userAccountControllerSender.getBaseUserInfo(userId);
+        chatUser.setFirstName(accountUserWeb.getFirstName());
+        chatUser.setLastName(accountUserWeb.getLastName());
         chatUser = setIsActiveTrue(chatUser);
         return chatUser;
     }

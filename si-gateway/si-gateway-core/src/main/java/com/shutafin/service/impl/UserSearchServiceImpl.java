@@ -1,7 +1,7 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.web.common.FiltersWeb;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
+import com.shutafin.model.web.common.FiltersWeb;
 import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.user.UserBaseResponse;
 import com.shutafin.sender.account.UserFilterControllerSender;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,11 +29,19 @@ public class UserSearchServiceImpl implements UserSearchService {
         return userFilterControllerSender.getFilteredUsers(authenticatedUserId, new AccountUserFilterRequest(users,fullName));
     }
 
+    @Override
+    public List<UserSearchResponse> userSearchByMap(Long authenticatedUserId, Map<Long, Integer> users, String fullName) {
+        List<Long> usersList = new ArrayList<>(users.keySet());
+        List<UserSearchResponse> userSearchResponses = userFilterControllerSender.getFilteredUsers(authenticatedUserId, new AccountUserFilterRequest(usersList, null));
+        return userSearchResponses.stream().peek(r-> r.setScore(users.get(r.getUserId()))).collect(Collectors.toList());
+    }
 
     @Override
-    public List<UserSearchResponse> userSearchByList(Long authenticatedUserId, List<Long> users, FiltersWeb filtersWeb) {
+    public List<UserSearchResponse> userSearchByMap(Long authenticatedUserId, Map<Long, Integer> users, FiltersWeb filtersWeb) {
         userFilterControllerSender.saveUserFilters(authenticatedUserId, filtersWeb);
-        return userFilterControllerSender.getFilteredUsers(authenticatedUserId, new AccountUserFilterRequest(users, null));
+        List<Long> usersList = new ArrayList<>(users.keySet());
+        List<UserSearchResponse> userSearchResponses = userFilterControllerSender.getFilteredUsers(authenticatedUserId, new AccountUserFilterRequest(usersList, null));
+        return userSearchResponses.stream().peek(r-> r.setScore(users.get(r.getUserId()))).collect(Collectors.toList());
     }
 
     @Override

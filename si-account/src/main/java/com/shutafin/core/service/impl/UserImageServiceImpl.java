@@ -5,6 +5,7 @@ import com.shutafin.core.service.ImageCompressService;
 import com.shutafin.core.service.UserImageService;
 import com.shutafin.model.entities.ImageStorage;
 import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.types.CompressionType;
@@ -12,6 +13,7 @@ import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.ImageStorageRepository;
 import com.shutafin.repository.account.ImagePairRepository;
+import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserImageRepository;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +54,9 @@ public class UserImageServiceImpl implements UserImageService {
     @Autowired
     private ImagePairRepository imagePairRepository;
 
+    @Autowired
+    private UserAccountRepository userAccountRepository;
+
     @Override
     @Transactional
     public UserImage addUserImage(AccountUserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
@@ -85,6 +90,15 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
+    public UserImage getUserImage(Long userId) {
+        UserAccount userAccount = userAccountRepository.findByUserId(userId);
+        if(userAccount.getUserImage()==null){
+            return new UserImage();
+        }
+        return userAccount.getUserImage();
+    }
+
+    @Override
     @Transactional
     public void deleteUserImage(User user, Long userImageId) {
         UserImage userImage = this.getUserImage(user, userImageId);
@@ -110,6 +124,11 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     public UserImage getOriginalUserImage(UserImage compressedUserImage) {
         return imagePairRepository.findOriginalUserImage(compressedUserImage);
+    }
+
+    @Override
+    public UserImage getOriginalUserImage(Long userId) {
+        return getOriginalUserImage(getUserImage(userId));
     }
 
     @Override

@@ -3,10 +3,10 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
     var vm = this;
 
     function activateMessenger() {
-        messengerChannelService.notifyListOfChatObservers();
-        if (messengerCurrentDataService.currentChat.id) {
-            activateChannel(messengerCurrentDataService.currentChat);
-        }
+            messengerChannelService.notifyListOfChatObservers();
+            if (messengerCurrentDataService.currentChat.id) {
+                activateChannel(messengerCurrentDataService.currentChat);
+            }
     }
 
     function sendMessage(userData) {
@@ -14,12 +14,13 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
             return;
         }
         var activeChat = messengerChannelService.findActiveChatWithUser(userData);
-
         /** Checks criteria for opening existing chat with user*/
         if (activeChat && activeChat.length > 0) {
             activateChannel(activeChat[0]);
         }
-        else{addChat(userData);}
+        else {
+            addChat(userData);
+        }
     }
 
     function addChat(userData) {
@@ -27,6 +28,7 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
         messengerModel.addChat(vm.chatName, userData.userId).then(
             function (success) {
                 vm.currentChat = success.data.data;
+                messengerChannelService.subscribeNewChannel(vm.currentChat.id);
                 messengerCurrentDataService.setCurrentChat(vm.currentChat);
                 messengerCurrentDataService.removeMessages();
                 messengerChannelService.updateListOfChats(vm.currentChat);

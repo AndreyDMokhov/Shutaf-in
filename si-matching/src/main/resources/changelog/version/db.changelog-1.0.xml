@@ -361,7 +361,7 @@
         <insert tableName="I_QUESTION_LOCALE">
             <column name="QUESTION_ID" value="2"/>
             <column name="LANGUAGE_ID" value="2"/>
-            <column name="DESCRIPTION" value="Отножение к домашним животным"/>
+            <column name="DESCRIPTION" value="Отношение к домашним животным"/>
         </insert>
         <insert tableName="I_QUESTION_LOCALE">
             <column name="QUESTION_ID" value="3"/>

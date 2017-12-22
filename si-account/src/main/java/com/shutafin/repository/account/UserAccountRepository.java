@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface UserAccountRepository extends BaseJpaRepository<UserAccount, Long>, UserAccountRepositoryCustom {
     UserAccount findByUser(User user);
+    UserAccount findByUserId (Long userId);
     List<UserAccount> findAllByAccountStatusAndAccountType(AccountStatus accountStatus, AccountType accountType);
 
 }

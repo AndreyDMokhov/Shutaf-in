@@ -132,7 +132,7 @@ public class LoginControllerTest extends BaseTestImpl {
 
     private AccountUserWeb createUser() {
         AccountUserWeb user = new AccountUserWeb();
-        user.setId(2L);
+        user.setUserId(2L);
         user.setFirstName("User");
         user.setLastName("User");
         return user;

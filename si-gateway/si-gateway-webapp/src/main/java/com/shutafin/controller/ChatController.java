@@ -38,13 +38,12 @@ public class ChatController {
 
     @Autowired
     private ChatInfoService chatInfoService;
-    //TODO moved to matching service
+
     @Autowired
     private UserMatchService userMatchService;
 
     @Autowired
     private UserSearchService userSearchService;
-
 
     @GetMapping(value = "/new/{chat_title}/{user_id}")
     public ChatWithUsersListDTO addChat(@PathVariable("chat_title") String chatTitle,
@@ -99,9 +98,9 @@ public class ChatController {
     @SendTo("/api/subscribe/chat/{chat_id}")
     public ChatMessageResponse send(@DestinationVariable("chat_id") Long chatId,
                                     Message<ChatMessageRequest> message,
-                                    @AuthenticatedUser Long authenticatedUserId) {
+                                    @AuthenticatedUser Long userId) {
 
-        ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, authenticatedUserId);
+        ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, userId);
         ChatMessageRequest chatMessageRequest = message.getPayload();
         ChatMessage chatMessage = chatManagementService.saveChatMessage(chatUser, chatMessageRequest);
         return createChatMessageOutputWeb(chatMessage);
@@ -140,13 +139,12 @@ public class ChatController {
     }
 
     private ChatMessageResponse createChatMessageOutputWeb(ChatMessage chatMessage) {
-        //todo ms-account
         return ChatMessageResponse
                 .builder()
-                .userId(chatMessage.getUserId())
+                .userId(chatMessage.getChatUser().getUserId())
                 .messageId(chatMessage.getId())
-                .firstName("")
-                .lastName("")
+                .firstName(chatMessage.getChatUser().getFirstName())
+                .lastName(chatMessage.getChatUser().getLastName())
                 .createDate(chatMessage.getCreatedDate())
                 .message(chatMessage.getMessage())
                 .messageType(chatMessage.getMessageType().getId())

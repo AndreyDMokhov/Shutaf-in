@@ -42,6 +42,26 @@ public class UserImageController {
                 image.getCreatedDate().getTime());
     }
 
+    @GetMapping(value = "/{userId}/images", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getUserImageByUserId(@PathVariable("userId") Long userId) {
+        log.debug("/images/byId/{id}");
+        UserImage image = userImageService.getUserImage(userId);
+        return new AccountUserImageWeb(
+                image.getId(),
+                image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().getTime());
+    }
+
+    @GetMapping(value = "/{userId}/images/original", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getOriginalUserImageByUserId(@PathVariable("userId") Long userId) {
+        log.debug("/images/original/{id}");
+        UserImage image = userImageService.getOriginalUserImage(userId);
+        return new AccountUserImageWeb(
+                image.getId(),
+                image.getImageStorage().getImageEncoded(),
+                image.getCreatedDate().getTime());
+    }
+
     @PostMapping(value = "/{userId}/images", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb addUserImage(@PathVariable("userId") Long userId,
                                             @RequestBody @Valid AccountUserImageWeb image, BindingResult result) {

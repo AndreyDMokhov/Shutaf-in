@@ -1,5 +1,7 @@
 package com.shutafin.sender.account;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutafin.model.web.common.AgeRangeWebDTO;
 import com.shutafin.model.web.common.FiltersWeb;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
@@ -22,7 +24,9 @@ public class UserFilterControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/filter/%d", userId);
 
-       return new RestTemplate().postForEntity(url, accountUserFilterRequest, List.class).getBody();
+        return new ObjectMapper().convertValue(
+                new RestTemplate().postForEntity(url, accountUserFilterRequest, List.class)
+                        .getBody(), new TypeReference<List<UserSearchResponse>>() {});
     }
 
     public void saveUserFilters(Long userId, FiltersWeb filtersWeb) {

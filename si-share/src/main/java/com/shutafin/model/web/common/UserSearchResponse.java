@@ -34,6 +34,8 @@ public class UserSearchResponse {
 
     private Integer age;
 
+    private Integer score;
+
     public UserSearchResponse(Long userId, String firstName, String lastName, String userImage, Long userImageId, Integer genderId, Integer cityId, Integer countryId, Date dateOfBirth) {
         this.userId = userId;
         this.firstName = firstName;

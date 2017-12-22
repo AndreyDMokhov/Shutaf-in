@@ -24,13 +24,25 @@ public class UserImageController {
     private UserImageService userImageService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getUserImage(@AuthenticatedUser Long userId, @PathVariable(value = "id") Long userImageId) {
+    public AccountUserImageWeb getUserImage(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "id") Long userImageId) {
         log.debug("/images/{id}");
-        return userImageService.getUserImage(userId, userImageId);
+        return userImageService.getUserImage(authenticatedUserId, userImageId);
+    }
+
+    @RequestMapping(value = "/compressed/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "userId") Long userId) {
+        log.debug("/images/{userId}");
+        return userImageService.getUserImage(userId);
+    }
+
+    @RequestMapping(value = "/original/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getOriginalUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "userId") Long userId) {
+        log.debug("/images/original/{userId}");
+        return userImageService.getOriginalUserImage(userId);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb addUserImage(@AuthenticatedUser Long userId,
+    public AccountUserImageWeb addUserImage(@AuthenticatedUser Long authenticatedUserId,
                                             @RequestBody @Valid AccountUserImageWeb image,
                                             BindingResult result) {
         log.debug("/images/");
@@ -40,20 +52,20 @@ public class UserImageController {
             throw new InputValidationException(result);
         }
 
-        return userImageService.addUserImage(image, userId);
+        return userImageService.addUserImage(image, authenticatedUserId);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserImage(@AuthenticatedUser Long userId,
+    public void deleteUserImage(@AuthenticatedUser Long authenticatedUserId,
                                 @PathVariable(value = "id") Long userImageId) {
         log.debug("/images/{id}");
-        userImageService.deleteUserImage(userId, userImageId);
+        userImageService.deleteUserImage(authenticatedUserId, userImageId);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<AccountUserImageWeb> getAllUserImages(@AuthenticatedUser Long userId) {
+    public List<AccountUserImageWeb> getAllUserImages(@AuthenticatedUser Long authenticatedUserId) {
         log.debug("/images/");
-        List<UserImage> allUserImages = userImageService.getAllUserImages(userId);
+        List<UserImage> allUserImages = userImageService.getAllUserImages(authenticatedUserId);
         return allUserImages
                 .stream()
                 .map(x -> new AccountUserImageWeb(

@@ -40,7 +40,7 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
 
                 webSocketService.getConnection();
-                messengerChannelService.initWsConnection();
+                messengerChannelService.initWsSubscription();
                 deferred.resolve(success.data);
             }, function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
