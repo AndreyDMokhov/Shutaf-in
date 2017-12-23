@@ -7,6 +7,7 @@ import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.entities.UserInfo;
 import com.shutafin.model.web.account.AccountUserInfoRequest;
 import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
+import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.repository.account.*;
 import com.shutafin.repository.locale.CityRepository;
 import com.shutafin.repository.locale.GenderRepository;
@@ -152,5 +153,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .append(emailDomain)
                 .append(rootDomain);
         return uglifiedEmail.toString();
+    }
+
+    @Override
+    public UserSearchResponse findUserSearchInfo(Long userId) {
+        return userInfoRepository.getUserSearchResponseByUserId(userId);
     }
 }

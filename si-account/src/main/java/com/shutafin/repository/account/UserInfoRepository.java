@@ -42,5 +42,14 @@ public interface UserInfoRepository extends BaseJpaRepository<UserInfo, Long> {
             " WHERE uin.user.id=u.id and uin.user.id=uic.user.id and uin.user.id in (:usersIdList)")
     List<UserSearchResponse> getUserSearchListByUserId(@Param("usersIdList") List<Long> usersIdList);
 
+    @Query("SELECT new com.shutafin.model.web.common.UserSearchResponse " +
+            "( u.id, u.firstName, u.lastName, " +
+            " ist.imageEncoded, uim.id, " +
+            " uin.gender.id, uin.currentCity.id, city.country.id, uin.dateOfBirth) " +
+            " FROM UserInfo uin left join uin.currentCity city, User u, " +
+            " UserAccount uic left join uic.userImage uim left join uim.imageStorage ist" +
+            " WHERE uin.user.id = :userId")
+    UserSearchResponse getUserSearchResponseByUserId(@Param("userId") Long usersId);
+
 
 }

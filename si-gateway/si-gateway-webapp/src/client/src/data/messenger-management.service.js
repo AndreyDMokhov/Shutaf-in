@@ -3,10 +3,10 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
     var vm = this;
 
     function activateMessenger() {
-            messengerChannelService.notifyListOfChatObservers();
-            if (messengerCurrentDataService.currentChat.id) {
-                activateChannel(messengerCurrentDataService.currentChat);
-            }
+        messengerChannelService.notifyListOfChatObservers();
+        if (messengerCurrentDataService.currentChat.id) {
+            activateChannel(messengerCurrentDataService.currentChat);
+        }
     }
 
     function sendMessage(userData) {
@@ -17,8 +17,7 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
         /** Checks criteria for opening existing chat with user*/
         if (activeChat && activeChat.length > 0) {
             activateChannel(activeChat[0]);
-        }
-        else {
+        } else {
             addChat(userData);
         }
     }

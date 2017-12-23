@@ -4,11 +4,11 @@ import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.FiltersWeb;
 import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.user.UserBaseResponse;
+import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.sender.account.UserFilterControllerSender;
 import com.shutafin.service.UserSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,13 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Transactional
 public class UserSearchServiceImpl implements UserSearchService {
 
     @Autowired
     public UserFilterControllerSender userFilterControllerSender;
 
+    @Autowired
+    private UserAccountControllerSender userAccountControllerSender;
 
     @Override
     public List<UserSearchResponse> userSearchByList(Long authenticatedUserId, List<Long> users, String fullName) {
@@ -54,6 +55,6 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     public UserSearchResponse findUserDataById(Long userId) {
-        return null;
+        return userAccountControllerSender.getUserSearchObject(userId);
     }
 }

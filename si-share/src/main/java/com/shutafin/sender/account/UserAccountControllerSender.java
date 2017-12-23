@@ -2,6 +2,7 @@ package com.shutafin.sender.account;
 
 import com.shutafin.model.web.account.*;
 import com.shutafin.model.web.common.LanguageWeb;
+import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,14 +78,13 @@ public class UserAccountControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 "/users/info-base";
 
-        //TODO didn't work with get method
-//        return new RestTemplate().getForEntity(
-//                url,
-//                List.class,
-//                new HashMap<String, Object>() {{
-//                    put("userIds", userIds);
-//                }}).getBody();
-
         return new RestTemplate().postForEntity(url, userIds, List.class).getBody();
+    }
+
+    public UserSearchResponse getUserSearchObject(Long userId) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/info-search/%d", userId);
+
+        return new RestTemplate().getForEntity(url, UserSearchResponse.class).getBody();
     }
 }

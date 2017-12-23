@@ -9,6 +9,7 @@ import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.*;
 import com.shutafin.model.web.common.LanguageWeb;
+import com.shutafin.model.web.common.UserSearchResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -122,6 +123,11 @@ public class UserAccountController {
             accountUserWebs.add(getBaseInfo(userId));
         }
         return accountUserWebs;
+    }
+
+    @GetMapping(value = "/info-search/{userId}")
+    public UserSearchResponse getUserSearchObject(@PathVariable("userId") Long userId) {
+        return userInfoService.findUserSearchInfo(userId);
     }
 
     private void checkBindingResult(BindingResult result) {
