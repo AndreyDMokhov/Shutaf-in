@@ -18,12 +18,12 @@ app.component('channelComponent', {
             if (!newChatData) {
                 checkChatTitlesList();
                 angular.forEach(vm.listOfChats, function (item) {
-                    findAndSaveUserImagesToStorage(item.usersInChat)
+                    findAndSaveUserImagesToStorage(item.usersInChat);
                 });
             }
             else {
                 checkOneChatTitle(newChatData);
-                findAndSaveUserImagesToStorage(newChatData.usersInChat)
+                findAndSaveUserImagesToStorage(newChatData.usersInChat);
             }
         }
 
