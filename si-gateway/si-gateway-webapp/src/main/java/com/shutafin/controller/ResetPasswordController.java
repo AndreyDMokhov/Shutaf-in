@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.validation.InputValidationException;
-import com.shutafin.model.web.user.EmailWeb;
+import com.shutafin.model.web.account.AccountEmailRequest;
 import com.shutafin.model.web.user.PasswordWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.ResetPasswordService;
@@ -23,7 +23,7 @@ public class ResetPasswordController {
     private ResetPasswordService resetPasswordService;
 
     @RequestMapping(value = "/request", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void resetPasswordRequest(@RequestBody @Valid EmailWeb emailWeb, BindingResult result) {
+    public void resetPasswordRequest(@RequestBody @Valid AccountEmailRequest emailWeb, BindingResult result) {
         log.debug("/reset-password/request");
         checkBindingResult(result);
         resetPasswordService.resetPasswordRequest(emailWeb);

@@ -1,15 +1,14 @@
-app.directive('channelDirective', function (messengerModel, webSocketService, $sessionStorage, ngDialog) {
+app.directive('channelDirective', function (messengerModel, webSocketService, $sessionStorage,
+                                            ngDialog, messengerCurrentDataService, messengerManagementService, messengerChannelService) {
     return {
         restrict: "E",
         scope: {
             chatData: '='
         },
         templateUrl: 'partials/messenger/components/channel-component/channel-directive/channel.html',
-        require: '^channelComponent',
 
-        link: function (scope, element, attrs, ctrl) {
+        link: function (scope, element, attrs) {
 
-            var destination = '/api/subscribe/chat/' + scope.chatData.id;
             scope.messages = [];
             scope.lastMessage = {};
             scope.characterLimit = 20;
@@ -18,36 +17,30 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
             var messageIdList = [];
             var chatElement = angular.element(element[0].children[0]);
 
-            function initWsConnection() {
-                if (!webSocketService.isConnectionReady()) {
-                    setTimeout(function () {
-                        initWsConnection();
-                    }, 1000);
-                }
-                else {
-                    _doSubscribe(destination);
-                }
+            //TODO: move the whole messages logic to service
+            function registerInit() {
+                messengerChannelService.registerInitChannelObservers(init);
             }
 
-            function _doSubscribe(destination) {
-                webSocketService.subscribe(destination).then(null, null,
-                    function (message) {
-                        addChatMessage(message);
-                    });
-                /**
-                 *  Should be called after getting status: connection is ready,
-                 *  other way subscription happens twice on the same channel.
-                 */
-                webSocketService.registerObserverCallback(initWsConnection);
+            function init() {
+                    messengerChannelService.registerChannelObserver(activateChannel);
+                    messengerChannelService.registerChannelMessagesCallbacks(addChatMessage, scope.chatData.id);
+            }
+
+            function activateChannel(channel) {
+                if (channel && channel.id === scope.chatData.id) {
+                    updateMessagesAsRead();
+                    messengerCurrentDataService.setMessages(scope.messages);
+                }
             }
 
             function addChatMessage(message) {
                 markMessageNotRead(message);
                 scope.messages.push(message);
                 scope.lastMessage = message;
-                if (ctrl.currentChat.id === scope.chatData.id) {
-                    ctrl.updateChatMessages(scope.messages);
+                if (messengerCurrentDataService.currentChat.id === scope.chatData.id) {
                     updateMessagesAsRead();
+                    messengerCurrentDataService.setMessages(scope.messages);
                 }
             }
 
@@ -62,8 +55,8 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
 
             scope.enterChat = function () {
                 updateMessagesAsRead();
-                ctrl.updateCurrentChatRoom(scope.chatData);
-                ctrl.updateChatMessages(scope.messages);
+                messengerCurrentDataService.setMessages(scope.messages);
+                messengerCurrentDataService.setCurrentChat(scope.chatData);
             };
 
             function findNewMessages() {
@@ -99,7 +92,7 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
             }
 
             scope.deleteChat = function () {
-               ctrl.removeChat(scope.chatData);
+                messengerManagementService.removeChat(scope.chatData);
             };
 
             scope.editChatTitle = function () {
@@ -115,12 +108,12 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
             scope.setNewChatTitle = function (newChatTitle) {
                 scope.dialog.close();
                 if (newChatTitle) {
-                    ctrl.renameChat(scope.chatData.id, newChatTitle);
+                    messengerManagementService.renameChat(scope.chatData, newChatTitle);
                 }
             };
 
             getAllMessages();
-            initWsConnection();
+            registerInit();
         }
     };
 });

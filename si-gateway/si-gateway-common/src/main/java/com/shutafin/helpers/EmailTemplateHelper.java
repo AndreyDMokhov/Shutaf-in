@@ -3,10 +3,7 @@ package com.shutafin.helpers;
 
 import java.util.Map;
 
-/**
- * Created by Edward Kats.
- * 03 / Jul / 2017
- */
+@Deprecated
 public class EmailTemplateHelper {
 
 

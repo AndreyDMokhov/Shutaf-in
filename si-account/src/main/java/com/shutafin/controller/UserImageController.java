@@ -6,7 +6,7 @@ import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.types.CompressionType;
 import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.web.user.UserImageWeb;
+import com.shutafin.model.web.account.AccountUserImageWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,30 +16,35 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/users")
 @Slf4j
 public class UserImageController {
 
-    @Autowired
     private UserImageService userImageService;
-
-    @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/{userImageId}/users/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb getUserImage(@PathVariable("userId") Long userId,
-                                     @PathVariable(value = "userImageId") Long userImageId) {
+    @Autowired
+    public UserImageController(
+            UserImageService userImageService,
+            UserService userService) {
+        this.userImageService = userImageService;
+        this.userService = userService;
+    }
+
+    @GetMapping(value = "/{userId}/images/{userImageId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getUserImage(@PathVariable("userId") Long userId,
+                                            @PathVariable(value = "userImageId") Long userImageId) {
         log.debug("/images/{id}");
         UserImage image = userImageService.getUserImage(userService.findUserById(userId), userImageId);
-        return new UserImageWeb(
+        return new AccountUserImageWeb(
                 image.getId(),
                 image.getImageStorage().getImageEncoded(),
                 image.getCreatedDate().getTime());
     }
 
-    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public UserImageWeb addUserImage(@RequestParam("userId") Long userId,
-                                     @RequestBody @Valid UserImageWeb image, BindingResult result) {
+    @PostMapping(value = "/{userId}/images", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb addUserImage(@PathVariable("userId") Long userId,
+                                            @RequestBody @Valid AccountUserImageWeb image, BindingResult result) {
         log.debug("/images/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
@@ -52,15 +57,15 @@ public class UserImageController {
                 PermissionType.PRIVATE,
                 CompressionType.NO_COMPRESSION);
 
-        return new UserImageWeb(
+        return new AccountUserImageWeb(
                 userImage.getId(),
                 null,
                 userImage.getCreatedDate().getTime());
     }
 
-    @DeleteMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserImage(Long userId,
-                                @PathVariable(value = "id") Long userImageId) {
+    @DeleteMapping(value = "/{userId}/images/{userImageId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void deleteUserImage(@PathVariable("userId") Long userId,
+                                @PathVariable(value = "userImageId") Long userImageId) {
         log.debug("/images/{id}");
         userImageService.deleteUserImage(userService.findUserById(userId), userImageId);
     }

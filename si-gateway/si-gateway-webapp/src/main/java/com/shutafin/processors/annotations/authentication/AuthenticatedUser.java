@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthenticatedUser {
 
-    AuthenticatedUserType value() default AuthenticatedUserType.USER;
+    AuthenticatedUserType value() default AuthenticatedUserType.USER_ID;
 
 }
 

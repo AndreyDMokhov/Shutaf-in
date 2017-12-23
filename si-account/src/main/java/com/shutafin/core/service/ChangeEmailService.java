@@ -1,8 +1,11 @@
 package com.shutafin.core.service;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.EmailChangeWeb;
+import com.shutafin.model.web.account.AccountEmailChangeRequest;
+import com.shutafin.model.web.account.AccountEmailChangeValidationRequest;
+import com.shutafin.model.web.email.EmailNotificationWeb;
 
 public interface ChangeEmailService {
-    boolean changeEmail(User user, EmailChangeWeb emailChangeWeb);
+    EmailNotificationWeb changeEmailChangeValidationRequest(User user, AccountEmailChangeValidationRequest emailChangeWeb);
+    void changeEmailChangeRequest(User user, AccountEmailChangeRequest emailChangeWeb);
 }

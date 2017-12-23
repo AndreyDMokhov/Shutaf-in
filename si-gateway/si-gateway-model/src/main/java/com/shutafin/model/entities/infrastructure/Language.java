@@ -24,6 +24,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Getter
 @Setter
+@Deprecated
 public class Language extends AbstractConstEntity {
     @Column(name = "LANGUAGE_NATIVE_NAME", nullable = false, length = 100)
     private String languageNativeName;

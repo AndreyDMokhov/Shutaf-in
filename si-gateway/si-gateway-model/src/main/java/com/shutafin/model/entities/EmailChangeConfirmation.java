@@ -15,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Setter
 @Getter
+@Deprecated
 public class EmailChangeConfirmation extends AbstractEntity {
 
     @JoinColumn(name = "USER_ID", nullable = false)

@@ -2,10 +2,11 @@ package com.shutafin.service.impl.chat;
 
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
-import com.shutafin.model.entities.ChatUser;
-import com.shutafin.model.entities.User;
+import com.shutafin.model.web.account.AccountUserWeb;
+import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatUserRepository;
+import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.service.ChatInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,30 +32,29 @@ public class ChatInfoServiceImpl implements ChatInfoService {
     private ChatMessageRepository chatMessageRepository;
 
 
+    @Autowired
+    private UserAccountControllerSender userAccountControllerSender;
+
     @Override
     @Transactional(readOnly = true)
-    public List<Chat> getListChats(User user) {
-        return chatUserRepository.findChatActiveUsers(user);
+    public List<ChatWithUsersListDTO> getListChats(Long userId) {
+        List<ChatWithUsersListDTO> chats = chatUserRepository.findChatsWithActiveUsers(userId);
+        for (ChatWithUsersListDTO chat : chats) {
+            List<Long> activeUsers = chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), userId);
+            List<AccountUserWeb> baseUserInfos = userAccountControllerSender.getBaseUserInfos(activeUsers);
+
+            chat.setUsersInChat(baseUserInfos);
+        }
+        return chats;
     }
 
-
-
     @Override
     @Transactional(readOnly = true)
-    public List<User> getListUsersByChatId(Chat chat, User user) {
-        List<ChatUser> chatUsers = chatUserRepository.findChatUsersByChatAndIsActiveUserTrue(chat);
-        return chatUsers.stream().map(ChatUser::getUser)
-                .filter(x -> !x.getId().equals(user.getId()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ChatMessage> getListMessages(Chat chat, User user) {
+    public List<ChatMessage> getListMessages(Chat chat, Long userId) {
         List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByChat(chat);
         chatMessages = chatMessages
                 .stream()
-                .filter(x -> x.getPermittedUsers().contains(user.getId()))
+                .filter(x -> x.getPermittedUsers().contains(userId))
                 .collect(Collectors.toList());
         return chatMessages;
     }

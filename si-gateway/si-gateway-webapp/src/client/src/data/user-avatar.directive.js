@@ -28,7 +28,7 @@ angular.module('app').directive('userAvatar', function (Restangular, $sessionSto
                     return scope.image = 'data:image/jpeg;base64,' + scope.image;
                 }
             };
-
+            //TODO move image getting logic fully to this directive
             function findUserImage() {
                 if ($sessionStorage.userProfile.userId === parseInt(scope.userId)) {
                     scope.currentUser = $sessionStorage.userProfile;

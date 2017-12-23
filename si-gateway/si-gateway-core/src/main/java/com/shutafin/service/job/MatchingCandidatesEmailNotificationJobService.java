@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+    // MS-matching
 @Component
 public class MatchingCandidatesEmailNotificationJobService {
 
@@ -53,7 +54,7 @@ public class MatchingCandidatesEmailNotificationJobService {
     }
 
 
-//    @Scheduled(cron = "0 0 0 * * *")
+    //    @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void sendEmailNotification() {
         List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(AccountStatus.CONFIRMED, AccountType.REGULAR);
@@ -61,13 +62,14 @@ public class MatchingCandidatesEmailNotificationJobService {
             User user = userAccount.getUser();
             //todo switch to general matching
             //todo add account status condition = matching completed
-            List<User> matchingUsers = userMatchService.findMatchingUsers(user);
+            List<User> matchingUsers = userMatchService.findMatchingUsers(user.getId());
             if (!matchingUsers.isEmpty()) {
                 sendEmail(userAccount, matchingUsers);
             }
         }
     }
 
+    // TODO: MS-email EmailNotificationSenderController.sendEmail()
     private void sendEmail(UserAccount userAccount, List<User> matchingUsers) {
         String link = "";
         String serverAddress = environmentConfigurationService.getServerAddress();
@@ -92,10 +94,10 @@ public class MatchingCandidatesEmailNotificationJobService {
 
     private byte[] getUserImage(User matchingUser) {
         String image;
-        if (userAccountService.findUserAccountProfileImage(matchingUser) == null) {
+        if (userAccountService.findUserAccountProfileImage(matchingUser.getId()) == null) {
             image = userImageService.getDefaultImageBase64();
         } else {
-            image = userAccountService.findUserAccountProfileImage(matchingUser).getImageStorage().getImageEncoded();
+            image = userAccountService.findUserAccountProfileImage(matchingUser.getId()).getImage();
         }
         return Base64.getDecoder().decode(image);
     }

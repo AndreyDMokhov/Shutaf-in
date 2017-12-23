@@ -3,10 +3,7 @@ package com.shutafin.model.entities.types;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-/**
- * Created by Edward Kats.
- * 03 / Jul / 2017
- */
+@Deprecated
 @Converter(autoApply = true)
 public class EmailReasonConverter implements AttributeConverter<EmailReason, Integer> {
 

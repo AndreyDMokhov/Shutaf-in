@@ -12,7 +12,7 @@ import com.shutafin.model.exception.exceptions.SystemException;
 import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.types.CompressionType;
 import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.web.user.UserImageWeb;
+import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     @Transactional
-    public UserImage updateProfileImage(UserImageWeb userImageWeb, User user) {
+    public UserImage updateProfileImage(AccountUserImageWeb userImageWeb, User user) {
         UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findByUser(user);
 
@@ -94,4 +94,8 @@ public class UserAccountServiceImpl implements UserAccountService {
         return userAccount;
     }
 
+    @Override
+    public UserAccount findUserAccountByUser(User user) {
+        return userAccountRepository.findByUser(user);
+    }
 }

@@ -1,10 +1,12 @@
 package com.shutafin.core.service.impl;
 
-import com.shutafin.core.service.UserImageService;
 import com.shutafin.core.service.UserInfoService;
-import com.shutafin.model.entities.*;
-import com.shutafin.model.web.user.UserInfoRequest;
-import com.shutafin.model.web.user.UserInfoResponseDTO;
+import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.UserAccount;
+import com.shutafin.model.entities.UserImage;
+import com.shutafin.model.entities.UserInfo;
+import com.shutafin.model.web.account.AccountUserInfoRequest;
+import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserInfoRepository;
 import com.shutafin.repository.account.UserRepository;
@@ -23,7 +25,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     private CityRepository cityRepository;
     private GenderRepository genderRepository;
     private UserAccountRepository userAccountRepository;
-    private UserImageService userImageService;
 
     @Autowired
     public UserInfoServiceImpl(
@@ -31,27 +32,25 @@ public class UserInfoServiceImpl implements UserInfoService {
             UserRepository userRepository,
             CityRepository cityRepository,
             GenderRepository genderRepository,
-            UserAccountRepository userAccountRepository,
-            UserImageService userImageService) {
+            UserAccountRepository userAccountRepository) {
         this.userInfoRepository = userInfoRepository;
         this.userRepository = userRepository;
         this.cityRepository = cityRepository;
         this.genderRepository = genderRepository;
         this.userAccountRepository = userAccountRepository;
-        this.userImageService = userImageService;
     }
 
     @Override
-    public void createUserInfo(UserInfoRequest userInfoRequest, User user) {
+    public void createUserInfo(AccountUserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = convertToUserInfo(userInfoRequest, user);
         userInfoRepository.save(userInfo);
     }
 
     @Override
-    public UserInfoResponseDTO getUserInfo(User user) {
+    public AccountUserInfoResponseDTO getUserInfo(User user) {
         UserAccount userAccount = userAccountRepository.findByUser(user);
 
-        UserInfoResponseDTO userInfoResponseDTO = UserInfoResponseDTO.builder()
+        AccountUserInfoResponseDTO userInfoResponseDTO = AccountUserInfoResponseDTO.builder()
                 .userId(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -77,19 +76,19 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         UserImage userImage = userAccount.getUserImage();
         if (userImage != null) {
-            userInfoResponseDTO.addUserImage(userImage);
+            userInfoResponseDTO.addUserImage(userImage.getId(), userImage.getImageStorage().getImageEncoded());
         }
 
         return userInfoResponseDTO;
     }
 
     @Override
-    public UserInfoResponseDTO getUserInfo(Long userId) {
+    public AccountUserInfoResponseDTO getUserInfo(Long userId) {
         return getUserInfo(userRepository.findOne(userId));
     }
 
     @Override
-    public void updateUserInfo(UserInfoRequest userInfoRequest, User user) {
+    public void updateUserInfo(AccountUserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = userInfoRepository.findByUser(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);
 
@@ -99,14 +98,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     }
 
-    private UserInfo convertToUserInfo(UserInfoRequest userInfoRequest, User user) {
+    private UserInfo convertToUserInfo(AccountUserInfoRequest userInfoRequest, User user) {
         UserInfo userInfo = new UserInfo();
         userInfo.setUser(user);
         userInfo = setUserInfoFields(userInfoRequest, userInfo);
         return userInfo;
     }
 
-    private UserInfo setUserInfoFields(UserInfoRequest userInfoRequest, UserInfo userInfo) {
+    private UserInfo setUserInfoFields(AccountUserInfoRequest userInfoRequest, UserInfo userInfo) {
         if (userInfoRequest.getCityId() != null) {
             userInfo.setCurrentCity(cityRepository.findOne(userInfoRequest.getCityId()));
         }

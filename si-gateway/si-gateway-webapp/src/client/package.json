@@ -4,9 +4,6 @@
   "description": "",
   "main": "index.html",
   "private": true,
-  "scripts": {
-    "postinstall": "bower install --save && gulp build"
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
