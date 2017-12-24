@@ -2,8 +2,7 @@
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li ng-class="{active : ('userProfile' | includedByState)}">
-
-                    <a class="navbar-brand" ng-show="!vm.sessionService.isAuthenticated()">
+                    <a class="navbar-brand hover-none" ng-show="!vm.sessionService.isAuthenticated()">
                         {{$root.brand}}
                     </a>
                     <a ng-show="vm.sessionService.isAuthenticated()"

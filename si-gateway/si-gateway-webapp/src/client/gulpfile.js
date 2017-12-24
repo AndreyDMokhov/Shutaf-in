@@ -179,10 +179,10 @@ gulp.task('eslint', function () {
 });
 
 gulp.task('less', function () {
-    return gulp.src('./src/styles/*.less')
+    return gulp.src(['./src/styles/*.less' ,  '!./src/styles/variables.less'])
         .pipe(less())
         .pipe(gulp.dest('./src/styles'));
-});
+});1
 
 
 // to run new server

@@ -14,11 +14,9 @@
 
     <h4> {{'Search.results'|translate}} {{vm.userSearchList.length}} </h4>
     <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
-    <div class="panel panel-custom" ng-repeat="user in vm.userSearchList">
-        <div class="panel-heading pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
-            <h4 class="panel-title">
-                {{ user.firstName }} {{ user.lastName }}
-            </h4>
+    <div class="card-custom" ng-repeat="user in vm.userSearchList">
+        <div class="card-header pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
+            <span>  {{ user.firstName }} {{ user.lastName }}</span>
             <span>{{'UserProfile.compatibility' | translate}}</span>
         </div>
         <div class="panel-body">
