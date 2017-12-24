@@ -3,16 +3,15 @@ package com.shutafin.core.service;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.types.CompressionType;
-import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 
 import java.util.List;
 
 public interface UserImageService {
 
-    UserImage addUserImage(AccountUserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType);
+    UserImage addUserImage(AccountUserImageWeb image, User user, CompressionType compressionType);
     UserImage getUserImage(User user, Long userImageId);
-    UserImage getUserImage(User user);
+    UserImage getDefaultUserImage(User user);
     void deleteUserImage(User user, Long userImageId);
     void createUserImageDirectory(User user);
     List<UserImage> getAllUserImages(User user);

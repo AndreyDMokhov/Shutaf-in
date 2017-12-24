@@ -333,4 +333,9 @@
         <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="FILTER_GENDER" constraintName="FILTER_GENDER_GENDER_ID_I_GENDER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_gender"/>
     </changeSet>
 
+    <changeSet id="7" author="mikhailRogov">
+        <dropColumn columnName="PERMISSION_TYPE_ID"
+                    tableName="USER_IMAGE"/>
+    </changeSet>
+
 </databaseChangeLog>

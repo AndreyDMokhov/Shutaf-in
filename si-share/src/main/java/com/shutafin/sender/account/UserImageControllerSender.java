@@ -13,15 +13,7 @@ public class UserImageControllerSender {
     @Autowired
     private DiscoveryRoutingService routingService;
 
-
-    public AccountUserImageWeb getUserImage(Long userId, Long userImageId) {
-        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
-                String.format("/users/%d/images/%d", userId, userImageId);
-
-        return new RestTemplate().getForEntity(url, AccountUserImageWeb.class).getBody();
-    }
-
-    public AccountUserImageWeb getUserImageByUserId(Long userId) {
+    public AccountUserImageWeb getDefaultUserImageByUserId(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/images", userId);
 
