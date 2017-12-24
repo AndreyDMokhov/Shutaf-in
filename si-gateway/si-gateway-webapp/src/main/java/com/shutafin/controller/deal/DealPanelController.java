@@ -1,6 +1,5 @@
 package com.shutafin.controller.deal;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.deal.DealPanelResponse;
 import com.shutafin.model.web.deal.DealPanelWeb;
 import com.shutafin.model.web.deal.NewTitleWeb;
@@ -23,7 +22,7 @@ public class DealPanelController {
     private DealPanelService dealPanelService;
 
     @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealPanelResponse addDealPanel(@AuthenticatedUser User user, @RequestBody @Valid DealPanelWeb dealPanelWeb,
+    public DealPanelResponse addDealPanel(@AuthenticatedUser Long userId, @RequestBody @Valid DealPanelWeb dealPanelWeb,
                                           BindingResult result) {
         log.debug("/deal/panel/");
         if (result.hasErrors()) {
@@ -32,29 +31,29 @@ public class DealPanelController {
             throw new RuntimeException();
         }
 
-        return dealPanelService.addDealPanel(dealPanelWeb, user);
+        return dealPanelService.addDealPanel(dealPanelWeb, userId);
     }
 
     @GetMapping(value = "/{panelId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealPanelResponse getDealPanel(@AuthenticatedUser User user,
+    public DealPanelResponse getDealPanel(@AuthenticatedUser Long userId,
                                           @PathVariable(value = "panelId") Long dealPanelId) {
         log.debug("GET /deal/panel/{userId}/{panelId}");
-        return dealPanelService.getDealPanel(dealPanelId, user);
+        return dealPanelService.getDealPanel(dealPanelId, userId);
     }
 
     @PostMapping(value = "/{panelId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealPanelResponse renameDealPanel(@AuthenticatedUser User user,
+    public DealPanelResponse renameDealPanel(@AuthenticatedUser Long userId,
                                              @PathVariable(value = "panelId") Long dealPanelId,
                                              @RequestBody @Valid NewTitleWeb panelTitle) {
         log.debug("POST /deal/panel/{panelId}");
-        return dealPanelService.renameDealPanel(dealPanelId, user, panelTitle);
+        return dealPanelService.renameDealPanel(dealPanelId, userId, panelTitle);
     }
 
     @DeleteMapping(value = "/{panelId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteDealPanel(@AuthenticatedUser User user,
+    public void deleteDealPanel(@AuthenticatedUser Long userId,
                                 @PathVariable(value = "panelId") Long dealPanelId) {
         log.debug("DELETE /deal/panel/{userId}/{panelId}");
-        dealPanelService.deleteDealPanel(dealPanelId, user);
+        dealPanelService.deleteDealPanel(dealPanelId, userId);
     }
 }
