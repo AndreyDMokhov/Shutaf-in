@@ -14,31 +14,27 @@ import java.util.Map;
 
 @Component
 public class DealDocumentControllerSender {
-    private static String dealUrl;
-
+    
+    @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
 
-    @Autowired
-    public DealDocumentControllerSender(DiscoveryRoutingService discoveryRoutingService) {
-        this.discoveryRoutingService = discoveryRoutingService;
-        dealUrl = this.discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/documents/";
-    }
 
     public DealUserDocumentWeb addDealDocument(DealUserDocumentWeb dealUserDocumentWeb, Long userId) {
+        String requestUrl = getDealUrl();
         InternalDealUserDocumentWeb internalDealUserDocumentWeb = new InternalDealUserDocumentWeb();
         internalDealUserDocumentWeb.setUserId(userId);
         internalDealUserDocumentWeb.setDealPanelId(dealUserDocumentWeb.getDealPanelId());
         internalDealUserDocumentWeb.setDocumentTitle(dealUserDocumentWeb.getDocumentTitle());
         internalDealUserDocumentWeb.setDocumentTypeId(dealUserDocumentWeb.getDocumentTypeId());
         internalDealUserDocumentWeb.setFileData(dealUserDocumentWeb.getFileData());
-        internalDealUserDocumentWeb = new RestTemplate().postForEntity(dealUrl, internalDealUserDocumentWeb,
+        internalDealUserDocumentWeb = new RestTemplate().postForEntity(requestUrl, internalDealUserDocumentWeb,
                 InternalDealUserDocumentWeb.class).getBody();
         dealUserDocumentWeb.setId(internalDealUserDocumentWeb.getId());
         return dealUserDocumentWeb;
     }
 
     public DealUserDocumentWeb getDealDocument(Long userId, Long dealDocumentId) {
-        String requestUrl = dealUrl + "{userId}/{docId}";
+        String requestUrl = getDealUrl() + "{userId}/{docId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("userId", userId);
         uriVariables.put("docId", dealDocumentId);
@@ -46,7 +42,7 @@ public class DealDocumentControllerSender {
     }
 
     public void deleteDealDocument(Long userId, Long dealDocumentId) {
-        String requestUrl = dealUrl + "{userId}/{docId}";
+        String requestUrl = getDealUrl() + "{userId}/{docId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("userId", userId);
         uriVariables.put("docId", dealDocumentId);
@@ -54,7 +50,7 @@ public class DealDocumentControllerSender {
     }
 
     public DealUserDocumentWeb renameDealDocument(Long userId, Long dealDocumentId, NewTitleWeb newTitle) {
-        String requestUrl = dealUrl + "{userId}/{docId}";
+        String requestUrl = getDealUrl() + "{userId}/{docId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("userId", userId);
         uriVariables.put("docId", dealDocumentId);
@@ -62,4 +58,7 @@ public class DealDocumentControllerSender {
                 .getBody();
     }
 
+    private String getDealUrl() {
+        return discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/internal/deal/documents/";
+    }
 }

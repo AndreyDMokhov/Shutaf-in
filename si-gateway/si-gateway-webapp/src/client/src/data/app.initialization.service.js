@@ -36,6 +36,12 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 $sessionStorage.listOfChats = success.data.matchingInitializationResponse.listOfChats;
                 $sessionStorage.showExtendedQuestions = showExtendedQuestions();
 
+                $sessionStorage.dealStatuses = success.data.dealInitializationResponse.dealStatuses;
+                $sessionStorage.dealUserPermissions = success.data.dealInitializationResponse.dealUserPermissions;
+                $sessionStorage.dealUserStatuses = success.data.dealInitializationResponse.dealUserStatuses;
+                $sessionStorage.documentTypes = success.data.dealInitializationResponse.documentTypes;
+                $sessionStorage.permissionTypes = success.data.dealInitializationResponse.permissionTypes;
+
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
                 $sessionStorage.filters = success.data.filters;
                 webSocketService.getConnection();

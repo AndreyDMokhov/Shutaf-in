@@ -10,17 +10,11 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class DealInitializationControllerSender {
 
-    private static String dealUrl;
-
+    @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
 
-    @Autowired
-    public DealInitializationControllerSender(DiscoveryRoutingService discoveryRoutingService) {
-        this.discoveryRoutingService = discoveryRoutingService;
-        dealUrl = this.discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
-    }
     public DealInitializationResponse getDealInitializationResponse() {
-        String requestUrl = dealUrl + "initialization";
+        String requestUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/internal/deal/initialization";
         return new RestTemplate().getForEntity(requestUrl, DealInitializationResponse.class).getBody();
     }
 }

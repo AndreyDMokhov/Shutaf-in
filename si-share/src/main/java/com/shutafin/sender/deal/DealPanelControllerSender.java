@@ -15,23 +15,17 @@ import java.util.Map;
 @Component
 public class DealPanelControllerSender {
 
-    private static String dealUrl;
-
+    @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
 
-    @Autowired
-    public DealPanelControllerSender(DiscoveryRoutingService discoveryRoutingService) {
-        this.discoveryRoutingService = discoveryRoutingService;
-        dealUrl = this.discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/panel/";
-    }
 
     public DealPanelResponse addDealPanel(DealPanelWeb dealPanelWeb, Long userId) {
         dealPanelWeb.setUserId(userId);
-        return new RestTemplate().postForEntity(dealUrl, dealPanelWeb, DealPanelResponse.class).getBody();
+        return new RestTemplate().postForEntity(getDealUrl(), dealPanelWeb, DealPanelResponse.class).getBody();
     }
 
     public DealPanelResponse getDealPanel(Long dealPanelId, Long userId) {
-        String requestUrl = dealUrl + "{userId}/{panelId}";
+        String requestUrl = getDealUrl() + "{userId}/{panelId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("userId", userId);
         uriVariables.put("panelId", dealPanelId);
@@ -39,7 +33,7 @@ public class DealPanelControllerSender {
     }
 
     public DealPanelResponse renameDealPanel(Long dealPanelId, Long userId, NewTitleWeb newTitle) {
-        String requestUrl = dealUrl + "{userId}/{panelId}";
+        String requestUrl = getDealUrl() + "{userId}/{panelId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("userId", userId);
         uriVariables.put("panelId", dealPanelId);
@@ -47,11 +41,14 @@ public class DealPanelControllerSender {
     }
 
     public void deleteDealPanel(Long dealPanelId, Long userId) {
-        String requestUrl = dealUrl + "{userId}/{panelId}";
+        String requestUrl = getDealUrl() + "{userId}/{panelId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("userId", userId);
         uriVariables.put("panelId", dealPanelId);
         new RestTemplate().delete(requestUrl, uriVariables);
     }
     
+    private String getDealUrl() {
+        return discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/internal/deal/panel/";
+    }
 }

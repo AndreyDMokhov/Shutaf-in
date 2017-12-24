@@ -5,7 +5,7 @@ import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,52 +16,52 @@ import java.util.Map;
 @Component
 public class DealControllerSender {
 
-    private static String dealUrl;
-
+    @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
 
-    @Autowired
-    public DealControllerSender(DiscoveryRoutingService discoveryRoutingService) {
-        this.discoveryRoutingService = discoveryRoutingService;
-        dealUrl = this.discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
-    }
-
     public DealWeb initiateDeal(DealWeb dealWeb, Long userId) {
+        String requestUrl = getDealUrl();
         InternalDealWeb internalDealWeb = new InternalDealWeb();
         internalDealWeb.setOriginUserId(userId);
         internalDealWeb.setTitle(dealWeb.getTitle());
         internalDealWeb.setUsers(dealWeb.getUsers());
-        internalDealWeb = new RestTemplate().postForEntity(dealUrl, internalDealWeb, InternalDealWeb.class).getBody();
+        internalDealWeb = new RestTemplate().postForEntity(requestUrl, internalDealWeb, InternalDealWeb.class).getBody();
         dealWeb.setDealId(internalDealWeb.getDealId());
         dealWeb.setTitle(internalDealWeb.getTitle());
         return dealWeb;
     }
 
     public void confirmDealUser(Long dealId, Long userId) {
-        String requestUrl = dealUrl + "{dealId}/{userId}";
+        String requestUrl = getDealUrl() + "{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);
         uriVariables.put("userId", userId);
-        new RestTemplate().put(requestUrl, null, uriVariables);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        new RestTemplate().put(requestUrl, request, uriVariables);
     }
 
     public void leaveDeal(Long dealId, Long userId) {
-        String requestUrl = dealUrl + "leave/{dealId}/{userId}";
+        String requestUrl = getDealUrl() + "leave/{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);
         uriVariables.put("userId", userId);
-        new RestTemplate().put(requestUrl, null, uriVariables);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        new RestTemplate().put(requestUrl, request, uriVariables);
     }
 
     public void removeDealUser(Long dealId, Long userOriginId, Long userToRemoveId) {
-        String requestUrl = dealUrl + "remove";
+        String requestUrl = getDealUrl() + "remove";
         InternalDealRemoveUserWeb internalDealRemoveUserWeb = new InternalDealRemoveUserWeb(dealId, userOriginId,
                 userToRemoveId);
         new RestTemplate().put(requestUrl, internalDealRemoveUserWeb);
     }
 
     public List<DealUserWeb> getAllUserDeals(Long userId) {
-        String requestUrl = dealUrl + "all/{userId}";
+        String requestUrl = getDealUrl() + "all/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("userId", userId);
         return (List<DealUserWeb>) new RestTemplate().exchange(requestUrl, HttpMethod.GET, null,
@@ -69,7 +69,7 @@ public class DealControllerSender {
     }
 
     public DealResponse getDeal(Long dealId, Long userId) {
-        String requestUrl = dealUrl + "{dealId}/{userId}";
+        String requestUrl = getDealUrl() + "{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);
         uriVariables.put("userId", userId);
@@ -77,7 +77,7 @@ public class DealControllerSender {
     }
 
     public DealWeb renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb) {
-        String requestUrl = dealUrl + "rename/{dealId}/{userId}";
+        String requestUrl = getDealUrl() + "rename/{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);
         uriVariables.put("userId", userId);
@@ -85,11 +85,15 @@ public class DealControllerSender {
     }
 
     public void deleteDeal(Long dealId, Long userId) {
-        String requestUrl = dealUrl + "{dealId}/{userId}";
+        String requestUrl = getDealUrl() + "{dealId}/{userId}";
         Map<String, Long> uriVariables = new HashMap<>();
         uriVariables.put("dealId", dealId);
         uriVariables.put("userId", userId);
         new RestTemplate().delete(requestUrl, uriVariables);
+    }
+
+    private String getDealUrl() {
+        return discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/internal/deal/";
     }
     
 }
