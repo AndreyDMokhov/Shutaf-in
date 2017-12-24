@@ -15,18 +15,8 @@ app.component('messengerUiComponent', {
         vm.characterLimit = 15;
 
         function activate() {
-            if (!messengerChannelService.listOfChatsCallbacks) {
-                setTimeout(function () {
-                    activate();
-                }, 50);
-            }
-            else {
                 messengerCurrentDataService.registerCurrentChatObserver(updateCurrentChat);
                 getUserData();
-                angular.element(document).ready(function () {
-                    messengerManagementService.activateMessenger();
-                });
-            }
         }
 
         function updateCurrentChat() {

@@ -3,7 +3,7 @@ app.component('channelComponent', {
     bindings: {},
     controllerAs: 'vm',
 
-    controller: function (messengerModel, $sessionStorage, $filter, messengerChannelService, userSearchModel) {
+    controller: function (messengerModel, $sessionStorage, $filter, messengerChannelService, userSearchModel, messengerManagementService) {
 
         var vm = this;
 
@@ -11,6 +11,9 @@ app.component('channelComponent', {
 
         function activate() {
             messengerChannelService.registerListOfChatsObserver(updateListOfChats);
+            angular.element(document).ready(function () {
+                        messengerManagementService.activateMessenger();
+                    });
         }
 
         function updateListOfChats(newChatData) {
