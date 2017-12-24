@@ -2,7 +2,7 @@ package com.shutafin.repository.locale;
 
 import com.shutafin.model.infrastructure.Country;
 import com.shutafin.model.infrastructure.Language;
-import com.shutafin.model.web.locale.CountryResponseDTO;
+import com.shutafin.model.web.account.AccountCountryResponseDTO;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
@@ -15,9 +15,9 @@ import java.util.List;
 @Repository
 public interface CountryRepository extends BaseJpaRepository<Country, Integer> {
 
-    @Query("select new com.shutafin.model.web.locale.CountryResponseDTO  (  cl.country.id,  cl.description  ) from CountryLocale cl where cl.language = :language")
+    @Query("select new com.shutafin.model.web.account.AccountCountryResponseDTO (  cl.country.id,  cl.description  ) from CountryLocale cl where cl.language = :language")
     @QueryHints(value = {
             @QueryHint(name = "org.hibernate.cacheable", value = "true")
     }, forCounting = false)
-    List<CountryResponseDTO> getLocaleCountries(@Param("language") Language language);
+    List<AccountCountryResponseDTO> getLocaleCountries(@Param("language") Language language);
 }

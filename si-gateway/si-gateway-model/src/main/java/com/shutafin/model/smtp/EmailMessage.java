@@ -6,10 +6,7 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.Validate.*;
 
-/**
- * Created by Edward Kats.
- * 03 / Jul / 2017
- */
+@Deprecated
 public class EmailMessage {
 
     private BaseTemplate mailTemplate;

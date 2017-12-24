@@ -1,6 +1,5 @@
 package com.shutafin.controller.deal;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.deal.DealResponse;
 import com.shutafin.model.web.deal.DealUserWeb;
 import com.shutafin.model.web.deal.DealWeb;
@@ -25,7 +24,7 @@ public class DealController {
     private DealService dealService;
 
     @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealWeb initiateDeal(@AuthenticatedUser User user, @RequestBody @Valid DealWeb dealWeb, BindingResult result) {
+    public DealWeb initiateDeal(@AuthenticatedUser Long userId, @RequestBody @Valid DealWeb dealWeb, BindingResult result) {
         log.debug("/deal/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
@@ -33,42 +32,42 @@ public class DealController {
             throw new RuntimeException();
         }
 
-        return dealService.initiateDeal(dealWeb, user);
+        return dealService.initiateDeal(dealWeb, userId);
     }
 
     @PutMapping(value = "/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void confirmDealUser(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId) {
+    public void confirmDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId) {
         log.debug("/{dealId}");
-        dealService.confirmDealUser(dealId, user);
+        dealService.confirmDealUser(dealId, userId);
     }
 
     @PutMapping(value = "/leave/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void leaveDeal(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId) {
+    public void leaveDeal(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId) {
         log.debug("/leave/{dealId}");
-        dealService.leaveDeal(dealId, user);
+        dealService.leaveDeal(dealId, userId);
     }
 
     @PutMapping(value = "/remove/{dealId}/{userToRemoveId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void removeDealUser(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId,
+    public void removeDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
                                @PathVariable(value = "userToRemoveId") Long userToRemoveId) {
         log.debug("/remove/{dealId}/{userToRemoveId}");
-        dealService.removeDealUser(dealId, user, userToRemoveId);
+        dealService.removeDealUser(dealId, userId, userToRemoveId);
     }
 
     @GetMapping(value = "/all", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<DealUserWeb> getAllUserDeals(@AuthenticatedUser User user) {
+    public List<DealUserWeb> getAllUserDeals(@AuthenticatedUser Long userId) {
         log.debug("/all");
-        return dealService.getAllUserDeals(user);
+        return dealService.getAllUserDeals(userId);
     }
 
     @GetMapping(value = "{dealId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealResponse getDeal(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId) {
+    public DealResponse getDeal(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId) {
         log.debug("/{dealId}");
-        return dealService.getDeal(dealId, user);
+        return dealService.getDeal(dealId, userId);
     }
 
     @PostMapping(value = "/rename/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealWeb renameDeal(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId,
+    public DealWeb renameDeal(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
                               @RequestBody @Valid NewTitleWeb newTitle, BindingResult result) {
         log.debug("POST /rename/{dealId}");
         if (result.hasErrors()) {
@@ -76,12 +75,12 @@ public class DealController {
             log.warn(result.toString());
             throw new RuntimeException();
         }
-        return dealService.renameDeal(dealId, user, newTitle);
+        return dealService.renameDeal(dealId, userId, newTitle);
     }
 
     @DeleteMapping(value = "/{dealId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteDeal(@AuthenticatedUser User user, @PathVariable(value = "dealId") Long dealId) {
+    public void deleteDeal(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId) {
         log.debug("DELETE /deal/{dealId}/{userId}");
-        dealService.deleteDeal(dealId, user);
+        dealService.deleteDeal(dealId, userId);
     }
 }

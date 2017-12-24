@@ -147,7 +147,8 @@
   "Search.ChooseGender" : "Выберите пол",
   "Search.ChooseCity" : "Выберите город",
   "Search.ChooseButton" : "Выбрать",
-  "Search.ValueInCityButtonMoreThan3" : "Выбрано",
+  "Search.filter.button.selected" : "Выбрано",
+  "Search.sendMessage.button" : "Отправить сообщение",
 
   "SECTION" : "Questions",
   "Questions.title" : "Вопросы",
@@ -156,6 +157,9 @@
   "Questions.button.save" : "Сохранить",
   "Questions.delimiter": "из",
   "Questions.confirm" : "Ответы успешно сохранены",
+  "Questions.requiredQuestions" : "Обязательные вопросы",
+  "Questions.extendedQuestions" : "Дополнительные вопросы",
+
 
   "SECTION": "CHAT",
   "Chat.title": "Чат",

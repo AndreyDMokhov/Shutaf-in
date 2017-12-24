@@ -4,6 +4,7 @@ package com.shutafin.service.extended.impl;
 import com.shutafin.model.entities.extended.QuestionExtended;
 import com.shutafin.model.entities.extended.UserMatchingScore;
 import com.shutafin.model.entities.extended.UserQuestionExtendedAnswer;
+import com.shutafin.repository.UserExamKeyRepository;
 import com.shutafin.repository.extended.MaxUserMatchingScoreRepository;
 import com.shutafin.repository.extended.UserMatchingScoreRepository;
 import com.shutafin.service.UserMatchService;
@@ -23,20 +24,27 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
 
     private static final Double BASIC_MATCHING_SCORE = 30.;
 
-    @Autowired
     private AnswerSimilarityService answerSimilarityService;
 
-    @Autowired
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
-    @Autowired
     private UserMatchService userMatchService;
 
-    @Autowired
     private UserMatchingScoreRepository userMatchingScoreRepository;
 
-    @Autowired
     private MaxUserMatchingScoreRepository maxUserMatchingScoreRepository;
+
+    private UserExamKeyRepository userExamKeyRepository;
+
+    @Autowired
+    public CoreMatchingServiceImpl(AnswerSimilarityService answerSimilarityService, UserQuestionExtendedAnswerService userQuestionExtendedAnswerService, UserMatchService userMatchService, UserMatchingScoreRepository userMatchingScoreRepository, MaxUserMatchingScoreRepository maxUserMatchingScoreRepository, UserExamKeyRepository userExamKeyRepository) {
+        this.answerSimilarityService = answerSimilarityService;
+        this.userQuestionExtendedAnswerService = userQuestionExtendedAnswerService;
+        this.userMatchService = userMatchService;
+        this.userMatchingScoreRepository = userMatchingScoreRepository;
+        this.maxUserMatchingScoreRepository = maxUserMatchingScoreRepository;
+        this.userExamKeyRepository = userExamKeyRepository;
+    }
 
     @Override
     public UserMatchingScore evaluateUserMatchingScore(Long userOriginId, Long userToMatchId) {
@@ -114,12 +122,12 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
         return maxAnswerSimilarityScore;
 
     }
-    //TODO establish connection with account service to get all active users
+
     @Override
     public void evaluateAllUserMatchingScores() {
-//        for (User userOrigin : userRepository.findAll()) {
-//            evaluateUserMatchingScores(userOrigin);
-//        }
+        for (Long userOrigin : userExamKeyRepository.findAllUserIds()) {
+            evaluateUserMatchingScores(userOrigin);
+        }
     }
 
     private void evaluateUserMatchingScores(Long userOriginId) {

@@ -1,8 +1,8 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.LoginWebModel;
+import com.shutafin.model.web.account.AccountLoginRequest;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.service.LoginService;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.system.BaseTestImpl;
@@ -17,9 +17,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Mockito.any;
@@ -46,14 +44,14 @@ public class LoginControllerTest extends BaseTestImpl {
 
     @Before
     public void SetUp() {
-        Mockito.when(loginService.getUserByLoginWebModel(any(LoginWebModel.class))).thenReturn(createUser());
-        Mockito.when(sessionManagementService.generateNewSession(any(User.class))).thenReturn(SESSION_ID);
+        Mockito.when(loginService.getUserByLoginWebModel(any(AccountLoginRequest.class))).thenReturn(createUser());
+        Mockito.when(sessionManagementService.generateNewSession(any(AccountUserWeb.class))).thenReturn(SESSION_ID);
         errorList = new ArrayList<>();
     }
 
     @Test
     public void LoginRequestObject_Positive() {
-        LoginWebModel loginWebModel = new LoginWebModel();
+        AccountLoginRequest loginWebModel = new AccountLoginRequest();
         loginWebModel.setEmail("email@site.com");
         loginWebModel.setPassword("12345678");
         ControllerRequest request = ControllerRequest.builder()
@@ -132,13 +130,11 @@ public class LoginControllerTest extends BaseTestImpl {
         assertInputValidationError(LOGIN_REQUEST_URL, loginWebModelJson, errorList);
     }
 
-    private User createUser() {
-        User user = new User();
+    private AccountUserWeb createUser() {
+        AccountUserWeb user = new AccountUserWeb();
         user.setId(2L);
-        user.setEmail("a@a");
         user.setFirstName("User");
         user.setLastName("User");
-        user.setCreatedDate(Date.from(Instant.now()));
         return user;
     }
 

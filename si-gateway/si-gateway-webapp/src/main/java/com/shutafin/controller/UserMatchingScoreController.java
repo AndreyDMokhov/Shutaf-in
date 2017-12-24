@@ -1,7 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.UserQuestionExtendedAnswersWeb;
+import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchingScoreService;
 import com.shutafin.service.UserQuestionExtendedAnswerService;
@@ -26,13 +25,13 @@ public class UserMatchingScoreController {
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<Long, Integer> getUserMatchingScores(@AuthenticatedUser User user) {
-        return userMatchingScoreService.getUserMatchingScores(user);
+    public Map<Long, Integer> getUserMatchingScores(@AuthenticatedUser Long authenticatedUserId) {
+        return userMatchingScoreService.getUserMatchingScores(authenticatedUserId);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void addUserQuestionExtendedAnswers(@AuthenticatedUser User user,
+    public void addUserQuestionExtendedAnswers(@AuthenticatedUser Long authenticatedUserId,
                                                @RequestBody List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList) {
-        userQuestionExtendedAnswerService.addUserQuestionExtendedAnswers(userQuestionExtendedAnswersWebList, user);
+        userQuestionExtendedAnswerService.addUserQuestionExtendedAnswers(authenticatedUserId, userQuestionExtendedAnswersWebList);
     }
 }

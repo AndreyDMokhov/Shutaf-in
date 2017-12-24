@@ -7,10 +7,7 @@ import com.shutafin.model.smtp.EmailMessage;
 
 import java.util.Set;
 
-/**
- * Created by Edward Kats.
- * 03 / Jul / 2017
- */
+@Deprecated
 public interface EmailNotificationSenderService {
 
     void sendEmail(EmailMessage emailMessage, EmailReason emailReason);

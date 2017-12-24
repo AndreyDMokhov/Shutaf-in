@@ -2,8 +2,8 @@ package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.exception.exceptions.validation.InputValidationException;
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.RegistrationRequestWeb;
+import com.shutafin.model.web.account.AccountRegistrationRequest;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.processors.annotations.response.SessionResponse;
 import com.shutafin.service.RegistrationService;
@@ -33,7 +33,7 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/registration/request", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void registration(@RequestBody @Valid RegistrationRequestWeb registrationRequestWeb,
+    public void registerUser(@RequestBody @Valid AccountRegistrationRequest registrationRequestWeb,
                              BindingResult result) {
         log.debug("/users/registration/request");
         if (result.hasErrors()) {
@@ -41,17 +41,17 @@ public class RegistrationController {
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        registrationService.save(registrationRequestWeb);
+        registrationService.registerUser(registrationRequestWeb);
     }
 
     @SessionResponse
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
-    public User confirmRegistration(@PathVariable String link) {
+    public AccountUserWeb confirmRegistrationUser(@PathVariable String link) {
         log.debug("/users/registration/confirmation/{link}");
         if (StringUtils.isBlank(link)) {
             log.warn("Link is blank or empty");
             throw new ResourceNotFoundException();
         }
-        return registrationService.confirmRegistration(link);
+        return registrationService.confirmRegistrationUser(link);
     }
 }

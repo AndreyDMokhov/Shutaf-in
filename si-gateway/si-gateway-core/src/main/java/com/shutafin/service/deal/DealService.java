@@ -1,6 +1,5 @@
 package com.shutafin.service.deal;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.deal.DealResponse;
 import com.shutafin.model.web.deal.DealUserWeb;
 import com.shutafin.model.web.deal.DealWeb;
@@ -10,12 +9,12 @@ import java.util.List;
 
 public interface DealService {
 
-    DealWeb initiateDeal(DealWeb dealWeb, User user);
-    void confirmDealUser(Long dealId, User user);
-    void leaveDeal(Long dealId, User user);
-    void removeDealUser(Long dealId, User userOrigin, Long userToRemoveId);
-    List<DealUserWeb> getAllUserDeals(User user);
-    DealResponse getDeal(Long dealId, User user);
-    DealWeb renameDeal(Long dealId, User user, NewTitleWeb newTitleWeb);
-    void deleteDeal(Long dealId, User user);
+    DealWeb initiateDeal(DealWeb dealWeb, Long userId);
+    void confirmDealUser(Long dealId, Long userId);
+    void leaveDeal(Long dealId, Long userId);
+    void removeDealUser(Long dealId, Long userOriginId, Long userToRemoveId);
+    List<DealUserWeb> getAllUserDeals(Long userId);
+    DealResponse getDeal(Long dealId, Long userId);
+    DealWeb renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb);
+    void deleteDeal(Long dealId, Long userId);
 }

@@ -9,8 +9,10 @@ import com.shutafin.model.exception.exceptions.validation.EmailNotUniqueValidati
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.types.AccountType;
-import com.shutafin.model.web.user.RegistrationRequestWeb;
-import com.shutafin.model.web.user.UserInfoRequest;
+import com.shutafin.model.web.account.AccountRegistrationRequest;
+import com.shutafin.model.web.account.AccountUserInfoRequest;
+import com.shutafin.model.web.email.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserRepository;
@@ -26,35 +28,47 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private static final int LANGUAGE_ID = 1;
 
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private UserAccountRepository userAccountRepository;
-
-    @Autowired
     private LanguageRepository languageRepository;
-
-    @Autowired
     private PasswordService passwordService;
-
-    @Autowired
     private UserImageService userImageService;
-
-    @Autowired
     private UserInfoService userInfoService;
+    private UserAccountService userAccountService;
 
     @Autowired
-    private UserAccountService userAccountService;
+    public RegistrationServiceImpl(
+            UserRepository userRepository,
+            UserAccountRepository userAccountRepository,
+            LanguageRepository languageRepository,
+            PasswordService passwordService,
+            UserImageService userImageService,
+            UserInfoService userInfoService,
+            UserAccountService userAccountService) {
+        this.userRepository = userRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.languageRepository = languageRepository;
+        this.passwordService = passwordService;
+        this.userImageService = userImageService;
+        this.userInfoService = userInfoService;
+        this.userAccountService = userAccountService;
+    }
 
     @Override
     @Transactional
-    public void save(RegistrationRequestWeb registrationRequestWeb) {
+    public EmailNotificationWeb registerUser(AccountRegistrationRequest registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
         UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         userImageService.createUserImageDirectory(user);
-        userInfoService.createUserInfo(new UserInfoRequest(), user);
+        userInfoService.createUserInfo(new AccountUserInfoRequest(), user);
+        return EmailNotificationWeb
+                .builder()
+                .userId(user.getId())
+                .emailTo(user.getEmail())
+                .languageCode(userAccount.getLanguage().getDescription())
+                .emailReason(EmailReason.REGISTRATION)
+                .build();
     }
 
     @Override
@@ -64,7 +78,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             log.warn("User was not found for id: " + userId);
             throw new AuthenticationException();
         }
-        UserAccount userAccount = userAccountService.checkUserAccountStatus(user);
+        UserAccount userAccount = userAccountService.findUserAccountByUser(user);
         userAccount.setAccountStatus(AccountStatus.CONFIRMED);
         return user;
     }
@@ -73,7 +87,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         passwordService.createAndSaveUserPassword(user, password);
     }
 
-    private UserAccount saveUserAccount(User user, RegistrationRequestWeb registrationRequestWeb) {
+    private UserAccount saveUserAccount(User user, AccountRegistrationRequest registrationRequestWeb) {
         UserAccount userAccount = new UserAccount();
         userAccount.setUser(user);
         userAccount.setAccountStatus(AccountStatus.NEW);
@@ -84,11 +98,10 @@ public class RegistrationServiceImpl implements RegistrationService {
             language = languageRepository.findOne(LANGUAGE_ID);
         }
         userAccount.setLanguage(language);
-        userAccountRepository.save(userAccount);
-        return userAccount;
+        return userAccountRepository.save(userAccount);
     }
 
-    private User saveUser(RegistrationRequestWeb registrationRequestWeb) {
+    private User saveUser(AccountRegistrationRequest registrationRequestWeb) {
         User user = new User();
         user.setFirstName(registrationRequestWeb.getFirstName());
         user.setLastName(registrationRequestWeb.getLastName());

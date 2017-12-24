@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!--CONSTANTS-->
+    <changeSet id="1" author="ivan">
+        <createTable tableName="I_LANGUAGE">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_ACTIVE" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LANGUAGE_NATIVE_NAME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_CITY">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="COUNTRY_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_CITY_LOCALE">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LANGUAGE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CITY_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_COUNTRY">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_COUNTRY_LOCALE">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LANGUAGE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTRY_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_GENDER">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_GENDER_LOCALE">
+            <column name="ID" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LANGUAGE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GENDER_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <!--END OF CONSTANTS-->
+
+    <!--USER SPECIFIC TABLES-->
+    <changeSet id="2" author="ivan">
+        <createTable tableName="USER">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="FIRST_NAME" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_NAME" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_CREDENTIALS">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD_HASH" type="LONGTEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD_SALT" type="LONGTEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_IMAGE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COMPRESSION_TYPE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOCAL_PATH" type="VARCHAR(200)"/>
+            <column name="PERMISSION_TYPE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IMAGE_STORAGE_ID" type="BIGINT"/>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_INFO">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="COMPANY" type="VARCHAR(255)"/>
+            <column name="DATE_OF_BIRTH" type="datetime(6)"/>
+            <column name="FACEBOOK_LINK" type="VARCHAR(255)"/>
+            <column name="PHONE_NUMBER" type="VARCHAR(255)"/>
+            <column name="PROFESSION" type="VARCHAR(255)"/>
+            <column name="CURRENT_CITY_ID" type="INT"/>
+            <column name="GENDER_ID" type="INT"/>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_LOGIN_LOG">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IS_LOGIN_SUCCESS" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="IMAGE_PAIR">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COMPRESSED_IMAGE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ORIGINAL_IMAGE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="IMAGE_STORAGE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="BASE_64_IMAGE" type="LONGTEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_IMAGE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_ACCOUNT">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCOUNT_STATUS_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCOUNT_TYPE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LANGUAGE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="USER_IMAGE_ID" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--FOREIGN KEYS-->
+    <changeSet id="3" author="ivan">
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_login_log" constraintName="USER_LOGIN_LOG_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_credentials" constraintName="USER_CREDENTIALS_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_info" constraintName="USER_INFO_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="COUNTRY_ID" baseTableName="i_country_locale" constraintName="I_COUNTRY_LOCALE_COUNTRY_ID_I_COUNTRY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_country"/>
+        <addForeignKeyConstraint baseColumnNames="CURRENT_CITY_ID" baseTableName="user_info" constraintName="USER_INFO_CURRENT_CITY_ID_I_CITY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_city"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_image" constraintName="USER_IMAGE_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="user_account" constraintName="USER_ACCOUNT_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_language"/>
+        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="i_gender_locale" constraintName="I_GENDER_LOCALE_GENDER_ID_I_GENDER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_gender"/>
+        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="user_info" constraintName="USER_INFO_GENDER_ID_I_GENDER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_gender"/>
+        <addForeignKeyConstraint baseColumnNames="USER_IMAGE_ID" baseTableName="user_account" constraintName="USER_ACCOUNT_USER_IMAGE_ID_USER_IMAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user_image"/>
+        <addForeignKeyConstraint baseColumnNames="COMPRESSED_IMAGE_ID" baseTableName="image_pair" constraintName="IMAGE_PAIR_USER_COMPRESSED_IMAGE_ID_USER_IMAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user_image"/>
+        <addForeignKeyConstraint baseColumnNames="COUNTRY_ID" baseTableName="i_city" constraintName="I_CITY_COUNTRY_ID_I_COUNTRY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_country"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_account" constraintName="USER_ACCOUNT_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="i_country_locale" constraintName="I_COUNTRY_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_language"/>
+        <addForeignKeyConstraint baseColumnNames="USER_IMAGE_ID" baseTableName="image_storage" constraintName="IMAGE_STORAGE_USER_IMAGE_ID_USER_IMAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user_image"/>
+        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="i_city_locale" constraintName="I_CITY_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_language"/>
+        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="i_gender_locale" constraintName="I_GENDER_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_language"/>
+        <addForeignKeyConstraint baseColumnNames="ORIGINAL_IMAGE_ID" baseTableName="image_pair" constraintName="IMAGE_PAIR_USER_ORIGINAL_IMAGE_ID_USER_IMAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user_image"/>
+        <addForeignKeyConstraint baseColumnNames="IMAGE_STORAGE_ID" baseTableName="user_image" constraintName="USER_IMAGE_IMAGE_STORAGE_ID_IMAGE_STORAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="image_storage"/>
+        <addForeignKeyConstraint baseColumnNames="CITY_ID" baseTableName="i_city_locale" constraintName="I_CITY_LOCALE_CITY_ID_I_CITY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_city"/>
+    </changeSet>
+
+    <changeSet id="4" author="edward">
+        <sqlFile path="changelog//version/initialization_data-1.0.sql"/>
+    </changeSet>
+
+</databaseChangeLog>

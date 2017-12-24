@@ -1,10 +1,8 @@
 package com.shutafin.service;
 
-import com.shutafin.model.entities.Chat;
-import com.shutafin.model.entities.ChatMessage;
-import com.shutafin.model.entities.ChatUser;
-import com.shutafin.model.entities.User;
+import com.shutafin.model.entities.*;
 import com.shutafin.model.web.chat.ChatMessageRequest;
+import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 
 import java.util.List;
 
@@ -14,10 +12,10 @@ import java.util.List;
  * Chat modifiers
  */
 public interface ChatManagementService {
-    Chat createNewChat(String chatTitle, User chatOwner, Long chatMemberUserId);
+    ChatWithUsersListDTO createNewChat(String chatTitle, Long chatOwner, Long chatMemberUserId);
     void addChatUserToChat(Chat chat, Long userId);
     void removeChatUserFromChat(Chat chat, Long userId);
     ChatMessage saveChatMessage(ChatUser chatUser, ChatMessageRequest message);
-    void updateMessagesAsRead(List<Long> messagesIdList, User user);
-    Chat renameChat(Chat chat, String chatTitle);
+    void updateMessagesAsRead(List<Long> messagesIdList, Long chatOwner);
+    ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, Long chatOwner);
     }

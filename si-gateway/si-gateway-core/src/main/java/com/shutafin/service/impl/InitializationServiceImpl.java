@@ -1,17 +1,17 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.web.initialization.CityResponseDTO;
-import com.shutafin.model.web.initialization.CountryResponseDTO;
-import com.shutafin.model.web.initialization.GenderResponseDTO;
-import com.shutafin.repository.initialization.LanguageRepository;
+import com.shutafin.model.web.account.AccountInitializationResponse;
+import com.shutafin.model.web.common.LanguageWeb;
+import com.shutafin.model.web.deal.DealInitializationResponse;
+import com.shutafin.model.web.initialization.InitializationResponse;
+import com.shutafin.model.web.matching.MatchingInitializationResponse;
+import com.shutafin.sender.account.AccountInitializationControllerSender;
+import com.shutafin.sender.deal.DealInitializationControllerSender;
+import com.shutafin.sender.matching.MatchingInitializationControllerSender;
+import com.shutafin.service.ChatInfoService;
 import com.shutafin.service.InitializationService;
-import com.shutafin.repository.initialization.locale.CityRepository;
-import com.shutafin.repository.initialization.locale.CountryRepository;
-import com.shutafin.repository.initialization.locale.GenderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,45 +20,46 @@ import java.util.List;
 @Transactional
 public class InitializationServiceImpl implements InitializationService {
 
-    private LanguageRepository languageRepository;
-    private GenderRepository genderRepository;
-    private CountryRepository countryRepository;
-    private CityRepository cityRepository;
 
     @Autowired
-    public InitializationServiceImpl(
-            LanguageRepository languageRepository,
-            GenderRepository genderRepository,
-            CountryRepository countryRepository,
-            CityRepository cityRepository) {
-        this.languageRepository = languageRepository;
-        this.genderRepository = genderRepository;
-        this.countryRepository = countryRepository;
-        this.cityRepository = cityRepository;
-    }
+    private AccountInitializationControllerSender accountInitializationControllerSender;
+
+    @Autowired
+    private ChatInfoService chatInfoService;
+
+    @Autowired
+    private MatchingInitializationControllerSender matchingInitializationControllerSender;
+
+    @Autowired
+    private DealInitializationControllerSender dealInitializationControllerSender;
+
 
     @Override
     @Transactional(readOnly = true)
-    // TODO: MS-account InitializationController.getLanguages()
-    public List<Language> findAllLanguages() {
-
-        return languageRepository.findAll();
+    public List<LanguageWeb> findAllLanguages() {
+        return accountInitializationControllerSender.getLanguages();
     }
 
-    // TODO: MS-account InitializationController.getInitializationResponse()
-    @Override
-    public List<GenderResponseDTO> findAllGendersByLanguage(Language language) {
-        return genderRepository.getLocaleGenders(language);
-    }
 
     @Override
-    public List<CountryResponseDTO> findAllCountriesByLanguage(Language language) {
-        return countryRepository.getLocaleCountries(language);
-    }
+    public InitializationResponse getInitializationResponse(Long userId) {
 
-    @Override
-    public List<CityResponseDTO> findAllCitiesByLanguage(Language language) {
-        return cityRepository.getLocaleCities(language);
-    }
+        AccountInitializationResponse accountInitialization = accountInitializationControllerSender.getInitializationResponse(userId);
 
+        MatchingInitializationResponse matchingInitialization = matchingInitializationControllerSender.getInitializationResponse(
+                userId,
+                accountInitialization
+                        .getUserProfile()
+                        .getLanguageId());
+
+        DealInitializationResponse dealInitializationResponse = dealInitializationControllerSender.getDealInitializationResponse();
+
+        return InitializationResponse
+                .builder()
+                .accountInitialization(accountInitialization)
+                .matchingInitializationResponse(matchingInitialization)
+                .listOfChats(chatInfoService.getListChats(userId))
+                .dealInitializationResponse(dealInitializationResponse)
+                .build();
+    }
 }

@@ -66,9 +66,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             template: '<user-search-component></user-search-component>',
             url: '/users/search?{name}'
         })
-        .state('questions', {
-            template:'<questions-component></questions-component>',
-            url: '/questions'
+        .state('questionsTab.requiredQuestions', {
+            template:'<required-questions-component></required-questions-component>',
+            url: '/required-questions'
+        })
+        .state('questionsTab.extendedQuestions', {
+            template:'<extended-questions-component></extended-questions-component>',
+            url: '/extended-questions'
         })
         /*Deal*/
         .state('deal', {
@@ -79,6 +83,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/document',
             template: '<document-deal-component></document-deal-component>'
         })
+
         /* Settings */
         .state('settings', {
             abstract: true,
@@ -103,11 +108,10 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/password',
             template: '<change-password-component></change-password-component>'
         })
-        .state("chat",
-            {
-                template: '<messenger-ui-component></messenger-ui-component>',
-                url: "/chat"
-            })
+        .state("chat", {
+            url: "/chat",
+            template: '<messenger-ui-component></messenger-ui-component>'
+        })
     ;
     $urlRouterProvider.otherwise('/home');
 });

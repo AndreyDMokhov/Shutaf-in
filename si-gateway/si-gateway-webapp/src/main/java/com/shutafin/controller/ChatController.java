@@ -1,8 +1,12 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.*;
+import com.shutafin.model.entities.Chat;
+import com.shutafin.model.entities.ChatMessage;
+import com.shutafin.model.entities.ChatUser;
+import com.shutafin.model.entities.ReadMessagesRequest;
 import com.shutafin.model.web.chat.ChatMessageRequest;
 import com.shutafin.model.web.chat.ChatMessageResponse;
+import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.model.web.user.UserBaseResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.WebSocketAuthentication;
@@ -41,51 +45,51 @@ public class ChatController {
     private UserSearchService userSearchService;
 
     @GetMapping(value = "/new/{chat_title}/{user_id}")
-    public Chat addChat(@PathVariable("chat_title") String chatTitle,
-                        @PathVariable("user_id") Long chatMemberUserId,
-                        @AuthenticatedUser User chatOwner) {
+    public ChatWithUsersListDTO addChat(@PathVariable("chat_title") String chatTitle,
+                                        @PathVariable("user_id") Long chatMemberUserId,
+                                        @AuthenticatedUser Long chatOwner) {
 
         return chatManagementService.createNewChat(chatTitle, chatOwner, chatMemberUserId);
     }
 
     @GetMapping(value = "/rename/{chat_id}/{chat_title}")
-    public Chat renameChat(@PathVariable("chat_id") Long chatId,
+    public ChatWithUsersListDTO renameChat(@PathVariable("chat_id") Long chatId,
                            @PathVariable("chat_title") String chatTitle,
-                           @AuthenticatedUser User user) {
+                           @AuthenticatedUser Long userId) {
 
-        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, user);
-        return chatManagementService.renameChat(chat, chatTitle);
+        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, userId);
+        return chatManagementService.renameChat(chat, chatTitle, userId);
     }
 
     @GetMapping(value = "/{chat_id}/add/user/{user_id}")
     public void addChatUser(@PathVariable("chat_id") Long chatId,
                             @PathVariable("user_id") Long userId,
-                            @AuthenticatedUser User user) {
+                            @AuthenticatedUser Long authenticatedUserId) {
 
-        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, user);
+        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, authenticatedUserId);
         chatManagementService.addChatUserToChat(chat, userId);
     }
 
     @GetMapping(value = "/{chat_id}/remove/user/{user_id}")
     public void removeChatUser(@PathVariable("chat_id") Long chatId,
                                @PathVariable("user_id") Long userId,
-                               @AuthenticatedUser User user) {
+                               @AuthenticatedUser Long authenticatedUserId) {
 
-        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, user);
+        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, authenticatedUserId);
         chatManagementService.removeChatUserFromChat(chat, userId);
     }
 
     @GetMapping(value = "/{chat_id}/remove/chat")
     public void removeChat(@PathVariable("chat_id") Long chatId,
-                           @AuthenticatedUser User user) {
+                           @AuthenticatedUser Long authenticatedUserId) {
 
-        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, user);
-        chatManagementService.removeChatUserFromChat(chat, user.getId());
+        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, authenticatedUserId);
+        chatManagementService.removeChatUserFromChat(chat, authenticatedUserId);
     }
 
     @GetMapping(value = "/get/chats")
-    public List<Chat> getChats(@AuthenticatedUser User user) {
-        return chatInfoService.getListChats(user);
+    public List<ChatWithUsersListDTO> getChats(@AuthenticatedUser Long authenticatedUserId) {
+        return chatInfoService.getListChats(authenticatedUserId);
     }
 
     @WebSocketAuthentication
@@ -93,39 +97,32 @@ public class ChatController {
     @SendTo("/api/subscribe/chat/{chat_id}")
     public ChatMessageResponse send(@DestinationVariable("chat_id") Long chatId,
                                     Message<ChatMessageRequest> message,
-                                    @AuthenticatedUser User user) {
+                                    @AuthenticatedUser Long authenticatedUserId) {
 
-        ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, user);
+        ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, authenticatedUserId);
         ChatMessageRequest chatMessageRequest = message.getPayload();
         ChatMessage chatMessage = chatManagementService.saveChatMessage(chatUser, chatMessageRequest);
         return createChatMessageOutputWeb(chatMessage);
     }
 
-    @GetMapping(value = "/{chat_id}/get/users")
-    public List<UserBaseResponse> getUsers(@PathVariable("chat_id") Long chatId,
-                                           @AuthenticatedUser User user) {
-
-        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, user);
-        return userSearchService.userBaseResponseByList(chatInfoService.getListUsersByChatId(chat, user));
-    }
 
     @GetMapping(value = "/{chat_id}/get/messages")
     public List<ChatMessageResponse> getMessages(@PathVariable("chat_id") Long chatId,
-                                                 @AuthenticatedUser User user) {
+                                                 @AuthenticatedUser Long authenticatedUserId) {
 
-        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, user);
-        List<ChatMessage> chatMessages = chatInfoService.getListMessages(chat, user);
+        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, authenticatedUserId);
+        List<ChatMessage> chatMessages = chatInfoService.getListMessages(chat, authenticatedUserId);
         return createListChatMessageOutputWeb(chatMessages);
     }
-
     @GetMapping(value = "/allUsers")
-    public List<UserBaseResponse> getUsers(@AuthenticatedUser User user) {
-        return userSearchService.userBaseResponseByList(userMatchService.findMatchingUsers(user));
+    public List<UserBaseResponse> getUsers(@AuthenticatedUser Long authenticatedUserId) {
+        return userSearchService.userBaseResponseByList(userMatchService.findMatchingUsers(authenticatedUserId));
     }
 
     @PutMapping(value = "/updateMessagesAsRead", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateMessagesAsRead(@RequestBody @Valid ReadMessagesRequest messagesIdList, @AuthenticatedUser User user) {
-        chatManagementService.updateMessagesAsRead(messagesIdList.getMessageIdList(), user);
+    public void updateMessagesAsRead(@RequestBody @Valid ReadMessagesRequest messagesIdList,
+                                     @AuthenticatedUser Long userId) {
+        chatManagementService.updateMessagesAsRead(messagesIdList.getMessageIdList(), userId);
     }
 
     private List<ChatMessageResponse> createListChatMessageOutputWeb(List<ChatMessage> chatMessages) {
@@ -136,12 +133,13 @@ public class ChatController {
     }
 
     private ChatMessageResponse createChatMessageOutputWeb(ChatMessage chatMessage) {
+        //todo ms-account
         return ChatMessageResponse
                 .builder()
-                .userId(chatMessage.getUser().getId())
+                .userId(chatMessage.getUserId())
                 .messageId(chatMessage.getId())
-                .firstName(chatMessage.getUser().getFirstName())
-                .lastName(chatMessage.getUser().getLastName())
+                .firstName("")
+                .lastName("")
                 .createDate(chatMessage.getCreatedDate())
                 .message(chatMessage.getMessage())
                 .messageType(chatMessage.getMessageType().getId())

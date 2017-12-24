@@ -148,7 +148,8 @@
   "Search.ChooseGender" : "Choose gender",
   "Search.ChooseCity" : "Choose city",
   "Search.ChooseButton" : "Click to choose",
-  "Search.ValueInCityButtonMoreThan3" : "selected",
+  "Search.filter.button.selected" : "Selected",
+  "Search.sendMessage.button" : "Send message",
 
 
   "SECTION" : "Questions",
@@ -158,6 +159,8 @@
   "Questions.button.save" : "Save",
   "Questions.delimiter": "from",
   "Questions.confirm" : "Answers were saved",
+  "Questions.requiredQuestions" : "Required questions",
+  "Questions.extendedQuestions" : "Extended questions",
 
   "SECTION": "CHAT",
   "Chat.title": "Chat",

@@ -15,13 +15,13 @@ app.controller('changeEmailConfirmationController', function ($state, $rootScope
         changeEmailModel.emailChangeConfirmation(urlLink).then(
             function (success) {
                 vm.dataLoading = false;
-                if (success.data.emailChanged === false) {
+                if (success.data.data.isEmailChanged === false) {
 
                     notify.set($filter('translate')("Settings.security.firstEmailConfirmed.success"), {type: 'success'});
                     $state.go('home');
                 }
 
-                if (success.data.emailChanged === true) {
+                if (success.data.data.isEmailChanged === true) {
 
                     notify.set($filter('translate')("Settings.security.secondEmailConfirmed.success"), {type: 'success'});
                     $state.go("logout");

@@ -24,9 +24,8 @@ public class ChatMessage extends AbstractEntity {
     @ManyToOne
     private Chat chat;
 
-    @JoinColumn(name = "USER_ID", nullable = false)
-    @ManyToOne
-    private User user;
+    @Column(name = "USER_ID", nullable = false)
+    private Long userId;
 
     @Column(name = "MESSAGE", nullable = false)
     @Lob

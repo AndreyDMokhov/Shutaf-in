@@ -1,10 +1,10 @@
 package com.shutafin.service;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.RegistrationRequestWeb;
+import com.shutafin.model.web.account.AccountRegistrationRequest;
+import com.shutafin.model.web.account.AccountUserWeb;
 
 public interface RegistrationService {
 
-    void save(RegistrationRequestWeb registrationRequestWeb);
-    User confirmRegistration(String link);
+    void registerUser(AccountRegistrationRequest registrationRequestWeb);
+    AccountUserWeb confirmRegistrationUser(String link);
 }

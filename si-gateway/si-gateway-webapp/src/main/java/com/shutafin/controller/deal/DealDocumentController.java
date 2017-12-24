@@ -1,6 +1,5 @@
 package com.shutafin.controller.deal;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.deal.DealUserDocumentWeb;
 import com.shutafin.model.web.deal.NewTitleWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
@@ -22,7 +21,7 @@ public class DealDocumentController {
     private DealDocumentService dealDocumentService;
 
     @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb addDealDocument(@AuthenticatedUser User user,
+    public DealUserDocumentWeb addDealDocument(@AuthenticatedUser Long userId,
                                                @RequestBody @Valid DealUserDocumentWeb dealUserDocumentWeb,
                                                BindingResult result) {
         log.debug("/documents/");
@@ -32,30 +31,30 @@ public class DealDocumentController {
             throw new RuntimeException();
         }
 
-        return dealDocumentService.addDealDocument(dealUserDocumentWeb, user);
+        return dealDocumentService.addDealDocument(dealUserDocumentWeb, userId);
     }
 
     @GetMapping(value = "/{docId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb getDealDocument(@AuthenticatedUser User user,
+    public DealUserDocumentWeb getDealDocument(@AuthenticatedUser Long userId,
                                                @PathVariable(value = "docId") Long dealDocumentId) {
         log.debug("GET /documents/{docId}");
-        return dealDocumentService.getDealDocument(user, dealDocumentId);
+        return dealDocumentService.getDealDocument(userId, dealDocumentId);
     }
 
     @PostMapping(value = "/{docId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public DealUserDocumentWeb renameDealDocument(@AuthenticatedUser User user,
+    public DealUserDocumentWeb renameDealDocument(@AuthenticatedUser Long userId,
                                                   @PathVariable(value = "docId") Long userDocumentId,
                                                   @RequestBody @Valid NewTitleWeb documentTitle) {
         log.debug("POST /documents/{docId}");
-        return dealDocumentService.renameDealDocument(user, userDocumentId, documentTitle);
+        return dealDocumentService.renameDealDocument(userId, userDocumentId, documentTitle);
     }
 
     @DeleteMapping(value = "/{docId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserDocument(@AuthenticatedUser User user,
+    public void deleteUserDocument(@AuthenticatedUser Long userId,
                                    @PathVariable(value = "docId") Long userDocumentId) {
-        log.debug("DELETE /documents/{userId}/{docId}");
-        dealDocumentService.deleteDealDocument(user, userDocumentId);
+        log.debug("DELETE /documents/{docId}");
+        dealDocumentService.deleteDealDocument(userId, userDocumentId);
     }
 
 }
