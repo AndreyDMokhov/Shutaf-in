@@ -70,6 +70,9 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     @Transactional
     public UserImage getUserImage(User user, Long userImageId) {
+        if (userImageId == null) {
+            return null;
+        }
         UserImage userImage = getUserImageFromFileSystem(user, userImageId);
         if (userImage != null) {
             return userImage;

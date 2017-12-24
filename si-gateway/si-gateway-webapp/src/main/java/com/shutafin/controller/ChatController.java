@@ -135,7 +135,7 @@ public class ChatController {
 
     @OnError
     public void onError(Throwable t) {
-
+        log.warn("WebSocket error: {}", t);
     }
 
     private ChatMessageResponse createChatMessageOutputWeb(ChatMessage chatMessage) {

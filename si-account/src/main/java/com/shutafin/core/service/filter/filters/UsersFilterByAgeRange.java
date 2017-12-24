@@ -51,7 +51,7 @@ public class UsersFilterByAgeRange implements UsersFilter {
             return filteredUsers;
         }
         Integer userAge = org.joda.time.Years.yearsBetween(new LocalDate(userBirthDate), LocalDate.now()).getYears();
-        List<FilterAgeRange> filteredUsersAgeRanges = filterAgeRangeRepository.findAllByUserId(filteredUsers);
+        List<FilterAgeRange> filteredUsersAgeRanges = filterAgeRangeRepository.findAllByUserIdIn(filteredUsers);
         for (FilterAgeRange filteredUsersAgeRange : filteredUsersAgeRanges) {
             if(filteredUsersAgeRange.getFromAge()>userAge||filteredUsersAgeRange.getToAge()<userAge){
                 filteredUsers.remove(filteredUsersAgeRange.getUser().getId());

@@ -2,6 +2,7 @@ package com.shutafin.controller;
 
 import com.shutafin.core.service.UserImageService;
 import com.shutafin.core.service.UserService;
+import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.types.CompressionType;
@@ -36,6 +37,14 @@ public class UserImageController {
                                             @PathVariable(value = "userImageId") Long userImageId) {
         log.debug("/images/{id}");
         UserImage image = userImageService.getUserImage(userService.findUserById(userId), userImageId);
+        if (image == null) {
+            User user = userService.findUserById(userId);
+            return AccountUserImageWeb.builder()
+                    .userId(user.getId())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .build();
+        }
         return new AccountUserImageWeb(
                 image.getId(),
                 image.getImageStorage().getImageEncoded(),
@@ -49,26 +58,44 @@ public class UserImageController {
     public AccountUserImageWeb getUserImageByUserId(@PathVariable("userId") Long userId) {
         log.debug("/images/byId/{id}");
         UserImage image = userImageService.getUserImage(userService.findUserById(userId));
-        return new AccountUserImageWeb(
-                image.getId(),
-                image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime(),
-                image.getUser().getFirstName(),
-                image.getUser().getLastName(),
-                image.getUser().getId());
+        if (image == null) {
+            User user = userService.findUserById(userId);
+            return AccountUserImageWeb.builder()
+                    .userId(user.getId())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .build();
+        }
+        return AccountUserImageWeb.builder()
+                .id(image.getId())
+                .firstName(image.getUser().getFirstName())
+                .lastName(image.getUser().getLastName())
+                .userId(image.getUser().getId())
+                .image(image.getImageStorage().getImageEncoded())
+                .createdDate(image.getCreatedDate().getTime())
+                .build();
     }
 
     @GetMapping(value = "/{userId}/images/original", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb getOriginalUserImageByUserId(@PathVariable("userId") Long userId) {
         log.debug("/images/original/{id}");
         UserImage image = userImageService.getOriginalUserImage(userService.findUserById(userId));
-        return new AccountUserImageWeb(
-                image.getId(),
-                image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime(),
-                image.getUser().getFirstName(),
-                image.getUser().getLastName(),
-                image.getUser().getId());
+        if (image == null) {
+            User user = userService.findUserById(userId);
+            return AccountUserImageWeb.builder()
+                    .userId(user.getId())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .build();
+        }
+        return AccountUserImageWeb.builder()
+                .id(image.getId())
+                .firstName(image.getUser().getFirstName())
+                .lastName(image.getUser().getLastName())
+                .userId(image.getUser().getId())
+                .image(image.getImageStorage().getImageEncoded())
+                .createdDate(image.getCreatedDate().getTime())
+                .build();
     }
 
     @PostMapping(value = "/{userId}/images", consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -85,7 +112,14 @@ public class UserImageController {
                 userService.findUserById(userId),
                 PermissionType.PRIVATE,
                 CompressionType.NO_COMPRESSION);
-
+        if (image == null) {
+            User user = userService.findUserById(userId);
+            return AccountUserImageWeb.builder()
+                    .userId(user.getId())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .build();
+        }
         return new AccountUserImageWeb(
                 userImage.getId(),
                 null,

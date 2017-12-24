@@ -15,7 +15,7 @@ public interface FilterAgeRangeRepository extends BaseJpaRepository<FilterAgeRan
 
     void deleteByUserId(Long userId);
 
-    List<FilterAgeRange> findAllByUserId(List<Long> filteredUsers);
+    List<FilterAgeRange> findAllByUserIdIn(List<Long> filteredUsers);
 
     @Query("SELECT new com.shutafin.model.web.common.AgeRangeWebDTO(far.fromAge, far.toAge) " +
             "FROM FilterAgeRange far WHERE far.user.id = :userId")
