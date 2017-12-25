@@ -62,7 +62,7 @@ public class MatchingCandidatesEmailNotificationJobService {
             User user = userAccount.getUser();
             //todo switch to general matching
             //todo add account status condition = matching completed
-            List<User> matchingUsers = userMatchService.findMatchingUsers(user.getId());
+            List<Long> matchingUsers = userMatchService.findMatchingUsers(user.getId());
             if (!matchingUsers.isEmpty()) {
                 sendEmail(userAccount, matchingUsers);
             }
@@ -70,14 +70,14 @@ public class MatchingCandidatesEmailNotificationJobService {
     }
 
     // TODO: MS-email EmailNotificationSenderController.sendEmail()
-    private void sendEmail(UserAccount userAccount, List<User> matchingUsers) {
+    private void sendEmail(UserAccount userAccount, List<Long> matchingUsers) {
         String link = "";
         String serverAddress = environmentConfigurationService.getServerAddress();
         Map<String, byte[]> imageSources = new TreeMap<>();
         Integer maxCountMatchingUsers = matchingUsers.size() >= MAX_COUNT_MATCHING_USERS ? MAX_COUNT_MATCHING_USERS : matchingUsers.size();
 
-        for (User matchingUser : matchingUsers.subList(0, maxCountMatchingUsers)) {
-            imageSources.put(matchingUser.getId().toString(), getUserImage(matchingUser));
+        for (Long matchingUser : matchingUsers.subList(0, maxCountMatchingUsers)) {
+            imageSources.put(matchingUser.toString(), getUserImage(matchingUser));
             link = link.concat(getLink(matchingUser, serverAddress));
         }
         link = link.concat(addSearchToLink(serverAddress));
@@ -92,28 +92,29 @@ public class MatchingCandidatesEmailNotificationJobService {
         mailSenderService.sendEmail(emailMessage, EmailReason.MATCHING_CANDIDATES);
     }
 
-    private byte[] getUserImage(User matchingUser) {
+    private byte[] getUserImage(Long matchingUser) {
         String image;
-        if (userAccountService.findUserAccountProfileImage(matchingUser.getId()) == null) {
+        if (userAccountService.findUserAccountProfileImage(matchingUser) == null) {
             image = userImageService.getDefaultImageBase64();
         } else {
-            image = userAccountService.findUserAccountProfileImage(matchingUser.getId()).getImage();
+            image = userAccountService.findUserAccountProfileImage(matchingUser).getImage();
         }
         return Base64.getDecoder().decode(image);
     }
 
-    private String getLink(User matchingUser, String serverAddress) {
+    //TODO add logic for getting First and LastName
+    private String getLink(Long matchingUser, String serverAddress) {
         return ""
                 .concat("<p style=\"font-size:14px\"><a href=\"")
                 .concat(serverAddress)
                 .concat(URL_PROFILE)
-                .concat(matchingUser.getId().toString())
+                .concat(matchingUser.toString())
                 .concat("\"> ")
-                .concat(matchingUser.getFirstName())
+//                .concat(matchingUser.getFirstName())
                 .concat(" ")
-                .concat(matchingUser.getLastName())
+//                .concat(matchingUser.getLastName())
                 .concat(" <br><img src=\"cid:")
-                .concat(matchingUser.getId().toString())
+                .concat(matchingUser.toString())
                 .concat("\" style=\"width:128px;height:128px;\">")
                 .concat("</a></p>");
     }

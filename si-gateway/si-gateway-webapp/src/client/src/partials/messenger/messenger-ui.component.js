@@ -6,7 +6,7 @@ app.component('messengerUiComponent', {
     bindings: {},
     controllerAs: 'vm',
 
-    controller: function (messengerModel, $sessionStorage, messengerCurrentDataService, messengerManagementService) {
+    controller: function (messengerModel, $sessionStorage, messengerChannelService, messengerCurrentDataService, messengerManagementService) {
 
         var vm = this;
 
@@ -15,11 +15,8 @@ app.component('messengerUiComponent', {
         vm.characterLimit = 15;
 
         function activate() {
-            messengerCurrentDataService.registerCurrentChatObserver(updateCurrentChat);
-            getUserData();
-            angular.element(document).ready(function () {
-                messengerManagementService.activateMessenger();
-            });
+                messengerCurrentDataService.registerCurrentChatObserver(updateCurrentChat);
+                getUserData();
         }
 
         function updateCurrentChat() {
@@ -30,7 +27,6 @@ app.component('messengerUiComponent', {
             messengerModel.getUsers().then(
                 function (success) {
                     vm.users = success.data.data;
-                    $sessionStorage.users = vm.users;
                 });
         }
 

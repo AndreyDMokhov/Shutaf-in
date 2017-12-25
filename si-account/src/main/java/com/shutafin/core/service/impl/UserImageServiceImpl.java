@@ -12,6 +12,7 @@ import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.ImageStorageRepository;
 import com.shutafin.repository.account.ImagePairRepository;
+import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserImageRepository;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,9 @@ public class UserImageServiceImpl implements UserImageService {
     @Autowired
     private ImagePairRepository imagePairRepository;
 
+    @Autowired
+    private UserAccountRepository userAccountRepository;
+
     @Override
     @Transactional
     public UserImage addUserImage(AccountUserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
@@ -66,6 +70,9 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     @Transactional
     public UserImage getUserImage(User user, Long userImageId) {
+        if (userImageId == null) {
+            return null;
+        }
         UserImage userImage = getUserImageFromFileSystem(user, userImageId);
         if (userImage != null) {
             return userImage;
@@ -82,6 +89,11 @@ public class UserImageServiceImpl implements UserImageService {
         }
         saveUserImageToFileSystem(userImage.getImageStorage().getImageEncoded(), userImage);
         return userImage;
+    }
+
+    @Override
+    public UserImage getUserImage(User user) {
+        return getUserImage(user, userAccountRepository.findDefaultUserImageIdByUserId(user.getId()));
     }
 
     @Override
@@ -110,6 +122,11 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     public UserImage getOriginalUserImage(UserImage compressedUserImage) {
         return imagePairRepository.findOriginalUserImage(compressedUserImage);
+    }
+
+    @Override
+    public UserImage getOriginalUserImage(User user) {
+        return getOriginalUserImage(getUserImage(user));
     }
 
     @Override

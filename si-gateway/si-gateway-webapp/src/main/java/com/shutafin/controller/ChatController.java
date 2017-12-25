@@ -21,6 +21,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.OnError;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public class ChatController {
 
     @Autowired
     private ChatInfoService chatInfoService;
-    //TODO moved to matching service
+
     @Autowired
     private UserMatchService userMatchService;
 
@@ -97,9 +98,9 @@ public class ChatController {
     @SendTo("/api/subscribe/chat/{chat_id}")
     public ChatMessageResponse send(@DestinationVariable("chat_id") Long chatId,
                                     Message<ChatMessageRequest> message,
-                                    @AuthenticatedUser Long authenticatedUserId) {
+                                    @AuthenticatedUser Long userId) {
 
-        ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, authenticatedUserId);
+        ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, userId);
         ChatMessageRequest chatMessageRequest = message.getPayload();
         ChatMessage chatMessage = chatManagementService.saveChatMessage(chatUser, chatMessageRequest);
         return createChatMessageOutputWeb(chatMessage);
@@ -116,7 +117,7 @@ public class ChatController {
     }
     @GetMapping(value = "/allUsers")
     public List<UserBaseResponse> getUsers(@AuthenticatedUser Long authenticatedUserId) {
-        return userSearchService.userBaseResponseByList(userMatchService.findMatchingUsers(authenticatedUserId));
+        return userSearchService.userBaseResponseByList(authenticatedUserId, userMatchService.findMatchingUsers(authenticatedUserId));
     }
 
     @PutMapping(value = "/updateMessagesAsRead", consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -132,14 +133,18 @@ public class ChatController {
                 .collect(Collectors.toList());
     }
 
+    @OnError
+    public void onError(Throwable t) {
+        log.warn("WebSocket error: {}", t);
+    }
+
     private ChatMessageResponse createChatMessageOutputWeb(ChatMessage chatMessage) {
-        //todo ms-account
         return ChatMessageResponse
                 .builder()
-                .userId(chatMessage.getUserId())
+                .userId(chatMessage.getChatUser().getUserId())
                 .messageId(chatMessage.getId())
-                .firstName("")
-                .lastName("")
+                .firstName(chatMessage.getChatUser().getFirstName())
+                .lastName(chatMessage.getChatUser().getLastName())
                 .createDate(chatMessage.getCreatedDate())
                 .message(chatMessage.getMessage())
                 .messageType(chatMessage.getMessageType().getId())

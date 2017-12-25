@@ -21,6 +21,20 @@ public class UserImageControllerSender {
         return new RestTemplate().getForEntity(url, AccountUserImageWeb.class).getBody();
     }
 
+    public AccountUserImageWeb getUserImageByUserId(Long userId) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/%d/images", userId);
+
+        return new RestTemplate().getForEntity(url, AccountUserImageWeb.class).getBody();
+    }
+
+    public AccountUserImageWeb getOriginalUserImageByUserId(Long userId) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/%d/images/original", userId);
+
+        return new RestTemplate().getForEntity(url, AccountUserImageWeb.class).getBody();
+    }
+
     public AccountUserImageWeb addUserImage(Long userId, AccountUserImageWeb image) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/images", userId);

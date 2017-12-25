@@ -1,5 +1,7 @@
 package com.shutafin.sender.matching;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
@@ -21,7 +23,7 @@ public class UserMatchControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
                 String.format("/matching/search/%d", userId);
 
-        return new RestTemplate().getForEntity(url, List.class).getBody();
+        return new ObjectMapper().convertValue(new RestTemplate().getForEntity(url, List.class).getBody(), new TypeReference<List<Long>>() {});
     }
 
     public void saveSelectedUserQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers) {

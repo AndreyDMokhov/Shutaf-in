@@ -6,7 +6,6 @@ import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatUserRepository;
-import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.service.ChatInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,18 +30,12 @@ public class ChatInfoServiceImpl implements ChatInfoService {
     @Autowired
     private ChatMessageRepository chatMessageRepository;
 
-
-    @Autowired
-    private UserAccountControllerSender userAccountControllerSender;
-
     @Override
     @Transactional(readOnly = true)
     public List<ChatWithUsersListDTO> getListChats(Long userId) {
         List<ChatWithUsersListDTO> chats = chatUserRepository.findChatsWithActiveUsers(userId);
         for (ChatWithUsersListDTO chat : chats) {
-            List<Long> activeUsers = chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), userId);
-            List<AccountUserWeb> baseUserInfos = userAccountControllerSender.getBaseUserInfos(activeUsers);
-
+            List<AccountUserWeb> baseUserInfos = chatUserRepository.findAllByUserId(chat.getId(), userId);
             chat.setUsersInChat(baseUserInfos);
         }
         return chats;

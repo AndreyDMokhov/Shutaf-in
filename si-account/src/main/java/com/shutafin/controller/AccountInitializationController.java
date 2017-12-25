@@ -1,9 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.core.service.InitializationService;
-import com.shutafin.core.service.UserInfoService;
-import com.shutafin.core.service.UserLanguageService;
-import com.shutafin.core.service.UserService;
+import com.shutafin.core.service.*;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.web.account.AccountInitializationResponse;
@@ -27,17 +24,20 @@ public class AccountInitializationController {
     private UserInfoService userInfoService;
     private UserLanguageService userLanguageService;
     private UserService userService;
+    private UserFilterService userFilterService;
 
     @Autowired
     public AccountInitializationController(
             InitializationService initializationService,
             UserInfoService userInfoService,
             UserLanguageService userLanguageService,
-            UserService userService) {
+            UserService userService,
+            UserFilterService userFilterService) {
         this.initializationService = initializationService;
         this.userInfoService = userInfoService;
         this.userLanguageService = userLanguageService;
         this.userService = userService;
+        this.userFilterService=userFilterService;
     }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -58,6 +58,7 @@ public class AccountInitializationController {
                 .cities(initializationService.findAllCitiesByLanguage(language))
                 .countries(initializationService.findAllCountriesByLanguage(language))
                 .genders(initializationService.findAllGendersByLanguage(language))
+                .filters(userFilterService.getUserFilters(user.getId()))
                 .build();
     }
 }
