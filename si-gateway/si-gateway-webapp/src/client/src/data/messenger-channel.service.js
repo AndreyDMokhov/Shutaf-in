@@ -1,7 +1,7 @@
 app.service('messengerChannelService', function ($sessionStorage, webSocketService) {
 
     var vm = this;
-    vm.listOfChats = $sessionStorage.listOfChats;
+    vm.listOfChats = [];
     vm.listOfChatsCallbacks = [];
     vm.channelCallbacks = [];
 
@@ -24,7 +24,6 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
     }
 
     function notifyListOfChatObservers(chatData) {
-        $sessionStorage.listOfChats = vm.listOfChats;
         angular.forEach(vm.listOfChatsCallbacks, function (callback) {
             callback(chatData);
         });
