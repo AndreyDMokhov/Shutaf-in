@@ -79,10 +79,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: '/deal',
             template: '<deal-presentation-component></deal-presentation-component>'
         })
-        .state('deal.document', {
-            url: '/document',
-            template: '<document-deal-component></document-deal-component>'
-        })
+
 
         /* Settings */
         .state('settings', {

@@ -5,45 +5,47 @@ app.component('dealComponent', {
 
     },
     controllerAs: 'vm',
-    controller: function (dealModel, $uibModal) {
+    controller: function (dealModel, $uibModal, $sessionStorage) {
 
         var vm = this;
         var namePanelDef = "Pallet";
         var ACTIVE = 2;                   //?????????????????/
+        var panelId;
+        vm.documents = [];
 
         vm.isDealStatusActive = function () {
 
             return vm.statusDeal === ACTIVE;
         };
         vm.$onInit = function () {
-
-            console.log(vm.dealInfo);
             vm.statusDeal = vm.dealInfo.statusId;
-            vm.pallets = vm.dealInfo.panels;
-
-        };
-        vm.$onChanges = function () {
-            vm.statusDeal = vm.dealInfo.statusId;
-            vm.pallets = vm.dealInfo.panels;
-        };
-
-        vm.selectPallet = function (pallet) {
+            vm.panels = vm.dealInfo.panels;
+            panelId = vm.dealInfo.firstPanel.panelId;
+            vm.documents = vm.dealInfo.firstPanel.documents;
             vm.palletClicked = true;
-            vm.documents = pallet.documents;
         };
 
-        vm.addPallet = function (dealId) {
 
-            modalInput(dealId);
-
+        vm.selectPanel = function (id) {
+            dealModel.getPanel(id).then(function (success) {
+                var panel = success.data.data;
+                vm.documents = panel.documents;
+                panelId = id;
+            });
 
         };
 
-        function modalInput(dealId) {
+        vm.addPallet = function (dealId, size, type) {
+
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
-                resolve: {}
+                size: size,
+                resolve: {
+                    type: function () {
+                        return type;
+                    }
+                }
             });
             modalInstance.result.then(function (newName) {
                 if (newName === undefined) {
@@ -51,24 +53,77 @@ app.component('dealComponent', {
                 }
 
                 var params = {dealId: dealId, title: newName};
-                dealModel.addPallet(params).then(function (success) {
-                    debugger;
-                    console.log(success);
-                    //vm.pallets.push(success);
+                dealModel.addPanel(params).then(function (success) {
+                    var panel = success.data.data;
+                    vm.panels[panel.panelId] = panel.title;
                 });
 
-            }, function () {
             });
-        }
+        };
+
+        vm.renamePanel = function (size, type) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                component: 'modalComponent',
+                size: size,
+                resolve: {
+                    type: function () {
+                        return type;
+                    }
+                }
+            });
+            modalInstance.result.then(function (newName) {
+                if (newName === undefined) {
+                    newName = namePanelDef;
+                }
+                var param = {title: newName};
+                dealModel.renamePanel(panelId, param).then(function (success) {
+                    var panel = success.data.data;
+                    vm.panels[panel.panelId] = panel.title;
+                });
+            });
+        };
+
+        vm.removePanel = function (size, type, text) {
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                component: 'modalComponent',
+                size: size,
+                resolve: {
+                    type: function () {
+                        return type;
+                    },
+                    text: function () {
+                        console.log(text);
+                        return text;
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+                var param = {
+                    userId: $sessionStorage.userProfile.userId,
+                    panelId: panelId
+                };
+                dealModel.removePanel(param).then(function (success) {
+
+                    delete vm.panels[panelId];
+                });
+            });
+
+        };
 
     }
 });
 
-app.component('modalComponent', {
+app.component('modalComponent', {             // param = {
+    //         type:  type of window ('input' or 'text')
+    //         text:  if the type of window is 'text', the key for the text
     templateUrl: 'ModalContent.html',
     bindings: {
         close: '&',
-        dismiss: '&'
+        dismiss: '&',
+        resolve: '<'
     },
     controllerAs: "vm",
     controller: function () {

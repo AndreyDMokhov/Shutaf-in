@@ -18,8 +18,6 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
     }
 
 
-
-
     return {
         getDeals: getDeals,
         getDealInfo: getDealInfo

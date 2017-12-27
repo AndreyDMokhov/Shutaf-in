@@ -12,10 +12,13 @@ app.component('palletComponent', {
 
         vm.$onChanges = function () {
             vm.documentsShow = vm.documents;
-            debugger;
             for (var i = 0; i < vm.documentsShow.length; i++) {
                 vm.documentsShow[i].createdDate = dateFormat(vm.documentsShow[i].createdDate);
             }
+        };
+
+        vm.addDocument = function () {
+
         };
         function dateFormat(dateNotFormated) {
             var date = new Date(dateNotFormated);
@@ -23,7 +26,6 @@ app.component('palletComponent', {
         }
 
         vm.openDocument = function (doc) {
-
             modalInput(doc);
         };
 

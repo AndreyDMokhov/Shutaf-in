@@ -14,7 +14,7 @@ app.component("dealPresentationComponent", {
                 function (success) {
                     vm.dealInfo = success.data.data;
                     vm.dealTabClicked=true;
-
+                    console.log(vm.dealInfo);
                 },
                 function (err) {
                     console.log(err);
@@ -25,7 +25,7 @@ app.component("dealPresentationComponent", {
         function getDeal() {
             dealPresentationModel.getDeals().then(function (success) {
                 vm.deals = success.data.data;
-                console.log(vm.deals);
+
             });
         }
 

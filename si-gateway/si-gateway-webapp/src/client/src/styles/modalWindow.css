@@ -1,9 +1,23 @@
 .modal-lg{
     margin-top:10vh;
 }
+.modal-sm {
+    width: 300px;
+}
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 900px;
+    }
+}
+
+
 .modal-body{
     height: 80vh;
     background-color: #f0f0f0;
+}
+.modal-body-original {
+    position: relative;
+    padding: 15px;
 }
 .modal-header {
     background-color: #f0f0f0;

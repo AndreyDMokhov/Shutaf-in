@@ -41,7 +41,7 @@ app.component('documentDealComponent', {
         };
 
         vm.cancel = function () {
-            console.log("Hi");
+
             vm.dismiss({$value: 'cancel'});
         };
     }

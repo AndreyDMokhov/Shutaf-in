@@ -1,31 +1,30 @@
-
 <div class="row">
 
     <div class="col-md-3">
         <uib-tabset ui-sref-active="vm.getSelectedPallet()" vertical="true" type="pills">
             <uib-tab
-                    ng-repeat="pallet in vm.pallets track by $index"
-                    ng-click="vm.selectPallet(pallet)">
+                    ng-repeat="(key, value) in vm.panels"
+                    ng-click="vm.selectPanel(key)">
                 <uib-tab-heading>
-
-                    {{pallet}}
-
+                    {{value}}
                 </uib-tab-heading>
             </uib-tab>
         </uib-tabset>
-        <div  ng-if="vm.isDealStatusActive()" class="col-md-offset-6 pull-right"  style="margin-top: 10px">
-            <button  class="btn btn-primary " style="border-radius: 50%" ng-click="vm.removePallet()" ><i
+        <div ng-if="vm.isDealStatusActive()" class="col-md-offset-6 pull-right" style="margin-top: 10px">
+            <button class="btn btn-primary " style="border-radius: 50%"
+                    ng-click="vm.removePanel('sm', 'text', 'Are you sure?')"><i
                     class="fa fa-times"></i></button>
-            <button  class="btn btn-primary " style="border-radius: 50%" ng-click="vm.renamePallet()" ><i
+            <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.renamePanel('sm', 'input')"><i
                     class="fa fa-edit"></i></button>
-            <button ng-click="vm.addPallet(vm.dealInfo.dealId)" class="btn btn-primary " style="border-radius: 50%" ><i
+            <button ng-click="vm.addPallet(vm.dealInfo.dealId, 'sm', 'input')" class="btn btn-primary "
+                    style="border-radius: 50%"><i
                     class="fa fa-plus"></i></button>
 
         </div>
     </div>
     <div class="col-md-9">
         <div ng-if="vm.palletClicked">
-        <pallet-component documents="vm.documents" status-deal="vm.statusDeal"></pallet-component>
+            <pallet-component documents="vm.documents" status-deal="vm.statusDeal"></pallet-component>
         </div>
     </div>
 </div>
@@ -33,16 +32,35 @@
 <!-- =================================== Modal dialog ===============================================-->
 <div class="modal-dialog">
     <script type="text/ng-template" id="ModalContent.html">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">New tabs name</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <label for="newTabName">New name</label>
-            <input ng-model="vm.newTabName" id="newTabName" name="newTabName">
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
-            <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
-        </div>
+        <div ng-switch="vm.resolve.type">
+            <div ng-switch-when="input">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">New tabs name</h3>
+                </div>
+                <div class="modal-body-original" id="modal-body">
+                    <label for="newTabName">New panel name</label>
+                    <input class="input-modal" ng-model="vm.newTabName" id="newTabName" name="newTabName">
+                </div>
+                <div class="modal-footer ">
+                    <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+                    <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
+
+                </div>
+            </div>
+            <div ng-switch-when="text">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title-1">Remove panel</h3>
+                </div>
+                <div class="modal-body-original">
+                    {{vm.resolve.text}}
+                </div>
+                    <div class="modal-footer ">
+                        <button class="btn btn-primary" type="button" ng-click="vm.ok()">Yes</button>
+                        <button class="btn btn-warning" type="button" ng-click="vm.cancel()">No</button>
+                    </div>
+                </div>
+
+            </div>
+
     </script>
 </div>

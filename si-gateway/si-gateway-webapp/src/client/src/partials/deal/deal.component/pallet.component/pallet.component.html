@@ -12,9 +12,11 @@
             </uib-accordion>
             <div class="row">
                 <div class="col-md-offset-10" style="">
-                    <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.removePallet()"><i
+                    <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.removeDocument()"><i
                             class="fa fa-times"></i></button>
-                    <button ng-click="vm.addPallet(vm.dealId)" class="btn btn-primary " style="border-radius: 50%"><i
+                    <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.renameDocument('sm', 'input')"><i
+                            class="fa fa-edit"></i></button>
+                    <button ng-click="vm.addDocument(vm.dealId)" class="btn btn-primary " style="border-radius: 50%"><i
                             class="fa fa-plus"></i></button>
                 </div>
             </div>
