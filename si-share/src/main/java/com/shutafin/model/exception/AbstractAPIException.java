@@ -15,6 +15,10 @@ public abstract class AbstractAPIException extends RuntimeException {
     public AbstractAPIException() {
     }
 
+    public String getSystemMessage() {
+        return systemMessage;
+    }
+
     public String getMessage() {
         return systemMessage;
     }
