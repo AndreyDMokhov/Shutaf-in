@@ -6,10 +6,7 @@ import com.shutafin.repository.base.BaseJpaRepository;
 
 import java.util.List;
 
-/**
- * @author Edward Kats
- * @since 3.2
- */
+@Deprecated
 public interface EmailImageSourceRepository extends BaseJpaRepository<EmailImageSource, Long> {
     List<EmailImageSource> findAllByEmailNotificationLog(EmailNotificationLog emailNotificationLog);
 }

@@ -174,5 +174,4 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         vm.sendMessage = sendMessage;
         vm.registerObserverCallback = registerObserverCallback;
     }
-)
-;
+);

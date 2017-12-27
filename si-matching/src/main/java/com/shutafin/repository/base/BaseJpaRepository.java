@@ -10,6 +10,7 @@ import java.util.List;
 
 @Component
 @NoRepositoryBean
+@Deprecated
 public interface BaseJpaRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
 
     void evict(T entity);

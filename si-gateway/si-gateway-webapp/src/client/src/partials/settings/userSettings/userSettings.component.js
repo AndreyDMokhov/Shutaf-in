@@ -20,7 +20,7 @@ app.component('userSettingsComponent', {
         vm.isOpened = true;
 
         vm.userProfile = $sessionStorage.userProfile;
-
+        vm.userProfile.dateOfBirth = new Date(vm.userProfile.dateOfBirth);
         vm.country = $sessionStorage.countries;
         vm.cities = $sessionStorage.cities;
         vm.gender = $sessionStorage.genders;

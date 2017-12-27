@@ -2,9 +2,7 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
-import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserSessionRepository;
-import com.shutafin.repository.common.UserRepository;
 import com.shutafin.service.LogoutService;
 import com.shutafin.service.SessionManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +20,14 @@ public class LogoutServiceImpl implements LogoutService {
     @Autowired
     private UserSessionRepository userSessionRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserAccountRepository userAccountRepository;
 
     @Override
-    public void logout(String sessionId, User user) {
+    public void logout(String sessionId) {
 
         UserSession userSession = userSessionRepository.findBySessionId(sessionId);
 
         userSessionRepository.save(userSession);
         userSessionRepository.evict(userSession);
-        userAccountRepository.evict(userAccountRepository.findByUser(user));
-
-        userRepository.evict(user);
 
         sessionManagementService.invalidateUserSession(sessionId);
     }

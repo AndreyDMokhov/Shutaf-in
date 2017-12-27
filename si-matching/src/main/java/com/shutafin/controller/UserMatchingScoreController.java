@@ -1,7 +1,8 @@
 package com.shutafin.controller;
 
 
-import com.shutafin.model.dto.UserQuestionExtendedAnswersWeb;
+import com.shutafin.model.web.matching.UserMatchingScoreDTO;
+import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.service.extended.UserMatchingScoreService;
 import com.shutafin.service.extended.UserQuestionExtendedAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,25 @@ public class UserMatchingScoreController {
     @Autowired
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
-    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<Long, Integer> getUserMatchingScores(@PathVariable("userId") Long userId) {
         return userMatchingScoreService.getUserMatchingScores(userId);
     }
 
-    @RequestMapping(value = "/{userId}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void addUserQuestionExtendedAnswers(@PathVariable("userId") Long userId,
                                                @RequestBody List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList) {
         userQuestionExtendedAnswerService.addUserQuestionExtendedAnswers(userQuestionExtendedAnswersWebList, userId);
+    }
+
+    @GetMapping(value = "/one/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserMatchingScoreDTO getOneMatchingScore(@PathVariable("userOrigin") Long userOrigin,
+                                                    @PathVariable("userToMatch") Long userToMatch) {
+        return userMatchingScoreService.getOneMatchingScore(userOrigin, userToMatch);
+    }
+
+    @GetMapping(value = "/delete/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Long deleteUserMatchingScores(@PathVariable("userId") Long userId) {
+        return userMatchingScoreService.deleteUserMatchingScores(userId);
     }
 }

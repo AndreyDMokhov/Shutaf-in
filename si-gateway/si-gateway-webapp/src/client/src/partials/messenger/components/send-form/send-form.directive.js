@@ -1,16 +1,23 @@
-app.directive('sendFormDirective', function (webSocketService) {
+app.directive('sendFormDirective', function (webSocketService, messengerCurrentDataService) {
     return {
         restrict: "E",
         templateUrl: 'partials/messenger/components/send-form/send-form.html',
-        scope: {
-            chatData: '='
-        },
-        link: function(scope, element, attrs) {
+        scope: {},
+        link: function (scope, element, attrs) {
 
             scope.outMessage = {};
-            
+            scope.currentChat = {};
+
+            function init() {
+                messengerCurrentDataService.registerCurrentChatObserver(updateCurrentChat);
+            }
+
+            function updateCurrentChat() {
+                scope.currentChat = messengerCurrentDataService.currentChat;
+            }
+
             scope.isEmpty = function () {
-                return Object.keys(scope.chatData).length === 0;
+                return Object.keys(scope.currentChat).length === 0;
             };
 
             scope.sendMessageThrowWs = function () {
@@ -18,10 +25,12 @@ app.directive('sendFormDirective', function (webSocketService) {
                     return;
                 }
                 scope.outMessage.messageType = 1;
-                scope.address = '/api/chat/' + scope.chatData.id + '/message';
+                scope.address = '/api/chat/' + scope.currentChat.id + '/message';
                 webSocketService.sendMessage(scope.outMessage, scope.address);
                 scope.outMessage.message = "";
             };
+
+            init();
         }
     };
 });

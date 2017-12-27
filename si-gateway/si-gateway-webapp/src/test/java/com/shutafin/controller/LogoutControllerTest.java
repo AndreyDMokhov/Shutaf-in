@@ -1,7 +1,6 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserSession;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.service.LogoutService;
@@ -18,13 +17,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class LogoutControllerTest extends BaseTestImpl{
+public class LogoutControllerTest extends BaseTestImpl {
 
     private static final String LOGOUT_REQUEST_URL = "/logout/";
 
@@ -35,13 +34,13 @@ public class LogoutControllerTest extends BaseTestImpl{
     private SessionManagementService sessionManagementService;
 
     @Before
-    public void setUp(){
-        Mockito.doNothing().when(logoutService).logout(anyString(), any(User.class));
-        Mockito.when(sessionManagementService.findUserWithValidSession(anyString())).thenReturn(new User());
+    public void setUp() {
+        Mockito.doNothing().when(logoutService).logout(anyString());
+        Mockito.when(sessionManagementService.findUserWithValidSession(anyString())).thenReturn(1L);
     }
 
     @Test
-    public void LogoutRequest_Positive(){
+    public void LogoutRequest_Positive() {
         List<HttpHeaders> headers = addSessionIdToHeader("40042cd8-51d0-4282-b431-36ee7f6dcaef");
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(LOGOUT_REQUEST_URL)
@@ -53,7 +52,7 @@ public class LogoutControllerTest extends BaseTestImpl{
     }
 
     @Test
-    public void LogoutRequest_HeaderNull(){
+    public void LogoutRequest_HeaderNull() {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(LOGOUT_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)

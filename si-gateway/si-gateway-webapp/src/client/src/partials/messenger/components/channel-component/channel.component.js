@@ -2,118 +2,72 @@ app.component('channelComponent', {
     templateUrl: 'partials/messenger/components/channel-component/channel.component.html',
     bindings: {},
     controllerAs: 'vm',
-    /*todo transform this into a service*/
-    require: {
-        messengerUiCtrl: '^messengerUiComponent'
-    },
-    controller: function (messengerModel, $sessionStorage, $filter) {
+
+    controller: function (messengerModel, $sessionStorage, $filter, messengerChannelService, userSearchModel, messengerManagementService) {
 
         var vm = this;
 
-        vm.$onInit = function () {
-            vm.messengerUiCtrl.channelProcessingCtrl = this;
-        };
-        vm.currentChat = {};
         vm.listOfChats = [];
-        vm.currentUserId = $sessionStorage.userProfile.userId;
 
         function activate() {
-            getChats();
-        }
-
-        function removeChat(chat) {
-            if (!chat) {
-                return;
-            }
-            messengerModel.removeChat(chat.id).then(
-                function (success) {
-                    if (vm.currentChat.id === chat.id) {
-                        vm.currentChat = {};
-                        vm.messengerUiCtrl.removeChat();
-                    }
-                    vm.listOfChats.splice(vm.listOfChats.indexOf(chat), 1);
-                });
-        }
-
-        function renameChat(chatId, chatTitle) {
-            messengerModel.renameChat(chatId, chatTitle).then(
-                function (success) {
-                    var newChatData = success.data.data;
-                    var oldTitle = vm.listOfChats.find(function (item) {
-                        return item.id === newChatData.id;
+            messengerChannelService.registerListOfChatsObserver(updateListOfChats);
+            angular.element(document).ready(function () {
+                        messengerManagementService.activateMessenger();
                     });
-                    vm.listOfChats.splice(vm.listOfChats.indexOf(oldTitle), 1, newChatData);
-                }
-            );
         }
 
-        function updateCurrentChatRoom(chatData) {
-            if (vm.currentChat.id === chatData.id) {
-                return;
-            }
-            vm.currentChat = chatData;
-            vm.messengerUiCtrl.updateCurrentChatRoom(chatData);
-        }
-        function updateChatMessages(messages){
-            vm.messengerUiCtrl.updateChatMessages(messages);
-        }
-
-        function activateChat(usersInChat, chatData){
-            vm.listOfChats.push(chatData);
-            vm.currentChat = chatData;
-            checkOneChatTitle(usersInChat, chatData);
-        }
-
-        function getChats() {
-            messengerModel.getChats().then(
-                function (success) {
-                    vm.listOfChats = success.data.data;
-                    checkChatTitlesList();
+        function updateListOfChats(newChatData) {
+            vm.listOfChats = messengerChannelService.listOfChats;
+            if (!newChatData) {
+                checkChatTitlesList();
+                angular.forEach(vm.listOfChats, function (item) {
+                    findAndSaveUserImagesToStorage(item.usersInChat);
                 });
+            }
+            else {
+                checkOneChatTitle(newChatData);
+                findAndSaveUserImagesToStorage(newChatData.usersInChat);
+            }
+        }
+
+        function findAndSaveUserImagesToStorage(usersInChat) {
+            angular.forEach(usersInChat, function (item) {
+                if (!$sessionStorage[item.userId]) {
+                    userSearchModel.getUserImageById(item.userId).then(
+                        function (success) {
+                            var data = success.data.data;
+                            if (data.image) {
+                                $sessionStorage[item.userId] =data.image;
+                            }
+                        }
+                    );
+                }
+            });
         }
 
         function checkChatTitlesList() {
             vm.listOfChats.forEach(function (element) {
                 if (element.hasNoTitle) {
-                    getUsersInChatAndSetChatTitle(element);
+                    setChatTitle(element);
                 }
             });
         }
 
-        function checkOneChatTitle(usersInChat, chatData) {
+        function checkOneChatTitle(chatData) {
             if (chatData.hasNoTitle) {
-                setChatTitle(usersInChat, chatData);
-                if (chatData.id === vm.currentChat.id) {
-                    vm.currentChat = chatData;
-                }
+                setChatTitle(chatData);
             }
         }
 
-        function getUsersInChatAndSetChatTitle(chatData) {
-            messengerModel.getActiveUsersInChat(chatData.id).then(
-                function (success) {
-                    var usersInChat = success.data.data;
-                    chatData = setChatTitle(usersInChat, chatData);
-                }
-            );
-        }
-        function setChatTitle(usersInChat, chatData) {
+        function setChatTitle(chatData) {
             chatData.chatTitle = $filter('translate')('Chat.name.prefix');
             var fullChatTitle = [];
-            usersInChat.forEach(function (elem) {
+            chatData.usersInChat.forEach(function (elem) {
                 fullChatTitle = fullChatTitle + ', ' + elem.firstName + ' ' + elem.lastName;
             });
             chatData.chatTitle = chatData.chatTitle + fullChatTitle;
         }
 
         activate();
-
-        vm.getChats = getChats;
-        vm.removeChat = removeChat;
-        vm.renameChat = renameChat;
-        vm.checkOneChatTitle=checkOneChatTitle;
-        vm.activateChat=activateChat;
-        vm.updateCurrentChatRoom = updateCurrentChatRoom;
-        vm.updateChatMessages=updateChatMessages;
     }
 });

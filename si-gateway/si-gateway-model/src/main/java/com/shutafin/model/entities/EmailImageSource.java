@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
+@Deprecated
 public class EmailImageSource extends AbstractEntity {
 
     @JoinColumn(name = "EMAIL_NOTIFICATION_LOG_ID", nullable = false)

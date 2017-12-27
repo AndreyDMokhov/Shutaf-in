@@ -4,7 +4,8 @@ import com.shutafin.core.service.UserLanguageService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.infrastructure.Language;
-import com.shutafin.model.web.user.UserLanguageWeb;
+import com.shutafin.model.web.account.AccountUserLanguageWeb;
+import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,20 @@ public class UserLanguageServiceImpl implements UserLanguageService {
 
     @Override
     @Transactional(readOnly = true)
+    public LanguageWeb findUserLanguageWeb(User user) {
+        if (user != null) {
+            Language language = userAccountRepository.findByUser(user).getLanguage();
+            return LanguageWeb.builder()
+                    .id(language.getId())
+                    .description(language.getDescription())
+                    .isActive(language.getIsActive())
+                    .languageNativeName(language.getLanguageNativeName())
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
     public Language findUserLanguage(User user) {
         if (user != null) {
             return userAccountRepository.findByUser(user).getLanguage();
@@ -34,7 +49,7 @@ public class UserLanguageServiceImpl implements UserLanguageService {
 
     @Override
     @Transactional
-    public void updateUserLanguage(UserLanguageWeb userLanguageWeb, User user) {
+    public void updateUserLanguage(AccountUserLanguageWeb userLanguageWeb, User user) {
         Language language = languageRepository.findOne(userLanguageWeb.getId());
         UserAccount userAccount = userAccountRepository.findByUser(user);
         userAccount.setLanguage(language);

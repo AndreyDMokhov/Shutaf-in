@@ -24,8 +24,7 @@ public class WebSocketProtocolHandler extends AbstractAuthenticationProtocolType
             }
             Message<?> message = (Message) parameter;
 
-            StompHeaderAccessor accessor =
-                    MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+            StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
             sessionId = accessor.getFirstNativeHeader(SESSION_ID_HEADER_TOKEN);
 
         }

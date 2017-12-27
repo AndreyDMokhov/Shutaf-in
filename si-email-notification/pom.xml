@@ -43,6 +43,13 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.29</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -50,6 +57,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>si-email</finalName>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -4,7 +4,7 @@ import com.shutafin.core.service.ChangePasswordService;
 import com.shutafin.core.service.PasswordService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.exception.exceptions.IncorrectPasswordException;
-import com.shutafin.model.web.user.ChangePasswordWeb;
+import com.shutafin.model.web.account.AccountChangePasswordWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
 
     @Transactional
     @Override
-    public void changePassword(ChangePasswordWeb changePasswordWeb, User user) {
+    public void changePassword(AccountChangePasswordWeb changePasswordWeb, User user) {
         if (!passwordService.isPasswordCorrect(user, changePasswordWeb.getOldPassword())) {
             log.warn("Authentication exception:");
             log.warn("User password with ID {} is incorrect", user.getId());

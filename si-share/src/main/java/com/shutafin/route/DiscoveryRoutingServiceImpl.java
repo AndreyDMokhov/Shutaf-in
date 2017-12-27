@@ -22,13 +22,21 @@ public class DiscoveryRoutingServiceImpl implements DiscoveryRoutingService {
 
     @Override
     public String getRoute(RouteDirection direction) {
+        return getRoute(direction, null);
+    }
+
+    @Override
+    public String getRoute(RouteDirection direction, String prefix) {
+
+
         List<ServiceInstance> instances = discoveryClient.getInstances(direction.getServiceId());
         if (instances == null || instances.isEmpty()) {
             return null;
         }
 
-        return substituteIpWithDns(instances.get(0).getUri()) + "/internal";
+        return substituteIpWithDns(instances.get(0).getUri()) + (prefix == null ? "" : prefix);
     }
+
 
     @Override
     public Map<RouteDirection, String> getServiceRoutes() {

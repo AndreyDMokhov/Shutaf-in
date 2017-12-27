@@ -1,12 +1,11 @@
 package com.shutafin.service;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.EmailChangeConfirmationWeb;
-import com.shutafin.model.web.user.EmailChangedResponse;
+import com.shutafin.model.web.account.AccountEmailChangeValidationRequest;
+import com.shutafin.model.web.user.GatewayEmailChangedResponse;
 
 public interface EmailChangeConfirmationService {
 
-    void emailChangeRequest(User user, EmailChangeConfirmationWeb emailChangeConfirmationWeb);
+    void emailChangeRequest(Long userId, AccountEmailChangeValidationRequest emailChangeConfirmationWeb);
 
-    EmailChangedResponse emailChangeConfirmation(String link);
+    GatewayEmailChangedResponse emailChangeConfirmation(String link);
 }

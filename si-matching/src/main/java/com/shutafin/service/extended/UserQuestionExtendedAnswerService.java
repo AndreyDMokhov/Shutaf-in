@@ -1,8 +1,8 @@
 package com.shutafin.service.extended;
 
-import com.shutafin.model.dto.UserQuestionExtendedAnswersWeb;
 import com.shutafin.model.entities.extended.QuestionExtended;
 import com.shutafin.model.entities.extended.UserQuestionExtendedAnswer;
+import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 
 import java.util.List;
 import java.util.Map;

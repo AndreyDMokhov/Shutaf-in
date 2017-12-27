@@ -29,12 +29,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-/**
- * Created by Edward Kats.
- * 03 / Jul / 2017
- */
 @Service
 @Slf4j
+@Deprecated
 public class EmailNotificationSenderServiceImpl implements EmailNotificationSenderService {
 
     private static final Integer RETRIES_ON_FAILURE = 2;

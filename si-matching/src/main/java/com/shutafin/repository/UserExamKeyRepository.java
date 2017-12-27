@@ -14,4 +14,7 @@ public interface UserExamKeyRepository extends BaseJpaRepository<UserExamKey, Lo
 
     @Query("SELECT uek.userId FROM UserExamKey uek WHERE uek.examKeyRegExp in (:keys)")
     List<Long> getMatchedUsers(@Param("keys") List<String> keys);
+
+    @Query("SELECT uek.userId FROM UserExamKey uek")
+    List<Long> findAllUserIds();
 }

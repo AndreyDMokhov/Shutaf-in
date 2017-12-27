@@ -3,8 +3,8 @@ package com.shutafin.service.extended.impl;
 
 import com.shutafin.model.dto.AnswerExtendedResponseDTO;
 import com.shutafin.model.dto.QuestionExtendedResponseDTO;
-import com.shutafin.model.dto.QuestionExtendedWithAnswersLocaleWeb;
-import com.shutafin.model.dto.QuestionImportanceDTO;
+import com.shutafin.model.web.matching.QuestionExtendedWithAnswersLocaleWeb;
+import com.shutafin.model.web.matching.QuestionImportanceDTO;
 import com.shutafin.repository.extended.AnswerExtendedRepository;
 import com.shutafin.repository.extended.QuestionExtendedRepository;
 import com.shutafin.repository.extended.QuestionImportanceRepository;

@@ -26,6 +26,7 @@ app.controller('logoutController', function (
         delete $sessionStorage.questionsExtended;
         delete $sessionStorage.questionImportance;
         delete $sessionStorage.selectedExtendedAnswers;
+        delete $sessionStorage.showExtendedQuestions;
         $rootScope.brand = 'Shutaf-In';
     }
 
