@@ -13,7 +13,7 @@ app.component('userSettingsComponent', {
                           $window,
                           browserTitle) {
 
-    browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
+        browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
 
         var vm = this;
         vm.dataLoading = false;
@@ -42,6 +42,10 @@ app.component('userSettingsComponent', {
                     }
                 });
         }
+
+        vm.onLog = function () {
+            console.log('hi');
+        };
 
         vm.submitChanges = submitChanges;
     }
