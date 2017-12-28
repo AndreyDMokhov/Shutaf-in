@@ -48,7 +48,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
             var socket = getSocket();
             vm.stompClient = Stomp.over(socket);
             /**
-             * STOMP debug mode setting. If true -> shows all debug messages in console.log
+             * STOMP debug mode setting. If true -> shows all debug messages in console
              */
             vm.stompClient.debug = false;
             return $q(function (resolve, reject) {
@@ -103,7 +103,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
          */
         function getSocket() {
             var protocols = ['xhr-polling', 'xdr-polling', 'xdr-streaming', 'xhr-streaming'];
-            var url = '/api/socket';
+            var url = '/api/socket?SESSION_ID='+$sessionStorage.sessionId;
             return new SockJS(url, null, {transports: protocols, server: 'shutaf-in'});
         }
 

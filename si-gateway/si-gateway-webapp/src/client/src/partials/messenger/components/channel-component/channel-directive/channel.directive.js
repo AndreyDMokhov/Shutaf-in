@@ -1,5 +1,6 @@
 app.directive('channelDirective', function (messengerModel, webSocketService, $sessionStorage,
-                                            ngDialog, messengerCurrentDataService, messengerManagementService, messengerChannelService) {
+                                            ngDialog, messengerCurrentDataService, messengerManagementService,
+                                            messengerChannelService) {
     return {
         restrict: "E",
         scope: {
@@ -23,7 +24,7 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
                 if (!messengerChannelService.isSubscribed()) {
                     setTimeout(function () {
                         init();
-                    }, 25);
+                    }, 50);
                 }
                 else {
                     messengerChannelService.registerChannelObserver(activateChannel);

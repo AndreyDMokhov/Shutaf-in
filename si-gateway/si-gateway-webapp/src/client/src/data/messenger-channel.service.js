@@ -1,26 +1,16 @@
-app.service('messengerChannelService', function ($sessionStorage, webSocketService) {
+app.service('messengerChannelService', function (webSocketService) {
 
     var vm = this;
     vm.listOfChats = [];
     vm.listOfChatsCallbacks = [];
     vm.channelCallbacks = [];
 
-    var destination = '/api/subscribe/chat/';
+    vm.destination = '/api/subscribe/chat/';
     vm.subscriptionsCallbacks = [];
     vm.subscribed = false;
 
     function registerListOfChatsObserver(callback) {
-            vm.listOfChatsCallbacks.push(callback);
-    }
-
-    function registerChannelObserver(callback) {
-        vm.channelCallbacks.push(callback);
-    }
-
-    function notifyChannelObservers(newChatData) {
-        angular.forEach(vm.channelCallbacks, function (callback) {
-            callback(newChatData);
-        });
+        vm.listOfChatsCallbacks.push(callback);
     }
 
     function notifyListOfChatObservers(chatData) {
@@ -38,6 +28,7 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
         }
         else {
             vm.listOfChats.push(newChatData);
+            subscribeNewChannel(newChatData.id);
         }
         notifyListOfChatObservers(newChatData);
     }
@@ -45,6 +36,16 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
     function removeChatFromList(chatData) {
         vm.listOfChats.splice(vm.listOfChats.indexOf(chatData), 1);
         notifyListOfChatObservers();
+    }
+
+    function registerChannelObserver(callback) {
+        vm.channelCallbacks.push(callback);
+    }
+
+    function notifyChannelObservers(newChatData) {
+        angular.forEach(vm.channelCallbacks, function (callback) {
+            callback(newChatData);
+        });
     }
 
     function findActiveChatWithUser(user) {
@@ -70,7 +71,7 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
             }, 50);
         }
         else {
-            _doSubscribeAll(destination);
+            _doSubscribeAll(vm.destination);
         }
     }
 
@@ -88,7 +89,6 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
          */
         webSocketService.registerObserverCallback(initWsSubscription);
         vm.subscribed = true;
-
     }
 
     /**
@@ -106,7 +106,7 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
      */
     function subscribeNewChannel(channelId) {
         vm.subscribed = false;
-        vm.subscriptionsCallbacks[channelId] = (webSocketService.subscribe(destination + channelId));
+        vm.subscriptionsCallbacks[channelId] = (webSocketService.subscribe(vm.destination + channelId));
         _isSubscriptionSuccess(channelId);
     }
 

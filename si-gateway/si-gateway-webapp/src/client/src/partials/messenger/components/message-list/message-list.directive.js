@@ -7,12 +7,12 @@ app.directive('messageListDirective', function (messengerCurrentDataService) {
         link: function (scope, element, attrs) {
 
             scope.messages = [];
+            var messageList = angular.element(element[0].children[0]);
 
             function init() {
                 messengerCurrentDataService.registerMessagesObserver(updateMessages);
-            }
 
-            var messageList = angular.element(element[0].children[0]);
+            }
 
             scope.prepareChatWindow = function () {
                     scrollToBottom();

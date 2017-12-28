@@ -7,12 +7,19 @@ import com.shutafin.model.entities.types.ChatMessageType;
 import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.model.web.chat.ChatMessageRequest;
 import com.shutafin.model.web.chat.ChatWithUsersListDTO;
+import com.shutafin.model.web.notification.ChatNotificationWeb;
+import com.shutafin.model.web.notification.NotificationReason;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatRepository;
 import com.shutafin.repository.common.ChatUserRepository;
 import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.service.ChatManagementService;
+import com.shutafin.service.WebSocketSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +34,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class ChatManagementServiceImpl implements ChatManagementService {
 
+    private static final String NOTIFICATION_DESTINATION = "/api/subscribe/notification";
+
     @Autowired
     private ChatRepository chatRepository;
 
@@ -39,6 +48,11 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     @Autowired
     private UserAccountControllerSender userAccountControllerSender;
 
+    @Autowired
+    private SimpMessageSendingOperations messagingTemplate;
+
+    @Autowired
+    private WebSocketSessionService webSocketSessionService;
 
     @Override
     @Transactional
@@ -50,19 +64,25 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         }
         chat.setChatTitle(chatTitle);
         chatRepository.save(chat);
-        addChatUserToChat(chat, chatOwnerId);
-        addChatUserToChat(chat, chatMemberUserId);
+        addUserToChat(chat, chatOwnerId);
+        addUserToChat(chat, chatMemberUserId);
 
-        return new ChatWithUsersListDTO(chat.getId(),
-                chat.getChatTitle(),
-                chat.getHasNoTitle(),
-                chatUserRepository.findAllByUserId (chat.getId(), chatOwnerId));
+        ChatWithUsersListDTO chatWithUsersListDTO = getChatWithUsersListDTO(chatOwnerId, chat);
+        sendNotificationsToUsers(chatWithUsersListDTO.getUsersInChat(), chat, NotificationReason.NEW_CHAT);
+
+        return chatWithUsersListDTO;
     }
 
 
     @Override
     @Transactional
-    public void addChatUserToChat(Chat chat, Long userId) {
+    public void addChatUserToChat(Long userId, Chat chat, Long userIdToAdd) {
+        addUserToChat(chat, userIdToAdd);
+        List<AccountUserWeb> usersToNotify = chatUserRepository.findOtherUsersInChatByUserId(chat.getId(), userId);
+        sendNotificationsToUsers(usersToNotify, chat, NotificationReason.ADD_CHAT_USER);
+    }
+
+    private void addUserToChat(Chat chat, Long userId) {
         ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chat.getId(), userId);
         if (chatUser == null) {
             chatUser = createChatUserAndSetIsActiveTrue(chat, userId);
@@ -71,13 +91,31 @@ public class ChatManagementServiceImpl implements ChatManagementService {
             chatUser = setIsActiveTrue(chatUser);
             chatUserRepository.save(chatUser);
         }
-
     }
 
     @Override
     @Transactional
-    public void removeChatUserFromChat(Chat chat, Long userId) {
-        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chat.getId(), userId);
+    public void removeChatUserFromChat(Long authenticatedUserId, Chat chat) {
+        setChatUserInActive(authenticatedUserId, chat);
+
+        sendNotificationsToUsers(getChatWithUsersListDTO(authenticatedUserId, chat).getUsersInChat(), chat,
+                NotificationReason.REMOVE_CHAT_USER);
+    }
+
+    @Override
+    @Transactional
+    public void removeChatUserFromChat(Long authenticatedUserId, Chat chat, Long userId) {
+        ChatWithUsersListDTO chatWithUsersListDTO = getChatWithUsersListDTO(userId, chat);
+        notifyChatUser(userId, new ChatNotificationWeb(chatWithUsersListDTO, NotificationReason.REMOVE_CHAT));
+
+        setChatUserInActive(userId, chat);
+
+        sendNotificationsToUsers(chatWithUsersListDTO.getUsersInChat(), chat, NotificationReason.REMOVE_CHAT_USER);
+        webSocketSessionService.closeWsSession(userId);
+    }
+
+    private void setChatUserInActive(Long authenticatedUserId, Chat chat) {
+        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chat.getId(), authenticatedUserId);
         chatUser.setIsActiveUser(false);
         chatUserRepository.save(chatUser);
     }
@@ -122,13 +160,41 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         chat.setChatTitle(chatTitle);
         chat.setHasNoTitle(false);
         chatRepository.save(chat);
-        ChatWithUsersListDTO chatWithUsersListDTO = new ChatWithUsersListDTO(chat.getId(), chat.getChatTitle(), chat.getHasNoTitle());
 
-        List<AccountUserWeb> users = chatUserRepository.findAllByUserId(chat.getId(), userId);
-        chatWithUsersListDTO.setUsersInChat(users);
+        ChatWithUsersListDTO chatWithUsersListDTO = getChatWithUsersListDTO(userId, chat);
+        sendNotificationsToUsers(chatWithUsersListDTO.getUsersInChat(), chat, NotificationReason.RENAME_CHAT);
 
         return chatWithUsersListDTO;
+    }
 
+    private void sendNotificationsToUsers(List<AccountUserWeb> userIds, Chat chat, NotificationReason notificationReason) {
+        for (AccountUserWeb user : userIds) {
+            ChatNotificationWeb chatNotificationWeb = new ChatNotificationWeb(getChatWithUsersListDTO(user.getUserId(), chat), notificationReason);
+            notifyChatUser(user.getUserId(), chatNotificationWeb);
+        }
+    }
+
+    private ChatWithUsersListDTO getChatWithUsersListDTO(Long userId, Chat chat) {
+        return new ChatWithUsersListDTO(chat.getId(),
+                chat.getChatTitle(),
+                chat.getHasNoTitle(),
+                chatUserRepository.findOtherUsersInChatByUserId(chat.getId(), userId));
+    }
+
+    private void notifyChatUser(Long userId, ChatNotificationWeb chatNotificationWeb) {
+        String wsSession = webSocketSessionService.findWsSessionId(userId);
+        if(wsSession != null){
+            messagingTemplate.convertAndSendToUser(wsSession, NOTIFICATION_DESTINATION,
+                    chatNotificationWeb,
+                    createHeaders(wsSession));
+        }
+    }
+
+    private MessageHeaders createHeaders(String sessionId) {
+        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+        headerAccessor.setSessionId(sessionId);
+        headerAccessor.setLeaveMutable(true);
+        return headerAccessor.getMessageHeaders();
     }
 
     private List<Long> getPermittedUsers(Chat chat) {

@@ -35,7 +35,7 @@ public class ChatInfoServiceImpl implements ChatInfoService {
     public List<ChatWithUsersListDTO> getListChats(Long userId) {
         List<ChatWithUsersListDTO> chats = chatUserRepository.findChatsWithActiveUsers(userId);
         for (ChatWithUsersListDTO chat : chats) {
-            List<AccountUserWeb> baseUserInfos = chatUserRepository.findAllByUserId(chat.getId(), userId);
+            List<AccountUserWeb> baseUserInfos = chatUserRepository.findOtherUsersInChatByUserId(chat.getId(), userId);
             chat.setUsersInChat(baseUserInfos);
         }
         return chats;
