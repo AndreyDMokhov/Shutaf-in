@@ -13,7 +13,7 @@ public interface DealService {
     void removeDealUser(InternalDealRemoveUserWeb internalDealRemoveUserWeb);
     List<DealUserWeb> getAllUserDeals(Long userId);
     DealResponse getDeal(Long dealId, Long userId);
-    Deal renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb);
+    InternalDealWeb renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb);
     Deal checkDealPermissions(Long dealId, Long userId, Boolean needFullAccess);
     void deleteDeal(Long dealId, Long userId);
 }

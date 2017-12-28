@@ -4,7 +4,10 @@ public enum DocumentType implements IdentifiableType<Integer> {
     DOC(0, ".doc", "0M8R4KGxGuE"),
     DOCX(1, ".docx", "UEsDBBQA"),
     PDF(2, ".pdf", "JVBER"),
-    TIF(3, ".tif", "SUkqA", "TU0AKg");
+    TIF(3, ".tif", "SUkqA", "TU0AKg"),
+    JPG(4, ".jpg", "/9j/"),
+    GIF(5, ".gif", "R0lGOD"),
+    PNG(6, ".png", "iVBORw0KGgo");
 
     private Integer id;
 

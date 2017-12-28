@@ -6,8 +6,6 @@ import com.shutafin.model.types.DealUserStatus;
 import com.shutafin.model.types.DocumentType;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.deal.DealDocumentWeb;
-import com.shutafin.model.web.deal.DealPanelWeb;
-import com.shutafin.model.web.deal.DealUserDocumentWeb;
 import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
@@ -58,7 +56,8 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     @Autowired
     private DealDocumentUserRepository dealDocumentUserRepository;
 
-    // TODO: add moving document from panel to panel
+    @Autowired
+    private DealSnapshotRepository dealSnapshotRepository;
 
     @Override
     public DealDocument addDealDocument(InternalDealUserDocumentWeb dealUserDocumentWeb, PermissionType permissionType) {
@@ -112,7 +111,37 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     public DealDocument getDealDocument(Long userId, Long dealDocumentId) {
 //        dealDocumentId >>= SHIFT_VALUE;
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, !NEED_FULL_ACCESS);
+        DealDocumentUser dealDocumentUser = dealDocumentUserRepository.findByDealDocumentIdAndUserId(dealDocumentId, userId);
+        if (dealDocumentUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
+            return getDealDocumentFromSnapshot(userId, dealDocument);
+        }
         return dealDocument;
+    }
+
+    private DealDocument getDealDocumentFromSnapshot(Long userId, DealDocument dealDocument) {
+        DealSnapshot dealSnapshot = dealSnapshotRepository.findAllByUserId(userId)
+                .stream()
+                .filter(snapshot -> snapshot.getDealSnapshotInfo().getDealId() == dealDocument
+                        .getDealPanel().getDeal().getId())
+                .findFirst().get();
+        DealDocumentWeb dealDocumentWeb = dealSnapshot.getDealSnapshotInfo()
+                .getDealPanels().stream()
+                .filter(panelResponse -> panelResponse.getPanelId() == dealDocument.getDealPanel().getId())
+                .findFirst().get()
+                .getDocuments().stream()
+                .filter(doc -> doc.getDocumentId() == dealDocument.getId())
+                .findFirst().get();
+        if (dealDocumentWeb == null) {
+            log.warn("Cannot find Deal Document with ID {} in Deal Snapshot {}", dealDocument.getId(),
+                    dealSnapshot.getId());
+            throw new RuntimeException();
+        }
+        DealDocument dealDocumentCopy = new DealDocument(DocumentType.getById(dealDocumentWeb.getDocumentType()),
+                dealDocument.getDocumentStorage(), dealDocumentWeb.getTitle(), false);
+        dealDocumentCopy.setDealPanel(dealDocument.getDealPanel());
+        dealDocumentCopy.setId(dealDocument.getId());
+        dealDocumentCopy.setCreatedDate(dealDocument.getCreatedDate());
+        return dealDocumentCopy;
     }
 
     @Override

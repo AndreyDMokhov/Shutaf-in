@@ -72,8 +72,7 @@ public class DealController {
             log.warn(result.toString());
             throw new RuntimeException();
         }
-        Deal deal = dealService.renameDeal(dealId, userId, newTitle);
-        return new InternalDealWeb(deal.getId(), null, deal.getTitle(), null);
+        return dealService.renameDeal(dealId, userId, newTitle);
     }
 
     @DeleteMapping(value = "/{dealId}/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})

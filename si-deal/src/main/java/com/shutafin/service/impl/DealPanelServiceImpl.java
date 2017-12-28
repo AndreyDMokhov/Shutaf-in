@@ -4,6 +4,7 @@ import com.shutafin.model.entities.*;
 import com.shutafin.model.types.DealUserPermissionType;
 import com.shutafin.model.types.DealUserStatus;
 import com.shutafin.model.web.deal.DealDocumentWeb;
+import com.shutafin.model.web.deal.DealPanelResponse;
 import com.shutafin.model.web.deal.DealPanelWeb;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
@@ -46,8 +47,11 @@ public class DealPanelServiceImpl implements DealPanelService {
     @Autowired
     private DealDocumentUserRepository dealDocumentUserRepository;
 
+    @Autowired
+    private DealSnapshotRepository dealSnapshotRepository;
+
     @Override
-    public DealPanel addDealPanel(DealPanelWeb dealPanelWeb) {
+    public DealPanelResponse addDealPanel(DealPanelWeb dealPanelWeb) {
 
         Deal deal = dealService.checkDealPermissions(dealPanelWeb.getDealId(),
                 dealPanelWeb.getUserId(), NEED_FULL_ACCESS);
@@ -67,21 +71,41 @@ public class DealPanelServiceImpl implements DealPanelService {
                     DealUserPermissionType.CREATE);
             dealPanelUserRepository.save(dealPanelUser);
         }
-        return dealPanel;
+        return getDealPanelResponse(dealPanel, dealPanelWeb.getUserId(), false);
     }
 
     @Override
-    public DealPanel getDealPanel(Long dealPanelId, Long userId) {
+    public DealPanelResponse getDealPanel(Long dealPanelId, Long userId) {
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, !NEED_FULL_ACCESS);
-        return dealPanel;
+        DealPanelUser dealPanelUser = dealPanelUserRepository.findByDealPanelIdAndUserId(dealPanelId, userId);
+        if (dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
+            return getDealPanelFromSnapshot(userId, dealPanel);
+        }
+        return getDealPanelResponse(dealPanel, userId, true);
+    }
+
+    private DealPanelResponse getDealPanelFromSnapshot(Long userId, DealPanel dealPanel) {
+        DealSnapshot dealSnapshot = dealSnapshotRepository.findAllByUserId(userId)
+                .stream()
+                .filter(snapshot -> snapshot.getDealSnapshotInfo().getDealId() == dealPanel.getDeal().getId())
+                .findFirst().get();
+        DealPanelResponse dealPanelResponse = dealSnapshot.getDealSnapshotInfo()
+                .getDealPanels().stream()
+                .filter(panelResponse -> panelResponse.getPanelId() == dealPanel.getId())
+                .findFirst().get();
+        if (dealPanelResponse == null) {
+            log.warn("Cannot find Deal Panel with ID {} in Deal Snapshot {}", dealPanel.getId(), dealSnapshot.getId());
+            throw new RuntimeException();
+        }
+        return dealPanelResponse;
     }
 
     @Override
-    public DealPanel renameDealPanel(Long dealPanelId, Long userId, String newTitle) {
+    public DealPanelResponse renameDealPanel(Long dealPanelId, Long userId, String newTitle) {
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
         dealPanel.setTitle(newTitle);
         dealPanel.setModifiedByUser(userId);
-        return dealPanel;
+        return getDealPanelResponse(dealPanel, userId, false);
     }
 
     @Override
@@ -132,6 +156,18 @@ public class DealPanelServiceImpl implements DealPanelService {
         }
         dealService.checkDealPermissions(dealPanel.getDeal().getId(), userId, fullAccess);
         return dealPanel;
+    }
+
+    private DealPanelResponse getDealPanelResponse(DealPanel dealPanel, Long userId, Boolean includeDocuments) {
+        DealPanelResponse dealPanelResponse = new DealPanelResponse();
+        dealPanelResponse.setPanelId(dealPanel.getId());
+        dealPanelResponse.setTitle(dealPanel.getTitle());
+        if (includeDocuments) {
+            dealPanelResponse.setDocuments(getDealPanelDocuments(dealPanel.getId(), userId));
+        } else {
+            dealPanelResponse.setDocuments(new ArrayList<>());
+        }
+        return dealPanelResponse;
     }
 
 }
