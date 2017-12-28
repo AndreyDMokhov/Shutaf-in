@@ -31,17 +31,14 @@ public class DealPanelController {
             throw new RuntimeException();
         }
 
-        DealPanel dealPanel = dealPanelService.addDealPanel(dealPanelWeb);
-
-        return getDealPanelResponse(dealPanel, dealPanelWeb.getUserId(), false);
+        return dealPanelService.addDealPanel(dealPanelWeb);
     }
 
     @GetMapping(value = "/{userId}/{panelId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealPanelResponse getDealPanel(@PathVariable(value = "userId") Long userId,
                                           @PathVariable(value = "panelId") Long dealPanelId) {
         log.debug("GET /deal/panel/{userId}/{panelId}");
-        DealPanel dealPanel = dealPanelService.getDealPanel(dealPanelId, userId);
-        return getDealPanelResponse(dealPanel, userId, true);
+        return dealPanelService.getDealPanel(dealPanelId, userId);
     }
 
     @PostMapping(value = "/{userId}/{panelId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -50,8 +47,7 @@ public class DealPanelController {
                                              @PathVariable(value = "panelId") Long dealPanelId,
                                              @RequestBody @Valid NewTitleWeb panelTitle) {
         log.debug("POST /deal/panel/{userId}/{panelId}");
-        DealPanel dealPanel = dealPanelService.renameDealPanel(dealPanelId, userId, panelTitle.getTitle());
-        return getDealPanelResponse(dealPanel, userId, false);
+        return dealPanelService.renameDealPanel(dealPanelId, userId, panelTitle.getTitle());
     }
 
     @DeleteMapping(value = "/{userId}/{panelId}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -61,15 +57,4 @@ public class DealPanelController {
         dealPanelService.deleteDealPanel(dealPanelId, userId);
     }
 
-    private DealPanelResponse getDealPanelResponse(DealPanel dealPanel, Long userId, Boolean includeDocuments) {
-        DealPanelResponse dealPanelResponse = new DealPanelResponse();
-        dealPanelResponse.setPanelId(dealPanel.getId());
-        dealPanelResponse.setTitle(dealPanel.getTitle());
-        if (includeDocuments) {
-            dealPanelResponse.setDocuments(dealPanelService.getDealPanelDocuments(dealPanel.getId(), userId));
-        } else {
-            dealPanelResponse.setDocuments(new ArrayList<>());
-        }
-        return dealPanelResponse;
-    }
 }
