@@ -2,6 +2,7 @@ package com.shutafin.service.extended.impl;
 
 
 import com.shutafin.model.entities.extended.UserMatchingScore;
+import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.repository.extended.UserMatchingScoreRepository;
 import com.shutafin.service.UserMatchService;
 import com.shutafin.service.extended.CoreMatchingService;
@@ -50,5 +51,16 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     @Override
     public Long deleteUserMatchingScores(Long userId) {
         return userMatchingScoreRepository.deleteAllByUserOriginIdOrUserToMatchId(userId, userId);
+    }
+
+    @Override
+    public UserMatchingScoreDTO getOneMatchingScore(Long userOriginId, Long userToMatch) {
+        UserMatchingScore userMatchingScore = getMatchingScore(userOriginId, userToMatch);
+        return new UserMatchingScoreDTO(userMatchingScore.getUserOriginId(),
+                userMatchingScore.getUserToMatchId(),
+                userMatchingScore.getScore(),
+                userMatchingScore.getCreatedDate(),
+                userMatchingScore.getUpdatedDate());
+
     }
 }

@@ -1,15 +1,12 @@
 package com.shutafin.service;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.UserInfoRequest;
-import com.shutafin.model.web.user.UserInfoResponseDTO;
+import com.shutafin.model.web.account.AccountUserInfoRequest;
+import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
 
 
 public interface UserInfoService {
 
-    void createUserInfo(UserInfoRequest userInfoRequest, User user);
-    UserInfoResponseDTO getUserInfo(User user);
-    UserInfoResponseDTO getUserInfo(Long userId);
-    void updateUserInfo(UserInfoRequest userInfoRequest, User user);
+    AccountUserInfoResponseDTO getUserInfo(Long userId);
+    void updateUserInfo(AccountUserInfoRequest userInfoRequest, Long userId);
 
 }

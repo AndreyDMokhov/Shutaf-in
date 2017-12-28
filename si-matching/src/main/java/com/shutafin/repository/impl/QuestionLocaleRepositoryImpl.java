@@ -1,7 +1,7 @@
 package com.shutafin.repository.impl;
 
 
-import com.shutafin.model.dto.QuestionsListWithAnswersDTO;
+import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.repository.QuestionLocaleRepositoryCustom;
 
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ public class QuestionLocaleRepositoryImpl implements QuestionLocaleRepositoryCus
     @Override
     public List<QuestionsListWithAnswersDTO> findByLanguageId(Integer languageId) {
         StringBuilder hql = new StringBuilder()
-                .append("SELECT NEW com.shutafin.model.DTO.QuestionsListWithAnswersDTO " +
+                .append("SELECT NEW com.shutafin.model.web.matching.QuestionsListWithAnswersDTO " +
                         " (cl.question.id, cl.description,cl.question.isActive ) " +
                         " from QuestionLocale cl where cl.languageId = :languageId  " +
                         " AND cl.question.isActive = 1  ");

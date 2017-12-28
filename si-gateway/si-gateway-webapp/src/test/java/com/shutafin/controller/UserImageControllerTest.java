@@ -1,32 +1,22 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.entities.ImageStorage;
-import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.UserImage;
-import com.shutafin.model.entities.types.CompressionType;
-import com.shutafin.model.entities.types.PermissionType;
 import com.shutafin.model.web.APIWebResponse;
+import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.user.UserImageWeb;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserImageService;
 import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -42,9 +32,6 @@ public class UserImageControllerTest extends BaseTestImpl {
     private static final String VALID_IMAGE_IN_BASE64 = "valid image in base64";
 
 
-    private User validUser;
-    private UserImage validUserImage;
-
     @MockBean
     public UserImageService userImageService;
     @MockBean
@@ -52,19 +39,19 @@ public class UserImageControllerTest extends BaseTestImpl {
 
     @Before
     public void setUp() {
-        validUser = createUser();
-        validUserImage = createUserImage();
-        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
-        Mockito.when(userImageService.addUserImage(Mockito.any(UserImageWeb.class), Mockito.any(User.class),
-                Mockito.any(PermissionType.class), Mockito.any(CompressionType.class)))
-                .thenReturn(validUserImage);
-        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
-                .thenReturn(validUserImage);
-        Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
-                .thenThrow(new ResourceNotFoundException());
-        Mockito.doNothing().when(userImageService).deleteUserImage(validUser, VALID_USER_IMAGE_ID);
-        Mockito.doThrow(new ResourceNotFoundException())
-                .when(userImageService).deleteUserImage(validUser, INVALID_USER_IMAGE_ID);
+        //todo
+//        validUser = createUser();
+//        validUserImage = createUserImage();
+//        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
+//        Mockito.when(userImageService.addUserImage(Mockito.any(AccountUserImageWeb.class), Mockito.any(User.class)))
+//                .thenReturn(validUserImage);
+//        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
+//                .thenReturn(validUserImage);
+//        Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
+//                .thenThrow(new ResourceNotFoundException());
+//        Mockito.doNothing().when(userImageService).deleteUserImage(validUser, VALID_USER_IMAGE_ID);
+//        Mockito.doThrow(new ResourceNotFoundException())
+//                .when(userImageService).deleteUserImage(validUser, INVALID_USER_IMAGE_ID);
 
     }
 
@@ -78,7 +65,7 @@ public class UserImageControllerTest extends BaseTestImpl {
                 .setUrl(USER_IMAGE_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(ADD_IMAGE_VALID_JSON_BODY)
-                .setResponseClass(UserImageWeb.class)
+                .setResponseClass(AccountUserImageWeb.class)
                 .setHeaders(sessionHeaders)
                 .build();
         APIWebResponse apiResponse = getResponse(request);
@@ -147,12 +134,12 @@ public class UserImageControllerTest extends BaseTestImpl {
                 .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(sessionHeaders)
-                .setResponseClass(UserImageWeb.class)
+                .setResponseClass(AccountUserImageWeb.class)
                 .build();
         APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNull(apiResponse.getError());
-        Assert.assertEquals(VALID_IMAGE_IN_BASE64, ((UserImageWeb) apiResponse.getData()).getImage());
+        Assert.assertEquals(VALID_IMAGE_IN_BASE64, ((AccountUserImageWeb) apiResponse.getData()).getImage());
     }
 
     @Test
@@ -164,7 +151,7 @@ public class UserImageControllerTest extends BaseTestImpl {
                 .setUrl(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(sessionHeaders)
-                .setResponseClass(UserImageWeb.class)
+                .setResponseClass(AccountUserImageWeb.class)
                 .build();
         APIWebResponse apiResponse = getResponse(request);
 
@@ -181,7 +168,7 @@ public class UserImageControllerTest extends BaseTestImpl {
                 .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(sessionHeaders)
-                .setResponseClass(UserImageWeb.class)
+                .setResponseClass(AccountUserImageWeb.class)
                 .build();
         APIWebResponse apiResponse = getResponse(request);
 
@@ -237,28 +224,8 @@ public class UserImageControllerTest extends BaseTestImpl {
     }
 
 
-    private User createUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setFirstName("User");
-        user.setLastName("Valid");
-        user.setEmail("valid@mail.com");
-        user.setCreatedDate(Date.from(Instant.now()));
-        return user;
-    }
 
-    private UserImage createUserImage() {
-        UserImage userImage = new UserImage();
-        userImage.setId(1L);
-        userImage.setUser(validUser);
-        userImage.setLocalPath("");
-        ImageStorage imageStorage = new ImageStorage();
-        imageStorage.setId(1L);
-        imageStorage.setUserImage(userImage);
-        imageStorage.setImageEncoded(VALID_IMAGE_IN_BASE64);
-        userImage.setImageStorage(imageStorage);
-        userImage.setCreatedDate(Date.from(Instant.now()));
-        return userImage;
-    }
+
+
 
 }

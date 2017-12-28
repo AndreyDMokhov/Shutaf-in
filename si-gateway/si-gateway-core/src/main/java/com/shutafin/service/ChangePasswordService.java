@@ -1,9 +1,8 @@
 package com.shutafin.service;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.ChangePasswordWeb;
+import com.shutafin.model.web.account.AccountChangePasswordWeb;
 
 public interface ChangePasswordService {
 
-    void changePassword(ChangePasswordWeb changePasswordWeb, User user);
+    void changePassword(AccountChangePasswordWeb changePasswordWeb, Long userId);
 }

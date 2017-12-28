@@ -8,8 +8,8 @@ import com.shutafin.model.entities.UserImage;
 
 import com.shutafin.model.types.CompressionType;
 import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.web.user.UserImageWeb;
 
+import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.account.ImagePairRepository;
 import com.shutafin.repository.account.UserImageRepository;
 import lombok.SneakyThrows;
@@ -67,7 +67,7 @@ public class ImageCompressServiceImpl implements ImageCompressService {
 
     private UserImage saveCompressedUserImage(String imageEncoded, User user, PermissionType permissionType,
                                               CompressionType compressionType) {
-        UserImageWeb compressedImage = new UserImageWeb();
+        AccountUserImageWeb compressedImage = new AccountUserImageWeb();
         compressedImage.setImage(imageEncoded);
         UserImage compressedUserImage = userImageService.addUserImage(compressedImage, user, permissionType, null);
         compressedUserImage.setCompressionType(compressionType);

@@ -8,7 +8,7 @@ import com.shutafin.model.smtp.EmailMessage;
 
 import java.util.Map;
 
-
+@Deprecated
 public interface EmailTemplateService {
 
     BaseTemplate getTemplate(EmailReason emailReason, Language language, String link);

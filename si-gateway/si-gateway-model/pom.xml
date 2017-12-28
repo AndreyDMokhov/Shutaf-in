@@ -34,6 +34,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.shutafin</groupId>
+            <artifactId>si-share</artifactId>
+            <version>0.1</version>
+        </dependency>
 
     </dependencies>
     

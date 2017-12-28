@@ -4,11 +4,7 @@
         <channel-component></channel-component>
 
         <h4>{{'Chat.title.compatibleUsers' | translate}}</h4>
-        <compatible-users-directive
-                users="vm.users"
-                add-chat="vm.addChat(userId)"
-                add-user-to-chat="vm.addUserToChat(userId)">
-        </compatible-users-directive>
+        <compatible-users-directive users="vm.users"></compatible-users-directive>
 
         <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}:
             <crop-name-directive
@@ -16,18 +12,15 @@
                     character-limit="vm.characterLimit">
             </crop-name-directive>
         </h4>
-        <chat-users-directive
-                users-in-chat="vm.usersInChat"
-                remove-user-from-chat="vm.removeUserFromChat(userId)">
-        </chat-users-directive>
+        <chat-users-directive></chat-users-directive>
     </div>
 
     <div class="col-md-8 col-lg-8">
         <strong>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</strong>
         <hr>
         <div class="message-container">
-            <message-list-directive data-messages="vm.messages"></message-list-directive>
-            <send-form-directive data-chat-data="vm.currentChat"></send-form-directive>
+            <message-list-directive></message-list-directive>
+            <send-form-directive></send-form-directive>
         </div>
     </div>
 </div>

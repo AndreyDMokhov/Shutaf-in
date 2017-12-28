@@ -14,22 +14,24 @@
 
     <h4> {{'Search.results'|translate}} {{vm.userSearchList.length}} </h4>
     <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
-    <div class="card-custom" ng-repeat="user in vm.userSearchList">
+    <div class="card-custom" ng-repeat="user in vm.userSearchList | orderBy:'-score'">
         <div class="card-header pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
-            <span>  {{ user.firstName }} {{ user.lastName }}</span>
-            <span>{{'UserProfile.compatibility' | translate}}</span>
+            <h4 class="panel-title">
+                {{ user.firstName }} {{ user.lastName }}
+            </h4>
+            <span>{{'UserProfile.compatibility' | translate}} {{user.score}}%</span>
         </div>
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-3" align="center">
-                    <modal-image class="pointer" user-profile="user"></modal-image>
+                    <user-avatar user-data="user" width="100" height="100"></user-avatar>
                 </div>
                 <div class=" col-md-9">
                     <table class="table table-user-information">
                         <tbody>
-                        <tr ng-if="user.dateOfBirth">
-                            <td>{{'UserProfile.dateOfBirth' | translate}}</td>
-                            <td>{{user.dateOfBirth | date: 'dd / MM / yyyy'}}</td>
+                        <tr ng-if="user.age">
+                            <td>{{'UserProfile.age' | translate}}</td>
+                            <td>{{user.age | date: 'dd / MM / yyyy'}}</td>
                         </tr>
                         <tr ng-if="user.genderId">
                             <td>{{'UserSettings.form.gender' | translate}}</td>
@@ -47,7 +49,7 @@
                         </tr>
                         </tbody>
                     </table>
-
+                    <send-message-directive user="user"></send-message-directive>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@ package com.shutafin.service;
 
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatMessage;
+import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.model.entities.User;
 
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.List;
  * Chat "getters"
  */
 public interface ChatInfoService {
-    List<Chat> getListChats(User user);
-    List<User> getListUsersByChatId(Chat chat, User user);
-    List<ChatMessage> getListMessages(Chat chat, User user);
+    List<ChatWithUsersListDTO> getListChats(Long userId);
+    List<ChatMessage> getListMessages(Chat chat, Long userId);
 }

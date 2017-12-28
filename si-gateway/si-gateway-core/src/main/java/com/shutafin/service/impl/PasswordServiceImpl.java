@@ -30,13 +30,6 @@ public class PasswordServiceImpl implements PasswordService {
     @Autowired
     private UserCredentialsRepository userCredentialsRepository;
 
-    @Override
-    @Transactional
-    public void createAndSaveUserPassword(User user, String password) {
-        UserCredentials userCredentials = new UserCredentials();
-        userCredentials.setUser(user);
-        userCredentialsRepository.save(populateWithSaltAndHash(userCredentials, password));
-    }
 
     @Override
     @Transactional

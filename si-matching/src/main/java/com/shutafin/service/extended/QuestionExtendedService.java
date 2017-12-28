@@ -1,8 +1,9 @@
 package com.shutafin.service.extended;
 
 
-import com.shutafin.model.dto.QuestionExtendedWithAnswersLocaleWeb;
-import com.shutafin.model.dto.QuestionImportanceDTO;
+
+import com.shutafin.model.web.matching.QuestionExtendedWithAnswersLocaleWeb;
+import com.shutafin.model.web.matching.QuestionImportanceDTO;
 
 import java.util.List;
 
