@@ -276,18 +276,7 @@ a.fa:focus {
   border-color: #006b78;
   cursor: default;
 }
-.hover-none {
-  pointer-events: none;
-}
-.showme {
-  display: none;
-}
-.showhim:hover .showme {
-  display: block;
-}
-.row:hover .select {
-  display: block;
-}
-.select {
-  display: none;
+.has-success .control-label {
+  color: #212121;
+  text-align: center;
 }
