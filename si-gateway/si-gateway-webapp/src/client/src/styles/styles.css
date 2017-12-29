@@ -2,7 +2,7 @@
   cursor: pointer;
 }
 .divider-vertical {
-  height: 9vh;
+  min-height: 50px;
   margin: 0 9px;
   border-left: 1px solid #DCEDC8;
   border-right: 1px solid #FFF;
@@ -37,7 +37,7 @@ div[role="main"] {
 }
 .navbar {
   margin-bottom: 0;
-  height: 9vh;
+  min-height: 50px;
   border-width: 0 0 2px 0;
 }
 .navbar-default {
