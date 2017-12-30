@@ -2,16 +2,18 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.Deal;
 import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.entities.DealSnapshot;
 import com.shutafin.model.entities.DealUser;
+import com.shutafin.model.exception.exceptions.NoPermissionException;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.exception.exceptions.SystemException;
 import com.shutafin.model.types.DealStatus;
 import com.shutafin.model.types.DealUserPermissionType;
 import com.shutafin.model.types.DealUserStatus;
-import com.shutafin.model.util.DealSnapshotInfo;
 import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealPanelService;
 import com.shutafin.service.DealService;
+import com.shutafin.service.DealSnapshotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,7 +51,7 @@ public class DealServiceImpl implements DealService {
     private DealDocumentUserRepository dealDocumentUserRepository;
 
     @Autowired
-    private DealSnapshotRepository dealSnapshotRepository;
+    private DealSnapshotService dealSnapshotService;
 
     @Override
     public InternalDealWeb initiateDeal(InternalDealWeb dealWeb) {
@@ -58,6 +59,7 @@ public class DealServiceImpl implements DealService {
         deal.setDealStatus(DealStatus.INITIATED);
         deal.setTitle(dealWeb.getTitle() == null ? DEFAULT_DEAL_TITLE : dealWeb.getTitle());
         deal.setModifiedByUser(dealWeb.getOriginUserId());
+        dealWeb.getUsers().remove(dealWeb.getOriginUserId());
         dealRepository.save(deal);
 
         for (Long userId : dealWeb.getUsers()) {
@@ -79,12 +81,7 @@ public class DealServiceImpl implements DealService {
         Deal deal = checkDealPermissions(dealId, userId, !NEED_FULL_ACCESS);
         DealUser currentDealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
         if (currentDealUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
-            Optional<DealSnapshot> dealSnapshotOptional = dealSnapshotRepository.findAllByUserId(userId)
-                    .stream().filter(dealSnapshot -> dealSnapshot.getDealSnapshotInfo().getDealId() == dealId)
-                    .findFirst();
-            if (dealSnapshotOptional.isPresent()) {
-                return getDealResponse(dealSnapshotOptional.get().getDealSnapshotInfo());
-            }
+            return dealSnapshotService.getDealSnapshot(dealId, userId);
         }
         DealResponse dealResponse = new DealResponse();
         dealResponse.setDealId(deal.getId());
@@ -124,19 +121,7 @@ public class DealServiceImpl implements DealService {
         Deal deal = checkDealPermissions(dealId, userId, NEED_FULL_ACCESS);
         DealUser dealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
         if (dealUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
-            Optional<DealSnapshot> dealSnapshotOptional = dealSnapshotRepository.findAllByUserId(userId)
-                    .stream().filter(snapshot -> snapshot.getDealSnapshotInfo().getDealId() == dealId)
-                    .findFirst();
-            if (dealSnapshotOptional.isPresent()) {
-                DealSnapshot dealSnapshot = dealSnapshotOptional.get();
-                dealSnapshot.getDealSnapshotInfo().setTitle(newTitleWeb.getTitle());
-                return new InternalDealWeb(dealId, null, dealSnapshot.getDealSnapshotInfo().getTitle(), null);
-            }
-            else {
-                log.warn("Deal snapshot of Deal ID {} for User ID {} was not found", dealId, userId);
-                throw new RuntimeException(String.format("Deal snapshot of Deal ID {} for User ID {} was not found",
-                        dealId, userId));
-            }
+            return dealSnapshotService.renameDealSnapshot(dealId, userId, newTitleWeb.getTitle());
         } else {
             deal.setTitle(newTitleWeb.getTitle());
             deal.setModifiedByUser(userId);
@@ -149,22 +134,16 @@ public class DealServiceImpl implements DealService {
         Deal deal = dealRepository.findOne(dealId);
         if (deal == null) {
             log.warn("Deal with ID {} was not found", dealId);
-            throw new RuntimeException(String.format("Deal with ID %d was not found", dealId));
+            throw new ResourceNotFoundException(String.format("Deal with ID %d was not found", dealId));
         }
         DealUser dealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
         if (dealUser == null) {
             log.warn("User has not ever been in this deal");
-            throw new RuntimeException();
-//        } else if (dealUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
-//            log.warn("User does not have permissions");
-//            throw new RuntimeException() ;
-//        }
-//        } else if (dealUser.getDealUserStatus() == DealUserStatus.REMOVED && needFullAccess) {
-//            log.warn("User was removed from this deal");
-//            throw new RuntimeException();
+            throw new SystemException(String.format("User with ID %d has not ever been in the deal with ID %d",
+                    userId, dealId));
         } else if (dealUser.getDealUserPermissionType() != DealUserPermissionType.CREATE && needFullAccess) {
             log.warn("User does not have permissions");
-            throw new RuntimeException();
+            throw new NoPermissionException("User does not have permissions");
         }
 
         return deal;
@@ -199,10 +178,12 @@ public class DealServiceImpl implements DealService {
     @Override
     public void leaveDeal(Long dealId, Long userId) {
         Deal deal = checkDealPermissions(dealId, userId, !NEED_FULL_ACCESS);
-        saveDealSnapshot(deal, userId);
+        dealSnapshotService.saveDealSnapshot(deal, userId);
         DealUser dealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
         dealUser.setDealUserStatus(DealUserStatus.LEAVED);
         dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
+
+        setPermissionToReadOnly(deal, userId);
     }
 
     @Override
@@ -214,12 +195,17 @@ public class DealServiceImpl implements DealService {
         if (dealUser == null) {
             log.warn("User {} was not included to deal {}", userToRemoveId,
                     internalDealRemoveUserWeb.getDealId());
-            throw new RuntimeException();
+            throw new SystemException(String.format("User %d was not included to deal %d", userToRemoveId,
+                    internalDealRemoveUserWeb.getDealId()));
         }
-        saveDealSnapshot(deal, userToRemoveId);
+        dealSnapshotService.saveDealSnapshot(deal, userToRemoveId);
         dealUser.setDealUserStatus(DealUserStatus.REMOVED);
         dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
 
+        setPermissionToReadOnly(deal, userToRemoveId);
+    }
+
+    private void setPermissionToReadOnly(Deal deal, Long userToRemoveId) {
         dealPanelUserRepository
                 .findAllByDealPanelDealIdAndUserId(deal.getId(), userToRemoveId)
                 .forEach(dealPanelUser -> {
@@ -264,51 +250,6 @@ public class DealServiceImpl implements DealService {
         dealPanelResponse.setTitle(dealPanel.getTitle());
         dealPanelResponse.setDocuments(dealPanelService.getDealPanelDocuments(dealPanel.getId(), userId));
         return dealPanelResponse;
-    }
-
-
-    private void saveDealSnapshot(Deal deal, Long userId) {
-        DealSnapshot dealSnapshot = new DealSnapshot();
-        dealSnapshot.setUserId(userId);
-
-        DealSnapshotInfo dealSnapshotInfo = new DealSnapshotInfo();
-        dealSnapshotInfo.setDealId(deal.getId());
-        dealSnapshotInfo.setTitle(deal.getTitle());
-        dealSnapshotInfo.setStatusId(deal.getDealStatus().getCode());
-
-        List<DealPanel> dealPanels = dealPanelRepository.findAllByDealId(deal.getId());
-        if (!dealPanels.isEmpty()) {
-            dealPanels = dealPanels.stream()
-                    .filter(dealPanel -> dealPanelUserRepository
-                            .findByDealPanelIdAndUserId(dealPanel.getId(), userId)
-                            .getDealUserPermissionType() != DealUserPermissionType.NO_READ)
-                    .collect(Collectors.toList());
-
-            dealSnapshotInfo.setDealPanels(dealPanels.stream()
-                    .map(dealPanel -> getDealPanelResponse(userId, dealPanel))
-                    .collect(Collectors.toList()));
-        }
-
-        dealSnapshot.setDealSnapshotInfo(dealSnapshotInfo);
-        dealSnapshotRepository.save(dealSnapshot);
-    }
-
-    public DealResponse getDealResponse(DealSnapshotInfo dealSnapshotInfo) {
-        DealResponse dealResponse = new DealResponse();
-        dealResponse.setDealId(dealSnapshotInfo.getDealId());
-        dealResponse.setTitle(dealSnapshotInfo.getTitle());
-        dealResponse.setStatusId(DealStatus.ARCHIVE.getCode());
-
-        List<DealPanelResponse> dealPanels = dealSnapshotInfo.getDealPanels();
-        if (dealPanels != null && !dealPanels.isEmpty()) {
-            dealResponse.setFirstPanel(dealPanels.get(0));
-            dealResponse.setPanels(dealPanels.stream()
-                    .collect(Collectors.toMap(DealPanelResponse::getPanelId, DealPanelResponse::getTitle)));
-        } else {
-            dealResponse.setPanels(new HashMap<>());
-        }
-
-        return dealResponse;
     }
 
 }

@@ -1,6 +1,8 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.*;
+import com.shutafin.model.exception.exceptions.NoPermissionException;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.types.DealUserPermissionType;
 import com.shutafin.model.types.DealUserStatus;
 import com.shutafin.model.web.deal.DealDocumentWeb;
@@ -10,6 +12,7 @@ import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealPanelService;
 import com.shutafin.service.DealService;
+import com.shutafin.service.DealSnapshotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +51,7 @@ public class DealPanelServiceImpl implements DealPanelService {
     private DealDocumentUserRepository dealDocumentUserRepository;
 
     @Autowired
-    private DealSnapshotRepository dealSnapshotRepository;
+    private DealSnapshotService dealSnapshotService;
 
     @Override
     public DealPanelResponse addDealPanel(DealPanelWeb dealPanelWeb) {
@@ -79,25 +82,9 @@ public class DealPanelServiceImpl implements DealPanelService {
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, !NEED_FULL_ACCESS);
         DealPanelUser dealPanelUser = dealPanelUserRepository.findByDealPanelIdAndUserId(dealPanelId, userId);
         if (dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
-            return getDealPanelFromSnapshot(userId, dealPanel);
+            return dealSnapshotService.getDealPanelFromSnapshot(userId, dealPanelId);
         }
         return getDealPanelResponse(dealPanel, userId, true);
-    }
-
-    private DealPanelResponse getDealPanelFromSnapshot(Long userId, DealPanel dealPanel) {
-        DealSnapshot dealSnapshot = dealSnapshotRepository.findAllByUserId(userId)
-                .stream()
-                .filter(snapshot -> snapshot.getDealSnapshotInfo().getDealId() == dealPanel.getDeal().getId())
-                .findFirst().get();
-        DealPanelResponse dealPanelResponse = dealSnapshot.getDealSnapshotInfo()
-                .getDealPanels().stream()
-                .filter(panelResponse -> panelResponse.getPanelId() == dealPanel.getId())
-                .findFirst().get();
-        if (dealPanelResponse == null) {
-            log.warn("Cannot find Deal Panel with ID {} in Deal Snapshot {}", dealPanel.getId(), dealSnapshot.getId());
-            throw new RuntimeException();
-        }
-        return dealPanelResponse;
     }
 
     @Override
@@ -110,15 +97,20 @@ public class DealPanelServiceImpl implements DealPanelService {
 
     @Override
     public void deleteDealPanel(Long dealPanelId, Long userId) {
-        DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, NEED_FULL_ACCESS);
-        dealPanel.setIsDeleted(true);
-        dealPanel.setModifiedByUser(userId);
-        List<DealDocument> dealDocuments = dealDocumentRepository.findAllByDealPanelIdAndIsDeletedFalse(dealPanelId);
-        dealDocuments.forEach(doc -> dealDocumentService.deleteDealDocument(userId, doc.getId()));
+        DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, !NEED_FULL_ACCESS);
+        DealPanelUser dealPanelUser = dealPanelUserRepository.findByDealPanelIdAndUserId(dealPanelId, userId);
+        if (dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
+            dealSnapshotService.deleteDealPanelFromSnapshot(dealPanelId, userId);
+        } else {
+            dealPanel.setIsDeleted(true);
+            dealPanel.setModifiedByUser(userId);
+            List<DealDocument> dealDocuments = dealDocumentRepository.findAllByDealPanelIdAndIsDeletedFalse(dealPanelId);
+            dealDocuments.forEach(doc -> dealDocumentService.deleteDealDocument(userId, doc.getId()));
 
-        List<DealPanelUser> dealPanelUsers = dealPanelUserRepository.
-                findAllByDealPanelIdAndDealUserPermissionType(dealPanelId, DealUserPermissionType.CREATE);
-        dealPanelUsers.forEach(d -> d.setDealUserPermissionType(DealUserPermissionType.NO_READ));
+            List<DealPanelUser> dealPanelUsers = dealPanelUserRepository.
+                    findAllByDealPanelIdAndDealUserPermissionType(dealPanelId, DealUserPermissionType.CREATE);
+            dealPanelUsers.forEach(d -> d.setDealUserPermissionType(DealUserPermissionType.NO_READ));
+        }
     }
 
     @Override
@@ -143,16 +135,16 @@ public class DealPanelServiceImpl implements DealPanelService {
         DealPanel dealPanel = dealPanelRepository.findOne(dealPanelId);
         if (dealPanel == null) {
             log.warn("Deal panel with ID {} was not found", dealPanelId);
-            throw new RuntimeException(String.format("Deal panel with ID %d was not found", dealPanelId));
+            throw new ResourceNotFoundException(String.format("Deal panel with ID %d was not found", dealPanelId));
         }
         DealPanelUser dealPanelUser = dealPanelUserRepository.findByDealPanelIdAndUserId(dealPanelId, userId);
         if (dealPanelUser == null || dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
             log.warn("User with ID {} does not have permissions", userId);
-            throw new RuntimeException(String.format("User panel with ID %d was not found", dealPanelId));
+            throw new NoPermissionException(String.format("User panel with ID %d was not found", dealPanelId));
         }
         if (dealPanel.getIsDeleted() && dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
             log.warn("Deal panel with ID {} was deleted", dealPanelId);
-            throw new RuntimeException(String.format("Deal panel with ID %d was not found", dealPanelId));
+            throw new ResourceNotFoundException(String.format("Deal panel with ID %d was not found", dealPanelId));
         }
         dealService.checkDealPermissions(dealPanel.getDeal().getId(), userId, fullAccess);
         return dealPanel;

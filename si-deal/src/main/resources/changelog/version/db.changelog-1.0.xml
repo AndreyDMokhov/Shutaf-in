@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="ivan">
+        <createTable tableName="DEAL">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MODIFIED_BY" type="BIGINT"/>
+            <column name="DEAL_STATUS_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="DEAL_DOCUMENT">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MODIFIED_BY" type="BIGINT"/>
+            <column name="IS_DELETED" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOCAL_PATH" type="VARCHAR(200)">
+                <constraints unique="true" />
+            </column>
+            <column name="PERMISSION_TYPE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOCUMENT_TYPE_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_PANEL_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOCUMENT_STORAGE_ID" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="DEAL_DOCUMENT_USER">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_USER_PERMISSION_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_DOCUMENT_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="DEAL_PANEL">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MODIFIED_BY" type="BIGINT"/>
+            <column name="IS_DELETED" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="DEAL_PANEL_USER">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_USER_PERMISSION_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_PANEL_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="deal_snapshot">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_SNAPSHOT_INFO" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="DEAL_USER">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="CREATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_DATE" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_USER_PERMISSION_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_USER_STATUS_ID" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="DOCUMENT_STORAGE">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="BASE_64_DOCUMENT" type="LONGTEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEAL_DOCUMENT_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!--FOREIGN KEYS-->
+    <changeSet id="2" author="ivan">
+        <addForeignKeyConstraint baseColumnNames="DEAL_ID" baseTableName="DEAL_USER" constraintName="DEAL_USER_DEAL_ID_DEAL_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="DEAL"/>
+        <addForeignKeyConstraint baseColumnNames="DOCUMENT_STORAGE_ID" baseTableName="DEAL_DOCUMENT" constraintName="DEAL_DOCUMENT_DOCUMENT_STORAGE_ID_DOCUMENT_STORAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="DOCUMENT_STORAGE"/>
+        <addForeignKeyConstraint baseColumnNames="DEAL_DOCUMENT_ID" baseTableName="DOCUMENT_STORAGE" constraintName="DOCUMENT_STORAGE_DEAL_DOCUMENT_ID_DEAL_DOCUMENT_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="DEAL_DOCUMENT"/>
+        <addForeignKeyConstraint baseColumnNames="DEAL_ID" baseTableName="DEAL_PANEL" constraintName="DEAL_PANEL_DEAL_ID_DEAL_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="DEAL"/>
+        <addForeignKeyConstraint baseColumnNames="DEAL_PANEL_ID" baseTableName="DEAL_DOCUMENT" constraintName="DEAL_DOCUMENT_DEAL_PANEL_ID_DEAL_PANEL_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="DEAL_PANEL"/>
+        <addForeignKeyConstraint baseColumnNames="DEAL_PANEL_ID" baseTableName="DEAL_PANEL_USER" constraintName="DEAL_PANEL_USER_DEAL_PANEL_ID_DEAL_PANEL_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="DEAL_PANEL"/>
+        <addForeignKeyConstraint baseColumnNames="DEAL_DOCUMENT_ID" baseTableName="DEAL_DOCUMENT_USER" constraintName="DEAL_DOCUMENT_USER_DEAL_DOCUMENT_ID_DEAL_DOCUMENT_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="DEAL_DOCUMENT"/>
+    </changeSet>
+
+</databaseChangeLog>
