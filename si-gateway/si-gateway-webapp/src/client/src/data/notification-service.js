@@ -24,7 +24,7 @@ app.service('notificationService', function (webSocketService, messengerChannelS
     function _doSubscribe(destination) {
         webSocketService.subscribe(destination).then(null, null,
             function (notification) {
-                _executeNotification(notification)
+                _executeNotification(notification);
             });
 
         /**
