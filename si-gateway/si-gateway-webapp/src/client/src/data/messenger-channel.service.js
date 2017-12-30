@@ -39,14 +39,14 @@ app.service('messengerChannelService', function (webSocketService) {
         notifyListOfChatObservers();
     }
 
-    function registerChannelActivateObserver(callback) {
-        vm.channelActivateCallbacks.push(callback);
+    function registerChannelActivateObserver(callback, chatData) {
+        vm.channelActivateCallbacks[chatData.id] = callback;
     }
 
-    function notifyChannelActivateObservers(chatData) {
-        angular.forEach(vm.channelActivateCallbacks, function (callback) {
-            callback(chatData);
-        });
+    function notifyChannelActivateObserver(chatData) {
+        if (chatData && vm.channelActivateCallbacks[chatData.id]) {
+            vm.channelActivateCallbacks[chatData.id](chatData);
+        }
     }
 
     function findActiveChatWithUser(user) {
@@ -89,6 +89,7 @@ app.service('messengerChannelService', function (webSocketService) {
         vm.listOfChats.forEach(function (chatData) {
             if (chatData.isActiveUser) {
                 vm.subscriptionsCallbacks[chatData.id] = (webSocketService.subscribe(destination + chatData.id));
+                notifyChannelActivateObserver(chatData);
             }
         });
 
@@ -119,8 +120,8 @@ app.service('messengerChannelService', function (webSocketService) {
         if (chatData.isActiveUser) {
             vm.subscribed = false;
             vm.subscriptionsCallbacks[chatData.id] = (webSocketService.subscribe(vm.destination + chatData.id));
-            notifyChannelActivateObservers(chatData);
             vm.subscribed = true;
+            notifyChannelActivateObserver(chatData);
         }
     }
 
@@ -137,7 +138,7 @@ app.service('messengerChannelService', function (webSocketService) {
 
     vm.registerListOfChatsObserver = registerListOfChatsObserver;
     vm.registerChannelActivateObserver = registerChannelActivateObserver;
-    vm.notifyChannelActivateObservers = notifyChannelActivateObservers;
+    vm.notifyChannelActivateObserver = notifyChannelActivateObserver;
     vm.notifyListOfChatObservers = notifyListOfChatObservers;
     vm.updateListOfChats = updateListOfChats;
     vm.removeChatFromList = removeChatFromList;

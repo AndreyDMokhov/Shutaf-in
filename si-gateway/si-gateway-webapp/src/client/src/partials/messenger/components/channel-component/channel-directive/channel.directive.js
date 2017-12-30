@@ -27,17 +27,16 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
                     }, 50);
                 }
                 else {
-                    messengerChannelService.registerChannelActivateObserver(activateChannel);
+                    messengerChannelService.registerChannelActivateObserver(activateChannel, scope.chatData);
                     messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData);
                 }
             }
 
-            function activateChannel(channel) {
-                if (channel && channel.id === scope.chatData.id) {
+            function activateChannel(chatData) {
+                    scope.chatData = chatData;
                     updateMessagesAsRead();
                     messengerCurrentDataService.setMessages(scope.messages);
                     messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData);
-                }
             }
 
             function addChatMessage(message) {

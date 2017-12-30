@@ -43,7 +43,7 @@ app.service('messengerManagementService', function ($sessionStorage, messengerMo
 
     function activateChannel(chatData) {
         messengerCurrentDataService.setCurrentChat(chatData);
-        messengerChannelService.notifyChannelActivateObservers(chatData);
+        messengerChannelService.notifyChannelActivateObserver(chatData);
     }
 
     function renameChat(chatData, chatTitle) {
