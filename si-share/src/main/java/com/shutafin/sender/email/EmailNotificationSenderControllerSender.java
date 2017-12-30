@@ -25,7 +25,7 @@ public class EmailNotificationSenderControllerSender {
             String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/send";
             new RestTemplate().postForEntity(url, emailNotificationWeb, Void.class);
         } catch (HttpClientErrorException e) {
-            APIExceptionClient.getException(e);
+            throw APIExceptionClient.getException(e);
         }
     }
 
@@ -34,18 +34,20 @@ public class EmailNotificationSenderControllerSender {
             String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/confirm?link=" + link + "&reason=" + emailReason;
             return new RestTemplate().getForEntity(url, emailReason.getResponseObject()).getBody();
         } catch (HttpClientErrorException e) {
-            APIExceptionClient.getException(e);
-            return null;
+            throw APIExceptionClient.getException(e);
         }
     }
 
     public Boolean isLinkValid(String link, EmailReason emailReason) {
-        String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) +
-                String.format("/email/validate/%s?reason=%s", link, emailReason);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Boolean> entity = new HttpEntity<Boolean>(null, headers);
-        return new RestTemplate().exchange(url, HttpMethod.GET, entity, Boolean.class).getBody();
+        try {
+            String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) +
+                    String.format("/email/validate/%s?reason=%s", link, emailReason);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Boolean> entity = new HttpEntity<Boolean>(null, headers);
+            return new RestTemplate().exchange(url, HttpMethod.GET, entity, Boolean.class).getBody();
+        } catch (HttpClientErrorException e) {
+            throw APIExceptionClient.getException(e);
+        }
     }
 }
