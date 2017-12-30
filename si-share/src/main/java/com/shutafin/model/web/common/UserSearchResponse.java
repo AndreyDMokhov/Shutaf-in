@@ -32,7 +32,7 @@ public class UserSearchResponse {
 
     private Integer countryId;
 
-    private Integer age;
+    private Long dateOfBirth;
 
     private Integer score;
 
@@ -45,7 +45,7 @@ public class UserSearchResponse {
         this.genderId = genderId;
         this.cityId = cityId;
         this.countryId = countryId;
-        this.age = org.joda.time.Years.yearsBetween(new LocalDate(dateOfBirth), LocalDate.now()).getYears();
+        this.dateOfBirth = dateOfBirth.getTime();
     }
 
 }

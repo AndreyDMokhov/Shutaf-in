@@ -29,9 +29,9 @@
                 <div class=" col-md-9">
                     <table class="table table-user-information">
                         <tbody>
-                        <tr ng-if="user.age">
-                            <td>{{'UserProfile.age' | translate}}</td>
-                            <td>{{user.age | date: 'dd / MM / yyyy'}}</td>
+                        <tr ng-if="user.dateOfBirth">
+                            <td>{{'UserProfile.dateOfBirth' | translate}}</td>
+                            <td>{{user.dateOfBirth | date: 'dd / MM / yyyy'}}</td>
                         </tr>
                         <tr ng-if="user.genderId">
                             <td>{{'UserSettings.form.gender' | translate}}</td>
