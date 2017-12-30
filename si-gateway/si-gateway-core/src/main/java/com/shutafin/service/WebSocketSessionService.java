@@ -1,15 +1,11 @@
 package com.shutafin.service;
 
-import org.springframework.web.socket.WebSocketSession;
-
 public interface WebSocketSessionService {
-    void addWsSession(WebSocketSession webSocketSession);
 
-    WebSocketSession getWsSession(Long userId);
+    void addWsSession(Long userId, String sessionId);
 
     String findWsSessionId(Long userId);
 
     void deleteWsSession(Long userId, String sessionId);
 
-    void closeWsSession(Long userId);
 }

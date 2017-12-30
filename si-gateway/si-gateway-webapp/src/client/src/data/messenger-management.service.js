@@ -41,35 +41,37 @@ app.service('messengerManagementService', function ($sessionStorage, messengerMo
         );
     }
 
-    function activateChannel(chat) {
-        messengerCurrentDataService.setCurrentChat(chat);
-        messengerChannelService.notifyChannelObservers(chat);
+    function activateChannel(chatData) {
+        messengerCurrentDataService.setCurrentChat(chatData);
+        messengerChannelService.notifyChannelActivateObservers(chatData);
     }
 
-    function renameChat(chat, chatTitle) {
-        messengerModel.renameChat(chat.id, chatTitle).then(
+    function renameChat(chatData, chatTitle) {
+        messengerModel.renameChat(chatData.id, chatTitle).then(
             function (success) {
                 messengerChannelService.updateListOfChats(success.data.data);
             }
         );
     }
 
-    function removeChat(chat) {
-        if (!chat) {
+    function deleteChat(chatData) {
+        if (!chatData) {
             return;
         }
-        messengerModel.removeChat(chat.id).then(
+        messengerModel.deleteChat(chatData.id).then(
             function (success) {
-                if (messengerCurrentDataService.currentChat.id === chat.id) {
+                if (messengerCurrentDataService.currentChat.id === chatData.id) {
                     messengerCurrentDataService.removeCurrentChat();
                 }
-                messengerChannelService.removeChatFromList(chat);
+                messengerChannelService.unSubscribe(chatData);
+                messengerChannelService.removeChatFromList(chatData);
             });
     }
 
     function addUserToChat(userData) {
         if (userData && Object.keys(messengerCurrentDataService.currentChat).length !== 0 &&
-            !messengerCurrentDataService.isUserActiveInCurrentChat(userData)) {
+            !messengerCurrentDataService.isUserActiveInCurrentChat(userData) &&
+            messengerCurrentDataService.currentChat.isActiveUser) {
 
             vm.currentChat = messengerCurrentDataService.currentChat;
             messengerModel.addUserToChat(vm.currentChat.id, userData.userId).then(
@@ -97,7 +99,7 @@ app.service('messengerManagementService', function ($sessionStorage, messengerMo
     vm.activateMessenger = activateMessenger;
     vm.sendMessage = sendMessage;
     vm.addChat = addChat;
-    vm.removeChat = removeChat;
+    vm.deleteChat = deleteChat;
     vm.renameChat = renameChat;
     vm.addUserToChat = addUserToChat;
     vm.removeUserFromChat = removeUserFromChat;

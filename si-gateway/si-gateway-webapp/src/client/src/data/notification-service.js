@@ -7,7 +7,7 @@ app.service('notificationService', function (webSocketService, messengerChannelS
     vm.notificationsList["RENAME_CHAT"] = _updateChat;
     vm.notificationsList["ADD_CHAT_USER"] = _updateChat;
     vm.notificationsList["REMOVE_CHAT_USER"] = _updateChat;
-    vm.notificationsList["REMOVE_CHAT"] = _removeChat;
+    vm.notificationsList["DELETE_CHAT"] = _deleteChat;
 
     /**WebSocket subscription part*/
     function initWsSubscription() {
@@ -45,15 +45,9 @@ app.service('notificationService', function (webSocketService, messengerChannelS
         }
     }
 
-    function _removeChat(chatData) {
-        messengerChannelService.listOfChats.find(function (item) {
-            if (item.id === chatData.id) {
-                messengerChannelService.removeChatFromList(chatData);
-                if (messengerCurrentDataService.currentChat.id === chatData.id) {
-                    messengerCurrentDataService.removeCurrentChat();
-                }
-            }
-        });
+    function _deleteChat(chatData) {
+        messengerChannelService.unSubscribe(chatData);
+        _updateChat(chatData);
     }
 
     vm.initWsSubscription = initWsSubscription;

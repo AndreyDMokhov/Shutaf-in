@@ -29,21 +29,25 @@ public class ClientSessionInboundChannelInterceptor extends ChannelInterceptorAd
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor =
                 MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        Long userIdFromAttributes = (Long) accessor.getSessionAttributes().get("userId");
 
         if (accessor.getCommand() == StompCommand.CONNECT ||
-            accessor.getCommand() == StompCommand.SUBSCRIBE ||
-            accessor.getCommand() == StompCommand.SEND) {
+                accessor.getCommand() == StompCommand.SUBSCRIBE) {
 
             Long userId = sessionManagementService.findUserWithValidSession(accessor.getFirstNativeHeader("session_id"));
-            if (userId == null) {
+            if (userId == null || !userId.equals(userIdFromAttributes)) {
                 log.warn("Authentication exception in ClientSessionInboundChannelInterceptor:");
                 log.warn("SessionId {} was not found", accessor.getFirstNativeHeader("session_id"));
                 throw new AuthenticationException();
             }
         }
 
-        if(accessor.getCommand() == StompCommand.DISCONNECT){
-            webSocketSessionService.deleteWsSession((Long)accessor.getSessionAttributes().get("userId"), accessor.getSessionId());
+        if (accessor.getCommand() == StompCommand.CONNECT) {
+            webSocketSessionService.addWsSession(userIdFromAttributes, accessor.getSessionId());
+        }
+
+        if (accessor.getCommand() == StompCommand.DISCONNECT) {
+            webSocketSessionService.deleteWsSession(userIdFromAttributes, accessor.getSessionId());
         }
 
         return message;

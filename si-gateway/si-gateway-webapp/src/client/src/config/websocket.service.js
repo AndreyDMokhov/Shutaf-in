@@ -4,7 +4,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
 
         vm.isConnected = false;
         vm.stompClient = null;
-        vm.subscription = null;
+        vm.subscriptionsList = [];
         vm.connecting = false;
 
 
@@ -73,12 +73,11 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
          * @param destination - is chat id, that was received from  /get/chats -> List<Chat> getChats -> ChatController
          */
         function subscribe(destination) {
-
             var deferred = $q.defer();
             if (!vm.isConnected) {
                 getConnection();
             } else {
-                vm.subscription = vm.stompClient.subscribe(destination, function (message) {
+                vm.subscriptionsList[destination] = vm.stompClient.subscribe(destination, function (message) {
                     deferred.notify(JSON.parse(message.body));
                 }, {'session_id': $sessionStorage.sessionId});
             }
@@ -88,10 +87,10 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         /**
          *  vm.subscription.unsubscribe(); unSubscribe all subscriptions via Stomp
          */
-        function unSubscribe() {
-            if (vm.subscription !== null) {
-                vm.subscription.unsubscribe();
-                vm.subscription = null;
+        function unSubscribe(destination) {
+            if (vm.subscriptionsList[destination]) {
+                vm.subscriptionsList[destination].unsubscribe();
+                vm.subscriptionsList[destination] = null;
             }
         }
 

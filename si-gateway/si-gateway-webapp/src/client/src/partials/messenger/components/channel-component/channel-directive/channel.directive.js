@@ -27,8 +27,8 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
                     }, 50);
                 }
                 else {
-                    messengerChannelService.registerChannelObserver(activateChannel);
-                    messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData.id);
+                    messengerChannelService.registerChannelActivateObserver(activateChannel);
+                    messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData);
                 }
             }
 
@@ -36,6 +36,7 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
                 if (channel && channel.id === scope.chatData.id) {
                     updateMessagesAsRead();
                     messengerCurrentDataService.setMessages(scope.messages);
+                    messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData);
                 }
             }
 
@@ -97,7 +98,7 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
             }
 
             scope.deleteChat = function () {
-                messengerManagementService.removeChat(scope.chatData);
+                messengerManagementService.deleteChat(scope.chatData);
             };
 
             scope.editChatTitle = function () {

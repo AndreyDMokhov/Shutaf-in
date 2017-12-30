@@ -28,7 +28,7 @@ public class ChatAuthorizationServiceImpl implements ChatAuthorizationService {
     @Override
     @Transactional(readOnly = true)
     public ChatUser findAuthorizedChatUser(Long chatId, Long userId) {
-        ChatUser chatUser = chatUserRepository.findActiveChatUserByChatIdAndUserId(chatId, userId);
+        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserIdAndIsActiveUserTrue(chatId, userId);
         if (chatUser == null) {
             throw new AuthenticationException();
         }

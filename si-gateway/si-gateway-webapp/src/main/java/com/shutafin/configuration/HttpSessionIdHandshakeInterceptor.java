@@ -23,7 +23,7 @@ public class HttpSessionIdHandshakeInterceptor implements HandshakeInterceptor {
 
     /**
      * Checks session id in path variable, that was sent by SockJs.
-     * After sessionId check add userId to attributes list, which will be add to WebSocketSession.
+     * After sessionId check, adds userId to attributes list, which will be add to WebSocketSession.
      */
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {

@@ -17,7 +17,7 @@ public interface ChatManagementService {
     ChatWithUsersListDTO createNewChat(String chatTitle, Long chatOwner, Long chatMemberUserId);
     void addChatUserToChat(Long userId, Chat chat, Long userIdToAdd);
     void removeChatUserFromChat(Long authenticatedUserId, Chat chat, Long userId);
-    void removeChatUserFromChat(Long authenticatedUserId, Chat chat);
+    void deleteChat(Long authenticatedUserId, Long chatId);
     ChatMessage saveChatMessage(ChatUser chatUser, ChatMessageRequest message);
     void updateMessagesAsRead(List<Long> messagesIdList, Long chatOwner);
     ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, Long chatOwner);

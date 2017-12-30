@@ -23,6 +23,7 @@ import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -88,6 +89,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
             chatUser = createChatUserAndSetIsActiveTrue(chat, userId);
             chatUserRepository.save(chatUser);
         } else if (!chatUser.getIsActiveUser()) {
+            chatUser.setIsDeletedFromChat(false);
             chatUser = setIsActiveTrue(chatUser);
             chatUserRepository.save(chatUser);
         }
@@ -95,27 +97,37 @@ public class ChatManagementServiceImpl implements ChatManagementService {
 
     @Override
     @Transactional
-    public void removeChatUserFromChat(Long authenticatedUserId, Chat chat) {
-        setChatUserInActive(authenticatedUserId, chat);
-
-        sendNotificationsToUsers(getChatWithUsersListDTO(authenticatedUserId, chat).getUsersInChat(), chat,
+    public void deleteChat(Long authenticatedUserId, Long chatId) {
+        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chatId, authenticatedUserId);
+        chatUserRepository.save(setIsDeletedFromChatTrue(chatUser));
+        sendNotificationsToUsers(chatUserRepository.findOtherUsersInChatByUserId(chatId, authenticatedUserId), chatUser.getChat(),
                 NotificationReason.REMOVE_CHAT_USER);
     }
+
+    private ChatUser setIsDeletedFromChatTrue(ChatUser chatUser) {
+        chatUser.setIsActiveUser(false);
+        chatUser.setIsDeletedFromChat(true);
+        chatUser.setExitDate(new Date());
+        return chatUser;
+    }
+
 
     @Override
     @Transactional
     public void removeChatUserFromChat(Long authenticatedUserId, Chat chat, Long userId) {
         ChatWithUsersListDTO chatWithUsersListDTO = getChatWithUsersListDTO(userId, chat);
-        notifyChatUser(userId, new ChatNotificationWeb(chatWithUsersListDTO, NotificationReason.REMOVE_CHAT));
+        List<AccountUserWeb> usersInChat = chatWithUsersListDTO.getUsersInChat();
+        chatWithUsersListDTO.setUsersInChat(new ArrayList<>());
+        chatWithUsersListDTO.setIsActiveUser(false);
+        notifyChatUser(userId, new ChatNotificationWeb(chatWithUsersListDTO, NotificationReason.DELETE_CHAT));
 
-        setChatUserInActive(userId, chat);
+        setChatUserInActive(userId, chat.getId());
 
-        sendNotificationsToUsers(chatWithUsersListDTO.getUsersInChat(), chat, NotificationReason.REMOVE_CHAT_USER);
-        webSocketSessionService.closeWsSession(userId);
+        sendNotificationsToUsers(usersInChat, chat, NotificationReason.REMOVE_CHAT_USER);
     }
 
-    private void setChatUserInActive(Long authenticatedUserId, Chat chat) {
-        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chat.getId(), authenticatedUserId);
+    private void setChatUserInActive(Long userId, Long chatId) {
+        ChatUser chatUser = chatUserRepository.findChatUserByChatIdAndUserId(chatId, userId);
         chatUser.setIsActiveUser(false);
         chatUserRepository.save(chatUser);
     }
@@ -178,12 +190,13 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         return new ChatWithUsersListDTO(chat.getId(),
                 chat.getChatTitle(),
                 chat.getHasNoTitle(),
+                true,
                 chatUserRepository.findOtherUsersInChatByUserId(chat.getId(), userId));
     }
 
     private void notifyChatUser(Long userId, ChatNotificationWeb chatNotificationWeb) {
         String wsSession = webSocketSessionService.findWsSessionId(userId);
-        if(wsSession != null){
+        if (wsSession != null) {
             messagingTemplate.convertAndSendToUser(wsSession, NOTIFICATION_DESTINATION,
                     chatNotificationWeb,
                     createHeaders(wsSession));
@@ -212,6 +225,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         AccountUserWeb accountUserWeb = userAccountControllerSender.getBaseUserInfo(userId);
         chatUser.setFirstName(accountUserWeb.getFirstName());
         chatUser.setLastName(accountUserWeb.getLastName());
+        chatUser.setIsDeletedFromChat(false);
         chatUser = setIsActiveTrue(chatUser);
         return chatUser;
     }
@@ -221,6 +235,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         chatUser.setJoinDate(new Date());
         return chatUser;
     }
+
 
     private List<Long> getUsersToNotify(List<Long> userIdList, Long userId) {
         return userIdList
