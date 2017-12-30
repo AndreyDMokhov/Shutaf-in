@@ -1,23 +1,17 @@
 package com.shutafin.service;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.web.user.AgeRangeWebDTO;
+import com.shutafin.model.web.common.FiltersWeb;
 import com.shutafin.model.web.user.UserBaseResponse;
-import com.shutafin.model.web.user.UserSearchResponse;
+import com.shutafin.model.web.common.UserSearchResponse;
 
 import java.util.List;
+import java.util.Map;
 
-//TODO move not @Deprecated methods to account service
 
 public interface UserSearchService {
-    List<UserSearchResponse> userSearchByList(List<User> users, String fullName);
-    List<UserSearchResponse> userSearchByList(List<User> users);
-    @Deprecated
-    List<Integer> getCitiesForFilter(User user);
-    @Deprecated
-    Integer getGenderForFilter(User user);
-    @Deprecated
-    AgeRangeWebDTO getAgeRangeForFilter(User user);
-    List<UserBaseResponse> userBaseResponseByList(List<User> users);
+    List<UserSearchResponse> userSearchByList(Long authenticatedUserId, List<Long> users, String fullName);
+    List<UserSearchResponse> userSearchByMap(Long authenticatedUserId, Map<Long, Integer> users, String fullName);
+    List<UserSearchResponse> userSearchByMap(Long authenticatedUserId, Map<Long, Integer> users, FiltersWeb filtersWeb);
+    List<UserBaseResponse> userBaseResponseByList(Long authenticatedUser, List<Long> users);
     UserSearchResponse findUserDataById(Long userId);
 }

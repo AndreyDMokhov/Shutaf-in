@@ -48,7 +48,7 @@ public class RegistrationController {
                 .builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .id(user.getId())
+                .userId(user.getId())
                 .build();
     }
 

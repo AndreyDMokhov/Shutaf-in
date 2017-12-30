@@ -24,10 +24,22 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
         return rest.one('api/images/' + id).customGET();
     }
 
+    function getUserImageById(userId){
+        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
+        return rest.one('api/images/compressed/' + userId).customGET();
+    }
+
+    function getOriginalUserImageById(userId){
+        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
+        return rest.one('api/images/original/' + userId).customGET();
+    }
+
     return {
         userSearch: userSearch,
         saveFilters: saveFilters,
-        getUserInfo: getUserInfo
+        getUserInfo: getUserInfo,
+        getUserImageById:getUserImageById,
+        getOriginalUserImageById:getOriginalUserImageById
 
     };
 });

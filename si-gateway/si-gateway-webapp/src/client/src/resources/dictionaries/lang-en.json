@@ -78,6 +78,7 @@
   "UserProfile.compatibility":"Compatibility",
   "UserProfile.message.sizeImage":"Image size should not exceed {{size}} MB",
   "UserProfile.current":"your profile",
+  "UserProfile.age" : "Age",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Email sent to specified address",

@@ -13,10 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,7 +31,7 @@ public class UserAccountController {
     private UserInfoService userInfoService;
 
 
-    @RequestMapping(value = "/image", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/image", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb updateUserAccountProfileImage(@AuthenticatedUser Long userId,
                                                              @RequestBody @Valid AccountUserImageWeb userImageWeb,
                                                              BindingResult result) {
@@ -43,13 +40,13 @@ public class UserAccountController {
         return userAccountService.updateProfileImage(userId, userImageWeb);
     }
 
-    @RequestMapping(value = "/image", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/image", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteUserAccountProfileImage(@AuthenticatedUser Long userId) {
         log.debug("/users/settings/image delete");
         userAccountService.deleteUserAccountProfileImage(userId);
     }
 
-    @RequestMapping(value = "/language", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/language", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void update(@RequestBody @Valid AccountUserLanguageWeb userLanguageWeb,
                        BindingResult result,
                        @AuthenticatedUser Long userId) {
@@ -59,13 +56,13 @@ public class UserAccountController {
     }
 
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/info", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserInfoResponseDTO getUserInfo(@AuthenticatedUser Long userId) {
 
         return userInfoService.getUserInfo(userId);
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/info", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void updateUserInfo(@AuthenticatedUser Long userId,
                                @RequestBody @Valid AccountUserInfoRequest userInfoRequest,
                                BindingResult result) {

@@ -204,6 +204,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <finalName>si-gateway</finalName>
+                </configuration>
             </plugin>
 
         </plugins>

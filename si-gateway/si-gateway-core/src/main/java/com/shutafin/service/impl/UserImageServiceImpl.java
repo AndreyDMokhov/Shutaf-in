@@ -40,6 +40,16 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
+    public AccountUserImageWeb getUserImage(Long userId) {
+        return userImageControllerSender.getUserImageByUserId(userId);
+    }
+
+    @Override
+    public AccountUserImageWeb getOriginalUserImage(Long userId) {
+        return userImageControllerSender.getOriginalUserImageByUserId(userId);
+    }
+
+    @Override
     public void deleteUserImage(Long userId, Long userImageId) {
         userImageControllerSender.deleteUserImage(userId, userImageId);
     }

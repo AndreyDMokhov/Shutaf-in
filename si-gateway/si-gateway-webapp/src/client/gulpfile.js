@@ -23,10 +23,12 @@ const eslint = require('gulp-eslint');
 var htmlmin = require('gulp-htmlmin');
 var livereload = require('gulp-livereload');
 var watch = require('gulp-watch');
+var less = require('gulp-less');
+var path = require('path');
 
 
 gulp.task('watch', function() {
-     gulp.watch(['src/**/*', '!src/bower_components/**'], ['eslint']);
+     gulp.watch(['src/**/*', '!src/bower_components/**'], ['eslint' , 'less']);
 });
 
 //clean all,
@@ -176,6 +178,12 @@ gulp.task('eslint', function () {
         .pipe(livereload({start: true}));
 });
 
+gulp.task('less', function () {
+    return gulp.src(['./src/styles/*.less' ,  '!./src/styles/variables.less'])
+        .pipe(less())
+        .pipe(gulp.dest('./src/styles'));
+});1
+
 
 // to run new server
 gulp.task('minifiedConnect', function () {
@@ -205,7 +213,7 @@ gulp.task('runServer', function () {
     });
 });
 
-gulp.task('start', ['eslint', 'runServer', 'watch']);
+gulp.task('start', ['eslint', 'runServer', 'less', 'watch']);
 
 gulp.task('build', function (callback) {
     runSequence(

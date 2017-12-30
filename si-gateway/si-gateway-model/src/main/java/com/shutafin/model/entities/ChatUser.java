@@ -24,6 +24,12 @@ public class ChatUser extends AbstractEntity {
     @Column(name = "USER_ID", nullable = false)
     private Long userId;
 
+    @Column(name = "FIRST_NAME", nullable = false)
+    private String firstName;
+
+    @Column(name = "LAST_NAME", nullable = false)
+    private String lastName;
+
     @Column(name = "IS_ACTIVE_USER", nullable = false)
     private Boolean isActiveUser;
 

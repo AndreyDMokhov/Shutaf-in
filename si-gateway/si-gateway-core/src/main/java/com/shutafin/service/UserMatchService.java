@@ -1,16 +1,17 @@
 package com.shutafin.service;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by evgeny on 8/12/2017.
  */
 public interface UserMatchService {
-    List<User> findMatchingUsers(Long userId);
+    List<Long> findMatchingUsers(Long userId);
+    Map<Long, Integer> getMatchingUsersWithScores(Long userId);
     void saveQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers);
     List<QuestionsListWithAnswersDTO> getUserQuestionsAnswers(Integer languageId);
     List getUserQuestionsSelectedAnswers(Long userId);

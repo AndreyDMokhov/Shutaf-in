@@ -1,42 +1,48 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.sender.matching.UserMatchControllerSender;
+import com.shutafin.sender.matching.UserMatchingScoreControllerSender;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by evgeny on 8/12/2017.
  */
 @Service
-@Transactional
 @Slf4j
 public class UserMatchServiceImpl implements UserMatchService {
 
     @Autowired
     private UserMatchControllerSender userMatchControllerSender;
 
+    @Autowired
+    private UserMatchingScoreControllerSender userMatchingScoreControllerSender;
+
     @Override
-    @Transactional(readOnly = true)
-    //todo MS-MATCHING
-    public List<User> findMatchingUsers(Long userId) {
+    public List<Long> findMatchingUsers(Long userId) {
         if (userId == null) {
             return new ArrayList<>();
         }
 
-        List<Long> matchingUsers = userMatchControllerSender.getMatchingUsers(userId);
+        return userMatchControllerSender.getMatchingUsers(userId);
+    }
 
-
-        return null;
+    @Override
+    public Map<Long, Integer> getMatchingUsersWithScores(Long userId) {
+        if (userId == null) {
+            return new HashMap<>();
+        }
+        return userMatchingScoreControllerSender.getUserMatchingScores(userId);
     }
 
     @Override
