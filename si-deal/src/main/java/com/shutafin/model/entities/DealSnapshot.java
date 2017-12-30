@@ -24,7 +24,7 @@ public class DealSnapshot extends AbstractEntity {
     @Column(name = "USER_ID", nullable = false)
     private Long userId;
 
-    @Column(name = "DEAL_SNAPSHOT_INFO", nullable = false)
+    @Column(name = "DEAL_SNAPSHOT_INFO", nullable = false, columnDefinition = "TEXT")
     @Convert(converter = DealSnapshotInfoConverter.class)
     private DealSnapshotInfo dealSnapshotInfo;
 }

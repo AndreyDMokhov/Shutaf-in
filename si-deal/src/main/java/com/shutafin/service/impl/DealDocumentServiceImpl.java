@@ -1,15 +1,18 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.entities.*;
+import com.shutafin.model.exception.exceptions.NoPermissionException;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.exception.exceptions.SystemException;
 import com.shutafin.model.types.DealUserPermissionType;
 import com.shutafin.model.types.DealUserStatus;
 import com.shutafin.model.types.DocumentType;
 import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.web.deal.DealDocumentWeb;
 import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealService;
+import com.shutafin.service.DealSnapshotService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +33,6 @@ import java.util.List;
 public class DealDocumentServiceImpl implements DealDocumentService {
 
     private static final Boolean NEED_FULL_ACCESS = true;
-    private static final Long SHIFT_VALUE = 131L;
 
     @Value("${windows.base.path}")
     private String windowsBasePath;
@@ -57,20 +59,21 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     private DealDocumentUserRepository dealDocumentUserRepository;
 
     @Autowired
-    private DealSnapshotRepository dealSnapshotRepository;
+    private DealSnapshotService dealSnapshotService;
 
     @Override
     public DealDocument addDealDocument(InternalDealUserDocumentWeb dealUserDocumentWeb, PermissionType permissionType) {
         DocumentType documentType = DocumentType.getById(dealUserDocumentWeb.getDocumentTypeId());
         if (!fileSignatureCorrect(dealUserDocumentWeb, documentType)) {
             log.warn("File content differs from document type or file is corrupted");
-            throw new RuntimeException();
+            throw new SystemException("File content differs from document type or file is corrupted");
         }
 
         DealPanel dealPanel = dealPanelRepository.findOne(dealUserDocumentWeb.getDealPanelId());
         if (dealPanel == null) {
             log.warn("Deal panel with given id does not exist");
-            throw new RuntimeException();
+            throw new ResourceNotFoundException(String.format("Deal panel with id %d does not exist",
+                    dealUserDocumentWeb.getDealPanelId()));
         }
 
         dealService.checkDealPermissions(dealPanel.getDeal().getId(),
@@ -113,47 +116,26 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, !NEED_FULL_ACCESS);
         DealDocumentUser dealDocumentUser = dealDocumentUserRepository.findByDealDocumentIdAndUserId(dealDocumentId, userId);
         if (dealDocumentUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
-            return getDealDocumentFromSnapshot(userId, dealDocument);
+            return dealSnapshotService.getDealDocumentFromSnapshot(dealDocument, userId);
         }
         return dealDocument;
-    }
-
-    private DealDocument getDealDocumentFromSnapshot(Long userId, DealDocument dealDocument) {
-        DealSnapshot dealSnapshot = dealSnapshotRepository.findAllByUserId(userId)
-                .stream()
-                .filter(snapshot -> snapshot.getDealSnapshotInfo().getDealId() == dealDocument
-                        .getDealPanel().getDeal().getId())
-                .findFirst().get();
-        DealDocumentWeb dealDocumentWeb = dealSnapshot.getDealSnapshotInfo()
-                .getDealPanels().stream()
-                .filter(panelResponse -> panelResponse.getPanelId() == dealDocument.getDealPanel().getId())
-                .findFirst().get()
-                .getDocuments().stream()
-                .filter(doc -> doc.getDocumentId() == dealDocument.getId())
-                .findFirst().get();
-        if (dealDocumentWeb == null) {
-            log.warn("Cannot find Deal Document with ID {} in Deal Snapshot {}", dealDocument.getId(),
-                    dealSnapshot.getId());
-            throw new RuntimeException();
-        }
-        DealDocument dealDocumentCopy = new DealDocument(DocumentType.getById(dealDocumentWeb.getDocumentType()),
-                dealDocument.getDocumentStorage(), dealDocumentWeb.getTitle(), false);
-        dealDocumentCopy.setDealPanel(dealDocument.getDealPanel());
-        dealDocumentCopy.setId(dealDocument.getId());
-        dealDocumentCopy.setCreatedDate(dealDocument.getCreatedDate());
-        return dealDocumentCopy;
     }
 
     @Override
     public void deleteDealDocument(Long userId, Long dealDocumentId) {
 //        dealDocumentId >>= SHIFT_VALUE;
-        DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, NEED_FULL_ACCESS);
-        dealDocument.setIsDeleted(true);
-        dealDocument.setModifiedByUser(userId);
+        DealDocument dealDocument = getDealDocumentWithPermissions(userId, dealDocumentId, !NEED_FULL_ACCESS);
+        DealDocumentUser dealDocumentUser = dealDocumentUserRepository.findByDealDocumentIdAndUserId(dealDocumentId, userId);
+        if (dealDocumentUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
+            dealSnapshotService.deleteDealDocumentFromSnapshot(dealDocumentId, userId);
+        } else {
+            dealDocument.setIsDeleted(true);
+            dealDocument.setModifiedByUser(userId);
 
-        List<DealDocumentUser> dealDocumentUsers = dealDocumentUserRepository.
-                findAllByDealDocumentIdAndDealUserPermissionType(dealDocumentId, DealUserPermissionType.CREATE);
-        dealDocumentUsers.forEach(d -> d.setDealUserPermissionType(DealUserPermissionType.NO_READ));
+            List<DealDocumentUser> dealDocumentUsers = dealDocumentUserRepository.
+                    findAllByDealDocumentIdAndDealUserPermissionType(dealDocumentId, DealUserPermissionType.CREATE);
+            dealDocumentUsers.forEach(d -> d.setDealUserPermissionType(DealUserPermissionType.NO_READ));
+        }
     }
 
     @Override
@@ -169,17 +151,17 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         DealDocument dealDocument = dealDocumentRepository.findOne(dealDocumentId);
         if (dealDocument == null) {
             log.warn("Deal Document with ID {} was not found", dealDocumentId);
-            throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
+            throw new ResourceNotFoundException(String.format("User Document with ID %d was not found", dealDocumentId));
         }
         DealDocumentUser dealDocumentUser = dealDocumentUserRepository.
                 findByDealDocumentIdAndUserId(dealDocumentId, userId);
         if (dealDocumentUser == null || dealDocumentUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
             log.warn("User with ID {} does not have permissions", userId);
-            throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
+            throw new NoPermissionException(String.format("User Document with ID %d was not found", dealDocumentId));
         }
         if (dealDocument.getIsDeleted() && dealDocumentUser.getDealUserPermissionType() == DealUserPermissionType.NO_READ) {
             log.warn("Deal Document with ID {} was deleted", dealDocumentId);
-            throw new RuntimeException(String.format("User Document with ID %d was not found", dealDocumentId));
+            throw new ResourceNotFoundException(String.format("User Document with ID %d was not found", dealDocumentId));
         }
         dealService.checkDealPermissions(dealDocument.getDealPanel().getDeal().getId(), userId, fullAccess);
         return dealDocument;
