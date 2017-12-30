@@ -32,10 +32,10 @@ public class UserImageController {
     }
 
     @GetMapping(value = "/{userId}/images", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getDefaultUserImageByUserId(@PathVariable("userId") Long userId) {
+    public AccountUserImageWeb getCompressedUserImageByUserId(@PathVariable("userId") Long userId) {
         log.debug("/{id}/images");
         User user = userService.findUserById(userId);
-        UserImage image = userImageService.getDefaultUserImage(user);
+        UserImage image = userImageService.getCompressedUserImage(user);
         return createAccountUserImageWeb(user, image);
     }
 

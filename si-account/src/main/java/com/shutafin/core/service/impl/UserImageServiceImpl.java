@@ -87,8 +87,8 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
-    public UserImage getDefaultUserImage(User user) {
-        return getUserImage(user, userAccountRepository.findDefaultUserImageIdByUserId(user.getId()));
+    public UserImage getCompressedUserImage(User user) {
+        return getUserImage(user, userAccountRepository.findCompressedUserImageIdByUserId(user.getId()));
     }
 
     @Override
@@ -121,8 +121,8 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     public UserImage getOriginalUserImage(User user) {
-        Long defaultImageId = userAccountRepository.findDefaultUserImageIdByUserId(user.getId());
-        return getUserImage(user, imagePairRepository.findOriginalUserImageById(defaultImageId));
+        Long compressedImageId = userAccountRepository.findCompressedUserImageIdByUserId(user.getId());
+        return getUserImage(user, imagePairRepository.findOriginalUserImageById(compressedImageId));
     }
 
     @Override

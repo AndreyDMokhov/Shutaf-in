@@ -31,8 +31,8 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
-    public AccountUserImageWeb getDefaultUserImage(Long userId) {
-        return userImageControllerSender.getDefaultUserImageByUserId(userId);
+    public AccountUserImageWeb getCompressedUserImage(Long userId) {
+        return userImageControllerSender.getCompressedUserImageByUserId(userId);
     }
 
     @Override

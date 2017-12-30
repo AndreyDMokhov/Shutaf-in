@@ -13,7 +13,7 @@ public class UserImageControllerSender {
     @Autowired
     private DiscoveryRoutingService routingService;
 
-    public AccountUserImageWeb getDefaultUserImageByUserId(Long userId) {
+    public AccountUserImageWeb getCompressedUserImageByUserId(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/images", userId);
 
