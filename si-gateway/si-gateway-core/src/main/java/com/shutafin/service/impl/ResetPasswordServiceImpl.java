@@ -1,121 +1,55 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.entities.ResetPasswordConfirmation;
-import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.infrastructure.Language;
-import com.shutafin.model.entities.types.EmailReason;
-import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.account.AccountEmailRequest;
+import com.shutafin.model.web.account.AccountResetPassword;
+import com.shutafin.model.web.email.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailReason;
+import com.shutafin.model.web.email.response.EmailResetPasswordResponse;
 import com.shutafin.model.web.user.PasswordWeb;
-import com.shutafin.repository.account.ResetPasswordConfirmationRepository;
-import com.shutafin.repository.account.UserAccountRepository;
-import com.shutafin.repository.common.UserRepository;
-import com.shutafin.service.*;
+import com.shutafin.sender.account.ResetPasswordControllerSender;
+import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
+import com.shutafin.service.ResetPasswordService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.UUID;
 
 @Service
-@Transactional
 @Slf4j
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
-    private static final int LINK_HOURS_EXPIRATION = 24;
-    private static final String RESET_PASSWORD_CONFIRMATION_URL = "/#/reset-password/confirmation/";
-
-
-    private UserRepository userRepository;
-    private ResetPasswordConfirmationRepository resetPasswordConfirmationRepository;
-    private UserAccountRepository userAccountRepository;
-    private EmailTemplateService emailTemplateService;
-    private EmailNotificationSenderService mailSenderService;
-    private EnvironmentConfigurationService environmentConfigurationService;
-    private PasswordService passwordService;
+    @Autowired
+    private ResetPasswordControllerSender resetPasswordControllerSender;
 
     @Autowired
-    public ResetPasswordServiceImpl(
-            UserRepository userRepository,
-            ResetPasswordConfirmationRepository resetPasswordConfirmationRepository,
-            UserAccountRepository userAccountRepository,
-            EmailTemplateService emailTemplateService,
-            EmailNotificationSenderService mailSenderService,
-            EnvironmentConfigurationService environmentConfigurationService,
-            PasswordService passwordService) {
-        this.userRepository = userRepository;
-        this.resetPasswordConfirmationRepository = resetPasswordConfirmationRepository;
-        this.userAccountRepository = userAccountRepository;
-        this.emailTemplateService = emailTemplateService;
-        this.mailSenderService = mailSenderService;
-        this.environmentConfigurationService = environmentConfigurationService;
-        this.passwordService = passwordService;
-    }
+    private EmailNotificationSenderControllerSender emailSender;
 
-    @Transactional
     @Override
-    // TODO: MS-email EmailNotificationSenderController.sendEmail()
     public void resetPasswordRequest(AccountEmailRequest emailWeb) {
-        User user = userRepository.findByEmail(emailWeb.getEmail());
-        if (user != null) {
-            ResetPasswordConfirmation resetPasswordConfirmation = saveResetPasswordConfirmation(user);
-            Language userLanguage = userAccountRepository.findUserLanguage(user);
-            sendMessage(user, userLanguage, resetPasswordConfirmation.getUrlLink());
+        EmailNotificationWeb notification = resetPasswordControllerSender.getResetPasswordEmailNotification(emailWeb);
+        if (notification == null) {
+            return;
         }
+        emailSender.sendEmail(notification);
     }
 
-    private ResetPasswordConfirmation saveResetPasswordConfirmation(User user) {
-        ResetPasswordConfirmation resetPasswordConfirmation = new ResetPasswordConfirmation();
-        resetPasswordConfirmation.setUser(user);
-        resetPasswordConfirmation.setUrlLink(UUID.randomUUID().toString());
-        resetPasswordConfirmation.setIsConfirmed(false);
-        resetPasswordConfirmation.setExpiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION));
-        resetPasswordConfirmationRepository.save(resetPasswordConfirmation);
-        return resetPasswordConfirmation;
-    }
 
-    private void sendMessage(User user, Language language, String uuid) {
-        String link = createLink(uuid);
-        EmailMessage emailMessage = emailTemplateService.getEmailMessage(user, EmailReason.RESET_PASSWORD, language, link);
-
-        //todo MS-email
-        mailSenderService.sendEmail(emailMessage, EmailReason.RESET_PASSWORD);
-    }
-
-    private String createLink(String uuid) {
-        return environmentConfigurationService.getServerAddress() + RESET_PASSWORD_CONFIRMATION_URL + uuid;
-    }
-
-    @Transactional(readOnly = true)
     @Override
-    // TODO: MS-email EmailNotificationSenderController.isValidLink()
     public void resetPasswordValidation(String link) {
-        //todo MS-email
-        if (resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date()) == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
+        Boolean linkValid = emailSender.isLinkValid(link, EmailReason.RESET_PASSWORD);
+        if (!linkValid) {
             throw new ResourceNotFoundException();
         }
     }
 
-    @Transactional
     @Override
-    // TODO: MS-email EmailNotificationSenderController.confirmLink()
     public void passwordChange(PasswordWeb passwordWeb, String link) {
-        ResetPasswordConfirmation resetPasswordConfirmation = resetPasswordConfirmationRepository.findByUrlLinkAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
-        if (resetPasswordConfirmation == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
-            throw new ResourceNotFoundException();
-        }
-        resetPasswordConfirmation.setIsConfirmed(Boolean.TRUE);
-        resetPasswordConfirmationRepository.save(resetPasswordConfirmation);
-
-        passwordService.updateUserPasswordInDb(resetPasswordConfirmation.getUser(), passwordWeb.getNewPassword());
+        EmailResetPasswordResponse o = (EmailResetPasswordResponse)emailSender.confirmLink(link, EmailReason.RESET_PASSWORD);
+        AccountResetPassword resetPassword = AccountResetPassword.builder()
+                .newPassword(passwordWeb.getNewPassword())
+                .userId(o.getUserId())
+                .build();
+        resetPasswordControllerSender.resetPassword(resetPassword);
     }
 
 }

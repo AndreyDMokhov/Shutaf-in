@@ -13,18 +13,20 @@ app.component('userSettingsComponent', {
                           $window,
                           browserTitle) {
 
-    browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
+        browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
 
         var vm = this;
         vm.dataLoading = false;
-        vm.isOpened = true;
+        vm.status = {
+            isGeneralOpen: true,
+            isAdditionalOpen: false
+        };
 
         vm.userProfile = $sessionStorage.userProfile;
         vm.userProfile.dateOfBirth = new Date(vm.userProfile.dateOfBirth);
         vm.country = $sessionStorage.countries;
         vm.cities = $sessionStorage.cities;
         vm.gender = $sessionStorage.genders;
-
 
         function submitChanges() {
             vm.dataLoading = true;
@@ -42,7 +44,6 @@ app.component('userSettingsComponent', {
                     }
                 });
         }
-
         vm.submitChanges = submitChanges;
     }
 });
