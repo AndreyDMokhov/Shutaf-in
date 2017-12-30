@@ -1,10 +1,10 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.entities.ResetPasswordConfirmation;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.infrastructure.Language;
 import com.shutafin.model.entities.types.EmailReason;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.account.AccountEmailRequest;
 import com.shutafin.model.web.user.PasswordWeb;

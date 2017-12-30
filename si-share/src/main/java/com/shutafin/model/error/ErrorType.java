@@ -1,6 +1,5 @@
 package com.shutafin.model.error;
 
-
 import com.shutafin.model.exception.AbstractAPIException;
 import com.shutafin.model.exception.exceptions.*;
 import com.shutafin.model.exception.exceptions.validation.EmailNotUniqueValidationException;
@@ -18,7 +17,6 @@ public enum ErrorType {
     INCORRECT_PASSWORD_ERROR(401, ErrorCode.IPE, IncorrectPasswordException.class),
     ACCOUNT_NOT_CONFIRMED(403, ErrorCode.ANC, AccountNotConfirmedException.class),
     ACCOUNT_BLOCKED(403, ErrorCode.ABL, AccountBlockedException.class);
-
 
     private Integer httpCode;
     private ErrorCode errorCodeType;
@@ -56,7 +54,6 @@ public enum ErrorType {
         throw new IllegalArgumentException(String.format("Error type with error code %s does not exist", errorCodeName));
     }
 }
-
 
 enum ErrorCode {
     INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANC, ABL;

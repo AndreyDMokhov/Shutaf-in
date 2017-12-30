@@ -22,11 +22,9 @@ public class RegistrationControllerSender {
             String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "/users/registration/request";
             return new RestTemplate().postForEntity(url, registrationRequestWeb, EmailNotificationWeb.class).getBody();
         } catch (HttpClientErrorException e) {
-            APIExceptionClient.getException(e);
-            return null;
+            throw APIExceptionClient.getException(e);
         }
     }
-
 
     public AccountUserWeb confirmRegistration(Long userId) {
         try {
@@ -34,8 +32,7 @@ public class RegistrationControllerSender {
                     String.format("/users/registration/confirm/%d", userId);
             return new RestTemplate().getForEntity(url, AccountUserWeb.class).getBody();
         } catch (HttpClientErrorException e) {
-            APIExceptionClient.getException(e);
-            return null;
+            throw APIExceptionClient.getException(e);
         }
     }
 }

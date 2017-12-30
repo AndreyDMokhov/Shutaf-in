@@ -1,10 +1,10 @@
 package com.shutafin.system;
 
 import com.google.gson.*;
+import com.shutafin.model.error.ErrorResponse;
+import com.shutafin.model.error.ErrorType;
+import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.error.ErrorResponse;
-import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.error.errors.InputValidationError;
 
 import java.lang.reflect.Type;
 

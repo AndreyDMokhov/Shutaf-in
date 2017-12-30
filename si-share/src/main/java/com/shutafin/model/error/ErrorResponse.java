@@ -1,6 +1,5 @@
 package com.shutafin.model.error;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ErrorResponse {
@@ -10,7 +9,6 @@ public class ErrorResponse {
 
     @JsonIgnore
     private ErrorType errorType;
-
 
     public ErrorResponse(String errorMessage, ErrorType errorType) {
         this.errorMessage = errorMessage;

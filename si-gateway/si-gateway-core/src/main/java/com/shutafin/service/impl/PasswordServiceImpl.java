@@ -1,8 +1,8 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.SystemException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserCredentials;
+import com.shutafin.model.exception.exceptions.SystemException;
 import com.shutafin.repository.account.UserCredentialsRepository;
 import com.shutafin.service.PasswordService;
 import de.mkammerer.argon2.Argon2;
