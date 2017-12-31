@@ -1,0 +1,12 @@
+<form role="form" ng-submit="sendMessageThrowWs()" ng-show="!isEmpty()">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="input-group">
+                <input ng-model="outMessage.message" type="text" class="form-control chat" placeholder="{{'Chat.form.input' | translate}}"/>
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-success">{{'Chat.button.send' | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

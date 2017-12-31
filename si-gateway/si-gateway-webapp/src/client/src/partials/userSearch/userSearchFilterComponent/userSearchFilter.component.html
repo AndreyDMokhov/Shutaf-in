@@ -1,0 +1,56 @@
+<div class="form-group">
+    <label>{{'Search.ChooseAge' | translate}}</label>
+    <input type="checkbox" ng-model="vm.age" style="float:right">
+    <rzslider ng-disabled="!vm.age"
+              rz-slider-model="vm.minRangeSlider.minValue"
+              rz-slider-high="vm.minRangeSlider.maxValue"
+              rz-slider-options="vm.minRangeSlider.options"></rzslider>
+</div>
+<div class="form-group">
+    <label>{{'Search.ChooseGender' | translate}}</label>
+    <input type="checkbox" ng-model="vm.gender" checked style="float:right">
+    <button ng-disabled="!vm.gender"
+            placement="auto"
+            type="submit"
+            class="btn btn-default label-above-input btn-choose-city"
+            ng-model="vm.searchData.filterGenderId"
+            placeholder="{{'Search.ChooseButton' | translate}}"
+            max-length-html="selected"
+            data-html="1"
+            bs-options="gender.id as gender.description for gender in vm.genders"
+            bs-select>
+    </button>
+</div>
+
+<div class="form-group" append-source ng-if="false">
+    <label class="label-above-input">Choose country</label>
+    <button type="button"
+            class="btn btn-default label-above-input"
+            ng-model="vm.selectedCountry"
+            data-html="1"
+            ng-options="country.id as country.description for country in vm.countries"
+            bs-select>
+        Action <span class="caret"></span>
+    </button>
+</div>
+
+<div class="form-group">
+    <label>{{'Search.ChooseCity' | translate}}</label>
+    <input type="checkbox" ng-model="vm.city" checked style="float:right">
+    <button ng-disabled="!vm.city" placement="auto" type="submit"
+            class="btn btn-default label-above-input btn-choose-city"
+            ng-model="vm.searchData.filterCitiesIds"
+            placeholder="{{'Search.ChooseButton' | translate}}"
+            max-length-html="{{'Search.filter.button.selected' | translate}}"
+            data-html="1" bs-options="city.id as city.description for city in vm.cities" data-multiple="1"
+            bs-select>
+        Action <span class="caret"></span>
+    </button>
+</div>
+<!--#d9edf7-->
+<button
+        class="btn btn-success pull-left"
+        type="submit"
+        ng-click="vm.saveFilters()">
+    {{"UserSettings.btn.submit" | translate}}
+</button>

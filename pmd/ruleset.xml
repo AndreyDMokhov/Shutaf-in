@@ -56,6 +56,7 @@
         <exclude name="PreserveStackTrace"/>
         <exclude name="UseUtilityClass"/>
         <exclude name="AvoidReassigningParameters"/>
+        <exclude name="ConstructorCallsOverridableMethod"/>
     </rule>
 
     <rule ref="rulesets/java/empty.xml"/>
@@ -78,6 +79,8 @@
         <exclude name="LongVariable"/>
         <exclude name="ShortClassName"/>
         <exclude name="AbstractNaming"/>
+        <exclude name="AvoidFieldNameMatchingMethodName"/>
+        <exclude name="GenericsNaming"/>
     </rule>
 
     <rule ref="rulesets/java/logging-java.xml"/>
@@ -98,5 +101,8 @@
     <rule ref="rulesets/java/sunsecure.xml"/>
     <rule ref="rulesets/java/typeresolution.xml"/>
     <rule ref="rulesets/java/unnecessary.xml"/>
-    <rule ref="rulesets/java/unusedcode.xml"/>
+    <rule ref="rulesets/java/unusedcode.xml">
+        <!--False-positive errors-->
+        <exclude name="UnusedPrivateMethod"/>
+    </rule>
 </ruleset>

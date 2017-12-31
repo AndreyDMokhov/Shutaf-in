@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="1" author="edwardKats">
+        <createTable tableName="I_QUESTION">
+            <column name="ID" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="IS_ACTIVE" type="bit">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_ANSWER">
+
+            <column name="ID" autoIncrement="true" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="IS_UNIVERSAL" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION"
+                             referencedColumnNames="ID"
+                foreignKeyName="I_ANSWER_QUESTION_ID_I_QUESTION_ID"/>
+            </column>
+
+        </createTable>
+        <createTable tableName="USER_QUESTION_ANSWER">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                referencedTableName="I_QUESTION"
+                referencedColumnNames="ID"
+                foreignKeyName="USER_QUESTION_ANSWER_QUESTION_ID_I_QUESTION_ID"/>
+            </column>
+
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedColumnNames="ID"
+                             referencedTableName="I_ANSWER"
+                             foreignKeyName="USER_QUESTION_ANSWER_ANSWER_ID_I_ANSWER_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_ANSWER_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER"
+                             referencedColumnNames="ID"
+                            foreignKeyName="I_ANSWER_LOCALE_ANSWER_ID_I_ANSWER_ID"/>
+            </column>
+        </createTable>
+        <createTable tableName="I_QUESTION_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION"
+                             referencedColumnNames="ID"
+                foreignKeyName="I_QUESTION_LOCALE_QUESTION_ID_I_QUESTION_ID"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="2" author="evgenyYablokov">
+
+        <createTable tableName="USER_EXAM_KEY">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="EXAM_KEY" type="varchar(150)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="EXAM_KEY_REGEXP" type="varchar(150)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="VARIETY_EXAM_KEY">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="EXAM_KEY" type="varchar(150)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_QUESTION_EXTENDED">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_QUESTION_EXTENDED_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="I_QUESTION_EXTENDED_LOCALE_QUESTION_ID_I_QUESTION_EXTENDED_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_QUESTION_IMPORTANCE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="WEIGHT" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_QUESTION_IMPORTANCE_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUESTION_IMPORTANCE_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_IMPORTANCE"
+                             referencedColumnNames="ID"
+                             foreignKeyName="I_QUEST_IMPORT_LOC_QUESTION_IMP_ID_I_QUESTION_IMP_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_ANSWER_EXTENDED">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="I_ANSWER_EXTENDED_QUESTION_ID_I_QUESTION_EXTENDED_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="I_ANSWER_EXTENDED_LOCALE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="LANGUAGE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="I_ANSWER_EXTENDED_LOCALE_ANSWER_ID_I_ANSWER_EXTENDED_ID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ANSWER_SIMILARITY">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="ANSWER_SIMILARITY_ANSWER_ID_I_ANSWER_EXTENDED_ID"/>
+            </column>
+            <column name="ANSWER_TO_COMPARE_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="ANSWER_SIMILARITY_ANSWER_TO_COMPARE_ID_I_ANSWER_EXTENDED_ID"/>
+            </column>
+            <column name="SIMILARITY_SCORE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="MAX_USER_MATCHING_SCORE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="SCORE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_MATCHING_SCORE">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="USER_ORIGIN_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="USER_TO_MATCH_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="SCORE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="USER_EXTENDED_QUESTION_ANSWER">
+            <column name="ID" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="QUESTION_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="USER_EXTENDED_QUESTION_ANSWER_QUESTION_ID_I_QUESTION_EXTENDED_ID"/>
+            </column>
+
+            <column name="ANSWER_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_ANSWER_EXTENDED"
+                             referencedColumnNames="ID"
+                             foreignKeyName="USER_EXTENDED_QUESTION_ANSWER_ANSWER_ID_I_ANSWER_EXTENDED_ID"/>
+            </column>
+
+            <column name="QUESTION_IMPORTANCE_ID" type="int">
+                <constraints nullable="false"
+                             referencedTableName="I_QUESTION_IMPORTANCE"
+                             referencedColumnNames="ID"
+                             foreignKeyName="USER_EXT_QUESTION_ANSWER_QUESTION_IMP_ID_I_QUESTION_IMP_ID"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="3" author="evgenyYablokov">
+        <insert tableName="I_QUESTION">
+            <column name="ID" value="1"/>
+            <column name="IS_ACTIVE" valueBoolean="TRUE"/>
+        </insert>
+        <insert tableName="I_QUESTION">
+            <column name="ID" value="2"/>
+            <column name="IS_ACTIVE" valueBoolean="TRUE"/>
+        </insert>
+        <insert tableName="I_QUESTION">
+            <column name="ID" value="3"/>
+            <column name="IS_ACTIVE" valueBoolean="TRUE"/>
+        </insert>
+        <insert tableName="I_QUESTION">
+            <column name="ID" value="4"/>
+            <column name="IS_ACTIVE" valueBoolean="TRUE"/>
+        </insert>
+        <insert tableName="I_QUESTION">
+            <column name="ID" value="5"/>
+            <column name="IS_ACTIVE" valueBoolean="TRUE"/>
+        </insert>
+
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="1"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="I'm looking for"/>
+        </insert>
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="2"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="Attitude to pets"/>
+        </insert>
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="3"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="Age range"/>
+        </insert>
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="4"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="Payment limits"/>
+        </insert>
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="5"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="City"/>
+        </insert>
+
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="1"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="я ищу"/>
+        </insert>
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="2"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Отношение к домашним животным"/>
+        </insert>
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="3"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Возрастной диапазон"/>
+        </insert>
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="4"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Мой денежный лимит в месяц"/>
+        </insert>
+        <insert tableName="I_QUESTION_LOCALE">
+            <column name="QUESTION_ID" value="5"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Город"/>
+        </insert>
+
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="1"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="1"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="2"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="1"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="3"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="1"/>
+        </insert>
+
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="4"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="2"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="5"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="2"/>
+        </insert>
+
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="6"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="3"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="7"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="3"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="8"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="3"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="9"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="3"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="10"/>
+            <column name="IS_UNIVERSAL" valueBoolean="TRUE"/>
+            <column name="QUESTION_ID" value="3"/>
+        </insert>
+
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="11"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="4"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="12"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="4"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="13"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="4"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="14"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="4"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="15"/>
+            <column name="IS_UNIVERSAL" valueBoolean="FALSE"/>
+            <column name="QUESTION_ID" value="4"/>
+        </insert>
+        <insert tableName="I_ANSWER">
+            <column name="ANSWER_ID" value="16"/>
+            <column name="IS_UNIVERSAL" valueBoolean="TRUE"/>
+            <column name="QUESTION_ID" value="4"/>
+        </insert>
+
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="1"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="A neighbor for what would have sat down in his apartment"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="2"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="Neighbor to look for a new apartment together"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="3"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="I want to find a free room to enter"/>
+        </insert>
+
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="4"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="Unacceptable"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="5"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="There are no problems if the owner follows him"/>
+        </insert>
+
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="6"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="18-22"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="7"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="23-37"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="8"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="28-34"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="9"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="35-41"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="10"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="It does not matter to me"/>
+        </insert>
+
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="11"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="1500-2000"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="12"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="2000-2500"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="13"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="2500-3000"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="14"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="3000-3500"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="15"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="3500-4000"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="16"/>
+            <column name="LANGUAGE_ID" value="1"/>
+            <column name="DESCRIPTION" value="It does not matter to me"/>
+        </insert>
+
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="1"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Соседа для того что бы подселись к себе в квартиру"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="2"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Соседа что-бы вместе искать новую квартиру"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="3"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Хочу найти свободную комнату что бы въехать"/>
+        </insert>
+
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="4"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Непреемлемо"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="5"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Нет ни каких проблем, если хозяин за ним следит"/>
+        </insert>
+
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="6"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="18-22"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="7"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="23-37"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="8"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="28-34"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="9"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="35-41"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="10"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Неважо"/>
+        </insert>
+
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="11"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="1500-2000"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="12"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="2000-2500"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="13"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="2500-3000"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="14"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="3000-3500"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="15"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="3500-4000"/>
+        </insert>
+        <insert tableName="I_ANSWER_LOCALE">
+            <column name="ANSWER_ID" value="16"/>
+            <column name="LANGUAGE_ID" value="2"/>
+            <column name="DESCRIPTION" value="Неважо"/>
+        </insert>
+
+    </changeSet>
+
+    <changeSet id="4" author="edwardKats">
+        <delete tableName="I_QUESTION_LOCALE">
+            <where>QUESTION_ID = 5</where>
+        </delete>
+    </changeSet>
+
+</databaseChangeLog>

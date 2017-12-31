@@ -1,0 +1,26 @@
+<div class="row margin-top">
+    <div class="col-md-4 col-lg-4 chat-col-left chat-menu" align="left">
+
+        <channel-component></channel-component>
+
+        <h4>{{'Chat.title.compatibleUsers' | translate}}</h4>
+        <compatible-users-directive users="vm.users"></compatible-users-directive>
+
+        <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}:
+            <crop-name-directive
+                    name={{vm.currentChat.chatTitle}}
+                    character-limit="vm.characterLimit">
+            </crop-name-directive>
+        </h4>
+        <chat-users-directive></chat-users-directive>
+    </div>
+
+    <div class="col-md-8 col-lg-8">
+        <strong>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</strong>
+        <hr>
+        <div class="message-container">
+            <message-list-directive></message-list-directive>
+            <send-form-directive></send-form-directive>
+        </div>
+    </div>
+</div>

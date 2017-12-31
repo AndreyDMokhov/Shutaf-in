@@ -1,0 +1,41 @@
+.modal-lg{
+    margin-top:5vh;
+}
+.modal-body{
+    height: 80vh;
+    background-color: #f0f0f0;
+}
+.modal-header {
+    background-color: #f0f0f0;
+}
+.image-div{
+    flex-grow: 7;
+    flex-basis:0;
+    height: 75vh;
+
+}
+.description-div{
+    flex-grow: 3;
+    flex-basis:0;
+    padding-left: 5px;
+}
+div.vertical {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+div.horizontal {
+    display: flex;
+    justify-content: center;
+}
+.container-flex{
+    display: flex;
+    justify-content:center;
+    align-content : center;
+
+}
+.image-style{
+    max-width: 100% !important;
+    max-height: 75vh !important;
+    background-color:  #fafafa;
+}

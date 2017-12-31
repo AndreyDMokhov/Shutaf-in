@@ -1,0 +1,20 @@
+<div class="chat-list" ng-repeat="user in usersInChat track by $index">
+    <div class="chat-item user-item">
+        <table class="item-table">
+            <tbody>
+            <tr>
+                <td class="userPic">
+                    <user-avatar user-data="user" width="20" height="20"></user-avatar>
+                </td>
+                <td><span class="title">{{user.lastName}} {{user.firstName}}</span></td>
+                <td class="sign">
+                            <span id="del-user-icon"
+                                  ng-click="removeUser(user)"
+                                  ng-attr-title="{{'Chat.title.delete.user' | translate}}"
+                                  class="fa fa-user-times"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
