@@ -12,8 +12,7 @@ public class RestTemplateFactory implements FactoryBean<RestTemplate> {
 
     @Override
     public RestTemplate getObject() {
-        RestTemplate restTemplate;
-        return restTemplate = new RestTemplateBuilder()
+        return new RestTemplateBuilder()
                 .errorHandler(new RestTemplateResponseErrorHandler())
                 .requestFactory(new HttpComponentsClientHttpRequestFactory())
                 .build();
