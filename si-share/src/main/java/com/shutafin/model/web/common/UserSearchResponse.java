@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.joda.time.LocalDate;
 
 import java.util.Date;
 
@@ -32,7 +31,7 @@ public class UserSearchResponse {
 
     private Integer countryId;
 
-    private Long dateOfBirth;
+    private Date dateOfBirth;
 
     private Integer score;
 
@@ -45,7 +44,7 @@ public class UserSearchResponse {
         this.genderId = genderId;
         this.cityId = cityId;
         this.countryId = countryId;
-        this.dateOfBirth = dateOfBirth.getTime();
+        this.dateOfBirth = dateOfBirth;
     }
 
 }

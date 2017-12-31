@@ -2,7 +2,6 @@ package com.shutafin.repository;
 
 import com.shutafin.model.entities.Answer;
 import com.shutafin.repository.base.BaseJpaRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
