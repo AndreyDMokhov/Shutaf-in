@@ -191,10 +191,6 @@
     <profiles>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-
             <properties>
                 <domain.name>localhost</domain.name>
                 <server.profiles>dev</server.profiles>
