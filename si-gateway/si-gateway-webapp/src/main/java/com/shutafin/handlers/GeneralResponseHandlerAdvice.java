@@ -1,8 +1,8 @@
 package com.shutafin.handlers;
 
 import com.shutafin.annotations.InternalRestController;
+import com.shutafin.model.error.ErrorResponse;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.error.ErrorResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

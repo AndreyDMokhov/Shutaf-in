@@ -15,17 +15,18 @@ public class RegistrationControllerSender {
     @Autowired
     private DiscoveryRoutingService routingService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public EmailNotificationWeb registerUser(AccountRegistrationRequest registrationRequestWeb) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "/users/registration/request";
-        return new RestTemplate().postForEntity(url, registrationRequestWeb, EmailNotificationWeb.class).getBody();
+        return restTemplate.postForEntity(url, registrationRequestWeb, EmailNotificationWeb.class).getBody();
     }
-
 
     public AccountUserWeb confirmRegistration(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/registration/confirm/%d", userId);
-
-        return new RestTemplate().getForEntity(url, AccountUserWeb.class).getBody();
+        return restTemplate.getForEntity(url, AccountUserWeb.class).getBody();
     }
 }
 

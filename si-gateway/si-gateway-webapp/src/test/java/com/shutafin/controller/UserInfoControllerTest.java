@@ -1,9 +1,9 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.User;
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
-import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserInfoService;
 import com.shutafin.system.BaseTestImpl;

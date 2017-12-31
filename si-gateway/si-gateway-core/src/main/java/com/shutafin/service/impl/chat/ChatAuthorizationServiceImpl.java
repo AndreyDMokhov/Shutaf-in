@@ -1,8 +1,8 @@
 package com.shutafin.service.impl.chat;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatUser;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.repository.common.ChatUserRepository;
 import com.shutafin.service.ChatAuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;

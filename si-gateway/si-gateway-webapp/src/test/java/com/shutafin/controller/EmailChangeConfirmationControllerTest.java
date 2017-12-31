@@ -2,9 +2,9 @@ package com.shutafin.controller;
 
 
 import com.shutafin.model.entities.User;
+import com.shutafin.model.error.ErrorType;
+import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.model.web.user.GatewayEmailChangedResponse;
 import com.shutafin.service.EmailChangeConfirmationService;
 import com.shutafin.service.SessionManagementService;

@@ -1,6 +1,6 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.SystemException;
+import com.shutafin.model.exception.exceptions.SystemException;
 import com.shutafin.service.EnvironmentConfigurationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SystemUtils;

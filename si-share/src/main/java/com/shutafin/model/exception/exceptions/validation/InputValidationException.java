@@ -1,6 +1,6 @@
 package com.shutafin.model.exception.exceptions.validation;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.exception.exceptions.ValidationException;
 import org.springframework.validation.BindingResult;
@@ -15,22 +15,35 @@ public class InputValidationException extends ValidationException {
 
     private BindingResult result;
 
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    private List<String> errors;
+
     public InputValidationException(BindingResult result) {
         this.result = result;
     }
 
-    @Override
-    protected List<String> getFieldErrors() {
-        List<String> list = new ArrayList<>();
+    public InputValidationException(List<String> errors) {
+        this.errors = errors;
+    }
 
-        for (FieldError fieldError : this.result.getFieldErrors()) {
-            String builder =
-                    getErrorType().getErrorCodeType() +
-                            DOT_SEPARATOR +
-                            fieldError.getField() +
-                            DOT_SEPARATOR +
-                            fieldError.getCode();
-            list.add(builder);
+    public InputValidationException() {
+    }
+
+    @Override
+    protected List<String> getErrors() {
+        List<String> list = new ArrayList<>();
+        if (result == null) {
+            return errors;
+        } else {
+            for (FieldError fieldError : this.result.getFieldErrors()) {
+                String builder =
+                        getErrorType().getErrorCodeType() +
+                                DOT_SEPARATOR +
+                                fieldError.getField() +
+                                DOT_SEPARATOR +
+                                fieldError.getCode();
+                list.add(builder);
+            }
         }
         return list;
     }

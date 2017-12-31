@@ -1,7 +1,7 @@
 package com.shutafin.model.web;
 
 
-import com.shutafin.model.web.error.ErrorResponse;
+import com.shutafin.model.error.ErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

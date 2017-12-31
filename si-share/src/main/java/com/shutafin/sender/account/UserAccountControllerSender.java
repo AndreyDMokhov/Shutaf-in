@@ -1,10 +1,13 @@
 package com.shutafin.sender.account;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutafin.model.web.account.*;
 import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -16,75 +19,71 @@ public class UserAccountControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
+    
+    @Autowired
+    private RestTemplate restTemplate;
 
     public AccountUserImageWeb updateUserAccountProfileImage(Long userId, AccountUserImageWeb userImageWeb) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/profile-image", userId);
-
-        return new RestTemplate().postForEntity(url, userImageWeb, AccountUserImageWeb.class).getBody();
+        return restTemplate.postForEntity(url, userImageWeb, AccountUserImageWeb.class).getBody();
     }
 
     public AccountUserImageWeb getUserAccountProfileImage(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/profile-image", userId);
-
-        return new RestTemplate().getForEntity(url, AccountUserImageWeb.class).getBody();
+        return restTemplate.getForEntity(url, AccountUserImageWeb.class).getBody();
     }
 
     public void deleteUserAccountProfileImage(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/profile-image", userId);
-
-        new RestTemplate().delete(url);
+        restTemplate.delete(url);
     }
 
 
     public void updateUserLanguage(AccountUserLanguageWeb userLanguageWeb, Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/language", userId);
-
-        new RestTemplate().put(url, userLanguageWeb);
+        restTemplate.put(url, userLanguageWeb);
     }
 
     public LanguageWeb getUserLanguage(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/language", userId);
-
-        return new RestTemplate().getForEntity(url, LanguageWeb.class).getBody();
+        return restTemplate.getForEntity(url, LanguageWeb.class).getBody();
     }
 
     public AccountUserInfoResponseDTO getUserInfo(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/info", userId);
-
-        return new RestTemplate().getForEntity(url, AccountUserInfoResponseDTO.class).getBody();
+        return restTemplate.getForEntity(url, AccountUserInfoResponseDTO.class).getBody();
     }
 
     public void updateUserInfo(Long userId, AccountUserInfoRequest userInfoRequest) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/info", userId);
-
-        new RestTemplate().put(url, userInfoRequest);
+        restTemplate.put(url, userInfoRequest);
     }
 
     public AccountUserWeb getBaseUserInfo(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/info-base", userId);
-
-        return new RestTemplate().getForEntity(url, AccountUserWeb.class).getBody();
+        return restTemplate.getForEntity(url, AccountUserWeb.class).getBody();
     }
 
+    @SneakyThrows
     public List<AccountUserWeb> getBaseUserInfos(List<Long> userIds) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 "/users/info-base";
+        String jsonBody = restTemplate.postForEntity(url, userIds, String.class).getBody();
 
-        return new RestTemplate().postForEntity(url, userIds, List.class).getBody();
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<AccountUserWeb>>() {});
     }
 
     public UserSearchResponse getUserSearchObject(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/info-search/%d", userId);
-
-        return new RestTemplate().getForEntity(url, UserSearchResponse.class).getBody();
+        return restTemplate.getForEntity(url, UserSearchResponse.class).getBody();
     }
 }
