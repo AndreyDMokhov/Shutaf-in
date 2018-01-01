@@ -49,7 +49,6 @@ public class MatchingCandidatesEmailNotificationJobService {
     }
 
     //    @Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(cron = "*/30 * * * * *")
     @Transactional
     public void sendEmailNotification() {
         List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(AccountStatus.CONFIRMED, AccountType.REGULAR);
