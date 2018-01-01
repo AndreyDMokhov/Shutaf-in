@@ -31,7 +31,7 @@ app.component('userSettingsComponent', {
         function submitChanges() {
             vm.dataLoading = true;
             userSettingsModel.saveDataPostRegistration(vm.userProfile).then(
-                function () {
+                function (success) {
                     vm.dataLoading = false;
                     notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
                     initializationService.initialize(success.data);

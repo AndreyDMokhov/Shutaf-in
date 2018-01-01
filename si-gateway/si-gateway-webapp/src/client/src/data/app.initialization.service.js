@@ -1,4 +1,12 @@
-app.factory('initializationService', function (messengerChannelService,Restangular, $q, $sessionStorage, notify, $filter, languageService, webSocketService) {
+app.factory('initializationService', function (messengerChannelService,
+                                               Restangular,
+                                               $q,
+                                               $sessionStorage,
+                                               notify,
+                                               $filter,
+                                               languageService,
+                                               webSocketService,
+                                               notifySessionStorageChangeService) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
     });
@@ -52,6 +60,8 @@ app.factory('initializationService', function (messengerChannelService,Restangul
         messengerChannelService.listOfChats = success.data.listOfChats;
 
         languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
+
+        notifySessionStorageChangeService.notifyServiceObservers();
     }
 
     function _getSelectedAnswers(data) {

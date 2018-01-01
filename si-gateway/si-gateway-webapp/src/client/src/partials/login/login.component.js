@@ -10,7 +10,8 @@ app.component('loginComponent', {
                           $sessionStorage,
                           initializationService,
                           $window,
-                          browserTitle) {
+                          browserTitle,
+                          accountStatus) {
 
         browserTitle.setBrowserTitleByFilterName('Login.title');
 
@@ -29,9 +30,9 @@ app.component('loginComponent', {
                         function () {
                             $window.location.reload();
                             notify.set($filter('translate')('Login.message.success'), {type: 'success'});
-                            if ($sessionStorage.accountStatus == 2){
+                            if ($sessionStorage.accountStatus == accountStatus.Statuses.CONFIRMED){
                                 $state.go('settings', {}, {reload: true});
-                            } else if ($sessionStorage.accountStatus == 3){
+                            } else if ($sessionStorage.accountStatus == accountStatus.Statuses.COMPLETED_USER_INFO){
                                 $state.go('questions', {}, {reload: true});
                             } else {
                                 $state.go('home', {}, {reload: true});

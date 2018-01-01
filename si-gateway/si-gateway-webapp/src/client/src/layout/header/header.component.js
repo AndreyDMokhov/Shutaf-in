@@ -11,19 +11,25 @@ app.component('headerComponent', {
                               $state,
                               $window,
                               initializationService,
-                              webSocketService) {
+                              webSocketService,
+                              accountStatus,
+                              notifySessionStorageChangeService) {
 
             var vm = this;
             vm.userProfile = {};
 
-            //This object has to contain the same values as defined in AccountStatus.java
-            vm.accountStatusEnum = {};
-            vm.accountStatusEnum.NEW = 1;
-            vm.accountStatusEnum.CONFIRMED = 2;
-            vm.accountStatusEnum.COMPLETED_USER_INFO = 3;
-            vm.accountStatusEnum.COMPLETED_REQUIRED_MATCHING = 4;
-
             vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
+            vm.accountStatusesNEW = accountStatus.Statuses.NEW;
+            vm.accountStatusesCONFIRMED = accountStatus.Statuses.CONFIRMED;
+            vm.accountStatusesCOMPLETED_USER_INFO = accountStatus.Statuses.COMPLETED_USER_INFO;
+            vm.accountStatusesCOMPLETED_REQUIRED_MATCHING = accountStatus.Statuses.COMPLETED_REQUIRED_MATCHING;
+            vm.accountStatusesDEAL = accountStatus.Statuses.DEAL;
+            vm.accountStatusesBLOCKED = accountStatus.Statuses.BLOCKED;
+
+            function updateAccountStatus(){
+                vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
+            }
+            notifySessionStorageChangeService.registerServiceObserver(updateAccountStatus);
 
             vm.sessionService = sessionService;
             $rootScope.brand = "Shutaf-In";
