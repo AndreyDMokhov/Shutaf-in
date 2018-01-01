@@ -1,5 +1,6 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchService;
@@ -24,8 +25,8 @@ public class UserMatchController {
     private UserMatchService userMatchService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserQuestionsAnswers(@AuthenticatedUser Long userId, @RequestBody @Valid List<UserQuestionAnswerDTO> questionsAnswers) {
-        userMatchService.saveQuestionsAnswers(userId, questionsAnswers);
+    public InitializationResponse saveUserQuestionsAnswers(@AuthenticatedUser Long userId, @RequestBody @Valid List<UserQuestionAnswerDTO> questionsAnswers) {
+        return userMatchService.saveQuestionsAnswers(userId, questionsAnswers);
     }
 
 }

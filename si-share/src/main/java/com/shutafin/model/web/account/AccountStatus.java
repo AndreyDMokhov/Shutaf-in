@@ -1,5 +1,7 @@
-package com.shutafin.model.types;
+package com.shutafin.model.web.account;
 
+
+import com.shutafin.model.types.IdentifiableType;
 
 /**
  * Created by Edward Kats.

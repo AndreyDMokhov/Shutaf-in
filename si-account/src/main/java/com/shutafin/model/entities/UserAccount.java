@@ -2,7 +2,7 @@ package com.shutafin.model.entities;
 
 import com.shutafin.model.base.AbstractEntity;
 import com.shutafin.model.infrastructure.Language;
-import com.shutafin.model.types.AccountStatus;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.types.AccountStatusConverter;
 import com.shutafin.model.types.AccountType;
 import com.shutafin.model.types.AccountTypeConverter;

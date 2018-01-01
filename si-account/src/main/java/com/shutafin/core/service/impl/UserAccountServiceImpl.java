@@ -9,7 +9,7 @@ import com.shutafin.model.exception.exceptions.AccountBlockedException;
 import com.shutafin.model.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.model.types.AccountStatus;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.types.CompressionType;
 import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.account.AccountUserImageWeb;
