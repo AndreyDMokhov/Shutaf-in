@@ -11,7 +11,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @ComponentScan(basePackages = "com.shutafin")
 @PropertySources({
         @PropertySource(value = "classpath:application.properties"),
-        @PropertySource(value = "classpath:environment.config.properties"),
         @PropertySource(value = "classpath:server.properties"),
 
 })

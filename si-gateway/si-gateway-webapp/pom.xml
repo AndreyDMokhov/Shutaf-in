@@ -43,11 +43,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.shutafin</groupId>
-            <artifactId>si-gateway-internal</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
