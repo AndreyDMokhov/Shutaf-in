@@ -175,7 +175,7 @@
   "Chat.title.new.message": "new",
   "Chat.header.rename.chat.title":"Rename chat:",
 
-  "SECTION" : "SITEACCESSERROR",
+  "SECTION" : "SITE_ACCESS_ERROR",
   "SiteAccess.info.settings" : "User info settings does not set",
   "SiteAccess.questionnaire.settings" : "User questionnaire was not fill"
 }

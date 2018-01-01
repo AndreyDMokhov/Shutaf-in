@@ -19,12 +19,14 @@ app.component('headerComponent', {
             vm.userProfile = {};
 
             vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
-            vm.accountStatusesNEW = accountStatus.Statuses.NEW;
-            vm.accountStatusesCONFIRMED = accountStatus.Statuses.CONFIRMED;
-            vm.accountStatusesCOMPLETED_USER_INFO = accountStatus.Statuses.COMPLETED_USER_INFO;
-            vm.accountStatusesCOMPLETED_REQUIRED_MATCHING = accountStatus.Statuses.COMPLETED_REQUIRED_MATCHING;
-            vm.accountStatusesDEAL = accountStatus.Statuses.DEAL;
-            vm.accountStatusesBLOCKED = accountStatus.Statuses.BLOCKED;
+
+            vm.accountStatuses = [];
+            vm.accountStatuses['NEW'] = accountStatus.Statuses.NEW;
+            vm.accountStatuses['CONFIRMED'] = accountStatus.Statuses.CONFIRMED;
+            vm.accountStatuses['COMPLETED_USER_INFO'] = accountStatus.Statuses.COMPLETED_USER_INFO;
+            vm.accountStatuses['COMPLETED_REQUIRED_MATCHING'] = accountStatus.Statuses.COMPLETED_REQUIRED_MATCHING;
+            vm.accountStatuses['DEAL'] = accountStatus.Statuses.DEAL;
+            vm.accountStatuses['BLOCKED'] = accountStatus.Statuses.BLOCKED;
 
             function updateAccountStatus(){
                 vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;

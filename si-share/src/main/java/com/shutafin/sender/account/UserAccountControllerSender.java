@@ -91,14 +91,14 @@ public class UserAccountControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/update-account-status", userId);
 
-        new RestTemplate().put(url, statusId);
+        restTemplate.put(url, statusId);
     }
 
     public Integer getUserAccountStatus(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/get-account-status", userId);
 
-        return new RestTemplate().getForEntity(url, Integer.class).getBody();
+        return restTemplate.getForEntity(url, Integer.class).getBody();
     }
 
 }
