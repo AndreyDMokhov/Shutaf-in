@@ -13,7 +13,6 @@ import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserRepository;
 import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
 import com.shutafin.sender.matching.UserMatchControllerSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
