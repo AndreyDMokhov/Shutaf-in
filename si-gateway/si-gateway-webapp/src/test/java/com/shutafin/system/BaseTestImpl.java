@@ -40,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         PersistenceContextConfiguration.class,
         HttpMessageConverterConfiguration.class,
         WebContextConfiguration.class,
-        SMTPContextConfiguration.class,
         GatewayApplication.class
 })
 public class BaseTestImpl implements BaseTest {

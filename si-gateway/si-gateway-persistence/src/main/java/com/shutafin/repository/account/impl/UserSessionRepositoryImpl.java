@@ -1,6 +1,5 @@
 package com.shutafin.repository.account.impl;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.repository.account.UserSessionRepositoryCustom;
 import org.springframework.stereotype.Repository;
 
