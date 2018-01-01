@@ -1,9 +1,8 @@
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-default" >
         <div class="container-fluid">
             <ul class="nav navbar-nav">
-                <li ng-class="{active : ('userProfile' | includedByState)}">
-
-                    <a class="navbar-brand" ng-show="!vm.sessionService.isAuthenticated()">
+                <li ng-class="{active : ('userProfile' | includedByState)}" style="margin-top: -3px">
+                    <a class="navbar-brand hover-none" ng-show="!vm.sessionService.isAuthenticated()">
                         {{$root.brand}}
                     </a>
                     <a ng-show="vm.sessionService.isAuthenticated()"
@@ -11,7 +10,7 @@
                        uib-tooltip="{{'UserProfile.title' | translate}}"
                        tooltip-placement="bottom">
                         <span>
-                            <img class="logo-center" src="{{vm.getUserImage()}}" width="28" height="28">
+                            <img class="logo-center" style="padding: 0" src="{{vm.getUserImage()}}" width="28" height="28">
                         </span>
                         &nbsp;
                         {{$root.brand}}
@@ -27,14 +26,12 @@
                 </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
-                    <a ui-sref="questions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
+                    <a ui-sref="questionsTab.requiredQuestions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
                         <span class="fa fa-book header-icon-size"></span>
                         &nbsp;
                         {{'Questions.title' | translate}}
                     </a>
                 </li>
-
-
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : ('userSearch' | includedByState)}">
                     <form class="header-search" id="userSearchForm">

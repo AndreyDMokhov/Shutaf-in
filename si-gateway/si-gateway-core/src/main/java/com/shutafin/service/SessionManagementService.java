@@ -1,15 +1,15 @@
 package com.shutafin.service;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
+import com.shutafin.model.web.account.AccountUserWeb;
 
 public interface SessionManagementService {
 
-    User findUserWithValidSession(String sessionId);
+    Long findUserWithValidSession(String sessionId);
     UserSession findValidUserSession(String sessionId);
     void validate(String sessionId) throws AuthenticationException;
-    String generateNewSession(User user);
+    String generateNewSession(AccountUserWeb accountUserWeb);
     void invalidateUserSession(String sessionId);
     void invalidateAllExpiredSessions();
     void deleteAllInvalidSessions();

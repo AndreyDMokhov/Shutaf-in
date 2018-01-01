@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountLoginRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
@@ -46,7 +45,7 @@ public class LoginControllerTest extends BaseTestImpl {
     @Before
     public void SetUp() {
         Mockito.when(loginService.getUserByLoginWebModel(any(AccountLoginRequest.class))).thenReturn(createUser());
-        Mockito.when(sessionManagementService.generateNewSession(any(User.class))).thenReturn(SESSION_ID);
+        Mockito.when(sessionManagementService.generateNewSession(any(AccountUserWeb.class))).thenReturn(SESSION_ID);
         errorList = new ArrayList<>();
     }
 
@@ -133,7 +132,7 @@ public class LoginControllerTest extends BaseTestImpl {
 
     private AccountUserWeb createUser() {
         AccountUserWeb user = new AccountUserWeb();
-        user.setId(2L);
+        user.setUserId(2L);
         user.setFirstName("User");
         user.setLastName("User");
         return user;

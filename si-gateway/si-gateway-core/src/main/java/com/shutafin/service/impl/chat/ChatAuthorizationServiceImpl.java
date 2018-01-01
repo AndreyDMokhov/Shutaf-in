@@ -1,9 +1,8 @@
 package com.shutafin.service.impl.chat;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.Chat;
 import com.shutafin.model.entities.ChatUser;
-import com.shutafin.model.entities.User;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.repository.common.ChatUserRepository;
 import com.shutafin.service.ChatAuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,14 @@ public class ChatAuthorizationServiceImpl implements ChatAuthorizationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Chat findAuthorizedChat(Long chatId, User user) {
-        return findAuthorizedChatUser(chatId, user).getChat();
+    public Chat findAuthorizedChat(Long chatId, Long userId) {
+        return findAuthorizedChatUser(chatId, userId).getChat();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ChatUser findAuthorizedChatUser(Long chatId, User user) {
-        ChatUser chatUser = chatUserRepository.findActiveChatUserByChatIdAndUserId(chatId, user.getId());
+    public ChatUser findAuthorizedChatUser(Long chatId, Long userId) {
+        ChatUser chatUser = chatUserRepository.findActiveChatUserByChatIdAndUserId(chatId, userId);
         if (chatUser == null) {
             throw new AuthenticationException();
         }

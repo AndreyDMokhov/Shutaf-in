@@ -1,14 +1,13 @@
 package com.shutafin.service;
 
-import com.shutafin.model.entities.User;
-import com.shutafin.model.entities.matching.UserMatchingScore;
+import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 
 import java.util.Map;
-@Deprecated
+
 public interface UserMatchingScoreService {
 
-    UserMatchingScore getMatchingScore(User userOrigin, User userToMatch);
-    Map<Long, Integer> getUserMatchingScores(User userOrigin);
-    Long deleteUserMatchingScores(User user);
+    UserMatchingScoreDTO getMatchingScore(Long userOrigin, Long userToMatch);
+    Map<Long, Integer> getUserMatchingScores(Long userOrigin);
+    Long deleteUserMatchingScores(Long userId);
 
 }

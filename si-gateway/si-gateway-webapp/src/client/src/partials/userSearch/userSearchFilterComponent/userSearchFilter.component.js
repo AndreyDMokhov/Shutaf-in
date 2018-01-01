@@ -31,16 +31,26 @@ app.component('userSearchFilterComponent', {
             }
         };
         fillAgeRange();
-
+        fillGenderAndCity();
 
         function fillAgeRange() {
             if (vm.searchData.filterAgeRange !== null) {
+                vm.age = true;
                 vm.minRangeSlider.minValue = vm.searchData.filterAgeRange.fromAge;
                 vm.minRangeSlider.maxValue = vm.searchData.filterAgeRange.toAge;
             }
             else {
                 vm.minRangeSlider.minValue = 25;
                 vm.minRangeSlider.maxValue = 50;
+            }
+        }
+
+        function fillGenderAndCity() {
+            if (vm.searchData.filterGenderId) {
+                vm.gender = true;
+            }
+            if (vm.searchData.filterCitiesIds) {
+                vm.city = true;
             }
         }
 

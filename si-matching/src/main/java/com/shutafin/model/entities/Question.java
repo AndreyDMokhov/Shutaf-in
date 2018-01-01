@@ -1,6 +1,6 @@
 package com.shutafin.model.entities;
 
-import com.shutafin.model.AbstractKeyConstEntity;
+import com.shutafin.model.base.AbstractKeyConstEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,27 +1,15 @@
-<div class="container">
+<div class="container margin-top">
     <div class="row">
-        <div class="col-md-12 col-md-offset-0 toppad">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div>
-                        <h5 class="panel-title"></h5>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 text-left panel-title">{{vm.userProfile.firstName}}
-                            {{vm.userProfile.lastName}}
-                            <span ng-show="vm.isThisMyProfile" class="text-muted panel-title">
-                                ({{'UserProfile.current' | translate}})
-                            </span>
-                        </div>
-                        <div class="col-md-8 text-right">
-                            <a class="fa fa-pencil"
-                               ui-sref="settings.personal"
-                               uib-tooltip="{{'UserProfile.edit' | translate}}"
-                               tooltip-placement="bottom"
-                               style="float: right; color: white;"
-                               ng-show="vm.isThisMyProfile"></a>
-                        </div>
-                    </div>
+        <div class="col-md-12 toppad">
+            <div class="card-custom">
+                <div class="card-header pointer">
+                    <span> ({{'UserProfile.current' | translate}}) {{vm.userProfile.firstName}}
+                            {{vm.userProfile.lastName}}</span>
+                    <span> <a class="fa fa-pencil"
+                              ui-sref="settings.personal"
+                              uib-tooltip="{{'UserProfile.edit' | translate}}"
+                              tooltip-placement="bottom"
+                              ng-show="vm.isThisMyProfile"></a></span>
                 </div>
                 <div class="panel-body">
                     <div class="row">

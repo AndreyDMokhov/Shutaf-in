@@ -6,7 +6,7 @@
                    ng-model="vm.fullName"
                    ng-maxlength="50"
                    placeholder="{{'Search.request' | translate}}"/>
-            <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary button-size-font">
+            <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary btn-sm">
                 {{"Search.button" | translate}}
             </button>
         </form>
@@ -14,17 +14,17 @@
 
     <h4> {{'Search.results'|translate}} {{vm.userSearchList.length}} </h4>
     <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
-    <div class="panel panel-primary" ng-repeat="user in vm.userSearchList">
-        <div class="panel-heading pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
+    <div class="card-custom" ng-repeat="user in vm.userSearchList | orderBy:'-score'">
+        <div class="card-header pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
             <h4 class="panel-title">
                 {{ user.firstName }} {{ user.lastName }}
             </h4>
-            <span>{{'UserProfile.compatibility' | translate}}</span>
+            <span>{{'UserProfile.compatibility' | translate}} {{user.score}}%</span>
         </div>
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-3" align="center">
-                    <modal-image class="pointer" user-profile="user"></modal-image>
+                    <user-avatar user-data="user" width="100" height="100"></user-avatar>
                 </div>
                 <div class=" col-md-9">
                     <table class="table table-user-information">

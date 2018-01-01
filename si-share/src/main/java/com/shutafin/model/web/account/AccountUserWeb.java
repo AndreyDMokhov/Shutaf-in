@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AccountUserWeb {
 
-    private Long id;
+    private Long userId;
     private String lastName;
     private String firstName;
 }

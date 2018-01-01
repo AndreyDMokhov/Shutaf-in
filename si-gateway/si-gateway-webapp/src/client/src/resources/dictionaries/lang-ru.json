@@ -71,6 +71,7 @@
   "UserProfile.compatibility":"Совместимость",
   "UserProfile.message.sizeImage":"Размер изображение не должен превышать {{size}} МБ",
   "UserProfile.current":"ваш профиль",
+  "UserProfile.age" : "Возраст",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Письмо отправлено на указанный адрес",
@@ -154,6 +155,9 @@
   "Questions.button.save" : "Сохранить",
   "Questions.delimiter": "из",
   "Questions.confirm" : "Ответы успешно сохранены",
+  "Questions.requiredQuestions" : "Обязательные вопросы",
+  "Questions.extendedQuestions" : "Дополнительные вопросы",
+
 
   "SECTION": "CHAT",
   "Chat.title": "Чат",

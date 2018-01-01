@@ -4,9 +4,6 @@
   "description": "",
   "main": "index.html",
   "private": true,
-  "scripts": {
-    "postinstall": "bower install --save && gulp build"
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -39,6 +36,7 @@
     "gulp-watch": "^4.3.11",
     "http-proxy-middleware": "^0.17.4",
     "jshint": "^2.9.5",
-    "run-sequence": "^2.1.0"
+    "run-sequence": "^2.1.0",
+    "gulp-less": "^3.3.2"
   }
 }

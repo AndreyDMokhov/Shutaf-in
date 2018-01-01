@@ -1,31 +1,23 @@
 package com.shutafin.controller;
 
 
-import com.shutafin.model.entities.User;
+import com.shutafin.model.error.ErrorType;
+import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.error.errors.InputValidationError;
-import com.shutafin.model.web.user.EmailChangeConfirmationWeb;
-import com.shutafin.model.web.user.EmailChangedResponse;
+import com.shutafin.model.web.user.GatewayEmailChangedResponse;
 import com.shutafin.service.EmailChangeConfirmationService;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-
-
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +45,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     private static final String INP_NEW_EMAIL_EMAIL = "INP.emailChange.Email";
 
     private List<String> errorList;
-    private User validUser;
+    private Long validUser;
 
     @MockBean
     private SessionManagementService sessionManagementService;
@@ -62,18 +54,18 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     @Before
     public void setUp() {
-        validUser = createUser();
+        validUser = 1L;
         errorList = new ArrayList<>();
 
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
-        Mockito.doNothing().when(emailChangeConfirmationService)
-                .emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
+//        Mockito.doNothing().when(emailChangeConfirmationService)
+//                .emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
         Mockito.when(emailChangeConfirmationService.
-                emailChangeConfirmation(anyString())).thenReturn(new EmailChangedResponse());
+                emailChangeConfirmation(anyString())).thenReturn(new GatewayEmailChangedResponse());
     }
 
     @Test
-    public void emailChangeConfirmation_Positive(){
+    public void emailChangeConfirmation_Positive() {
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(EMAIL_CHANGE_CONFIRMATION_URL + "1a424de3-3671-420f-a8e2-ee97158f9ea2")
                 .setHttpMethod(HttpMethod.GET)
@@ -109,7 +101,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void emailChangeRequest_IncorrectSessionId(){
+    public void emailChangeRequest_IncorrectSessionId() {
         List<HttpHeaders> sessionHeaders = addSessionIdToHeader(INVALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
                 .setJsonContext(EMAIL_CHANGE_VALID_JSON_BODY)
@@ -124,7 +116,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void emailChangeRequest_IncorrectHeaderName(){
+    public void emailChangeRequest_IncorrectHeaderName() {
         List<HttpHeaders> sessionHeaders = new ArrayList<>();
         sessionHeaders.add(new HttpHeaders());
         sessionHeaders.get(0).set("sesion", VALID_SESSION_ID);
@@ -141,7 +133,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void emailChangeRequest_AllFieldsNull(){
+    public void emailChangeRequest_AllFieldsNull() {
         String emailChangeRequestRequestWebJson = "{\"userPassword\":null,\"emailChange\":null}";
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_NEW_EMAIL_NOT_BLANK);
@@ -149,7 +141,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void emailChangeRequest_AllEmptyFields(){
+    public void emailChangeRequest_AllEmptyFields() {
         String emailChangeRequestRequestWebJson = "{\"userPassword\":\"\",\"emailChange\":\"\"}";
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_NEW_EMAIL_NOT_BLANK);
@@ -157,7 +149,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void emailChangeRequest_AllWhitespaceFields(){
+    public void emailChangeRequest_AllWhitespaceFields() {
         String emailChangeRequestRequestWebJson = "{\"userPassword\":\" \",\"emailChange\":\" \"}";
         errorList.add(INP_PASSWORD_NOT_BLANK);
         errorList.add(INP_NEW_EMAIL_NOT_BLANK);
@@ -166,7 +158,7 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void emailChangeRequest_ExceededMaxLength(){
+    public void emailChangeRequest_ExceededMaxLength() {
         String emailChangeRequestRequestWebJson = "{\"userPassword\":\"iiiiiiiiiivvvvvvvvvvaaaaaaaaaannnnnnnnnnoooooooooov\"," +
                 "\"emailChange\":\"iiiiiiiiiivvvvvvvvvvaaaaaaaaaannnnnnnnnnoooooooooov\"}";
         errorList.add(INP_PASSWORD_LENGTH);
@@ -176,19 +168,19 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void emailChangeRequest_IllegalEmail(){
+    public void emailChangeRequest_IllegalEmail() {
         String emailChangeRequestRequestWebJson = "{\"userPassword\":\"alex\",\"emailChange\":\"gmail\"}";
         errorList.add(INP_NEW_EMAIL_EMAIL);
         testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
     }
 
-    private User createUser() {
-        User user = new User();
-        user.setFirstName("Alexander");
-        user.setLastName("Matsievsky");
-        user.setEmail("matsievsky@gmail.com");
-        return user;
-    }
+//    private User createUser() {
+//        User user = new User();
+//        user.setFirstName("Alexander");
+//        user.setLastName("Matsievsky");
+//        user.setEmail("matsievsky@gmail.com");
+//        return user;
+//    }
 
     private void testEmailChangeConfirmationWeb(String json, List<String> errorList) {
         List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);

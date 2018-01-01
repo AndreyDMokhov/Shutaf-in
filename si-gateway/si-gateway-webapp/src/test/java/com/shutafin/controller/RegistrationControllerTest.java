@@ -1,11 +1,10 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
+import com.shutafin.model.error.ErrorResponse;
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountRegistrationRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
-import com.shutafin.model.web.error.ErrorResponse;
-import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;
@@ -60,9 +59,9 @@ public class RegistrationControllerTest extends BaseTestImpl {
 
     @Before
     public void setUp() {
-        Mockito.doNothing().when(registrationService).save(any(AccountRegistrationRequest.class));
-        Mockito.when(registrationService.confirmRegistration(anyString())).thenReturn(new AccountUserWeb());
-        Mockito.when(sessionManagementService.generateNewSession(any(User.class))).thenReturn(SESSION_ID);
+        Mockito.doNothing().when(registrationService).registerUser(any(AccountRegistrationRequest.class));
+        Mockito.when(registrationService.confirmRegistrationUser(anyString())).thenReturn(new AccountUserWeb());
+        Mockito.when(sessionManagementService.generateNewSession(any(AccountUserWeb.class))).thenReturn(SESSION_ID);
         errorList = new ArrayList<>();
     }
 

@@ -3,7 +3,7 @@ app.component('channelComponent', {
     bindings: {},
     controllerAs: 'vm',
 
-    controller: function (messengerModel, $sessionStorage, $filter, messengerChannelService, messengerCurrentDataService) {
+    controller: function (messengerModel, $sessionStorage, $filter, messengerChannelService, userSearchModel, messengerManagementService) {
 
         var vm = this;
 
@@ -11,16 +11,38 @@ app.component('channelComponent', {
 
         function activate() {
             messengerChannelService.registerListOfChatsObserver(updateListOfChats);
+            angular.element(document).ready(function () {
+                        messengerManagementService.activateMessenger();
+                    });
         }
 
-        function updateListOfChats(chatData) {
+        function updateListOfChats(newChatData) {
             vm.listOfChats = messengerChannelService.listOfChats;
-            if (!chatData) {
+            if (!newChatData) {
                 checkChatTitlesList();
+                angular.forEach(vm.listOfChats, function (item) {
+                    findAndSaveUserImagesToStorage(item.usersInChat);
+                });
             }
-            else{
-                checkOneChatTitle(chatData)
+            else {
+                checkOneChatTitle(newChatData);
+                findAndSaveUserImagesToStorage(newChatData.usersInChat);
             }
+        }
+
+        function findAndSaveUserImagesToStorage(usersInChat) {
+            angular.forEach(usersInChat, function (item) {
+                if (!$sessionStorage[item.userId]) {
+                    userSearchModel.getUserImageById(item.userId).then(
+                        function (success) {
+                            var data = success.data.data;
+                            if (data.image) {
+                                $sessionStorage[item.userId] =data.image;
+                            }
+                        }
+                    );
+                }
+            });
         }
 
         function checkChatTitlesList() {
@@ -47,7 +69,5 @@ app.component('channelComponent', {
         }
 
         activate();
-
-        vm.checkOneChatTitle = checkOneChatTitle;
     }
 });

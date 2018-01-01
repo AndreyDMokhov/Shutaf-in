@@ -33,12 +33,14 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 $sessionStorage.questionsExtended = success.data.matchingInitializationResponse.questionExtendedWithAnswers;
                 $sessionStorage.questionImportance = success.data.matchingInitializationResponse.questionImportanceList;
                 $sessionStorage.selectedExtendedAnswers = success.data.matchingInitializationResponse.selectedExtendedAnswersResponses;
-                $sessionStorage.listOfChats = success.data.matchingInitializationResponse.listOfChats;
+                $sessionStorage.showExtendedQuestions = showExtendedQuestions();
+                $sessionStorage.filters = success.data.accountInitialization.filters;
+                messengerChannelService.listOfChats = success.data.listOfChats;
 
                 languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
-                $sessionStorage.filters = success.data.filters;
+
                 webSocketService.getConnection();
-                messengerChannelService.initWsConnection();
+                messengerChannelService.initWsSubscription();
                 deferred.resolve(success.data);
             }, function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -54,10 +56,18 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 answers.push({"questionId": data[i].questionId, "answerId": data[i].selectedAnswersIds[0]});
             }
             else {
-                answers.push({"questionId": i+1, "answerId": null});
+                answers.push({"questionId": i + 1, "answerId": null});
             }
         }
         return answers;
+    }
+    function showExtendedQuestions() {
+        if( $sessionStorage.selectedAnswers[0].answerId === null){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     return {

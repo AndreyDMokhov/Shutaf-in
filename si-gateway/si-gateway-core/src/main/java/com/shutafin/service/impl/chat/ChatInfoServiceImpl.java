@@ -1,6 +1,8 @@
 package com.shutafin.service.impl.chat;
 
-import com.shutafin.model.entities.*;
+import com.shutafin.model.entities.Chat;
+import com.shutafin.model.entities.ChatMessage;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatUserRepository;
@@ -33,18 +35,19 @@ public class ChatInfoServiceImpl implements ChatInfoService {
     public List<ChatWithUsersListDTO> getListChats(Long userId) {
         List<ChatWithUsersListDTO> chats = chatUserRepository.findChatsWithActiveUsers(userId);
         for (ChatWithUsersListDTO chat : chats) {
-            chat.setUsersInChat(chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), userId));
+            List<AccountUserWeb> baseUserInfos = chatUserRepository.findAllByUserId(chat.getId(), userId);
+            chat.setUsersInChat(baseUserInfos);
         }
         return chats;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ChatMessage> getListMessages(Chat chat, User user) {
+    public List<ChatMessage> getListMessages(Chat chat, Long userId) {
         List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByChat(chat);
         chatMessages = chatMessages
                 .stream()
-                .filter(x -> x.getPermittedUsers().contains(user.getId()))
+                .filter(x -> x.getPermittedUsers().contains(userId))
                 .collect(Collectors.toList());
         return chatMessages;
     }

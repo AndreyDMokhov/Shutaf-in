@@ -1,8 +1,8 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.SessionManagementService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +29,8 @@ public class SessionManagementServiceImpl implements SessionManagementService {
 
     @Override
     @Transactional(readOnly = true)
-    public User findUserWithValidSession(String sessionId) {
-        return userSessionRepository.findUserBySessionIdAndIsValid(sessionId, IS_TRUE);
+    public Long findUserWithValidSession(String sessionId) {
+        return userSessionRepository.findUserIdBySessionIdAndIsValid(sessionId, IS_TRUE);
     }
 
     @Override
@@ -54,9 +54,9 @@ public class SessionManagementServiceImpl implements SessionManagementService {
 
     @Override
     @Transactional
-    public String generateNewSession(User user) {
+    public String generateNewSession(AccountUserWeb accountUserWeb) {
         UserSession userSession = new UserSession();
-        userSession.setUser(user);
+        userSession.setUserId(accountUserWeb.getUserId());
         userSession.setIsValid(IS_TRUE);
         userSession.setSessionId(UUID.randomUUID().toString());
         userSession.setIsExpirable(IS_FALSE);

@@ -1,31 +1,29 @@
 app.service('messengerChannelService', function ($sessionStorage, webSocketService) {
 
     var vm = this;
-    vm.listOfChats = $sessionStorage.listOfChats;
+    vm.listOfChats = [];
     vm.listOfChatsCallbacks = [];
     vm.channelCallbacks = [];
 
     var destination = '/api/subscribe/chat/';
-    vm.initWsCallbacks = [];
-    vm.channelMessagesCallbacks = [];
-    vm.initChannelCallbacks = [];
+    vm.subscriptionsCallbacks = [];
+    vm.subscribed = false;
 
     function registerListOfChatsObserver(callback) {
-        vm.listOfChatsCallbacks.push(callback);
+            vm.listOfChatsCallbacks.push(callback);
     }
 
     function registerChannelObserver(callback) {
         vm.channelCallbacks.push(callback);
     }
 
-    function notifyChannelObservers(channel) {
+    function notifyChannelObservers(newChatData) {
         angular.forEach(vm.channelCallbacks, function (callback) {
-            callback(channel);
+            callback(newChatData);
         });
     }
 
     function notifyListOfChatObservers(chatData) {
-        $sessionStorage.listOfChats = vm.listOfChats;
         angular.forEach(vm.listOfChatsCallbacks, function (callback) {
             callback(chatData);
         });
@@ -52,7 +50,7 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
     function findActiveChatWithUser(user) {
         return vm.listOfChats
             .filter(function (chat) {
-                return chat.usersInChat.length === 1 && isUserActiveInChat(chat, user)
+                return chat.usersInChat.length === 1 && isUserActiveInChat(chat, user);
             });
     }
 
@@ -65,45 +63,69 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
 
 
     /**WebSocket subscription part*/
-    function initWsConnection() {
+    function initWsSubscription() {
         if (!webSocketService.isConnectionReady()) {
             setTimeout(function () {
-                initWsConnection();
-            }, 100);
+                initWsSubscription();
+            }, 50);
         }
         else {
-            _doSubscribe(destination);
+            _doSubscribeAll(destination);
         }
     }
 
-    function _doSubscribe(destination) {
+    /**
+     *  Subscribes all channels from vm.listOfChats
+     */
+    function _doSubscribeAll(destination) {
         vm.listOfChats.forEach(function (chat) {
-            vm.initWsCallbacks[chat.id] = (webSocketService.subscribe(destination + chat.id));
+            vm.subscriptionsCallbacks[chat.id] = (webSocketService.subscribe(destination + chat.id));
         });
 
         /**
          *  This should be called after getting status: connection is ready;
          *  in other way the subscription will happens twice on the same channel.
          */
-        webSocketService.registerObserverCallback(initWsConnection);
-        notifyInitChannelObservers();
+        webSocketService.registerObserverCallback(initWsSubscription);
+        vm.subscribed = true;
+
     }
 
-    function registerChannelMessagesCallbacks(callback, chatId) {
-        vm.initWsCallbacks[chatId].then(null, null,
+    /**
+     *  Passes callback function for incoming messages to existing subscription due channelId
+     */
+    function registerSubscriptionCallback(callback, channelId) {
+        vm.subscriptionsCallbacks[channelId].then(null, null,
             function (message) {
                 callback(message);
             });
     }
 
-    function registerInitChannelObservers(callback) {
-        vm.initChannelCallbacks.push(callback);
+    /**
+     *  Subscribes new channels with any ids
+     */
+    function subscribeNewChannel(channelId) {
+        vm.subscribed = false;
+        vm.subscriptionsCallbacks[channelId] = (webSocketService.subscribe(destination + channelId));
+        _isSubscriptionSuccess(channelId);
     }
 
-    function notifyInitChannelObservers() {
-        angular.forEach(vm.initChannelCallbacks, function (callback) {
-            callback();
-        });
+    function _isSubscriptionSuccess(channelId) {
+        if (!vm.subscriptionsCallbacks[channelId]) {
+            setTimeout(function () {
+                _isSubscriptionSuccess();
+            }, 50);
+        }
+        else {
+            vm.subscribed = true;
+        }
+    }
+
+    /**
+     *  Checks if subscriptions are happened
+     */
+    function isSubscribed() {
+        return vm.subscribed;
     }
 
     vm.registerListOfChatsObserver = registerListOfChatsObserver;
@@ -114,8 +136,8 @@ app.service('messengerChannelService', function ($sessionStorage, webSocketServi
     vm.removeChatFromList = removeChatFromList;
     vm.findActiveChatWithUser = findActiveChatWithUser;
 
-    vm.initWsConnection = initWsConnection;
-    vm.registerChannelMessagesCallbacks = registerChannelMessagesCallbacks;
-    vm.registerInitChannelObservers = registerInitChannelObservers;
-    vm.notifyInitChannelObservers = notifyInitChannelObservers;
+    vm.initWsSubscription = initWsSubscription;
+    vm.registerSubscriptionCallback = registerSubscriptionCallback;
+    vm.subscribeNewChannel = subscribeNewChannel;
+    vm.isSubscribed = isSubscribed;
 });

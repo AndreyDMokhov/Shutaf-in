@@ -1,21 +1,21 @@
 package com.shutafin.service.impl.chat;
 
-import com.shutafin.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.entities.*;
+import com.shutafin.model.entities.Chat;
+import com.shutafin.model.entities.ChatMessage;
+import com.shutafin.model.entities.ChatUser;
 import com.shutafin.model.entities.types.ChatMessageType;
+import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.model.web.chat.ChatMessageRequest;
-import com.shutafin.model.web.chat.ChatUserDTO;
 import com.shutafin.model.web.chat.ChatWithUsersListDTO;
 import com.shutafin.repository.common.ChatMessageRepository;
 import com.shutafin.repository.common.ChatRepository;
 import com.shutafin.repository.common.ChatUserRepository;
-import com.shutafin.repository.common.UserRepository;
+import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.service.ChatManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,12 +37,12 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     private ChatMessageRepository chatMessageRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserAccountControllerSender userAccountControllerSender;
 
 
     @Override
     @Transactional
-    public ChatWithUsersListDTO createNewChat(String chatTitle, User chatOwner, Long chatMemberUserId) {
+    public ChatWithUsersListDTO createNewChat(String chatTitle, Long chatOwnerId, Long chatMemberUserId) {
         Chat chat = new Chat();
         chat.setChatTitle(chatTitle);
         if (chatTitle == null || chatTitle.equals("null")) {
@@ -50,19 +50,15 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         }
         chat.setChatTitle(chatTitle);
         chatRepository.save(chat);
-        addChatUserToChat(chat, chatOwner.getId());
+        addChatUserToChat(chat, chatOwnerId);
         addChatUserToChat(chat, chatMemberUserId);
-        //TODO moved to Account MS
-        List<User> users = Arrays.asList(userRepository.findOne(chatMemberUserId));
-        return getChatWithUsersListDTO(chat, users);
+
+        return new ChatWithUsersListDTO(chat.getId(),
+                chat.getChatTitle(),
+                chat.getHasNoTitle(),
+                chatUserRepository.findAllByUserId (chat.getId(), chatOwnerId));
     }
 
-    private ChatWithUsersListDTO getChatWithUsersListDTO(Chat chat, List<User> users) {
-        List<ChatUserDTO> chatUserDTOs = users.stream()
-                .map(u->new ChatUserDTO(u.getId(),u.getFirstName(),u.getLastName()))
-                .collect(Collectors.toList());
-        return new ChatWithUsersListDTO(chat.getId(),chat.getChatTitle(),chat.getHasNoTitle(),chatUserDTOs);
-    }
 
     @Override
     @Transactional
@@ -95,7 +91,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     private ChatMessage createChatMessage(ChatUser chatUser, ChatMessageRequest message) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setChat(chatUser.getChat());
-        chatMessage.setUser(chatUser.getUser());
+        chatMessage.setChatUser(chatUser);
         chatMessage.setMessage(message.getMessage());
         ChatMessageType chatMessageType = ChatMessageType.getById(message.getMessageType());
         if (chatMessageType == null) {
@@ -104,7 +100,7 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         chatMessage.setMessageType(chatMessageType);
 
         List<Long> permittedUsersIdList = getPermittedUsers(chatUser.getChat());
-        List<Long> usersToNotifyIdList = getUsersToNotify(permittedUsersIdList, chatUser.getUser().getId());
+        List<Long> usersToNotifyIdList = getUsersToNotify(permittedUsersIdList, chatUser.getUserId());
         chatMessage.setPermittedUsers(permittedUsersIdList);
         chatMessage.setUsersToNotify(usersToNotifyIdList);
         chatMessageRepository.save(chatMessage);
@@ -112,22 +108,25 @@ public class ChatManagementServiceImpl implements ChatManagementService {
     }
 
     @Override
-    public void updateMessagesAsRead(List<Long> messagesIdList, User user) {
+    public void updateMessagesAsRead(List<Long> messagesIdList, Long userId) {
         List<ChatMessage> chatMessages = chatMessageRepository.findChatMessagesByMessageIdList(messagesIdList);
         for (ChatMessage chatMessage : chatMessages) {
-            List<Long> usersToNotifyIdList = getUsersToNotify(chatMessage.getUsersToNotify(), user.getId());
+            List<Long> usersToNotifyIdList = getUsersToNotify(chatMessage.getUsersToNotify(), userId);
             chatMessage.setUsersToNotify(usersToNotifyIdList);
             chatMessageRepository.save(chatMessage);
         }
     }
 
     @Override
-    public ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, User user) {
+    public ChatWithUsersListDTO renameChat(Chat chat, String chatTitle, Long userId) {
         chat.setChatTitle(chatTitle);
         chat.setHasNoTitle(false);
         chatRepository.save(chat);
-        ChatWithUsersListDTO chatWithUsersListDTO = new ChatWithUsersListDTO(chat.getId(),chat.getChatTitle(),chat.getHasNoTitle());
-        chatWithUsersListDTO.setUsersInChat(chatUserRepository.findActiveChatUsersIdByChatId(chat.getId(), user.getId()));
+        ChatWithUsersListDTO chatWithUsersListDTO = new ChatWithUsersListDTO(chat.getId(), chat.getChatTitle(), chat.getHasNoTitle());
+
+        List<AccountUserWeb> users = chatUserRepository.findAllByUserId(chat.getId(), userId);
+        chatWithUsersListDTO.setUsersInChat(users);
+
         return chatWithUsersListDTO;
 
     }
@@ -136,25 +135,17 @@ public class ChatManagementServiceImpl implements ChatManagementService {
         List<ChatUser> chatUsers = chatUserRepository.findChatUsersByChatAndIsActiveUserTrue(chat);
         return chatUsers
                 .stream()
-                .map(ChatUser::getUser)
-                .map(User::getId)
+                .map(ChatUser::getUserId)
                 .collect(Collectors.toList());
     }
 
-    private User getUserById(Long userId) {
-        //TODO moved to Account MS
-        User user = userRepository.findOne(userId);
-        if (user == null) {
-            throw new ResourceNotFoundException();
-        }
-        return user;
-    }
-
     private ChatUser createChatUserAndSetIsActiveTrue(Chat chat, Long userId) {
-        User user = getUserById(userId);
         ChatUser chatUser = new ChatUser();
         chatUser.setChat(chat);
-        chatUser.setUser(user);
+        chatUser.setUserId(userId);
+        AccountUserWeb accountUserWeb = userAccountControllerSender.getBaseUserInfo(userId);
+        chatUser.setFirstName(accountUserWeb.getFirstName());
+        chatUser.setLastName(accountUserWeb.getLastName());
         chatUser = setIsActiveTrue(chatUser);
         return chatUser;
     }

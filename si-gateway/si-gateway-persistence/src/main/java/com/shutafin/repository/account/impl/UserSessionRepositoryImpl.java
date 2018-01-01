@@ -1,6 +1,5 @@
 package com.shutafin.repository.account.impl;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.repository.account.UserSessionRepositoryCustom;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +15,9 @@ public class UserSessionRepositoryImpl implements UserSessionRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public User findUserBySessionIdAndIsValid(String sessionId, boolean isValid) {
+    public Long findUserIdBySessionIdAndIsValid(String sessionId, boolean isValid) {
         try {
-            return (User) entityManager.createQuery("SELECT e.user FROM UserSession e WHERE e.sessionId = :sessionId AND e.isValid = :isValid")
+            return (Long) entityManager.createQuery("SELECT e.userId FROM UserSession e WHERE e.sessionId = :sessionId AND e.isValid = :isValid")
                     .setParameter("sessionId", sessionId)
                     .setParameter("isValid", isValid)
                     .getSingleResult();

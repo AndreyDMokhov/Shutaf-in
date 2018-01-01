@@ -5,6 +5,6 @@ import com.shutafin.model.web.account.AccountUserWeb;
 
 public interface RegistrationService {
 
-    void save(AccountRegistrationRequest registrationRequestWeb);
-    AccountUserWeb confirmRegistration(String link);
+    void registerUser(AccountRegistrationRequest registrationRequestWeb);
+    AccountUserWeb confirmRegistrationUser(String link);
 }

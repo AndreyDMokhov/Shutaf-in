@@ -27,8 +27,8 @@ app.component('userSearchPresentationComponent', {
         function userSearch() {
             userSearchModel.userSearch(vm.fullName).then(
                 function (success) {
-
                     vm.userSearchList = success.data.data;
+                    saveUserImagesToStorage();
                 }, function (error) {
                     if (error === undefined || error === null) {
                         notify.set($filter('translate')('Error.SYS'), {type: 'error'});
@@ -37,13 +37,12 @@ app.component('userSearchPresentationComponent', {
                 });
         }
 
-        function getImage(userProfile) {
-            if (!userProfile.userImage) {
-                return '../../images/default_avatar.png';
-            }
-            else {
-                return 'data:image/jpeg;base64,' + userProfile.userImage;
-            }
+        function saveUserImagesToStorage() {
+            angular.forEach(vm.userSearchList, function (item) {
+                if(item.userImage && !$sessionStorage[item.userId]){
+                    $sessionStorage[item.userId] = item.userImage;
+                }
+            });
         }
 
         function showUserProfilePopup(userId) {
@@ -64,7 +63,6 @@ app.component('userSearchPresentationComponent', {
         activate();
 
         vm.userSearch = userSearch;
-        vm.getImage = getImage;
         vm.showUserProfilePopup = showUserProfilePopup;
     }
 

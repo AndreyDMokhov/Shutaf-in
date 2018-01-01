@@ -1,12 +1,10 @@
 package com.shutafin.controller;
 
-import com.shutafin.core.service.InitializationService;
-import com.shutafin.core.service.UserInfoService;
-import com.shutafin.core.service.UserLanguageService;
-import com.shutafin.core.service.UserService;
+import com.shutafin.core.service.*;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.infrastructure.Language;
 import com.shutafin.model.web.account.AccountInitializationResponse;
+import com.shutafin.model.web.common.LanguageWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,27 +24,30 @@ public class AccountInitializationController {
     private UserInfoService userInfoService;
     private UserLanguageService userLanguageService;
     private UserService userService;
+    private UserFilterService userFilterService;
 
     @Autowired
     public AccountInitializationController(
             InitializationService initializationService,
             UserInfoService userInfoService,
             UserLanguageService userLanguageService,
-            UserService userService) {
+            UserService userService,
+            UserFilterService userFilterService) {
         this.initializationService = initializationService;
         this.userInfoService = userInfoService;
         this.userLanguageService = userLanguageService;
         this.userService = userService;
+        this.userFilterService=userFilterService;
     }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Language> getLanguages() {
+    public List<LanguageWeb> getLanguages() {
         log.debug("/initialization/languages");
         return initializationService.findAllLanguages();
     }
 
 
-    @RequestMapping(value = "{userId}/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "{userId}/all", method = RequestMethod.GET)
     public AccountInitializationResponse getInitializationResponse(@PathVariable("userId") Long userId) {
         User user = userService.findUserById(userId);
         Language language = userLanguageService.findUserLanguage(user);
@@ -57,6 +58,7 @@ public class AccountInitializationController {
                 .cities(initializationService.findAllCitiesByLanguage(language))
                 .countries(initializationService.findAllCountriesByLanguage(language))
                 .genders(initializationService.findAllGendersByLanguage(language))
+                .filters(userFilterService.getUserFilters(user.getId()))
                 .build();
     }
 }

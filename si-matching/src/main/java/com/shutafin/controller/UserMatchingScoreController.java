@@ -1,6 +1,7 @@
 package com.shutafin.controller;
 
 
+import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.service.extended.UserMatchingScoreService;
 import com.shutafin.service.extended.UserQuestionExtendedAnswerService;
@@ -31,5 +32,16 @@ public class UserMatchingScoreController {
     public void addUserQuestionExtendedAnswers(@PathVariable("userId") Long userId,
                                                @RequestBody List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList) {
         userQuestionExtendedAnswerService.addUserQuestionExtendedAnswers(userQuestionExtendedAnswersWebList, userId);
+    }
+
+    @GetMapping(value = "/one/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserMatchingScoreDTO getOneMatchingScore(@PathVariable("userOrigin") Long userOrigin,
+                                                    @PathVariable("userToMatch") Long userToMatch) {
+        return userMatchingScoreService.getOneMatchingScore(userOrigin, userToMatch);
+    }
+
+    @GetMapping(value = "/delete/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Long deleteUserMatchingScores(@PathVariable("userId") Long userId) {
+        return userMatchingScoreService.deleteUserMatchingScores(userId);
     }
 }

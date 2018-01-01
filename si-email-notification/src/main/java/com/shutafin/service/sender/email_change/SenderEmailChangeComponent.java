@@ -30,17 +30,26 @@ public class SenderEmailChangeComponent implements BaseEmailInterface {
     public void send(EmailNotificationWeb emailNotificationWeb) {
         EmailMessage emailMessage;
 
-        ConfirmationEmailChange emailOldObject = confirmationEmailChangeService.get(emailNotificationWeb, null, null);
-        ConfirmationEmailChange emailChangeObject = confirmationEmailChangeService.get(emailNotificationWeb, emailNotificationWeb.getEmailChange(), emailOldObject);
+        ConfirmationEmailChange fromEmail = confirmationEmailChangeService.get(
+                emailNotificationWeb,
+                null,
+                null);
 
-        emailOldObject.setConnectedConfirmationEmailChange(emailChangeObject);
-        confirmationEmailChangeService.save(emailOldObject);
-        confirmationEmailChangeService.save(emailChangeObject);
+        ConfirmationEmailChange toEmail = confirmationEmailChangeService.get(
+                emailNotificationWeb,
+                emailNotificationWeb.getEmailChange(),
+                fromEmail);
 
-        emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, emailOldObject.getConfirmationUUID(), emailOldObject.getEmailChange(), EMAIL_CHANGE_CONFIRMATION_URL);
+        fromEmail.setConnectedConfirmationEmailChange(toEmail);
+        toEmail.setConnectedConfirmationEmailChange(fromEmail);
+
+        confirmationEmailChangeService.save(fromEmail);
+        confirmationEmailChangeService.save(toEmail);
+
+        emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, fromEmail.getConfirmationUUID(), fromEmail.getEmailChange(), EMAIL_CHANGE_CONFIRMATION_URL);
         senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
 
-        emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, emailChangeObject.getConfirmationUUID(), emailChangeObject.getEmailChange(), EMAIL_CHANGE_CONFIRMATION_URL);
+        emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, toEmail.getConfirmationUUID(), toEmail.getEmailChange(), EMAIL_CHANGE_CONFIRMATION_URL);
         senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
     }
 }

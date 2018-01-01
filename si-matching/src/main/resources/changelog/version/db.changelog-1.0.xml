@@ -99,52 +99,6 @@
 
     <changeSet id="2" author="evgenyYablokov">
 
-        <createTable tableName="FILTER_AGE_RANGE">
-            <column name="ID" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-
-            <column name="USER_ID" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="FROM_AGE" type="int">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="TO_AGE" type="int">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="FILTER_CITY">
-            <column name="ID" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-
-            <column name="USER_ID" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="CITY_ID" type="int">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="FILTER_GENDER">
-            <column name="ID" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-
-            <column name="USER_ID" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="GENDER_ID" type="int">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
         <createTable tableName="USER_EXAM_KEY">
             <column name="ID" type="int" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -407,7 +361,7 @@
         <insert tableName="I_QUESTION_LOCALE">
             <column name="QUESTION_ID" value="2"/>
             <column name="LANGUAGE_ID" value="2"/>
-            <column name="DESCRIPTION" value="Отножение к домашним животным"/>
+            <column name="DESCRIPTION" value="Отношение к домашним животным"/>
         </insert>
         <insert tableName="I_QUESTION_LOCALE">
             <column name="QUESTION_ID" value="3"/>
@@ -677,6 +631,12 @@
             <column name="DESCRIPTION" value="Неважо"/>
         </insert>
 
+    </changeSet>
+
+    <changeSet id="4" author="edwardKats">
+        <delete tableName="I_QUESTION_LOCALE">
+            <where>QUESTION_ID = 5</where>
+        </delete>
     </changeSet>
 
 </databaseChangeLog>

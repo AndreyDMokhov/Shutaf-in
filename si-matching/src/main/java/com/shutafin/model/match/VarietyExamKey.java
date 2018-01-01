@@ -1,6 +1,6 @@
 package com.shutafin.model.match;
 
-import com.shutafin.model.AbstractBaseEntity;
+import com.shutafin.model.base.AbstractBaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

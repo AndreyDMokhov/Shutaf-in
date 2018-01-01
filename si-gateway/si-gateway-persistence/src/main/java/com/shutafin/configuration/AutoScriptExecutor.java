@@ -24,6 +24,7 @@ import java.util.TreeMap;
 
 @Configuration
 @Slf4j
+@Deprecated
 public class AutoScriptExecutor {
 
     private final static String DB_UPDATE_TABLE_NAME = "DB_UPDATE";

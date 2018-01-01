@@ -3,9 +3,15 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
     var vm = this;
 
     function activateMessenger() {
-        messengerChannelService.notifyListOfChatObservers();
-        if (messengerCurrentDataService.currentChat.id) {
-            activateChannel(messengerCurrentDataService.currentChat)
+        if (messengerChannelService.listOfChats.length<1) {
+            setTimeout(function () {
+                activateMessenger();
+            }, 50);
+        }else{
+            messengerChannelService.notifyListOfChatObservers();
+            if (messengerCurrentDataService.currentChat.id) {
+                activateChannel(messengerCurrentDataService.currentChat);
+            }
         }
     }
 
@@ -14,13 +20,12 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
             return;
         }
         var activeChat = messengerChannelService.findActiveChatWithUser(userData);
-
         /** Checks criteria for opening existing chat with user*/
         if (activeChat && activeChat.length > 0) {
             activateChannel(activeChat[0]);
-            return;
+        } else {
+            addChat(userData);
         }
-        addChat(userData);
     }
 
     function addChat(userData) {
@@ -28,6 +33,7 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
         messengerModel.addChat(vm.chatName, userData.userId).then(
             function (success) {
                 vm.currentChat = success.data.data;
+                messengerChannelService.subscribeNewChannel(vm.currentChat.id);
                 messengerCurrentDataService.setCurrentChat(vm.currentChat);
                 messengerCurrentDataService.removeMessages();
                 messengerChannelService.updateListOfChats(vm.currentChat);

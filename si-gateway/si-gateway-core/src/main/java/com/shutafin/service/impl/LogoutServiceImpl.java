@@ -1,6 +1,5 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.LogoutService;
@@ -22,7 +21,7 @@ public class LogoutServiceImpl implements LogoutService {
 
 
     @Override
-    public void logout(String sessionId, User user) {
+    public void logout(String sessionId) {
 
         UserSession userSession = userSessionRepository.findBySessionId(sessionId);
 

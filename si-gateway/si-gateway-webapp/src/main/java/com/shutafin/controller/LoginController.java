@@ -1,6 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountLoginRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
@@ -29,7 +29,7 @@ public class LoginController {
 
     //todo ms-gateway @SessionResponse
 
-//    @SessionResponse
+    @SessionResponse
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserWeb login(@RequestBody @Valid AccountLoginRequest loginWeb,
                                 BindingResult result) {
