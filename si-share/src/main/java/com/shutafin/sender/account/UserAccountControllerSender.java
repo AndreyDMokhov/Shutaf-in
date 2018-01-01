@@ -86,4 +86,19 @@ public class UserAccountControllerSender {
                 String.format("/users/info-search/%d", userId);
         return restTemplate.getForEntity(url, UserSearchResponse.class).getBody();
     }
+
+    public void updateUserAccountStatus(Long userId, Integer statusId) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/%d/update-account-status", userId);
+
+        new RestTemplate().put(url, statusId);
+    }
+
+    public Integer getUserAccountStatus(Long userId) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/%d/get-account-status", userId);
+
+        return new RestTemplate().getForEntity(url, Integer.class).getBody();
+    }
+
 }

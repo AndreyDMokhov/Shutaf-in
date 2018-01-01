@@ -34,6 +34,7 @@ app.component('userSettingsComponent', {
                 function () {
                     vm.dataLoading = false;
                     notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
+                    initializationService.initialize(success);
                     $window.location.reload();
                     $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
                 }, function (error) {

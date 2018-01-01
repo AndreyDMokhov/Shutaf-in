@@ -35,6 +35,26 @@ public class UserAccountServiceImpl implements UserAccountService {
         this.userImageService = userImageService;
     }
 
+    @Override
+    public Integer getUserAccountStatus(User user) {
+        if (user != null){
+            UserAccount userAccount = userAccountRepository.findByUser(user);
+            return userAccount.getAccountStatus().getCode();
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void updateUserAccountStatus(Integer accountStatusId, User user) {
+
+        if (user != null){
+            UserAccount userAccount = userAccountRepository.findByUser(user);
+            userAccount.setAccountStatus(AccountStatus.getById(accountStatusId));
+            userAccountRepository.save(userAccount);
+        }
+
+    }
 
     @Override
     @Transactional

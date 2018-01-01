@@ -22,4 +22,5 @@ public class AccountInitializationResponse {
     private List<AccountCountryResponseDTO> countries;
     private List<AccountCityResponseDTO> cities;
     private FiltersWeb filters;
+    private Integer accountStatus;
 }

@@ -8,7 +8,10 @@ package com.shutafin.model.types;
 public enum AccountStatus implements IdentifiableType<Integer> {
     NEW(1),
     CONFIRMED(2),
-    BLOCKED(3);
+    COMPLETED_USER_INFO(3),
+    COMPLETED_REQUIRED_MATCHING(4),
+    DEAL(5),
+    BLOCKED(-1);
 
     private Integer id;
 

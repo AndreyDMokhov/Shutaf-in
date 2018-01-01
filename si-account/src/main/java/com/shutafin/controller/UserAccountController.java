@@ -116,6 +116,19 @@ public class UserAccountController {
         return userService.getAccountUserWebById(userId);
     }
 
+    @PutMapping(value = "/{userId}/update-account-status", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateUserAccountStatus(@PathVariable("userId") Long userId,
+                                        @RequestBody @Valid Integer statusId,
+                                        BindingResult result) {
+
+        userAccountService.updateUserAccountStatus(statusId, userService.findUserById(userId));
+    }
+
+    @GetMapping(value = "/{userId}/get-account-status")
+    public Integer getUserAccountStatus(@PathVariable("userId") Long userId) {
+        return userAccountService.getUserAccountStatus(userService.findUserById(userId));
+    }
+
     @PostMapping(value = "/info-base")
     public List<AccountUserWeb> getBaseInfos(@RequestBody List<Long> userIds) {
         List<AccountUserWeb> accountUserWebs = new ArrayList<>();

@@ -22,6 +22,7 @@ app.component('requiredQuestionsComponent', {
             quizModel.sendAnswers($sessionStorage.selectedAnswers).then(
                 function (success) {
                     notify.set($filter('translate')('Questions.confirm'), {type: 'success'});
+                    $sessionStorage.accountStatus = 4;
                 },
                 function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

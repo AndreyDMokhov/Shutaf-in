@@ -36,6 +36,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             chatUser.setLastName(userInfoRequest.getLastName());
         }
         userAccountControllerSender.updateUserInfo(userId, userInfoRequest);
+        //TODO access to AccountStatus.COMPLETED_USER_INFO
+        userAccountControllerSender.updateUserAccountStatus(userId, 3); //AccountStatus.COMPLETED_USER_INFO
     }
 
 }

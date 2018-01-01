@@ -29,7 +29,13 @@ app.component('loginComponent', {
                         function () {
                             $window.location.reload();
                             notify.set($filter('translate')('Login.message.success'), {type: 'success'});
-                            $state.go('home');
+                            if ($sessionStorage.accountStatus == 2){
+                                $state.go('settings', {}, {reload: true});
+                            } else if ($sessionStorage.accountStatus == 3){
+                                $state.go('questions', {}, {reload: true});
+                            } else {
+                                $state.go('home', {}, {reload: true});
+                            }
                         }, function (error) {
                             vm.dataLoading = false;
                             notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

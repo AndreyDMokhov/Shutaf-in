@@ -8,6 +8,8 @@ import com.shutafin.model.web.account.AccountUserImageWeb;
 
 public interface UserAccountService {
 
+    Integer getUserAccountStatus(User user);
+    void updateUserAccountStatus(Integer accountStatusId, User user);
     UserImage updateProfileImage(AccountUserImageWeb userImageWeb, User user);
     UserImage findUserAccountProfileImage(User user);
     void deleteUserAccountProfileImage(User user);

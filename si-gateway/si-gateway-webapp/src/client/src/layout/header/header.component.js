@@ -16,6 +16,15 @@ app.component('headerComponent', {
             var vm = this;
             vm.userProfile = {};
 
+            //This object has to contain the same values as defined in AccountStatus.java
+            vm.accountStatusEnum = {};
+            vm.accountStatusEnum.NEW = 1;
+            vm.accountStatusEnum.CONFIRMED = 2;
+            vm.accountStatusEnum.COMPLETED_USER_INFO = 3;
+            vm.accountStatusEnum.COMPLETED_REQUIRED_MATCHING = 4;
+
+            vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
+
             vm.sessionService = sessionService;
             $rootScope.brand = "Shutaf-In";
             vm.initialization = {};
