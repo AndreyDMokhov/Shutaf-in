@@ -2,6 +2,7 @@ package com.shutafin.controller;
 
 import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.error.errors.InputValidationError;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserLanguageWeb;
 import com.shutafin.model.web.common.LanguageWeb;
@@ -18,10 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 

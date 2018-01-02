@@ -1,14 +1,12 @@
 package com.shutafin.controller;
 
 
-import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.entities.User;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.user.GatewayEmailChangedResponse;
-import com.shutafin.route.DiscoveryRoutingService;
-import com.shutafin.route.RouteDirection;
+import com.shutafin.service.ChangePasswordService;
 import com.shutafin.service.EmailChangeConfirmationService;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.system.BaseTestImpl;
@@ -17,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +54,9 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     private SessionManagementService sessionManagementService;
     @MockBean
     private EmailChangeConfirmationService emailChangeConfirmationService;
+
+    @MockBean
+    private ChangePasswordService changePasswordService;
 
     @Before
     public void setUp() {

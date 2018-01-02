@@ -1,6 +1,8 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.error.ErrorType;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.service.SessionManagementService;
@@ -43,14 +45,13 @@ public class UserImageControllerTest extends BaseTestImpl {
     public void setUp() {
         //todo
         Long validUser = 1L;
-        AccountUserImageWeb validUserImage = createUserImage();
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
         Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID))
                 .thenThrow(new AuthenticationException());
-        Mockito.when(userImageService.addUserImage(validUserImage, VALID_USER_ID))
-                .thenReturn(validUserImage);
+        Mockito.when(userImageService.addUserImage(Mockito.any(AccountUserImageWeb.class), VALID_USER_ID))
+                .thenReturn(Mockito.any(AccountUserImageWeb.class));
         Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
-                .thenReturn(validUserImage);
+                .thenReturn(Mockito.any(AccountUserImageWeb.class));
         Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
                 .thenThrow(new ResourceNotFoundException());
 
@@ -58,10 +59,6 @@ public class UserImageControllerTest extends BaseTestImpl {
         Mockito.doThrow(new ResourceNotFoundException())
                 .when(userImageService).deleteUserImage(validUser, INVALID_USER_IMAGE_ID);
 
-    }
-
-    private AccountUserImageWeb createUserImage() {
-        return new AccountUserImageWeb(1L,"valid image in base64", 1L);
     }
 
     @Test

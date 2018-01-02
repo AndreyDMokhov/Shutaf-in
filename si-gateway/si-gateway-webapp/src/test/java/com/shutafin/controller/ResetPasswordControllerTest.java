@@ -2,7 +2,7 @@ package com.shutafin.controller;
 
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountEmailRequest;
-import com.shutafin.model.web.error.ErrorType;
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.web.user.PasswordWeb;
 import com.shutafin.service.ResetPasswordService;
 import com.shutafin.system.BaseTestImpl;
@@ -42,7 +42,7 @@ public class ResetPasswordControllerTest extends BaseTestImpl {
 
     @Test
     public void resetPasswordRequest_Positive(){
-        ControllerRequest request =ControllerRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(RESET_PASSWORD_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(RESET_PASSWORD_JSON_BODY)
@@ -53,7 +53,7 @@ public class ResetPasswordControllerTest extends BaseTestImpl {
 
     @Test
     public void resetPasswordRequest_notEmail(){
-        ControllerRequest request =ControllerRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(RESET_PASSWORD_REQUEST_URL)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(RESET_PASSWORD_JSON_BODY_NOT_EMAIL)
@@ -66,7 +66,7 @@ public class ResetPasswordControllerTest extends BaseTestImpl {
 
     @Test
     public void resetPasswordValidation_Positive(){
-        ControllerRequest request =ControllerRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(RESET_PASSWORD_VALIDATION_URL + LINK)
                 .setHttpMethod(HttpMethod.GET)
                 .build();
@@ -77,7 +77,7 @@ public class ResetPasswordControllerTest extends BaseTestImpl {
 
     @Test
     public void resetPasswordValidation_UrlWithAWhitespace(){
-        ControllerRequest request =ControllerRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(RESET_PASSWORD_VALIDATION_URL + " ")
                 .setHttpMethod(HttpMethod.GET)
                 .build();
@@ -89,7 +89,7 @@ public class ResetPasswordControllerTest extends BaseTestImpl {
 
     @Test
     public void passwordChange_Positive(){
-        ControllerRequest request =ControllerRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(PASSWORD_CHANGE_URL + LINK)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(PASSWORD_CHANGE_JSON_BODY)
@@ -100,7 +100,7 @@ public class ResetPasswordControllerTest extends BaseTestImpl {
 
     @Test
     public void passwordChange_notEmail(){
-        ControllerRequest request =ControllerRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(PASSWORD_CHANGE_URL + LINK)
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(PASSWORD_CHANGE_JSON_BODY_NOT_EMAIL)
@@ -113,7 +113,7 @@ public class ResetPasswordControllerTest extends BaseTestImpl {
 
     @Test
     public void passwordChange_UrlWithAWhitespace(){
-        ControllerRequest request =ControllerRequest.builder()
+        ControllerRequest request = ControllerRequest.builder()
                 .setUrl(PASSWORD_CHANGE_URL + " ")
                 .setHttpMethod(HttpMethod.POST)
                 .setJsonContext(PASSWORD_CHANGE_JSON_BODY)
@@ -123,7 +123,4 @@ public class ResetPasswordControllerTest extends BaseTestImpl {
         Assert.assertNotNull(apiResponse.getError());
         Assert.assertEquals(ErrorType.RESOURCE_NOT_FOUND_ERROR.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
     }
-
-
-
 }

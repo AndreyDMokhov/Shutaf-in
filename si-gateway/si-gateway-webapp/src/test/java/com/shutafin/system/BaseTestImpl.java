@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -33,14 +34,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Slf4j
-@WebMvcTest(value = GatewayApplication.class)
+@WebMvcTest
 @EnableAutoConfiguration
 @ContextConfiguration(classes = {
         ApplicationContextConfiguration.class,
-        PersistenceContextConfiguration.class,
+//        PersistenceContextConfiguration.class,
         HttpMessageConverterConfiguration.class,
         WebContextConfiguration.class,
-        GatewayApplication.class
+        GatewayTestApplication.class
 })
 public class BaseTestImpl implements BaseTest {
 
