@@ -14,7 +14,6 @@ public interface UserImageService {
 
     void deleteUserImage(Long userId, Long userImageId);
 
-    //    List<UserImage> getAllUserImages(Long userId);
     String getDefaultImageBase64();
 
 }
