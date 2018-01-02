@@ -31,9 +31,9 @@ app.component('loginComponent', {
                             $window.location.reload();
                             notify.set($filter('translate')('Login.message.success'), {type: 'success'});
                             if ($sessionStorage.accountStatus == accountStatus.Statuses.CONFIRMED){
-                                $state.go('settings', {}, {reload: true});
+                                $state.go('settings.personal', {}, {reload: true});
                             } else if ($sessionStorage.accountStatus == accountStatus.Statuses.COMPLETED_USER_INFO){
-                                $state.go('questions', {}, {reload: true});
+                                $state.go('questionsTab.requiredQuestions', {}, {reload: true});
                             } else {
                                 $state.go('home', {}, {reload: true});
                             }
