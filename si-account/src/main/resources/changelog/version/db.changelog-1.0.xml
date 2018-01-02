@@ -279,7 +279,7 @@
     <changeSet id="5" author="evgenyYablokov">
 
         <createTable tableName="FILTER_AGE_RANGE">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -297,7 +297,7 @@
         </createTable>
 
         <createTable tableName="FILTER_CITY">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -311,7 +311,7 @@
         </createTable>
 
         <createTable tableName="FILTER_GENDER">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 

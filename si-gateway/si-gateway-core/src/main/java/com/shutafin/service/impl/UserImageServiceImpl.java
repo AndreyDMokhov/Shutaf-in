@@ -50,10 +50,6 @@ public class UserImageServiceImpl implements UserImageService {
         userImageControllerSender.deleteUserImage(userId, userImageId);
     }
 
-//    @Override
-//    public List<UserImage> getAllUserImages(Long userId) {
-//        return new ArrayList<>();
-//    }
 
 
     @Override

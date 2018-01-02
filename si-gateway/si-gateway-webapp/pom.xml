@@ -77,6 +77,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
     </dependencies>
 
 
@@ -131,10 +136,23 @@
                             </execution>
 
                             <execution>
+                                <id>npm set registry</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>set registry https://registry.npmjs.org</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
                                 <id>npm install</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
+                                <configuration>
+                                    <arguments>install --max-old-space-size=500</arguments>
+                                </configuration>
                             </execution>
 
                             <execution>
