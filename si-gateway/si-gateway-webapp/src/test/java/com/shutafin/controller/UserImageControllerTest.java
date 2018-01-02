@@ -1,5 +1,7 @@
 package com.shutafin.controller;
 
+import com.shutafin.exception.exceptions.AuthenticationException;
+import com.shutafin.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.model.web.error.ErrorType;
@@ -11,11 +13,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,34 +31,41 @@ public class UserImageControllerTest extends BaseTestImpl {
     private static final String USER_IMAGE_REQUEST_URL = "/images/";
     private static final String VALID_SESSION_ID = "validsessionid";
     private static final String INVALID_SESSION_ID = "invalidsessionid";
+    private static final Long VALID_USER_ID = 1L;
     private static final Long VALID_USER_IMAGE_ID = 1L;
     private static final Long INVALID_USER_IMAGE_ID = 99L;
     private static final String VALID_IMAGE_IN_BASE64 = "valid image in base64";
 
 
     @MockBean
-    public UserImageService userImageService;
+    private UserImageService userImageService;
     @MockBean
-    public SessionManagementService sessionManagementService;
+    private SessionManagementService sessionManagementService;
 
     @Before
     public void setUp() {
         //todo
-//        validUser = createUser();
-//        validUserImage = createUserImage();
-//        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
-//        Mockito.when(userImageService.addUserImage(Mockito.any(AccountUserImageWeb.class), Mockito.any(User.class)))
-//                .thenReturn(validUserImage);
-//        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
-//                .thenReturn(validUserImage);
-//        Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
-//                .thenThrow(new ResourceNotFoundException());
-//        Mockito.doNothing().when(userImageService).deleteUserImage(validUser, VALID_USER_IMAGE_ID);
-//        Mockito.doThrow(new ResourceNotFoundException())
-//                .when(userImageService).deleteUserImage(validUser, INVALID_USER_IMAGE_ID);
+        Long validUser = 1L;
+        AccountUserImageWeb validUserImage = createUserImage();
+        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
+        Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID))
+                .thenThrow(new AuthenticationException());
+        Mockito.when(userImageService.addUserImage(validUserImage, VALID_USER_ID))
+                .thenReturn(validUserImage);
+        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
+                .thenReturn(validUserImage);
+        Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
+                .thenThrow(new ResourceNotFoundException());
+
+        Mockito.doNothing().when(userImageService).deleteUserImage(validUser, VALID_USER_IMAGE_ID);
+        Mockito.doThrow(new ResourceNotFoundException())
+                .when(userImageService).deleteUserImage(validUser, INVALID_USER_IMAGE_ID);
 
     }
 
+    private AccountUserImageWeb createUserImage() {
+        return new AccountUserImageWeb(1L,"valid image in base64", 1L);
+    }
 
     @Test
     public void addUserImage_Positive() {

@@ -37,12 +37,11 @@ public class UserInfoControllerTest extends BaseTestImpl {
 
     @Before
     public void setUp() {
-
+        Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION)).thenReturn(null);
     }
 
     @Test
     public void userSessionDoesNotExist() {
-        Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION)).thenReturn(null);
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(INITIALIZATION_REQUEST_URL)
@@ -66,9 +65,6 @@ public class UserInfoControllerTest extends BaseTestImpl {
         userInfoResponseDTO.setLastName("bbb");
         userInfoResponseDTO.setLanguageId(1);
 
-
-        when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(1L);
-        when(userInfoService.getUserInfo(user.getId())).thenReturn(userInfoResponseDTO);
 
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()

@@ -1,5 +1,6 @@
 package com.shutafin.controller;
 
+import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserLanguageWeb;
@@ -50,6 +51,8 @@ public class UserAccountControllerTest extends BaseTestImpl {
     public void setUp() {
 
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(1L);
+        Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION))
+                .thenThrow(new AuthenticationException());
         Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(AccountUserLanguageWeb.class), Mockito.any(Long.class));
         expectedError = new ArrayList<>();
     }
