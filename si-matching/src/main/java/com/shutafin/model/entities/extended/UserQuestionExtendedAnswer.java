@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "USER_EXTENDED_QUESTION_ANSWER")
+@Table(name = "USER_QUESTION_EXTENDED_ANSWER")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
