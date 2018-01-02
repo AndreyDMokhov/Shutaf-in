@@ -1,9 +1,14 @@
-angular.module('app').directive('userAvatar', function (Restangular, $sessionStorage, ngDialog) {
+angular.module('app').directive('userAvatar', function (Restangular,
+                                                        $sessionStorage,
+                                                        $uibModal,
+                                                        userSearchModel,
+                                                        $filter,
+                                                        notify) {
     return {
         restrict: "E",
-        template: '<img ng-click="getUserDataAndShowPopup()" ng-src={{getUserImage()}} class="logo-center pointer" width="{{width}}" height="{{height}}">',
+        template: '<img ng-click="openModalImageSize()" ng-src={{getUserImagePath()}} class="logo-center pointer" width="{{width}}" height="{{height}}">',
         scope: {
-            userId: "@",
+            userData: "=",
             width: "@",
             height: '@'
         },
@@ -15,60 +20,73 @@ angular.module('app').directive('userAvatar', function (Restangular, $sessionSto
 
             scope.image = '';
             scope.currentUser = {};
+            scope.originImage = {};
+            var DEFAULT_IMAGE_PATH = '../../images/default_avatar.png';
+            var BASE64_IMAGE_PATH = 'data:image/jpeg;base64,';
 
-            scope.getUserImage = function() {
-                if (!scope.userId) {
-                    return scope.image = '../../images/default_avatar.png';
+            scope.getUserImagePath = function () {
+                if (!scope.userData.userId) {
+                    return scope.image = DEFAULT_IMAGE_PATH;
                 }
                 scope.image = findUserImage();
                 if (!scope.image) {
-                    return scope.image = '../../images/default_avatar.png';
+                    return scope.image = DEFAULT_IMAGE_PATH;
                 }
                 else {
-                    return scope.image = 'data:image/jpeg;base64,' + scope.image;
+                    return scope.image = BASE64_IMAGE_PATH + scope.image;
                 }
             };
-            //TODO move image getting logic fully to this directive
+
             function findUserImage() {
-                if ($sessionStorage.userProfile.userId === parseInt(scope.userId)) {
+                if ($sessionStorage.userProfile.userId === parseInt(scope.userData.userId)) {
                     scope.currentUser = $sessionStorage.userProfile;
-                    return $sessionStorage.userProfile.userImage;
-                } else {
-                    var users = $sessionStorage.users;
-                    var res = users.find(function (item) {
-                        return item.userId === parseInt(scope.userId);
-                    });
-                    scope.currentUser = res;
-                    return res.profileImage;
+                    return scope.currentUser.userImage;
                 }
+                if ($sessionStorage[scope.userData.userId]) {
+                    return $sessionStorage[scope.userData.userId];
+                }
+                return '';
             }
 
-            scope.getUserDataAndShowPopup = function () {
-                if (!scope.currentUser.genderId || !scope.currentUser.cityId || !scope.currentUser.dateOfBirth) {
-                    rest.one('/api/users/search/' + scope.currentUser.userId).customGET().then(
+            scope.open = function (size, parentSelector) {
+                var modalInstance = $uibModal.open({
+                    animation: scope.animationsEnabled,
+                    templateUrl: 'data/user-avatar.modal.html',
+                    controller: function ($uibModalInstance) {
+                        var vm = this;
+                        vm.currentImage = scope.originImage;
+                        vm.fullName = scope.userData.firstName + " " + scope.userData.lastName;
+
+                        vm.closeModal = function () {
+                            $uibModalInstance.close();
+                        };
+                    },
+                    controllerAs: 'vm',
+                    size: 'lg'
+                });
+            };
+
+            scope.openModalImageSize = function () {
+                if (scope.image === DEFAULT_IMAGE_PATH) {
+                    scope.originImage = scope.image;
+                    scope.open();
+                }
+                else {
+                    userSearchModel.getOriginalUserImageById(scope.userData.userId).then(
                         function (success) {
-                            var user = success.data;
-                            scope.currentUser.genderId = user.genderId;
-                            scope.currentUser.cityId = user.cityId;
-                            scope.currentUser.dateOfBirth = user.dateOfBirth;
-                            scope.showImagePopup();
-                        });
-                } else {
-                    scope.showImagePopup();
+                            scope.originImage = 'data:image/jpeg;base64,' + success.data.data.image;
+                            scope.open();
+                        },
+                        function (error) {
+                            if (error === undefined || error === null) {
+                                notify.set($filter('translate')('Error.SYS'), {type: 'error'});
+                            }
+                            notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                        }
+                    );
                 }
             };
 
-            scope.showImagePopup = function () {
-                scope.cities = $sessionStorage.cities;
-                scope.genders = $sessionStorage.genders;
-                ngDialog.open({
-                    templateUrl: 'data/user-card.popup.html',
-                    scope: scope,
-                    showClose: false,
-                    className: 'ngdialog-theme-default',
-                    closeByDocument: true
-                });
-            };
         }
     };
 });

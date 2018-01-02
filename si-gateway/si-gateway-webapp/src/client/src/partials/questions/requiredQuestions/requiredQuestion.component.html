@@ -1,5 +1,5 @@
-<div class="quiz-area card ">
-    <div class="cardContainer">
+<div class="quiz-area card-question">
+    <div class="cardContainer ">
         <h2 style="text-align: center">{{$ctrl.currentQuestion.description}} </h2>
         <div class="radio" ng-repeat="answer in $ctrl.currentQuestion.answers">
             <label>
@@ -16,7 +16,7 @@
         <ul uib-pagination class="question-pagination" total-items="$ctrl.totalItems" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"
             previous-text="{{'Questions.button.back'|translate}}" next-text="{{'Questions.button.next'|translate}}"
             items-per-page="$ctrl.itemsPerPage"></ul>
-        <button class="btn btn-default pull-right" ng-click="$ctrl.save()" ng-disabled="$ctrl.disableSubmit">
+        <button class="btn btn-success pull-right" ng-click="$ctrl.save()" ng-disabled="$ctrl.disableSubmit">
             {{"Questions.button.save"|translate}}
         </button>
     </div>

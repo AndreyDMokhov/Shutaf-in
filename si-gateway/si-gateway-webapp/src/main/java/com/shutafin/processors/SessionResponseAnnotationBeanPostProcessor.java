@@ -1,6 +1,6 @@
 package com.shutafin.processors;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.processors.annotations.response.SessionResponse;
 import com.shutafin.processors.annotations.response.SessionResponseType;

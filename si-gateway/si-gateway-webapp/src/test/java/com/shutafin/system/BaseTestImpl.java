@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.shutafin.GatewayApplication;
 import com.shutafin.configuration.*;
+import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.error.errors.InputValidationError;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -40,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         PersistenceContextConfiguration.class,
         HttpMessageConverterConfiguration.class,
         WebContextConfiguration.class,
-        SMTPContextConfiguration.class,
         GatewayApplication.class
 })
 public class BaseTestImpl implements BaseTest {

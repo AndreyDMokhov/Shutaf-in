@@ -120,3 +120,7 @@
     -webkit-border-radius: 50px;
     border-radius: 50px;
 }
+
+.form-control.chat {
+    height: 36px;
+}

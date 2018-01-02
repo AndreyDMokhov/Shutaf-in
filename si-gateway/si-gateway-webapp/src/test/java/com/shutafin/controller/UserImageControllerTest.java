@@ -1,10 +1,8 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserImageWeb;
-import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserImageService;
 import com.shutafin.system.BaseTestImpl;
@@ -19,7 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 

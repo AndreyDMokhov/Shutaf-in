@@ -31,7 +31,7 @@ app.component('userProfileImage', {
         vm.disableLoadImage = false;
 
         function setProfileImage() {
-            if (!vm.userProfile.userImageId) {
+            if (!vm.userProfile.originalUserImage) {
                 vm.image = '../../images/default_avatar.png';
                 vm.deleteButton = true;
             }

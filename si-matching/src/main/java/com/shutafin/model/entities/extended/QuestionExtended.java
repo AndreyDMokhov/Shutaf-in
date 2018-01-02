@@ -1,7 +1,7 @@
 package com.shutafin.model.entities.extended;
 
 
-import com.shutafin.model.AbstractKeyConstEntity;
+import com.shutafin.model.base.AbstractKeyConstEntity;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;

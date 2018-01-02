@@ -275,4 +275,62 @@
         <sqlFile path="changelog//version/initialization_data-1.0.sql"/>
     </changeSet>
 
+
+    <changeSet id="5" author="evgenyYablokov">
+
+        <createTable tableName="FILTER_AGE_RANGE">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="FROM_AGE" type="int">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="TO_AGE" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="FILTER_CITY">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CITY_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="FILTER_GENDER">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="GENDER_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="mikhailRogov">
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_AGE_RANGE" constraintName="FILTER_AGE_RANGE_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_CITY" constraintName="FILTER_CITY_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="CITY_ID" baseTableName="FILTER_CITY" constraintName="FILTER_CITY_CITY_ID_I_CITY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_city"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_GENDER" constraintName="FILTER_GENDER_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="FILTER_GENDER" constraintName="FILTER_GENDER_GENDER_ID_I_GENDER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_gender"/>
+    </changeSet>
+
 </databaseChangeLog>

@@ -3,9 +3,9 @@ package com.shutafin.controller;
 
 import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.User;
+import com.shutafin.model.error.ErrorType;
+import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.model.web.user.GatewayEmailChangedResponse;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
@@ -55,15 +55,12 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
     private SessionManagementService sessionManagementService;
     @MockBean
     private EmailChangeConfirmationService emailChangeConfirmationService;
-//    @MockBean
-//    private DiscoveryRoutingService routingService;
 
     @Before
     public void setUp() {
         validUser = 1L;
         errorList = new ArrayList<>();
 
-//        String url = routingService.getRoute(RouteDirection.SI_MATCHING);
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
         Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID))
                 .thenThrow(new AuthenticationException());
@@ -71,7 +68,6 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 //                .emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
         Mockito.when(emailChangeConfirmationService.
                 emailChangeConfirmation(anyString())).thenReturn(new GatewayEmailChangedResponse());
-
     }
 
     @Test
@@ -184,13 +180,13 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
     }
 
-    private User createUser() {
-        User user = new User();
-        user.setFirstName("Alexander");
-        user.setLastName("Matsievsky");
-        user.setEmail("matsievsky@gmail.com");
-        return user;
-    }
+//    private User createUser() {
+//        User user = new User();
+//        user.setFirstName("Alexander");
+//        user.setLastName("Matsievsky");
+//        user.setEmail("matsievsky@gmail.com");
+//        return user;
+//    }
 
     private void testEmailChangeConfirmationWeb(String json, List<String> errorList) {
         List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);

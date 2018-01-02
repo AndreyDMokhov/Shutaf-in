@@ -99,54 +99,8 @@
 
     <changeSet id="2" author="evgenyYablokov">
 
-        <createTable tableName="FILTER_AGE_RANGE">
-            <column name="ID" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-
-            <column name="USER_ID" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="FROM_AGE" type="int">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="TO_AGE" type="int">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="FILTER_CITY">
-            <column name="ID" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-
-            <column name="USER_ID" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="CITY_ID" type="int">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="FILTER_GENDER">
-            <column name="ID" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-
-            <column name="USER_ID" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="GENDER_ID" type="int">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
         <createTable tableName="USER_EXAM_KEY">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -164,7 +118,7 @@
         </createTable>
 
         <createTable tableName="VARIETY_EXAM_KEY">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -278,7 +232,7 @@
         </createTable>
 
         <createTable tableName="MAX_USER_MATCHING_SCORE">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -292,7 +246,7 @@
         </createTable>
 
         <createTable tableName="USER_MATCHING_SCORE">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -317,8 +271,8 @@
             </column>
         </createTable>
 
-        <createTable tableName="USER_EXTENDED_QUESTION_ANSWER">
-            <column name="ID" type="int" autoIncrement="true">
+        <createTable tableName="USER_QUESTION_EXTENDED_ANSWER">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -330,14 +284,14 @@
                 <constraints nullable="false"
                              referencedTableName="I_QUESTION_EXTENDED"
                              referencedColumnNames="ID"
-                             foreignKeyName="USER_EXTENDED_QUESTION_ANSWER_QUESTION_ID_I_QUESTION_EXTENDED_ID"/>
+                             foreignKeyName="USER_QUESTION_EXTENDED_ANSWER_QUESTION_ID_I_QUESTION_EXTENDED_ID"/>
             </column>
 
             <column name="ANSWER_ID" type="int">
                 <constraints nullable="false"
                              referencedTableName="I_ANSWER_EXTENDED"
                              referencedColumnNames="ID"
-                             foreignKeyName="USER_EXTENDED_QUESTION_ANSWER_ANSWER_ID_I_ANSWER_EXTENDED_ID"/>
+                             foreignKeyName="USER_QUESTION_EXTENDED_ANSWER_ANSWER_ID_I_ANSWER_EXTENDED_ID"/>
             </column>
 
             <column name="QUESTION_IMPORTANCE_ID" type="int">
@@ -407,7 +361,7 @@
         <insert tableName="I_QUESTION_LOCALE">
             <column name="QUESTION_ID" value="2"/>
             <column name="LANGUAGE_ID" value="2"/>
-            <column name="DESCRIPTION" value="Отножение к домашним животным"/>
+            <column name="DESCRIPTION" value="Отношение к домашним животным"/>
         </insert>
         <insert tableName="I_QUESTION_LOCALE">
             <column name="QUESTION_ID" value="3"/>

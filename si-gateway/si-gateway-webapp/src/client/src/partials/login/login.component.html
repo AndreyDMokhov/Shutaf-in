@@ -1,20 +1,20 @@
-<div class="col-md-6 col-md-offset-3">
-    <h2>{{'Login.title' | translate}}</h2>
+<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4 col-sm-offset-4">
+    <form name="loginForm" novalidate role="form" class="form-container login">
+        <h2>{{'Login.title' | translate}}</h2>
 
-    <form name="loginForm" novalidate role="form">
         <div class="form-group"
              ng-class="{
-                    'has-error': loginForm.email.$invalid && loginForm.email.$dirty,
+                    'has-error': loginForm.email.$invalid && loginForm.email.$dirty || loginForm.email.$dirty && loginForm.email.$invalid,
                     'has-success': loginForm.email.$valid }">
             <label class="required" for="email">{{'Login.form.email' | translate}}</label>
             <input  value="email"
+                    type="email"
                     class="form-control"
                     ng-maxLength="50"
                     name="email"
                     id="email"
                     ng-model="vm.loginData.email"
                     required/>
-
             <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">
                 {{'Login.form.errorEmail' | translate}}
             </p>
@@ -39,15 +39,15 @@
         </div>
         <br/>
 
-        <div class="form-actions">
+        <div class="form-actions" style="margin: 7% 0 7% 0">
             <button ng-click="vm.login()"
                     type="submit"
                     ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid"
-                    class="btn btn-primary pull-right">
+                    class="btn btn-success btn-block entry-card-button login">
                 {{'Login.title' | translate}}
                 <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
             </button>
-            <span class="btn btn-warning pull-left" ui-sref="resetPasswordRequest">{{'ResetPassword.title' | translate}}</span>
+            <a ui-sref="resetPasswordRequest" class="forgot">{{'ResetPassword.title' | translate}}</a>
         </div>
     </form>
 </div>

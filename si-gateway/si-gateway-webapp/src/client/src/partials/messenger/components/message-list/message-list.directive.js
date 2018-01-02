@@ -1,8 +1,7 @@
 app.directive('messageListDirective', function (messengerCurrentDataService) {
     return {
         restrict: "E",
-        scope: {
-        },
+        scope: {},
         templateUrl: 'partials/messenger/components/message-list/message-list.html',
 
         link: function (scope, element, attrs) {
@@ -15,12 +14,10 @@ app.directive('messageListDirective', function (messengerCurrentDataService) {
 
             var messageList = angular.element(element[0].children[0]);
 
-            function prepareChatWindow() {
-                angular.element(document).ready(function () {
+            scope.prepareChatWindow = function () {
                     scrollToBottom();
                     markMessageItems();
-                });
-            }
+            };
 
             function scrollToBottom() {
                 messageList.scrollTop(messageList.prop('scrollHeight'));
@@ -28,17 +25,17 @@ app.directive('messageListDirective', function (messengerCurrentDataService) {
 
             function updateMessages() {
                 scope.messages = messengerCurrentDataService.messages;
-                if (scope.messages.length > 0) {
-                    prepareChatWindow();
-                }
             }
 
             function markMessageItems() {
-                for (var i = 0; i < scope.messages.length; i++) {
-                    if (scope.messages[i].isNew) {
-                        messageList[0].children[i].style.backgroundColor = '#C3C3C3';
+                angular.element(document).ready(function () {
+                    for (var i = 0; i < scope.messages.length; i++) {
+                        if (scope.messages[i].isNew) {
+                            messageList[0].children[i].style.backgroundColor = '#C3C3C3';
+                        }
                     }
-                }
+                });
+
             }
 
             scope.unmarkMessageItem = function (index) {

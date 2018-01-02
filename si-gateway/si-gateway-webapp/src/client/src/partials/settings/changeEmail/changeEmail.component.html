@@ -9,7 +9,7 @@
     <div class="row">
         <form name="form" novalidate role="form">
             <uib-accordion close-others="oneAtATime">
-                <div uib-accordion-group class="panel-primary" is-open="vm.isOpened">
+                <div uib-accordion-group class="panel-custom" is-open="vm.isOpened">
                     <uib-accordion-heading>
                         {{'Settings.security.email.title' | translate}}
                         <i class="pull-right fa fa-chevron-down"
@@ -59,14 +59,12 @@
                         <button ng-click="vm.changeEmailRequest()"
                                 type="submit"
                                 ng-disabled="form.$invalid"
-                                class="btn btn-primary">
+                                class="btn btn-success">
                             <span ng-show="!vm.dataLoading">{{"Settings.security.form.btn.saveChanges"|translate}}</span>
                             <span ng-show="vm.dataLoading">{{"Settings.security.form.btn.loading"|translate}}</span>
                             <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
                         </button>
 
-                        <a ui-sref="home"
-                           class="btn btn-link">{{"Settings.security.form.btn.cancel"|translate}}</a>
                     </div>
                 </div>
 

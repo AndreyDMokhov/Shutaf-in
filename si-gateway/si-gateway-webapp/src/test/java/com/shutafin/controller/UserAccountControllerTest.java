@@ -1,12 +1,10 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
-import com.shutafin.model.entities.User;
+import com.shutafin.model.error.ErrorType;
+import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserLanguageWeb;
 import com.shutafin.model.web.common.LanguageWeb;
-import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserLanguageService;
 import com.shutafin.system.BaseTestImpl;
@@ -138,13 +136,13 @@ public class UserAccountControllerTest extends BaseTestImpl {
         return language;
     }
 
-    private User createUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("q@q");
-        user.setFirstName("User");
-        user.setLastName("User");
-        user.setCreatedDate(Date.from(Instant.now()));
-        return user;
-    }
+//    private User createUser() {
+//        User user = new User();
+//        user.setId(1L);
+//        user.setEmail("q@q");
+//        user.setFirstName("User");
+//        user.setLastName("User");
+//        user.setCreatedDate(Date.from(Instant.now()));
+//        return user;
+//    }
 }

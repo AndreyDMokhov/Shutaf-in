@@ -6,8 +6,8 @@ import com.shutafin.model.exception.AbstractAPIException;
 
 public class SystemException extends AbstractAPIException {
 
-    public SystemException(String systemMessage) {
-        super(systemMessage);
+    public SystemException(String errorMessage) {
+        super(errorMessage);
     }
     public SystemException(){}
 

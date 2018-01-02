@@ -1,8 +1,7 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.service.LogoutService;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.system.BaseTestImpl;
@@ -19,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 
 @RunWith(SpringJUnit4ClassRunner.class)

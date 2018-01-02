@@ -1,10 +1,10 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.error.ErrorResponse;
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountRegistrationRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
-import com.shutafin.model.web.error.ErrorResponse;
-import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.model.web.user.RegistrationRequestWeb;
 import com.shutafin.service.RegistrationService;
 import com.shutafin.service.SessionManagementService;

@@ -1,7 +1,7 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.UserSession;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.SessionManagementService;
@@ -56,7 +56,7 @@ public class SessionManagementServiceImpl implements SessionManagementService {
     @Transactional
     public String generateNewSession(AccountUserWeb accountUserWeb) {
         UserSession userSession = new UserSession();
-        userSession.setUserId(accountUserWeb.getId());
+        userSession.setUserId(accountUserWeb.getUserId());
         userSession.setIsValid(IS_TRUE);
         userSession.setSessionId(UUID.randomUUID().toString());
         userSession.setIsExpirable(IS_FALSE);
