@@ -64,7 +64,7 @@ public class UserFilterServiceImpl implements UserFilterService {
             filteredUsersId = userRepository.findAllByFullName(filteredUsersId, accountUserFilterRequest.getFullName());
         }
 
-        filteredUsersId = applyFilters(userId, accountUserFilterRequest.getUserIds());
+        filteredUsersId = applyFilters(userId, filteredUsersId);
 
         if (filteredUsersId.isEmpty()) {
             return new ArrayList<>();
@@ -85,13 +85,14 @@ public class UserFilterServiceImpl implements UserFilterService {
 
     @Override
     @Transactional
-    public void saveUserFilters(Long userId, FiltersWeb filtersWeb) {
-        if (filtersWeb == null) {
-            return;
+    public List<UserSearchResponse> saveUserFiltersAndGetUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+        if (accountUserFilterRequest.getFiltersWeb() != null) {
+            saveUserFilterCity(userId, accountUserFilterRequest.getFiltersWeb().getFilterCitiesIds());
+            saveUserFilterGender(userId, accountUserFilterRequest.getFiltersWeb().getFilterGenderId());
+            saveUserFilterAgeRange(userId, accountUserFilterRequest.getFiltersWeb().getFilterAgeRange());
         }
-        saveUserFilterCity(userId, filtersWeb.getFilterCitiesIds());
-        saveUserFilterGender(userId, filtersWeb.getFilterGenderId());
-        saveUserFilterAgeRange(userId, filtersWeb.getFilterAgeRange());
+
+        return filterMatchedUsers(userId,accountUserFilterRequest);
     }
 
     @Override

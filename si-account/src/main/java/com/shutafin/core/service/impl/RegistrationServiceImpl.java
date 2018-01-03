@@ -16,6 +16,7 @@ import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.repository.LanguageRepository;
 import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserRepository;
+import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private UserImageService userImageService;
     private UserInfoService userInfoService;
     private UserAccountService userAccountService;
-
+    private EmailNotificationSenderControllerSender emailSender;
     @Autowired
     public RegistrationServiceImpl(
             UserRepository userRepository,
@@ -44,7 +45,8 @@ public class RegistrationServiceImpl implements RegistrationService {
             PasswordService passwordService,
             UserImageService userImageService,
             UserInfoService userInfoService,
-            UserAccountService userAccountService) {
+            UserAccountService userAccountService,
+            EmailNotificationSenderControllerSender emailSender) {
         this.userRepository = userRepository;
         this.userAccountRepository = userAccountRepository;
         this.languageRepository = languageRepository;
@@ -52,23 +54,25 @@ public class RegistrationServiceImpl implements RegistrationService {
         this.userImageService = userImageService;
         this.userInfoService = userInfoService;
         this.userAccountService = userAccountService;
+        this.emailSender = emailSender;
     }
 
     @Override
     @Transactional
-    public EmailNotificationWeb registerUser(AccountRegistrationRequest registrationRequestWeb) {
+    public void registerUser(AccountRegistrationRequest registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
         UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);
         saveUserCredentials(user, registrationRequestWeb.getPassword());
         userImageService.createUserImageDirectory(user);
         userInfoService.createUserInfo(new AccountUserInfoRequest(), user);
-        return EmailNotificationWeb
+
+        emailSender.sendEmail(EmailNotificationWeb
                 .builder()
                 .userId(user.getId())
                 .emailTo(user.getEmail())
                 .languageCode(userAccount.getLanguage().getDescription())
                 .emailReason(EmailReason.REGISTRATION)
-                .build();
+                .build());
     }
 
     @Override

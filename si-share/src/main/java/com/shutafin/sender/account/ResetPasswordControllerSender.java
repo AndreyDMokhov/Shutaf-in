@@ -18,10 +18,10 @@ public class ResetPasswordControllerSender {
     @Autowired
     private RestTemplate restTemplate;
 
-    public EmailNotificationWeb getResetPasswordEmailNotification(AccountEmailRequest accountEmailRequest) {
+    public void resetPassword(AccountEmailRequest accountEmailRequest) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 "/users/reset-password/request";
-        return restTemplate.postForEntity(url, accountEmailRequest, EmailNotificationWeb.class).getBody();
+        restTemplate.postForEntity(url, accountEmailRequest, EmailNotificationWeb.class).getBody();
 
     }
 

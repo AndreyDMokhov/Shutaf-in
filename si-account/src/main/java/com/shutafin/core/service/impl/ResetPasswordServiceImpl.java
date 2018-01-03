@@ -10,6 +10,7 @@ import com.shutafin.model.web.account.AccountResetPassword;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.repository.account.UserRepository;
+import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,22 +27,25 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     @Autowired
     private PasswordService passwordService;
 
+    @Autowired
+    private EmailNotificationSenderControllerSender emailSender;
+
     @Override
-    public EmailNotificationWeb getResetPasswordEmailNotification(AccountEmailRequest accountEmailRequest) {
+    public void resetPassword(AccountEmailRequest accountEmailRequest) {
         User user = userRepository.findByEmail(accountEmailRequest.getEmail());
         if (user == null) {
-            return null;
+            return;
         }
 
         UserAccount userAccount = userAccountService.findUserAccountByUser(user);
 
-        return EmailNotificationWeb
+        emailSender.sendEmail(EmailNotificationWeb
                 .builder()
                 .emailReason(EmailReason.RESET_PASSWORD)
                 .userId(user.getId())
                 .emailTo(user.getEmail())
                 .languageCode(userAccount.getLanguage().getDescription())
-                .build();
+                .build());
     }
 
     @Override

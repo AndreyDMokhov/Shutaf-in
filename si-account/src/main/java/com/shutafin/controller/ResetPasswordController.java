@@ -1,12 +1,9 @@
 package com.shutafin.controller;
 
 import com.shutafin.core.service.ResetPasswordService;
-import com.shutafin.core.service.UserAccountService;
-import com.shutafin.core.service.UserService;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountEmailRequest;
 import com.shutafin.model.web.account.AccountResetPassword;
-import com.shutafin.model.web.email.EmailNotificationWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -24,12 +21,14 @@ public class ResetPasswordController {
 
 
     @PostMapping("/request")
-    public EmailNotificationWeb getResetPasswordEmailNotification(@RequestBody AccountEmailRequest accountEmailRequest,
-                                                                  BindingResult result) {
+    public void resetPassword(@RequestBody AccountEmailRequest accountEmailRequest, BindingResult result) {
+        log.debug("/users/reset-password/request");
         if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        return resetPasswordService.getResetPasswordEmailNotification(accountEmailRequest);
+        resetPasswordService.resetPassword(accountEmailRequest);
     }
 
     @PutMapping("/confirmation")
