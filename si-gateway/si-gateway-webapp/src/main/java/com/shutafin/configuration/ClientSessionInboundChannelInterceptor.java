@@ -1,6 +1,6 @@
 package com.shutafin.configuration;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.WebSocketSessionService;
 import lombok.extern.slf4j.Slf4j;
