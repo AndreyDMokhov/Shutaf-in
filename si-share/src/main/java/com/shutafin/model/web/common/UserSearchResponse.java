@@ -31,7 +31,7 @@ public class UserSearchResponse {
 
     private Integer countryId;
 
-    private Long dateOfBirth;
+    private Date dateOfBirth;
 
     private Integer score;
 
@@ -44,9 +44,7 @@ public class UserSearchResponse {
         this.genderId = genderId;
         this.cityId = cityId;
         this.countryId = countryId;
-        if(dateOfBirth!=null){
-            this.dateOfBirth = dateOfBirth.getTime();
-        }
+        this.dateOfBirth = dateOfBirth;
     }
 
 }

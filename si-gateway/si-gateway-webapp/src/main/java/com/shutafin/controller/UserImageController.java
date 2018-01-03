@@ -1,6 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserImageService;

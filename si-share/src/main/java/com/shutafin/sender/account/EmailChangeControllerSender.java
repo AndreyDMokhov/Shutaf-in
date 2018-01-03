@@ -14,18 +14,19 @@ public class EmailChangeControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
+    
+    @Autowired
+    private RestTemplate restTemplate;
 
     public EmailNotificationWeb validateChangeEmailRequest(AccountEmailChangeValidationRequest emailChangeWeb, Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/change-email", userId);
-
-        return new RestTemplate().postForEntity(url, emailChangeWeb, EmailNotificationWeb.class).getBody();
+        return restTemplate.postForEntity(url, emailChangeWeb, EmailNotificationWeb.class).getBody();
     }
 
     public void changeEmail(Long userId, AccountEmailChangeRequest accountEmailChangeRequest) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/change-email", userId);
-
-        new RestTemplate().put(url, accountEmailChangeRequest);
+        restTemplate.put(url, accountEmailChangeRequest);
     }
 }

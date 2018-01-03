@@ -1,7 +1,7 @@
 package com.shutafin.service;
 
-import com.shutafin.exception.exceptions.AuthenticationException;
 import com.shutafin.model.entities.UserSession;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.web.account.AccountUserWeb;
 
 public interface SessionManagementService {

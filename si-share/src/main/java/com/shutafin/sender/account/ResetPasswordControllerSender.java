@@ -15,16 +15,19 @@ public class ResetPasswordControllerSender {
     @Autowired
     private DiscoveryRoutingService routingService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public EmailNotificationWeb getResetPasswordEmailNotification(AccountEmailRequest accountEmailRequest) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 "/users/reset-password/request";
-        return new RestTemplate().postForEntity(url, accountEmailRequest, EmailNotificationWeb.class).getBody();
+        return restTemplate.postForEntity(url, accountEmailRequest, EmailNotificationWeb.class).getBody();
+
     }
 
     public void resetPassword(AccountResetPassword accountResetPassword) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 "/users/reset-password/confirmation";
-
-        new RestTemplate().put(url, accountResetPassword);
+        restTemplate.put(url, accountResetPassword);
     }
 }

@@ -43,11 +43,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.shutafin</groupId>
-            <artifactId>si-gateway-internal</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
@@ -81,6 +76,11 @@
                     <artifactId>spring-cloud-starter-eureka</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
 
@@ -136,10 +136,23 @@
                             </execution>
 
                             <execution>
+                                <id>npm set registry</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>set registry https://registry.npmjs.org</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
                                 <id>npm install</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
+                                <configuration>
+                                    <arguments>install --max-old-space-size=500</arguments>
+                                </configuration>
                             </execution>
 
                             <execution>

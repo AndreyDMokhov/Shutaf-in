@@ -1,6 +1,6 @@
 package com.shutafin.model.entities.extended;
 
-import com.shutafin.model.AbstractBaseEntity;
+import com.shutafin.model.base.AbstractBaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "USER_EXTENDED_QUESTION_ANSWER")
+@Table(name = "USER_QUESTION_EXTENDED_ANSWER")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
