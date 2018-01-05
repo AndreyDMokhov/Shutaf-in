@@ -10,7 +10,7 @@ app.component('dealComponent', {
         var vm = this;
         var namePanelDef = "Pallet";
         var ACTIVE = 2;                   //?????????????????/
-        var panelId;
+        vm.panelId;
         vm.documents = [];
 
         vm.isDealStatusActive = function () {
@@ -20,19 +20,22 @@ app.component('dealComponent', {
         vm.$onInit = function () {
             vm.statusDeal = vm.dealInfo.statusId;
             vm.panels = vm.dealInfo.panels;
-            panelId = vm.dealInfo.firstPanel.panelId;
+            vm.panelId = vm.dealInfo.firstPanel.panelId ;
             vm.documents = vm.dealInfo.firstPanel.documents;
             vm.palletClicked = true;
+            // console.log(vm.panels);
         };
 
 
         vm.selectPanel = function (id) {
+            // vm.showLoading = true;
             dealModel.getPanel(id).then(function (success) {
                 var panel = success.data.data;
                 vm.documents = panel.documents;
-                panelId = id;
+                vm.panelId = id;
+                // vm.showLoading = false;
+                console.log(panel);
             });
-
         };
 
         vm.addPallet = function (dealId, size, type) {
@@ -61,7 +64,8 @@ app.component('dealComponent', {
             });
         };
 
-        vm.renamePanel = function (size, type) {
+        vm.renamePanel = function (size, type, idPanel) {
+            console.log(idPanel);
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
@@ -77,14 +81,14 @@ app.component('dealComponent', {
                     newName = namePanelDef;
                 }
                 var param = {title: newName};
-                dealModel.renamePanel(panelId, param).then(function (success) {
+                dealModel.renamePanel(idPanel, param).then(function (success) {
                     var panel = success.data.data;
                     vm.panels[panel.panelId] = panel.title;
                 });
             });
         };
 
-        vm.removePanel = function (size, type, text) {
+        vm.removePanel = function (size, type, text, idPanel) {
 
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -103,14 +107,13 @@ app.component('dealComponent', {
             modalInstance.result.then(function () {
                 var param = {
                     userId: $sessionStorage.userProfile.userId,
-                    panelId: panelId
+                    panelId: idPanel
                 };
                 dealModel.removePanel(param).then(function (success) {
 
-                    delete vm.panels[panelId];
+                    delete vm.panels[idPanel];
                 });
             });
-
         };
 
     }

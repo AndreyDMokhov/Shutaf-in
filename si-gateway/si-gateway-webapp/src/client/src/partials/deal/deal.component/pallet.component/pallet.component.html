@@ -1,25 +1,144 @@
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+<!--<div class="documents-container" style="width: 100%; height:70vh;">-->
+<!--<uib-accordion close-others="true">-->
+<!--<div ng-repeat="document in vm.documentsShow">-->
+<!--<div uib-accordion-group class="panel-default">-->
+<!--<uib-accordion-heading>-->
+<!--{{document.title}} id: {{document.documentId}}-->
+<!--<div style="float: right;">-->
+<!--<i-->
+<!--class="fa fa-edit"-->
+<!--ng-click="$event.preventDefault(); $event.stopPropagation(); vm.renameDocument(document.documentId)"-->
+<!--uib-tooltip="Rename document"-->
+<!--&gt;</i>-->
+<!--&nbsp;-->
+<!--<i-->
+<!--class="fa fa-remove" style="font-size:16px;color:red"-->
+<!--ng-click="$event.preventDefault(); $event.stopPropagation(); vm.deleteDocument(document.documentId)"-->
+<!--uib-tooltip="Delete document"-->
+<!--&gt;</i>-->
+<!--</div>-->
+<!--</uib-accordion-heading>-->
+<!--<p>{{document.title}}</p>-->
+<!--<p>{{document.createdDate}}</p>-->
+<!--<button ng-click="vm.openDocument(document.documentId)">Open document</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</uib-accordion>-->
+<!--<div class="row">-->
+<!--<div class="col-md-offset-2" style="">-->
+<!--<div class="input-group">-->
+<!--<label for="file" style="cursor: pointer">Upload file-->
+<!--<i class="fa fa-plus"></i></label>-->
+<!--<input-->
+<!--id="file"-->
+<!--style="display:none;"-->
+<!--type="file"-->
+<!--ng-model="vm.fileInfo"-->
+<!--name="file"-->
+<!--base-sixty-four-input-->
+<!--required-->
+<!--onload="onLoad;"-->
+<!--maxsize="5000"-->
+<!--accept=".doc, .docx, .pdf, .tif, .jpg, .jpeg, .gif, .png">-->
+
+<!--<span style="margin: 0 10px 0 10px; padding: 0 15px 0 15px; border: 1px solid grey"-->
+<!--ng-show="vm.showFileName"> {{vm.fileInfo.filename}}</span>-->
+<!--<button class="btn btn-success btn-sm" ng-show="vm.showFileName" ng-click="vm.addDocu()">-->
+<!--confirm-->
+<!--</button>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--*****************************-->
+
 <div class="row">
     <div class="col-md-12">
-        <div class="documents-container" style="width: 100%; height:70vh; border: 1px solid #528CE0">
-            <uib-accordion close-others="true">
-                <div ng-repeat="document in vm.documentsShow">
-                    <div uib-accordion-group class="panel-default" heading={{document.title}}>
-                        <p>{{document.title}}</p>
-                        <p>{{document.createdDate}}</p>
-                        <button ng-click="vm.openDocument(document.documentId)">Open document</button>
+        <div class="documents-container" style="width: 100%; height:70vh;">
+            <div class="floating-box" ng-repeat="document in vm.documentsShow"
+            >
+                <!--<div style="display: inline;border:2px solid red" >-->
+                <img src="./images/iWord.png" alt="Document file"
+                     ng-if="document.documentType === 0 || document.documentType === 1 "
+                     style="left:50%; cursor: pointer"
+                     ng-click="vm.openDocument(document.documentId)"
+                >
+                <img src="./images/iPdf.png" alt="Pdf file"
+                     ng-if="document.documentType === 2"
+                     style="left:50%; cursor: pointer"
+                     ng-click="vm.openDocument(document.documentId)"
+                >
+                <img src="./images/iImage.png" alt="Image file"
+                     ng-if="document.documentType >= 3 && document.documentType <= 6"
+                     style="left:50%; cursor: pointer"
+                     ng-click="vm.openDocument(document.documentId)"
+                >
+
+                <div style="float: right">
+                    <div>
+                        <i
+                                class="fa fa-download" style="font-size:16px;color:blue"
+                                ng-click="vm.download(document)"
+                                uib-tooltip="Download document"
+                        ></i>
                     </div>
+                    <div>
+                        <i
+                                class="fa fa-edit " style="color:black"
+                                ng-click="vm.renameDocument(document.documentId)"
+                                uib-tooltip="Rename document"
+                        ></i>
+                    </div>
+                    <div>
+                        <i
+                                class="fa fa-remove" style="font-size:16px;color:red"
+                                ng-click="vm.deleteDocument('sm', 'text', 'Are you sure?',document.documentId)"
+                                uib-tooltip="Delete document"
+                        ></i>
+                    </div>
+
+
                 </div>
-            </uib-accordion>
-            <div class="row">
-                <div class="col-md-offset-10" style="">
-                    <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.removeDocument()"><i
-                            class="fa fa-times"></i></button>
-                    <button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.renameDocument('sm', 'input')"><i
-                            class="fa fa-edit"></i></button>
-                    <button ng-click="vm.addDocument(vm.dealId)" class="btn btn-primary " style="border-radius: 50%"><i
-                            class="fa fa-plus"></i></button>
+
+                <span uib-tooltip="{{document.title}}" class="crop" style="display: block;"> {{document.title}}</span>
+
+
+            </div>
+            <hr>
+            <div class="row after-box">
+                <div class="col-md-offset-2" style="margin-top: 20px;">
+                    <div class="input-group">
+                        <label for="file" style="cursor: pointer">Upload file
+                            <i class="fa fa-plus"></i></label>
+                        <input
+                                id="file"
+                                style="display:none;"
+                                type="file"
+                                ng-model="vm.fileInfo"
+                                name="file"
+                                base-sixty-four-input
+                                required
+                                onload="onLoad;"
+                                maxsize="5000"
+                                accept=".doc, .docx, .pdf, .tif, .jpg, .jpeg, .gif, .png">
+
+                        <span style="margin: 0 10px 0 10px; padding: 0 15px 0 15px; border: 1px solid grey"
+                              ng-show="vm.showFileName"> {{vm.fileInfo.filename}}</span>
+                        <button class="btn btn-success btn-sm" ng-show="vm.showFileName" ng-click="vm.addDocu()">
+                            confirm
+                        </button>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+

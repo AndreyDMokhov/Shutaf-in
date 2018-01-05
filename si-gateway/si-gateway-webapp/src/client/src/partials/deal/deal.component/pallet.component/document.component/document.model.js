@@ -12,7 +12,7 @@ app.factory('documentModel', function (Restangular, $sessionStorage) {
     }
 
     function getDocument(docId) {
-
+        return  rest.one().get(docId);
     }
 
     return {

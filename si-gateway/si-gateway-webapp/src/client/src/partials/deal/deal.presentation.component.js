@@ -9,12 +9,14 @@ app.component("dealPresentationComponent", {
         vm.dealInfo = {};
 
         vm.selectedDeal = function (deal) {
+            vm.showLoading = true;
 
             dealPresentationModel.getDealInfo(deal.dealId).then(
                 function (success) {
                     vm.dealInfo = success.data.data;
                     vm.dealTabClicked=true;
-                    console.log(vm.dealInfo);
+                    vm.showLoading = false;
+                    // console.log(vm.dealInfo);
                 },
                 function (err) {
                     console.log(err);

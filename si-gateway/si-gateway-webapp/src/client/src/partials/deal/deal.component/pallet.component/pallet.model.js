@@ -8,11 +8,26 @@ app.factory('palletModel', function (Restangular, $sessionStorage) {
 
 
     function addDocument(param) {
-        return  rest.one().customPOST(param);
+        return  rest.one('/').customPOST(param);
     }
+    function deleteDocument(docId) {
+        return  rest.one('/'+docId).remove();
+    }
+    function renameDocument(docId, params) {
+        return  rest.one('/'+docId).customPOST(params);
+    }
+    function getDocument(docId) {
+        return  rest.one('/'+docId).get();
+    }
+
+
 
     return {
         addDocument: addDocument,
-        getDocuments: getDocuments
+        deleteDocument: deleteDocument,
+        renameDocument:renameDocument,
+        getDocument:getDocument
+        // ,
+        // getDocuments: getDocuments
     };
 });
