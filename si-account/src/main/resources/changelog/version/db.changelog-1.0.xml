@@ -272,7 +272,7 @@
     </changeSet>
 
     <changeSet id="4" author="edward">
-        <sqlFile path="changelog//version/initialization_data-1.0.sql"/>
+        <sqlFile path="changelog/version/initialization_data-1.0.sql"/>
     </changeSet>
 
 
