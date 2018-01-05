@@ -145,9 +145,6 @@
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
-                                <configuration>
-                                    <arguments>install --max-old-space-size=500</arguments>
-                                </configuration>
                             </execution>
 
                             <execution>
