@@ -34,7 +34,7 @@ public class DiscoveryRoutingServiceImpl implements DiscoveryRoutingService {
             return null;
         }
 
-        return substituteIpWithDns(instances.get(0).getUri()) + (prefix == null ? "" : prefix);
+        return instances.get(0).getUri() + (prefix == null ? "" : prefix);
     }
 
 
