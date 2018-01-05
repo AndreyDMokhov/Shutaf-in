@@ -1,6 +1,5 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.sender.account.UserImageControllerSender;
 import com.shutafin.service.UserImageService;
@@ -11,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
 @Service
 @Transactional
@@ -21,7 +18,6 @@ import java.util.List;
 public class UserImageServiceImpl implements UserImageService {
 
     private static final String DEFAULT_AVATAR = "default_avatar.jpg";
-
 
 
     @Autowired
@@ -54,10 +50,6 @@ public class UserImageServiceImpl implements UserImageService {
         userImageControllerSender.deleteUserImage(userId, userImageId);
     }
 
-    @Override
-    public List<UserImage> getAllUserImages(Long userId) {
-        return new ArrayList<>();
-    }
 
 
     @Override
@@ -76,7 +68,6 @@ public class UserImageServiceImpl implements UserImageService {
         return null;
 
     }
-
 
 
 }

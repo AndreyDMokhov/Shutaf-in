@@ -48,7 +48,7 @@ public class DiscoveryRoutingServiceImpl implements DiscoveryRoutingService {
                 continue;
             }
 
-            map.put(routeDirection, substituteIpWithDns(instance.getUri()));
+            map.put(routeDirection, instance.getUri().toString());
         }
         return map;
     }

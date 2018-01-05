@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="mihailRogov">
+        <createTable tableName="CHAT">
+            <column name="ID" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="CHAT_TITLE" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="HAS_NO_TITLE" type="bit">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="mihailRogov">
+        <createTable tableName="CHAT_USER">
+            <column name="ID" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="CHAT_ID" type="bigint">
+                <constraints nullable="false"
+                             referencedTableName="CHAT"
+                             referencedColumnNames="ID"
+                             foreignKeyName="FK_CHAT_USER_CHAT_ID_CHAT"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="FIRST_NAME" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="LAST_NAME" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="IS_ACTIVE_USER" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="JOIN_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="EXIT_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="mihailRogov">
+        <createTable tableName="CHAT_MESSAGE">
+            <column name="ID" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="CHAT_ID" type="bigint">
+                <constraints nullable="false"
+                             referencedTableName="CHAT"
+                             referencedColumnNames="ID"
+                             foreignKeyName="FK_CHAT_MESSAGE_CHAT_ID_CHAT"/>
+            </column>
+
+            <column name="CHAT_USER_ID" type="bigint">
+                <constraints nullable="false"
+                             referencedTableName="CHAT_USER"
+                             referencedColumnNames="ID"
+                             foreignKeyName="FK_CHAT_MESSAGE_CHAT_USER_ID_ID"/>
+            </column>
+
+            <column name="MESSAGE" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="MESSAGE_TYPE_ID" type="int(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="PERMITTED_USERS" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="USERS_TO_NOTIFY" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="mihailRogov">
+        <createTable tableName="I_LANGUAGE">
+            <column name="ID" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="DESCRIPTION" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="LANGUAGE_NATIVE_NAME" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="IS_ACTIVE" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="5" author="mihailRogov">
+        <createTable tableName="USER_LOGIN_LOG">
+            <column name="ID" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="IS_LOGIN_SUCCESS" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="6" author="mihailRogov">
+        <createTable tableName="USER_SESSION">
+            <column name="ID" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="IS_VALID" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="SESSION_ID" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+
+            <column name="IS_EXPIRABLE" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="EXPIRATION_TIME" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CREATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="UPDATED_DATE" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

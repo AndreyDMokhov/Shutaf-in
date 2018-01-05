@@ -3,24 +3,15 @@ package com.shutafin.configuration;
 import com.shutafin.processors.AuthenticationAnnotationsBeanPostProcessor;
 import com.shutafin.processors.SessionResponseAnnotationBeanPostProcessor;
 import com.shutafin.processors.TraceLogBeanPostProcessor;
-import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 
 @Configuration
-@ComponentScan(basePackages = "com.shutafin")
-@PropertySources({
-        @PropertySource(value = "classpath:application.properties"),
-        @PropertySource(value = "classpath:environment.config.properties"),
-        @PropertySource(value = "classpath:server.properties"),
-
-})
+@PropertySource(value = "classpath:server.properties")
 public class ApplicationContextConfiguration {
 
-    @Bean
-    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
 
     @Bean
     public AuthenticationAnnotationsBeanPostProcessor authenticationHandlerArgumentResolverProcessor() {
