@@ -29,4 +29,10 @@ public class UserMatchController {
         return userMatchService.saveQuestionsAnswers(userId, questionsAnswers);
     }
 
+/*
+    @RequestMapping(value = "/enable", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void setIsUserMatchingEnabled(@AuthenticatedUser Long userId, @RequestBody @Valid Boolean isEnabled) {
+        userMatchService.setIsUserMatchingEnabled(userId, isEnabled);
+    }
+*/
 }

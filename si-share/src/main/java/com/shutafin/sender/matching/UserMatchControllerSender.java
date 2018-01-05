@@ -56,4 +56,10 @@ public class UserMatchControllerSender {
 
         return new ObjectMapper().readValue(jsonBody, new TypeReference<List<MatchingQuestionsSelectedAnswersDTO>>() {});
     }
+
+    public void setIsUserMatchingEnabled(Long userId, Boolean isEnabled){
+        String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
+                String.format("/matching/enabled/%d", userId);
+        restTemplate.put(url, isEnabled, Void.class);
+    }
 }

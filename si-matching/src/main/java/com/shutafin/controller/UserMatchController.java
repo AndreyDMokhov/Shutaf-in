@@ -40,4 +40,9 @@ public class UserMatchController {
         return userMatchService.getSelectedUserQuestionsAnswers(userId);
     }
 
+    @PutMapping(value = "/enabled/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void setIsUserMatchingEnabled(@PathVariable("userId") Long userId, @RequestBody @Valid Boolean isEnabled) {
+        userMatchService.setIsUserMatchingEnabled(userId, isEnabled);
+    }
+
 }

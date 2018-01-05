@@ -27,4 +27,7 @@ public class UserExamKey extends AbstractBaseEntity {
     @Column(name = "EXAM_KEY_REGEXP", nullable = false)
     private String examKeyRegExp;
 
+    @Column(name = "IS_MATCHING_ENABLED", nullable = false)
+    private Boolean isMatchingEnabled = true;
+
 }
