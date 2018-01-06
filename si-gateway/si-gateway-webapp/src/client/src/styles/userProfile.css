@@ -1,38 +1,40 @@
 .table-user-information > tbody > tr {
-  border-top: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
 }
 .table-user-information > tbody > tr:first-child {
-  border-top: 0;
+    border-top: 0;
 }
 .table-user-information > tbody > tr > td {
-  border-top: 0;
+    border-top: 0;
 }
 .toppad {
-  margin-top: 20px;
-  margin-left: -20px;
+    margin-top: 20px;
+    margin-left: -20px;
 }
 .tooltip.custom-class .tooltip-inner {
-  color: #212121;
-  background-color: #DCEDC8;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    color: #212121;
+    background-color: #DCEDC8;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 .tooltip.custom-class .tooltip-arrow {
-  display: none;
+    display: none;
 }
+
 .ngdialog.ngdialog-theme-plain.custom-width .ngdialog-content {
-  width: 0;
-  height: 0;
-  background-color: transparent;
+    width: 0;
+    height: 0;
+    background-color: transparent;
 }
 .ngdialog.ngdialog-theme-default.custom-user-profile-popup .ngdialog-content {
-  padding: 0 !important;
-  background: transparent !important;
-  display: table;
-  /*table-like styles for vertical centering*/
-  width: 100% !important;
-  height: 100%;
+    padding: 0 !important;
+    background: transparent !important;
+    display: table;
+    /*table-like styles for vertical centering*/
+    width: 100% !important;
+    height: 100%;
 }
+
 .ngdialog-content > .ngdialog-close {
-  display: none;
-  /*hide original close button*/
+    display: none;
+    /*hide original close button*/
 }

@@ -14,7 +14,7 @@ public class EmailChangeControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
-    
+
     @Autowired
     private RestTemplate restTemplate;
 

@@ -20,7 +20,7 @@ public class UserFilterControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
-    
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -31,7 +31,8 @@ public class UserFilterControllerSender {
 
         String jsonBody = restTemplate.postForEntity(url, accountUserFilterRequest, String.class).getBody();
 
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserSearchResponse>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserSearchResponse>>() {
+        });
     }
 
     public void saveUserFilters(Long userId, FiltersWeb filtersWeb) {
@@ -69,7 +70,8 @@ public class UserFilterControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/city/%d", userId);
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<Integer>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<Integer>>() {
+        });
     }
 
     public Integer getGenderForFilter(Long userId) {

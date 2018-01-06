@@ -6,19 +6,19 @@
                 <div uib-accordion-group class="panel panel-custom" is-open="vm.status.isGeneralOpen">
                     <uib-accordion-heading>
                         <div ng-mouseenter="vm.status.isGeneralOpen = !vm.status.isGeneralOpen;">
-                        {{'UserSettings.personal.settings.general' | translate}}
-                        <i class="pull-right fa fa-chevron-down"
-                           ng-class="{'open' : vm.status.isGeneralOpen}">
-                        </i>
-                </div>
-                </uib-accordion-heading>
-                <div class="form-group "
-                     ng-class="{
+                            {{'UserSettings.personal.settings.general' | translate}}
+                            <i class="pull-right fa fa-chevron-down"
+                               ng-class="{'open' : vm.status.isGeneralOpen}">
+                            </i>
+                        </div>
+                    </uib-accordion-heading>
+                    <div class="form-group "
+                         ng-class="{
             'has-error': userSettings.firstName.$invalid && userSettings.firstName.$dirty,
             'has-success': userSettings.firstName.$valid }">
-                    <label class="required col-sm-4 control-label" for="firstName">
-                        {{'UserSettings.personal.form.firstName' | translate}}</label>
-                    <div class="col-sm-7">
+                        <label class="required col-sm-4 control-label" for="firstName">
+                            {{'UserSettings.personal.form.firstName' | translate}}</label>
+                        <div class="col-sm-7">
                         <input
                                 class="form-control"
                                 name="firstName"
@@ -28,20 +28,21 @@
                                 ng-maxLength="50"
                                 required/>
 
-                        <p class="help-block"
-                           ng-if="userSettings.firstName.$invalid && userSettings.firstName.$dirty">
-                            {{'UserSettings.personal.form.inputFieldError' | translate : '{ fieldName: "First name", minLength : "3", maxLength : "50"}'}}
+                            <p class="help-block"
+                               ng-if="userSettings.firstName.$invalid && userSettings.firstName.$dirty">
+                                {{'UserSettings.personal.form.inputFieldError' | translate : '{ fieldName: "First name",
+                                minLength : "3", maxLength : "50"}'}}
                         </p>
                     </div>
-                </div>
+                    </div>
 
-                <div class="form-group"
-                     ng-class="{
+                    <div class="form-group"
+                         ng-class="{
             'has-error': userSettings.lastName.$invalid && userSettings.lastName.$dirty,
             'has-success': userSettings.lastName.$valid }">
-                    <label class="required col-sm-4 control-label" for="lastName">{{'UserSettings.personal.form.lastName'
-                        | translate}}</label>
-                    <div class="col-sm-7">
+                        <label class="required col-sm-4 control-label" for="lastName">{{'UserSettings.personal.form.lastName'
+                            | translate}}</label>
+                        <div class="col-sm-7">
                         <input
                                 class="form-control"
                                 name="lastName"
@@ -51,19 +52,19 @@
                                 ng-maxLength="50"
                                 required/>
 
-                        <p class="help-block"
-                           ng-if="userSettings.lastName.$invalid && userSettings.lastName.$dirty">
+                            <p class="help-block"
+                               ng-if="userSettings.lastName.$invalid && userSettings.lastName.$dirty">
                             {{'UserSettings.personal.form.inputFieldError' | translate: '{ minLength : "3", maxLength: "50"}'}}
                         </p>
                     </div>
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <div ng-class="{
+                    <div class="form-group">
+                        <div ng-class="{
             'has-error': userSettings.gender.$invalid,
             'has-success': userSettings.gender.$valid }">
-                        <label class="required col-sm-4 control-label" for="gender">{{"UserSettings.form.gender"|translate}}</label>
-                        <div class="col-sm-7">
+                            <label class="required col-sm-4 control-label" for="gender">{{"UserSettings.form.gender"|translate}}</label>
+                            <div class="col-sm-7">
                             <select
                                     name="gender"
                                     ng-options="gender.id as gender.description for gender in vm.gender"
@@ -75,13 +76,13 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div ng-class="{
+                    </div>
+                    <div class="form-group">
+                        <div ng-class="{
             'has-error': userSettings.country.$invalid,
             'has-success': userSettings.country.$valid }">
-                        <label class="required col-sm-4 control-label" for="country">{{"UserSettings.form.country"|translate}}</label>
-                        <div class="col-sm-7">
+                            <label class="required col-sm-4 control-label" for="country">{{"UserSettings.form.country"|translate}}</label>
+                            <div class="col-sm-7">
                             <select
                                     name="country"
                                     ng-options="country.id as country.description for country in vm.country"
@@ -93,13 +94,13 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div ng-class="{
+                    </div>
+                    <div class="form-group">
+                        <div ng-class="{
             'has-error': userSettings.city.$invalid,
             'has-success': userSettings.city.$valid }">
-                        <label class="required col-sm-4 control-label" for="city">{{"UserSettings.form.city"|translate}}</label>
-                        <div class="col-sm-7">
+                            <label class="required col-sm-4 control-label" for="city">{{"UserSettings.form.city"|translate}}</label>
+                            <div class="col-sm-7">
                             <select
                                     name="city"
                                     ng-options="city.id as city.description for city in vm.cities"
@@ -111,13 +112,13 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div ng-class="{
+                    </div>
+                    <div class="form-group">
+                        <div ng-class="{
             'has-error': userSettings.dateOfBirth.$invalid,
             'has-success': userSettings.dateOfBirth.$valid }">
-                        <label class="required col-sm-4 control-label" for="dateOfBirth">{{"UserSettings.form.dateOfBirth"|translate}}</label>
-                        <div class="col-sm-7">
+                            <label class="required col-sm-4 control-label" for="dateOfBirth">{{"UserSettings.form.dateOfBirth"|translate}}</label>
+                            <div class="col-sm-7">
                             <input
                                     type="date"
                                     name="dateOfBirth"
@@ -130,73 +131,73 @@
                         </div>
                     </div>
                 </div>
-    </div>
-    <br>
-    <div uib-accordion-group class="panel panel-custom" is-open="vm.isAdditionalOpen">
-        <uib-accordion-heading>
-            <div ng-mouseenter="vm.isAdditionalOpen = !vm.isAdditionalOpen">
-                {{'UserSettings.personal.settings.additional' | translate}}
-                <i class="pull-right fa fa-chevron-down"
-                   ng-class="{'open': vm.isAdditionalOpen }"
-                ></i>
-            </div>
-        </uib-accordion-heading>
-        <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: center" for="facebook">{{"UserSettings.form.facebook"|translate}}</label>
-            <div class="col-sm-7">
-                <input type="text"
-                       name="facebook"
-                       id="facebook"
-                       class="form-control "
-                       ng-model="vm.userProfile.facebookLink"/>
-            </div>
-        </div>
+                </div>
+                <br>
+                <div uib-accordion-group class="panel panel-custom" is-open="vm.isAdditionalOpen">
+                    <uib-accordion-heading>
+                        <div ng-mouseenter="vm.isAdditionalOpen = !vm.isAdditionalOpen">
+                            {{'UserSettings.personal.settings.additional' | translate}}
+                            <i class="pull-right fa fa-chevron-down"
+                               ng-class="{'open': vm.isAdditionalOpen }"
+                            ></i>
+                        </div>
+                    </uib-accordion-heading>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: center" for="facebook">{{"UserSettings.form.facebook"|translate}}</label>
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   name="facebook"
+                                   id="facebook"
+                                   class="form-control "
+                                   ng-model="vm.userProfile.facebookLink"/>
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: center" for="profession">{{"UserSettings.form.profession"|translate}}</label>
-            <div class="col-sm-7">
-                <input type="text"
-                       name="profession"
-                       id="profession"
-                       class="form-control "
-                       ng-model="vm.userProfile.profession"/>
-            </div>
-        </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: center" for="profession">{{"UserSettings.form.profession"|translate}}</label>
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   name="profession"
+                                   id="profession"
+                                   class="form-control "
+                                   ng-model="vm.userProfile.profession"/>
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: center" for="company">{{"UserSettings.form.company"|translate}}</label>
-            <div class="col-sm-7">
-                <input type="text"
-                       name="company"
-                       id="company"
-                       class="form-control "
-                       ng-model="vm.userProfile.company"/>
-            </div>
-        </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: center" for="company">{{"UserSettings.form.company"|translate}}</label>
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   name="company"
+                                   id="company"
+                                   class="form-control "
+                                   ng-model="vm.userProfile.company"/>
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <label class="col-sm-4 control-label" style="text-align: center" for="phoneNumber">{{"UserSettings.form.phoneNumber"|translate}}</label>
-            <div class="col-sm-7">
-                <input type="text"
-                       name="phoneNumber"
-                       id="phoneNumber"
-                       class="form-control "
-                       ng-model="vm.userProfile.phoneNumber"/>
-            </div>
-        </div>
-    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" style="text-align: center" for="phoneNumber">{{"UserSettings.form.phoneNumber"|translate}}</label>
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   name="phoneNumber"
+                                   id="phoneNumber"
+                                   class="form-control "
+                                   ng-model="vm.userProfile.phoneNumber"/>
+                        </div>
+                    </div>
+                </div>
 
                 <br>
 
-    <button ng-click="vm.submitChanges()"
-            type="submit"
-            ng-disabled="userSettings.gender.$invalid || userSettings.city.$invalid || userSettings.country.$invalid
+                <button ng-click="vm.submitChanges()"
+                        type="submit"
+                        ng-disabled="userSettings.gender.$invalid || userSettings.city.$invalid || userSettings.country.$invalid
             || userSettings.firstName.$invalid || userSettings.lastName.$invalid"
-            class="btn btn-success">
-        {{"UserSettings.btn.submit" | translate}}
-        <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
-    </button>
-    </uib-accordion>
-    </form>
-</div>
+                        class="btn btn-success">
+                    {{"UserSettings.btn.submit" | translate}}
+                    <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
+                </button>
+            </uib-accordion>
+        </form>
+    </div>
 </div>
