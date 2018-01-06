@@ -12,13 +12,15 @@ public class UserImageControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
-    
+
     @Autowired
     private RestTemplate restTemplate;
 
-    public AccountUserImageWeb getUserImage(Long userId, Long userImageId) {
+
+    public AccountUserImageWeb getCompressedUserImageByUserId(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
-                String.format("/users/%d/images/%d", userId, userImageId);
+                String.format("/users/%d/images", userId);
+
         return restTemplate.getForEntity(url, AccountUserImageWeb.class).getBody();
     }
 

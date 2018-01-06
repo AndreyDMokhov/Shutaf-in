@@ -8,7 +8,6 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.types.CompressionType;
-import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.ImageStorageRepository;
 import com.shutafin.repository.account.ImagePairRepository;
@@ -58,9 +57,9 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     @Transactional
-    public UserImage addUserImage(AccountUserImageWeb image, User user, PermissionType permissionType, CompressionType compressionType) {
+    public UserImage addUserImage(AccountUserImageWeb image, User user, CompressionType compressionType) {
         image = convertToJpg(image);
-        UserImage userImage = addUserImage(image, user, permissionType);
+        UserImage userImage = addUserImage(image, user);
         if (compressionType != null && compressionType != CompressionType.NO_COMPRESSION) {
             return imageCompressService.addCompressedUserImage(userImage, compressionType);
         }
@@ -82,18 +81,14 @@ public class UserImageServiceImpl implements UserImageService {
             log.warn("Resource not found exception:");
             log.warn("User Image with ID {} was not found", userImageId);
             throw new ResourceNotFoundException(String.format("User Image with ID %d was not found", userImageId));
-        } else if (!user.getId().equals(userImage.getUser().getId()) &&
-                !userImage.getPermissionType().equals(PermissionType.PUBLIC)) {
-            log.warn("User does not have authority to view this image, throw exception");
-            throw new ResourceNotFoundException(String.format("User Image with ID %d was not found", userImageId));
         }
         saveUserImageToFileSystem(userImage.getImageStorage().getImageEncoded(), userImage);
         return userImage;
     }
 
     @Override
-    public UserImage getUserImage(User user) {
-        return getUserImage(user, userAccountRepository.findDefaultUserImageIdByUserId(user.getId()));
+    public UserImage getCompressedUserImage(User user) {
+        return getUserImage(user, userAccountRepository.findCompressedUserImageIdByUserId(user.getId()));
     }
 
     @Override
@@ -126,7 +121,8 @@ public class UserImageServiceImpl implements UserImageService {
 
     @Override
     public UserImage getOriginalUserImage(User user) {
-        return getOriginalUserImage(getUserImage(user));
+        Long compressedImageId = userAccountRepository.findCompressedUserImageIdByUserId(user.getId());
+        return getUserImage(user, imagePairRepository.findOriginalUserImageById(compressedImageId));
     }
 
     @Override
@@ -155,9 +151,8 @@ public class UserImageServiceImpl implements UserImageService {
         image.delete();
     }
 
-    private UserImage addUserImage(AccountUserImageWeb image, User user, PermissionType permissionType) {
+    private UserImage addUserImage(AccountUserImageWeb image, User user) {
         UserImage userImage = new UserImage();
-        userImage.setPermissionType(permissionType);
         userImage.setCompressionType(CompressionType.NO_COMPRESSION);
         String imageEncoded = image.getImage();
         userImage.setUser(user);
