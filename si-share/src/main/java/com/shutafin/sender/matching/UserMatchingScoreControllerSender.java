@@ -19,7 +19,7 @@ public class UserMatchingScoreControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
-    
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -29,7 +29,8 @@ public class UserMatchingScoreControllerSender {
                 String.format("/matching/extended/%d", userId);
 
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<Map<Long, Integer>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<Map<Long, Integer>>() {
+        });
     }
 
     public void addUserQuestionExtendedAnswers(Long userId, List<UserQuestionExtendedAnswersWeb> questionExtendedAnswersWeb) {

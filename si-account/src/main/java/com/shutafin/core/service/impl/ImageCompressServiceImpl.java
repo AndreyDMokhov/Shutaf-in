@@ -5,10 +5,7 @@ import com.shutafin.core.service.UserImageService;
 import com.shutafin.model.entities.ImagePair;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserImage;
-
 import com.shutafin.model.types.CompressionType;
-import com.shutafin.model.types.PermissionType;
-
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.account.ImagePairRepository;
 import com.shutafin.repository.account.UserImageRepository;
@@ -57,7 +54,6 @@ public class ImageCompressServiceImpl implements ImageCompressService {
             compressedUserImage = saveCompressedUserImage(
                     imageEncoded,
                     userImage.getUser(),
-                    userImage.getPermissionType(),
                     compressionType);
 
             saveImagePair(userImage, compressedUserImage);
@@ -65,11 +61,11 @@ public class ImageCompressServiceImpl implements ImageCompressService {
         return compressedUserImage;
     }
 
-    private UserImage saveCompressedUserImage(String imageEncoded, User user, PermissionType permissionType,
+    private UserImage saveCompressedUserImage(String imageEncoded, User user,
                                               CompressionType compressionType) {
         AccountUserImageWeb compressedImage = new AccountUserImageWeb();
         compressedImage.setImage(imageEncoded);
-        UserImage compressedUserImage = userImageService.addUserImage(compressedImage, user, permissionType, null);
+        UserImage compressedUserImage = userImageService.addUserImage(compressedImage, user, null);
         compressedUserImage.setCompressionType(compressionType);
         userImageRepository.save(compressedUserImage);
         return compressedUserImage;

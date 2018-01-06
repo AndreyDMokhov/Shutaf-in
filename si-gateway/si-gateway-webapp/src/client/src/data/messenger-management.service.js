@@ -3,11 +3,11 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
     var vm = this;
 
     function activateMessenger() {
-        if (messengerChannelService.listOfChats.length<1) {
+        if (messengerChannelService.listOfChats.length < 1) {
             setTimeout(function () {
                 activateMessenger();
             }, 50);
-        }else{
+        } else {
             messengerChannelService.notifyListOfChatObservers();
             if (messengerCurrentDataService.currentChat.id) {
                 activateChannel(messengerCurrentDataService.currentChat);

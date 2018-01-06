@@ -20,8 +20,8 @@ public class QuestionExtendedControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
-    
-    
+
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -32,7 +32,8 @@ public class QuestionExtendedControllerSender {
 
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
 
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<QuestionExtendedWithAnswersLocaleWeb>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<QuestionExtendedWithAnswersLocaleWeb>>() {
+        });
     }
 
     @SneakyThrows
@@ -42,7 +43,8 @@ public class QuestionExtendedControllerSender {
 
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
 
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<QuestionImportanceDTO>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<QuestionImportanceDTO>>() {
+        });
     }
 
     @SneakyThrows
@@ -50,6 +52,7 @@ public class QuestionExtendedControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
                 String.format("/matching/extended/questions/selected/answers/%d", userId);
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserQuestionExtendedAnswersWeb>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserQuestionExtendedAnswersWeb>>() {
+        });
     }
 }
