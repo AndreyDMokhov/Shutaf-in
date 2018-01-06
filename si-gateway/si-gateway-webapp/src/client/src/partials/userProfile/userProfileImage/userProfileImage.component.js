@@ -78,7 +78,7 @@ app.component('userProfileImage', {
                     $sessionStorage.userProfile = vm.userProfile;
                     vm.deleteButton = false;
                     notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
-                    // $window.location.reload();
+                    $window.location.reload();
                 },
 
                 function (error) {

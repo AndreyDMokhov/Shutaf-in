@@ -18,7 +18,7 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
         return rest.one('/api/users/search/save/filters').customPOST(params);
     }
 
-    function getDefaultUserImageById(userId){
+    function getCompressedUserImageById(userId) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         return rest.one('api/images/' + userId).customGET();
     }
@@ -31,7 +31,7 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
     return {
         userSearch: userSearch,
         saveFilters: saveFilters,
-        getDefaultUserImageById:getDefaultUserImageById,
+        getCompressedUserImageById: getCompressedUserImageById,
         getOriginalUserImageById:getOriginalUserImageById
 
     };

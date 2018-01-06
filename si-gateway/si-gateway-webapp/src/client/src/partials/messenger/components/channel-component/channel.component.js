@@ -33,7 +33,7 @@ app.component('channelComponent', {
         function findAndSaveUserImagesToStorage(usersInChat) {
             angular.forEach(usersInChat, function (item) {
                 if (!$sessionStorage[item.userId]) {
-                    userSearchModel.getDefaultUserImageById(item.userId).then(
+                    userSearchModel.getCompressedUserImageById(item.userId).then(
                         function (success) {
                             $sessionStorage[item.userId] = success.data.data;
                         }

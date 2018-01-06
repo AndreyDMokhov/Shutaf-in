@@ -183,7 +183,6 @@ gulp.task('less', function () {
         .pipe(less())
         .pipe(gulp.dest('./src/styles'));
 });
-1
 
 
 // to run new server
