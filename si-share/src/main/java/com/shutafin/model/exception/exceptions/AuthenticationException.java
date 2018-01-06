@@ -10,5 +10,4 @@ public class AuthenticationException extends AbstractAPIException {
     public ErrorType getErrorType() {
         return ErrorType.AUTHENTICATION;
     }
-
 }

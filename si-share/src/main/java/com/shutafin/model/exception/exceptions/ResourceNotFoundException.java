@@ -10,8 +10,8 @@ public class ResourceNotFoundException extends AbstractAPIException {
         return ErrorType.RESOURCE_NOT_FOUND_ERROR;
     }
 
-    public ResourceNotFoundException(String systemMessage) {
-        super(systemMessage);
+    public ResourceNotFoundException(String errorMessage) {
+        super(errorMessage);
     }
 
     public ResourceNotFoundException() {

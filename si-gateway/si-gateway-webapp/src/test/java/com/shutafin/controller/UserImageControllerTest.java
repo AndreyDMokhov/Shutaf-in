@@ -1,8 +1,8 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserImageWeb;
-import com.shutafin.model.web.error.ErrorType;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserImageService;
 import com.shutafin.system.BaseTestImpl;

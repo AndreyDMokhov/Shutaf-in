@@ -1,6 +1,5 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserSession;
 import com.shutafin.repository.account.UserSessionRepository;
 import com.shutafin.service.LogoutService;

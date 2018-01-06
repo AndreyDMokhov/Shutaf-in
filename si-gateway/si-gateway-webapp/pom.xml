@@ -28,11 +28,6 @@
         </dependency>
         <dependency>
             <groupId>com.shutafin</groupId>
-            <artifactId>si-gateway-common</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.shutafin</groupId>
             <artifactId>si-gateway-core</artifactId>
             <version>0.1</version>
         </dependency>
@@ -42,11 +37,6 @@
             <version>0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.shutafin</groupId>
-            <artifactId>si-gateway-internal</artifactId>
-            <version>0.1</version>
-        </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -81,6 +71,11 @@
                     <artifactId>spring-cloud-starter-eureka</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
 
@@ -133,6 +128,16 @@
                                 <goals>
                                     <goal>install-node-and-npm</goal>
                                 </goals>
+                            </execution>
+
+                            <execution>
+                                <id>npm set registry</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>set registry https://registry.npmjs.org</arguments>
+                                </configuration>
                             </execution>
 
                             <execution>
@@ -204,6 +209,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <finalName>si-gateway</finalName>
+                </configuration>
             </plugin>
 
         </plugins>

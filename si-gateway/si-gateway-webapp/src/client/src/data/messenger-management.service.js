@@ -3,9 +3,15 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
     var vm = this;
 
     function activateMessenger() {
-        messengerChannelService.notifyListOfChatObservers();
-        if (messengerCurrentDataService.currentChat.id) {
-            activateChannel(messengerCurrentDataService.currentChat);
+        if (messengerChannelService.listOfChats.length<1) {
+            setTimeout(function () {
+                activateMessenger();
+            }, 50);
+        }else{
+            messengerChannelService.notifyListOfChatObservers();
+            if (messengerCurrentDataService.currentChat.id) {
+                activateChannel(messengerCurrentDataService.currentChat);
+            }
         }
     }
 

@@ -20,7 +20,6 @@ public class UserImageServiceImpl implements UserImageService {
     private static final String DEFAULT_AVATAR = "default_avatar.jpg";
 
 
-
     @Autowired
     private UserImageControllerSender userImageControllerSender;
 
@@ -46,6 +45,7 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
 
+
     @Override
     @SneakyThrows
     //todo remote this after email notification
@@ -62,7 +62,6 @@ public class UserImageServiceImpl implements UserImageService {
         return null;
 
     }
-
 
 
 }

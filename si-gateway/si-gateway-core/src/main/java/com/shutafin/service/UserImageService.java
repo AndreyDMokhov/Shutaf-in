@@ -7,7 +7,9 @@ public interface UserImageService {
     AccountUserImageWeb addUserImage(AccountUserImageWeb image, Long userId);
     AccountUserImageWeb getCompressedUserImage(Long userId);
     AccountUserImageWeb getOriginalUserImage(Long userId);
+
     void deleteUserImage(Long userId, Long userImageId);
+
     String getDefaultImageBase64();
 
 }
