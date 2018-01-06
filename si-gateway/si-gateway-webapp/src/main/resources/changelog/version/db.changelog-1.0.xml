@@ -46,7 +46,7 @@
             </column>
 
             <column name="FIRST_NAME" type="varchar(50)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="LAST_NAME" type="varchar(50)">
@@ -54,7 +54,7 @@
             </column>
 
             <column name="IS_ACTIVE_USER" type="bit">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="JOIN_DATE" type="java.sql.Timestamp">
@@ -136,7 +136,7 @@
             </column>
 
             <column name="IS_ACTIVE" type="bit">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="CREATED_DATE" type="java.sql.Timestamp">
@@ -161,7 +161,7 @@
             </column>
 
             <column name="IS_LOGIN_SUCCESS" type="bit">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="CREATED_DATE" type="java.sql.Timestamp">
@@ -186,7 +186,7 @@
             </column>
 
             <column name="IS_VALID" type="bit">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="SESSION_ID" type="varchar(50)">
@@ -194,7 +194,7 @@
             </column>
 
             <column name="IS_EXPIRABLE" type="bit">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="EXPIRATION_TIME" type="java.sql.Timestamp">

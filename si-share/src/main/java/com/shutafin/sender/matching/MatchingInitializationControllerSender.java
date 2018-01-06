@@ -12,7 +12,7 @@ public class MatchingInitializationControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
-    
+
     @Autowired
     private RestTemplate restTemplate;
 

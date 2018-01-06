@@ -27,7 +27,8 @@ public class AccountInitializationControllerSender {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "/initialization/languages";
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
 
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<LanguageWeb>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<LanguageWeb>>() {
+        });
     }
 
     public AccountInitializationResponse getInitializationResponse(Long userId) {

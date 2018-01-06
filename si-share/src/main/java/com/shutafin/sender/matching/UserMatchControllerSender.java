@@ -29,7 +29,8 @@ public class UserMatchControllerSender {
                 String.format("/matching/search/%d", userId);
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
 
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<Long>>() { });
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<Long>>() {
+        });
     }
 
     public void saveSelectedUserQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers) {
@@ -44,7 +45,8 @@ public class UserMatchControllerSender {
                 String.format("/matching/questionnaire/initialization/%d", languageId);
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
 
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<QuestionsListWithAnswersDTO>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<QuestionsListWithAnswersDTO>>() {
+        });
     }
 
     @SneakyThrows
@@ -54,6 +56,7 @@ public class UserMatchControllerSender {
 
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
 
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<MatchingQuestionsSelectedAnswersDTO>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<MatchingQuestionsSelectedAnswersDTO>>() {
+        });
     }
 }
