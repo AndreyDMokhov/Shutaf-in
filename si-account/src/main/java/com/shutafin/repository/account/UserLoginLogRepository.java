@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 
 @Repository
 public interface UserLoginLogRepository extends BaseJpaRepository<UserLoginLog, Long> {
+
     Stream<UserLoginLog> findAllByUserAndCreatedDateBetween(User user, Date timeFrom, Date timeTo);
+
     UserLoginLog findTopByIsLoginSuccessOrderByIdDesc(boolean isLoginSuccess);
 }

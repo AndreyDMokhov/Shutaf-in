@@ -38,4 +38,15 @@ public class LoginController {
         return loginWebService.getUserByLoginWebModel(loginWeb);
     }
 
+    @PostMapping(value = "/check/user/password", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void checkUserPassword(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
+        log.debug("/login/");
+        if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
+            throw new InputValidationException(result);
+        }
+        loginWebService.checkUserPassword(loginWeb);
+    }
+
 }

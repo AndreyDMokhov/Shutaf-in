@@ -18,12 +18,14 @@ public class LoginControllerSender {
     @Autowired
     private RestTemplate restTemplate;
 
-
     public AccountUserWeb login(AccountLoginRequest loginWeb) {
-        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
-                "/users/login";
-
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "/users/login";
         ResponseEntity<AccountUserWeb> accountUserWebResponseEntity = restTemplate.postForEntity(url, loginWeb, AccountUserWeb.class);
         return accountUserWebResponseEntity.getBody();
+    }
+
+    public void checkUserPassword(AccountLoginRequest loginWeb) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "users/check/user/password";
+        restTemplate.postForEntity(url, loginWeb, AccountUserWeb.class);
     }
 }

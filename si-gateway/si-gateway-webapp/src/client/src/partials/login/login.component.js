@@ -16,7 +16,8 @@ app.component('loginComponent', {
 
         var vm = this;
         vm.dataLoading = false;
-
+        vm.resendLoading = false;
+        vm.showResend = false;
         vm.loginData = {};
 
         function login() {
@@ -37,12 +38,33 @@ app.component('loginComponent', {
                     $state.go('home');
                 },
                 function (error) {
-
+                    if (error.status === 403) {
+                        vm.showResend = true;
+                    }
                     vm.dataLoading = false;
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 
+        function resendEmailRegistration() {
+            vm.resendLoading = true;
+            loginModel.resendEmailRegistration(vm.loginData).then(
+                function (success) {
+                    vm.resendLoading = false;
+                    notify.set($filter('translate')('Registration.request.success'), {type: 'success'});
+                    $state.go('home');
+                },
+                function (error) {
+                    if (error.status === 401) {
+                        vm.showResend = false;
+                    }
+                    vm.resendLoading = false;
+                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                }
+            );
+        }
+
         vm.login = login;
+        vm.resendEmailRegistration = resendEmailRegistration;
     }
 });

@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -70,8 +67,10 @@ public class SenderEmailMessageServiceImpl implements SenderEmailMessageService 
     public void sendEmailMessage(EmailNotificationLog emailNotificationLog, Set<EmailImageSource> emailImageSources) {
 
         Map<String, byte[]> imageSources = new TreeMap<>();
-        for (EmailImageSource emailImageSource : emailImageSources) {
-            imageSources.put(emailImageSource.getContentId(), emailImageSource.getImageSource());
+        if (emailImageSources != null) {
+            for (EmailImageSource emailImageSource : emailImageSources) {
+                imageSources.put(emailImageSource.getContentId(), emailImageSource.getImageSource());
+            }
         }
 
         MimeMessage mimeMessage = getMimeMessage(
@@ -120,6 +119,7 @@ public class SenderEmailMessageServiceImpl implements SenderEmailMessageService 
     }
 
     private void updateRepositories(EmailNotificationLog emailNotificationLog, Set<EmailImageSource> emailImageSources) {
+        emailNotificationLog.setUpdatedDate(new Date());
         emailNotificationLogService.save(emailNotificationLog);
         emailImageSourceService.save(emailImageSources);
     }

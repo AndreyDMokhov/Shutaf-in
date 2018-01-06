@@ -48,12 +48,20 @@ public class LoginServiceImpl implements LoginService {
     @Transactional(noRollbackFor = AuthenticationException.class)
     public AccountUserWeb getUserByLoginWebModel(AccountLoginRequest loginWeb) {
         User user = findUserByEmail(loginWeb);
-        UserAccount userAccount = userAccountService.checkUserAccountStatus(user);
-        checkUserPassword(loginWeb, userAccount, user);
+        UserAccount userAccount = userAccountService.findUserAccountByUser(user);
+        checkPassword(loginWeb, userAccount);
+        userAccountService.checkUserAccountStatus(user);
         return new AccountUserWeb(
                 user.getId(),
                 user.getLastName(),
                 user.getFirstName());
+    }
+
+    @Transactional(noRollbackFor = AuthenticationException.class)
+    public void checkUserPassword(AccountLoginRequest loginWeb) {
+        User user = findUserByEmail(loginWeb);
+        UserAccount userAccount = userAccountService.findUserAccountByUser(user);
+        checkPassword(loginWeb, userAccount);
     }
 
     private User findUserByEmail(AccountLoginRequest loginWeb) {
@@ -65,14 +73,14 @@ public class LoginServiceImpl implements LoginService {
         return user;
     }
 
-    private void checkUserPassword(AccountLoginRequest loginWeb, UserAccount userAccount, User user) {
-        if (!passwordService.isPasswordCorrect(user, loginWeb.getPassword())) {
-            saveUserLoginLogEntry(user, false);
-            countLoginFailsAndBlockAccountIfMoreThanMax(user, userAccount);
-            log.warn("Password for userId {} is incorrect", user.getId());
+    private void checkPassword(AccountLoginRequest loginWeb, UserAccount userAccount) {
+        if (!passwordService.isPasswordCorrect(userAccount.getUser(), loginWeb.getPassword())) {
+            saveUserLoginLogEntry(userAccount.getUser(), false);
+            countLoginFailsAndBlockAccountIfMoreThanMax(userAccount);
+            log.warn("Password for userId {} is incorrect", userAccount.getUser().getId());
             throw new AuthenticationException();
         }
-        saveUserLoginLogEntry(user, true);
+        saveUserLoginLogEntry(userAccount.getUser(), true);
     }
 
     private void saveUserLoginLogEntry(User user, boolean isSuccess) {
@@ -82,12 +90,12 @@ public class LoginServiceImpl implements LoginService {
         userLoginLogRepository.save(userLoginLog);
     }
 
-    private void countLoginFailsAndBlockAccountIfMoreThanMax(User user, UserAccount userAccount) {
+    private void countLoginFailsAndBlockAccountIfMoreThanMax(UserAccount userAccount) {
         Date timeNow = DateTime.now().toDate();
         Date timeDelay = DateTime.now().minusMinutes(MAX_TRIES_FOR_MINUTES).toDate();
         UserLoginLog lastSuccessLoginLog = userLoginLogRepository.findTopByIsLoginSuccessOrderByIdDesc(true);
         Long countTries = userLoginLogRepository
-                .findAllByUserAndCreatedDateBetween(user, timeDelay, timeNow)
+                .findAllByUserAndCreatedDateBetween(userAccount.getUser(), timeDelay, timeNow)
                 .filter(log -> log.getId() > lastSuccessLoginLog.getId())
                 .count();
         if (countTries >= AMOUNT_OF_ALLOWED_MAX_TRIES) {
