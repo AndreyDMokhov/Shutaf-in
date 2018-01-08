@@ -203,6 +203,10 @@ public class DealServiceImpl implements DealService {
         dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
 
         setPermissionToReadOnly(deal, userId);
+
+        if (dealUserRepository.findAllByDealIdAndDealUserStatus(dealId, DealUserStatus.ACTIVE).size() < 2) {
+            deleteDeal(dealId, userId);
+        }
     }
 
     @Override
@@ -222,6 +226,10 @@ public class DealServiceImpl implements DealService {
         dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
 
         setPermissionToReadOnly(deal, userToRemoveId);
+
+        if (dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(), DealUserStatus.ACTIVE).size() < 2) {
+            deleteDeal(deal.getId(), internalDealUserWeb.getUserOriginId());
+        }
     }
 
     @Override

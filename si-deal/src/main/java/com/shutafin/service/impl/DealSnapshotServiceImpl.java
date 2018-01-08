@@ -51,7 +51,16 @@ public class DealSnapshotServiceImpl implements DealSnapshotService {
 
     @Override
     public void saveDealSnapshot(Deal deal, Long userId) {
-        DealSnapshot dealSnapshot = new DealSnapshot();
+        Optional<DealSnapshot> dealSnapshotOptional = dealSnapshotRepository.findAllByUserId(userId).stream()
+                .filter(dealSnapshot -> dealSnapshot.getDealSnapshotInfo().getDealId().equals(deal.getId()))
+                .findFirst();
+
+        DealSnapshot dealSnapshot;
+        if (dealSnapshotOptional.isPresent()) {
+            dealSnapshot = dealSnapshotOptional.get();
+        } else {
+            dealSnapshot = new DealSnapshot();
+        }
         dealSnapshot.setUserId(userId);
 
         DealSnapshotInfo dealSnapshotInfo = new DealSnapshotInfo();
