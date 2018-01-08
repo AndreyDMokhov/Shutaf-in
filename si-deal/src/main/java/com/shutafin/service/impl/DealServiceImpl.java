@@ -65,8 +65,13 @@ public class DealServiceImpl implements DealService {
         dealWeb.getUsers().remove(dealWeb.getOriginUserId());
 
         for (Long userId : dealWeb.getUsers()) {
-            DealUser dealUser = new DealUser(userId, deal, DealUserStatus.PENDING, DealUserPermissionType.READ_ONLY);
-            dealUserRepository.save(dealUser);
+            if (!userHasActiveDeal(userId)) {
+                DealUser dealUser = new DealUser(userId, deal, DealUserStatus.PENDING, DealUserPermissionType.READ_ONLY);
+                dealUserRepository.save(dealUser);
+            } else {
+                log.warn("User {} has already active deal", userId);
+                throw new SystemException(String.format("User %d has already active deal", userId));
+            }
         }
 
         DealUser dealUserOrigin = new DealUser(dealWeb.getOriginUserId(), deal, DealUserStatus.ACTIVE,
@@ -76,6 +81,18 @@ public class DealServiceImpl implements DealService {
         dealWeb.setDealId(deal.getId());
         dealWeb.setTitle(deal.getTitle());
         return dealWeb;
+    }
+
+    private boolean userHasActiveDeal(Long userId) {
+        List<DealUser> userDeals = dealUserRepository.findAllByUserId(userId);
+        if (userDeals != null && !userDeals.isEmpty()) {
+            for (DealUser dealUser : userDeals) {
+                if (dealUser.getDealUserStatus() == DealUserStatus.ACTIVE) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -189,22 +206,35 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public void removeDealUser(InternalDealRemoveUserWeb internalDealRemoveUserWeb) {
-        Deal deal = checkDealPermissions(internalDealRemoveUserWeb.getDealId(),
-                internalDealRemoveUserWeb.getUserOriginId(), NEED_FULL_ACCESS);
-        Long userToRemoveId = internalDealRemoveUserWeb.getUserToRemoveId();
+    public void removeDealUser(InternalDealUserWeb internalDealUserWeb) {
+        Deal deal = checkDealPermissions(internalDealUserWeb.getDealId(),
+                internalDealUserWeb.getUserOriginId(), NEED_FULL_ACCESS);
+        Long userToRemoveId = internalDealUserWeb.getUserToChangeId();
         DealUser dealUser = dealUserRepository.findByDealIdAndUserId(deal.getId(), userToRemoveId);
         if (dealUser == null) {
             log.warn("User {} was not included to deal {}", userToRemoveId,
-                    internalDealRemoveUserWeb.getDealId());
+                    internalDealUserWeb.getDealId());
             throw new SystemException(String.format("User %d was not included to deal %d", userToRemoveId,
-                    internalDealRemoveUserWeb.getDealId()));
+                    internalDealUserWeb.getDealId()));
         }
         dealSnapshotService.saveDealSnapshot(deal, userToRemoveId);
         dealUser.setDealUserStatus(DealUserStatus.REMOVED);
         dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
 
         setPermissionToReadOnly(deal, userToRemoveId);
+    }
+
+    @Override
+    public void addDealUser(InternalDealUserWeb internalDealUserWeb) {
+        Deal deal = checkDealPermissions(internalDealUserWeb.getDealId(),
+                internalDealUserWeb.getUserOriginId(), NEED_FULL_ACCESS);
+        Long userToAddId = internalDealUserWeb.getUserToChangeId();
+        if (userHasActiveDeal(userToAddId)) {
+            log.warn("User {} has already active deal", userToAddId);
+            throw new SystemException(String.format("User %d has already active deal", userToAddId));
+        }
+        DealUser dealUser = new DealUser(userToAddId, deal, DealUserStatus.PENDING, DealUserPermissionType.READ_ONLY);
+        dealUserRepository.save(dealUser);
     }
 
     private void setPermissionToReadOnly(Deal deal, Long userToRemoveId) {

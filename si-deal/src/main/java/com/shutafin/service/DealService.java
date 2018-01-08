@@ -10,7 +10,8 @@ public interface DealService {
     InternalDealWeb initiateDeal(InternalDealWeb dealWeb);
     void confirmDealUser(Long dealId, Long userId);
     void leaveDeal(Long dealId, Long userId);
-    void removeDealUser(InternalDealRemoveUserWeb internalDealRemoveUserWeb);
+    void removeDealUser(InternalDealUserWeb internalDealUserWeb);
+    void addDealUser(InternalDealUserWeb internalDealUserWeb);
     List<DealUserWeb> getAllUserDeals(Long userId);
     DealResponse getDeal(Long dealId, Long userId);
     InternalDealWeb renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb);

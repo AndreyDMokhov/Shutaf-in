@@ -9,10 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class InternalDealRemoveUserWeb {
+public class InternalDealUserWeb {
 
     private Long dealId;
     private Long userOriginId;
-    private Long userToRemoveId;
+    private Long userToChangeId;
     
 }

@@ -42,6 +42,11 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
+    public void addDealUser(Long dealId, Long userOriginId, Long userToAddId) {
+        dealControllerSender.addDealUser(dealId, userOriginId, userToAddId);
+    }
+
+    @Override
     public List<DealUserWeb> getAllUserDeals(Long userId) {
         return dealControllerSender.getAllUserDeals(userId);
     }
