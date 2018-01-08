@@ -13,6 +13,7 @@ public interface DealService {
     void confirmDealUser(Long dealId, Long userId);
     void leaveDeal(Long dealId, Long userId);
     void removeDealUser(Long dealId, Long userOriginId, Long userToRemoveId);
+    void addDealUser(Long dealId, Long userOriginId, Long userToAddId);
     List<DealUserWeb> getAllUserDeals(Long userId);
     DealResponse getDeal(Long dealId, Long userId);
     DealWeb renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb);

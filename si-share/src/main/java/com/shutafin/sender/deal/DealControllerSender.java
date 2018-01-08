@@ -55,9 +55,15 @@ public class DealControllerSender {
 
     public void removeDealUser(Long dealId, Long userOriginId, Long userToRemoveId) {
         String requestUrl = getDealUrl() + "remove";
-        InternalDealRemoveUserWeb internalDealRemoveUserWeb = new InternalDealRemoveUserWeb(dealId, userOriginId,
+        InternalDealUserWeb internalDealUserWeb = new InternalDealUserWeb(dealId, userOriginId,
                 userToRemoveId);
-        new RestTemplate().put(requestUrl, internalDealRemoveUserWeb);
+        new RestTemplate().put(requestUrl, internalDealUserWeb);
+    }
+
+    public void addDealUser(Long dealId, Long userOriginId, Long userToAddId) {
+        String requestUrl = getDealUrl() + "add";
+        InternalDealUserWeb internalDealUserWeb = new InternalDealUserWeb(dealId, userOriginId, userToAddId);
+        new RestTemplate().put(requestUrl, internalDealUserWeb);
     }
 
     public List<DealUserWeb> getAllUserDeals(Long userId) {

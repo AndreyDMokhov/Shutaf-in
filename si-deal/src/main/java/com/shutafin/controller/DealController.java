@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.Deal;
 import com.shutafin.model.web.deal.*;
 import com.shutafin.service.DealService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +45,15 @@ public class DealController {
     }
 
     @PutMapping(value = "/remove", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    void removeDealUser(@RequestBody InternalDealRemoveUserWeb internalDealRemoveUserWeb) {
+    void removeDealUser(@RequestBody InternalDealUserWeb internalDealUserWeb) {
         log.debug("/remove");
-        dealService.removeDealUser(internalDealRemoveUserWeb);
+        dealService.removeDealUser(internalDealUserWeb);
+    }
+
+    @PutMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    void addDealUser(@RequestBody InternalDealUserWeb internalDealUserWeb) {
+        log.debug("/add");
+        dealService.addDealUser(internalDealUserWeb);
     }
 
     @GetMapping(value = "/all/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})

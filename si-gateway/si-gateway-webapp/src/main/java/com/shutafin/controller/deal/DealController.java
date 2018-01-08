@@ -54,6 +54,13 @@ public class DealController {
         dealService.removeDealUser(dealId, userId, userToRemoveId);
     }
 
+    @PutMapping(value = "/add/{dealId}/{userToAddId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void addDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
+                               @PathVariable(value = "userToAddId") Long userToAddId) {
+        log.debug("/add/{dealId}/{userToChangeId}");
+        dealService.addDealUser(dealId, userId, userToAddId);
+    }
+
     @GetMapping(value = "/all", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<DealUserWeb> getAllUserDeals(@AuthenticatedUser Long userId) {
         log.debug("/all");
