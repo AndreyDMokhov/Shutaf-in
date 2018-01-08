@@ -1,10 +1,9 @@
 package com.shutafin.controller;
 
 
-import com.shutafin.model.entities.User;
+import com.shutafin.model.error.ErrorType;
+import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.error.ErrorType;
-import com.shutafin.model.web.error.errors.InputValidationError;
 import com.shutafin.model.web.user.GatewayEmailChangedResponse;
 import com.shutafin.service.EmailChangeConfirmationService;
 import com.shutafin.service.SessionManagementService;
@@ -175,13 +174,13 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
     }
 
-    private User createUser() {
-        User user = new User();
-        user.setFirstName("Alexander");
-        user.setLastName("Matsievsky");
-        user.setEmail("matsievsky@gmail.com");
-        return user;
-    }
+//    private User createUser() {
+//        User user = new User();
+//        user.setFirstName("Alexander");
+//        user.setLastName("Matsievsky");
+//        user.setEmail("matsievsky@gmail.com");
+//        return user;
+//    }
 
     private void testEmailChangeConfirmationWeb(String json, List<String> errorList) {
         List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);

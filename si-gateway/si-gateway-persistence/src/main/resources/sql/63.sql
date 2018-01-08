@@ -1,4 +1,0 @@
-ALTER TABLE `userdb`.`chat_user`
-DROP FOREIGN KEY `FK_CHAT_USER_USER_ID_USER`;
-ALTER TABLE `userdb`.`chat_user`
-DROP INDEX `FK_CHAT_USER_USER_ID_USER_idx` ;

@@ -13,4 +13,7 @@ public interface ImagePairRepository extends BaseJpaRepository<ImagePair, Long> 
 
     @Query("select ip.originalImage from ImagePair ip where ip.compressedImage = :userImage")
     UserImage findOriginalUserImage(@Param("userImage") UserImage userImage);
+
+    @Query("select ip.originalImage.id from ImagePair ip where ip.compressedImage.id = :userImageId")
+    Long findOriginalUserImageById(@Param("userImageId") Long userImageId);
 }

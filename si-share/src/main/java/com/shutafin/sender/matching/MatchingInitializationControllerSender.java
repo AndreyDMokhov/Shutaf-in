@@ -13,10 +13,12 @@ public class MatchingInitializationControllerSender {
     @Autowired
     private DiscoveryRoutingService routingService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public MatchingInitializationResponse getInitializationResponse(Long userId, Integer languageId) {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
                 String.format("/initialization/%d/all/%d", userId, languageId);
-
-        return new RestTemplate().getForEntity(url, MatchingInitializationResponse.class).getBody();
+        return restTemplate.getForEntity(url, MatchingInitializationResponse.class).getBody();
     }
 }

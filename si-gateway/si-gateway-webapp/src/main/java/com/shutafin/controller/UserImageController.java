@@ -1,6 +1,6 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserImageService;
@@ -20,16 +20,10 @@ public class UserImageController {
     @Autowired
     private UserImageService userImageService;
 
-    @RequestMapping(value = "/{userImageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getUserImage(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "userImageId") Long userImageId) {
-        log.debug("/images/{id}");
-        return userImageService.getUserImage(authenticatedUserId, userImageId);
-    }
-
-    @RequestMapping(value = "/compressed/{imageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "imageId") Long imageId) {
+    @RequestMapping(value = "/{imageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getCompressedUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "imageId") Long imageId) {
         log.debug("/images/{userId}");
-        return userImageService.getUserImage(imageId);
+        return userImageService.getCompressedUserImage(imageId);
     }
 
     @RequestMapping(value = "/original/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})

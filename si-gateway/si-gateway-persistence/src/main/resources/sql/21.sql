@@ -1,7 +1,0 @@
-CREATE TABLE `I_GENDER` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ID`));
-
-INSERT INTO `i_gender` (`ID`) VALUES(1);
-INSERT INTO `i_gender` (`ID`) VALUES(2);
-INSERT INTO `i_gender` (`ID`) VALUES(3);

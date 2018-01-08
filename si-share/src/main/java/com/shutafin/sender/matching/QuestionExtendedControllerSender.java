@@ -1,11 +1,14 @@
 package com.shutafin.sender.matching;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutafin.model.web.matching.QuestionExtendedWithAnswersLocaleWeb;
 import com.shutafin.model.web.matching.QuestionImportanceDTO;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -18,24 +21,38 @@ public class QuestionExtendedControllerSender {
     @Autowired
     private DiscoveryRoutingService routingService;
 
-    public List<QuestionExtendedWithAnswersLocaleWeb> getQuestionsExtendedWithAnswers(Integer languageId){
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @SneakyThrows
+    public List<QuestionExtendedWithAnswersLocaleWeb> getQuestionsExtendedWithAnswers(Integer languageId) {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
                 String.format("/matching/extended/questions/answers/%d", languageId);
 
-        return new RestTemplate().getForEntity(url, List.class).getBody();
+        String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
+
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<QuestionExtendedWithAnswersLocaleWeb>>() {
+        });
     }
 
-    public List<QuestionImportanceDTO> getQuestionImportanceList(Integer languageId){
+    @SneakyThrows
+    public List<QuestionImportanceDTO> getQuestionImportanceList(Integer languageId) {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
                 String.format("/matching/extended/questions/importance/%d", languageId);
 
-        return new RestTemplate().getForEntity(url, List.class).getBody();
+        String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
+
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<QuestionImportanceDTO>>() {
+        });
     }
 
-    public List<UserQuestionExtendedAnswersWeb> getSelectedQuestionExtendedAnswers(Long userId){
+    @SneakyThrows
+    public List<UserQuestionExtendedAnswersWeb> getSelectedQuestionExtendedAnswers(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
                 String.format("/matching/extended/questions/selected/answers/%d", userId);
-
-        return new RestTemplate().getForEntity(url, List.class).getBody();
+        String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserQuestionExtendedAnswersWeb>>() {
+        });
     }
 }

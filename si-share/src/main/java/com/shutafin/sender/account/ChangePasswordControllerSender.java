@@ -13,10 +13,12 @@ public class ChangePasswordControllerSender {
     @Autowired
     private DiscoveryRoutingService routingService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public void changePassword(AccountChangePasswordWeb changePasswordWeb, Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/%d/change-password", userId);
-
-        new RestTemplate().put(url, changePasswordWeb);
+        restTemplate.put(url, changePasswordWeb);
     }
 }

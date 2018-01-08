@@ -1,7 +1,7 @@
 package com.shutafin.controller;
 
-import com.shutafin.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountEmailChangeValidationRequest;
 import com.shutafin.model.web.user.GatewayEmailChangedResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;

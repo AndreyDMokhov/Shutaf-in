@@ -1,6 +1,6 @@
 package com.shutafin.model.entities.extended;
 
-import com.shutafin.model.AbstractLocalizedConstEntity;
+import com.shutafin.model.base.AbstractLocalizedConstEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -19,8 +19,6 @@
         <module>si-gateway-model</module>
         <module>si-gateway-webapp</module>
         <module>si-gateway-persistence</module>
-        <module>si-gateway-common</module>
-        <module>si-gateway-internal</module>
     </modules>
 
     <dependencies>

@@ -1,6 +1,6 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.account.AccountEmailRequest;
 import com.shutafin.model.web.account.AccountResetPassword;
 import com.shutafin.model.web.email.EmailNotificationWeb;
@@ -33,7 +33,6 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         emailSender.sendEmail(notification);
     }
 
-
     @Override
     public void resetPasswordValidation(String link) {
         Boolean linkValid = emailSender.isLinkValid(link, EmailReason.RESET_PASSWORD);
@@ -44,7 +43,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     public void passwordChange(PasswordWeb passwordWeb, String link) {
-        EmailResetPasswordResponse o = (EmailResetPasswordResponse)emailSender.confirmLink(link, EmailReason.RESET_PASSWORD);
+        EmailResetPasswordResponse o = (EmailResetPasswordResponse) emailSender.confirmLink(link, EmailReason.RESET_PASSWORD);
         AccountResetPassword resetPassword = AccountResetPassword.builder()
                 .newPassword(passwordWeb.getNewPassword())
                 .userId(o.getUserId())

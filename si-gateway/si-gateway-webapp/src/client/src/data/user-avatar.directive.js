@@ -8,7 +8,7 @@ angular.module('app').directive('userAvatar', function (Restangular,
         restrict: "E",
         template: '<img ng-click="openModalImageSize()" ng-src={{getUserImagePath()}} class="logo-center pointer" width="{{width}}" height="{{height}}">',
         scope: {
-            userData: "=",
+            userId: "@",
             width: "@",
             height: '@'
         },
@@ -25,7 +25,7 @@ angular.module('app').directive('userAvatar', function (Restangular,
             var BASE64_IMAGE_PATH = 'data:image/jpeg;base64,';
 
             scope.getUserImagePath = function () {
-                if (!scope.userData.userId) {
+                if (!scope.userId) {
                     return scope.image = DEFAULT_IMAGE_PATH;
                 }
                 scope.image = findUserImage();
@@ -38,12 +38,13 @@ angular.module('app').directive('userAvatar', function (Restangular,
             };
 
             function findUserImage() {
-                if ($sessionStorage.userProfile.userId === parseInt(scope.userData.userId)) {
+                if ($sessionStorage.userProfile.userId === parseInt(scope.userId)) {
                     scope.currentUser = $sessionStorage.userProfile;
                     return scope.currentUser.userImage;
                 }
-                if ($sessionStorage[scope.userData.userId]) {
-                    return $sessionStorage[scope.userData.userId];
+                if ($sessionStorage[scope.userId]) {
+                    scope.currentUser = $sessionStorage[scope.userId];
+                    return $sessionStorage[scope.userId].image;
                 }
                 return '';
             }
@@ -55,7 +56,7 @@ angular.module('app').directive('userAvatar', function (Restangular,
                     controller: function ($uibModalInstance) {
                         var vm = this;
                         vm.currentImage = scope.originImage;
-                        vm.fullName = scope.userData.firstName + " " + scope.userData.lastName;
+                        vm.fullName = scope.currentUser.firstName + " " + scope.currentUser.lastName;
 
                         vm.closeModal = function () {
                             $uibModalInstance.close();
@@ -72,7 +73,7 @@ angular.module('app').directive('userAvatar', function (Restangular,
                     scope.open();
                 }
                 else {
-                    userSearchModel.getOriginalUserImageById(scope.userData.userId).then(
+                    userSearchModel.getOriginalUserImageById(scope.userId).then(
                         function (success) {
                             scope.originImage = 'data:image/jpeg;base64,' + success.data.data.image;
                             scope.open();
