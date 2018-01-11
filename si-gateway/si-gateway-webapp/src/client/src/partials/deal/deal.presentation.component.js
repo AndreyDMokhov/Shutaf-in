@@ -8,33 +8,52 @@ app.component("dealPresentationComponent", {
         vm.deals = [];
         vm.dealInfo = {};
 
-        vm.selectedDeal = function (deal) {
+        vm.showSelectedDeal = function (deal) {
             vm.showLoading = true;
 
             dealPresentationModel.getDealInfo(deal.dealId).then(
                 function (success) {
                     vm.dealInfo = success.data.data;
-                    vm.dealTabClicked=true;
+                    vm.dealTabClicked = true;
                     vm.showLoading = false;
-                    // console.log(vm.dealInfo);
                 },
-                function (err) {
-                    console.log(err);
-
+                function (error) {
+                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         };
 
-        function getDeal() {
+        function getDeals() {
             dealPresentationModel.getDeals().then(function (success) {
                 vm.deals = success.data.data;
-
             });
         }
 
-        function init() {
-            vm.deals = getDeal();
-        }
-
-        init();
+        vm.renameDeal = function (size, type, deal) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                component: 'modalComponent',
+                size: size,
+                resolve: {
+                    type: function () {
+                        return type;
+                    }
+                }
+            });
+            modalInstance.result.then(function (newName) {
+                if (newName === undefined) {
+                    newName = 'Deal';
+                }
+                var param = {title: newName};
+                dealPresentationModel.renameDeal(deal.dealId, param).then(
+                    function (success) {
+                        getDeals();
+                    },
+                    function (error) {
+                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                    }
+                );
+            });
+        };
+        getDeals();
     }
 });

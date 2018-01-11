@@ -1,0 +1,8 @@
+<nav ng-class="getNavStyle(scroll)"  style="margin: 5% 0 0 40%">
+    <button ng-click="goPrevious()"><span>&lt;</span></button>
+    <button ng-click="goNext()"><span>&gt;</span></button>
+    <span>{{'Deal.page'|translate}}: </span>
+    <input type="text" min=1 ng-model="pageNum" style="width: 30px">
+    <span> / {{pageCount}}</span>
+</nav>
+

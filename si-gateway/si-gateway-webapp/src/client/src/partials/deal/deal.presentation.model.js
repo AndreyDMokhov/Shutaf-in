@@ -16,11 +16,17 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
     function getDealInfo(dealId) {
         return rest.one('/' +dealId).customGET();
     }
+    function renameDeal(dealId, params) {
+        console.log(dealId);
+        console.log(params);
+        return rest.one('/rename/' +dealId).customPOST(params);
+    }
 
 
     return {
         getDeals: getDeals,
-        getDealInfo: getDealInfo
+        getDealInfo: getDealInfo,
+        renameDeal: renameDeal
 
     };
 });

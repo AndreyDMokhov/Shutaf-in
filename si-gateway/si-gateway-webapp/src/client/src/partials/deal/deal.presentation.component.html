@@ -1,18 +1,18 @@
-<!--<img src="./images/iImage.png" alt="">-->
-<!--<a ng-href="./images/iImage.png" target="_blank">trtrtr</a>-->
-
-
-<div class="row margin-top" >
-    <i ng-show="vm.showLoading" class="fa fa-spinner fa-spin"
-       style="position: relative;font-size:36px; top:30vh; left:50%; z-index:9999"></i>
+<div class="row margin-top">
+    <i ng-show="vm.showLoading" class="fa fa-spinner fa-spin spin-by-center"></i>
     <div class="col-md-12">
         <uib-tabset active="activeDeal" vertical="false" type="pills">
             <uib-tab
-
                     ng-repeat="deal in vm.deals"
-                    ng-click="vm.selectedDeal(deal)">
-                <uib-tab-heading >
+                    ng-click="vm.showSelectedDeal(deal)">
+                <uib-tab-heading>
                     {{deal.title}}
+                    <i
+                            class="fa fa-edit deal-rename icon-rename"
+                            ng-click="$event.preventDefault();$event.stopPropagation(); vm.renameDeal('sm', 'input',deal)"
+                            uib-tooltip="{{'Deal.rename' |translate}}"
+
+                    ></i>
                 </uib-tab-heading>
             </uib-tab>
         </uib-tabset>
@@ -23,9 +23,41 @@
 <div class="row">
     <div class="col-md-12">
         <div ng-if="vm.dealTabClicked">
-            <deal-component deal-info="vm.dealInfo" ></deal-component>
+            <deal-component deal-info="vm.dealInfo"></deal-component>
         </div>
     </div>
 </div>
 
+
+<!-- =================================== Modal dialog ===============================================-->
+<div class="modal-dialog">
+    <script type="text/ng-template" id="ModalContent.html">
+        <div ng-switch="vm.resolve.type">
+            <div ng-switch-when="input">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">New tabs name</h3>
+                </div>
+                <div class="modal-body-original" id="modal-body">
+                    <label for="newTabName">New panel name</label>
+                    <input autofocus class="input-modal" ng-model="vm.newTabName" id="newTabName" name="newTabName">
+                </div>
+                <div class="modal-footer ">
+                    <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+                    <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
+                </div>
+            </div>
+            <div ng-switch-when="text">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title-1">Remove panel</h3>
+                </div>
+                <div class="modal-body-original">
+                    {{vm.resolve.text}}
+                </div>
+                <div class="modal-footer ">
+                    <button class="btn btn-primary" type="button" ng-click="vm.ok()">Yes</button>
+                    <button class="btn btn-warning" type="button" ng-click="vm.cancel()">No</button>
+                </div>
+            </div>
+        </div>
+    </script>
 </div>

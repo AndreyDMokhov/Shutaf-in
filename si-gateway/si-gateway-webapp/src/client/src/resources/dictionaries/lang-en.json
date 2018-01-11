@@ -10,10 +10,17 @@
 
   "SECTION": "DEAL",
   "Deal.title":"Deal",
-  "Deal.content.bills": "Bills",
-  "Deal.content.photos": "Photos",
-  "Deal.content.my_place": "My place",
-  "Deal.content.arhives": "NNM",
+
+  "Deal.withoutPanel.text" : "You haven't folders",
+  "Deal.withoutPanel.create" : "Create one",
+  "Deal.rename" : "Rename",
+  "Deal.delete" : "Delete",
+  "Deal.download" : "Download",
+  "Deal.createFolder" : "Create new folder",
+  "Deal.uploadFile" : "Upload file",
+  "Deal.confirmButton" : "Upload",
+  "Deal.page": "Page",
+  "Deal.message.documentSaved": "Document was added",
 
   "SECTION":"HOME",
   "Home.title":"Home",

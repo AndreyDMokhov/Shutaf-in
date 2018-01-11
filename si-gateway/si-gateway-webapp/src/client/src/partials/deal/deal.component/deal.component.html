@@ -1,30 +1,11 @@
 <div class="row" >
-
-
-        <!--<label for="file-upload" >-->
-        <!--<i class="fa fa-cloud-upload"></i>-->
-        <!--<i class="fa fa-cloud-upload"></i>-->
-        <!--<button ng-click="onLoad()">load</button>-->
-
-        <!--</label>-->
-        <!--<input id="file-upload" type="file" ng-model="vm.fileInfo" name="file" base-sixty-four-input required onload="onLoad" maxsize="5000" accept=".doc, .docx, .jpg">-->
-        <!--</div>-->
-        <!--<button  class="btn btn-success " style="border-radius: 50%"><i-->
-        <!--class="fa fa-plus"></i></button>-->
-        <!--<button ng-click="go()">GO</button>-->
-
-
-
-
-
     <div class="col-md-3">
-        <div style="text-align:center;">
-        <label  style="cursor: pointer; margin: 0 0 10px 0" ng-click="vm.addPallet(vm.dealInfo.dealId, 'sm', 'input')">Add panel
+        <div style="text-align:center;" ng-if="vm.isDealStatusActive()">
+        <label  class="add-folder" ng-click="vm.addPallet(vm.dealInfo.dealId, 'sm', 'input')">{{'Deal.createFolder'|translate}}
             <i  class="fa fa-th-list"></i></label>
         </div>
 
-
-        <uib-tabset ui-sref-active="vm.getSelectedPallet()" vertical="true" type="pills">
+        <uib-tabset vertical="true" type="pills">
             <uib-tab
                     ng-repeat="(key, value) in vm.panels"
                     ng-click="vm.selectPanel(key)">
@@ -32,68 +13,38 @@
                     {{value}}
                     <div style="float: right;">
                         <i
-                                class="fa fa-edit " style="color:black"
+                                class="fa fa-edit icon-rename"
                                 ng-click="$event.preventDefault(); $event.stopPropagation(); vm.renamePanel('sm', 'input', key)"
-                                uib-tooltip="Rename document"
+                                uib-tooltip="{{'Deal.rename'|translate}}"
                                 ng-if="vm.isDealStatusActive()"
                         ></i>
                         &nbsp;
                         <i
-                                class="fa fa-remove" style="font-size:16px;color:red"
+                                class="fa fa-remove icon-delete"
                                 ng-click="$event.preventDefault(); $event.stopPropagation(); vm.removePanel('sm', 'text', 'Are you sure?', key)"
-                                uib-tooltip="Delete document"
+                                uib-tooltip="{{'Deal.delete'|translate}}"
                         ></i>
                     </div>
                 </uib-tab-heading>
             </uib-tab>
         </uib-tabset>
-        <!--<div ng-if="vm.isDealStatusActive()" class="col-md-offset-6 pull-right" style="margin-top: 10px">-->
-            <!--<button class="btn btn-primary " style="border-radius: 50%"-->
-                    <!--ng-click="vm.removePanel('sm', 'text', 'Are you sure?')"><i-->
-                    <!--class="fa fa-times"></i></button>-->
-            <!--<button class="btn btn-primary " style="border-radius: 50%" ng-click="vm.renamePanel('sm', 'input')"><i-->
-                    <!--class="fa fa-edit"></i></button>-->
-        <!--</div>-->
     </div>
     <div class="col-md-9">
         <div ng-if="vm.palletClicked">
             <pallet-component documents="vm.documents" panel-id="vm.panelId" get-deals="vm.selectPanel" status-deal="vm.statusDeal"></pallet-component>
         </div>
+        <div  class="col-md-4 col-sm-4 col-xs-12 col-md-offset-3 col-sm-offset-3 " >
+            <div ng-if="vm.emptyDeal && vm.isDealStatusActive()" class="without-folder">
+                <p>
+                    {{'Deal.withoutPanel.text' | translate}}
+                </p>
+                <p>
+                    <a class="pointer" ng-click="vm.addPallet(vm.dealInfo.dealId, 'sm', 'input')">{{'Deal.withoutPanel.create' | translate}}</a>
+                </p>
+
+            </div>
+        </div>
+
     </div>
 </div>
 
-<!-- =================================== Modal dialog ===============================================-->
-<div class="modal-dialog">
-    <script type="text/ng-template" id="ModalContent.html">
-        <div ng-switch="vm.resolve.type">
-            <div ng-switch-when="input">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="modal-title">New tabs name</h3>
-                </div>
-                <div class="modal-body-original" id="modal-body">
-                    <label for="newTabName">New panel name</label>
-                    <input autofocus class="input-modal" ng-model="vm.newTabName" id="newTabName" name="newTabName">
-                </div>
-                <div class="modal-footer ">
-                    <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
-                    <button class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
-
-                </div>
-            </div>
-            <div ng-switch-when="text">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="modal-title-1">Remove panel</h3>
-                </div>
-                <div class="modal-body-original">
-                    {{vm.resolve.text}}
-                </div>
-                <div class="modal-footer ">
-                    <button class="btn btn-primary" type="button" ng-click="vm.ok()">Yes</button>
-                    <button class="btn btn-warning" type="button" ng-click="vm.cancel()">No</button>
-                </div>
-            </div>
-
-        </div>
-
-    </script>
-</div>

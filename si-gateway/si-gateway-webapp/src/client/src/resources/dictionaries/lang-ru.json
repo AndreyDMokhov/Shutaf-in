@@ -11,6 +11,17 @@
   "SECTION": "DEAL",
   "Deal.title":"Сделка",
 
+  "Deal.withoutPanel.text" : "У вас нет папок",
+  "Deal.withoutPanel.create" : "Создать",
+  "Deal.rename" : "Переименовать",
+  "Deal.delete" : "Удалить",
+  "Deal.download" : "Скачать",
+  "Deal.createFolder" : "Создать новую папку",
+  "Deal.uploadFile" : "Добавить файл",
+  "Deal.confirmButton" : "Добавить",
+  "Deal.page": "Страница",
+  "Deal.message.documentSaved": "Файл сохранен",
+
   "SECTION":"HOME",
   "Home.title":"Домашняя",
   "Home.description":"Это сервис для поиска соседей.",
