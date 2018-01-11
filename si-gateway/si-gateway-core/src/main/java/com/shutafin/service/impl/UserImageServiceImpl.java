@@ -30,14 +30,8 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
-    public AccountUserImageWeb getUserImage(Long userId, Long userImageId) {
-
-        return userImageControllerSender.getUserImage(userId, userImageId);
-    }
-
-    @Override
-    public AccountUserImageWeb getUserImage(Long userId) {
-        return userImageControllerSender.getUserImageByUserId(userId);
+    public AccountUserImageWeb getCompressedUserImage(Long userId) {
+        return userImageControllerSender.getCompressedUserImageByUserId(userId);
     }
 
     @Override
@@ -49,7 +43,6 @@ public class UserImageServiceImpl implements UserImageService {
     public void deleteUserImage(Long userId, Long userImageId) {
         userImageControllerSender.deleteUserImage(userId, userImageId);
     }
-
 
 
     @Override

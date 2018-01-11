@@ -21,14 +21,9 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
 
     }
 
-    function getUserInfo(id) {
+    function getCompressedUserImageById(userId) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
-        return rest.one('api/images/' + id).customGET();
-    }
-
-    function getUserImageById(userId){
-        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
-        return rest.one('api/images/compressed/' + userId).customGET();
+        return rest.one('api/images/' + userId).customGET();
     }
 
     function getOriginalUserImageById(userId){
@@ -39,8 +34,7 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
     return {
         userSearch: userSearch,
         saveFilters: saveFilters,
-        getUserInfo: getUserInfo,
-        getUserImageById:getUserImageById,
+        getCompressedUserImageById: getCompressedUserImageById,
         getOriginalUserImageById:getOriginalUserImageById
 
     };

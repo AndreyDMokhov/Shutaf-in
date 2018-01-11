@@ -28,7 +28,7 @@ var path = require('path');
 
 
 gulp.task('watch', function() {
-     gulp.watch(['src/**/*', '!src/bower_components/**'], ['eslint' , 'less']);
+    gulp.watch(['src/**/*', '!src/bower_components/**'], ['eslint', 'less']);
 });
 
 //clean all,
@@ -179,10 +179,10 @@ gulp.task('eslint', function () {
 });
 
 gulp.task('less', function () {
-    return gulp.src(['./src/styles/*.less' ,  '!./src/styles/variables.less'])
+    return gulp.src(['./src/styles/*.less', '!./src/styles/variables.less'])
         .pipe(less())
         .pipe(gulp.dest('./src/styles'));
-});1
+});
 
 
 // to run new server
