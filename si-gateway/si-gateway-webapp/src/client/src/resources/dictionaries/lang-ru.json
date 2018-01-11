@@ -10,6 +10,16 @@
 
   "SECTION": "DEAL",
   "Deal.title":"Сделка",
+  "Deal.deal.modalWindow.creationPanel.header": "Создание панели",
+  "Deal.deal.modalWindow.creationPanel.content": "Введите название панели",
+  "Deal.deal.modalWindow.renamePanel.header": "Переименование панели",
+  "Deal.deal.modalWindow.renamePanel.content": "Новое имя",
+  "Deal.deal.modalWindow.removePanel.header": "Удаление панели",
+  "Deal.deal.modalWindow.removePanel.content": "Вы уверены?",
+  "Deal.deal.modalWindow.cancel": "Отмена",
+  "Deal.deal.modalWindow.ok": "Ok",
+  "Deal.deal.modalWindow.yes": "Да",
+  "Deal.deal.modalWindow.no": "Нет",
 
   "Deal.withoutPanel.text" : "У вас нет папок",
   "Deal.withoutPanel.create" : "Создать",

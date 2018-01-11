@@ -108,7 +108,8 @@ app.component('dealComponent', {
                 });
         };
 
-        vm.removePanel = function (size, type, text, idPanel) {
+        vm.removePanel = function (size, type,  idPanel) {
+
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
@@ -116,9 +117,6 @@ app.component('dealComponent', {
                 resolve: {
                     type: function () {
                         return type;
-                    },
-                    text: function () {
-                        return text;
                     }
                 }
             });
