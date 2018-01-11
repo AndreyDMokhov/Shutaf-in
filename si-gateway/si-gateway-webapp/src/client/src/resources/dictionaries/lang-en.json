@@ -10,7 +10,6 @@
 
   "SECTION": "DEAL",
   "Deal.title":"Deal",
-
   "Deal.withoutPanel.text" : "You haven't folders",
   "Deal.withoutPanel.create" : "Create one",
   "Deal.rename" : "Rename",
