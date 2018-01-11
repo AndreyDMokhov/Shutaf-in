@@ -32,7 +32,6 @@ public class PasswordServiceImpl implements PasswordService {
     private UserCredentialsRepository userCredentialsRepository;
 
     @Override
-    @Transactional
     public void createAndSaveUserPassword(User user, String password) {
         UserCredentials userCredentials = new UserCredentials();
         userCredentials.setUser(user);
@@ -40,7 +39,6 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     @Override
-    @Transactional
     public void updateUserPasswordInDb(User user, String password) {
         UserCredentials userCredentials = userCredentialsRepository.findByUser(user);
         if (userCredentials == null) {
@@ -52,7 +50,6 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     @Override
-    @Transactional
     public boolean isPasswordCorrect(User user, String password) {
         Argon2 argon2 = Argon2Factory.create();
         UserCredentials userCredentials = userCredentialsRepository.findByUser(user);

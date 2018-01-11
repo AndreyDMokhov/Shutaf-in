@@ -11,6 +11,7 @@ public interface UserImageService {
 
     UserImage addUserImage(AccountUserImageWeb image, User user, CompressionType compressionType);
     UserImage getUserImage(User user, Long userImageId);
+
     UserImage getCompressedUserImage(User user);
     void deleteUserImage(User user, Long userImageId);
     void createUserImageDirectory(User user);

@@ -13,8 +13,10 @@ import com.shutafin.repository.account.UserRepository;
 import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
 

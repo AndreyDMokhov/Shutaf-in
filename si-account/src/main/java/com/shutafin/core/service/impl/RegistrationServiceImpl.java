@@ -58,7 +58,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    @Transactional
     public void registerUser(AccountRegistrationRequest registrationRequestWeb) {
         User user = saveUser(registrationRequestWeb);
         UserAccount userAccount = saveUserAccount(user, registrationRequestWeb);

@@ -36,7 +36,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 
     @Override
-    @Transactional
     public UserImage updateProfileImage(AccountUserImageWeb userImageWeb, User user) {
         UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findByUser(user);
