@@ -11,6 +11,7 @@ app.component('palletComponent', {
     controller: function (palletModel, $uibModal, $scope, $timeout, $state, $sessionStorage, notify, $filter) {
         var vm = this;
         vm.documentsShow = [];
+        var componentType = 'file';
         var typeDocument =
             {
                 0: 'doc',
@@ -69,13 +70,14 @@ app.component('palletComponent', {
         };
 
         vm.addDocument = function () {
+            var type = 'creation';
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
                 size: 'sm',
                 resolve: {
                     type: function () {
-                        return 'input';
+                        return {type: type, component: componentType};
                     }
                 }
             });
@@ -100,23 +102,18 @@ app.component('palletComponent', {
 
                         }
                     );
-                },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         };
 
-        vm.deleteDocument = function (size, type, text, id) {
+        vm.deleteDocument = function (id) {
+            var type = 'remove';
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
-                size: size,
+                size: 'sm',
                 resolve: {
                     type: function () {
-                        return type;
-                    },
-                    text: function () {
-                        return text;
+                        return {type: type, component: componentType};
                     }
                 }
             });
@@ -133,13 +130,14 @@ app.component('palletComponent', {
         };
 
         vm.renameDocument = function (id) {
+            var type = 'rename';
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
                 size: 'sm',
                 resolve: {
                     type: function () {
-                        return 'input';
+                        return {type: type, component: componentType};
                     }
                 }
             });

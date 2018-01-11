@@ -75,7 +75,3 @@ app.component('documentDealComponent', {
 
     }
 });
-
-
-
-

@@ -28,14 +28,16 @@ app.component("dealPresentationComponent", {
             });
         }
 
-        vm.renameDeal = function (size, type, deal) {
+        vm.renameDeal = function (deal) {
+            var componentType = 'deal',
+                type = 'rename';
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
-                size: size,
+                size: 'sm',
                 resolve: {
                     type: function () {
-                        return type;
+                        return {type: type, component: componentType};
                     }
                 }
             });
@@ -50,8 +52,7 @@ app.component("dealPresentationComponent", {
                     },
                     function (error) {
                         notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
-                );
+                    });
             });
         };
         getDeals();

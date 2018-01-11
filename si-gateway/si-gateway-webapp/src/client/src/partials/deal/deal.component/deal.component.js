@@ -4,7 +4,7 @@ app.component('dealComponent', {
         dealInfo: '<'
     },
     controllerAs: 'vm',
-    controller: function (dealModel, $uibModal, $sessionStorage, $filter) {
+    controller: function (dealModel, $uibModal, $sessionStorage, $filter, notify) {
 
         var vm = this;
         var namePanelDef = "Pallet";
@@ -12,6 +12,7 @@ app.component('dealComponent', {
         vm.panelId;
         vm.documents = [];
         vm.panels = {};
+        var componentType = 'folder';
 
         vm.isDealStatusActive = function () {
             return vm.statusDeal === ACTIVE;
@@ -44,14 +45,17 @@ app.component('dealComponent', {
                 });
         };
 
-        vm.addPallet = function (dealId, size, type) {
+        vm.addPallet = function (dealId) {
+            var type = 'creation';
             var modalInstance = $uibModal.open({
+
                 animation: true,
                 component: 'modalComponent',
-                size: size,
+                size: 'sm',
                 resolve: {
+
                     type: function () {
-                        return type;
+                        return {type: type, component: componentType};
                     }
                 }
             });
@@ -77,14 +81,15 @@ app.component('dealComponent', {
             });
         };
 
-        vm.renamePanel = function (size, type, idPanel) {
+        vm.renamePanel = function (idPanel) {
+            var type = 'rename';
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
-                size: size,
+                size: 'sm',
                 resolve: {
                     type: function () {
-                        return type;
+                        return {type: type, component: componentType};
                     }
                 }
             });
@@ -102,20 +107,18 @@ app.component('dealComponent', {
                         function (error) {
                             notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                         });
-                },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         };
 
-        vm.removePanel = function (size, type, text, idPanel) {
+        vm.removePanel = function (idPanel) {
+            var type = 'remove';
             var modalInstance = $uibModal.open({
                 animation: true,
                 component: 'modalComponent',
-                size: size,
+                size: 'sm',
                 resolve: {
                     type: function () {
-                        return type;
+                        return {type: type, component: componentType};
                     }
                 }
             });
@@ -124,36 +127,13 @@ app.component('dealComponent', {
                     userId: $sessionStorage.userProfile.userId,
                     panelId: idPanel
                 };
-                dealModel.removePanel(param).then(function (success) {
-                    delete vm.panels[idPanel];
-                });
+                dealModel.removePanel(param).then(
+                    function (success) {
+                        delete vm.panels[idPanel];
+                    }, function (error) {
+                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                    });
             });
         };
     }
 });
-
-app.component('modalComponent',
-    {
-        templateUrl: 'ModalContent.html',
-        bindings: {
-            close: '&',
-            dismiss: '&',
-            resolve: '<'
-        },
-        controllerAs: "vm",
-        controller: function () {
-            var vm = this;
-
-            vm.ok = function () {
-
-                vm.close({$value: vm.newTabName});
-            };
-
-            vm.cancel = function () {
-
-                vm.dismiss({$value: 'cancel'});
-            };
-
-        }
-
-    });

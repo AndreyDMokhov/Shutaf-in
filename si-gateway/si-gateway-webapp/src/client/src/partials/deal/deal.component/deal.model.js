@@ -16,7 +16,7 @@ app.factory('dealModel', function (Restangular, $sessionStorage) {
     }
 
     function removePanel(param) {
-        return rest.one('panel/'  + param.panelId).remove();
+        return rest.one('panel/' + param.panelId).remove();
     }
 
     function renamePanel(panelId, param) {

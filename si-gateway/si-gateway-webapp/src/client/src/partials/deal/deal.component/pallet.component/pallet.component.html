@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="documents-container" >
+        <div class="documents-container">
             <div class="row after-box" ng-if="vm.statusDeal === 2">
                 <div class="col-md-offset-2" style="margin-top: 20px;">
                     <div class="input-group">
@@ -63,7 +63,7 @@
                     <div>
                         <i
                                 class="fa fa-remove icon-delete"
-                                ng-click="vm.deleteDocument('sm', 'text', 'Are you sure?',document.documentId)"
+                                ng-click="vm.deleteDocument(document.documentId)"
                                 uib-tooltip="{{'Deal.delete'|translate}}"
                         ></i>
                     </div>
