@@ -17,8 +17,6 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
         return rest.one('/' +dealId).customGET();
     }
     function renameDeal(dealId, params) {
-        console.log(dealId);
-        console.log(params);
         return rest.one('/rename/' +dealId).customPOST(params);
     }
 
