@@ -19,7 +19,7 @@ public class UserAccountControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
-    
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -78,7 +78,8 @@ public class UserAccountControllerSender {
                 "/users/info-base";
         String jsonBody = restTemplate.postForEntity(url, userIds, String.class).getBody();
 
-        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<AccountUserWeb>>() {});
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<AccountUserWeb>>() {
+        });
     }
 
     public UserSearchResponse getUserSearchObject(Long userId) {

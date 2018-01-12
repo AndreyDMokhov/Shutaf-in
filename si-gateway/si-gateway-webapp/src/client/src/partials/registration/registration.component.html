@@ -6,17 +6,19 @@
              ng-class="{
                 'has-error':  form.firstName.$dirty && !form.firstName.$valid }">
 
-            <label class="required col-sm-4 control-label" style="text-align: center" for="firstName">    <i class="fa fa-user"></i> &nbsp{{"Registration.form.firstName"|translate}}</label>
+            <label class="required col-sm-4 control-label" style="text-align: center" for="firstName">
+                <i class="fa fa-user"></i> &nbsp{{"Registration.form.firstName"|translate}}
+            </label>
             <div class="col-sm-7">
 
-            <input type="text"
-                   name="firstName"
-                   id="firstName"
-                   class="form-control "
-                   ng-model="vm.registrationData.firstName"
-                   required
-                   minlength="3"
-                   ng-maxlength="50"/>
+                <input type="text"
+                       name="firstName"
+                       id="firstName"
+                       class="form-control "
+                       ng-model="vm.registrationData.firstName"
+                       required
+                       minlength="3"
+                       ng-maxlength="50"/>
             <span ng-show="form.firstName.$invalid && form.firstName.$error.required || form.firstName.$dirty && !form.firstName.$valid">
                 <span ng-show="form.firstName.$invalid && form.firstName.$error.required && form.firstName.$dirty"
                       class="help-block">
@@ -27,13 +29,14 @@
                         {{"Registration.form.msg.shortFirstName"|translate}}
                 </span>
            </span>
-                </div>
+            </div>
         </div>
         <div class="form-group form-group-md"
              ng-class="{
                 'has-error': form.lastName.$dirty && form.lastName.$error.required
                     || form.lastName.$dirty && !form.lastName.$valid }">
-            <label class="required col-sm-4 control-label" style="text-align: center" for="lastName"><i class="fa fa-user-o"></i> &nbsp{{"Registration.form.lastName"|translate}}</label>
+            <label class="required col-sm-4 control-label" style="text-align: center" for="lastName"><i
+                    class="fa fa-user-o"></i> &nbsp{{"Registration.form.lastName"|translate}}</label>
             <div class="col-sm-7">
             <input type="text"
                    name="lastName"
@@ -59,7 +62,8 @@
              ng-class="{
              'has-error': form.email.$dirty && form.email.$error.email || form.email.$dirty && form.email.$invalid}">
 
-            <label class="required col-sm-4 control-label" style="text-align: center" for="email"><i class="fa fa-envelope"></i> &nbsp{{"Registration.form.email"|translate}}</label>
+            <label class="required col-sm-4 control-label" style="text-align: center" for="email"><i
+                    class="fa fa-envelope"></i> &nbsp{{"Registration.form.email"|translate}}</label>
             <div class="col-sm-7">
             <input type="email"
                    name="email"
@@ -84,7 +88,8 @@
         <div class="form-group form-group-md"
              ng-class="{
                 'has-error': form.password.$dirty && form.password.$invalid }">
-            <label class="required col-sm-4 control-label" style="text-align: center" for="password"><i class="fa fa-lock"></i> &nbsp{{"Registration.form.password"|translate}}</label>
+            <label class="required col-sm-4 control-label" style="text-align: center" for="password"><i
+                    class="fa fa-lock"></i> &nbsp{{"Registration.form.password"|translate}}</label>
             <div class="col-sm-7">
             <input type="password"
                    name="password"
@@ -109,7 +114,8 @@
         <div class="form-group form-group-md"
              ng-class="{
                     'has-error': form.confirmPassword.$dirty && form.confirmPassword.$error.required || form.password.$modelValue !== form.confirmPassword.$modelValue && !form.confirmPassword.$error.required}">
-            <label class="required col-sm-4 control-label" style="text-align: center" for="confirmPassword"><i class="fa fa-lock"></i> &nbsp{{"Registration.form.confirmPassword"|translate}}</label>
+            <label class="required col-sm-4 control-label" style="text-align: center" for="confirmPassword"><i
+                    class="fa fa-lock"></i> &nbsp{{"Registration.form.confirmPassword"|translate}}</label>
             <div class="col-sm-7">
             <input type="password"
                    name="confirmPassword"

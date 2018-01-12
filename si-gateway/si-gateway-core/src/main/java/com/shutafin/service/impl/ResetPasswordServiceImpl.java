@@ -43,7 +43,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     public void passwordChange(PasswordWeb passwordWeb, String link) {
-        EmailResetPasswordResponse o = (EmailResetPasswordResponse)emailSender.confirmLink(link, EmailReason.RESET_PASSWORD);
+        EmailResetPasswordResponse o = (EmailResetPasswordResponse) emailSender.confirmLink(link, EmailReason.RESET_PASSWORD);
         AccountResetPassword resetPassword = AccountResetPassword.builder()
                 .newPassword(passwordWeb.getNewPassword())
                 .userId(o.getUserId())
