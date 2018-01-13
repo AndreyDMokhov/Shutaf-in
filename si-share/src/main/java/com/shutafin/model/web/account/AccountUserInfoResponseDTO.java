@@ -26,6 +26,8 @@ public class AccountUserInfoResponseDTO {
     private Integer genderId;
     private Date dateOfBirth;
 
+    private AccountStatus accountStatus;
+
     private Long userImageId;
     private String userImage;
 
@@ -48,6 +50,7 @@ public class AccountUserInfoResponseDTO {
             Integer cityId,
             Integer genderId,
             Date dateOfBirth,
+            AccountStatus accountStatus,
             String facebookLink,
             String profession,
             String company,
@@ -61,6 +64,7 @@ public class AccountUserInfoResponseDTO {
         this.cityId = cityId;
         this.genderId = genderId;
         this.dateOfBirth = dateOfBirth;
+        this.accountStatus = accountStatus;
         this.facebookLink = facebookLink;
         this.profession = profession;
         this.company = company;

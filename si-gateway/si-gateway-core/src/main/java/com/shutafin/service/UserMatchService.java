@@ -2,6 +2,7 @@ package com.shutafin.service;
 
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
+import com.shutafin.model.web.initialization.InitializationResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
 public interface UserMatchService {
     List<Long> findMatchingUsers(Long userId);
     Map<Long, Integer> getMatchingUsersWithScores(Long userId);
-    void saveQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers);
+    InitializationResponse saveQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers);
     List<QuestionsListWithAnswersDTO> getUserQuestionsAnswers(Integer languageId);
     List getUserQuestionsSelectedAnswers(Long userId);
 }
