@@ -3,25 +3,26 @@ package com.shutafin.system;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.shutafin.GatewayApplication;
-import com.shutafin.configuration.*;
 import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
+import com.shutafin.repository.base.BaseRepositoryFactoryBean;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -34,15 +35,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Slf4j
-@WebMvcTest
-@EnableAutoConfiguration
-@ContextConfiguration(classes = {
-        ApplicationContextConfiguration.class,
-//        PersistenceContextConfiguration.class,
-        HttpMessageConverterConfiguration.class,
-        WebContextConfiguration.class,
-        GatewayTestApplication.class
-})
+@WebMvcTest(value = GatewayApplication.class)
+@ComponentScan("com.shutafin")
+@EnableTransactionManagement(proxyTargetClass = true)
+@EnableCaching
+@EnableJpaRepositories(basePackages = "com.shutafin", repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
 public class BaseTestImpl implements BaseTest {
 
     private Gson gson;

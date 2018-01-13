@@ -6,5 +6,6 @@ import com.shutafin.model.web.email.EmailNotificationWeb;
 
 public interface ResetPasswordService {
     EmailNotificationWeb getResetPasswordEmailNotification(AccountEmailRequest accountEmailRequest);
+
     void resetPassword(AccountResetPassword accountResetPassword);
 }

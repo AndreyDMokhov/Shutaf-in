@@ -19,7 +19,8 @@ app.component('userProfileImage', {
                           $scope,
                           ngDialog,
                           IMAGE_MAX_SIZE_MB,
-                          $window) {
+                          $window,
+                          userSearchModel) {
 
         var vm = this;
         $scope.myCroppedImage = '';
@@ -65,8 +66,15 @@ app.component('userProfileImage', {
                     vm.userProfile.userImage = success.data.data.image;
                     vm.userProfile.userImageId = success.data.data.id;
                     vm.userProfile.createdDate = success.data.data.createdDate;
-                    //todo change to original size image
-                    vm.userProfile.originalUserImage = success.data.data.image;
+                    userSearchModel.getOriginalUserImageById(vm.userProfile.userId).then(
+                        function (success) {
+                            vm.userProfile.originalUserImageId = success.data.data.id;
+                            vm.userProfile.originalUserImage = success.data.data.image;
+                        },
+                        function (error) {
+                            vm.userProfile.originalUserImage = data;
+                        }
+                    );
                     $sessionStorage.userProfile = vm.userProfile;
                     vm.deleteButton = false;
                     notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
