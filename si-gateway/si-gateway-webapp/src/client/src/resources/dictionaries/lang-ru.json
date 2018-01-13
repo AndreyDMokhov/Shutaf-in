@@ -178,7 +178,7 @@
   "Chat.header.rename.chat.title":"Изменить имя чата:",
 
   "SECTION" : "SITE_ACCESS_ERROR",
-  "SiteAccess.info.settings" : "Настройки информации пользователя не заданы",
+  "SiteAccess.info.settings" : "Информация пользователя не задана",
   "SiteAccess.questionnaire.settings" : "Пользовательская анкета не заполнена"
 
 }

@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
@@ -56,10 +55,10 @@ public class UserInfoControllerTest extends BaseTestImpl {
 
     @Test
     public void userSessionExists() {
-        User user = new User();
-        user.setFirstName("aaa");
-        user.setLastName("bbb");
-        user.setEmail("1@1.com");
+//        User user = new User();
+//        user.setFirstName("aaa");
+//        user.setLastName("bbb");
+//        user.setEmail("1@1.com");
 
         AccountUserInfoResponseDTO userInfoResponseDTO = new AccountUserInfoResponseDTO();
         userInfoResponseDTO.setFirstName("aaa");
@@ -68,7 +67,7 @@ public class UserInfoControllerTest extends BaseTestImpl {
 
 
         when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(1L);
-        when(userInfoService.getUserInfo(user.getId())).thenReturn(userInfoResponseDTO);
+//        when(userInfoService.getUserInfo(user.getId())).thenReturn(userInfoResponseDTO);
 
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()

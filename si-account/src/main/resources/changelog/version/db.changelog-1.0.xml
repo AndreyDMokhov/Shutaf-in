@@ -249,37 +249,97 @@
 
     <!--FOREIGN KEYS-->
     <changeSet id="3" author="ivan">
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_login_log" constraintName="USER_LOGIN_LOG_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_credentials" constraintName="USER_CREDENTIALS_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_info" constraintName="USER_INFO_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
-        <addForeignKeyConstraint baseColumnNames="COUNTRY_ID" baseTableName="i_country_locale" constraintName="I_COUNTRY_LOCALE_COUNTRY_ID_I_COUNTRY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_country"/>
-        <addForeignKeyConstraint baseColumnNames="CURRENT_CITY_ID" baseTableName="user_info" constraintName="USER_INFO_CURRENT_CITY_ID_I_CITY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_city"/>
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_image" constraintName="USER_IMAGE_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
-        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="user_account" constraintName="USER_ACCOUNT_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_language"/>
-        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="i_gender_locale" constraintName="I_GENDER_LOCALE_GENDER_ID_I_GENDER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_gender"/>
-        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="user_info" constraintName="USER_INFO_GENDER_ID_I_GENDER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_gender"/>
-        <addForeignKeyConstraint baseColumnNames="USER_IMAGE_ID" baseTableName="user_account" constraintName="USER_ACCOUNT_USER_IMAGE_ID_USER_IMAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user_image"/>
-        <addForeignKeyConstraint baseColumnNames="COMPRESSED_IMAGE_ID" baseTableName="image_pair" constraintName="IMAGE_PAIR_USER_COMPRESSED_IMAGE_ID_USER_IMAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user_image"/>
-        <addForeignKeyConstraint baseColumnNames="COUNTRY_ID" baseTableName="i_city" constraintName="I_CITY_COUNTRY_ID_I_COUNTRY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_country"/>
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="user_account" constraintName="USER_ACCOUNT_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
-        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="i_country_locale" constraintName="I_COUNTRY_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_language"/>
-        <addForeignKeyConstraint baseColumnNames="USER_IMAGE_ID" baseTableName="image_storage" constraintName="IMAGE_STORAGE_USER_IMAGE_ID_USER_IMAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user_image"/>
-        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="i_city_locale" constraintName="I_CITY_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_language"/>
-        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="i_gender_locale" constraintName="I_GENDER_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_language"/>
-        <addForeignKeyConstraint baseColumnNames="ORIGINAL_IMAGE_ID" baseTableName="image_pair" constraintName="IMAGE_PAIR_USER_ORIGINAL_IMAGE_ID_USER_IMAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user_image"/>
-        <addForeignKeyConstraint baseColumnNames="IMAGE_STORAGE_ID" baseTableName="user_image" constraintName="USER_IMAGE_IMAGE_STORAGE_ID_IMAGE_STORAGE_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="image_storage"/>
-        <addForeignKeyConstraint baseColumnNames="CITY_ID" baseTableName="i_city_locale" constraintName="I_CITY_LOCALE_CITY_ID_I_CITY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_city"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="USER_LOGIN_LOG"
+                                 constraintName="USER_LOGIN_LOG_USER_ID_USER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="USER_CREDENTIALS"
+                                 constraintName="USER_CREDENTIALS_USER_ID_USER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="USER_INFO"
+                                 constraintName="USER_INFO_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID"
+                                 referencedTableName="USER"/>
+        <addForeignKeyConstraint baseColumnNames="COUNTRY_ID" baseTableName="I_COUNTRY_LOCALE"
+                                 constraintName="I_COUNTRY_LOCALE_COUNTRY_ID_I_COUNTRY_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_COUNTRY"/>
+        <addForeignKeyConstraint baseColumnNames="CURRENT_CITY_ID" baseTableName="USER_INFO"
+                                 constraintName="USER_INFO_CURRENT_CITY_ID_I_CITY_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_CITY"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="USER_IMAGE"
+                                 constraintName="USER_IMAGE_USER_ID_USER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER"/>
+        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="USER_ACCOUNT"
+                                 constraintName="USER_ACCOUNT_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_LANGUAGE"/>
+        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="I_GENDER_LOCALE"
+                                 constraintName="I_GENDER_LOCALE_GENDER_ID_I_GENDER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_GENDER"/>
+        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="USER_INFO"
+                                 constraintName="USER_INFO_GENDER_ID_I_GENDER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_GENDER"/>
+        <addForeignKeyConstraint baseColumnNames="USER_IMAGE_ID" baseTableName="USER_ACCOUNT"
+                                 constraintName="USER_ACCOUNT_USER_IMAGE_ID_USER_IMAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER_IMAGE"/>
+        <addForeignKeyConstraint baseColumnNames="COMPRESSED_IMAGE_ID" baseTableName="IMAGE_PAIR"
+                                 constraintName="IMAGE_PAIR_USER_COMPRESSED_IMAGE_ID_USER_IMAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER_IMAGE"/>
+        <addForeignKeyConstraint baseColumnNames="COUNTRY_ID" baseTableName="I_CITY"
+                                 constraintName="I_CITY_COUNTRY_ID_I_COUNTRY_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_COUNTRY"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="USER_ACCOUNT"
+                                 constraintName="USER_ACCOUNT_USER_ID_USER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER"/>
+        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="I_COUNTRY_LOCALE"
+                                 constraintName="I_COUNTRY_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_LANGUAGE"/>
+        <addForeignKeyConstraint baseColumnNames="USER_IMAGE_ID" baseTableName="IMAGE_STORAGE"
+                                 constraintName="IMAGE_STORAGE_USER_IMAGE_ID_USER_IMAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER_IMAGE"/>
+        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="I_CITY_LOCALE"
+                                 constraintName="I_CITY_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_LANGUAGE"/>
+        <addForeignKeyConstraint baseColumnNames="LANGUAGE_ID" baseTableName="I_GENDER_LOCALE"
+                                 constraintName="I_GENDER_LOCALE_LANGUAGE_ID_I_LANGUAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_LANGUAGE"/>
+        <addForeignKeyConstraint baseColumnNames="ORIGINAL_IMAGE_ID" baseTableName="IMAGE_PAIR"
+                                 constraintName="IMAGE_PAIR_USER_ORIGINAL_IMAGE_ID_USER_IMAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER_IMAGE"/>
+        <addForeignKeyConstraint baseColumnNames="IMAGE_STORAGE_ID" baseTableName="USER_IMAGE"
+                                 constraintName="USER_IMAGE_IMAGE_STORAGE_ID_IMAGE_STORAGE_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="IMAGE_STORAGE"/>
+        <addForeignKeyConstraint baseColumnNames="CITY_ID" baseTableName="I_CITY_LOCALE"
+                                 constraintName="I_CITY_LOCALE_CITY_ID_I_CITY_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_CITY"/>
     </changeSet>
 
     <changeSet id="4" author="edward">
-        <sqlFile path="changelog//version/initialization_data-1.0.sql"/>
+        <sqlFile path="changelog/version/initialization_data-1.0.sql"/>
     </changeSet>
 
 
     <changeSet id="5" author="evgenyYablokov">
 
         <createTable tableName="FILTER_AGE_RANGE">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -297,7 +357,7 @@
         </createTable>
 
         <createTable tableName="FILTER_CITY">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -311,7 +371,7 @@
         </createTable>
 
         <createTable tableName="FILTER_GENDER">
-            <column name="ID" type="int" autoIncrement="true">
+            <column name="ID" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
@@ -326,11 +386,31 @@
     </changeSet>
 
     <changeSet id="6" author="mikhailRogov">
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_AGE_RANGE" constraintName="FILTER_AGE_RANGE_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_CITY" constraintName="FILTER_CITY_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
-        <addForeignKeyConstraint baseColumnNames="CITY_ID" baseTableName="FILTER_CITY" constraintName="FILTER_CITY_CITY_ID_I_CITY_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_city"/>
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_GENDER" constraintName="FILTER_GENDER_USER_ID_USER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="user"/>
-        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="FILTER_GENDER" constraintName="FILTER_GENDER_GENDER_ID_I_GENDER_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="i_gender"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_AGE_RANGE"
+                                 constraintName="FILTER_AGE_RANGE_USER_ID_USER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_CITY"
+                                 constraintName="FILTER_CITY_USER_ID_USER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER"/>
+        <addForeignKeyConstraint baseColumnNames="CITY_ID" baseTableName="FILTER_CITY"
+                                 constraintName="FILTER_CITY_CITY_ID_I_CITY_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_CITY"/>
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="FILTER_GENDER"
+                                 constraintName="FILTER_GENDER_USER_ID_USER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="USER"/>
+        <addForeignKeyConstraint baseColumnNames="GENDER_ID" baseTableName="FILTER_GENDER"
+                                 constraintName="FILTER_GENDER_GENDER_ID_I_GENDER_ID" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="ID" referencedTableName="I_GENDER"/>
+    </changeSet>
+
+    <changeSet id="7" author="mikhailRogov">
+        <dropColumn columnName="PERMISSION_TYPE_ID"
+                    tableName="USER_IMAGE"/>
     </changeSet>
 
 </databaseChangeLog>

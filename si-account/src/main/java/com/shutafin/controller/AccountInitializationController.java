@@ -62,7 +62,6 @@ public class AccountInitializationController {
                 .countries(initializationService.findAllCountriesByLanguage(language))
                 .genders(initializationService.findAllGendersByLanguage(language))
                 .filters(userFilterService.getUserFilters(user.getId()))
-                .accountStatus(userAccountService.findUserAccountByUser(user).getAccountStatus().getCode())
                 .build();
     }
 }

@@ -11,7 +11,6 @@ import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
 import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.types.CompressionType;
-import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -36,24 +35,27 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public Integer getUserAccountStatus(User user) {
+    public AccountStatus getUserAccountStatus(User user) {
         if (user != null){
             UserAccount userAccount = userAccountRepository.findByUser(user);
-            return userAccount.getAccountStatus().getCode();
+            return userAccount.getAccountStatus();
         }
         return null;
     }
 
     @Override
     @Transactional
-    public void updateUserAccountStatus(Integer accountStatusId, User user) {
+    public AccountStatus updateUserAccountStatus(Integer accountStatusId, User user) {
 
         if (user != null){
             UserAccount userAccount = userAccountRepository.findByUser(user);
             userAccount.setAccountStatus(AccountStatus.getById(accountStatusId));
             userAccountRepository.save(userAccount);
+
+            return userAccount.getAccountStatus();
         }
 
+        return null;
     }
 
     @Override
@@ -73,7 +75,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         if (userImage == null) {
-            userImage = userImageService.addUserImage(userImageWeb, user, PermissionType.PUBLIC, CompressionType.COMPRESSION_RATE_0_7);
+            userImage = userImageService.addUserImage(userImageWeb, user, CompressionType.COMPRESSION_RATE_0_7);
         }
 
         if (userAccount != null) {

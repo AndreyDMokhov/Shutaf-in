@@ -186,6 +186,14 @@
             <artifactId>spring-boot-starter-integration</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.196</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <profiles>
@@ -212,24 +220,24 @@
             <build>
                 <plugins>
                     <!--<plugin>-->
-                        <!--<groupId>org.apache.maven.plugins</groupId>-->
-                        <!--<artifactId>maven-pmd-plugin</artifactId>-->
-                        <!--<version>3.8</version>-->
-                        <!--<executions>-->
-                            <!--<execution>-->
-                                <!--<id>pmd</id>-->
-                                <!--<phase>validate</phase>-->
-                                <!--<goals>-->
-                                    <!--<goal>check</goal>-->
-                                <!--</goals>-->
-                                <!--<configuration>-->
-                                    <!--<printFailingErrors>true</printFailingErrors>-->
-                                    <!--<rulesets>-->
-                                        <!--<ruleset>${project.parent.basedir}${file.separator}pmd${file.separator}ruleset.xml</ruleset>-->
-                                    <!--</rulesets>-->
-                                <!--</configuration>-->
-                            <!--</execution>-->
-                        <!--</executions>-->
+                    <!--<groupId>org.apache.maven.plugins</groupId>-->
+                    <!--<artifactId>maven-pmd-plugin</artifactId>-->
+                    <!--<version>3.8</version>-->
+                    <!--<executions>-->
+                    <!--<execution>-->
+                    <!--<id>pmd</id>-->
+                    <!--<phase>validate</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>check</goal>-->
+                    <!--</goals>-->
+                    <!--<configuration>-->
+                    <!--<printFailingErrors>true</printFailingErrors>-->
+                    <!--<rulesets>-->
+                    <!--<ruleset>${project.parent.basedir}${file.separator}pmd${file.separator}ruleset.xml</ruleset>-->
+                    <!--</rulesets>-->
+                    <!--</configuration>-->
+                    <!--</execution>-->
+                    <!--</executions>-->
                     <!--</plugin>-->
                 </plugins>
             </build>

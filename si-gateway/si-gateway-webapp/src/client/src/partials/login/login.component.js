@@ -11,7 +11,8 @@ app.component('loginComponent', {
                           initializationService,
                           $window,
                           browserTitle,
-                          accountStatus) {
+                          accountStatus,
+                          siteAssessRouting) {
 
         browserTitle.setBrowserTitleByFilterName('Login.title');
 
@@ -30,18 +31,12 @@ app.component('loginComponent', {
                         function () {
                             $window.location.reload();
                             notify.set($filter('translate')('Login.message.success'), {type: 'success'});
-                            if ($sessionStorage.accountStatus == accountStatus.Statuses.CONFIRMED){
-                                $state.go('settings.personal', {}, {reload: true});
-                            } else if ($sessionStorage.accountStatus == accountStatus.Statuses.COMPLETED_USER_INFO){
-                                $state.go('questionsTab.requiredQuestions', {}, {reload: true});
-                            } else {
-                                $state.go('home', {}, {reload: true});
-                            }
+                            siteAssessRouting.navigate('home', {});
+
                         }, function (error) {
                             vm.dataLoading = false;
                             notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                         });
-                    $state.go('home');
                 },
                 function (error) {
 

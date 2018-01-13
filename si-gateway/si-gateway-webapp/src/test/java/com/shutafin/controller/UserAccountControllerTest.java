@@ -1,6 +1,5 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.User;
 import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
@@ -20,9 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -135,13 +132,13 @@ public class UserAccountControllerTest extends BaseTestImpl {
         return language;
     }
 
-    private User createUser() {
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("q@q");
-        user.setFirstName("User");
-        user.setLastName("User");
-        user.setCreatedDate(Date.from(Instant.now()));
-        return user;
-    }
+//    private User createUser() {
+//        User user = new User();
+//        user.setId(1L);
+//        user.setEmail("q@q");
+//        user.setFirstName("User");
+//        user.setLastName("User");
+//        user.setCreatedDate(Date.from(Instant.now()));
+//        return user;
+//    }
 }

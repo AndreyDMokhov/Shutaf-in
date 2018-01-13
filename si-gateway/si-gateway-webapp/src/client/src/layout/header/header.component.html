@@ -1,4 +1,4 @@
-    <nav class="navbar navbar-default" >
+<nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li ng-class="{active : ('userProfile' | includedByState)}" style="margin-top: -3px">
@@ -10,7 +10,8 @@
                        uib-tooltip="{{'UserProfile.title' | translate}}"
                        tooltip-placement="bottom">
                         <span>
-                            <img class="logo-center" style="padding: 0" src="{{vm.getUserImage()}}" width="28" height="28">
+                            <img class="logo-center" style="padding: 0" src="{{vm.getUserImage()}}" width="28"
+                                 height="28">
                         </span>
                         &nbsp;
                         {{$root.brand}}
@@ -26,7 +27,9 @@
                 </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
-                    <a ui-sref="questionsTab.requiredQuestions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom"
+                    <a ui-sref="questionsTab.requiredQuestions"
+                       uib-tooltip="{{'Questions.title' | translate}}"
+                       tooltip-placement="bottom"
                        ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_USER_INFO']">
                         <span class="fa fa-book header-icon-size"></span>
                         &nbsp;
@@ -35,7 +38,10 @@
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : ('userSearch' | includedByState)}">
-                    <form class="header-search" id="userSearchForm" ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
+                    <form
+                            class="header-search"
+                            id="userSearchForm"
+                            ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
                         <input
                                 type="text"
                                 ng-model="vm.fullName"
@@ -51,7 +57,8 @@
                     </form>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('chat' | includedByState)}">
-                    <a ui-sref="chat" ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">{{'Chat.title' | translate}}</a>
+                    <a ui-sref="chat"
+                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">{{'Chat.title' | translate}}</a>
                 </li>
 
             </ul>
@@ -74,8 +81,10 @@
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : (('settings.personal' | includedByState) || ('settings.changeEmailRequest' | includedByState) || ('settings.changePassword' | includedByState)) }">
-                    <a ui-sref="settings.personal" tooltip-placement="bottom"
-                       uib-tooltip="{{'Settings.title' | translate}}" ng-show="vm.currentAccountStatus >= vm.accountStatuses['CONFIRMED']">
+                    <a ui-sref="settings.personal"
+                       tooltip-placement="bottom"
+                       uib-tooltip="{{'Settings.title' | translate}}"
+                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['CONFIRMED']">
                         <span class="glyphicon glyphicon-cog"></span>
                         &nbsp;
                         {{'Settings.title' | translate}}

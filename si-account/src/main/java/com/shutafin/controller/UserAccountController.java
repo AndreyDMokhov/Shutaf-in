@@ -81,11 +81,10 @@ public class UserAccountController {
     }
 
 
-
     @PutMapping(value = "/{userId}/language", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void updateUserLanguage(@RequestBody @Valid AccountUserLanguageWeb userLanguageWeb,
-                       BindingResult result,
-                       @PathVariable("userId") Long userId) {
+                                   BindingResult result,
+                                   @PathVariable("userId") Long userId) {
         log.debug("/users/settings/language");
         checkBindingResult(result);
         userLanguageService.updateUserLanguage(userLanguageWeb, userService.findUserById(userId));
@@ -116,18 +115,26 @@ public class UserAccountController {
         return userService.getAccountUserWebById(userId);
     }
 
-    @PutMapping(value = "/{userId}/update-account-status", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateUserAccountStatus(@PathVariable("userId") Long userId,
-                                        @RequestBody @Valid Integer statusId,
-                                        BindingResult result) {
+    @GetMapping(value = "/account-status")
+    public AccountStatus updateUserAccountStatus(
+            @RequestParam(value = "userId") Long userId,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "enforce", required = false, defaultValue = "false") Boolean isEnforcedChange) {
 
-        userAccountService.updateUserAccountStatus(statusId, userService.findUserById(userId));
+        AccountStatus incomingAccountStatus = AccountStatus.getById(status);
+        AccountStatus userAccountStatus = userAccountService.getUserAccountStatus(userService.findUserById(userId));
+        if (status == null) {
+            return userAccountStatus;
+        }
+
+        if ((incomingAccountStatus.getCode() > userAccountStatus.getCode()) || Boolean.TRUE.equals(isEnforcedChange)) {
+
+            return userAccountService.updateUserAccountStatus(incomingAccountStatus.getCode(), userService.findUserById(userId));
+        }
+
+        return userAccountStatus;
     }
 
-    @GetMapping(value = "/{userId}/get-account-status")
-    public Integer getUserAccountStatus(@PathVariable("userId") Long userId) {
-        return userAccountService.getUserAccountStatus(userService.findUserById(userId));
-    }
 
     @PostMapping(value = "/info-base")
     public List<AccountUserWeb> getBaseInfos(@RequestBody List<Long> userIds) {
