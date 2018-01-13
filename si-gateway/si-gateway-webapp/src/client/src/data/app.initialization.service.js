@@ -49,7 +49,7 @@ app.factory('initializationService', function (messengerChannelService,
         $sessionStorage.cities = success.data.accountInitialization.cities;
         $sessionStorage.countries = success.data.accountInitialization.countries;
         $sessionStorage.genders = success.data.accountInitialization.genders;
-        $sessionStorage.accountStatus = success.data.accountInitialization.accountStatus;
+        $sessionStorage.accountStatus = success.data.accountInitialization.userProfile.accountStatus;
         $sessionStorage.questions = success.data.matchingInitializationResponse.questionAnswersResponses;
         $sessionStorage.selectedAnswers = _getSelectedAnswers(success.data.matchingInitializationResponse.selectedAnswersResponses);
         $sessionStorage.questionsExtended = success.data.matchingInitializationResponse.questionExtendedWithAnswers;

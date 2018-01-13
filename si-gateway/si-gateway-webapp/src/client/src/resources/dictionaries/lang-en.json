@@ -176,6 +176,6 @@
   "Chat.header.rename.chat.title":"Rename chat:",
 
   "SECTION" : "SITE_ACCESS_ERROR",
-  "SiteAccess.info.settings" : "User info settings does not set",
-  "SiteAccess.questionnaire.settings" : "User questionnaire was not fill"
+  "SiteAccess.info.settings" : "User info is not set",
+  "SiteAccess.questionnaire.settings" : "User questionnaire is not filled in"
 }

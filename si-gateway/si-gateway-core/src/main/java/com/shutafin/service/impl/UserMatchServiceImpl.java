@@ -59,9 +59,8 @@ public class UserMatchServiceImpl implements UserMatchService {
     public InitializationResponse saveQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers) {
 
         userMatchControllerSender.saveSelectedUserQuestionsAnswers(userId, questionsAnswers);
-        if (userAccountControllerSender.getUserAccountStatus(userId) < AccountStatus.COMPLETED_REQUIRED_MATCHING.getCode()){
-            userAccountControllerSender.updateUserAccountStatus(userId, AccountStatus.COMPLETED_REQUIRED_MATCHING.getCode());
-        }
+        userAccountControllerSender.updateUserAccountStatus(userId, AccountStatus.COMPLETED_REQUIRED_MATCHING);
+
         return initializationService.getInitializationResponse(userId);
     }
 

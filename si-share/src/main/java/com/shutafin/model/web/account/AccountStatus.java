@@ -1,6 +1,8 @@
 package com.shutafin.model.web.account;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.shutafin.model.types.IdentifiableType;
 
 /**
@@ -21,6 +23,7 @@ public enum AccountStatus implements IdentifiableType<Integer> {
         this.id = id;
     }
 
+    @JsonValue
     public Integer getCode() {
         return id;
     }
@@ -37,5 +40,14 @@ public enum AccountStatus implements IdentifiableType<Integer> {
         }
 
         throw new IllegalArgumentException(String.format("AccountStatus status with ID %d does not exist", id));
+    }
+
+    @JsonCreator
+    public static AccountStatus getById(String id) {
+        if (id == null) {
+            return null;
+        }
+
+        return getById(Integer.valueOf(id));
     }
 }

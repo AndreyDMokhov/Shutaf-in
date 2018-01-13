@@ -11,7 +11,8 @@ app.component('userSettingsComponent', {
                           $state,
                           initializationService,
                           $window,
-                          browserTitle) {
+                          browserTitle,
+                          siteAssessRouting) {
 
         browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
 
@@ -36,13 +37,15 @@ app.component('userSettingsComponent', {
                     notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
                     initializationService.initialize(success.data);
                     $window.location.reload();
-                    $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
+
+                    siteAssessRouting.navigate('userProfile', {id: $sessionStorage.userProfile.userId});
+
                 }, function (error) {
                     vm.dataLoading = false;
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     if (error.data.error.errorTypeCode === 'AUT') {
                         $state.go('logout');
-                    }
+                }
                 });
         }
         vm.submitChanges = submitChanges;

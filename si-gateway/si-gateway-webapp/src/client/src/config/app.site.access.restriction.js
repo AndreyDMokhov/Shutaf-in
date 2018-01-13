@@ -6,7 +6,7 @@
 app.run(function($rootScope, $sessionStorage, $state, notify, $filter) {
     $rootScope.$on('$stateChangeStart', function(evt, toState, toParams, fromState, fromParams) {
 
-        //If user try to access page manually by writing URL in address bar
+        //If user tries to access page manually by writing URL in the address bar
         if ($sessionStorage.accountStatus !== undefined && toParams.accessibleToAccountStatus > $sessionStorage.accountStatus){
             switch ($sessionStorage.accountStatus){
                 case 2 :

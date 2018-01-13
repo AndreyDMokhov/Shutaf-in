@@ -35,24 +35,27 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public Integer getUserAccountStatus(User user) {
+    public AccountStatus getUserAccountStatus(User user) {
         if (user != null){
             UserAccount userAccount = userAccountRepository.findByUser(user);
-            return userAccount.getAccountStatus().getCode();
+            return userAccount.getAccountStatus();
         }
         return null;
     }
 
     @Override
     @Transactional
-    public void updateUserAccountStatus(Integer accountStatusId, User user) {
+    public AccountStatus updateUserAccountStatus(Integer accountStatusId, User user) {
 
         if (user != null){
             UserAccount userAccount = userAccountRepository.findByUser(user);
             userAccount.setAccountStatus(AccountStatus.getById(accountStatusId));
             userAccountRepository.save(userAccount);
+
+            return userAccount.getAccountStatus();
         }
 
+        return null;
     }
 
     @Override
