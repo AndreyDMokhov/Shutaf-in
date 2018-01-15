@@ -20,4 +20,5 @@ public class MatchingInitializationResponse {
     private List<QuestionExtendedWithAnswersLocaleWeb> questionExtendedWithAnswers;
     private List<QuestionImportanceDTO> questionImportanceList;
     private List<UserQuestionExtendedAnswersWeb> selectedExtendedAnswersResponses;
+    private Boolean isMatchingEnabled;
 }

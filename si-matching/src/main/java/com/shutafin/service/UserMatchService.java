@@ -11,4 +11,6 @@ public interface UserMatchService {
     void saveSelectedUserQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers);
     List<QuestionsListWithAnswersDTO> getQuestionsAnswersByLanguageId(Integer languageId);
     List<MatchingQuestionsSelectedAnswersDTO> getSelectedUserQuestionsAnswers(Long userId);
+    void setIsUserMatchingEnabled(Long userId, Boolean isEnabled);
+    Boolean getIsMatchingEnabled(Long userId);
 }

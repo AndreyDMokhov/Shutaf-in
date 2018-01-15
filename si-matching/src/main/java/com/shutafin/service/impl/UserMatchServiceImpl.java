@@ -96,7 +96,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         userQuestionAnswerRepository.saveList(userId, questionsAnswers);
 
         List<String> examKeyRes = generateExamKey(questionsAnswers);
-        userExamKeyRepository.save(new UserExamKey(userId, examKeyRes.get(0), examKeyRes.get(1)));
+        userExamKeyRepository.save(new UserExamKey(userId, examKeyRes.get(0), examKeyRes.get(1), true));
 
         for (String str : examKeyRes) {
             if (varietyExamKeyRepository.findByUserExamKey(str) == null) {
@@ -155,5 +155,23 @@ public class UserMatchServiceImpl implements UserMatchService {
                 .forEach((key, value) -> result.add(new MatchingQuestionsSelectedAnswersDTO(key, value)));
 
         return result;
+    }
+
+    @Override
+    @Transactional
+    public void setIsUserMatchingEnabled(Long userId, Boolean isEnabled) {
+        UserExamKey userExamKey = userExamKeyRepository.findByUserId(userId);
+        if (userExamKey != null){
+            userExamKey.setIsMatchingEnabled(isEnabled);
+        }
+    }
+
+    @Override
+    public Boolean getIsMatchingEnabled(Long userId) {
+        UserExamKey userExamKey = userExamKeyRepository.findByUserId(userId);
+        if (userExamKey != null){
+            return userExamKey.getIsMatchingEnabled();
+        }
+        return null;
     }
 }

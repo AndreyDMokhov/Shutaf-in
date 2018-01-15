@@ -25,7 +25,7 @@ public class UserMatchController {
         return userMatchService.findMatchingUsers(userId);
     }
 
-    @PostMapping(value = "/save/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveSelectedUserQuestionsAnswers(@PathVariable("userId") Long userId, @RequestBody @Valid List<UserQuestionAnswerDTO> questionsAnswers) {
         userMatchService.saveSelectedUserQuestionsAnswers(userId, questionsAnswers);
     }
@@ -38,6 +38,13 @@ public class UserMatchController {
     @GetMapping(value = "/questionnaire/answers/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<MatchingQuestionsSelectedAnswersDTO> getSelectedUserQuestionsAnswers(@PathVariable("userId") Long userId) {
         return userMatchService.getSelectedUserQuestionsAnswers(userId);
+    }
+
+    @PutMapping(value = "/{userId}/configure", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void setIsUserMatchingEnabled(
+            @PathVariable("userId") Long userId,
+            @RequestParam("enabled") Boolean isEnabled) {
+        userMatchService.setIsUserMatchingEnabled(userId, isEnabled);
     }
 
 }

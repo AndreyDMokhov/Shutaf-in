@@ -35,7 +35,7 @@ public class UserMatchControllerSender {
 
     public void saveSelectedUserQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers) {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
-                String.format("/matching/save/%d", userId);
+                String.format("/matching/%d", userId);
         restTemplate.postForEntity(url, questionsAnswers, Void.class);
     }
 
@@ -58,5 +58,11 @@ public class UserMatchControllerSender {
 
         return new ObjectMapper().readValue(jsonBody, new TypeReference<List<MatchingQuestionsSelectedAnswersDTO>>() {
         });
+    }
+
+    public void setIsUserMatchingEnabled(Long userId, Boolean isEnabled){
+        String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
+                String.format("/matching/%s/configure?enabled=%s", userId, isEnabled);
+        restTemplate.put(url, Void.class);
     }
 }
