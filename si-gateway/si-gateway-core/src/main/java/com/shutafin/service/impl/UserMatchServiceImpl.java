@@ -76,6 +76,6 @@ public class UserMatchServiceImpl implements UserMatchService {
 
     @Override
     public void setIsUserMatchingEnabled(Long userId, Boolean isEnabled) {
-        userMatchControllerSender.setIsUserMatchingEnabled(userId, isEnabled);
+        userMatchControllerSender.configure(userId, isEnabled);
     }
 }

@@ -28,7 +28,7 @@ public class UserMatchController {
 
 
     @PutMapping(value = "/configure")
-    public void setIsUserMatchingEnabled(@AuthenticatedUser Long userId,
+    public void configure(@AuthenticatedUser Long userId,
                                          @RequestParam("enabled") Boolean isEnabled) {
         userMatchService.setIsUserMatchingEnabled(userId, isEnabled);
     }

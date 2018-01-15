@@ -41,7 +41,7 @@ public class UserMatchController {
     }
 
     @PutMapping(value = "/{userId}/configure", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void setIsUserMatchingEnabled(
+    public void configure(
             @PathVariable("userId") Long userId,
             @RequestParam("enabled") Boolean isEnabled) {
         userMatchService.setIsUserMatchingEnabled(userId, isEnabled);
