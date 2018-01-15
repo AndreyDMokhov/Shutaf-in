@@ -165,4 +165,13 @@ public class UserMatchServiceImpl implements UserMatchService {
             userExamKey.setIsMatchingEnabled(isEnabled);
         }
     }
+
+    @Override
+    public Boolean getIsMatchingEnabled(Long userId) {
+        UserExamKey userExamKey = userExamKeyRepository.findByUserId(userId);
+        if (userExamKey != null){
+            return userExamKey.getIsMatchingEnabled();
+        }
+        return null;
+    }
 }

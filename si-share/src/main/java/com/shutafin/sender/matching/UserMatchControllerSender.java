@@ -62,7 +62,7 @@ public class UserMatchControllerSender {
 
     public void setIsUserMatchingEnabled(Long userId, Boolean isEnabled){
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
-                String.format("/matching/%s?enabled=%s", userId, isEnabled);
+                String.format("/matching/%s/configure?enabled=%s", userId, isEnabled);
         restTemplate.put(url, Void.class);
     }
 }
