@@ -35,7 +35,7 @@ public class UserMatchControllerSender {
 
     public void saveSelectedUserQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers) {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
-                String.format("/matching/save/%d", userId);
+                String.format("/matching/%d", userId);
         restTemplate.postForEntity(url, questionsAnswers, Void.class);
     }
 
@@ -62,7 +62,7 @@ public class UserMatchControllerSender {
 
     public void setIsUserMatchingEnabled(Long userId, Boolean isEnabled){
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
-                String.format("/matching/enabled/%d", userId);
-        restTemplate.put(url, isEnabled, Void.class);
+                String.format("/matching/%s?enabled=%s", userId, isEnabled);
+        restTemplate.put(url, Void.class);
     }
 }

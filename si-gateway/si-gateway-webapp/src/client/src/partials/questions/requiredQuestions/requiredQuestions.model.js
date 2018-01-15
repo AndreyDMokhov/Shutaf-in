@@ -6,7 +6,7 @@ app.factory('quizModel', function (Restangular, $sessionStorage) {
     });
 
     function sendAnswers(params) {
-        return rest.one('/api/users/match/save').customPOST(params);
+        return rest.one('/api/users/matching/required').customPOST(params);
     }
 
     return {
