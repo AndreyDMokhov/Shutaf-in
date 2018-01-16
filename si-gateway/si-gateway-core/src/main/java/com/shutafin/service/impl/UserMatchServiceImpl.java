@@ -73,4 +73,9 @@ public class UserMatchServiceImpl implements UserMatchService {
     public List<MatchingQuestionsSelectedAnswersDTO> getUserQuestionsSelectedAnswers(Long userId) {
         return userMatchControllerSender.getSelectedUserQuestionsAnswers(userId);
     }
+
+    @Override
+    public void setIsUserMatchingEnabled(Long userId, Boolean isEnabled) {
+        userMatchControllerSender.configure(userId, isEnabled);
+    }
 }
