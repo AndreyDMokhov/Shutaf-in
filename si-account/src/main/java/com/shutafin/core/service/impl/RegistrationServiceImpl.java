@@ -7,7 +7,7 @@ import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.exception.exceptions.validation.EmailNotUniqueValidationException;
 import com.shutafin.model.infrastructure.Language;
-import com.shutafin.model.types.AccountStatus;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.types.AccountType;
 import com.shutafin.model.web.account.AccountRegistrationRequest;
 import com.shutafin.model.web.account.AccountUserInfoRequest;

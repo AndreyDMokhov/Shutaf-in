@@ -15,7 +15,7 @@ app.factory('userProfileModel', function (Restangular, $sessionStorage) {
     }
 
     function getSelectedUserProfile(userId) {
-        return rest.one('/api/user/profile/'+userId).customGET();
+        return rest.one('/api/users/profile/'+userId).customGET();
     }
 
     return {
