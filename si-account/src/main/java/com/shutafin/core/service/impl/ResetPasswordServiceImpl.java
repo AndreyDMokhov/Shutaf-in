@@ -33,7 +33,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private EmailNotificationSenderControllerSender emailSender;
 
     @Override
-    public void resetPassword(AccountEmailRequest accountEmailRequest) {
+    public void resetPasswordRequest(AccountEmailRequest accountEmailRequest) {
         User user = userRepository.findByEmail(accountEmailRequest.getEmail());
         if (user == null) {
             return;

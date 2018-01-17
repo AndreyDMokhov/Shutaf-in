@@ -34,37 +34,33 @@ import java.util.List;
 @Slf4j
 public class UserFilterServiceImpl implements UserFilterService {
 
+    @Autowired
     private FilterCityRepository filterCityRepository;
-    private FilterGenderRepository filterGenderRepository;
-    private FilterAgeRangeRepository filterAgeRangeRepository;
-    private UserRepository userRepository;
-    private CityRepository cityRepository;
-    private GenderRepository genderRepository;
-    private UserInfoRepository userInfoRepository;
-    private List<UsersFilter> usersFilters;
-    private UserFilterService userFilterService;
 
     @Autowired
-    public UserFilterServiceImpl(
-            UserInfoRepository userInfoRepository,
-            GenderRepository genderRepository,
-            CityRepository cityRepository,
-            FilterCityRepository filterCityRepository,
-            FilterGenderRepository filterGenderRepository,
-            FilterAgeRangeRepository filterAgeRangeRepository,
-            UserRepository userRepository,
-            List<UsersFilter> usersFilters,
-            UserFilterService userFilterService) {
-        this.filterCityRepository = filterCityRepository;
-        this.filterGenderRepository = filterGenderRepository;
-        this.filterAgeRangeRepository = filterAgeRangeRepository;
-        this.userRepository = userRepository;
-        this.cityRepository = cityRepository;
-        this.genderRepository = genderRepository;
-        this.userInfoRepository = userInfoRepository;
-        this.usersFilters = usersFilters;
-        this.userFilterService = userFilterService;
-    }
+    private FilterGenderRepository filterGenderRepository;
+
+    @Autowired
+    private FilterAgeRangeRepository filterAgeRangeRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
+    private GenderRepository genderRepository;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private List<UsersFilter> usersFilters;
+
+    @Autowired
+    private UserFilterService userFilterService;
+
 
     @Override
     public List<UserSearchResponse> filterMatchedUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {

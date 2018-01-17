@@ -5,7 +5,6 @@ import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
-import com.shutafin.model.web.initialization.InitializationResponse;
 
 import java.util.List;
 

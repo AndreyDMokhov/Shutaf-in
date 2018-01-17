@@ -21,14 +21,14 @@ public class ResetPasswordController {
 
 
     @PostMapping("/request")
-    public void resetPassword(@RequestBody AccountEmailRequest accountEmailRequest, BindingResult result) {
+    public void resetPasswordRequest(@RequestBody AccountEmailRequest accountEmailRequest, BindingResult result) {
         log.debug("/users/reset-password/request");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        resetPasswordService.resetPassword(accountEmailRequest);
+        resetPasswordService.resetPasswordRequest(accountEmailRequest);
     }
 
     @PutMapping("/confirmation")

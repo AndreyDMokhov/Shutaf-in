@@ -18,7 +18,6 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
             return rest.one('/api/users/search/save/filters?name=' + fullName).customPOST(params);
         }
         return rest.one('/api/users/search/save/filters').customPOST(params);
-
     }
 
     function getCompressedUserImageById(userId) {

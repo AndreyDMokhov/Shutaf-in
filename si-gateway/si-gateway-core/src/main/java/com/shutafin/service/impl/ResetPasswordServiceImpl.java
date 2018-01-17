@@ -25,7 +25,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     public void resetPasswordRequest(AccountEmailRequest emailWeb) {
-        resetPasswordControllerSender.resetPassword(emailWeb);
+        resetPasswordControllerSender.resetPasswordRequest(emailWeb);
     }
 
     @Override
