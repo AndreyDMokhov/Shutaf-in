@@ -12,6 +12,7 @@ import com.shutafin.model.web.account.AccountEmailChangeValidationRequest;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.repository.account.UserRepository;
+import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,11 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
     @Autowired
     private UserAccountService userAccountService;
 
+    @Autowired
+    private EmailNotificationSenderControllerSender emailSender;
+
     @Override
-    public EmailNotificationWeb changeEmailChangeValidationRequest(User user, AccountEmailChangeValidationRequest emailChangeWeb) {
+    public void changeEmailChangeValidationRequest(User user, AccountEmailChangeValidationRequest emailChangeWeb) {
 
         if (!passwordService.isPasswordCorrect(user, emailChangeWeb.getUserPassword())) {
             log.warn("Authentication exception:");
@@ -48,7 +52,7 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
 
         UserAccount userAccount = userAccountService.findUserAccountByUser(user);
 
-        return EmailNotificationWeb
+        emailSender.sendEmail(EmailNotificationWeb
                 .builder()
                 .emailTo(user.getEmail())
                 .languageCode(userAccount.getLanguage().getDescription())
@@ -56,7 +60,7 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
                 .emailChange(emailChangeWeb.getNewEmail())
                 .userId(user.getId())
                 .emailReason(EmailReason.EMAIL_CHANGE)
-                .build();
+                .build());
     }
 
     @Override

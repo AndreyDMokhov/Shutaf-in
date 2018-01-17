@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 @Service
-@Transactional
 @Slf4j
 public class LoginServiceImpl implements LoginService {
 

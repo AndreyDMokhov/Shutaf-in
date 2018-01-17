@@ -18,5 +18,5 @@ public interface FilterGenderRepository extends BaseJpaRepository<FilterGender, 
 
     void deleteByUserId(Long userId);
 
-    List<FilterGender> findAllByUserId(List<Long> userIds);
+    List<FilterGender> findAllByUserIdIn(List<Long> userIds);
 }
