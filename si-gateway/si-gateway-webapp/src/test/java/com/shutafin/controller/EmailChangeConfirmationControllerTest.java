@@ -182,13 +182,6 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         testEmailChangeConfirmationWeb(emailChangeRequestRequestWebJson, errorList);
     }
 
-//    private User createUser() {
-//        User user = new User();
-//        user.setFirstName("Alexander");
-//        user.setLastName("Matsievsky");
-//        user.setEmail("matsievsky@gmail.com");
-//        return user;
-//    }
 
     private void testEmailChangeConfirmationWeb(String json, List<String> errorList) {
         List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);

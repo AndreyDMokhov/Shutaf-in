@@ -1,12 +1,12 @@
 package com.shutafin.controller;
 
-
+import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.web.APIWebResponse;
-import com.shutafin.model.web.common.UserSearchResponse;
+import com.shutafin.model.web.common.LanguageWeb;
+import com.shutafin.model.web.initialization.InitializationResponse;
+import com.shutafin.service.InitializationService;
 import com.shutafin.service.SessionManagementService;
-import com.shutafin.service.UserMatchService;
-import com.shutafin.service.UserSearchService;
 import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
 import org.junit.Assert;
@@ -23,47 +23,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class UserSearchControllerTest extends BaseTestImpl {
+public class InitializationControllerTest extends BaseTestImpl{
 
+    private static final String GET_LANGUAGE_URL = "/initialization/languages";
+    private static final String GET_INITIALIZATION_RESPONSE_URL = "/initialization/all";
     private static final String VALID_SESSION_ID = "validsessionid";
     private static final String INVALID_SESSION_ID = "invalidsessionid";
-    private static final String GET_MATCHING_USERS_URL = "/users/search";
-    private static final String GET_USER_BY_ID_URL = "/users/search/";
-    private static final String FULL_NAME = "{\"name\": \"AaaaaBbbbb\"}";
 
+    private List<String> errorList;
     private Long validUser;
 
     @MockBean
     private SessionManagementService sessionManagementService;
 
     @MockBean
-    private UserSearchService userSearchService;
-
-    @MockBean
-    private UserMatchService userMatchService;
+    private InitializationService initializationService;
 
     @Before
     public void setUp(){
         validUser = 1L;
-        List<UserSearchResponse> listUserSearchResponse = new ArrayList<>();
-
+        errorList = new ArrayList<>();
+        List<LanguageWeb> listLanguageWeb = new ArrayList<>();
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
         Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID))
                 .thenThrow(new AuthenticationException());
-        Mockito.when(userSearchService.userSearchByMap(Mockito.anyLong(), Mockito.anyMapOf(Long.class,Integer.class), Mockito.anyString()))
-                .thenReturn(listUserSearchResponse);
-        Mockito.when(userSearchService.findUserDataById(Mockito.anyLong()))
-                .thenReturn(new UserSearchResponse());
-//        Mockito.when(userMatchService.getMatchingUsersWithScores())
-
+        Mockito.when(initializationService.findAllLanguages()).thenReturn(listLanguageWeb);
+        Mockito.when(initializationService.getInitializationResponse(Mockito.anyLong())).thenReturn(new InitializationResponse());
     }
 
     @Test
-    public void getMatchingUsers_Positive(){
-        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
+    public void getLanguages_Positive(){
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(GET_MATCHING_USERS_URL)
-                .setHeaders(sessionHeaders)
+                .setUrl(GET_LANGUAGE_URL)
                 .setHttpMethod(HttpMethod.GET)
                 .build();
         APIWebResponse apiResponse = getResponse(request);
@@ -71,10 +62,10 @@ public class UserSearchControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void getUserById_Positive(){
+    public void getInitializationResponse_Positive(){
         List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(GET_USER_BY_ID_URL + "5465665")
+                .setUrl(GET_INITIALIZATION_RESPONSE_URL)
                 .setHttpMethod(HttpMethod.GET)
                 .setHeaders(sessionHeaders)
                 .build();
@@ -82,4 +73,19 @@ public class UserSearchControllerTest extends BaseTestImpl {
         Assert.assertNull(apiResponse.getError());
     }
 
+    @Test
+    public void getInitializationResponse_IncorrectSessionId(){
+        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(INVALID_SESSION_ID);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(GET_INITIALIZATION_RESPONSE_URL)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
+
+        Assert.assertNotNull(apiResponse.getError());
+        Assert.assertEquals(ErrorType.AUTHENTICATION.getErrorCodeType(), apiResponse.getError().getErrorTypeCode());
+
+    }
 }
+

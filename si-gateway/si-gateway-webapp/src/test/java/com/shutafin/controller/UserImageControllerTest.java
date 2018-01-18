@@ -50,10 +50,10 @@ public class UserImageControllerTest extends BaseTestImpl {
                 .thenThrow(new AuthenticationException());
         Mockito.when(userImageService.addUserImage(Mockito.any(AccountUserImageWeb.class), VALID_USER_ID))
                 .thenReturn(Mockito.any(AccountUserImageWeb.class));
-        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
-                .thenReturn(Mockito.any(AccountUserImageWeb.class));
-        Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
-                .thenThrow(new ResourceNotFoundException());
+//////        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
+////                .thenReturn(Mockito.any(AccountUserImageWeb.class));
+////        Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
+//                .thenThrow(new ResourceNotFoundException());
 
         Mockito.doNothing().when(userImageService).deleteUserImage(validUser, VALID_USER_IMAGE_ID);
         Mockito.doThrow(new ResourceNotFoundException())
