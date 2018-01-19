@@ -27,7 +27,7 @@ public class UserSearchController {
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getMatchingUsers(@RequestParam(value = "name", required = false) String fullName,
                                                      @AuthenticatedUser Long authenticatedUserId) {
-        return userSearchService.userSearchByMap(authenticatedUserId, userMatchService.getMatchingUsersWithScores(authenticatedUserId), fullName);
+        return userMatchService.getMatchedUserSearchResponses(authenticatedUserId, fullName, null);
     }
 
     @RequestMapping(value = "/search/{user_id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -36,7 +36,9 @@ public class UserSearchController {
     }
 
     @RequestMapping(value = "/search/save/filters", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<UserSearchResponse> saveUserFilters(@AuthenticatedUser Long authenticatedUserId, @RequestBody @Valid FiltersWeb filtersWeb) {
-        return userSearchService.userSearchByMap(authenticatedUserId, userMatchService.getMatchingUsersWithScores(authenticatedUserId), filtersWeb);
+    public List<UserSearchResponse> saveUserFilters(@RequestParam(value = "name", required = false) String fullName,
+                                                    @AuthenticatedUser Long authenticatedUserId,
+                                                    @RequestBody @Valid FiltersWeb filtersWeb) {
+        return userMatchService.getMatchedUserSearchResponses(authenticatedUserId, fullName, filtersWeb);
     }
 }

@@ -3,7 +3,9 @@ package com.shutafin.model.entities;
 import com.shutafin.model.base.AbstractEntity;
 import com.shutafin.model.types.CompressionType;
 import com.shutafin.model.types.CompressionTypeConverter;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 

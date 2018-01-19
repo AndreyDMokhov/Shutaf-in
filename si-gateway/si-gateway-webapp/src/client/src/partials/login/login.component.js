@@ -10,7 +10,9 @@ app.component('loginComponent', {
                           $sessionStorage,
                           initializationService,
                           $window,
-                          browserTitle) {
+                          browserTitle,
+                          accountStatus,
+                          siteAssessRouting) {
 
         browserTitle.setBrowserTitleByFilterName('Login.title');
 
@@ -29,12 +31,12 @@ app.component('loginComponent', {
                         function () {
                             $window.location.reload();
                             notify.set($filter('translate')('Login.message.success'), {type: 'success'});
-                            $state.go('home');
+                            siteAssessRouting.navigate('home', {});
+
                         }, function (error) {
                             vm.dataLoading = false;
                             notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                         });
-                    $state.go('home');
                 },
                 function (error) {
 

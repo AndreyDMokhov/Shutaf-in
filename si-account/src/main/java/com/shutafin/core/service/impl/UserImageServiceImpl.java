@@ -87,6 +87,7 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
+    @Transactional
     public UserImage getCompressedUserImage(User user) {
         return getUserImage(user, userAccountRepository.findCompressedUserImageIdByUserId(user.getId()));
     }
@@ -101,6 +102,7 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
+    @Transactional
     public void createUserImageDirectory(User user) {
         String userDirPath = getUserDirectoryPath(user);
         File directory = new File(userDirPath);
@@ -110,28 +112,33 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
+    @Transactional
     public List<UserImage> getAllUserImages(User user) {
         return userImageRepository.findAllByUser(user);
     }
 
     @Override
+    @Transactional
     public UserImage getOriginalUserImage(UserImage compressedUserImage) {
         return imagePairRepository.findOriginalUserImage(compressedUserImage);
     }
 
     @Override
+    @Transactional
     public UserImage getOriginalUserImage(User user) {
         Long compressedImageId = userAccountRepository.findCompressedUserImageIdByUserId(user.getId());
         return getUserImage(user, imagePairRepository.findOriginalUserImageById(compressedImageId));
     }
 
     @Override
+    @Transactional
     public UserImage getCompressedUserImage(UserImage originalUserImage) {
         return imagePairRepository.findCompressedUserImage(originalUserImage);
     }
 
     @Override
     @SneakyThrows
+    @Transactional
     public String getDefaultImageBase64() {
         InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_AVATAR);
 

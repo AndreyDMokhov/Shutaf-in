@@ -87,4 +87,54 @@ public class UserAccountControllerSender {
                 String.format("/users/info-search/%d", userId);
         return restTemplate.getForEntity(url, UserSearchResponse.class).getBody();
     }
+
+    /**
+     * This method increases Account Status (2 -> 3).
+     * Use different method if decreasing Account Status is required (3 -> -1  -  i.e. blocking an account)
+     *
+     * @param userId
+     * @param status
+     * @return
+     */
+    public AccountStatus updateUserAccountStatus(Long userId, AccountStatus status) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/account-status?status=%s&userId=%s", status.getCode(), userId);
+
+        return restTemplate.getForEntity(url, AccountStatus.class).getBody();
+    }
+
+    /**
+     * This method forces the account status to change.
+     * Useful for an irregular behaviour, like blocking an account.
+     * "Regular behaviour" means, when the account status increases and everything is ok.
+     * For example, status 3 will not be overridden with status 2 by default. Status 2 will be ignored unless
+     * <h2><code>enforce</code></h2> is enabled.
+     *
+     * @param userId
+     * @param status
+     * @param enforce
+     * @return current AccountStatus
+     */
+    public AccountStatus updateUserAccountStatus(Long userId, AccountStatus status, Boolean enforce) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/account-status?status=%s&userId=%s&enforce=%s",
+                        status.getCode(),
+                        userId,
+                        enforce);
+
+        return restTemplate.getForEntity(url, AccountStatus.class).getBody();
+    }
+
+    /**
+     * This method does not change account status
+     *
+     * @return returns the existing value
+     */
+    public AccountStatus updateUserAccountStatus(Long userId) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/account-status?userId=%s", userId);
+
+        return restTemplate.getForEntity(url, AccountStatus.class).getBody();
+    }
+
 }

@@ -1,13 +1,13 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.model.infrastructure.AnswerElement;
 import com.shutafin.model.infrastructure.SelectedAnswerElement;
 import com.shutafin.model.match.UserExamKey;
 import com.shutafin.model.match.VarietyExamKey;
 import com.shutafin.model.web.matching.AnswersForQuestion;
-import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
+import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
+import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.repository.*;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Transactional
 @Slf4j
 public class UserMatchServiceImpl implements UserMatchService {
 
@@ -96,7 +95,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         userQuestionAnswerRepository.saveList(userId, questionsAnswers);
 
         List<String> examKeyRes = generateExamKey(questionsAnswers);
-        userExamKeyRepository.save(new UserExamKey(userId, examKeyRes.get(0), examKeyRes.get(1)));
+        userExamKeyRepository.save(new UserExamKey(userId, examKeyRes.get(0), examKeyRes.get(1), true));
 
         for (String str : examKeyRes) {
             if (varietyExamKeyRepository.findByUserExamKey(str) == null) {
@@ -155,5 +154,23 @@ public class UserMatchServiceImpl implements UserMatchService {
                 .forEach((key, value) -> result.add(new MatchingQuestionsSelectedAnswersDTO(key, value)));
 
         return result;
+    }
+
+    @Override
+    @Transactional
+    public void setIsUserMatchingEnabled(Long userId, Boolean isEnabled) {
+        UserExamKey userExamKey = userExamKeyRepository.findByUserId(userId);
+        if (userExamKey != null){
+            userExamKey.setIsMatchingEnabled(isEnabled);
+        }
+    }
+
+    @Override
+    public Boolean getIsMatchingEnabled(Long userId) {
+        UserExamKey userExamKey = userExamKeyRepository.findByUserId(userId);
+        if (userExamKey != null){
+            return userExamKey.getIsMatchingEnabled();
+        }
+        return null;
     }
 }

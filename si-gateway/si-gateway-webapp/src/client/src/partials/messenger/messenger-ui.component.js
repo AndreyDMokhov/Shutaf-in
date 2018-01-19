@@ -6,7 +6,10 @@ app.component('messengerUiComponent', {
     bindings: {},
     controllerAs: 'vm',
 
-    controller: function (messengerModel, $sessionStorage, messengerChannelService, messengerCurrentDataService, messengerManagementService) {
+    controller: function (messengerModel,
+                          $sessionStorage,
+                          messengerChannelService,
+                          messengerCurrentDataService) {
 
         var vm = this;
 

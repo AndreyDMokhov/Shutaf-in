@@ -58,6 +58,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .lastName(user.getLastName())
                 .email(uglifyEmail(user.getEmail()))
                 .languageId(userAccount.getLanguage().getId())
+                .accountStatus(userAccount.getAccountStatus())
                 .build();
 
         UserInfo userInfo = userInfoRepository.findByUser(user);
