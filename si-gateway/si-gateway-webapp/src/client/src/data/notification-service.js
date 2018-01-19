@@ -1,4 +1,6 @@
-app.service('notificationService', function (webSocketService, messengerChannelService, messengerCurrentDataService) {
+app.service('notificationService', function (webSocketService,
+                                             messengerChannelService,
+                                             messengerCurrentDataService) {
 
     var vm = this;
     vm.destination = '/user/api/subscribe/notification';

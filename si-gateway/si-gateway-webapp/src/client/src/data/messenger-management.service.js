@@ -1,5 +1,7 @@
-app.service('messengerManagementService', function ($sessionStorage, messengerModel,
-                                                    messengerChannelService, messengerCurrentDataService) {
+app.service('messengerManagementService', function ($sessionStorage,
+                                                    messengerModel,
+                                                    messengerChannelService,
+                                                    messengerCurrentDataService) {
 
     var vm = this;
 

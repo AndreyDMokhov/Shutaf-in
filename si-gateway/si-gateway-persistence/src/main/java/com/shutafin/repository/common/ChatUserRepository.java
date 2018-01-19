@@ -28,7 +28,5 @@ public interface ChatUserRepository extends BaseJpaRepository<ChatUser, Long> {
     List<ChatUser> findChatUsersByChatAndIsActiveUserTrue (Chat chat);
 
     List<ChatUser> findAllByUserId(Long userId);
-
-
 }
 
