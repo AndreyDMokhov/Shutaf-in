@@ -14,10 +14,11 @@ import java.util.List;
 @Setter
 public class ChatWithUsersListDTO {
 
-    public ChatWithUsersListDTO(Long id, String chatTitle, Boolean hasNoTitle) {
+    public ChatWithUsersListDTO(Long id, String chatTitle, Boolean hasNoTitle, Boolean isActiveUser) {
         this.id = id;
         this.chatTitle = chatTitle;
         this.hasNoTitle = hasNoTitle;
+        this.isActiveUser = isActiveUser;
     }
 
     private Long id;
@@ -25,6 +26,8 @@ public class ChatWithUsersListDTO {
     private String chatTitle;
 
     private Boolean hasNoTitle;
+
+    private Boolean isActiveUser;
 
     private List<AccountUserWeb> usersInChat;
 }

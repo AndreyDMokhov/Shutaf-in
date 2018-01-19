@@ -1,5 +1,6 @@
 app.directive('channelDirective', function (messengerModel, webSocketService, $sessionStorage,
-                                            ngDialog, messengerCurrentDataService, messengerManagementService, messengerChannelService) {
+                                            ngDialog, messengerCurrentDataService, messengerManagementService,
+                                            messengerChannelService) {
     return {
         restrict: "E",
         scope: {
@@ -23,19 +24,19 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
                 if (!messengerChannelService.isSubscribed()) {
                     setTimeout(function () {
                         init();
-                    }, 25);
+                    }, 50);
                 }
                 else {
-                    messengerChannelService.registerChannelObserver(activateChannel);
-                    messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData.id);
+                    messengerChannelService.registerChannelActivateObserver(activateChannel, scope.chatData);
+                    messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData);
                 }
             }
 
-            function activateChannel(channel) {
-                if (channel && channel.id === scope.chatData.id) {
+            function activateChannel(chatData) {
+                    scope.chatData = chatData;
                     updateMessagesAsRead();
                     messengerCurrentDataService.setMessages(scope.messages);
-                }
+                    messengerChannelService.registerSubscriptionCallback(addChatMessage, scope.chatData);
             }
 
             function addChatMessage(message) {
@@ -96,7 +97,7 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
             }
 
             scope.deleteChat = function () {
-                messengerManagementService.removeChat(scope.chatData);
+                messengerManagementService.deleteChat(scope.chatData);
             };
 
             scope.editChatTitle = function () {

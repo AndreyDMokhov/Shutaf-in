@@ -85,4 +85,10 @@ public class WebContextConfiguration extends WebMvcConfigurerAdapter {
     public ClientSessionInboundChannelInterceptor clientSessionInboundChannelInterceptor(){
         return new ClientSessionInboundChannelInterceptor();
     }
+
+    @Bean
+    public HttpSessionIdHandshakeInterceptor httpSessionIdHandshakeInterceptor() {
+        return new HttpSessionIdHandshakeInterceptor();
+    }
+
 }

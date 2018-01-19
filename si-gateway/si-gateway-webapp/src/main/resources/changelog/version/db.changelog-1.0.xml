@@ -211,4 +211,11 @@
         </createTable>
 
     </changeSet>
+
+    <changeSet id="7" author="mikhailRogov" >
+        <addColumn tableName="CHAT_USER">
+            <column name="IS_DELETED_FROM_CHAT" type="bit" afterColumn="IS_ACTIVE_USER"/>
+        </addColumn>
+        <addNotNullConstraint tableName="CHAT_USER" columnName="IS_DELETED_FROM_CHAT" columnDataType="bit"/>
+    </changeSet>
 </databaseChangeLog>
