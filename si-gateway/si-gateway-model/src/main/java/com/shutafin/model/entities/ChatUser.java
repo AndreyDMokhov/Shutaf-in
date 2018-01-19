@@ -33,6 +33,9 @@ public class ChatUser extends AbstractEntity {
     @Column(name = "IS_ACTIVE_USER", nullable = false)
     private Boolean isActiveUser;
 
+    @Column(name = "IS_DELETED_FROM_CHAT", nullable = false)
+    private Boolean isDeletedFromChat;
+
     @Column(name = "JOIN_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date joinDate;

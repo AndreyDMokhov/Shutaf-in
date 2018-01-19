@@ -7,7 +7,7 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
 import com.shutafin.model.entities.UserLoginLog;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
-import com.shutafin.model.types.AccountStatus;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.account.AccountLoginRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.repository.account.UserLoginLogRepository;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 @Service
-@Transactional
 @Slf4j
 public class LoginServiceImpl implements LoginService {
 

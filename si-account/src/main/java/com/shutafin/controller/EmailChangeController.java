@@ -6,7 +6,6 @@ import com.shutafin.model.entities.User;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountEmailChangeRequest;
 import com.shutafin.model.web.account.AccountEmailChangeValidationRequest;
-import com.shutafin.model.web.email.EmailNotificationWeb;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ public class EmailChangeController {
     private UserService userService;
 
     @PostMapping(value = "/{userId}/change-email", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public EmailNotificationWeb validateChangeEmailRequest(@RequestBody @Valid AccountEmailChangeValidationRequest emailChangeWeb,
+    public void validateChangeEmailRequest(@RequestBody @Valid AccountEmailChangeValidationRequest emailChangeWeb,
                                                            BindingResult result,
                                                            @PathVariable("userId") Long userId) {
         log.debug("/users/account/change-email-request");
@@ -37,7 +36,7 @@ public class EmailChangeController {
             throw new InputValidationException(result);
         }
         User user = userService.findUserById(userId);
-        return changeEmailService.changeEmailChangeValidationRequest(user, emailChangeWeb);
+        changeEmailService.changeEmailChangeValidationRequest(user, emailChangeWeb);
     }
 
     @PutMapping(value = "/{userId}/change-email")

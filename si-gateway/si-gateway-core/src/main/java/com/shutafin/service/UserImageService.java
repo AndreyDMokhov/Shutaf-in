@@ -9,7 +9,4 @@ public interface UserImageService {
     AccountUserImageWeb getOriginalUserImage(Long userId);
 
     void deleteUserImage(Long userId, Long userImageId);
-
-    String getDefaultImageBase64();
-
 }

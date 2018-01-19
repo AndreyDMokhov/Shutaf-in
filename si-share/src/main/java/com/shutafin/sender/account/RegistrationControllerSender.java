@@ -18,9 +18,9 @@ public class RegistrationControllerSender {
     @Autowired
     private RestTemplate restTemplate;
 
-    public EmailNotificationWeb registerUser(AccountRegistrationRequest registrationRequestWeb) {
+    public void registerUser(AccountRegistrationRequest registrationRequestWeb) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "/users/registration/request";
-        return restTemplate.postForEntity(url, registrationRequestWeb, EmailNotificationWeb.class).getBody();
+        restTemplate.postForEntity(url, registrationRequestWeb, EmailNotificationWeb.class).getBody();
     }
 
     public AccountUserWeb confirmRegistration(Long userId) {
