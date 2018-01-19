@@ -12,7 +12,7 @@ app.component('loginComponent', {
                           $window,
                           browserTitle,
                           accountStatus,
-                          siteAssessRouting) {
+                          siteAccessRouting) {
 
         browserTitle.setBrowserTitleByFilterName('Login.title');
 

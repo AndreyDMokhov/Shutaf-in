@@ -9,7 +9,7 @@ app.factory("userSettingsModel", function (Restangular, $sessionStorage) {
     }
 
     return {
-        saveDataPostRegistration: saveDataPostRegistration
-    };
+saveDataPostRegistration: saveDataPostRegistration
+};
 });
 

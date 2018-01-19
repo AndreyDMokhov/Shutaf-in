@@ -1,0 +1,30 @@
+<div class="col-md-8 col-md-offset-2">
+    <fieldset>
+        <legend>
+            <h2>{{"UserSetting.personal.matching.title"|translate}}</h2>
+        </legend>
+    </fieldset>
+    <div class="row">
+        <form name="matchingSettings" novalidate role="form">
+            <uib-accordion close-others="oneAtATime">
+                <div uib-accordion-group class="panel-custom" is-open="vm.isOpened">
+                    <uib-accordion-heading>
+                        {{'UserSetting.personal.matching.title' | translate}}
+                        <i class="pull-right fa fa-chevron-down"
+                           ng-class="{'open' : vm.isOpened}">
+                        </i>
+                    </uib-accordion-heading>
+                    <div class="form-group">
+                        <label>{{'UserSetting.personal.matching.toggle.label' | translate}}</label><br>
+                        <toggle-switch
+                                ng-model="vm.switchStatus"
+                                is-disabled="vm.isAccessRoute()"
+                                on-label= "{{'UserSetting.personal.matching.toggle.yes' | translate }}"
+                                off-label= "{{'UserSetting.personal.matching.toggle.no' | translate }}"
+                                ng-change="vm.changeMatchingVisible()"
+                        >
+                        <toggle-switch>
+            </uib-accordion>
+        </form>
+    </div>
+</div>

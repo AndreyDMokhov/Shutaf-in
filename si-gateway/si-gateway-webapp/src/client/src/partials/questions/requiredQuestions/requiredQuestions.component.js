@@ -17,6 +17,7 @@ app.component('requiredQuestionsComponent', {
 
         function putAnswersToSessionStorage(answers) {
             $sessionStorage.selectedAnswers = answers;
+
         }
 
         function sendData() {

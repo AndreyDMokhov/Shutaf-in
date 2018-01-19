@@ -1,4 +1,4 @@
-app.factory('siteAssessRouting', function ($state,
+app.factory('siteAccessRouting', function ($state,
                                            $stateParams,
                                            accountStatus,
                                            $sessionStorage) {
