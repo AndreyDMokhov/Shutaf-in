@@ -14,26 +14,18 @@ app.component('matchingSettingsComponent', {
         browserTitle.setBrowserTitleByFilterName('UserSetting.personal.matching.title');
         vm.isOpened = true;
         vm.switchStatus = $sessionStorage.isMathingEnabled;
-        console.log($sessionStorage);
-        vm.isAccessRoute = function () {
+        vm.isEnabledMatching = function () {
 
-            if ($sessionStorage.accountStatus === accountStatus.Statuses.COMPLETED_REQUIRED_MATCHING) {
-                return false;
-            } else {
-                return true;
-            }
+            return !($sessionStorage.accountStatus === accountStatus.Statuses.COMPLETED_REQUIRED_MATCHING);
 
         };
 
         vm.changeMatchingVisible = function () {
-            var param = {
-                enabled: vm.switchStatus
-            };
 
-            matchingModel.saveMatchingStatus(param).then(
+            matchingModel.saveMatchingStatus(vm.switchStatus).then(
                 function (success) {
                     $sessionStorage.isMathingEnabled = vm.switchStatus;
-                    console.log(success);
+
                 },
                 function (error) {
                     vm.switchStatus = !vm.switchStatus;
@@ -41,7 +33,7 @@ app.component('matchingSettingsComponent', {
                         notify.set($filter('translate')('Error.SYS'), {type: 'error'});
                     }
                     notify.set($filter('translate')('Error' + '.' + error.status), {type: 'error'});
-                    console.log(error);
+
                 }
             );
         };

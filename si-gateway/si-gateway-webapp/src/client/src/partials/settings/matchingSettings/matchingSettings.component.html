@@ -18,10 +18,14 @@
                         <label>{{'UserSetting.personal.matching.toggle.label' | translate}}</label><br>
                         <toggle-switch
                                 ng-model="vm.switchStatus"
-                                is-disabled="vm.isAccessRoute()"
+                                is-disabled="vm.isEnabledMatching()"
                                 on-label= "{{'UserSetting.personal.matching.toggle.yes' | translate }}"
                                 off-label= "{{'UserSetting.personal.matching.toggle.no' | translate }}"
+                                class="switch-success"
                                 ng-change="vm.changeMatchingVisible()"
+                                uib-tooltip= "{{'UserSetting.personal.matching.toggle.tip' | translate }}"
+                                tooltip-enable="vm.isEnabledMatching()"
+                                tooltip-placement="bottom"
                         >
                         <toggle-switch>
             </uib-accordion>

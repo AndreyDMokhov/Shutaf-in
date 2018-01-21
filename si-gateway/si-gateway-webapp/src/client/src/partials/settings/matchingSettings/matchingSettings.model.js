@@ -6,12 +6,8 @@ app.factory("matchingModel", function (Restangular, $sessionStorage) {
     });
 
     function saveMatchingStatus(params) {
-        debugger;
-        rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
-        return  rest.one('/configure').put(params);
-
+        return  rest.one('/configure?enabled=' + params).customPUT();
     }
-
     return {
         saveMatchingStatus: saveMatchingStatus
     };

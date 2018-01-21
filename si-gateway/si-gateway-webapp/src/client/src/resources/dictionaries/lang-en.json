@@ -136,6 +136,7 @@
   "UserSetting.personal.matching.toggle.label": "I want to be found by other users",
   "UserSetting.personal.matching.toggle.yes": "Yes",
   "UserSetting.personal.matching.toggle.no": "No",
+  "UserSetting.personal.matching.toggle.tip": "Only users who answered all questions can use this function",
 
 
   "SECTION": "USER SEARCH",

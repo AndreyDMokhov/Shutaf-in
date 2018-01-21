@@ -138,6 +138,7 @@
   "UserSetting.personal.matching.toggle.label": "Я хочу что меня находили другие пользователи",
   "UserSetting.personal.matching.toggle.yes": "Да",
   "UserSetting.personal.matching.toggle.no": "Нет",
+  "UserSetting.personal.matching.toggle.tip": "Только пользователи ответившие на все вопросы могут использовать эту функцию",
 
   "SECTION": "USER SEARCH",
   "Search.title": "Поиск",
