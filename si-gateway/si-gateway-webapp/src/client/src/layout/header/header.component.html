@@ -36,7 +36,10 @@
                 </li>
 
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
-                    <a ui-sref="questionsTab.requiredQuestions" uib-tooltip="{{'Questions.title' | translate}}" tooltip-placement="bottom">
+                    <a ui-sref="questionsTab.requiredQuestions"
+                       uib-tooltip="{{'Questions.title' | translate}}"
+                       tooltip-placement="bottom"
+                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_USER_INFO']">
                         <span class="fa fa-book header-icon-size"></span>
                         &nbsp;
                         {{'Questions.title' | translate}}
@@ -44,7 +47,10 @@
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : ('userSearch' | includedByState)}">
-                    <form class="header-search" id="userSearchForm">
+                    <form
+                            class="header-search"
+                            id="userSearchForm"
+                            ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
                         <input
                                 type="text"
                                 ng-model="vm.fullName"
@@ -60,7 +66,8 @@
                     </form>
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('chat' | includedByState)}">
-                    <a ui-sref="chat">{{'Chat.title' | translate}}</a>
+                    <a ui-sref="chat"
+                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">{{'Chat.title' | translate}}</a>
                 </li>
 
             </ul>
@@ -83,8 +90,10 @@
                 </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : (('settings.personal' | includedByState) || ('settings.changeEmailRequest' | includedByState) || ('settings.changePassword' | includedByState)) }">
-                    <a ui-sref="settings.personal" tooltip-placement="bottom"
-                       uib-tooltip="{{'Settings.title' | translate}}">
+                    <a ui-sref="settings.personal"
+                       tooltip-placement="bottom"
+                       uib-tooltip="{{'Settings.title' | translate}}"
+                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['CONFIRMED']">
                         <span class="glyphicon glyphicon-cog"></span>
                         &nbsp;
                         {{'Settings.title' | translate}}

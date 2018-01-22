@@ -1,18 +1,21 @@
 package com.shutafin.service;
 
+import com.shutafin.model.web.common.FiltersWeb;
+import com.shutafin.model.web.common.UserSearchResponse;
+import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by evgeny on 8/12/2017.
  */
 public interface UserMatchService {
     List<Long> findMatchingUsers(Long userId);
-    Map<Long, Integer> getMatchingUsersWithScores(Long userId);
-    void saveQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers);
+    List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, String fullName, FiltersWeb filtersWeb);
+    InitializationResponse saveQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers);
     List<QuestionsListWithAnswersDTO> getUserQuestionsAnswers(Integer languageId);
     List getUserQuestionsSelectedAnswers(Long userId);
+    void setIsUserMatchingEnabled(Long userId, Boolean isEnabled);
 }

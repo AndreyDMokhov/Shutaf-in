@@ -8,14 +8,16 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
     function userSearch(fullName) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         if (fullName) {
-
             return rest.one('/api/users/search?name=' + fullName).customGET();
         }
         return rest.one('/api/users/search').customGET();
     }
 
-    function saveFilters(params) {
+    function saveFilters(params,fullName) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
+        if (fullName) {
+            return rest.one('/api/users/search/save/filters?name=' + fullName).customPOST(params);
+        }
         return rest.one('/api/users/search/save/filters').customPOST(params);
     }
 

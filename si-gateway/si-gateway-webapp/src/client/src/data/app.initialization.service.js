@@ -1,4 +1,13 @@
-app.factory('initializationService', function (messengerChannelService,Restangular, $q, $sessionStorage, notify, $filter, languageService, webSocketService) {
+app.factory('initializationService', function (messengerChannelService,
+                                               Restangular,
+                                               $q,
+                                               $sessionStorage,
+                                               notify,
+                                               $filter,
+                                               languageService,
+                                               webSocketService,
+                                               notifySessionStorageChangeService,
+                                               notificationService) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
     });
@@ -24,27 +33,9 @@ app.factory('initializationService', function (messengerChannelService,Restangul
         rest.one('/api/initialization/all').customGET().then(
             function (success) {
 
-                $sessionStorage.userProfile = success.data.accountInitialization.userProfile;
-                $sessionStorage.cities = success.data.accountInitialization.cities;
-                $sessionStorage.countries = success.data.accountInitialization.countries;
-                $sessionStorage.genders = success.data.accountInitialization.genders;
-                $sessionStorage.questions = success.data.matchingInitializationResponse.questionAnswersResponses;
-                $sessionStorage.selectedAnswers = _getSelectedAnswers(success.data.matchingInitializationResponse.selectedAnswersResponses);
-                $sessionStorage.questionsExtended = success.data.matchingInitializationResponse.questionExtendedWithAnswers;
-                $sessionStorage.questionImportance = success.data.matchingInitializationResponse.questionImportanceList;
-                $sessionStorage.selectedExtendedAnswers = success.data.matchingInitializationResponse.selectedExtendedAnswersResponses;
-                $sessionStorage.showExtendedQuestions = showExtendedQuestions();
-                $sessionStorage.filters = success.data.accountInitialization.filters;
-                messengerChannelService.listOfChats = success.data.listOfChats;
+                initialize(success);
 
-                $sessionStorage.dealStatuses = success.data.dealInitializationResponse.dealStatuses;
-                $sessionStorage.dealUserPermissions = success.data.dealInitializationResponse.dealUserPermissions;
-                $sessionStorage.dealUserStatuses = success.data.dealInitializationResponse.dealUserStatuses;
-                $sessionStorage.documentTypes = success.data.dealInitializationResponse.documentTypes;
-                $sessionStorage.permissionTypes = success.data.dealInitializationResponse.permissionTypes;
-
-                languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
-
+                notificationService.initWsSubscription();
                 webSocketService.getConnection();
                 messengerChannelService.initWsSubscription();
                 deferred.resolve(success.data);
@@ -53,6 +44,32 @@ app.factory('initializationService', function (messengerChannelService,Restangul
                 return deferred.reject();
             });
         return deferred.promise;
+    }
+
+    function initialize(success){
+        $sessionStorage.userProfile = success.data.accountInitialization.userProfile;
+        $sessionStorage.cities = success.data.accountInitialization.cities;
+        $sessionStorage.countries = success.data.accountInitialization.countries;
+        $sessionStorage.genders = success.data.accountInitialization.genders;
+        $sessionStorage.accountStatus = success.data.accountInitialization.userProfile.accountStatus;
+        $sessionStorage.questions = success.data.matchingInitializationResponse.questionAnswersResponses;
+        $sessionStorage.selectedAnswers = _getSelectedAnswers(success.data.matchingInitializationResponse.selectedAnswersResponses);
+        $sessionStorage.questionsExtended = success.data.matchingInitializationResponse.questionExtendedWithAnswers;
+        $sessionStorage.questionImportance = success.data.matchingInitializationResponse.questionImportanceList;
+        $sessionStorage.selectedExtendedAnswers = success.data.matchingInitializationResponse.selectedExtendedAnswersResponses;
+        $sessionStorage.showExtendedQuestions = showExtendedQuestions();
+        $sessionStorage.filters = success.data.accountInitialization.filters;
+        messengerChannelService.listOfChats = success.data.listOfChats;
+
+        $sessionStorage.dealStatuses = success.data.dealInitializationResponse.dealStatuses;
+        $sessionStorage.dealUserPermissions = success.data.dealInitializationResponse.dealUserPermissions;
+        $sessionStorage.dealUserStatuses = success.data.dealInitializationResponse.dealUserStatuses;
+        $sessionStorage.documentTypes = success.data.dealInitializationResponse.documentTypes;
+        $sessionStorage.permissionTypes = success.data.dealInitializationResponse.permissionTypes;
+
+        languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
+
+        notifySessionStorageChangeService.notifyServiceObservers();
     }
 
     function _getSelectedAnswers(data) {
@@ -78,6 +95,7 @@ app.factory('initializationService', function (messengerChannelService,Restangul
 
     return {
         initializeLanguages: initializeLanguages,
-        initializeApplication: initializeApplication
+        initializeApplication: initializeApplication,
+        initialize: initialize
     };
 });

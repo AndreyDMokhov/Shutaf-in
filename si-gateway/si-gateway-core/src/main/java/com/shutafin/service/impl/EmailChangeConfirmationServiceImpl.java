@@ -2,7 +2,6 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.web.account.AccountEmailChangeRequest;
 import com.shutafin.model.web.account.AccountEmailChangeValidationRequest;
-import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.web.email.response.EmailChangeResponse;
 import com.shutafin.model.web.user.GatewayEmailChangedResponse;
@@ -26,9 +25,7 @@ public class EmailChangeConfirmationServiceImpl implements EmailChangeConfirmati
 
     @Override
     public void emailChangeRequest(Long userId, AccountEmailChangeValidationRequest emailChangeConfirmationWeb) {
-
-        EmailNotificationWeb emailNotificationWeb = emailChangeControllerSender.validateChangeEmailRequest(emailChangeConfirmationWeb, userId);
-        emailSender.sendEmail(emailNotificationWeb);
+        emailChangeControllerSender.validateChangeEmailRequest(emailChangeConfirmationWeb, userId);
     }
 
 

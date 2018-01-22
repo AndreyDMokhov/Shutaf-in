@@ -25,6 +25,7 @@ public class AccountInitializationController {
     private UserLanguageService userLanguageService;
     private UserService userService;
     private UserFilterService userFilterService;
+    private UserAccountService userAccountService;
 
     @Autowired
     public AccountInitializationController(
@@ -32,12 +33,14 @@ public class AccountInitializationController {
             UserInfoService userInfoService,
             UserLanguageService userLanguageService,
             UserService userService,
-            UserFilterService userFilterService) {
+            UserFilterService userFilterService,
+            UserAccountService userAccountService) {
         this.initializationService = initializationService;
         this.userInfoService = userInfoService;
         this.userLanguageService = userLanguageService;
         this.userService = userService;
         this.userFilterService=userFilterService;
+        this.userAccountService = userAccountService;
     }
 
     @RequestMapping(value = "/languages", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})

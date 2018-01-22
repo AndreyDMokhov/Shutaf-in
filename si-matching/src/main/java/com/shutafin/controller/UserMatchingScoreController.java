@@ -1,6 +1,8 @@
 package com.shutafin.controller;
 
 
+import com.shutafin.model.web.account.AccountUserFilterRequest;
+import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.service.extended.UserMatchingScoreService;
@@ -26,6 +28,12 @@ public class UserMatchingScoreController {
     @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<Long, Integer> getUserMatchingScores(@PathVariable("userId") Long userId) {
         return userMatchingScoreService.getUserMatchingScores(userId);
+    }
+
+    @PostMapping(value = "/search/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public List<UserSearchResponse> getMatchedUserSearchResponses(@PathVariable("userId") Long userId,
+                                                                  @RequestBody AccountUserFilterRequest accountUserFilterRequest) {
+        return userMatchingScoreService.getMatchedUserSearchResponses(userId, accountUserFilterRequest);
     }
 
     @PostMapping(value = "/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
