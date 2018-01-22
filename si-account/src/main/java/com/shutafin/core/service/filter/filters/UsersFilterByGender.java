@@ -38,7 +38,7 @@ public class UsersFilterByGender implements UsersFilter {
         if (gender == null || filteredUsers.isEmpty()) {
             return filteredUsers;
         }
-        List<FilterGender> genders = filterGenderRepository.findAllByUserId(filteredUsers);
+        List<FilterGender> genders = filterGenderRepository.findAllByUserIdIn(filteredUsers);
         for (FilterGender filterGender : genders) {
             if (!filterGender.getGender().getId().equals(gender)) {
                 filteredUsers.remove(filterGender.getUser().getId());

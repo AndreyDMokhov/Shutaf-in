@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.InputStream;
-import java.util.Base64;
-
 @Service
 @Transactional
 @Slf4j
@@ -42,24 +39,6 @@ public class UserImageServiceImpl implements UserImageService {
     @Override
     public void deleteUserImage(Long userId, Long userImageId) {
         userImageControllerSender.deleteUserImage(userId, userImageId);
-    }
-
-
-    @Override
-    @SneakyThrows
-    //todo remote this after email notification
-    public String getDefaultImageBase64() {
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_AVATAR);
-
-        if (resourceAsStream != null) {
-            byte[] imageDecoded = new byte[resourceAsStream.available()];
-            resourceAsStream.read(imageDecoded);
-            resourceAsStream.close();
-            return Base64.getEncoder().encodeToString(imageDecoded);
-        }
-
-        return null;
-
     }
 
 

@@ -2,6 +2,8 @@ package com.shutafin.sender.matching;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shutafin.model.web.account.AccountUserFilterRequest;
+import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.route.DiscoveryRoutingService;
@@ -31,6 +33,16 @@ public class UserMatchingScoreControllerSender {
         String jsonBody = restTemplate.getForEntity(url, String.class).getBody();
         return new ObjectMapper().readValue(jsonBody, new TypeReference<Map<Long, Integer>>() {
         });
+    }
+
+    @SneakyThrows
+    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+        String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
+                String.format("/matching/extended/search/%d", userId);
+
+        String jsonBody = restTemplate.postForEntity(url, accountUserFilterRequest, String.class).getBody();
+
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserSearchResponse>>() {});
     }
 
     public void addUserQuestionExtendedAnswers(Long userId, List<UserQuestionExtendedAnswersWeb> questionExtendedAnswersWeb) {

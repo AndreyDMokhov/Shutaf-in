@@ -1,18 +1,15 @@
 app.factory('userSearchService', function () {
-    var callbackSearchList = [];
-    var searchList = '';
+    var callbackFiltersObserver = function (){};
 
-    var addSearchList = function (value) {
-        searchList = value;
-        for (var i = 0; i < callbackSearchList.length; i++) {
-            callbackSearchList[i](searchList);
-        }
+    var notifyFilterObserver = function (filters) {
+       callbackFiltersObserver(filters);
     };
-    var onSearchListRefreshed = function (value) {
-        callbackSearchList.push(value);
+    var registerFilterObserver = function (callback) {
+        callbackFiltersObserver = callback;
     };
+
     return {
-        addSearchList: addSearchList,
-        onSearchListRefreshed: onSearchListRefreshed
+        notifyFilterObserver: notifyFilterObserver,
+        registerFilterObserver: registerFilterObserver
     };
 });

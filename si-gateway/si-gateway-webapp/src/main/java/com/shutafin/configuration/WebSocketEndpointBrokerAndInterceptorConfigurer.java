@@ -19,24 +19,42 @@ public class WebSocketEndpointBrokerAndInterceptorConfigurer extends AbstractWeb
     @Autowired
     private ChannelInterceptor channelInterceptor;
 
+    @Autowired
+    private HttpSessionIdHandshakeInterceptor httpSessionIdHandshakeInterceptor;
+
+    /**
+     * Configures subscriptions path.
+     */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/api/subscribe/chat");
+        config.enableSimpleBroker("/api/subscribe");
     }
 
+    /**
+     * Add connection endpoint, enable SockJs, set SockJs library version,
+     * set custom handshake interceptor.
+     */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/api/socket")
                 .setAllowedOrigins("*")
                 .withSockJS()
-                .setClientLibraryUrl("http://cdn.jsdelivr.net/sockjs/1.1.4/sockjs.min.js");
+                .setClientLibraryUrl("http://cdn.jsdelivr.net/sockjs/1.1.4/sockjs.min.js")
+                .setInterceptors(httpSessionIdHandshakeInterceptor);
+
     }
 
+    /**
+     * Set custom client inbound channel interceptor. Checks all incoming messages
+     */
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.setInterceptors(channelInterceptor);
     }
 
+    /**
+     * Set custom argument resolver for AuthenticatedUser annotation
+     */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new AuthenticatedUserAnnotationMethodArgumentResolver());

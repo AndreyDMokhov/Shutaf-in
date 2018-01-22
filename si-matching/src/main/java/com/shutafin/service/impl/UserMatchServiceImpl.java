@@ -1,13 +1,13 @@
 package com.shutafin.service.impl;
 
-import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.model.infrastructure.AnswerElement;
 import com.shutafin.model.infrastructure.SelectedAnswerElement;
 import com.shutafin.model.match.UserExamKey;
 import com.shutafin.model.match.VarietyExamKey;
 import com.shutafin.model.web.matching.AnswersForQuestion;
-import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
 import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
+import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
+import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.repository.*;
 import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Transactional
 @Slf4j
 public class UserMatchServiceImpl implements UserMatchService {
 

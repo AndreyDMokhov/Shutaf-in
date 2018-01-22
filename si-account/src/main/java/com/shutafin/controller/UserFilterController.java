@@ -32,9 +32,9 @@ public class UserFilterController {
         return userFilterService.filterMatchedUsers(userId, accountUserFilterRequest);
     }
 
-    @PutMapping(value = "/save/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void saveUserFilters(@PathVariable("userId") Long userId, @RequestBody @Valid FiltersWeb filtersWeb) {
-        userFilterService.saveUserFilters(userId, filtersWeb);
+    @PostMapping(value = "/save/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<UserSearchResponse> saveUserFiltersAndGetUsers(@PathVariable("userId") Long userId, @RequestBody @Valid AccountUserFilterRequest accountUserFilterRequest) {
+       return userFilterService.saveUserFiltersAndGetUsers(userId, accountUserFilterRequest);
     }
 
     @PutMapping(value = "/city/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
