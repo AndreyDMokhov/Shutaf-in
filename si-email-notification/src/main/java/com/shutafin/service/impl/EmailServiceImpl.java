@@ -23,6 +23,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
+@Transactional
 public class EmailServiceImpl implements EmailService {
 
     private static final String VALIDATION_BEAN_NAME_SUFFIX = "ValidationLink";
@@ -45,7 +46,6 @@ public class EmailServiceImpl implements EmailService {
     private Map<String, BaseConfirmationResponseInterface> confirmationResponsesMap;
 
     @Override
-    @Transactional
     public void sendEmail(EmailNotificationWeb emailNotificationWeb) {
 
         String emailReasonPrefix = emailNotificationWeb.getEmailReason().getPropertyPrefix();

@@ -6,9 +6,9 @@ import com.shutafin.core.service.filter.UsersFilter;
 import com.shutafin.model.filter.FilterAgeRange;
 import com.shutafin.model.filter.FilterCity;
 import com.shutafin.model.filter.FilterGender;
+import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.AgeRangeWebDTO;
 import com.shutafin.model.web.common.FiltersWeb;
-import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.repository.FilterAgeRangeRepository;
 import com.shutafin.repository.FilterCityRepository;
@@ -34,29 +34,35 @@ import java.util.List;
 @Slf4j
 public class UserFilterServiceImpl implements UserFilterService {
 
+    @Autowired
     private FilterCityRepository filterCityRepository;
+
+    @Autowired
     private FilterGenderRepository filterGenderRepository;
+
+    @Autowired
     private FilterAgeRangeRepository filterAgeRangeRepository;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private CityRepository cityRepository;
+
+    @Autowired
     private GenderRepository genderRepository;
+
+    @Autowired
     private UserInfoRepository userInfoRepository;
+
+    @Autowired
     private List<UsersFilter> usersFilters;
 
     @Autowired
-    public UserFilterServiceImpl(UserInfoRepository userInfoRepository, GenderRepository genderRepository, CityRepository cityRepository, FilterCityRepository filterCityRepository, FilterGenderRepository filterGenderRepository, FilterAgeRangeRepository filterAgeRangeRepository, UserRepository userRepository, List<UsersFilter> usersFilters) {
-        this.filterCityRepository = filterCityRepository;
-        this.filterGenderRepository = filterGenderRepository;
-        this.filterAgeRangeRepository = filterAgeRangeRepository;
-        this.userRepository = userRepository;
-        this.cityRepository = cityRepository;
-        this.genderRepository = genderRepository;
-        this.userInfoRepository = userInfoRepository;
-        this.usersFilters = usersFilters;
-    }
+    private UserFilterService userFilterService;
+
 
     @Override
-    @Transactional(readOnly = true)
     public List<UserSearchResponse> filterMatchedUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
         List<Long> filteredUsersId = accountUserFilterRequest.getUserIds();
 
@@ -64,7 +70,7 @@ public class UserFilterServiceImpl implements UserFilterService {
             filteredUsersId = userRepository.findAllByFullName(filteredUsersId, accountUserFilterRequest.getFullName());
         }
 
-        filteredUsersId = applyFilters(userId, accountUserFilterRequest.getUserIds());
+        filteredUsersId = applyFilters(userId, filteredUsersId);
 
         if (filteredUsersId.isEmpty()) {
             return new ArrayList<>();
@@ -84,18 +90,17 @@ public class UserFilterServiceImpl implements UserFilterService {
     }
 
     @Override
-    @Transactional
-    public void saveUserFilters(Long userId, FiltersWeb filtersWeb) {
-        if (filtersWeb == null) {
-            return;
+    public List<UserSearchResponse> saveUserFiltersAndGetUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+        if (accountUserFilterRequest.getFiltersWeb() != null) {
+            userFilterService.saveUserFilterCity(userId, accountUserFilterRequest.getFiltersWeb().getFilterCitiesIds());
+            userFilterService.saveUserFilterGender(userId, accountUserFilterRequest.getFiltersWeb().getFilterGenderId());
+            userFilterService.saveUserFilterAgeRange(userId, accountUserFilterRequest.getFiltersWeb().getFilterAgeRange());
         }
-        saveUserFilterCity(userId, filtersWeb.getFilterCitiesIds());
-        saveUserFilterGender(userId, filtersWeb.getFilterGenderId());
-        saveUserFilterAgeRange(userId, filtersWeb.getFilterAgeRange());
+
+        return userFilterService.filterMatchedUsers(userId, accountUserFilterRequest);
     }
 
     @Override
-    @Transactional
     public void saveUserFilterCity(Long userId, List<Integer> cities) {
         filterCityRepository.deleteByUserId(userId);
         if (cities != null) {
@@ -106,7 +111,6 @@ public class UserFilterServiceImpl implements UserFilterService {
     }
 
     @Override
-    @Transactional
     public void saveUserFilterGender(Long userId, Integer genderId) {
         filterGenderRepository.deleteByUserId(userId);
         if (genderId != null) {
@@ -126,9 +130,9 @@ public class UserFilterServiceImpl implements UserFilterService {
     @Override
     public FiltersWeb getUserFilters(Long userId) {
         FiltersWeb filtersWeb = new FiltersWeb();
-        filtersWeb.setFilterAgeRange(getAgeRangeForFilter(userId));
-        filtersWeb.setFilterCitiesIds(getCitiesForFilter(userId));
-        filtersWeb.setFilterGenderId(getGenderForFilter(userId));
+        filtersWeb.setFilterAgeRange(userFilterService.getAgeRangeForFilter(userId));
+        filtersWeb.setFilterCitiesIds(userFilterService.getCitiesForFilter(userId));
+        filtersWeb.setFilterGenderId(userFilterService.getGenderForFilter(userId));
         return filtersWeb;
     }
 

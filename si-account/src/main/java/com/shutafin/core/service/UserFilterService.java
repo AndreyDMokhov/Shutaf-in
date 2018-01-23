@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface UserFilterService {
     List<UserSearchResponse> filterMatchedUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest);
-    void saveUserFilters(Long userId, FiltersWeb filtersWeb);
+    List<UserSearchResponse> saveUserFiltersAndGetUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest);
     void saveUserFilterCity(Long userId, List<Integer> cities);
     void saveUserFilterGender(Long userId, Integer genderId);
     void saveUserFilterAgeRange(Long userId, AgeRangeWebDTO ageRangeWebDTO);

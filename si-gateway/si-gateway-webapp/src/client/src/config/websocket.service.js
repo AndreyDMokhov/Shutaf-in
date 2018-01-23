@@ -4,7 +4,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
 
         vm.isConnected = false;
         vm.stompClient = null;
-        vm.subscription = null;
+        vm.subscriptionsList = [];
         vm.connecting = false;
 
 
@@ -48,7 +48,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
             var socket = getSocket();
             vm.stompClient = Stomp.over(socket);
             /**
-             * STOMP debug mode setting. If true -> shows all debug messages in console.log
+             * STOMP debug mode setting. If true -> shows all debug messages in console
              */
             vm.stompClient.debug = false;
             return $q(function (resolve, reject) {
@@ -73,12 +73,11 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
          * @param destination - is chat id, that was received from  /get/chats -> List<Chat> getChats -> ChatController
          */
         function subscribe(destination) {
-
             var deferred = $q.defer();
             if (!vm.isConnected) {
                 getConnection();
             } else {
-                vm.subscription = vm.stompClient.subscribe(destination, function (message) {
+                vm.subscriptionsList[destination] = vm.stompClient.subscribe(destination, function (message) {
                     deferred.notify(JSON.parse(message.body));
                 }, {'session_id': $sessionStorage.sessionId});
             }
@@ -88,10 +87,10 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         /**
          *  vm.subscription.unsubscribe(); unSubscribe all subscriptions via Stomp
          */
-        function unSubscribe() {
-            if (vm.subscription !== null) {
-                vm.subscription.unsubscribe();
-                vm.subscription = null;
+        function unSubscribe(destination) {
+            if (vm.subscriptionsList[destination]) {
+                vm.subscriptionsList[destination].unsubscribe();
+                vm.subscriptionsList[destination] = null;
             }
         }
 
@@ -103,7 +102,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
          */
         function getSocket() {
             var protocols = ['xhr-polling', 'xdr-polling', 'xdr-streaming', 'xhr-streaming'];
-            var url = '/api/socket';
+            var url = '/api/socket?SESSION_ID='+$sessionStorage.sessionId;
             return new SockJS(url, null, {transports: protocols, server: 'shutaf-in'});
         }
 

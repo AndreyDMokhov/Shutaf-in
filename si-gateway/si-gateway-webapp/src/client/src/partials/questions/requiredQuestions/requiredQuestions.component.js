@@ -8,7 +8,8 @@ app.component('requiredQuestionsComponent', {
                           notify,
                           $sessionStorage,
                           $filter,
-                          browserTitle) {
+                          browserTitle,
+                          initializationService) {
         var vm = this;
         browserTitle.setBrowserTitleByFilterName('Questions.requiredQuestions');
         vm.questions = $sessionStorage.questions;
@@ -22,6 +23,7 @@ app.component('requiredQuestionsComponent', {
             quizModel.sendAnswers($sessionStorage.selectedAnswers).then(
                 function (success) {
                     notify.set($filter('translate')('Questions.confirm'), {type: 'success'});
+                    initializationService.initialize(success.data);
                 },
                 function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

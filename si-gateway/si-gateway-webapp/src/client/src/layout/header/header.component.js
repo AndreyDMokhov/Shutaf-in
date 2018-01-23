@@ -11,10 +11,27 @@ app.component('headerComponent', {
                               $state,
                               $window,
                               initializationService,
-                              webSocketService) {
+                              webSocketService,
+                              accountStatus,
+                              notifySessionStorageChangeService) {
 
             var vm = this;
             vm.userProfile = {};
+
+            vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
+
+            vm.accountStatuses = [];
+            vm.accountStatuses['NEW'] = accountStatus.Statuses.NEW;
+            vm.accountStatuses['CONFIRMED'] = accountStatus.Statuses.CONFIRMED;
+            vm.accountStatuses['COMPLETED_USER_INFO'] = accountStatus.Statuses.COMPLETED_USER_INFO;
+            vm.accountStatuses['COMPLETED_REQUIRED_MATCHING'] = accountStatus.Statuses.COMPLETED_REQUIRED_MATCHING;
+            vm.accountStatuses['DEAL'] = accountStatus.Statuses.DEAL;
+            vm.accountStatuses['BLOCKED'] = accountStatus.Statuses.BLOCKED;
+
+            function updateAccountStatus(){
+                vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
+            }
+            notifySessionStorageChangeService.registerServiceObserver(updateAccountStatus);
 
             vm.sessionService = sessionService;
             $rootScope.brand = "Shutaf-In";

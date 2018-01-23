@@ -18,7 +18,6 @@ public class ChangePasswordServiceImpl implements ChangePasswordService {
     @Autowired
     private PasswordService passwordService;
 
-    @Transactional
     @Override
     public void changePassword(AccountChangePasswordWeb changePasswordWeb, User user) {
         if (!passwordService.isPasswordCorrect(user, changePasswordWeb.getOldPassword())) {

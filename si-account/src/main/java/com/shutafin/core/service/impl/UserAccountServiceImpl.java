@@ -9,7 +9,7 @@ import com.shutafin.model.exception.exceptions.AccountBlockedException;
 import com.shutafin.model.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.model.types.AccountStatus;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.types.CompressionType;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
@@ -34,9 +34,31 @@ public class UserAccountServiceImpl implements UserAccountService {
         this.userImageService = userImageService;
     }
 
+    @Override
+    public AccountStatus getUserAccountStatus(User user) {
+        if (user != null){
+            UserAccount userAccount = userAccountRepository.findByUser(user);
+            return userAccount.getAccountStatus();
+        }
+        return null;
+    }
 
     @Override
     @Transactional
+    public AccountStatus updateUserAccountStatus(Integer accountStatusId, User user) {
+
+        if (user != null){
+            UserAccount userAccount = userAccountRepository.findByUser(user);
+            userAccount.setAccountStatus(AccountStatus.getById(accountStatusId));
+            userAccountRepository.save(userAccount);
+
+            return userAccount.getAccountStatus();
+        }
+
+        return null;
+    }
+
+    @Override
     public UserImage updateProfileImage(AccountUserImageWeb userImageWeb, User user) {
         UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findByUser(user);
