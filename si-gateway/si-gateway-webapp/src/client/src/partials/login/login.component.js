@@ -40,7 +40,7 @@ app.component('loginComponent', {
                         });
                 },
                 function (error) {
-                    if (error.status === 403) {
+                    if (error.data.error.errorTypeCode === "ANC") {
                         vm.showResend = true;
                     }
                     vm.dataLoading = false;
@@ -54,10 +54,10 @@ app.component('loginComponent', {
                 function (success) {
                     vm.resendLoading = false;
                     notify.set($filter('translate')('Registration.request.success'), {type: 'success'});
-                    $state.go('home');
+                    siteAssessRouting.navigate('home', {});
                 },
                 function (error) {
-                    if (error.status === 401) {
+                    if (error.data.error.errorTypeCode === "AUT") {
                         vm.showResend = false;
                     }
                     vm.resendLoading = false;

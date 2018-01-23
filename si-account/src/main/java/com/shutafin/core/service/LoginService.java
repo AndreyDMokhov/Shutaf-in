@@ -7,5 +7,5 @@ public interface LoginService {
 
     AccountUserWeb getUserByLoginWebModel(AccountLoginRequest login);
 
-    void checkUserPassword(AccountLoginRequest loginWeb);
+    void resendEmailRegistration(AccountLoginRequest loginWeb);
 }

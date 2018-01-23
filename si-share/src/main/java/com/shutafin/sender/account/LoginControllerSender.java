@@ -24,8 +24,9 @@ public class LoginControllerSender {
         return accountUserWebResponseEntity.getBody();
     }
 
-    public void checkUserPassword(AccountLoginRequest loginWeb) {
-        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "users/check/user/password";
-        restTemplate.postForEntity(url, loginWeb, AccountUserWeb.class);
+    public void resendEmailRegistration(AccountLoginRequest loginWeb) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "users/resend/registration";
+        restTemplate.postForEntity(url, loginWeb, Void.class);
     }
+
 }

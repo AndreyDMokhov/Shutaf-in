@@ -41,9 +41,9 @@ public class LoginController {
         return loginWebService.getUserByLoginWebModel(loginWeb);
     }
 
-    @RequestMapping(value = "/resend/email/registration", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/resend/registration", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void resendEmailRegistration(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
-        log.debug("/login/resend/email/registration");
+        log.debug("/login/resend/registration");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
@@ -51,5 +51,4 @@ public class LoginController {
         }
         loginWebService.resendEmailRegistration(loginWeb);
     }
-
 }
