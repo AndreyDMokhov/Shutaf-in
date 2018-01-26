@@ -46,7 +46,6 @@ public class UserMatchControllerTest extends BaseTestImpl {
         validUser = 1L;
         errorList = new ArrayList<>();
         listUserQuestionAnswerDTO = new ArrayList<>();
-        enabled = new Boolean(true);
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
         Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID))
                 .thenThrow(new AuthenticationException());
@@ -69,18 +68,16 @@ public class UserMatchControllerTest extends BaseTestImpl {
         Assert.assertNull(apiResponse.getError());
     }
 
-//    @Test
-//    public void configure_Positive(){
-//        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
-//        ControllerRequest request = ControllerRequest.builder()
-//                .setUrl(CONFIQURE_URL)
-////                .setRequestObject(enabled)
-////                .setJsonContext(IS_ENABLE)
-//                .setHttpMethod(HttpMethod.PUT)
-//                .setHeaders(sessionHeaders)
-//                .build();
-//        APIWebResponse apiResponse = getResponse(request);
-//
-//        Assert.assertNull(apiResponse.getError());
-//    }
+    @Test
+    public void configure_Positive(){
+        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(CONFIQURE_URL + "/path_variable?enabled=true")
+                .setHttpMethod(HttpMethod.PUT)
+                .setHeaders(sessionHeaders)
+                .build();
+        APIWebResponse apiResponse = getResponse(request);
+
+        Assert.assertNull(apiResponse.getError());
+    }
 }

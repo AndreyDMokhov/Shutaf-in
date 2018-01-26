@@ -4,9 +4,13 @@ import com.shutafin.model.error.ErrorType;
 import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.web.APIWebResponse;
+import com.shutafin.model.web.account.AccountUserInfoRequest;
+import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
 import com.shutafin.model.web.account.AccountUserLanguageWeb;
 import com.shutafin.model.web.common.LanguageWeb;
+import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.service.SessionManagementService;
+import com.shutafin.service.UserInfoService;
 import com.shutafin.service.UserLanguageService;
 import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;
@@ -19,7 +23,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -27,34 +34,78 @@ import java.util.List;
 public class UserAccountControllerTest extends BaseTestImpl {
 
     private static final String USER_SETTINGS_LANGUAGE_URL = "/users/settings/language";
+    private static final String GET_USER_INFO_URL = "/users/settings/info";
     private static final String VALID_JSON = "{\"id\":\"1\"}";
     private static final String LANG_ID_0 = "{\"id\":\"0\"}";
     private static final String LANG_ID_NULL = "{\"id\":\"\"}";
     private static final String VALID_SESSION = "40042cd8-51d0-4282-b431-36ee7f6dcaef";
     private static final String INVALID_SESSION = "";
     private static final String SESSION_ID_HEADER_NAME = "session_id";
-
-
     private ArrayList<String> expectedError;
+    private AccountUserInfoRequest accountUserInfoRequest;
+
+    @MockBean
+    private SessionManagementService sessionManagementService;
 
     @MockBean
     private UserLanguageService userLanguageService;
 
     @MockBean
-    private SessionManagementService sessionManagementService;
+    private UserInfoService userInfoService;
 
     @Before
     public void setUp() {
-
+        expectedError = new ArrayList<>();
+        accountUserInfoRequest = createAccountUserInfoRequest();
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(1L);
         Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION))
                 .thenThrow(new AuthenticationException());
         Mockito.doNothing().when(userLanguageService).updateUserLanguage(Mockito.any(AccountUserLanguageWeb.class), Mockito.any(Long.class));
-        expectedError = new ArrayList<>();
+        Mockito.when(userInfoService.getUserInfo(Mockito.anyLong()))
+                .thenReturn(new AccountUserInfoResponseDTO());
+        Mockito.when(userInfoService.updateUserInfo(Mockito.any(AccountUserInfoRequest.class), Mockito.anyLong()))
+                .thenReturn(new InitializationResponse());
+    }
+
+    private AccountUserInfoRequest createAccountUserInfoRequest() {
+        AccountUserInfoRequest accountUserInfoRequest = new AccountUserInfoRequest();
+        accountUserInfoRequest.setFirstName("Shlomo");
+        accountUserInfoRequest.setLastName("Shlomo");
+        accountUserInfoRequest.setEmail("aaa@aaa");
+        return accountUserInfoRequest;
     }
 
     @Test
-    public void updateRequestJson_Positive() {
+    public void getUserInfo_Positive(){
+        List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(GET_USER_INFO_URL)
+                .setHttpMethod(HttpMethod.GET)
+                .setHeaders(headers)
+                .setResponseClass(AccountUserInfoResponseDTO.class)
+                .build();
+        APIWebResponse response = getResponse(request);
+
+        Assert.assertNull(response.getError());
+    }
+
+    @Test
+    public void updateUserInfo_Positive(){
+        List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
+        ControllerRequest request = ControllerRequest.builder()
+                .setUrl(GET_USER_INFO_URL)
+                .setHttpMethod(HttpMethod.POST)
+                .setRequestObject(accountUserInfoRequest)
+                .setHeaders(headers)
+                .setResponseClass(InitializationResponse.class)
+                .build();
+        APIWebResponse response = getResponse(request);
+
+        Assert.assertNull(response.getError());
+    }
+
+    @Test
+    public void update_Positive() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_SETTINGS_LANGUAGE_URL)
@@ -68,7 +119,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void updateRequestJson_LangId_0() {
+    public void update_LangId_0() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_SETTINGS_LANGUAGE_URL)
@@ -85,7 +136,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void updateRequestJson_LangIdIsNull() {
+    public void update_LangIdIsNull() {
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_SETTINGS_LANGUAGE_URL)
@@ -102,7 +153,7 @@ public class UserAccountControllerTest extends BaseTestImpl {
     }
 
     @Test
-    public void updateRequestJson_WrongSession() {
+    public void update_WrongSession() {
         List<HttpHeaders> headers = addSessionIdToHeader(INVALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_SETTINGS_LANGUAGE_URL)
@@ -115,16 +166,6 @@ public class UserAccountControllerTest extends BaseTestImpl {
         Assert.assertNotNull(response.getError());
         Assert.assertEquals(response.getError().getErrorTypeCode(), ErrorType.AUTHENTICATION.getErrorCodeType());
     }
-
-
-    public List<HttpHeaders> addSessionIdToHeader(String sessionId) {
-        List<HttpHeaders> headers = new ArrayList<>();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(SESSION_ID_HEADER_NAME, sessionId);
-        headers.add(httpHeaders);
-        return headers;
-    }
-
     private LanguageWeb createLanguage() {
         LanguageWeb language = new LanguageWeb();
         language.setIsActive(true);
@@ -133,14 +174,4 @@ public class UserAccountControllerTest extends BaseTestImpl {
         language.setDescription("ru");
         return language;
     }
-
-//    private User createUser() {
-//        User user = new User();
-//        user.setId(1L);
-//        user.setEmail("q@q");
-//        user.setFirstName("User");
-//        user.setLastName("User");
-//        user.setCreatedDate(Date.from(Instant.now()));
-//        return user;
-//    }
 }

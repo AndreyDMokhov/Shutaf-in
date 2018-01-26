@@ -31,5 +31,4 @@ public class UserMatchController {
                           @RequestParam("enabled") Boolean isEnabled) {
         userMatchService.setIsUserMatchingEnabled(userId, isEnabled);
     }
-
 }
