@@ -88,11 +88,11 @@ public class ChatControllerTest extends BaseTestImpl {
                 .thenReturn(new ChatWithUsersListDTO());
         Mockito.doNothing().when(chatManagementService).updateMessagesAsRead(Mockito.anyListOf(Long.class), Mockito.anyLong());
 
-        Mockito.doNothing().when(chatManagementService).addChatUserToChat(Mockito.any(Chat.class), Mockito.anyLong());
-        Mockito.doNothing().when(chatManagementService).removeChatUserFromChat(Mockito.any(Chat.class), Mockito.anyLong());
+        Mockito.doNothing().when(chatManagementService).addChatUserToChat(Mockito.anyLong(), Mockito.any(Chat.class), Mockito.anyLong());
+        Mockito.doNothing().when(chatManagementService).removeChatUserFromChat(Mockito.anyLong(), Mockito.any(Chat.class), Mockito.anyLong());
         Mockito.when(chatInfoService.getListChats(Mockito.anyLong()))
                 .thenReturn(listChatWithUsersListDTO);
-        Mockito.when(chatInfoService.getListMessages(Mockito.any(Chat.class),Mockito.anyLong()))
+        Mockito.when(chatInfoService.getListMessages(Mockito.anyLong(),Mockito.anyLong()))
                 .thenReturn(listChatMessage);
         Mockito.when(chatAuthorizationService.findAuthorizedChat(Mockito.anyLong(), Mockito.anyLong()))
                 .thenReturn(new Chat());
