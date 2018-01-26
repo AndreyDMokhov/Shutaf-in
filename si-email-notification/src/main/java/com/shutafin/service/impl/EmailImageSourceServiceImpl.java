@@ -6,12 +6,14 @@ import com.shutafin.repository.EmailImageSourceRepository;
 import com.shutafin.service.EmailImageSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 @Service
+@Transactional
 public class EmailImageSourceServiceImpl implements EmailImageSourceService {
 
     private EmailImageSourceRepository emailImageSourceRepository;

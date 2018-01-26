@@ -27,8 +27,8 @@ app.factory('messengerModel', function (Restangular, $sessionStorage) {
         return rest.one('/' + chatId + '/remove/user/' + userId).customGET();
     }
 
-    function removeChat(chatId) {
-        return rest.one('/' + chatId + '/remove/chat').customGET();
+    function deleteChat(chatId) {
+        return rest.one('/' + chatId + '/delete/chat').customGET();
     }
 
     function addUserToChat(chatId, userId) {
@@ -49,7 +49,7 @@ app.factory('messengerModel', function (Restangular, $sessionStorage) {
         getAllMessages: getAllMessages,
         removeUserFromChat: removeUserFromChat,
         addUserToChat: addUserToChat,
-        removeChat: removeChat,
+        deleteChat: deleteChat,
         updateMessagesAsRead: updateMessagesAsRead,
         renameChat:renameChat
     };
