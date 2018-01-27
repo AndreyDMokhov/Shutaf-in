@@ -3,8 +3,8 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.*;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.types.DealUserPermissionType;
-import com.shutafin.model.types.DealUserStatus;
+import com.shutafin.model.web.deal.DealUserPermissionType;
+import com.shutafin.model.web.deal.DealUserStatus;
 import com.shutafin.model.web.deal.DealDocumentWeb;
 import com.shutafin.model.web.deal.DealPanelResponse;
 import com.shutafin.model.web.deal.DealPanelWeb;
@@ -56,8 +56,10 @@ public class DealPanelServiceImpl implements DealPanelService {
     @Override
     public DealPanelResponse addDealPanel(DealPanelWeb dealPanelWeb) {
 
-        Deal deal = dealService.checkDealPermissions(dealPanelWeb.getDealId(),
-                dealPanelWeb.getUserId(), NEED_FULL_ACCESS);
+        Deal deal = dealService.checkDealPermissions(
+                dealPanelWeb.getDealId(),
+                dealPanelWeb.getUserId(),
+                NEED_FULL_ACCESS);
 
         DealPanel dealPanel = new DealPanel();
         dealPanel.setDeal(deal);
@@ -67,10 +69,14 @@ public class DealPanelServiceImpl implements DealPanelService {
 
         dealPanel = dealPanelRepository.save(dealPanel);
 
-        List<DealUser> activeDealUsers = dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(),
+        List<DealUser> activeDealUsers = dealUserRepository.findAllByDealIdAndDealUserStatus(
+                deal.getId(),
                 DealUserStatus.ACTIVE);
+
         for (DealUser dealUser : activeDealUsers) {
-            DealPanelUser dealPanelUser = new DealPanelUser(dealUser.getUserId(), dealPanel,
+            DealPanelUser dealPanelUser = new DealPanelUser(
+                    dealUser.getUserId(),
+                    dealPanel,
                     DealUserPermissionType.CREATE);
             dealPanelUserRepository.save(dealPanelUser);
         }
@@ -124,7 +130,7 @@ public class DealPanelServiceImpl implements DealPanelService {
                                     .getDealUserPermissionType() != DealUserPermissionType.NO_READ)
                     .map(dealDocument -> new DealDocumentWeb(dealDocument.getId(),
                             dealDocument.getTitle(),
-                            dealDocument.getDocumentType().getCode(),
+                            dealDocument.getDocumentType(),
                             dealDocument.getCreatedDate().getTime()))
                     .collect(Collectors.toList());
         }

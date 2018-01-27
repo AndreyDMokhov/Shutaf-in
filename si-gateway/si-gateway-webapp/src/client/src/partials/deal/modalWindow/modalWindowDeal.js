@@ -20,6 +20,11 @@ app.component('modalComponent',
             vm.cancel = function () {
                 vm.dismiss({$value: 'cancel'});
             };
+
+            vm.getFilenameExtension = function() {
+                var filename = vm.resolve.type.filename;
+                return filename.substring(filename.lastIndexOf('.'), filename.length);
+            };
         }
 
     });

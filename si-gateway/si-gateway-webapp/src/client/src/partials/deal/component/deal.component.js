@@ -7,7 +7,7 @@ app.component('dealComponent', {
     controller: function (dealModel, $uibModal, $sessionStorage, $filter, notify) {
 
         var vm = this;
-        var namePanelDef = "Pallet";
+        var namePanelDef = "Panel";
         var ACTIVE = 2;
         vm.panelId;
         vm.documents = [];
@@ -29,7 +29,7 @@ app.component('dealComponent', {
                 vm.panels = vm.dealInfo.panels;
                 vm.panelId = vm.dealInfo.firstPanel.panelId;
                 vm.documents = vm.dealInfo.firstPanel.documents;
-                vm.palletClicked = true;
+                vm.panelClicked = true;
             }
         };
 
@@ -45,7 +45,7 @@ app.component('dealComponent', {
                 });
         };
 
-        vm.addPallet = function (dealId) {
+        vm.addPanel = function (dealId) {
             var type = 'creation';
             var modalInstance = $uibModal.open({
 
@@ -67,7 +67,7 @@ app.component('dealComponent', {
                 dealModel.addPanel(params).then(
                     function (success) {
                         vm.emptyDeal = false;
-                        vm.palletClicked = true;
+                        vm.panelClicked = true;
                         var panel = success.data.data;
                         vm.panelId = panel.panelId;
                         vm.panels[panel.panelId] = panel.title;

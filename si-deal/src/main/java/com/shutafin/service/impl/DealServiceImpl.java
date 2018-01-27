@@ -1,14 +1,15 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.model.base.AbstractEntity;
 import com.shutafin.model.entities.Deal;
 import com.shutafin.model.entities.DealPanel;
 import com.shutafin.model.entities.DealUser;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.model.types.DealStatus;
-import com.shutafin.model.types.DealUserPermissionType;
-import com.shutafin.model.types.DealUserStatus;
+import com.shutafin.model.web.deal.DealStatus;
+import com.shutafin.model.web.deal.DealUserPermissionType;
+import com.shutafin.model.web.deal.DealUserStatus;
 import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealPanelService;
@@ -105,7 +106,7 @@ public class DealServiceImpl implements DealService {
         DealResponse dealResponse = new DealResponse();
         dealResponse.setDealId(deal.getId());
         dealResponse.setTitle(deal.getTitle());
-        dealResponse.setStatusId(deal.getDealStatus().getCode());
+        dealResponse.setStatusId(deal.getDealStatus());
 
         dealResponse.setUsers(dealUserRepository.findAllByDealIdAndDealUserStatus(dealId, DealUserStatus.ACTIVE)
                 .stream()
@@ -136,13 +137,13 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public InternalDealWeb renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb) {
+    public InternalDealWeb renameDeal(Long dealId, Long userId, DealTitleChangeWeb dealTitleChangeWeb) {
         Deal deal = checkDealPermissions(dealId, userId, NEED_FULL_ACCESS);
         DealUser dealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
         if (dealUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
-            return dealSnapshotService.renameDealSnapshot(dealId, userId, newTitleWeb.getTitle());
+            return dealSnapshotService.renameDealSnapshot(dealId, userId, dealTitleChangeWeb.getTitle());
         } else {
-            deal.setTitle(newTitleWeb.getTitle());
+            deal.setTitle(dealTitleChangeWeb.getTitle());
             deal.setModifiedByUser(userId);
             return new InternalDealWeb(dealId, null, deal.getTitle(), null);
         }
@@ -271,14 +272,14 @@ public class DealServiceImpl implements DealService {
         List<DealUserWeb> userDealsWeb = userDeals.stream()
                 .map(dealUser -> new DealUserWeb(dealUser.getDeal().getId(),
                         dealUser.getDeal().getTitle(),
-                        dealUser.getDeal().getDealStatus().getCode()))
+                        dealUser.getDeal().getDealStatus()))
                 .collect(Collectors.toList());
         return userDealsWeb;
     }
 
     private DealPanelResponse getFirstDealPanel(List<DealPanel> dealPanels, Long userId) {
         DealPanel firstPanel = dealPanels.stream()
-                .min(Comparator.comparing(dealPanel -> dealPanel.getCreatedDate()))
+                .min(Comparator.comparing(AbstractEntity::getCreatedDate))
                 .get();
         DealPanelResponse dealPanelResponse = getDealPanelResponse(userId, firstPanel);
         return dealPanelResponse;

@@ -18,9 +18,11 @@
                                 maxsize="5000"
                                 accept=".doc, .docx, .pdf, .tif, .jpg, .jpeg, .gif, .png">
 
-                        <span class="name-choosen-file"
+                        <span class="name-chosen-file"
                               ng-show="vm.showFileName"> {{vm.fileInfo.filename}}</span>
-                        <button class="btn btn-success btn-sm" ng-show="vm.showFileName" ng-click="vm.addDocument()">
+                        <button class="btn btn-success btn-sm"
+                                ng-show="vm.showFileName"
+                                ng-click="vm.addDocument()">
                             {{'Deal.confirmButton'|translate}}
                         </button>
                     </div>
@@ -28,6 +30,7 @@
             </div>
             <div class="floating-box" ng-repeat="document in vm.documentsShow"
             >
+                <!--todo generify with angular constants -->
                 <img class="document-icon" src="./images/iWord.png" alt="Document file"
                      ng-if="document.documentType === 0 || document.documentType === 1 "
                      ng-click="vm.downloadDocument(document)"
@@ -56,14 +59,14 @@
                     <div>
                         <i
                                 class="fa fa-edit icon-rename "
-                                ng-click="vm.renameDocument(document.documentId)"
+                                ng-click="vm.renameDocument(document)"
                                 uib-tooltip="{{'Deal.rename'|translate}}"
                         ></i>
                     </div>
                     <div>
                         <i
                                 class="fa fa-remove icon-delete"
-                                ng-click="vm.deleteDocument(document.documentId)"
+                                ng-click="vm.deleteDocument(document)"
                                 uib-tooltip="{{'Deal.delete'|translate}}"
                         ></i>
                     </div>

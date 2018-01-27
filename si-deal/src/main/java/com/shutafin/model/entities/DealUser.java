@@ -1,9 +1,9 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.base.AbstractEntity;
-import com.shutafin.model.types.DealUserPermissionType;
+import com.shutafin.model.web.deal.DealUserPermissionType;
 import com.shutafin.model.types.DealUserPermissionTypeConverter;
-import com.shutafin.model.types.DealUserStatus;
+import com.shutafin.model.web.deal.DealUserStatus;
 import com.shutafin.model.types.DealUserStatusConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

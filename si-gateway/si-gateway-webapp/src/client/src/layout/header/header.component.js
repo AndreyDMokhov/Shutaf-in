@@ -66,7 +66,7 @@ app.component('headerComponent', {
                 }
             }
 
-           init();
+            init();
 
             vm.setLanguageCode = setLanguageCode;
             vm.getUserImage = getUserImage;

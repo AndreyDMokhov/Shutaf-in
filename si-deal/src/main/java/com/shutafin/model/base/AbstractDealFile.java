@@ -1,7 +1,7 @@
 package com.shutafin.model.base;
 
 import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.types.PermissionType;
+import com.shutafin.model.web.deal.PermissionType;
 import com.shutafin.model.types.PermissionTypeConverter;
 import lombok.AccessLevel;
 import lombok.Getter;

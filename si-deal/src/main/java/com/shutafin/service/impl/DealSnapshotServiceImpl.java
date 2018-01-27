@@ -5,9 +5,8 @@ import com.shutafin.model.entities.DealDocument;
 import com.shutafin.model.entities.DealPanel;
 import com.shutafin.model.entities.DealSnapshot;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.types.DealStatus;
-import com.shutafin.model.types.DealUserPermissionType;
-import com.shutafin.model.types.DocumentType;
+import com.shutafin.model.web.deal.DealStatus;
+import com.shutafin.model.web.deal.DealUserPermissionType;
 import com.shutafin.model.util.DealSnapshotInfo;
 import com.shutafin.model.web.deal.DealDocumentWeb;
 import com.shutafin.model.web.deal.DealPanelResponse;
@@ -165,7 +164,7 @@ public class DealSnapshotServiceImpl implements DealSnapshotService {
     }
 
     private DealDocument getDealDocumentSnapshotAsDealDocument(DealDocument dealDocument, DealDocumentWeb dealDocumentWeb) {
-        DealDocument dealDocumentCopy = new DealDocument(DocumentType.getById(dealDocumentWeb.getDocumentType()),
+        DealDocument dealDocumentCopy = new DealDocument(dealDocumentWeb.getDocumentType(),
                 dealDocument.getDocumentStorage(), dealDocumentWeb.getTitle(), false);
         dealDocumentCopy.setDealPanel(dealDocument.getDealPanel());
         dealDocumentCopy.setId(dealDocument.getId());
@@ -232,11 +231,11 @@ public class DealSnapshotServiceImpl implements DealSnapshotService {
         return dealPanelResponse;
     }
 
-    public DealResponse getDealResponse(DealSnapshotInfo dealSnapshotInfo) {
+    private DealResponse getDealResponse(DealSnapshotInfo dealSnapshotInfo) {
         DealResponse dealResponse = new DealResponse();
         dealResponse.setDealId(dealSnapshotInfo.getDealId());
         dealResponse.setTitle(dealSnapshotInfo.getTitle());
-        dealResponse.setStatusId(DealStatus.ARCHIVE.getCode());
+        dealResponse.setStatusId(DealStatus.ARCHIVE);
 
         List<DealPanelResponse> dealPanels = dealSnapshotInfo.getDealPanels();
         if (dealPanels != null && !dealPanels.isEmpty()) {

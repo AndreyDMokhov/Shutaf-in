@@ -1,7 +1,8 @@
-package com.shutafin.controller.deal;
+package com.shutafin.controller;
 
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.deal.DealUserDocumentWeb;
-import com.shutafin.model.web.deal.NewTitleWeb;
+import com.shutafin.model.web.deal.DealTitleChangeWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.deal.DealDocumentService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class DealDocumentController {
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
-            throw new RuntimeException();
+            throw new InputValidationException(result);
         }
 
         return dealDocumentService.addDealDocument(dealUserDocumentWeb, userId);
@@ -45,7 +46,7 @@ public class DealDocumentController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealUserDocumentWeb renameDealDocument(@AuthenticatedUser Long userId,
                                                   @PathVariable(value = "docId") Long userDocumentId,
-                                                  @RequestBody @Valid NewTitleWeb documentTitle) {
+                                                  @RequestBody @Valid DealTitleChangeWeb documentTitle) {
         log.debug("POST /documents/{docId}");
         return dealDocumentService.renameDealDocument(userId, userDocumentId, documentTitle);
     }

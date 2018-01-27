@@ -14,7 +14,7 @@ public interface DealService {
     void addDealUser(InternalDealUserWeb internalDealUserWeb);
     List<DealUserWeb> getAllUserDeals(Long userId);
     DealResponse getDeal(Long dealId, Long userId);
-    InternalDealWeb renameDeal(Long dealId, Long userId, NewTitleWeb newTitleWeb);
+    InternalDealWeb renameDeal(Long dealId, Long userId, DealTitleChangeWeb dealTitleChangeWeb);
     Deal checkDealPermissions(Long dealId, Long userId, Boolean needFullAccess);
     void deleteDeal(Long dealId, Long userId);
 }

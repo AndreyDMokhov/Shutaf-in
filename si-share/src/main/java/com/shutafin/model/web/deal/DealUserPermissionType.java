@@ -1,5 +1,11 @@
-package com.shutafin.model.types;
+package com.shutafin.model.web.deal;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.shutafin.model.types.IdentifiableType;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public enum DealUserPermissionType implements IdentifiableType<Integer> {
     CREATE(1),
     READ_ONLY(2),
@@ -7,14 +13,13 @@ public enum DealUserPermissionType implements IdentifiableType<Integer> {
 
     private Integer id;
 
-    DealUserPermissionType(Integer id) {
-        this.id = id;
-    }
 
+    @JsonValue
     public Integer getCode() {
         return id;
     }
 
+    @JsonCreator
     public static DealUserPermissionType getById(Integer id) {
         if (id == null) {
             return null;

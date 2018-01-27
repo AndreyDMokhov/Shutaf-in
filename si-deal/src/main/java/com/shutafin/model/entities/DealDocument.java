@@ -1,7 +1,7 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.base.AbstractDealFile;
-import com.shutafin.model.types.DocumentType;
+import com.shutafin.model.web.deal.DocumentType;
 import com.shutafin.model.types.DocumentTypeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

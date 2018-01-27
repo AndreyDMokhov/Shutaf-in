@@ -15,5 +15,5 @@ public class DealUserWeb {
 
     private String title;
 
-    private Integer statusId;
+    private DealStatus statusId;
 }

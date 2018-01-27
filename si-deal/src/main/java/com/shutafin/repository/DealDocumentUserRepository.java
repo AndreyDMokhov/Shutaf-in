@@ -1,7 +1,7 @@
 package com.shutafin.repository;
 
 import com.shutafin.model.entities.DealDocumentUser;
-import com.shutafin.model.types.DealUserPermissionType;
+import com.shutafin.model.web.deal.DealUserPermissionType;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.stereotype.Repository;
 

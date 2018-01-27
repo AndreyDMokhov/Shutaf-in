@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.io.IOException;
 
 @Converter(autoApply = true)
 public class DealSnapshotInfoConverter implements AttributeConverter<DealSnapshotInfo, String> {

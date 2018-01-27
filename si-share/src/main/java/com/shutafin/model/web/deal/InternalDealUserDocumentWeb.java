@@ -1,9 +1,6 @@
 package com.shutafin.model.web.deal;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class InternalDealUserDocumentWeb {
 
     private Long id;
@@ -28,7 +26,7 @@ public class InternalDealUserDocumentWeb {
     private Long createdDate;
 
     @NotNull
-    private Integer documentTypeId;
+    private DocumentType documentTypeId;
 
     @Length(min = 1, max = 50)
     private String documentTitle;

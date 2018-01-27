@@ -2,7 +2,7 @@ package com.shutafin.service.deal.impl;
 
 import com.shutafin.model.web.deal.DealPanelResponse;
 import com.shutafin.model.web.deal.DealPanelWeb;
-import com.shutafin.model.web.deal.NewTitleWeb;
+import com.shutafin.model.web.deal.DealTitleChangeWeb;
 import com.shutafin.sender.deal.DealPanelControllerSender;
 import com.shutafin.service.deal.DealPanelService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class DealPanelServiceImpl implements DealPanelService {
     }
 
     @Override
-    public DealPanelResponse renameDealPanel(Long dealPanelId, Long userId, NewTitleWeb newTitle) {
+    public DealPanelResponse renameDealPanel(Long dealPanelId, Long userId, DealTitleChangeWeb newTitle) {
         return dealPanelControllerSender.renameDealPanel(dealPanelId, userId, newTitle);
     }
 

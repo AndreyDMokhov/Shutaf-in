@@ -1,6 +1,6 @@
 "use strict";
-app.component('palletComponent', {
-    templateUrl: 'partials/deal/deal.component/pallet.component/pallet.component.html',
+app.component('panelComponent', {
+    templateUrl: 'partials/deal/deal.component/panel.component/panel.component.html',
     bindings: {
         documents: "<",
         getDeals: "=",
@@ -8,26 +8,24 @@ app.component('palletComponent', {
         statusDeal: '<'
     },
     controllerAs: 'vm',
-    controller: function (palletModel, $uibModal, $scope, $timeout, $state, $sessionStorage, notify, $filter) {
+    controller: function (panelModel,
+                          $uibModal,
+                          $scope,
+                          $timeout,
+                          $state,
+                          $sessionStorage,
+                          notify,
+                          $filter,
+                          documentTypes) {
         var vm = this;
         vm.documentsShow = [];
         var componentType = 'file';
-        var typeDocument =
-            {
-                0: 'doc',
-                1: 'docx',
-                2: 'pdf',
-                3: 'tif',
-                4: 'jpg',
-                5: 'gif',
-                6: 'png'
-            };
 
         vm.$onChanges = function () {
             vm.documentsShow = vm.documents;
             for (var i = 0; i < vm.documentsShow.length; i++) {
                 vm.documentsShow[i].createdDate = dateFormat(vm.documentsShow[i].createdDate);
-                vm.documentsShow[i].extension = typeDocument[vm.documentsShow[i].documentType];
+                vm.documentsShow[i].extension = documentTypes.TYPES[vm.documentsShow[i].documentType];
             }
         };
 
@@ -37,7 +35,7 @@ app.component('palletComponent', {
         }
 
         vm.openDocument = function (docId) {
-            palletModel.getDocument(docId).then(
+            panelModel.getDocument(docId).then(
                 function (success) {
                     var documentById = success.data.data;
                     modalInput(documentById);
@@ -77,21 +75,21 @@ app.component('palletComponent', {
                 size: 'sm',
                 resolve: {
                     type: function () {
-                        return {type: type, component: componentType};
+                        return {type: type, component: componentType, filename: vm.fileInfo.filename};
                     }
                 }
             });
             modalInstance.result.then(
                 function (newName) {
                     if (newName === undefined) {
-                        newName = getDefaultName();
+                        newName = vm.fileInfo.filename;
                     }
                     var uploadedDocument = {};
                     uploadedDocument.dealPanelId = vm.panelId;
                     uploadedDocument.fileData = vm.fileInfo.base64;
                     uploadedDocument.documentTypeId = getDocumentTypeByFileExtension(vm.fileInfo.filename);
                     uploadedDocument.documentTitle = newName;
-                    palletModel.addDocument(uploadedDocument).then(
+                    panelModel.addDocument(uploadedDocument).then(
                         function (success) {
                             vm.getDeals(vm.panelId);
                             vm.showFileName = false;
@@ -105,7 +103,7 @@ app.component('palletComponent', {
                 });
         };
 
-        vm.deleteDocument = function (id) {
+        vm.deleteDocument = function (document) {
             var type = 'remove';
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -113,12 +111,12 @@ app.component('palletComponent', {
                 size: 'sm',
                 resolve: {
                     type: function () {
-                        return {type: type, component: componentType};
+                        return {type: type, component: componentType, filename: document.title};
                     }
                 }
             });
             modalInstance.result.then(function () {
-                palletModel.deleteDocument(id).then(
+                panelModel.deleteDocument(document.documentId).then(
                     function (success) {
                         vm.getDeals(vm.panelId);
                     },
@@ -129,7 +127,7 @@ app.component('palletComponent', {
             });
         };
 
-        vm.renameDocument = function (id) {
+        vm.renameDocument = function (document) {
             var type = 'rename';
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -137,16 +135,16 @@ app.component('palletComponent', {
                 size: 'sm',
                 resolve: {
                     type: function () {
-                        return {type: type, component: componentType};
+                        return {type: type, component: componentType, filename: document.title};
                     }
                 }
             });
             modalInstance.result.then(function (newName) {
                 if (newName === undefined) {
-                    newName = getDefaultName();
+                    return;
                 }
                 var param = {title: newName};
-                palletModel.renameDocument(id, param).then(
+                panelModel.renameDocument(document.documentId, param).then(
                     function (success) {
                         vm.getDeals(vm.panelId);
                     },
@@ -158,22 +156,18 @@ app.component('palletComponent', {
             });
         };
 
-        function getDefaultName() {
-            var date = new Date;
-            return "Document was created: " + date.toDateString() + " " + date.toLocaleTimeString();
-        }
 
         function getDocumentTypeByFileExtension(filename) {
-            var objectTypesExtentions = $sessionStorage.documentTypes;
+            var objectTypesExtensions = $sessionStorage.documentTypes;
             var extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length);
             if (extension === 'jpeg') {
                 extension = 'jpg';
             }
-            return Object.keys(objectTypesExtentions)[Object.values(objectTypesExtentions).indexOf(extension.toUpperCase())];
+            return Object.keys(objectTypesExtensions)[Object.values(objectTypesExtensions).indexOf(extension.toUpperCase())];
         }
 
         vm.downloadDocument = function (doc) {
-            palletModel.getDocument(doc.documentId).then(
+            panelModel.getDocument(doc.documentId).then(
                 function (success) {
                     $timeout(function () {
                         saveFile(success.data.data);

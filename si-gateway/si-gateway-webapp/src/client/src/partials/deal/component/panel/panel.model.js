@@ -1,4 +1,4 @@
-app.factory('palletModel', function (Restangular, $sessionStorage) {
+app.factory('panelModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);

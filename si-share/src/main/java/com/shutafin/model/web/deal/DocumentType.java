@@ -1,4 +1,8 @@
-package com.shutafin.model.types;
+package com.shutafin.model.web.deal;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.shutafin.model.types.IdentifiableType;
 
 public enum DocumentType implements IdentifiableType<Integer> {
     DOC(0, ".doc", "0M8R4KGxGuE"),
@@ -23,10 +27,12 @@ public enum DocumentType implements IdentifiableType<Integer> {
     }
 
     @Override
+    @JsonValue
     public Integer getCode() {
         return id;
     }
 
+    @JsonCreator
     public static DocumentType getById(Integer id) {
         if (id == null) {
             return null;

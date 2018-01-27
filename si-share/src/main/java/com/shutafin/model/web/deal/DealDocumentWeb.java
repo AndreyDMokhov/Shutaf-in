@@ -13,7 +13,7 @@ public class DealDocumentWeb {
 
     private Long documentId;
     private String title;
-    private Integer documentType;
+    private DocumentType documentType;
     private Long createdDate;
 
 }

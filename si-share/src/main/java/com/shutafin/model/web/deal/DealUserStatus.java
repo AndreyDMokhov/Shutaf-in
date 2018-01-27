@@ -1,5 +1,11 @@
-package com.shutafin.model.types;
+package com.shutafin.model.web.deal;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.shutafin.model.types.IdentifiableType;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public enum DealUserStatus implements IdentifiableType<Integer> {
     PENDING(1),
     ACTIVE(2),
@@ -8,14 +14,13 @@ public enum DealUserStatus implements IdentifiableType<Integer> {
 
     private Integer id;
 
-    DealUserStatus(Integer id) {
-        this.id = id;
-    }
 
+    @JsonValue
     public Integer getCode() {
         return id;
     }
 
+    @JsonCreator
     public static DealUserStatus getById(Integer id) {
         if (id == null) {
             return null;

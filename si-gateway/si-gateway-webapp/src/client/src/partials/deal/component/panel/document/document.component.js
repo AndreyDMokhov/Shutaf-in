@@ -1,6 +1,6 @@
 "use strict";
 app.component('documentDealComponent', {
-    templateUrl: 'partials/deal/deal.component/pallet.component/document.component/document.component.html',
+    templateUrl: 'partials/deal/deal.component/panel.component/document.component/document.component.html',
     bindings: {
         close: '&',
         dismiss: '&',
@@ -38,12 +38,6 @@ app.component('documentDealComponent', {
                 return 'data:image/jpeg;base64,' + vm.fullDocument.fileData;
             }
         };
-
-        function dateFormat(dateNotFormated) {
-            var date = new Date(dateNotFormated);
-            return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
-        }
-
 
         function b64toBlob(b64Data, contentType, sliceSize) {
             contentType = contentType || '';

@@ -1,8 +1,7 @@
 package com.shutafin.service;
 
 import com.shutafin.model.entities.DealDocument;
-import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.web.deal.DealUserDocumentWeb;
+import com.shutafin.model.web.deal.PermissionType;
 import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
 
 public interface DealDocumentService {

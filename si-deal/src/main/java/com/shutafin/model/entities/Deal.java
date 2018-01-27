@@ -1,7 +1,7 @@
 package com.shutafin.model.entities;
 
 import com.shutafin.model.base.AbstractModifiableEntity;
-import com.shutafin.model.types.DealStatus;
+import com.shutafin.model.web.deal.DealStatus;
 import com.shutafin.model.types.DealStatusConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

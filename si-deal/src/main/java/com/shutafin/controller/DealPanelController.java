@@ -1,9 +1,8 @@
 package com.shutafin.controller;
 
-import com.shutafin.model.entities.DealPanel;
 import com.shutafin.model.web.deal.DealPanelResponse;
 import com.shutafin.model.web.deal.DealPanelWeb;
-import com.shutafin.model.web.deal.NewTitleWeb;
+import com.shutafin.model.web.deal.DealTitleChangeWeb;
 import com.shutafin.service.DealPanelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/deal/panel")
@@ -45,7 +43,7 @@ public class DealPanelController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealPanelResponse renameDealPanel(@PathVariable(value = "userId") Long userId,
                                              @PathVariable(value = "panelId") Long dealPanelId,
-                                             @RequestBody @Valid NewTitleWeb panelTitle) {
+                                             @RequestBody @Valid DealTitleChangeWeb panelTitle) {
         log.debug("POST /deal/panel/{userId}/{panelId}");
         return dealPanelService.renameDealPanel(dealPanelId, userId, panelTitle.getTitle());
     }

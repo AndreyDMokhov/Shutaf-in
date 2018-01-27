@@ -4,10 +4,10 @@ import com.shutafin.model.entities.*;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.model.types.DealUserPermissionType;
-import com.shutafin.model.types.DealUserStatus;
-import com.shutafin.model.types.DocumentType;
-import com.shutafin.model.types.PermissionType;
+import com.shutafin.model.web.deal.DealUserPermissionType;
+import com.shutafin.model.web.deal.DealUserStatus;
+import com.shutafin.model.web.deal.DocumentType;
+import com.shutafin.model.web.deal.PermissionType;
 import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
@@ -63,8 +63,8 @@ public class DealDocumentServiceImpl implements DealDocumentService {
 
     @Override
     public DealDocument addDealDocument(InternalDealUserDocumentWeb dealUserDocumentWeb, PermissionType permissionType) {
-        DocumentType documentType = DocumentType.getById(dealUserDocumentWeb.getDocumentTypeId());
-        if (!fileSignatureCorrect(dealUserDocumentWeb, documentType)) {
+
+        if (!fileSignatureCorrect(dealUserDocumentWeb, dealUserDocumentWeb.getDocumentTypeId())) {
             log.warn("File content differs from document type or file is corrupted");
             throw new SystemException("File content differs from document type or file is corrupted");
         }
@@ -84,7 +84,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         dealDocument.setModifiedByUser(dealUserDocumentWeb.getUserId());
         dealDocument.setTitle(dealUserDocumentWeb.getDocumentTitle());
         dealDocument.setPermissionType(permissionType);
-        dealDocument.setDocumentType(documentType);
+        dealDocument.setDocumentType(dealUserDocumentWeb.getDocumentTypeId());
         dealDocument.setIsDeleted(false);
 
         String documentEncoded = dealUserDocumentWeb.getFileData();

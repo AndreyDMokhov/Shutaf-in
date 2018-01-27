@@ -13,8 +13,11 @@ public class DealInitializationControllerSender {
     @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public DealInitializationResponse getDealInitializationResponse() {
-        String requestUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/internal/deal/initialization";
-        return new RestTemplate().getForEntity(requestUrl, DealInitializationResponse.class).getBody();
+        String requestUrl = discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/initialization";
+        return restTemplate.getForEntity(requestUrl, DealInitializationResponse.class).getBody();
     }
 }

@@ -1,15 +1,25 @@
 <div ng-switch="vm.resolve.type.type">
+
     <div ng-switch-when="creation">
         <div class="modal-header deal" style="text-align: center ">
-            <h3 class="modal-title">{{'Deal.deal.modalWindow.creation.header' |
-                translate: vm.componentData}} </h3>
+            <h3 class="modal-title">{{'Deal.deal.modalWindow.creation.header' | translate: vm.componentData}} </h3>
         </div>
         <div class="modal-body-original" id="modal-body">
-            <label for="newTabName">
-                {{'Deal.deal.modalWindow.creation.content' | translate: vm.componentData}}
-            </label>
-            <input autofocus class="input-modal" ng-model="vm.newTabName" id="newTabName"
+            <div>
+                <label for="newTabName">
+                    {{'Deal.deal.modalWindow.creation.content' | translate: vm.componentData}} :
+                </label>
+                {{vm.resolve.type.filename}}
+            </div>
+            <br>
+            <input autofocus
+                   class="input-modal"
+                   ng-model="vm.newTabName"
+                   id="newTabName"
                    name="newTabName">
+            <strong>
+                {{vm.getFilenameExtension()}}
+            </strong>
         </div>
         <div class="modal-footer ">
             <button class="btn btn-primary" type="button" ng-click="vm.ok()">
@@ -27,8 +37,19 @@
             <h3 class="modal-title">{{'Deal.deal.modalWindow.rename.header' | translate: vm.componentData}}</h3>
         </div>
         <div class="modal-body-original">
-            <label for="newTabName">{{'Deal.deal.modalWindow.rename.content' | translate: vm.componentData}}</label>
-            <input autofocus class="input-modal" ng-model="vm.newTabName" name="newTabName">
+            <div>
+                <label for="newTabName">
+                    {{'Deal.deal.modalWindow.rename.content' | translate: vm.componentData}}
+                </label>
+                {{vm.resolve.type.filename}}
+            </div>
+            <input autofocus
+                   class="input-modal"
+                   ng-model="vm.newTabName"
+                   name="newTabName">
+            <strong>
+                {{vm.getFilenameExtension()}}
+            </strong>
         </div>
         <div class="modal-footer ">
             <button class="btn btn-primary" type="button" ng-click="vm.ok()">

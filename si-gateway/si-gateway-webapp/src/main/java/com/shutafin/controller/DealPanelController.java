@@ -1,8 +1,9 @@
-package com.shutafin.controller.deal;
+package com.shutafin.controller;
 
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.deal.DealPanelResponse;
 import com.shutafin.model.web.deal.DealPanelWeb;
-import com.shutafin.model.web.deal.NewTitleWeb;
+import com.shutafin.model.web.deal.DealTitleChangeWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.deal.DealPanelService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +23,14 @@ public class DealPanelController {
     private DealPanelService dealPanelService;
 
     @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealPanelResponse addDealPanel(@AuthenticatedUser Long userId, @RequestBody @Valid DealPanelWeb dealPanelWeb,
+    public DealPanelResponse addDealPanel(@AuthenticatedUser Long userId,
+                                          @RequestBody @Valid DealPanelWeb dealPanelWeb,
                                           BindingResult result) {
         log.debug("/deal/panel/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
-            throw new RuntimeException();
+            throw new InputValidationException(result);
         }
 
         return dealPanelService.addDealPanel(dealPanelWeb, userId);
@@ -45,7 +47,7 @@ public class DealPanelController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealPanelResponse renameDealPanel(@AuthenticatedUser Long userId,
                                              @PathVariable(value = "panelId") Long dealPanelId,
-                                             @RequestBody @Valid NewTitleWeb panelTitle) {
+                                             @RequestBody @Valid DealTitleChangeWeb panelTitle) {
         log.debug("POST /deal/panel/{panelId}");
         return dealPanelService.renameDealPanel(dealPanelId, userId, panelTitle);
     }

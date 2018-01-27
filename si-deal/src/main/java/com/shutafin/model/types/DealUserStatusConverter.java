@@ -1,5 +1,7 @@
 package com.shutafin.model.types;
 
+import com.shutafin.model.web.deal.DealUserStatus;
+
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 

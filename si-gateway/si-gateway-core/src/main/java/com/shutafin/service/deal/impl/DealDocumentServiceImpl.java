@@ -1,7 +1,7 @@
 package com.shutafin.service.deal.impl;
 
 import com.shutafin.model.web.deal.DealUserDocumentWeb;
-import com.shutafin.model.web.deal.NewTitleWeb;
+import com.shutafin.model.web.deal.DealTitleChangeWeb;
 import com.shutafin.sender.deal.DealDocumentControllerSender;
 import com.shutafin.service.deal.DealDocumentService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class DealDocumentServiceImpl implements DealDocumentService {
     }
 
     @Override
-    public DealUserDocumentWeb renameDealDocument(Long userId, Long dealDocumentId, NewTitleWeb newTitle) {
+    public DealUserDocumentWeb renameDealDocument(Long userId, Long dealDocumentId, DealTitleChangeWeb newTitle) {
         return dealDocumentControllerSender.renameDealDocument(userId, dealDocumentId, newTitle);
     }
 
