@@ -46,7 +46,17 @@ angular.module('app').directive('userAvatar', function (Restangular,
                     scope.currentUser = $sessionStorage[scope.userId];
                     return $sessionStorage[scope.userId].image;
                 }
-                return '';
+                // console.log(scope.userId);
+                var bl='';
+                    return userSearchModel.getCompressedUserImageById(scope.userId).then(
+                        function (success) {
+                            console.log(scope.userId);
+                            console.log(success);
+                            return success.data.data;
+                        }
+
+                    );
+                return bl;
             }
 
             scope.open = function (size, parentSelector) {
