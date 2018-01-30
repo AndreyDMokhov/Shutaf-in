@@ -20,10 +20,10 @@ public class UserImageController {
     @Autowired
     private UserImageService userImageService;
 
-    @RequestMapping(value = "/{imageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getCompressedUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "imageId") Long imageId) {
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getCompressedUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "userId") Long userId) {
         log.debug("/images/{userId}");
-        return userImageService.getCompressedUserImage(imageId);
+        return userImageService.getCompressedUserImage(userId);
     }
 
     @RequestMapping(value = "/original/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
