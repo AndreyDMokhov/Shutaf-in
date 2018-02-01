@@ -19,14 +19,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.mockito.Mockito.when;
-
 
 @RunWith(SpringRunner.class)
 public class UserInfoControllerTest extends BaseTestImpl {
     private static final String INITIALIZATION_REQUEST_URL = "/users/settings/info/";
     private static final String VALID_SESSION = "e382d6ec-0e97-4c32-a1a2-8280160cd179";
     private static final String INVALID_SESSION = "";
+
+    private AccountUserInfoResponseDTO userInfoResponseDTO = AccountUserInfoResponseDTO
+            .builder()
+            .firstName("aaa")
+            .lastName("bbb")
+            .languageId(1)
+            .userId(1L)
+            .build();
 
     @MockBean
     private UserInfoService userInfoService;
@@ -37,6 +43,7 @@ public class UserInfoControllerTest extends BaseTestImpl {
     @Before
     public void setUp() {
         Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION)).thenReturn(null);
+        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION)).thenReturn(userInfoResponseDTO.getUserId());
     }
 
     @Test
@@ -54,16 +61,8 @@ public class UserInfoControllerTest extends BaseTestImpl {
 
     @Test
     public void userSessionExists() {
-//        User user = new User();
-//        user.setFirstName("aaa");
-//        user.setLastName("bbb");
-//        user.setEmail("1@1.com");
 
-        AccountUserInfoResponseDTO userInfoResponseDTO = new AccountUserInfoResponseDTO();
-        userInfoResponseDTO.setFirstName("aaa");
-        userInfoResponseDTO.setLastName("bbb");
-        userInfoResponseDTO.setLanguageId(1);
-
+        Mockito.when(userInfoService.getUserInfo(userInfoResponseDTO.getUserId())).thenReturn(userInfoResponseDTO);
 
         List<HttpHeaders> headers = addSessionIdToHeader(VALID_SESSION);
         ControllerRequest request = ControllerRequest.builder()
