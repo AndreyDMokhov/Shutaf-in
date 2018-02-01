@@ -12,7 +12,7 @@ app.component('userSettingsComponent', {
                           initializationService,
                           $window,
                           browserTitle,
-                          siteAssessRouting) {
+                          siteAccessRouting) {
 
         browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
 

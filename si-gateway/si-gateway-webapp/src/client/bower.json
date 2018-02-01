@@ -42,7 +42,8 @@
     "ui-cropper": "^1.0.6",
     "angularjs-slider": "^6.4.0",
     "stomp-websocket": "2.3.4",
-    "sockjs-client": "^1.1.4"
+    "sockjs-client": "^1.1.4",
+    "angular-bootstrap-toggle-switch": "^0.5.6"
   },
   "resolutions": {
     "angular": "1.5.9"
