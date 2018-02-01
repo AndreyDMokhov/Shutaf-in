@@ -15,4 +15,5 @@ public class TestConfiguration {
     public DiscoveryClient discoveryClient() {
         return new SimpleDiscoveryClient(new SimpleDiscoveryProperties());
     }
+    
 }
