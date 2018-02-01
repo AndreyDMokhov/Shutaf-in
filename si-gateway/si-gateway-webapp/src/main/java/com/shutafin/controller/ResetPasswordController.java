@@ -1,11 +1,13 @@
 package com.shutafin.controller;
 
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountEmailRequest;
 import com.shutafin.model.web.user.PasswordWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.ResetPasswordService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -32,6 +34,10 @@ public class ResetPasswordController {
     @RequestMapping(value = "/validate/{link}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public void resetPasswordValidation(@PathVariable("link") String link) {
         log.debug("/reset-password/validate/{link}");
+        if (StringUtils.isBlank(link)){
+            log.warn("Link is blank or empty");
+            throw new ResourceNotFoundException();
+        }
         resetPasswordService.resetPasswordValidation(link);
     }
 
@@ -39,6 +45,10 @@ public class ResetPasswordController {
     public void passwordChange(@RequestBody @Valid PasswordWeb passwordWeb, BindingResult result, @PathVariable("link") String link) {
         log.debug("/reset-password/change/{link}");
         checkBindingResult(result);
+        if (StringUtils.isBlank(link)){
+            log.warn("Link is blank or empty");
+            throw new ResourceNotFoundException();
+        }
         resetPasswordService.passwordChange(passwordWeb, link);
     }
 

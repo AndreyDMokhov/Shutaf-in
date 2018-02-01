@@ -59,7 +59,6 @@ public class UserAccountController {
 
     @GetMapping(value = "/info", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserInfoResponseDTO getUserInfo(@AuthenticatedUser Long userId) {
-
         return userInfoService.getUserInfo(userId);
     }
 
@@ -67,7 +66,6 @@ public class UserAccountController {
     public InitializationResponse updateUserInfo(@AuthenticatedUser Long userId,
                                                  @RequestBody @Valid AccountUserInfoRequest userInfoRequest,
                                                  BindingResult result) {
-
         checkBindingResult(result);
         return userInfoService.updateUserInfo(userInfoRequest, userId);
     }
