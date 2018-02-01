@@ -86,7 +86,7 @@ public class ChangePasswordControllerTest extends BaseTestImpl {
 
     @Test
     public void changePassword_AllFieldsEmpty_MinLength() {
-        String accountChangePasswordWebJson = "{\"oldPassword\":\" \", \"newPassword\":\" \"}";
+        String accountChangePasswordWebJson = "{\"oldPassword\":\"1\", \"newPassword\":\"1\"}";
         errorList.add(INP_OLD_PASSWORD_NOT_BLANK);
         errorList.add(INP_NEW_PASSWORD_NOT_BLANK);
         errorList.add(INP_NEW_PASSWORD_LENGTH);

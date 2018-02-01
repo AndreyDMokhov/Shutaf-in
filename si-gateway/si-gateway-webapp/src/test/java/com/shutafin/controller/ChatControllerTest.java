@@ -152,7 +152,6 @@ public class ChatControllerTest extends BaseTestImpl {
     }
 
     @Test
-//    @Ignore("Mockito semantics failure. Passes if to run separately. Does no pass if to run alltests")
     public void removeChat_Positive(){
         List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()

@@ -32,7 +32,6 @@ import static org.mockito.Matchers.anyString;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
-    private static final String SESSION_ID_HEADER_NAME = "session_id";
     private static final String EMAIL_CHANGE_REQUEST_URL = "/users/account/change-email-request/";
     private static final String EMAIL_CHANGE_CONFIRMATION_URL = "/users/account/change-email-confirmation/";
     private static final String VALID_SESSION_ID = "validsessionid";
@@ -52,11 +51,10 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
 
     @MockBean
     private SessionManagementService sessionManagementService;
+
     @MockBean
     private EmailChangeConfirmationService emailChangeConfirmationService;
 
-    @MockBean
-    private ChangePasswordService changePasswordService;
 
     @Before
     public void setUp() {
@@ -64,12 +62,8 @@ public class EmailChangeConfirmationControllerTest extends BaseTestImpl {
         errorList = new ArrayList<>();
 
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
-        Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID))
-                .thenThrow(new AuthenticationException());
-//        Mockito.doNothing().when(emailChangeConfirmationService)
-//                .emailChangeRequest(Mockito.any(User.class), Mockito.any(EmailChangeConfirmationWeb.class));
-        Mockito.when(emailChangeConfirmationService.
-                emailChangeConfirmation(anyString())).thenReturn(new GatewayEmailChangedResponse());
+        Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID)).thenThrow(new AuthenticationException());
+        Mockito.when(emailChangeConfirmationService.emailChangeConfirmation(anyString())).thenReturn(new GatewayEmailChangedResponse());
     }
 
     @Test

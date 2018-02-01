@@ -72,7 +72,7 @@ public class UserMatchControllerTest extends BaseTestImpl {
     public void configure_Positive(){
         List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
-                .setUrl(CONFIQURE_URL + "/path_variable?enabled=true")
+                .setUrl(CONFIQURE_URL + "?enabled=true")
                 .setHttpMethod(HttpMethod.PUT)
                 .setHeaders(sessionHeaders)
                 .build();
