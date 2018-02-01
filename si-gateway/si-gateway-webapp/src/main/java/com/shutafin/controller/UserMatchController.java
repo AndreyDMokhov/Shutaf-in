@@ -26,11 +26,9 @@ public class UserMatchController {
         return userMatchService.saveQuestionsAnswers(userId, questionsAnswers);
     }
 
-
     @PutMapping(value = "/configure")
     public void configure(@AuthenticatedUser Long userId,
-                                         @RequestParam("enabled") Boolean isEnabled) {
+                          @RequestParam("enabled") Boolean isEnabled) {
         userMatchService.setIsUserMatchingEnabled(userId, isEnabled);
     }
-
 }

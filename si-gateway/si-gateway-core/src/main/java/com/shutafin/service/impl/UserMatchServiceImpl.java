@@ -1,5 +1,8 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.model.web.account.AccountUserFilterRequest;
+import com.shutafin.model.web.common.FiltersWeb;
+import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
@@ -13,16 +16,16 @@ import com.shutafin.service.UserMatchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by evgeny on 8/12/2017.
  */
 @Service
+@Transactional
 @Slf4j
 public class UserMatchServiceImpl implements UserMatchService {
 
@@ -48,11 +51,11 @@ public class UserMatchServiceImpl implements UserMatchService {
     }
 
     @Override
-    public Map<Long, Integer> getMatchingUsersWithScores(Long userId) {
+    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, String fullName, FiltersWeb filtersWeb) {
         if (userId == null) {
-            return new HashMap<>();
+            return new ArrayList<>();
         }
-        return userMatchingScoreControllerSender.getUserMatchingScores(userId);
+        return userMatchingScoreControllerSender.getMatchedUserSearchResponses(userId, new AccountUserFilterRequest(null, fullName, filtersWeb));
     }
 
     @Override

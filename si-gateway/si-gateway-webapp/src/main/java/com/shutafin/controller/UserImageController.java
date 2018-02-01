@@ -21,13 +21,15 @@ public class UserImageController {
     private UserImageService userImageService;
 
     @RequestMapping(value = "/{imageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getCompressedUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "imageId") Long imageId) {
+    public AccountUserImageWeb getCompressedUserImageById(@AuthenticatedUser Long authenticatedUserId,
+                                                          @PathVariable(value = "imageId") Long imageId) {
         log.debug("/images/{userId}");
         return userImageService.getCompressedUserImage(imageId);
     }
 
     @RequestMapping(value = "/original/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getOriginalUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "userId") Long userId) {
+    public AccountUserImageWeb getOriginalUserImageById(@AuthenticatedUser Long authenticatedUserId,
+                                                        @PathVariable(value = "userId") Long userId) {
         log.debug("/images/original/{userId}");
         return userImageService.getOriginalUserImage(userId);
     }

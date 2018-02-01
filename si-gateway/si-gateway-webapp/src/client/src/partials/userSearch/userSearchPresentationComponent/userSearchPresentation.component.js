@@ -21,6 +21,7 @@ app.component('userSearchPresentationComponent', {
         vm.fullName = $stateParams.name;
 
         function activate() {
+            userSearchService.registerFilterObserver(saveFilters);
             userSearch();
         }
 
@@ -33,6 +34,20 @@ app.component('userSearchPresentationComponent', {
                     if (error === undefined || error === null) {
                         notify.set($filter('translate')('Error.SYS'), {type: 'error'});
                     }
+                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                });
+        }
+
+        function saveFilters(filters) {
+            userSearchModel.saveFilters(filters, vm.fullName).then(
+                function (success) {
+                    $sessionStorage.filters.filterGenderId = filters.filterGenderId;
+                    $sessionStorage.filters.filterCitiesIds = filters.filterCitiesIds;
+                    $sessionStorage.filters.filterAgeRange = filters.filterAgeRange;
+
+                    vm.userSearchList = success.data.data;
+                    saveUserImagesToStorage();
+                }, function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
@@ -56,14 +71,11 @@ app.component('userSearchPresentationComponent', {
             });
         }
 
-        userSearchService.onSearchListRefreshed(function (answer) {
-            vm.userSearchList = answer;
-        });
-
         activate();
 
         vm.userSearch = userSearch;
         vm.showUserProfilePopup = showUserProfilePopup;
+        vm.saveFilters = saveFilters;
     }
 
 });

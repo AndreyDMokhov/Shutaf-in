@@ -19,6 +19,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -29,6 +30,7 @@ import java.util.TreeMap;
 
 @Service
 @Slf4j
+@Transactional
 public class SenderEmailMessageServiceImpl implements SenderEmailMessageService {
 
     private static final String IMAGE_CONTENT_TYPE = "image/jpeg";

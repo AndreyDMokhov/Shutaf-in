@@ -6,7 +6,8 @@ app.factory('initializationService', function (messengerChannelService,
                                                $filter,
                                                languageService,
                                                webSocketService,
-                                               notifySessionStorageChangeService) {
+                                               notifySessionStorageChangeService,
+                                               notificationService) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
     });
@@ -34,6 +35,7 @@ app.factory('initializationService', function (messengerChannelService,
 
                 initialize(success);
 
+                notificationService.initWsSubscription();
                 webSocketService.getConnection();
                 messengerChannelService.initWsSubscription();
                 deferred.resolve(success.data);

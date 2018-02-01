@@ -55,8 +55,8 @@ public class ChatController {
 
     @GetMapping(value = "/rename/{chat_id}/{chat_title}")
     public ChatWithUsersListDTO renameChat(@PathVariable("chat_id") Long chatId,
-                           @PathVariable("chat_title") String chatTitle,
-                           @AuthenticatedUser Long userId) {
+                                           @PathVariable("chat_title") String chatTitle,
+                                           @AuthenticatedUser Long userId) {
 
         Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, userId);
         return chatManagementService.renameChat(chat, chatTitle, userId);
@@ -68,7 +68,7 @@ public class ChatController {
                             @AuthenticatedUser Long authenticatedUserId) {
 
         Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, authenticatedUserId);
-        chatManagementService.addChatUserToChat(chat, userId);
+        chatManagementService.addChatUserToChat(authenticatedUserId, chat, userId);
     }
 
     @GetMapping(value = "/{chat_id}/remove/user/{user_id}")
@@ -77,15 +77,14 @@ public class ChatController {
                                @AuthenticatedUser Long authenticatedUserId) {
 
         Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, authenticatedUserId);
-        chatManagementService.removeChatUserFromChat(chat, userId);
+        chatManagementService.removeChatUserFromChat(authenticatedUserId, chat, userId);
     }
 
-    @GetMapping(value = "/{chat_id}/remove/chat")
-    public void removeChat(@PathVariable("chat_id") Long chatId,
+    @GetMapping(value = "/{chat_id}/delete/chat")
+    public void deleteChat(@PathVariable("chat_id") Long chatId,
                            @AuthenticatedUser Long authenticatedUserId) {
 
-        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, authenticatedUserId);
-        chatManagementService.removeChatUserFromChat(chat, authenticatedUserId);
+        chatManagementService.deleteChat(authenticatedUserId, chatId);
     }
 
     @GetMapping(value = "/get/chats")
@@ -102,6 +101,7 @@ public class ChatController {
 
         ChatUser chatUser = chatAuthorizationService.findAuthorizedChatUser(chatId, userId);
         ChatMessageRequest chatMessageRequest = message.getPayload();
+
         ChatMessage chatMessage = chatManagementService.saveChatMessage(chatUser, chatMessageRequest);
         return createChatMessageOutputWeb(chatMessage);
     }
@@ -111,13 +111,14 @@ public class ChatController {
     public List<ChatMessageResponse> getMessages(@PathVariable("chat_id") Long chatId,
                                                  @AuthenticatedUser Long authenticatedUserId) {
 
-        Chat chat = chatAuthorizationService.findAuthorizedChat(chatId, authenticatedUserId);
-        List<ChatMessage> chatMessages = chatInfoService.getListMessages(chat, authenticatedUserId);
+        List<ChatMessage> chatMessages = chatInfoService.getListMessages(chatId, authenticatedUserId);
         return createListChatMessageOutputWeb(chatMessages);
     }
+
     @GetMapping(value = "/allUsers")
     public List<UserBaseResponse> getUsers(@AuthenticatedUser Long authenticatedUserId) {
-        return userSearchService.userBaseResponseByList(authenticatedUserId, userMatchService.findMatchingUsers(authenticatedUserId));
+        return userSearchService.userBaseResponseByList(authenticatedUserId,
+                userMatchService.findMatchingUsers(authenticatedUserId));
     }
 
     @PutMapping(value = "/updateMessagesAsRead", consumes = {MediaType.APPLICATION_JSON_VALUE})

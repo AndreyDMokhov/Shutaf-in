@@ -12,19 +12,18 @@ import java.util.List;
 
 public interface ChatUserRepository extends BaseJpaRepository<ChatUser, Long> {
 
-    ChatUser findActiveChatUserByChatIdAndUserId(Long chatId, Long userId);
+    ChatUser findChatUserByChatIdAndUserIdAndIsActiveUserTrue(Long chatId, Long userId);
     ChatUser findChatUserByChatIdAndUserId(Long chatId, Long userId);
 
     @Query("SELECT new com.shutafin.model.web.account.AccountUserWeb" +
             " (cu.userId, cu.lastName, cu.firstName) " +
             " from ChatUser cu where cu.chat.id = :chatId  AND cu.userId <> :currentUser AND cu.isActiveUser = TRUE ")
-    List<AccountUserWeb> findAllByUserId (@Param("chatId") Long chatId, @Param ("currentUser") Long currentUser);
+    List<AccountUserWeb> findOtherUsersInChatByUserId(@Param("chatId") Long chatId, @Param ("currentUser") Long currentUser);
 
     @Query("select new com.shutafin.model.web.chat.ChatWithUsersListDTO" +
-            "(c.chat.id, c.chat.chatTitle, c.chat.hasNoTitle) " +
-            "from ChatUser c where c.userId = :userId AND c.isActiveUser = TRUE ")
-    List<ChatWithUsersListDTO> findChatsWithActiveUsers(@Param("userId") Long userId);
-
+            "(c.chat.id, c.chat.chatTitle, c.chat.hasNoTitle, c.isActiveUser) " +
+            "from ChatUser c where c.userId = :userId AND c.isDeletedFromChat = FALSE")
+    List<ChatWithUsersListDTO> findChats(@Param("userId") Long userId);
 
     List<ChatUser> findChatUsersByChatAndIsActiveUserTrue (Chat chat);
 
