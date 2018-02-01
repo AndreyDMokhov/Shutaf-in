@@ -134,6 +134,11 @@
   "UserSettings.btn.addSettings": "Дополнительная информация",
   "UserSettings.btn.submit":  "Сохранить",
   "UserSettings.message.save.success": "Данные успешно сохранены",
+  "UserSetting.personal.matching.title": "Настройки поиска",
+  "UserSetting.personal.matching.toggle.label": "Я хочу что меня находили другие пользователи",
+  "UserSetting.personal.matching.toggle.yes": "Да",
+  "UserSetting.personal.matching.toggle.no": "Нет",
+  "UserSetting.personal.matching.toggle.tip": "Только пользователи ответившие на все вопросы могут использовать эту функцию",
 
   "SECTION": "USER SEARCH",
   "Search.title": "Поиск",
