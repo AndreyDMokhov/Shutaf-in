@@ -1,6 +1,5 @@
 package com.shutafin.service.impl;
 
-
 import com.shutafin.model.web.account.AccountLoginRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.sender.account.LoginControllerSender;
@@ -15,16 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class LoginServiceImpl implements LoginService {
 
-
     @Autowired
     private LoginControllerSender loginControllerSender;
 
-
+    @Override
     public AccountUserWeb getUserByLoginWebModel(AccountLoginRequest loginWeb) {
         return loginControllerSender.login(loginWeb);
     }
 
-
-
+    @Override
+    public void resendEmailRegistration(AccountLoginRequest loginWeb) {
+        loginControllerSender.resendEmailRegistration(loginWeb);
+    }
 
 }

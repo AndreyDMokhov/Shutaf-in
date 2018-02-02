@@ -23,6 +23,7 @@
   "Error.IPE":"Incorrect password",
   "Error.ABL":"Your account was blocked",
   "Error.ANC":"Account not activated, please confirm your email",
+  "Error.ERI":"Resend interval is 2 minutes",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
@@ -51,6 +52,7 @@
   "Login.form.email": "Email ",
   "Login.form.password": "Password ",
   "Login.form.button.login": "Login",
+  "Login.form.button.resendEmailRegistration": "Resend email confirmation",
   "Login.form.errorEmail": "Please enter a valid email address",
   "Login.form.errorPassword": "Please enter at least 8 characters",
   "Login.message.success": "We are glad to see You again!",

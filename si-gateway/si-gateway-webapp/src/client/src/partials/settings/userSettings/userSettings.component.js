@@ -38,7 +38,7 @@ app.component('userSettingsComponent', {
                     initializationService.initialize(success.data);
                     $window.location.reload();
 
-                    siteAssessRouting.navigate('userProfile', {id: $sessionStorage.userProfile.userId});
+                    siteAccessRouting.navigate('userProfile', {id: $sessionStorage.userProfile.userId});
 
                 }, function (error) {
                     vm.dataLoading = false;

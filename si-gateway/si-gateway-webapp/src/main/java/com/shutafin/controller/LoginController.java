@@ -27,12 +27,9 @@ public class LoginController {
     private LoginService loginWebService;
 
 
-    //todo ms-gateway @SessionResponse
-
     @SessionResponse
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserWeb login(@RequestBody @Valid AccountLoginRequest loginWeb,
-                                BindingResult result) {
+    public AccountUserWeb login(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
         log.debug("/login/");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
@@ -42,4 +39,15 @@ public class LoginController {
         return loginWebService.getUserByLoginWebModel(loginWeb);
     }
 
+    //todo add e2e test
+    @RequestMapping(value = "/resend", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void resendEmailRegistration(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
+        log.debug("/login/resend");
+        if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
+            throw new InputValidationException(result);
+        }
+        loginWebService.resendEmailRegistration(loginWeb);
+    }
 }

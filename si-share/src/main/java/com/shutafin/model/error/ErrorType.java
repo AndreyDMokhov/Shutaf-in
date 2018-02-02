@@ -13,6 +13,7 @@ public enum ErrorType {
     EMAIL_SEND_ERROR(503, ErrorCode.ESE, EmailSendException.class),
     EMAIL_CONFIGURATION_ERROR(500, ErrorCode.ECE, EmailNotificationProcessingException.class),
     EMAIL_DUPLICATION_EXCEPTION(400, ErrorCode.EDE, EmailNotUniqueValidationException.class),
+    EMAIL_RESEND_INTERVAL_EXCEPTION(429, ErrorCode.ERI, EmailResendIntervalException.class),
     RESOURCE_NOT_FOUND_ERROR(404, ErrorCode.RNF, ResourceNotFoundException.class),
     INCORRECT_PASSWORD_ERROR(401, ErrorCode.IPE, IncorrectPasswordException.class),
     ACCOUNT_NOT_CONFIRMED(403, ErrorCode.ANC, AccountNotConfirmedException.class),
@@ -56,5 +57,5 @@ public enum ErrorType {
 }
 
 enum ErrorCode {
-    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANC, ABL;
+    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANC, ABL, ERI;
 }

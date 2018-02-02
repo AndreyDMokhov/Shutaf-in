@@ -30,12 +30,23 @@ public class LoginController {
     @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserWeb login(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
         log.debug("/login/");
+        checkResult(result);
+        return loginWebService.getUserByLoginWebModel(loginWeb);
+    }
+
+    @PostMapping(value = "/resend", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void resendEmailRegistration(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
+        log.debug("/users/resend");
+        checkResult(result);
+        loginWebService.resendEmailRegistration(loginWeb);
+    }
+
+    private void checkResult(BindingResult result) {
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        return loginWebService.getUserByLoginWebModel(loginWeb);
     }
 
 }
