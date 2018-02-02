@@ -34,9 +34,9 @@ public class LoginController {
         return loginWebService.getUserByLoginWebModel(loginWeb);
     }
 
-    @PostMapping(value = "/resend/registration", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/resend", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void resendEmailRegistration(@RequestBody @Valid AccountLoginRequest loginWeb, BindingResult result) {
-        log.debug("/users/resend/registration");
+        log.debug("/users/resend");
         checkResult(result);
         loginWebService.resendEmailRegistration(loginWeb);
     }

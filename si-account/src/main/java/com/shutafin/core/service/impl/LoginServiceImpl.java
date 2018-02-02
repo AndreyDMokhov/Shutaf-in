@@ -37,8 +37,10 @@ public class LoginServiceImpl implements LoginService {
     private EmailNotificationSenderControllerSender emailNotificationSenderControllerSender;
 
     @Autowired
-    public LoginServiceImpl(UserRepository userRepository, PasswordService passwordService,
-                            UserAccountService userAccountService, UserLoginLogRepository userLoginLogRepository,
+    public LoginServiceImpl(UserRepository userRepository,
+                            PasswordService passwordService,
+                            UserAccountService userAccountService,
+                            UserLoginLogRepository userLoginLogRepository,
                             EmailNotificationSenderControllerSender emailNotificationSenderControllerSender) {
         this.userRepository = userRepository;
         this.passwordService = passwordService;

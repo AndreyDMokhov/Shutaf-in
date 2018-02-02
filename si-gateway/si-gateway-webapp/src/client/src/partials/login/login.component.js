@@ -32,7 +32,7 @@ app.component('loginComponent', {
                         function () {
                             $window.location.reload();
                             notify.set($filter('translate')('Login.message.success'), {type: 'success'});
-                            siteAssessRouting.navigate('home', {});
+                            siteAccessRouting.navigate('home', {});
 
                         }, function (error) {
                             vm.dataLoading = false;
@@ -54,7 +54,7 @@ app.component('loginComponent', {
                 function (success) {
                     vm.resendLoading = false;
                     notify.set($filter('translate')('Registration.request.success'), {type: 'success'});
-                    siteAssessRouting.navigate('home', {});
+                    siteAccessRouting.navigate('home', {});
                 },
                 function (error) {
                     if (error.data.error.errorTypeCode === "AUT") {

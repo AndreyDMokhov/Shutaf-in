@@ -25,7 +25,7 @@ public class LoginControllerSender {
     }
 
     public void resendEmailRegistration(AccountLoginRequest loginWeb) {
-        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "users/resend/registration";
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) + "/users/resend";
         restTemplate.postForEntity(url, loginWeb, Void.class);
     }
 

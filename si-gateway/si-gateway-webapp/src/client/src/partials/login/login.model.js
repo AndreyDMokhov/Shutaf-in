@@ -9,7 +9,7 @@ app.factory('loginModel', function (Restangular) {
         return  rest.one('/api/login/').customPOST(params);
     }
     function resendEmailRegistration(params) {
-        return  rest.one('/api/login/resend/registration').customPOST(params);
+        return  rest.one('/api/login/resend').customPOST(params);
     }
 
     return {
