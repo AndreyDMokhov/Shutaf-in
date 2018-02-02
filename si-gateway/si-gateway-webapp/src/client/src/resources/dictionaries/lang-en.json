@@ -23,6 +23,7 @@
   "Error.IPE":"Incorrect password",
   "Error.ABL":"Your account was blocked",
   "Error.ANC":"Account not activated, please confirm your email",
+  "Error.ERI":"Resend interval is 2 minutes",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
@@ -51,6 +52,7 @@
   "Login.form.email": "Email ",
   "Login.form.password": "Password ",
   "Login.form.button.login": "Login",
+  "Login.form.button.resendEmailRegistration": "Resend email confirmation",
   "Login.form.errorEmail": "Please enter a valid email address",
   "Login.form.errorPassword": "Please enter at least 8 characters",
   "Login.message.success": "We are glad to see You again!",
@@ -132,6 +134,12 @@
   "UserSettings.btn.addSettings": "Show additional settings",
   "UserSettings.btn.submit":  "Submit",
   "UserSettings.message.save.success": "Has been successfully saved",
+  "UserSetting.personal.matching.title": "Matching",
+  "UserSetting.personal.matching.toggle.label": "I want to be found by other users",
+  "UserSetting.personal.matching.toggle.yes": "Yes",
+  "UserSetting.personal.matching.toggle.no": "No",
+  "UserSetting.personal.matching.toggle.tip": "Only users who answered all questions can use this function",
+
 
   "SECTION": "USER SEARCH",
   "Search.title": "Search",

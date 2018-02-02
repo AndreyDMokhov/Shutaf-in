@@ -22,6 +22,7 @@
   "Error.IPE":"Неверный пароль",
   "Error.ABL":"Ваш аккаунт заблокирован",
   "Error.ANC":"Ваш аккаунт не активирван, пожалуйста подтвердите ваш электронный адрес",
+  "Error.ERI":"Интервал между повторной отправкой составляет 2 минуты",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Регистрация",
@@ -50,6 +51,7 @@
   "Login.form.email": "Электронная почта",
   "Login.form.password": "Пароль ",
   "Login.form.button.login": "Вход",
+  "Login.form.button.resendEmailRegistration": "Отправить повторно подтверждение",
   "Login.form.errorEmail": "Введите корректную электронную почту",
   "Login.form.errorPassword": "Длинна пароля должна быть не мньше 8 знаков",
   "Login.message.success": "Мы рады Вас видеть!",
@@ -134,6 +136,11 @@
   "UserSettings.btn.addSettings": "Дополнительная информация",
   "UserSettings.btn.submit":  "Сохранить",
   "UserSettings.message.save.success": "Данные успешно сохранены",
+  "UserSetting.personal.matching.title": "Настройки поиска",
+  "UserSetting.personal.matching.toggle.label": "Я хочу что меня находили другие пользователи",
+  "UserSetting.personal.matching.toggle.yes": "Да",
+  "UserSetting.personal.matching.toggle.no": "Нет",
+  "UserSetting.personal.matching.toggle.tip": "Только пользователи ответившие на все вопросы могут использовать эту функцию",
 
   "SECTION": "USER SEARCH",
   "Search.title": "Поиск",
