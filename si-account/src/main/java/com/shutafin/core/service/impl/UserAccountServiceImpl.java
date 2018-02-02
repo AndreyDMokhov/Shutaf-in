@@ -95,7 +95,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public UserAccount checkUserAccountStatus(User user) {
+    public void checkUserAccountStatus(User user) {
         UserAccount userAccount = userAccountRepository.findByUser(user);
         if (userAccount == null) {
             String message = String.format("UserAccount for user with ID %s does not exist", user.getId());
@@ -111,8 +111,6 @@ public class UserAccountServiceImpl implements UserAccountService {
             log.warn("UserAccount for userId {} is not CONFIRMED", user.getId());
             throw new AccountNotConfirmedException();
         }
-
-        return userAccount;
     }
 
     @Override

@@ -142,6 +142,13 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
                 accessibleToAccountStatus: accountStatus.Statuses.CONFIRMED     //2
             }
         })
+        .state('settings.matching', {
+            url: '/matching',
+            template: '<matching-settings-component></matching-settings-component>',
+            params: {
+                accessibleToAccountStatus: accountStatus.Statuses.CONFIRMED    //2
+            }
+        })
         .state("chat", {
             url: "/chat",
             template: '<messenger-ui-component></messenger-ui-component>',

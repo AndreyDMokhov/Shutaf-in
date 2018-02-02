@@ -57,6 +57,7 @@ app.factory('initializationService', function (messengerChannelService,
         $sessionStorage.questionsExtended = success.data.matchingInitializationResponse.questionExtendedWithAnswers;
         $sessionStorage.questionImportance = success.data.matchingInitializationResponse.questionImportanceList;
         $sessionStorage.selectedExtendedAnswers = success.data.matchingInitializationResponse.selectedExtendedAnswersResponses;
+        $sessionStorage.isMathingEnabled = success.data.matchingInitializationResponse.isMatchingEnabled;
         $sessionStorage.showExtendedQuestions = showExtendedQuestions();
         $sessionStorage.filters = success.data.accountInitialization.filters;
         messengerChannelService.listOfChats = success.data.listOfChats;
