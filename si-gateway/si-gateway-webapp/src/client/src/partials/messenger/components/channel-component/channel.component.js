@@ -20,26 +20,10 @@ app.component('channelComponent', {
             vm.listOfChats = messengerChannelService.listOfChats;
             if (!newChatData) {
                 checkChatTitlesList();
-                angular.forEach(vm.listOfChats, function (item) {
-                    findAndSaveUserImagesToStorage(item.usersInChat);
-                });
             }
             else {
                 checkOneChatTitle(newChatData);
-                findAndSaveUserImagesToStorage(newChatData.usersInChat);
             }
-        }
-
-        function findAndSaveUserImagesToStorage(usersInChat) {
-            angular.forEach(usersInChat, function (item) {
-                if (!$sessionStorage[item.userId]) {
-                    userSearchModel.getCompressedUserImageById(item.userId).then(
-                        function (success) {
-                            $sessionStorage[item.userId] = success.data.data;
-                        }
-                    );
-                }
-            });
         }
 
         function checkChatTitlesList() {
