@@ -22,6 +22,10 @@ app.component('modalComponent',
             };
 
             vm.getFilenameExtension = function() {
+                if (!vm.resolve.type.filename) {
+                    return null;
+                }
+
                 var filename = vm.resolve.type.filename;
                 return filename.substring(filename.lastIndexOf('.'), filename.length);
             };

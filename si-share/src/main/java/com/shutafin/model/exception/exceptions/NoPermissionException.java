@@ -7,7 +7,7 @@ public class NoPermissionException extends AbstractAPIException {
 
     @Override
     public ErrorType getErrorType() {
-        return ErrorType.RESOURCE_NOT_FOUND_ERROR;
+        return ErrorType.NO_ACCESS_PERMISSION;
     }
 
     public NoPermissionException(String systemMessage) {

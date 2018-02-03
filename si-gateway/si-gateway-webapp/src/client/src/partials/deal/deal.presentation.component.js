@@ -2,7 +2,17 @@ app.component("dealPresentationComponent", {
     templateUrl: "partials/deal/deal.presentation.component.html",
     bindings: {},
     controllerAs: "vm",
-    controller: function ($filter, $state, $sessionStorage, $uibModal, dealPresentationModel) {
+    controller: function ($filter,
+                          $state,
+                          $sessionStorage,
+                          $uibModal,
+                          dealPresentationModel,
+                          notify,
+                          dealUserStatus,
+                          dealStatus,
+                          browserTitle) {
+
+        browserTitle.setBrowserTitleByFilterName('Deal.title');
 
         var vm = this;
         vm.deals = [];
@@ -18,6 +28,8 @@ app.component("dealPresentationComponent", {
                     vm.showLoading = false;
                 },
                 function (error) {
+                    vm.showLoading = false;
+                    vm.dealTabClicked = true;
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         };
@@ -27,6 +39,18 @@ app.component("dealPresentationComponent", {
                 vm.deals = success.data.data;
             });
         }
+
+        vm.getDealSuffix = function (deal) {
+            if(deal.userStatusId === dealUserStatus.Status.PENDING) {
+                return $filter('translate')('Deal.deal.status.inactive');
+            }
+            if (deal.userStatusId === dealUserStatus.Status.ACTIVE) {
+                return $filter('translate')('Deal.deal.status.active');
+            }
+            if (deal.userStatusId === dealUserStatus.Status.LEAVED) {
+                return $filter('translate')('Deal.deal.status.archive');
+            }
+        };
 
         vm.renameDeal = function (deal) {
             var componentType = 'deal',

@@ -34,6 +34,11 @@
   "Deal.deal.modalWindow.ok": "Ok",
   "Deal.deal.modalWindow.yes": "Yes",
   "Deal.deal.modalWindow.no": "No",
+  "Deal.deal.status.inactive":"Inactive",
+  "Deal.deal.status.active":"Active",
+  "Deal.deal.status.archive":"Archived",
+  "Deal.deal.no.deals":"You don't have deals yet",
+
 
   "SECTION":"HOME",
   "Home.title":"Home",

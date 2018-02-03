@@ -17,7 +17,7 @@
                    ng-model="vm.newTabName"
                    id="newTabName"
                    name="newTabName">
-            <strong>
+            <strong ng-if="vm.getFilenameExtension()">
                 {{vm.getFilenameExtension()}}
             </strong>
         </div>

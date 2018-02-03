@@ -7,9 +7,6 @@ import com.shutafin.model.entities.DealUser;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.model.web.deal.DealStatus;
-import com.shutafin.model.web.deal.DealUserPermissionType;
-import com.shutafin.model.web.deal.DealUserStatus;
 import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealPanelService;
@@ -204,10 +201,6 @@ public class DealServiceImpl implements DealService {
         dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
 
         setPermissionToReadOnly(deal, userId);
-
-        if (dealUserRepository.findAllByDealIdAndDealUserStatus(dealId, DealUserStatus.ACTIVE).size() < 2) {
-            deleteDeal(dealId, userId);
-        }
     }
 
     @Override
@@ -269,12 +262,16 @@ public class DealServiceImpl implements DealService {
             log.warn("User {} does not have any deal", userId);
             return null;
         }
-        List<DealUserWeb> userDealsWeb = userDeals.stream()
-                .map(dealUser -> new DealUserWeb(dealUser.getDeal().getId(),
-                        dealUser.getDeal().getTitle(),
-                        dealUser.getDeal().getDealStatus()))
+        return userDeals.stream()
+                .map(dealUser ->
+                        DealUserWeb
+                                .builder()
+                                .dealId(dealUser.getDeal().getId())
+                                .title(dealUser.getDeal().getTitle())
+                                .userStatusId(dealUser.getDealUserStatus())
+                                .statusId(dealUser.getDeal().getDealStatus())
+                                .build())
                 .collect(Collectors.toList());
-        return userDealsWeb;
     }
 
     private DealPanelResponse getFirstDealPanel(List<DealPanel> dealPanels, Long userId) {

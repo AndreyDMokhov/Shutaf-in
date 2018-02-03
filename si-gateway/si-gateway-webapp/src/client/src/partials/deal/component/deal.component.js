@@ -1,21 +1,25 @@
 app.component('dealComponent', {
-    templateUrl: 'partials/deal/deal.component/deal.component.html',
+    templateUrl: 'partials/deal/component/deal.component.html',
     bindings: {
         dealInfo: '<'
     },
     controllerAs: 'vm',
-    controller: function (dealModel, $uibModal, $sessionStorage, $filter, notify) {
+    controller: function (
+        dealModel,
+        $uibModal,
+        $sessionStorage,
+        $filter,
+        notify) {
 
         var vm = this;
         var namePanelDef = "Panel";
-        var ACTIVE = 2;
         vm.panelId;
         vm.documents = [];
         vm.panels = {};
         var componentType = 'folder';
 
         vm.isDealStatusActive = function () {
-            return vm.statusDeal === ACTIVE;
+            return vm.statusDeal === dealStatus.Status.ACTIVE;
         };
 
         vm.$onChanges = function () {
