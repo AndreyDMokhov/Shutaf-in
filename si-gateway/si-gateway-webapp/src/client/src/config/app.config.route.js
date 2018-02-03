@@ -97,6 +97,13 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
             template:'<extended-questions-component></extended-questions-component>',
             url: '/extended-questions'
         })
+        /*Deal*/
+        .state('deal', {
+            url: '/deal',
+            template: '<deal-presentation-component></deal-presentation-component>'
+        })
+
+
         /* Settings */
         .state('settings', {
             abstract: true,
@@ -120,7 +127,7 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
                 accessibleToAccountStatus: accountStatus.Statuses.CONFIRMED     //2
             }
         })
-        .state('changeEmailConfirmation', {
+        .state('settings.changeEmailConfirmation', {
             controller: 'changeEmailConfirmationController',
             controllerAs: 'vm',
             url: '/settings/change-email/confirmation/{link}',

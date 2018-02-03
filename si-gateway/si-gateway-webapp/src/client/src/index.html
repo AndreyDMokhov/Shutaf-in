@@ -42,6 +42,9 @@
     <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
     <script src="bower_components/sockjs-client/dist/sockjs.min.js"></script>
     <script src="bower_components/stomp-websocket/lib/stomp.min.js"></script>
+    <script src="bower_components/angular-pdf/dist/angular-pdf.js"></script>
+    <script src="bower_components/pdfjs-dist/build/pdf.js"></script>
+    <script src="bower_components/file-saver/FileSaver.js"></script>
     <script src="bower_components/angular-bootstrap-toggle-switch/angular-toggle-switch.min.js"></script>
 
     <!-- endbuild -->
@@ -50,12 +53,18 @@
     <script src="config/app.module.js"></script>
     <!-- @echo templateCache -->
 
+    <!--SI CONSTANTS-->
+    <script src="constants/app.storage.constants.js"></script>
+    <script src="constants/app.accountStatus.enum.js"></script>
+    <script src="constants/app.document.type.enum.js"></script>
+    <script src="constants/app.dealUserStatus.enum.js"></script>
+    <script src="constants/app.dealStatus.enum.js"></script>
+
+
     <!--SI Configurations-->
     <script src="config/app.config.translate.js"></script>
     <script src="config/app.config.route.js"></script>
-    <script src="config/app.storage.constants.js"></script>
     <script src="config/app.config.notification.js"></script>
-    <script src="config/app.accountStatus.enum.js"></script>
     <script src="config/websocket.service.js"></script>
     <script src="config/app.site.access.restriction.js"></script>
     <script src="data/messenger-channel.service.js"></script>
@@ -145,6 +154,17 @@
     <script src="data/user-avatar.directive.js"></script>
     <script src="partials/messenger/crop-name.directive.js"></script>
 
+    <script src="partials/deal/deal.presentation.component.js"></script>
+    <script src="partials/deal/deal.presentation.model.js"></script>
+    <script src="partials/deal/component/deal.component.js"></script>
+    <script src="partials/deal/component/deal.model.js"></script>
+    <script src="partials/deal/component/panel/panel.component.js"></script>
+    <script src="partials/deal/component/panel/panel.model.js"></script>
+    <script src="partials/deal/component/panel/document/document.component.js"></script>
+    <script src="partials/deal/component/panel/document/document.model.js"></script>
+    <script src="partials/deal/modalWindow/modalWindowDeal.js"></script>
+
+
 
     <!-- endbuild -->
 
@@ -171,12 +191,12 @@
     <link rel="stylesheet" href="styles/questionStyle.css">
     <link rel="stylesheet" href="styles/chat.css">
     <link rel="stylesheet" href="styles/modalWindow.css">
-
+    <link rel="stylesheet" href="styles/deal.css">
     <!-- endbuild -->
     <link rel="shortcut icon" href="favico.png">
 </head>
-<body>
-<layout-component></layout-component>
+<body >
+<layout-component ></layout-component>
 
 </body>
 </html>

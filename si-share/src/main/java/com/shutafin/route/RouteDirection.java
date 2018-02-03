@@ -14,7 +14,8 @@ public enum RouteDirection {
     SI_ADMIN("si-admin"),
     SI_ACCOUNT("si-account"),
     SI_MATCHING("si-matching"),
-    SI_EMAIL_NOTIFICATION("si-email-notification")
+    SI_EMAIL_NOTIFICATION("si-email-notification"),
+    SI_DEAL("si-deal")
     ;
 
     private String serviceId;

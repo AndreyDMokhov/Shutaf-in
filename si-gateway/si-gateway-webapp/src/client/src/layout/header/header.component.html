@@ -25,6 +25,17 @@
                     </a>
                 </li>
 
+                <li data-ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
+                    <a ui-sref="deal"
+                       uib-tooltip="{{'Deal.title' | translate}}"
+                       tooltip-placement="bottom">
+                        <span class="fa fa-handshake-o header-icon-size"></span>
+                        &nbsp;
+                        {{'Deal.title' | translate}}
+                    </a>
+
+                </li>
+
                 <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
                     <a ui-sref="questionsTab.requiredQuestions"
                        uib-tooltip="{{'Questions.title' | translate}}"

@@ -62,6 +62,11 @@ app.factory('initializationService', function (messengerChannelService,
         $sessionStorage.filters = success.data.accountInitialization.filters;
         messengerChannelService.listOfChats = success.data.listOfChats;
 
+        $sessionStorage.dealStatuses = success.data.dealInitializationResponse.dealStatuses;
+        $sessionStorage.dealUserPermissions = success.data.dealInitializationResponse.dealUserPermissions;
+        $sessionStorage.dealUserStatuses = success.data.dealInitializationResponse.dealUserStatuses;
+        $sessionStorage.documentTypes = success.data.dealInitializationResponse.documentTypes;
+        $sessionStorage.permissionTypes = success.data.dealInitializationResponse.permissionTypes;
 
         languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
 
