@@ -4,7 +4,7 @@
         <div ng-if="vm.deals.length > 0">
             <uib-tabset active="activeDeal" vertical="false" type="pills">
                 <uib-tab
-                        ng-repeat="deal in vm.deals"
+                        ng-repeat="deal in vm.deals | orderBy: ['userStatusId', 'statusId']"
                         ng-click="vm.showSelectedDeal(deal)">
                     <uib-tab-heading>
                         {{deal.title}} ({{vm.getDealSuffix(deal)}})
@@ -12,7 +12,6 @@
                                 class="fa fa-edit deal-rename icon-rename"
                                 ng-click="$event.preventDefault();$event.stopPropagation(); vm.renameDeal(deal)"
                                 uib-tooltip="{{'Deal.rename' | translate}}"
-
                         ></i>
                     </uib-tab-heading>
                 </uib-tab>

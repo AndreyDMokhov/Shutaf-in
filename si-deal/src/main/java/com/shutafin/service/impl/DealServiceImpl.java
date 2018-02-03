@@ -201,6 +201,11 @@ public class DealServiceImpl implements DealService {
         dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
 
         setPermissionToReadOnly(deal, userId);
+
+        if (dealUserRepository.findAllByDealIdAndDealUserStatus(dealId, DealUserStatus.ACTIVE).size() == 1) {
+            deal.setDealStatus(DealStatus.ARCHIVE);
+            dealRepository.save(deal);
+        }
     }
 
     @Override
@@ -257,7 +262,7 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public List<DealUserWeb> getAllUserDeals(Long userId) {
-        List<DealUser> userDeals = dealUserRepository.findAllByUserId(userId);
+        List<DealUser> userDeals = dealUserRepository.findAllByUserIdAndDealUserStatusNot(userId, DealUserStatus.REMOVED);
         if (userDeals == null) {
             log.warn("User {} does not have any deal", userId);
             return null;

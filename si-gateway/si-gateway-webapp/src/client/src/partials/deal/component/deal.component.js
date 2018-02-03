@@ -9,7 +9,8 @@ app.component('dealComponent', {
         $uibModal,
         $sessionStorage,
         $filter,
-        notify) {
+        notify,
+        dealStatus) {
 
         var vm = this;
         var namePanelDef = "Panel";

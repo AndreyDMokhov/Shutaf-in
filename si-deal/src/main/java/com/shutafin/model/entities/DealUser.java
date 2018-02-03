@@ -24,7 +24,7 @@ public class DealUser extends AbstractEntity {
     private Long userId;
 
     @JoinColumn(name = "DEAL_ID", nullable = false)
-    @OneToOne
+    @ManyToOne
     private Deal deal;
 
     @Column(name = "DEAL_USER_STATUS_ID", nullable = false)
