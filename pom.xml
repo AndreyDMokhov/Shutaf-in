@@ -19,7 +19,6 @@
     <modules>
         <module>si-share</module>
         <module>si-discovery</module>
-        <module>si-admin</module>
         <module>si-gateway</module>
         <module>si-email-notification</module>
         <module>si-matching</module>
