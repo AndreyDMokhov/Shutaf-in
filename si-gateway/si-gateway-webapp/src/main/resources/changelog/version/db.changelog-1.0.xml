@@ -62,7 +62,6 @@
             </column>
 
             <column name="EXIT_DATE" type="java.sql.Timestamp">
-                <constraints nullable="false"/>
             </column>
 
             <column name="CREATED_DATE" type="java.sql.Timestamp">

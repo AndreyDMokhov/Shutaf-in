@@ -18,8 +18,8 @@ app.component('messengerUiComponent', {
         vm.characterLimit = 15;
 
         function activate() {
-                messengerCurrentDataService.registerCurrentChatObserver(updateCurrentChat);
-                getUserData();
+            messengerCurrentDataService.registerCurrentChatObserver(updateCurrentChat);
+            getUserData();
         }
 
         function updateCurrentChat() {
@@ -33,8 +33,20 @@ app.component('messengerUiComponent', {
                 });
         }
 
+
+        function initializeDeal() {
+            console.log("it's work");
+            console.log(vm.currentChat);
+        }
+
+        function isInChatGroup() {
+            return Object.keys(vm.currentChat).length;
+        }
+
         activate();
 
         vm.getUserData = getUserData;
+        vm.initializeDeal = initializeDeal;
+        vm.isInChatGroup = isInChatGroup;
     }
 });
