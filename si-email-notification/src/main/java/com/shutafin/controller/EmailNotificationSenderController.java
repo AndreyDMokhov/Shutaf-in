@@ -1,6 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.web.email.EmailNotificationDealWeb;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.web.email.EmailResendWeb;
@@ -36,7 +37,20 @@ public class EmailNotificationSenderController {
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        mailSenderService.sendEmail(emailNotificationWeb);
+        mailSenderService.sendEmails(emailNotificationWeb);
+    }
+
+    @PostMapping(
+            value = "deal/send",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public void sendEmail(@RequestBody @Valid EmailNotificationDealWeb emailNotificationDealWeb, BindingResult result) {
+        if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
+            throw new InputValidationException(result);
+        }
+        mailSenderService.sendEmails(emailNotificationDealWeb);
     }
 
     @GetMapping("/confirm")
@@ -63,7 +77,7 @@ public class EmailNotificationSenderController {
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        mailSenderService.resendEmail(emailResendWeb);
+        mailSenderService.resendEmails(emailResendWeb);
     }
 
 }

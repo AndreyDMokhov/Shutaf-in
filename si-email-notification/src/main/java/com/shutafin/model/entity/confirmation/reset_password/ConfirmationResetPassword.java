@@ -1,6 +1,6 @@
-package com.shutafin.model.entity.reset_password;
+package com.shutafin.model.entity.confirmation.reset_password;
 
-import com.shutafin.model.entity.BaseConfirmation;
+import com.shutafin.model.entity.BaseUserConfirmation;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "CONFIRMATION_RESET_PASSWORD")
 @NoArgsConstructor
 @Data
-public class ConfirmationResetPassword extends BaseConfirmation {
+public class ConfirmationResetPassword extends BaseUserConfirmation {
 
     @Builder
     public ConfirmationResetPassword(Long userId, String confirmationUUID, Boolean isConfirmed, Date expiresAt) {

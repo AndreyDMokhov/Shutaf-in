@@ -1,8 +1,6 @@
 package com.shutafin.model.web.email;
 
-import com.shutafin.model.web.email.response.EmailChangeResponse;
-import com.shutafin.model.web.email.response.EmailRegistrationResponse;
-import com.shutafin.model.web.email.response.EmailResetPasswordResponse;
+import com.shutafin.model.web.email.response.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,7 +11,10 @@ public enum EmailReason {
     EMAIL_CHANGE(2, "emailChange", EmailChangeResponse.class),
     CHANGE_PASSWORD(3, "changePassword", Void.class),
     RESET_PASSWORD(4, "resetPassword", EmailResetPasswordResponse.class),
-    MATCHING_CANDIDATES(5, "matchingCandidates", Void.class);
+    MATCHING_CANDIDATES(5, "matchingCandidates", Void.class),
+    DEAL_CREATION(6, "dealCreation", EmailDealCreationResponse.class),
+    DEAL_USER_ADDING(7, "dealUserAdding", EmailDealUserAddingResponse.class),
+    DEAL_USER_REMOVING(8, "dealUserRemoving", EmailDealUserRemovingResponse.class);
 
     private Integer id;
     private String propertyPrefix;

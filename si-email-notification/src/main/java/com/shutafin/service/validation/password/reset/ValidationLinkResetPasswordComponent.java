@@ -1,6 +1,6 @@
 package com.shutafin.service.validation.password.reset;
 
-import com.shutafin.model.entity.reset_password.ConfirmationResetPassword;
+import com.shutafin.model.entity.confirmation.reset_password.ConfirmationResetPassword;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.service.confirmation.ConfirmationResetPasswordService;
 import com.shutafin.service.validation.BaseValidationLinkInterface;
