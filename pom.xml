@@ -19,7 +19,6 @@
     <modules>
         <module>si-share</module>
         <module>si-discovery</module>
-        <module>si-admin</module>
         <module>si-gateway</module>
         <module>si-email-notification</module>
         <module>si-matching</module>
@@ -199,6 +198,12 @@
 
     <profiles>
         <profile>
+            <id>si-admin</id>
+            <modules>
+                <module>si-admin</module>
+            </modules>
+        </profile>
+        <profile>
             <id>dev</id>
             <properties>
                 <domain.name>localhost</domain.name>
@@ -240,6 +245,7 @@
                     <!--</execution>-->
                     <!--</executions>-->
                     <!--</plugin>-->
+
                 </plugins>
             </build>
         </profile>
