@@ -33,12 +33,6 @@ app.component('messengerUiComponent', {
                 });
         }
 
-
-        function initializeDeal() {
-            console.log("it's work");
-            console.log(vm.currentChat);
-        }
-
         function isInChatGroup() {
             return Object.keys(vm.currentChat).length;
         }
@@ -46,7 +40,6 @@ app.component('messengerUiComponent', {
         activate();
 
         vm.getUserData = getUserData;
-        vm.initializeDeal = initializeDeal;
         vm.isInChatGroup = isInChatGroup;
     }
 });

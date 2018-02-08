@@ -46,7 +46,6 @@ app.component("dealPresentationComponent", {
             }
 
             if (deal.statusId === dealStatus.Status.ARCHIVE) {
-                debugger;
                 return $filter('translate')('Deal.deal.status.archive');
             }
 
