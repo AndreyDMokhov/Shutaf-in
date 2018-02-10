@@ -1,5 +1,6 @@
 package com.shutafin.sender.email;
 
+import com.shutafin.model.web.email.EmailNotificationDealWeb;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.web.email.EmailResendWeb;
@@ -25,6 +26,11 @@ public class EmailNotificationSenderControllerSender {
     public void sendEmail(EmailNotificationWeb emailNotificationWeb) {
         String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/send";
         restTemplate.postForEntity(url, emailNotificationWeb, Void.class);
+    }
+
+    public void sendEmailDeal(EmailNotificationDealWeb emailNotificationDealWeb) {
+        String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/deal/send";
+        restTemplate.postForEntity(url, emailNotificationDealWeb, Void.class);
     }
 
     public Object confirmLink(String link, EmailReason emailReason) {
