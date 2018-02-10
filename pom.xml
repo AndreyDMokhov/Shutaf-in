@@ -24,6 +24,7 @@
         <module>si-matching</module>
         <module>si-account</module>
         <module>si-deal</module>
+        <module>si-test</module>
     </modules>
 
     <dependencyManagement>

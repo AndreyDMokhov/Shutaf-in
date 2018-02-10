@@ -2,7 +2,6 @@ package com.shutafin.system;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.shutafin.GatewayApplication;
 import com.shutafin.model.error.errors.InputValidationError;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.repository.base.BaseRepositoryFactoryBean;
@@ -35,7 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Slf4j
-@WebMvcTest(value = GatewayApplication.class)
+@WebMvcTest
 @ComponentScan("com.shutafin")
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableCaching
