@@ -40,6 +40,7 @@ app.component('userSettingsComponent', {
                 timeIsOver = true;
             }, 600);
         };
+
         vm.leaveOpenCloseChangeStatus = function () {
             if (!timeIsOver) {
                 $timeout.cancel(time);
@@ -52,7 +53,6 @@ app.component('userSettingsComponent', {
         vm.country = $sessionStorage.countries;
         vm.cities = $sessionStorage.cities;
         vm.gender = $sessionStorage.genders;
-
 
         function submitChanges() {
             vm.dataLoading = true;
@@ -70,10 +70,9 @@ app.component('userSettingsComponent', {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     if (error.data.error.errorTypeCode === 'AUT') {
                         $state.go('logout');
-                    }
+                }
                 });
         }
-
         vm.submitChanges = submitChanges;
     }
 });
