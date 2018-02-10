@@ -213,6 +213,10 @@
                 <!--common build application configurations-->
                 <npm.build.postfix>--dev</npm.build.postfix>
             </properties>
+
+            <modules>
+                <module>si-dev-utils</module>
+            </modules>
         </profile>
 
         <profile>
