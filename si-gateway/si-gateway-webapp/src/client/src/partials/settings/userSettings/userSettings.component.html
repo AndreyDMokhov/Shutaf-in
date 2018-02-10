@@ -5,7 +5,8 @@
             <uib-accordion close-others="false">
                 <div uib-accordion-group class="panel panel-custom" is-open="vm.status.isGeneralOpen">
                     <uib-accordion-heading>
-                        <div ng-mouseenter="vm.status.isGeneralOpen = !vm.status.isGeneralOpen;">
+                        <div ng-mouseover="vm.overOpenCloseChangeStatus('general')"
+                             ng-mouseleave="vm.leaveOpenCloseChangeStatus()">
                             {{'UserSettings.personal.settings.general' | translate}}
                             <i class="pull-right fa fa-chevron-down"
                                ng-class="{'open' : vm.status.isGeneralOpen}">
@@ -30,8 +31,9 @@
 
                             <p class="help-block"
                                ng-if="userSettings.firstName.$invalid && userSettings.firstName.$dirty">
-                                {{'UserSettings.personal.form.inputFieldError' | translate : '{ fieldName: "First name",
-                                minLength : "3", maxLength : "50"}'}}
+                                {{'UserSettings.personal.form.inputFieldError' | translate : '{ fieldName: "First
+                                name",' +
+                                'minLength : "3", maxLength: "50"}'}}
                             </p>
                         </div>
                     </div>
@@ -54,8 +56,8 @@
 
                             <p class="help-block"
                                ng-if="userSettings.lastName.$invalid && userSettings.lastName.$dirty">
-                                {{'UserSettings.personal.form.inputFieldError' | translate: '{ minLength : "3",
-                                maxLength: "50"}'}}
+                                {{'UserSettings.personal.form.inputFieldError' | translate: '{ minLength : "3",' +
+                                'maxLength: "50"}'}}
                             </p>
                         </div>
                     </div>
@@ -134,9 +136,10 @@
                     </div>
                 </div>
                 <br>
-                <div uib-accordion-group class="panel panel-custom" is-open="vm.isAdditionalOpen">
+                <div uib-accordion-group class="panel panel-custom" is-open="vm.status.isAdditionalOpen">
                     <uib-accordion-heading>
-                        <div ng-mouseenter="vm.isAdditionalOpen = !vm.isAdditionalOpen">
+                        <div ng-mouseover="vm.overOpenCloseChangeStatus('additional')"
+                             ng-mouseleave="vm.leaveOpenCloseChangeStatus()">
                             {{'UserSettings.personal.settings.additional' | translate}}
                             <i class="pull-right fa fa-chevron-down"
                                ng-class="{'open': vm.isAdditionalOpen }"></i>

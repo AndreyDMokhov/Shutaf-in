@@ -12,22 +12,47 @@ app.component('userSettingsComponent', {
                           initializationService,
                           $window,
                           browserTitle,
-                          siteAccessRouting) {
+                          siteAccessRouting,
+                          $timeout) {
 
         browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
 
         var vm = this;
         vm.dataLoading = false;
+        var time;
+        var timeIsOver = false;
+
         vm.status = {
             isGeneralOpen: true,
             isAdditionalOpen: false
         };
+
+        vm.overOpenCloseChangeStatus = function (tabName) {
+
+            timeIsOver = false;
+            time = $timeout(function () {
+                if (tabName === "general") {
+                    vm.status.isGeneralOpen = !vm.status.isGeneralOpen;
+                }
+                else if (tabName === "additional") {
+                    vm.status.isAdditionalOpen = !vm.status.isAdditionalOpen;
+                }
+                timeIsOver = true;
+            }, 600);
+        };
+        vm.leaveOpenCloseChangeStatus = function () {
+            if (!timeIsOver) {
+                $timeout.cancel(time);
+            }
+        };
+
 
         vm.userProfile = $sessionStorage.userProfile;
         vm.userProfile.dateOfBirth = new Date(vm.userProfile.dateOfBirth);
         vm.country = $sessionStorage.countries;
         vm.cities = $sessionStorage.cities;
         vm.gender = $sessionStorage.genders;
+
 
         function submitChanges() {
             vm.dataLoading = true;
@@ -45,9 +70,10 @@ app.component('userSettingsComponent', {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     if (error.data.error.errorTypeCode === 'AUT') {
                         $state.go('logout');
-                }
+                    }
                 });
         }
+
         vm.submitChanges = submitChanges;
     }
 });
