@@ -1,6 +1,6 @@
 package com.shutafin.service.response.email_change;
 
-import com.shutafin.model.entity.email_change.ConfirmationEmailChange;
+import com.shutafin.model.entity.confirmation.email_change.ConfirmationEmailChange;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.email.response.EmailChangeResponse;
 import com.shutafin.service.confirmation.ConfirmationEmailChangeService;

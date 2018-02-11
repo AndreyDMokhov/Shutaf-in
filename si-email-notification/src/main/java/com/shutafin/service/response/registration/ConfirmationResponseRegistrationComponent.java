@@ -1,6 +1,6 @@
 package com.shutafin.service.response.registration;
 
-import com.shutafin.model.entity.registration.ConfirmationRegistration;
+import com.shutafin.model.entity.confirmation.registration.ConfirmationRegistration;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.email.response.EmailRegistrationResponse;
 import com.shutafin.service.confirmation.ConfirmationRegistrationService;

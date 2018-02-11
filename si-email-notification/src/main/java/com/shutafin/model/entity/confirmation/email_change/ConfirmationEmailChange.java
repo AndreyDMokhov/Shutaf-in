@@ -1,7 +1,9 @@
-package com.shutafin.model.entity.email_change;
+package com.shutafin.model.entity.confirmation.email_change;
 
-import com.shutafin.model.entity.BaseConfirmation;
-import lombok.*;
+import com.shutafin.model.entity.BaseUserConfirmation;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,7 +12,7 @@ import java.util.Date;
 @Table(name = "CONFIRMATION_EMAIL_CHANGE")
 @NoArgsConstructor
 @Data
-public class ConfirmationEmailChange extends BaseConfirmation {
+public class ConfirmationEmailChange extends BaseUserConfirmation {
 
     @Builder()
     public ConfirmationEmailChange(Long userId, String confirmationUUID, Boolean isConfirmed, Date expiresAt,

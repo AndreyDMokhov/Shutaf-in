@@ -1,11 +1,11 @@
 package com.shutafin.service.sender.email_change;
 
-import com.shutafin.model.web.email.EmailNotificationWeb;
-import com.shutafin.model.entity.email_change.ConfirmationEmailChange;
+import com.shutafin.model.entity.confirmation.email_change.ConfirmationEmailChange;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.service.confirmation.ConfirmationEmailChangeService;
+import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
+import com.shutafin.service.confirmation.ConfirmationEmailChangeService;
 import com.shutafin.service.sender.BaseEmailInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,9 +47,9 @@ public class SenderEmailChangeComponent implements BaseEmailInterface {
         confirmationEmailChangeService.save(toEmail);
 
         emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, fromEmail.getConfirmationUUID(), fromEmail.getEmailChange(), EMAIL_CHANGE_CONFIRMATION_URL);
-        senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
+        senderEmailMessageService.sendEmailMessage(emailNotificationWeb.getEmailReason(), emailMessage);
 
         emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, toEmail.getConfirmationUUID(), toEmail.getEmailChange(), EMAIL_CHANGE_CONFIRMATION_URL);
-        senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
+        senderEmailMessageService.sendEmailMessage(emailNotificationWeb.getEmailReason(), emailMessage);
     }
 }
