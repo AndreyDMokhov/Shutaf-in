@@ -24,6 +24,7 @@
         <module>si-matching</module>
         <module>si-account</module>
         <module>si-deal</module>
+        <module>si-test</module>
     </modules>
 
     <dependencyManagement>
@@ -212,6 +213,10 @@
                 <!--common build application configurations-->
                 <npm.build.postfix>--dev</npm.build.postfix>
             </properties>
+
+            <modules>
+                <module>si-dev-utils</module>
+            </modules>
         </profile>
 
         <profile>

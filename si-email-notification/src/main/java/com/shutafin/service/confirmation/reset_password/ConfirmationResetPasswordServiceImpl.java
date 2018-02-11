@@ -1,7 +1,7 @@
 package com.shutafin.service.confirmation.reset_password;
 
+import com.shutafin.model.entity.confirmation.reset_password.ConfirmationResetPassword;
 import com.shutafin.model.web.email.EmailNotificationWeb;
-import com.shutafin.model.entity.reset_password.ConfirmationResetPassword;
 import com.shutafin.repository.reset_password.ConfirmationResetPasswordRepository;
 import com.shutafin.service.confirmation.ConfirmationResetPasswordService;
 import org.apache.commons.lang3.time.DateUtils;
@@ -24,11 +24,11 @@ public class ConfirmationResetPasswordServiceImpl implements ConfirmationResetPa
     @Override
     public ConfirmationResetPassword get(EmailNotificationWeb emailNotificationWeb) {
         return ConfirmationResetPassword.builder()
-                        .userId(emailNotificationWeb.getUserId())
-                        .confirmationUUID(UUID.randomUUID().toString())
-                        .isConfirmed(false)
-                        .expiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION))
-                        .build();
+                .userId(emailNotificationWeb.getUserId())
+                .confirmationUUID(UUID.randomUUID().toString())
+                .isConfirmed(false)
+                .expiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION))
+                .build();
     }
 
     @Override

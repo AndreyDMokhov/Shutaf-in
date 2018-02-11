@@ -31,7 +31,7 @@ public class SenderMatchingCandidatesComponent implements BaseEmailInterface {
     @Override
     public void send(EmailNotificationWeb emailNotificationWeb) {
         EmailMessage emailMessage = emailTemplateService.getEmailMessageMatchingCandidates(emailNotificationWeb, URL_PROFILE, URL_SEARCH);
-        senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
+        senderEmailMessageService.sendEmailMessage(emailNotificationWeb.getEmailReason(), emailMessage);
     }
 
 }

@@ -1,11 +1,11 @@
 package com.shutafin.service.sender.registration;
 
-import com.shutafin.model.entity.registration.ConfirmationRegistration;
+import com.shutafin.model.entity.confirmation.registration.ConfirmationRegistration;
 import com.shutafin.model.smtp.EmailMessage;
 import com.shutafin.model.web.email.EmailNotificationWeb;
-import com.shutafin.service.confirmation.ConfirmationRegistrationService;
 import com.shutafin.service.EmailTemplateService;
 import com.shutafin.service.SenderEmailMessageService;
+import com.shutafin.service.confirmation.ConfirmationRegistrationService;
 import com.shutafin.service.sender.BaseEmailInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,6 +29,6 @@ public class SenderRegistrationComponent implements BaseEmailInterface {
         ConfirmationRegistration confirmationRegistration = confirmationRegistrationService.get(emailNotificationWeb);
         confirmationRegistrationService.save(confirmationRegistration);
         EmailMessage emailMessage = emailTemplateService.getEmailMessage(emailNotificationWeb, confirmationRegistration.getConfirmationUUID(), REGISTRATION_CONFIRMATION_URL);
-        senderEmailMessageService.sendEmailMessage(emailNotificationWeb, emailMessage);
+        senderEmailMessageService.sendEmailMessage(emailNotificationWeb.getEmailReason(), emailMessage);
     }
 }

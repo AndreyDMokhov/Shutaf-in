@@ -3,6 +3,7 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entity.EmailNotificationLog;
 import com.shutafin.model.exception.exceptions.EmailResendIntervalException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
+import com.shutafin.model.web.email.EmailNotificationDealWeb;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.web.email.EmailResendWeb;
@@ -10,6 +11,7 @@ import com.shutafin.repository.EmailNotificationLogRepository;
 import com.shutafin.service.EmailService;
 import com.shutafin.service.SenderEmailMessageService;
 import com.shutafin.service.response.BaseConfirmationResponseInterface;
+import com.shutafin.service.sender.BaseEmailDealInterface;
 import com.shutafin.service.sender.BaseEmailInterface;
 import com.shutafin.service.validation.BaseValidationLinkInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,9 @@ public class EmailServiceImpl implements EmailService {
     private Map<String, BaseEmailInterface> senderEmailsMap;
 
     @Autowired
+    private Map<String, BaseEmailDealInterface> senderEmailsDealMap;
+
+    @Autowired
     private Map<String, BaseValidationLinkInterface> validationLinksMap;
 
     @Autowired
@@ -46,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
     private Map<String, BaseConfirmationResponseInterface> confirmationResponsesMap;
 
     @Override
-    public void sendEmail(EmailNotificationWeb emailNotificationWeb) {
+    public void sendEmails(EmailNotificationWeb emailNotificationWeb) {
 
         String emailReasonPrefix = emailNotificationWeb.getEmailReason().getPropertyPrefix();
         BaseEmailInterface sendEmail = senderEmailsMap.get(emailReasonPrefix);
@@ -56,6 +61,19 @@ public class EmailServiceImpl implements EmailService {
         }
 
         sendEmail.send(emailNotificationWeb);
+    }
+
+    @Override
+    public void sendEmails(EmailNotificationDealWeb emailNotificationDealWeb) {
+
+        String emailReasonPrefix = emailNotificationDealWeb.getEmailReason().getPropertyPrefix();
+        BaseEmailDealInterface sendEmail = senderEmailsDealMap.get(emailReasonPrefix);
+        if (sendEmail == null) {
+            printError("senderEmailsDealMap", emailReasonPrefix);
+            throw new ResourceNotFoundException();
+        }
+
+        sendEmail.send(emailNotificationDealWeb);
     }
 
     @Override
@@ -85,18 +103,18 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void resendEmail(EmailResendWeb emailResendWeb) {
+    public void resendEmails(EmailResendWeb emailResendWeb) {
 
         EmailNotificationLog emailNotificationLog = emailNotificationLogRepository
                 .findFirstByEmailToAndEmailReason(emailResendWeb.getEmailTo(), emailResendWeb.getEmailReason());
         if (emailNotificationLog == null) {
             log.warn("Resource not found exception:");
-            log.warn("resendEmail: emailNotificationLog with {} and {} was not found",
+            log.warn("resendEmails: emailNotificationLog with {} and {} was not found",
                     emailResendWeb.getEmailTo(), emailResendWeb.getEmailReason());
             throw new ResourceNotFoundException();
         }
         if (DateUtils.addMinutes(emailNotificationLog.getUpdatedDate(), INTERVAL_RESEND_EMAIL_MINUTES).after(new Date())) {
-            log.warn("resendEmail: interval of resend email {} minuts", INTERVAL_RESEND_EMAIL_MINUTES);
+            log.warn("resendEmails: interval of resend email {} minuts", INTERVAL_RESEND_EMAIL_MINUTES);
             throw new EmailResendIntervalException();
         }
         senderEmailMessageService.sendEmailMessage(emailNotificationLog, null);

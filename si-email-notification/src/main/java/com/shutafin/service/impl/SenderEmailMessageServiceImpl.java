@@ -5,7 +5,7 @@ import com.shutafin.model.entity.EmailImageSource;
 import com.shutafin.model.entity.EmailNotificationLog;
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.model.web.email.EmailNotificationWeb;
+import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.service.AsyncSenderEmailService;
 import com.shutafin.service.EmailImageSourceService;
 import com.shutafin.service.EmailNotificationLogService;
@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.MimeMessage;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 @Service
 @Slf4j
@@ -35,14 +38,14 @@ public class SenderEmailMessageServiceImpl implements SenderEmailMessageService 
     }
 
     @Override
-    public void sendEmailMessage(EmailNotificationWeb emailNotificationWeb, EmailMessage emailMessage) {
+    public void sendEmailMessage(EmailReason emailReason, EmailMessage emailMessage) {
 
         BaseTemplate baseTemplate = emailMessage.getMailTemplate();
         EmailTemplateHelper helper = new EmailTemplateHelper();
         String messageContent = helper.getMessageContent(baseTemplate.getTokenValueMap(), baseTemplate.getHtmlTemplate());
 
         EmailNotificationLog emailNotificationLog = emailNotificationLogService.get(
-                baseTemplate.getEmailHeader(), emailMessage, messageContent, emailNotificationWeb.getEmailReason());
+                baseTemplate.getEmailHeader(), emailMessage, messageContent, emailReason);
 
         Map<String, byte[]> imageSources = emailMessage.getImageSources();
         Set<EmailImageSource> emailImageSources = new HashSet<>();
