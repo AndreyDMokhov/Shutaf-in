@@ -7,14 +7,13 @@ app.component('dealLeaveComponent', {
     controller: function (dealPresentationModel, dealStatus, $state, $filter, notify) {
 
         var vm = this;
-        console.log(vm.dealInfo);
         // vm.initializeDeal = function () {
         //     console.log(vm.chatInfo);
         // };
 
         function isInDeal() {
-            // return Object.keys(vm.dealInfo).length && vm.dealInfo.statusId === dealStatus.Status.ACTIVE;
-            return true;
+            return Object.keys(vm.dealInfo).length && vm.dealInfo.statusId === dealStatus.Status.ACTIVE;
+            // return true;
         }
 
 function leaveDeal() {
