@@ -7,6 +7,7 @@ import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.service.extended.UserMatchingScoreService;
 import com.shutafin.service.extended.UserQuestionExtendedAnswerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/matching/extended")
+@Slf4j
 public class UserMatchingScoreController {
 
     @Autowired
@@ -27,7 +29,10 @@ public class UserMatchingScoreController {
 
     @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<Long, Integer> getUserMatchingScores(@PathVariable("userId") Long userId) {
-        return userMatchingScoreService.getUserMatchingScores(userId);
+        long startTime = System.currentTimeMillis();
+        Map<Long, Integer> res = userMatchingScoreService.getUserMatchingScores(userId);
+        log.info("==========time:" + (System.currentTimeMillis() - startTime) + "===========");
+        return res;
     }
 
     @PostMapping(value = "/search/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
