@@ -16,8 +16,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service
 public class GenerateDummyUsersService {
@@ -36,22 +38,36 @@ public class GenerateDummyUsersService {
 
     public void run(int countUsers, int countThreads) {
 
-        if (countUsers < countThreads) {
-            countThreads = countUsers;
-        }
-        int countUsersInThread = countUsers / countThreads;
+        long start = System.currentTimeMillis();
 
-        ExecutorService service = Executors.newFixedThreadPool(countThreads);
-        for (int i = 0; i < countThreads; i++) {
+        int newCountThreads = countUsers < countThreads ? countUsers : countThreads;
+
+        int countUsersInThread = countUsers / newCountThreads;
+
+        ExecutorService service = Executors.newFixedThreadPool(newCountThreads);
+        List<Future<?>> futureList = new ArrayList<>();
+        for (int i = 0; i < newCountThreads; i++) {
             int userIdFrom = i * countUsersInThread + 1;
-            int userIdTo = (i == countThreads - 1) ? countUsers + 1 : userIdFrom + countUsersInThread;
-            service.submit(() -> {
+            int userIdTo = (i == newCountThreads - 1) ? countUsers + 1 : userIdFrom + countUsersInThread;
+            futureList.add(service.submit(() -> {
                 addUsers(userIdFrom, userIdTo);
                 updateUserAccountStatus(userIdFrom, userIdTo);
                 addQuestionsMain(userIdFrom, userIdTo);
                 addQuestionsExtended(userIdFrom, userIdTo);
-            });
+            }));
         }
+        for (Future<?> future : futureList) {
+            try {
+                future.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        long finish = System.currentTimeMillis();
+        System.out.println("Finish in " + (finish - start) + " ms");
+        service.shutdown();
     }
 
     private void sendRequest(Object object, String url, HttpMethod httpMethod) {
