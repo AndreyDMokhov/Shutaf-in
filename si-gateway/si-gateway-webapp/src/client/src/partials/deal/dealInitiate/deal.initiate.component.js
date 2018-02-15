@@ -4,34 +4,51 @@ app.component('dealInitiateComponent', {
         chatInfo: '<'
     },
     controllerAs: "vm",
-    controller: function (dealPresentationModel) {
+    controller: function (dealPresentationModel, $uibModal, notify, $filter) {
 
         var vm = this;
-        // vm.initializeDeal = function () {
-        //     console.log(vm.chatInfo);
-        // };
+        var namePanelDef = 'Deal', componentType = 'deal';
+        var dealWeb = {
+            title: '',
+            users: []
+        };
 
-
-        function initializeDeal() {
-            console.log("it's work");
-            console.log(vm.chatInfo.usersInChat);
-            var dealWeb = {
-                title: "New deal",
-                users: []
-            };
+        function getUsersIdInChat() {
             vm.chatInfo.usersInChat.forEach(function (user) {
                 dealWeb.users.push(user.userId);
-                // console.log(user.userId);
             });
-            console.log(dealWeb);
-            dealPresentationModel.initiateDeal(dealWeb).then(
-                function (success) {
-                    console.log(success);
-                },
-                function (error) {
-                    console.log(error);
+        }
+
+        function initializeDeal() {
+            var type = 'creation';
+            var modalInstance = $uibModal.open({
+
+                animation: true,
+                component: 'modalComponent',
+                size: 'sm',
+                resolve: {
+
+                    type: function () {
+                        return {type: type, component: componentType};
+                    }
                 }
-            );
+            });
+            modalInstance.result.then(function (newName) {
+                if (newName === undefined) {
+                    newName = namePanelDef;
+                }
+                dealWeb.title = newName;
+                getUsersIdInChat();
+                dealPresentationModel.initiateDeal(dealWeb).then(
+                    function (success) {
+                        notify.set($filter('translate')("Deal.confirmation"));
+                    },
+                    function (error) {
+                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                    }
+                );
+
+            });
         }
 
         vm.initializeDeal = initializeDeal;

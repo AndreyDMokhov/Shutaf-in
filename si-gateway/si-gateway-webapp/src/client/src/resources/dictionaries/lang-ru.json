@@ -37,6 +37,10 @@
   "Deal.deal.status.active":"Активный",
   "Deal.deal.status.archive":"Архивный",
   "Deal.deal.no.deals":"У вас еще нет сделок",
+  "Deal.deal.button.initiate":"Создать сделку",
+  "Deal.deal.button.leave":"Покинуть сделку",
+  "Deal.confirmation":"Для активации сделки необходимо подтверждение с электронного адреса",
+  "Deal.leaving": "Вы покинули сделку",
 
   "SECTION":"HOME",
   "Home.title":"Домашняя",

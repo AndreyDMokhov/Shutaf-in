@@ -5,7 +5,7 @@
             <deal-leave-component deal-info="vm.dealInfo"></deal-leave-component>
             <div style="float: left">
                 <uib-tabset active="active" disable="true" vertical="false" type="pills">
-                    <uib-tab ng-if="deal.statusId !== 1""
+                    <uib-tab ng-if="deal.statusId !== 1"
                             ng-repeat="deal in vm.deals | orderBy: ['userStatusId', 'statusId']"
                             ng-click="vm.showSelectedDeal(deal)">
                         <uib-tab-heading>

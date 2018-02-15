@@ -14,7 +14,6 @@ app.component('modalComponent',
                 component: translatedComponent
             };
             vm.ok = function () {
-
                 vm.close({$value: vm.newTabName});
             };
             vm.cancel = function () {

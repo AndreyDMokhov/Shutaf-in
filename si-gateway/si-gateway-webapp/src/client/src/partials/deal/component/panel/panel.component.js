@@ -82,7 +82,8 @@ app.component('panelComponent', {
             modalInstance.result.then(
                 function (newName) {
                     if (newName === undefined) {
-                        newName = vm.fileInfo.filename;
+                        newName = vm.fileInfo.filename.slice(0, vm.fileInfo.filename.lastIndexOf('.'));
+
                     }
                     var uploadedDocument = {};
                     uploadedDocument.dealPanelId = vm.panelId;

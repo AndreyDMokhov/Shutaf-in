@@ -1,6 +1,6 @@
 "use strict";
 app.component('documentDealComponent', {
-    templateUrl: 'partials/deal/deal.component/panel.component/document.component/document.component.html',
+    templateUrl: 'partials/deal/component/panel/document/document.component.html',
     bindings: {
         close: '&',
         dismiss: '&',

@@ -4,13 +4,12 @@ app.component('dealComponent', {
         dealInfo: '<'
     },
     controllerAs: 'vm',
-    controller: function (
-        dealModel,
-        $uibModal,
-        $sessionStorage,
-        $filter,
-        notify,
-        dealStatus) {
+    controller: function (dealModel,
+                          $uibModal,
+                          $sessionStorage,
+                          $filter,
+                          notify,
+                          dealStatus) {
 
         var vm = this;
         var namePanelDef = "Panel";
@@ -27,6 +26,11 @@ app.component('dealComponent', {
             if (Object.getOwnPropertyNames(vm.dealInfo.panels).length === 0) {
                 vm.statusDeal = vm.dealInfo.statusId;
                 vm.emptyDeal = true;
+            }
+            else if (Object.getOwnPropertyNames(vm.dealInfo.panels).length === 0) {
+                vm.statusDeal = vm.dealInfo.statusId;
+                vm.emptyDeal = true;
+                vm.panels = {};
             }
             else {
                 vm.emptyDeal = false;
