@@ -6,6 +6,8 @@ import com.shutafin.model.entities.UserImage;
 import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 
+import java.util.List;
+
 
 public interface UserAccountService {
 
@@ -14,6 +16,7 @@ public interface UserAccountService {
 
     UserImage updateProfileImage(AccountUserImageWeb userImageWeb, User user);
     UserImage findUserAccountProfileImage(User user);
+    List<UserImage> findUsersAccountsProfileImages(List<User> users);
 
     void checkUserAccountStatus(User user);
     UserAccount findUserAccountByUser(User user);
