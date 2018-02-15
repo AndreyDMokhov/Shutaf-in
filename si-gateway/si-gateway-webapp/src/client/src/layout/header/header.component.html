@@ -46,6 +46,14 @@
                         {{'Questions.title' | translate}}
                     </a>
                 </li>
+                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('chat' | includedByState)}">
+                    <a ui-sref="chat"
+                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
+                        {{'Chat.title' | translate}}
+                        &nbsp;
+                        <span class="fa fa-comments header-icon-size"></span>
+                    </a>
+                </li>
                 <li ng-show="vm.sessionService.isAuthenticated()"
                     ng-class="{active : ('userSearch' | includedByState)}">
                     <form
@@ -56,19 +64,12 @@
                                 type="text"
                                 ng-model="vm.fullName"
                                 placeholder="{{'Search.button' | translate}}"
-                                style="border-radius: 5px"
+                                style="border-radius: 20px; text-indent: 5px"
                                 tooltip-placement="bottom"
-                                uib-tooltip="{{'Search.button' | translate}}">
-                        <button
-                                ui-sref="userSearch({name: vm.fullName})"
-                                type="submit"
-                                class="glyphicon glyphicon-search"
-                                style="background-color: inherit; border:none"></button>
+                                uib-tooltip="{{'Search.button' | translate}}"
+                                ng-keyup="$event.keyCode == 13 && vm.search(vm.fullName)"
+                                size="50">
                     </form>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('chat' | includedByState)}">
-                    <a ui-sref="chat"
-                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">{{'Chat.title' | translate}}</a>
                 </li>
 
             </ul>
