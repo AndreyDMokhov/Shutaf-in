@@ -19,6 +19,12 @@
             <groupId>com.shutafin</groupId>
             <artifactId>si-share</artifactId>
             <version>0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-eureka-client</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
