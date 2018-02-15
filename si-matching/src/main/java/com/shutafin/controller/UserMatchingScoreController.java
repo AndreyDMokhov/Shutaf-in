@@ -32,9 +32,8 @@ public class UserMatchingScoreController {
 
     @PostMapping(value = "/search/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getMatchedUserSearchResponses(@PathVariable("userId") Long userId,
-                                                                  @RequestBody AccountUserFilterRequest accountUserFilterRequest,
-                                                                  @RequestParam(value = "name", required = false) String fullName) {
-        return userMatchingScoreService.getMatchedUserSearchResponses(userId, fullName, accountUserFilterRequest);
+                                                                  @RequestBody AccountUserFilterRequest accountUserFilterRequest) {
+        return userMatchingScoreService.getMatchedUserSearchResponses(userId, accountUserFilterRequest);
     }
 
     @PostMapping(value = "/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
