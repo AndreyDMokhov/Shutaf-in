@@ -8,6 +8,37 @@
   "SECTION": "HELP",
   "Help.title": "Help",
 
+  "SECTION": "DEAL",
+  "SECTION": "DEAL",
+  "Deal.title":"Deal",
+  "Deal.deal" :"deal",
+  "Deal.folder": "folder",
+  "Deal.file" : "file",
+  "Deal.withoutPanel.text" : "There are no folders",
+  "Deal.withoutPanel.create" : "Create one",
+  "Deal.rename" : "Rename",
+  "Deal.delete" : "Delete",
+  "Deal.download" : "Download",
+  "Deal.createFolder" : "Create new folder",
+  "Deal.uploadFile" : "Upload file",
+  "Deal.confirmButton" : "Upload",
+  "Deal.page": "Page",
+  "Deal.message.documentSaved": "Document was added",
+  "Deal.deal.modalWindow.creation.header": "Create {{component}}",
+  "Deal.deal.modalWindow.creation.content": "Name",
+  "Deal.deal.modalWindow.rename.header": "Rename {{component}}",
+  "Deal.deal.modalWindow.rename.content": "New name",
+  "Deal.deal.modalWindow.remove.header": "Remove {{component}}",
+  "Deal.deal.modalWindow.remove.content": "Are you sure?",
+  "Deal.deal.modalWindow.cancel": "Cancel",
+  "Deal.deal.modalWindow.ok": "Ok",
+  "Deal.deal.modalWindow.yes": "Yes",
+  "Deal.deal.modalWindow.no": "No",
+  "Deal.deal.status.inactive":"Inactive",
+  "Deal.deal.status.active":"Active",
+  "Deal.deal.status.archive":"Archived",
+  "Deal.deal.no.deals":"You don't have deals yet",
+
 
   "SECTION":"HOME",
   "Home.title":"Home",
@@ -23,6 +54,8 @@
   "Error.IPE":"Incorrect password",
   "Error.ABL":"Your account was blocked",
   "Error.ANC":"Account not activated, please confirm your email",
+  "Error.ERI":"Resend interval is 2 minutes",
+  "Error.NAP":"No permissions to perform the action",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
@@ -51,6 +84,7 @@
   "Login.form.email": "Email ",
   "Login.form.password": "Password ",
   "Login.form.button.login": "Login",
+  "Login.form.button.resendEmailRegistration": "Resend email confirmation",
   "Login.form.errorEmail": "Please enter a valid email address",
   "Login.form.errorPassword": "Please enter at least 8 characters",
   "Login.message.success": "We are glad to see You again!",
@@ -132,6 +166,12 @@
   "UserSettings.btn.addSettings": "Show additional settings",
   "UserSettings.btn.submit":  "Submit",
   "UserSettings.message.save.success": "Has been successfully saved",
+  "UserSetting.personal.matching.title": "Matching",
+  "UserSetting.personal.matching.toggle.label": "I want to be found by other users",
+  "UserSetting.personal.matching.toggle.yes": "Yes",
+  "UserSetting.personal.matching.toggle.no": "No",
+  "UserSetting.personal.matching.toggle.tip": "Only users who answered all questions can use this function",
+
 
   "SECTION": "USER SEARCH",
   "Search.title": "Search",
@@ -173,5 +213,9 @@
   "Chat.title.enter.chat": "Enter chat",
   "Chat.title.edit.chat.title": "Edit chat title",
   "Chat.title.new.message": "new",
-  "Chat.header.rename.chat.title":"Rename chat:"
+  "Chat.header.rename.chat.title":"Rename chat:",
+
+  "SECTION" : "SITE_ACCESS_ERROR",
+  "SiteAccess.info.settings" : "User info is not set",
+  "SiteAccess.questionnaire.settings" : "User questionnaire is not filled in"
 }

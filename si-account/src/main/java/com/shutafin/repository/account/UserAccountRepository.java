@@ -2,7 +2,7 @@ package com.shutafin.repository.account;
 
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.types.AccountStatus;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.types.AccountType;
 import com.shutafin.repository.base.BaseJpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +18,6 @@ public interface UserAccountRepository extends BaseJpaRepository<UserAccount, Lo
     List<UserAccount> findAllByAccountStatusAndAccountType(AccountStatus accountStatus, AccountType accountType);
 
     @Query("SELECT ucc.userImage.id FROM UserAccount ucc where ucc.user.id = :userId")
-    Long findDefaultUserImageIdByUserId(@Param("userId") Long userId);
+    Long findCompressedUserImageIdByUserId(@Param("userId") Long userId);
+    List<UserAccount> findAllByUserIn(List<User> users);
 }

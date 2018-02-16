@@ -20,20 +20,14 @@ public class UserImageController {
     @Autowired
     private UserImageService userImageService;
 
-    @RequestMapping(value = "/{userImageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getUserImage(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "userImageId") Long userImageId) {
-        log.debug("/images/{id}");
-        return userImageService.getUserImage(authenticatedUserId, userImageId);
-    }
-
-    @RequestMapping(value = "/compressed/{imageId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "imageId") Long imageId) {
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getCompressedUserImageById(@PathVariable(value = "userId") Long userId) {
         log.debug("/images/{userId}");
-        return userImageService.getUserImage(imageId);
+        return userImageService.getCompressedUserImage(userId);
     }
 
     @RequestMapping(value = "/original/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getOriginalUserImageById(@AuthenticatedUser Long authenticatedUserId, @PathVariable(value = "userId") Long userId) {
+    public AccountUserImageWeb getOriginalUserImageById(@PathVariable(value = "userId") Long userId) {
         log.debug("/images/original/{userId}");
         return userImageService.getOriginalUserImage(userId);
     }

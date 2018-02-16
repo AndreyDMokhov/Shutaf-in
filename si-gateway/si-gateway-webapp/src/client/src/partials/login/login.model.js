@@ -8,8 +8,12 @@ app.factory('loginModel', function (Restangular) {
     function login(params) {
         return  rest.one('/api/login/').customPOST(params);
     }
+    function resendEmailRegistration(params) {
+        return  rest.one('/api/login/resend').customPOST(params);
+    }
 
     return {
-        login: login
+        login: login,
+        resendEmailRegistration : resendEmailRegistration
     };
 });

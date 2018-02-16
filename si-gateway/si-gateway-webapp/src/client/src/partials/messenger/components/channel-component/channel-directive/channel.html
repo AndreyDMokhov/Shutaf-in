@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <td class="userPic">
-                <user-avatar ng-if="lastMessage.userId" user-data="lastMessage" width="20"
+                <user-avatar ng-if="lastMessage.userId" user-id={{lastMessage.userId}} width="20"
                              height="20"></user-avatar>
             </td>
             <td>
@@ -28,7 +28,7 @@
             </span>
             </td>
             <td class="sign">
-                <span ng-click="editChatTitle();$event.stopPropagation()" class="fa fa-pencil"
+                <span ng-if="chatData.isActiveUser" ng-click="editChatTitle();$event.stopPropagation()" class="fa fa-pencil"
                       ng-attr-title="{{'Chat.title.edit.chat.title' | translate}}"></span>
                 <span ng-click="deleteChat();$event.stopPropagation()" class="glyphicon glyphicon-trash"
                       ng-attr-title="{{'Chat.title.delete.chat' | translate}}"></span>

@@ -1,13 +1,16 @@
-app.service('messengerManagementService', function (messengerModel, messengerChannelService, messengerCurrentDataService) {
+app.service('messengerManagementService', function ($sessionStorage,
+                                                    messengerModel,
+                                                    messengerChannelService,
+                                                    messengerCurrentDataService) {
 
     var vm = this;
 
     function activateMessenger() {
-        if (messengerChannelService.listOfChats.length<1) {
+        if (messengerChannelService.listOfChats.length < 1) {
             setTimeout(function () {
                 activateMessenger();
             }, 50);
-        }else{
+        } else {
             messengerChannelService.notifyListOfChatObservers();
             if (messengerCurrentDataService.currentChat.id) {
                 activateChannel(messengerCurrentDataService.currentChat);
@@ -33,51 +36,53 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
         messengerModel.addChat(vm.chatName, userData.userId).then(
             function (success) {
                 vm.currentChat = success.data.data;
-                messengerChannelService.subscribeNewChannel(vm.currentChat.id);
                 messengerCurrentDataService.setCurrentChat(vm.currentChat);
-                messengerCurrentDataService.removeMessages();
                 messengerChannelService.updateListOfChats(vm.currentChat);
+                messengerCurrentDataService.removeMessages();
             }
         );
     }
 
-    function activateChannel(chat) {
-        messengerCurrentDataService.setCurrentChat(chat);
-        messengerChannelService.notifyChannelObservers(chat);
+    function activateChannel(chatData) {
+        messengerCurrentDataService.setCurrentChat(chatData);
+        messengerChannelService.notifyChannelActivateObserver(chatData);
     }
 
-    function renameChat(chat, chatTitle) {
-        messengerModel.renameChat(chat.id, chatTitle).then(
+    function renameChat(chatData, chatTitle) {
+        messengerModel.renameChat(chatData.id, chatTitle).then(
             function (success) {
                 messengerChannelService.updateListOfChats(success.data.data);
             }
         );
     }
 
-    function removeChat(chat) {
-        if (!chat) {
+    function deleteChat(chatData) {
+        if (!chatData) {
             return;
         }
-        messengerModel.removeChat(chat.id).then(
+        messengerModel.deleteChat(chatData.id).then(
             function (success) {
-                if (messengerCurrentDataService.currentChat.id === chat.id) {
+                if (messengerCurrentDataService.currentChat.id === chatData.id) {
                     messengerCurrentDataService.removeCurrentChat();
                 }
-                messengerChannelService.removeChatFromList(chat);
+                messengerChannelService.unSubscribe(chatData);
+                messengerChannelService.removeChatFromList(chatData);
             });
     }
 
     function addUserToChat(userData) {
-        if (!userData || messengerCurrentDataService.isUserActiveInCurrentChat(userData)) {
-            return;
+        if (userData && Object.keys(messengerCurrentDataService.currentChat).length !== 0 &&
+            !messengerCurrentDataService.isUserActiveInCurrentChat(userData) &&
+            messengerCurrentDataService.currentChat.isActiveUser) {
+
+            vm.currentChat = messengerCurrentDataService.currentChat;
+            messengerModel.addUserToChat(vm.currentChat.id, userData.userId).then(
+                function (success) {
+                    vm.currentChat.usersInChat.push(userData);
+                    messengerCurrentDataService.setCurrentChat(vm.currentChat);
+                    messengerChannelService.updateListOfChats(vm.currentChat);
+                });
         }
-        vm.currentChat = messengerCurrentDataService.currentChat;
-        messengerModel.addUserToChat(vm.currentChat.id, userData.userId).then(
-            function (success) {
-                vm.currentChat.usersInChat.push(userData);
-                messengerCurrentDataService.setCurrentChat(vm.currentChat);
-                messengerChannelService.updateListOfChats(vm.currentChat);
-            });
     }
 
     function removeUserFromChat(userData) {
@@ -96,7 +101,7 @@ app.service('messengerManagementService', function (messengerModel, messengerCha
     vm.activateMessenger = activateMessenger;
     vm.sendMessage = sendMessage;
     vm.addChat = addChat;
-    vm.removeChat = removeChat;
+    vm.deleteChat = deleteChat;
     vm.renameChat = renameChat;
     vm.addUserToChat = addUserToChat;
     vm.removeUserFromChat = removeUserFromChat;

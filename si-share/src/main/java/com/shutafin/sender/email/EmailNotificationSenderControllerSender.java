@@ -1,7 +1,9 @@
 package com.shutafin.sender.email;
 
+import com.shutafin.model.web.email.EmailNotificationDealWeb;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
+import com.shutafin.model.web.email.EmailResendWeb;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,18 @@ public class EmailNotificationSenderControllerSender {
 
     @Autowired
     private DiscoveryRoutingService routingService;
-    
+
     @Autowired
     private RestTemplate restTemplate;
 
     public void sendEmail(EmailNotificationWeb emailNotificationWeb) {
         String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/send";
         restTemplate.postForEntity(url, emailNotificationWeb, Void.class);
+    }
+
+    public void sendEmailDeal(EmailNotificationDealWeb emailNotificationDealWeb) {
+        String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/deal/send";
+        restTemplate.postForEntity(url, emailNotificationDealWeb, Void.class);
     }
 
     public Object confirmLink(String link, EmailReason emailReason) {
@@ -39,4 +46,10 @@ public class EmailNotificationSenderControllerSender {
         HttpEntity<Boolean> entity = new HttpEntity<>(null, headers);
         return restTemplate.exchange(url, HttpMethod.GET, entity, Boolean.class).getBody();
     }
+
+    public void resendEmail(EmailResendWeb emailResendWeb) {
+        String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/resend";
+        restTemplate.postForEntity(url, emailResendWeb, Void.class);
+    }
+
 }

@@ -3,9 +3,9 @@ package com.shutafin.model.entities;
 import com.shutafin.model.base.AbstractEntity;
 import com.shutafin.model.types.CompressionType;
 import com.shutafin.model.types.CompressionTypeConverter;
-import com.shutafin.model.types.PermissionType;
-import com.shutafin.model.types.PermissionTypeConverter;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -26,10 +26,6 @@ public class UserImage extends AbstractEntity {
 
     @Column(name = "LOCAL_PATH", unique = true, length = 200)
     private String localPath;
-
-    @Column(name = "PERMISSION_TYPE_ID", nullable = false)
-    @Convert(converter = PermissionTypeConverter.class)
-    private PermissionType permissionType;
 
     @Column(name = "COMPRESSION_TYPE_ID", nullable = false)
     @Convert(converter = CompressionTypeConverter.class)

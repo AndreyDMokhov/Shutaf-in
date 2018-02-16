@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
@@ -16,7 +15,5 @@ public class AbstractBaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
-
-
 
 }

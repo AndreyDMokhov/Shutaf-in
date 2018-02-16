@@ -16,7 +16,9 @@ var app = angular.module("app", [
     'uiCropper',
     'naif.base64',
     'rzModule',
-    'ngStorage'
+    'ngStorage',
+    'toggle-switch',
+    'pdf'
     /* @if templateCache **
      ,'templateCache'
      /* @endif */

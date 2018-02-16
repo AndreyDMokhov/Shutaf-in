@@ -1,9 +1,15 @@
 package com.shutafin.model.entity;
 
 import com.shutafin.model.base.AbstractEntity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 @MappedSuperclass
@@ -11,9 +17,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class BaseConfirmation extends AbstractEntity {
-
-    @Column(name = "USER_ID", nullable = false)
-    private Long userId;
 
     @Column(name = "CONFIRMATION_UUID", nullable = false, unique = true, length = 50)
     private String confirmationUUID;

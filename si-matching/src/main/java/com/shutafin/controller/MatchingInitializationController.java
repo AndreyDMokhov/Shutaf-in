@@ -38,6 +38,7 @@ public class MatchingInitializationController {
                 .questionExtendedWithAnswers(questionExtendedService.getQuestionsExtendedWithAnswers(languageId))
                 .questionImportanceList(questionExtendedService.getQuestionImportanceList(languageId))
                 .selectedExtendedAnswersResponses(userQuestionExtendedAnswerService.getSelectedQuestionExtendedAnswers(userId))
+                .isMatchingEnabled(userMatchService.getIsMatchingEnabled(userId))
                 .build();
 
     }

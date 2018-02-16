@@ -11,16 +11,42 @@ app.component('userSettingsComponent', {
                           $state,
                           initializationService,
                           $window,
-                          browserTitle) {
+                          browserTitle,
+                          siteAccessRouting,
+                          $timeout) {
 
         browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
 
         var vm = this;
         vm.dataLoading = false;
+        var time;
+        var timeIsOver = false;
+
         vm.status = {
             isGeneralOpen: true,
             isAdditionalOpen: false
         };
+
+        vm.overOpenCloseChangeStatus = function (tabName) {
+
+            timeIsOver = false;
+            time = $timeout(function () {
+                if (tabName === "general") {
+                    vm.status.isGeneralOpen = !vm.status.isGeneralOpen;
+                }
+                else if (tabName === "additional") {
+                    vm.status.isAdditionalOpen = !vm.status.isAdditionalOpen;
+                }
+                timeIsOver = true;
+            }, 600);
+        };
+
+        vm.leaveOpenCloseChangeStatus = function () {
+            if (!timeIsOver) {
+                $timeout.cancel(time);
+            }
+        };
+
 
         vm.userProfile = $sessionStorage.userProfile;
         vm.userProfile.dateOfBirth = new Date(vm.userProfile.dateOfBirth);
@@ -31,17 +57,20 @@ app.component('userSettingsComponent', {
         function submitChanges() {
             vm.dataLoading = true;
             userSettingsModel.saveDataPostRegistration(vm.userProfile).then(
-                function () {
+                function (success) {
                     vm.dataLoading = false;
                     notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
+                    initializationService.initialize(success.data);
                     $window.location.reload();
-                    $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
+
+                    siteAccessRouting.navigate('userProfile', {id: $sessionStorage.userProfile.userId});
+
                 }, function (error) {
                     vm.dataLoading = false;
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     if (error.data.error.errorTypeCode === 'AUT') {
                         $state.go('logout');
-                    }
+                }
                 });
         }
         vm.submitChanges = submitChanges;

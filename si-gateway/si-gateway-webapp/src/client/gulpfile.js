@@ -28,7 +28,7 @@ var path = require('path');
 
 
 gulp.task('watch', function() {
-     gulp.watch(['src/**/*', '!src/bower_components/**'], ['eslint' , 'less']);
+    gulp.watch(['src/**/*', '!src/bower_components/**'], ['eslint', 'less']);
 });
 
 //clean all,
@@ -65,6 +65,9 @@ gulp.task('babel', function () {
         '!./.tmp/bower_components/lodash/vendor/firebug-lite/src/firebug-lite-debug.js',
         '!./.tmp/bower_components/ng-dialog/**',
         '!./.tmp/bower_components/ngstorage/**',
+        '!./.tmp/bower_components/angular-pdf/**',
+        '!./.tmp/bower_components/file-saver/**',
+        '!./.tmp/bower_components/pdfjs-dist/**',
         '!./.tmp/bower_components/angularjs-slider/**'
     ])
         .pipe(babel({
@@ -179,10 +182,10 @@ gulp.task('eslint', function () {
 });
 
 gulp.task('less', function () {
-    return gulp.src(['./src/styles/*.less' ,  '!./src/styles/variables.less'])
+    return gulp.src(['./src/styles/*.less', '!./src/styles/variables.less'])
         .pipe(less())
         .pipe(gulp.dest('./src/styles'));
-});1
+});
 
 
 // to run new server

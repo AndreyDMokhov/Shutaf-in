@@ -1,51 +1,48 @@
-angular.module('app').directive('userAvatar', function (Restangular,
-                                                        $sessionStorage,
-                                                        $uibModal,
+angular.module('app').directive('userAvatar', function ($uibModal,
                                                         userSearchModel,
                                                         $filter,
                                                         notify) {
     return {
         restrict: "E",
-        template: '<img ng-click="openModalImageSize()" ng-src={{getUserImagePath()}} class="logo-center pointer" width="{{width}}" height="{{height}}">',
+        template: '<img ng-click="openModalImageSize()" ng-src={{image}} class="logo-center pointer" width="{{width}}" height="{{height}}">',
         scope: {
-            userData: "=",
+            userId: "@",
             width: "@",
             height: '@'
         },
         link: function (scope, element, attrs) {
-
-            var rest = Restangular.withConfig(function (RestangularProvider) {
-                RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
-            });
-
             scope.image = '';
             scope.currentUser = {};
             scope.originImage = {};
             var DEFAULT_IMAGE_PATH = '../../images/default_avatar.png';
             var BASE64_IMAGE_PATH = 'data:image/jpeg;base64,';
 
-            scope.getUserImagePath = function () {
-                if (!scope.userData.userId) {
-                    return scope.image = DEFAULT_IMAGE_PATH;
-                }
-                scope.image = findUserImage();
-                if (!scope.image) {
-                    return scope.image = DEFAULT_IMAGE_PATH;
-                }
-                else {
-                    return scope.image = BASE64_IMAGE_PATH + scope.image;
-                }
-            };
+            findUserImage();
 
             function findUserImage() {
-                if ($sessionStorage.userProfile.userId === parseInt(scope.userData.userId)) {
-                    scope.currentUser = $sessionStorage.userProfile;
-                    return scope.currentUser.userImage;
+                if (!scope.userId) {
+                    scope.image = DEFAULT_IMAGE_PATH;
                 }
-                if ($sessionStorage[scope.userData.userId]) {
-                    return $sessionStorage[scope.userData.userId];
+                else {
+                    userSearchModel.getCompressedUserImageById(scope.userId).then(
+                        function (success) {
+                            scope.currentUser.firstName = success.data.data.firstName;
+                            scope.currentUser.lastName = success.data.data.lastName;
+                            if (success.data.data.image !== null) {
+                                scope.image = BASE64_IMAGE_PATH + success.data.data.image;
+                            }
+                            else {
+                                scope.image = DEFAULT_IMAGE_PATH;
+                            }
+                        },
+                        function (error) {
+                            if (error === undefined || error === null) {
+                                notify.set($filter('translate')('Error.SYS'), {type: 'error'});
+                            }
+                            notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                        }
+                    );
                 }
-                return '';
             }
 
             scope.open = function (size, parentSelector) {
@@ -55,8 +52,7 @@ angular.module('app').directive('userAvatar', function (Restangular,
                     controller: function ($uibModalInstance) {
                         var vm = this;
                         vm.currentImage = scope.originImage;
-                        vm.fullName = scope.userData.firstName + " " + scope.userData.lastName;
-
+                        vm.fullName = scope.currentUser.firstName + " " + scope.currentUser.lastName;
                         vm.closeModal = function () {
                             $uibModalInstance.close();
                         };
@@ -72,7 +68,7 @@ angular.module('app').directive('userAvatar', function (Restangular,
                     scope.open();
                 }
                 else {
-                    userSearchModel.getOriginalUserImageById(scope.userData.userId).then(
+                    userSearchModel.getOriginalUserImageById(scope.userId).then(
                         function (success) {
                             scope.originImage = 'data:image/jpeg;base64,' + success.data.data.image;
                             scope.open();

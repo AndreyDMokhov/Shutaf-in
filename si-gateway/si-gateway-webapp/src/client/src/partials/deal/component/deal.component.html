@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-3">
+        <div style="text-align:center;" ng-if="vm.isDealStatusActive()">
+            <label class="add-folder" ng-click="vm.addPanel(vm.dealInfo.dealId)">{{'Deal.createFolder'|translate}}
+                <i class="fa fa-th-list"></i></label>
+        </div>
+
+        <uib-tabset vertical="true" type="pills">
+            <uib-tab
+                    ng-repeat="(key, value) in vm.panels"
+                    ng-click="vm.selectPanel(key)">
+                <uib-tab-heading>
+                    {{value}}
+                    <div style="float: right;">
+                        <i
+                                class="fa fa-edit icon-rename"
+                                ng-click="$event.preventDefault(); $event.stopPropagation(); vm.renamePanel(key)"
+                                uib-tooltip="{{'Deal.rename'|translate}}"
+                                ng-if="vm.isDealStatusActive()"
+                        ></i>
+                        &nbsp;
+                        <i
+                                class="fa fa-remove icon-delete"
+                                ng-click="$event.preventDefault(); $event.stopPropagation(); vm.removePanel( key)"
+                                uib-tooltip="{{'Deal.delete'|translate}}"
+                        ></i>
+                    </div>
+                </uib-tab-heading>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+    <div class="col-md-9">
+        <div ng-if="vm.panelClicked">
+            <panel-component documents="vm.documents" panel-id="vm.panelId" get-deals="vm.selectPanel"
+                              status-deal="vm.statusDeal"></panel-component>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-3 col-sm-offset-3 ">
+            <div ng-if="vm.emptyDeal && vm.isDealStatusActive()" class="without-folder">
+                <p>
+                    {{'Deal.withoutPanel.text' | translate}}
+                </p>
+                <p>
+                    <a class="pointer" ng-click="vm.addPanel(vm.dealInfo.dealId)">{{'Deal.withoutPanel.create' |
+                        translate}}</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -15,7 +15,17 @@ public interface UserRepository extends BaseJpaRepository<User, Long> {
 
     @Query("SELECT u.id FROM User u WHERE u.id in (:usersIdList) AND " +
             "concat(u.firstName, ' ', u.lastName) = :fullName " +
-            "OR concat(u.lastName, ' ', u.firstName) = :fullName ")
+            "OR u.id in (:usersIdList) AND " +
+            "(concat(u.lastName, ' ', u.firstName) = :fullName " +
+            "OR " +
+            "concat(u.firstName, ' ', u.lastName) = :fullName " +
+            "OR " +
+            "u.firstName = :fullName " +
+            "OR " +
+            "u.lastName = :fullName)")
     List<Long> findAllByFullName(@Param("usersIdList") List<Long> usersIdList,
                                  @Param("fullName") String fullName);
+
+
+    List<User> findAllByIdIn(List<Long> userIds);
 }

@@ -12,9 +12,9 @@ public interface UserExamKeyRepository extends BaseJpaRepository<UserExamKey, Lo
     void deleteByUserId(Long userId);
     UserExamKey findByUserId(Long userId);
 
-    @Query("SELECT uek.userId FROM UserExamKey uek WHERE uek.examKeyRegExp in (:keys)")
+    @Query("SELECT uek.userId FROM UserExamKey uek WHERE uek.examKeyRegExp in (:keys) AND uek.isMatchingEnabled = 1")
     List<Long> getMatchedUsers(@Param("keys") List<String> keys);
 
-    @Query("SELECT uek.userId FROM UserExamKey uek")
+    @Query("SELECT uek.userId FROM UserExamKey uek WHERE uek.isMatchingEnabled = 1")
     List<Long> findAllUserIds();
 }

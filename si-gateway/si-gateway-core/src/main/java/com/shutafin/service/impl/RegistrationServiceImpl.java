@@ -2,7 +2,6 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.web.account.AccountRegistrationRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
-import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.web.email.response.EmailRegistrationResponse;
 import com.shutafin.sender.account.RegistrationControllerSender;
@@ -25,10 +24,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public void registerUser(AccountRegistrationRequest registrationRequestWeb) {
-
-        EmailNotificationWeb emailNotificationWeb = registrationControllerSender.registerUser(registrationRequestWeb);
-
-        emailNotificationSenderControllerSender.sendEmail(emailNotificationWeb);
+        registrationControllerSender.registerUser(registrationRequestWeb);
     }
 
     @Override

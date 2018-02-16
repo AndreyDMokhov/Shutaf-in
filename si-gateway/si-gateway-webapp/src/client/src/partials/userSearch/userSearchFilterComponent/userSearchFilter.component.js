@@ -62,17 +62,7 @@ app.component('userSearchFilterComponent', {
             if (!vm.gender) {
                 vm.searchData.filterGenderId = null;
             }
-            userSearchModel.saveFilters(vm.searchData).then(
-                function (success) {
-                    $sessionStorage.filters.filterGenderId = vm.searchData.filterGenderId;
-                    $sessionStorage.filters.filterCitiesIds = vm.searchData.filterCitiesIds;
-                    $sessionStorage.filters.filterAgeRange = vm.searchData.filterAgeRange;
-
-                    vm.userSearchList = success.data.data;
-                    userSearchService.addSearchList(vm.userSearchList);
-                }, function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                });
+            userSearchService.notifyFilterObserver(vm.searchData);
         }
 
         function setAgeRangeData() {

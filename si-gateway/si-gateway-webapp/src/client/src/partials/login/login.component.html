@@ -7,14 +7,14 @@
                     'has-error': loginForm.email.$invalid && loginForm.email.$dirty || loginForm.email.$dirty && loginForm.email.$invalid,
                     'has-success': loginForm.email.$valid }">
             <label class="required" for="email">{{'Login.form.email' | translate}}</label>
-            <input  value="email"
-                    type="email"
-                    class="form-control"
-                    ng-maxLength="50"
-                    name="email"
-                    id="email"
-                    ng-model="vm.loginData.email"
-                    required/>
+            <input value="email"
+                   type="email"
+                   class="form-control"
+                   ng-maxLength="50"
+                   name="email"
+                   id="email"
+                   ng-model="vm.loginData.email"
+                   required/>
             <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">
                 {{'Login.form.errorEmail' | translate}}
             </p>
@@ -44,10 +44,19 @@
                     type="submit"
                     ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid"
                     class="btn btn-success btn-block entry-card-button login">
-                {{'Login.title' | translate}}
+                {{'Login.form.button.login' | translate}}
                 <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
+            </button>
+            <button ng-click="vm.resendEmailRegistration()"
+                    ng-if="vm.showResend"
+                    type="submit"
+                    ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid"
+                    class="btn btn-success btn-block entry-card-button login">
+                {{'Login.form.button.resendEmailRegistration' | translate}}
+                <i ng-show="vm.resendLoading" class="fa fa-spinner fa-pulse"></i>
             </button>
             <a ui-sref="resetPasswordRequest" class="forgot">{{'ResetPassword.title' | translate}}</a>
         </div>
+
     </form>
 </div>

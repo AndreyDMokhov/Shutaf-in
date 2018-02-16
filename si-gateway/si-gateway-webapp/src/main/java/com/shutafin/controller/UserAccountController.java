@@ -5,6 +5,7 @@ import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.model.web.account.AccountUserInfoRequest;
 import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
 import com.shutafin.model.web.account.AccountUserLanguageWeb;
+import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserAccountService;
 import com.shutafin.service.UserInfoService;
@@ -58,17 +59,15 @@ public class UserAccountController {
 
     @GetMapping(value = "/info", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserInfoResponseDTO getUserInfo(@AuthenticatedUser Long userId) {
-
         return userInfoService.getUserInfo(userId);
     }
 
     @PostMapping(value = "/info", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateUserInfo(@AuthenticatedUser Long userId,
-                               @RequestBody @Valid AccountUserInfoRequest userInfoRequest,
-                               BindingResult result) {
-
+    public InitializationResponse updateUserInfo(@AuthenticatedUser Long userId,
+                                                 @RequestBody @Valid AccountUserInfoRequest userInfoRequest,
+                                                 BindingResult result) {
         checkBindingResult(result);
-        userInfoService.updateUserInfo(userInfoRequest, userId);
+        return userInfoService.updateUserInfo(userInfoRequest, userId);
     }
 
     private void checkBindingResult(BindingResult result) {

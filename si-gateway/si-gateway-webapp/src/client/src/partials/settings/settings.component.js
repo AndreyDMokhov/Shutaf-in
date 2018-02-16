@@ -25,7 +25,14 @@ app.component('settingsComponent', {
                 title: $filter('translate')('Settings.security.password.title'),
                 state: 'settings.changePassword',
                 icon: 'fa-key'
+            },
+            {
+                tabId: 4,
+                title: $filter('translate')('UserSetting.personal.matching.title'),
+                state: 'settings.matching',
+                icon: ' fa-search'
             }
+
         ];
 
         vm.getCurrentStateName = function() {

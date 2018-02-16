@@ -2,9 +2,7 @@ package com.shutafin.service.impl;
 
 import com.shutafin.model.smtp.BaseTemplate;
 import com.shutafin.model.smtp.EmailMessage;
-import com.shutafin.model.web.email.EmailNotificationWeb;
-import com.shutafin.model.web.email.EmailReason;
-import com.shutafin.model.web.email.EmailUserImageSource;
+import com.shutafin.model.web.email.*;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
@@ -14,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 
 @Service
@@ -31,10 +29,10 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
 
-    private BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, String link) {
+    private BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, Map<String, String> textReplace) {
         notNull(emailReason);
         notNull(languageDescription);
-        notBlank(link);
+        notNull(textReplace);
 
         Properties properties = getProperties(languageDescription);
 
@@ -42,9 +40,11 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
         String header = properties.getProperty(prefix + HEADER_SUFFIX);
 
-        String section = properties
-                .getProperty(prefix + SECTION_SUFFIX)
-                .replace("${link}", link);
+        String section = properties.getProperty(prefix + SECTION_SUFFIX);
+
+        for (Map.Entry<String, String> mapText : textReplace.entrySet()) {
+            section = section.replace("${"+mapText.getKey()+"}", mapText.getValue());
+        }
 
         String signature = properties.getProperty("common.signature");
 
@@ -85,7 +85,10 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
                 getTemplate(
                         emailNotificationWeb.getEmailReason(),
                         emailNotificationWeb.getLanguageCode(),
-                        link),
+                        new HashMap<String, String>(){{
+                            put("link", link);
+                        }}
+                ),
                 imageSources
         );
     }
@@ -93,8 +96,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     @Override
     public EmailMessage getEmailMessage(EmailNotificationWeb emailNotificationWeb, String link, String emailChange, String confirmationUrl) {
 
-        String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
-        String urlLink = serverAddress + confirmationUrl + link;
+        String urlLink = getServerAddress() + confirmationUrl + link;
         return getEmailMessage(emailNotificationWeb, urlLink, (Map<String, byte[]>) null, emailChange);
 
     }
@@ -108,7 +110,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     public EmailMessage getEmailMessageMatchingCandidates(EmailNotificationWeb emailNotificationWeb, String urlProfile, String urlSearch) {
 
         String urlLink = "";
-        String serverAddress = discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
+        String serverAddress = getServerAddress();
         Map<String, byte[]> imageSources = new TreeMap<>();
 
         for (EmailUserImageSource emailUserImageSource : emailNotificationWeb.getEmailUserImageSources()) {
@@ -118,6 +120,44 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         urlLink += getSearchLink(serverAddress, urlSearch);
         return getEmailMessage(emailNotificationWeb, urlLink, imageSources);
 
+    }
+
+    @Override
+    public EmailMessage getEmailMessageDeal(EmailNotificationDealWeb emailNotificationDealWeb, EmailUserLanguage emailUserLanguage,
+                                            String confirmationUUID, String confirmationUrl, String urlProfile) {
+
+        String serverAddress = getServerAddress();
+        String urlLink = serverAddress + confirmationUrl + confirmationUUID;
+        Map<String, byte[]> imageSources = new TreeMap<>();
+
+        Map<String, String> textReplace = new HashMap<>();
+        EmailUserImageSource userOrigin = emailNotificationDealWeb.getUserOrigin();
+        String userOriginUrl = getUserImageLink(userOrigin, serverAddress, urlProfile);
+        imageSources.put(userOrigin.getUserId().toString(), userOrigin.getImageSource());
+        textReplace.put("userOrigin", userOriginUrl);
+        if (emailNotificationDealWeb.getUserToChange() != null){
+            EmailUserImageSource userToChange = emailNotificationDealWeb.getUserToChange();
+            String userToChangeUrl = getUserImageLink(userToChange, serverAddress, urlProfile);
+            imageSources.put(userToChange.getUserId().toString(), userToChange.getImageSource());
+            textReplace.put("userToChange", userToChangeUrl);
+        }
+        textReplace.put("dealTitle", emailNotificationDealWeb.getDealTitle());
+        textReplace.put("link", urlLink);
+
+        return new EmailMessage(
+                emailUserLanguage.getUserId(),
+                emailUserLanguage.getEmail(),
+                getTemplate(
+                        emailNotificationDealWeb.getEmailReason(),
+                        emailUserLanguage.getLanguageCode(),
+                        textReplace
+                ),
+                imageSources
+        );
+    }
+
+    private String getServerAddress(){
+        return discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
     }
 
     private String getUserImageLink(EmailUserImageSource emailUserImageSource, String serverAddress, String urlProfile) {

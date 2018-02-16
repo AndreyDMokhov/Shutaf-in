@@ -1,6 +1,8 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.error.ErrorType;
+import com.shutafin.model.exception.exceptions.AuthenticationException;
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.service.SessionManagementService;
@@ -11,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,34 +30,40 @@ public class UserImageControllerTest extends BaseTestImpl {
     private static final String USER_IMAGE_REQUEST_URL = "/images/";
     private static final String VALID_SESSION_ID = "validsessionid";
     private static final String INVALID_SESSION_ID = "invalidsessionid";
+    private static final Long VALID_USER_ID = 1L;
     private static final Long VALID_USER_IMAGE_ID = 1L;
     private static final Long INVALID_USER_IMAGE_ID = 99L;
     private static final String VALID_IMAGE_IN_BASE64 = "valid image in base64";
 
 
     @MockBean
-    public UserImageService userImageService;
+    private UserImageService userImageService;
     @MockBean
-    public SessionManagementService sessionManagementService;
+    private SessionManagementService sessionManagementService;
 
     @Before
     public void setUp() {
-        //todo
-//        validUser = createUser();
-//        validUserImage = createUserImage();
-//        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
-//        Mockito.when(userImageService.addUserImage(Mockito.any(AccountUserImageWeb.class), Mockito.any(User.class)))
-//                .thenReturn(validUserImage);
-//        Mockito.when(userImageService.getUserImage(validUser, VALID_USER_IMAGE_ID))
-//                .thenReturn(validUserImage);
-//        Mockito.when(userImageService.getUserImage(validUser, INVALID_USER_IMAGE_ID))
-//                .thenThrow(new ResourceNotFoundException());
-//        Mockito.doNothing().when(userImageService).deleteUserImage(validUser, VALID_USER_IMAGE_ID);
-//        Mockito.doThrow(new ResourceNotFoundException())
-//                .when(userImageService).deleteUserImage(validUser, INVALID_USER_IMAGE_ID);
+
+        Long validUser = 1L;
+
+        Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
+        Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID))
+                .thenThrow(new AuthenticationException());
+        Mockito.when(userImageService.addUserImage(new AccountUserImageWeb(), VALID_USER_ID))
+                .thenReturn(new AccountUserImageWeb());
+        Mockito.when(userImageService.getCompressedUserImage(Mockito.anyLong()))
+                .thenReturn(new AccountUserImageWeb());
+        Mockito.when(userImageService.getCompressedUserImage(INVALID_USER_IMAGE_ID))
+                .thenThrow(new ResourceNotFoundException());
+
+        Mockito.when(userImageService.getOriginalUserImage(validUser))
+                .thenThrow(new ResourceNotFoundException());
+
+        Mockito.doNothing().when(userImageService).deleteUserImage(validUser, VALID_USER_IMAGE_ID);
+        Mockito.doThrow(new ResourceNotFoundException())
+                .when(userImageService).deleteUserImage(validUser, INVALID_USER_IMAGE_ID);
 
     }
-
 
     @Test
     public void addUserImage_Positive() {
@@ -127,9 +136,7 @@ public class UserImageControllerTest extends BaseTestImpl {
 
     @Test
     public void getUserImage_Positive() {
-        List<HttpHeaders> sessionHeaders = new ArrayList<>();
-        sessionHeaders.add(new HttpHeaders());
-        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL + VALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.GET)
@@ -139,14 +146,11 @@ public class UserImageControllerTest extends BaseTestImpl {
         APIWebResponse apiResponse = getResponse(request);
 
         Assert.assertNull(apiResponse.getError());
-        Assert.assertEquals(VALID_IMAGE_IN_BASE64, ((AccountUserImageWeb) apiResponse.getData()).getImage());
     }
 
     @Test
     public void getUserImage_IncorrectUserImageId() {
-        List<HttpHeaders> sessionHeaders = new ArrayList<>();
-        sessionHeaders.add(new HttpHeaders());
-        sessionHeaders.get(0).set(SESSION_ID_HEADER_NAME, VALID_SESSION_ID);
+        List<HttpHeaders> sessionHeaders = addSessionIdToHeader(VALID_SESSION_ID);
         ControllerRequest request = ControllerRequest.builder()
                 .setUrl(USER_IMAGE_REQUEST_URL + INVALID_USER_IMAGE_ID)
                 .setHttpMethod(HttpMethod.GET)

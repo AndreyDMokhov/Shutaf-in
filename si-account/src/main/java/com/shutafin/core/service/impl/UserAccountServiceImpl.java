@@ -9,15 +9,17 @@ import com.shutafin.model.exception.exceptions.AccountBlockedException;
 import com.shutafin.model.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.model.types.AccountStatus;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.types.CompressionType;
-import com.shutafin.model.types.PermissionType;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,9 +37,31 @@ public class UserAccountServiceImpl implements UserAccountService {
         this.userImageService = userImageService;
     }
 
+    @Override
+    public AccountStatus getUserAccountStatus(User user) {
+        if (user != null){
+            UserAccount userAccount = userAccountRepository.findByUser(user);
+            return userAccount.getAccountStatus();
+        }
+        return null;
+    }
 
     @Override
     @Transactional
+    public AccountStatus updateUserAccountStatus(Integer accountStatusId, User user) {
+
+        if (user != null){
+            UserAccount userAccount = userAccountRepository.findByUser(user);
+            userAccount.setAccountStatus(AccountStatus.getById(accountStatusId));
+            userAccountRepository.save(userAccount);
+
+            return userAccount.getAccountStatus();
+        }
+
+        return null;
+    }
+
+    @Override
     public UserImage updateProfileImage(AccountUserImageWeb userImageWeb, User user) {
         UserImage userImage = null;
         UserAccount userAccount = userAccountRepository.findByUser(user);
@@ -53,7 +77,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         if (userImage == null) {
-            userImage = userImageService.addUserImage(userImageWeb, user, PermissionType.PUBLIC, CompressionType.COMPRESSION_RATE_0_7);
+            userImage = userImageService.addUserImage(userImageWeb, user, CompressionType.COMPRESSION_RATE_0_7);
         }
 
         if (userAccount != null) {
@@ -68,13 +92,22 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    public List<UserImage> findUsersAccountsProfileImages(List<User> users) {
+        return userAccountRepository
+                .findAllByUserIn(users)
+                .stream()
+                .map(UserAccount::getUserImage)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void deleteUserAccountProfileImage(User user) {
         UserAccount userAccount = userAccountRepository.findByUser(user);
         userAccount.setUserImage(null);
     }
 
     @Override
-    public UserAccount checkUserAccountStatus(User user) {
+    public void checkUserAccountStatus(User user) {
         UserAccount userAccount = userAccountRepository.findByUser(user);
         if (userAccount == null) {
             String message = String.format("UserAccount for user with ID %s does not exist", user.getId());
@@ -90,8 +123,6 @@ public class UserAccountServiceImpl implements UserAccountService {
             log.warn("UserAccount for userId {} is not CONFIRMED", user.getId());
             throw new AccountNotConfirmedException();
         }
-
-        return userAccount;
     }
 
     @Override

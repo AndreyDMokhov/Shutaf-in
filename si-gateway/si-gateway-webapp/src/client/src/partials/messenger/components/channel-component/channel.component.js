@@ -12,37 +12,18 @@ app.component('channelComponent', {
         function activate() {
             messengerChannelService.registerListOfChatsObserver(updateListOfChats);
             angular.element(document).ready(function () {
-                        messengerManagementService.activateMessenger();
-                    });
+                messengerManagementService.activateMessenger();
+            });
         }
 
         function updateListOfChats(newChatData) {
             vm.listOfChats = messengerChannelService.listOfChats;
             if (!newChatData) {
                 checkChatTitlesList();
-                angular.forEach(vm.listOfChats, function (item) {
-                    findAndSaveUserImagesToStorage(item.usersInChat);
-                });
             }
             else {
                 checkOneChatTitle(newChatData);
-                findAndSaveUserImagesToStorage(newChatData.usersInChat);
             }
-        }
-
-        function findAndSaveUserImagesToStorage(usersInChat) {
-            angular.forEach(usersInChat, function (item) {
-                if (!$sessionStorage[item.userId]) {
-                    userSearchModel.getUserImageById(item.userId).then(
-                        function (success) {
-                            var data = success.data.data;
-                            if (data.image) {
-                                $sessionStorage[item.userId] =data.image;
-                            }
-                        }
-                    );
-                }
-            });
         }
 
         function checkChatTitlesList() {

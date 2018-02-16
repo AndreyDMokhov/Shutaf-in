@@ -21,6 +21,8 @@
         <module>si-gateway-persistence</module>
     </modules>
 
+
+
     <dependencyManagement>
         <dependencies>
 
@@ -31,6 +33,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
