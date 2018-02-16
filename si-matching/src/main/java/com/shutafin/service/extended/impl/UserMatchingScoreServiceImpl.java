@@ -1,6 +1,7 @@
 package com.shutafin.service.extended.impl;
 
 
+import com.shutafin.model.entities.extended.MaxUserMatchingScore;
 import com.shutafin.model.entities.extended.QuestionExtended;
 import com.shutafin.model.entities.extended.UserMatchingScore;
 import com.shutafin.model.entities.extended.UserQuestionExtendedAnswer;
@@ -11,6 +12,7 @@ import com.shutafin.repository.extended.MaxUserMatchingScoreRepository;
 import com.shutafin.repository.extended.UserMatchingScoreRepository;
 import com.shutafin.sender.account.UserFilterControllerSender;
 import com.shutafin.service.UserMatchService;
+import com.shutafin.service.extended.AsyncSaveMatchingScoreService;
 import com.shutafin.service.extended.CoreMatchingService;
 import com.shutafin.service.extended.UserMatchingScoreService;
 import com.shutafin.service.extended.UserQuestionExtendedAnswerService;
@@ -46,6 +48,9 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     @Autowired
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
+    @Autowired
+    private AsyncSaveMatchingScoreService asyncSaveMatchingScoreService;
+
     @Override
     public UserMatchingScore getMatchingScore(Long userOriginId,
                                               Long userToMatchId,
@@ -68,16 +73,30 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
 
         Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.findByUserId(userOriginId).getScore().doubleValue();
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOriginId);
+
+        Map<Long, Double> maxUserMatchingScoresMap = createMaxUserMatchingScoresMap(maxUserMatchingScoreRepository.findByUserIdIn(usersToMatch));
+        Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> usersQuestionExtendedAnswers = userQuestionExtendedAnswerService.getUserQuestionExtendedAnswersByUserIds(usersToMatch);
         for (Long userToMatch : usersToMatch) {
-            Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.findByUserId(userToMatch).getScore().doubleValue();
-            Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userToMatch);
+            Double maxPossibleScoreToMatch = maxUserMatchingScoresMap.get(userToMatch);
+//            Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userToMatch);
+            Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers = usersQuestionExtendedAnswers.get(userToMatch);
 
             UserMatchingScore score = getMatchingScore(userOriginId, userToMatch, maxPossibleScoreOrigin, userOriginAnswers, maxPossibleScoreToMatch, userToMatchAnswers);
             userMatchingScoresValues.put(userToMatch, score.getScore());
             userMatchingScores.put(userToMatch, score);
         }
-        userMatchingScoreRepository.save(userMatchingScores.values());
+//        userMatchingScoreRepository.save(userMatchingScores.values());
+        asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
         return userMatchingScoresValues;
+    }
+
+    private Map<Long,Double> createMaxUserMatchingScoresMap(List<MaxUserMatchingScore> maxUserMatchingScores) {
+        Map<Long,Double> res = new HashMap<>();
+        for(MaxUserMatchingScore maxUserMatchingScore : maxUserMatchingScores){
+            res.put(maxUserMatchingScore.getUserId(), maxUserMatchingScore.getScore().doubleValue());
+        }
+
+        return res;
     }
 
     @Override

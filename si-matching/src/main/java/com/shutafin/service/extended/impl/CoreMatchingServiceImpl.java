@@ -38,7 +38,7 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
 
     private UserExamKeyRepository userExamKeyRepository;
 
-    private Map<Integer, Map<Integer,Integer>> answerSimilarityCache;
+    private static Map<Integer, Map<Integer,Integer>> answerSimilarityCache;
 
     @Autowired
     public CoreMatchingServiceImpl(AnswerSimilarityService answerSimilarityService, UserQuestionExtendedAnswerService userQuestionExtendedAnswerService, UserMatchService userMatchService, UserMatchingScoreRepository userMatchingScoreRepository, MaxUserMatchingScoreRepository maxUserMatchingScoreRepository, UserExamKeyRepository userExamKeyRepository) {

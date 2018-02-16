@@ -11,4 +11,5 @@ import java.util.List;
 public interface UserQuestionExtendedAnswerRepository extends BaseJpaRepository<UserQuestionExtendedAnswer, Long> {
     List<UserQuestionExtendedAnswer> findAllByUserIdAndQuestion(Long userId, QuestionExtended question);
     List<UserQuestionExtendedAnswer> findAllByUserId(Long userId);
+    List<UserQuestionExtendedAnswer> findAllByUserIdIn(List<Long> userIds);
 }

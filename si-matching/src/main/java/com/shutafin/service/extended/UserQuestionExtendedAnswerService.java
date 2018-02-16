@@ -10,6 +10,7 @@ import java.util.Map;
 public interface UserQuestionExtendedAnswerService {
 
     Map<QuestionExtended, List<UserQuestionExtendedAnswer>> getAllUserQuestionExtendedAnswers(Long userId);
+    Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> getUserQuestionExtendedAnswersByUserIds(List<Long> userIds);
     void addUserQuestionExtendedAnswers(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList, Long userId);
     List<UserQuestionExtendedAnswersWeb> getSelectedQuestionExtendedAnswers(Long userId);
 }
