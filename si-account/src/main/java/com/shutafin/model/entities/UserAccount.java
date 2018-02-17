@@ -21,6 +21,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Getter
 @Setter
+@Data
 public class UserAccount extends AbstractEntity {
 
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
