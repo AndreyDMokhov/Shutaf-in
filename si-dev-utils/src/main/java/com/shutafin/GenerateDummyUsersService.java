@@ -15,8 +15,8 @@ public class GenerateDummyUsersService {
     private static final int COUNT_CHARACTER_NAME = 3;
     private static final String PASSWORD = "11111111";
     private static final Integer USER_LANGUAGE_ID = 1;
-    private static final String EMAIL_BEGIN = "tel";
-    private static final String EMAIL_END = "@ran";
+    private static final String EMAIL_PREFIX = "tel";
+    private static final String EMAIL_SUFFIX = "@ran";
 
     private Random random = new Random();
 
@@ -57,7 +57,7 @@ public class GenerateDummyUsersService {
     }
 
     private String getEmail(int number) {
-        return EMAIL_BEGIN + Integer.toString(number) + EMAIL_END;
+        return EMAIL_PREFIX + Integer.toString(number) + EMAIL_SUFFIX;
     }
 
 }
