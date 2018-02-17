@@ -4,8 +4,8 @@ import com.shutafin.core.service.UserAccountService;
 import com.shutafin.core.service.UserImageService;
 import com.shutafin.model.entities.User;
 import com.shutafin.model.entities.UserAccount;
-import com.shutafin.model.types.AccountStatus;
 import com.shutafin.model.types.AccountType;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.web.email.EmailReason;
 import com.shutafin.model.web.email.EmailUserImageSource;
@@ -13,10 +13,10 @@ import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserRepository;
 import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
 import com.shutafin.sender.matching.UserMatchControllerSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Base64;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,10 +50,9 @@ public class MatchingCandidatesEmailNotificationJobService {
     //    @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void sendEmailNotification() {
-        List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(AccountStatus.CONFIRMED, AccountType.REGULAR);
+        List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(AccountStatus.COMPLETED_REQUIRED_MATCHING, AccountType.REGULAR);
         for (UserAccount userAccount : userAccounts) {
-            User user = userAccount.getUser();
-            List<Long> matchingUsers = userMatchControllerSender.getMatchingUsers(user.getId());
+            List<Long> matchingUsers = userMatchControllerSender.getMatchingUsers(userAccount.getUser().getId());
             if (!matchingUsers.isEmpty()) {
                 sendEmail(userAccount, matchingUsers);
             }
@@ -84,14 +83,12 @@ public class MatchingCandidatesEmailNotificationJobService {
                 .build();
     }
 
-    private byte[] getUserImage(User user) {
-        String image;
+    private String getUserImage(User user) {
         if (userAccountService.findUserAccountProfileImage(user) == null) {
-            image = userImageService.getDefaultImageBase64();
+            return userImageService.getDefaultImageBase64();
         } else {
-            image = userAccountService.findUserAccountProfileImage(user).getImageStorage().getImageEncoded();
+            return userAccountService.findUserAccountProfileImage(user).getImageStorage().getImageEncoded();
         }
-        return Base64.getDecoder().decode(image);
     }
 
 }
