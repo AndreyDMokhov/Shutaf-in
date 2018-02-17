@@ -98,7 +98,7 @@ public class UserMatchServiceImpl implements UserMatchService {
         userExamKeyRepository.save(new UserExamKey(userId, examKeyRes.get(0), examKeyRes.get(1), true));
 
         for (String str : examKeyRes) {
-            if (varietyExamKeyRepository.findByUserExamKey(str) == null) {
+            if (varietyExamKeyRepository.getFirstByUserExamKey(str) == null) {
                 varietyExamKeyRepository.save(new VarietyExamKey(str));
             }
         }

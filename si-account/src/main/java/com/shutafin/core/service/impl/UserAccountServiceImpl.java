@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @Slf4j
@@ -86,6 +89,15 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public UserImage findUserAccountProfileImage(User user) {
         return userAccountRepository.findByUser(user).getUserImage();
+    }
+
+    @Override
+    public List<UserImage> findUsersAccountsProfileImages(List<User> users) {
+        return userAccountRepository
+                .findAllByUserIn(users)
+                .stream()
+                .map(UserAccount::getUserImage)
+                .collect(Collectors.toList());
     }
 
     @Override
