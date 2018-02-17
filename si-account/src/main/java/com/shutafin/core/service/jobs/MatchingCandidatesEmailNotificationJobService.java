@@ -13,6 +13,8 @@ import com.shutafin.repository.account.UserAccountRepository;
 import com.shutafin.repository.account.UserRepository;
 import com.shutafin.sender.email.EmailNotificationSenderControllerSender;
 import com.shutafin.sender.matching.UserMatchControllerSender;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 @Component
+@Slf4j
+@Profile("!dev")
 public class MatchingCandidatesEmailNotificationJobService {
 
     private static final Integer MAX_COUNT_MATCHING_USERS = 3;
@@ -47,12 +51,20 @@ public class MatchingCandidatesEmailNotificationJobService {
         this.userImageService = userImageService;
     }
 
-    //    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(fixedDelay = 720000)
     @Transactional
     public void sendEmailNotification() {
-        List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(AccountStatus.COMPLETED_REQUIRED_MATCHING, AccountType.REGULAR);
+        List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(
+                                                                                            AccountStatus.COMPLETED_REQUIRED_MATCHING,
+                                                                                            AccountType.REGULAR);
         for (UserAccount userAccount : userAccounts) {
             List<Long> matchingUsers = userMatchControllerSender.getMatchingUsers(userAccount.getUser().getId());
+            log.info("Found {} users matching with user ID {} ({} {})",
+                    matchingUsers.size(),
+                    userAccount.getUser().getId(),
+                    userAccount.getUser().getFirstName(),
+                    userAccount.getUser().getLastName());
+
             if (!matchingUsers.isEmpty()) {
                 sendEmail(userAccount, matchingUsers);
             }
@@ -67,6 +79,7 @@ public class MatchingCandidatesEmailNotificationJobService {
             EmailUserImageSource emailUserImageSource = new EmailUserImageSource(matchingUser, user.getFirstName(), user.getLastName(), getUserImage(user));
             emailUserImageSources.add(emailUserImageSource);
         }
+        log.info("Sending matching users offer to {}", userAccount.getUser().getEmail());
         emailNotificationSenderControllerSender.sendEmail(getEmailNotificationWeb(userAccount, emailUserImageSources));
     }
 
