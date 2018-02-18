@@ -29,10 +29,7 @@ public class UserMatchingScoreController {
 
     @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<Long, Integer> getUserMatchingScores(@PathVariable("userId") Long userId) {
-        long startTime = System.currentTimeMillis();
-        Map<Long, Integer> res = userMatchingScoreService.getUserMatchingScores(userId);
-        log.info("==========time:" + (System.currentTimeMillis() - startTime) + "===========");
-        return res;
+        return userMatchingScoreService.getUserMatchingScores(userId);
     }
 
     @PostMapping(value = "/search/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})

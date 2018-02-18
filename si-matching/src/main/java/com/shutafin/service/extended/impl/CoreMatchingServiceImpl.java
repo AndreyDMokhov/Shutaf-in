@@ -76,7 +76,6 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
         UserMatchingScore matchingScore = userMatchingScoreRepository.findByUserOriginIdAndUserToMatchId(userOriginId, userToMatchId);
         if (matchingScore == null) {
             matchingScore = new UserMatchingScore(userOriginId, userToMatchId, resultScore.intValue());
-//            userMatchingScoreRepository.save(matchingScore);
         } else {
             matchingScore.setScore(resultScore.intValue());
         }

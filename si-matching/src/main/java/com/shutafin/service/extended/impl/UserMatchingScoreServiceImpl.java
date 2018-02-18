@@ -78,14 +78,12 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
         Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> usersQuestionExtendedAnswers = userQuestionExtendedAnswerService.getUserQuestionExtendedAnswersByUserIds(usersToMatch);
         for (Long userToMatch : usersToMatch) {
             Double maxPossibleScoreToMatch = maxUserMatchingScoresMap.get(userToMatch);
-//            Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userToMatch);
             Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers = usersQuestionExtendedAnswers.get(userToMatch);
 
             UserMatchingScore score = getMatchingScore(userOriginId, userToMatch, maxPossibleScoreOrigin, userOriginAnswers, maxPossibleScoreToMatch, userToMatchAnswers);
             userMatchingScoresValues.put(userToMatch, score.getScore());
             userMatchingScores.put(userToMatch, score);
         }
-//        userMatchingScoreRepository.save(userMatchingScores.values());
         asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
         return userMatchingScoresValues;
     }
