@@ -35,6 +35,7 @@ public class SenderDealUserAddingComponent implements BaseEmailDealInterface {
             ConfirmationDealUserAdding confirmation =
                     confirmationDealUserAddingService.get(
                             emailNotificationDealWeb.getDealId(),
+                            emailNotificationDealWeb.getUserOrigin().getUserId(),
                             emailNotificationDealWeb.getUserToChange().getUserId(),
                             groupUUID);
             confirmationDealUserAddingService.save(confirmation);

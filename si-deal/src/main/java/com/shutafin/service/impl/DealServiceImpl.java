@@ -7,10 +7,12 @@ import com.shutafin.model.entities.DealUser;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.*;
 import com.shutafin.sender.account.UserAccountControllerSender;
+import com.shutafin.sender.matching.UserMatchControllerSender;
 import com.shutafin.service.DealPanelService;
 import com.shutafin.service.DealService;
 import com.shutafin.service.DealSnapshotService;
@@ -56,13 +58,15 @@ public class DealServiceImpl implements DealService {
     @Autowired
     private UserAccountControllerSender userAccountControllerSender;
 
+    @Autowired
+    private UserMatchControllerSender userMatchControllerSender;
+
     @Override
     public InternalDealWeb initiateDeal(InternalDealWeb dealWeb) {
         Deal deal = new Deal();
         deal.setDealStatus(DealStatus.INITIATED);
         deal.setTitle(dealWeb.getTitle() == null ? DEFAULT_DEAL_TITLE : dealWeb.getTitle());
         deal.setModifiedByUser(dealWeb.getOriginUserId());
-        dealWeb.getUsers().remove(dealWeb.getOriginUserId());
         dealRepository.save(deal);
 
         dealWeb.getUsers().remove(dealWeb.getOriginUserId());
@@ -192,12 +196,36 @@ public class DealServiceImpl implements DealService {
     @Override
     public void confirmDealUser(Long dealId, Long userId) {
         Deal deal = checkDealPermissions(dealId, userId, !NEED_FULL_ACCESS);
-        DealUser dealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
-        dealUser.setDealUserStatus(DealUserStatus.ACTIVE);
-        dealUser.setDealUserPermissionType(DealUserPermissionType.CREATE);
-        if (deal.getDealStatus() == DealStatus.INITIATED) {
-            deal.setDealStatus(DealStatus.ACTIVE);
+        Long userOriginId = changeUserOriginStatus(deal);
+        try {
+            DealUser dealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
+            dealUser.setDealUserStatus(DealUserStatus.ACTIVE);
+            dealUser.setDealUserPermissionType(DealUserPermissionType.CREATE);
+            if (deal.getDealStatus() == DealStatus.INITIATED) {
+                deal.setDealStatus(DealStatus.ACTIVE);
+            }
+        } catch (Exception e) {
+            rollbackUserOriginStatus(userOriginId);
         }
+    }
+
+    private Long changeUserOriginStatus(Deal deal) {
+        if (deal.getDealStatus() == DealStatus.INITIATED) {
+            setUserAccountMatchingStatus(deal.getModifiedByUser(), AccountStatus.DEAL, false, false);
+            return deal.getModifiedByUser();
+        }
+        return 0L;
+    }
+
+    private void rollbackUserOriginStatus(Long userOriginId) {
+        if (userOriginId != 0L) {
+            setUserAccountMatchingStatus(userOriginId, AccountStatus.COMPLETED_REQUIRED_MATCHING, true, true);
+        }
+    }
+
+    private void setUserAccountMatchingStatus(Long userId, AccountStatus accountStatus, Boolean enforce, Boolean isMatchingEnabled) {
+        userAccountControllerSender.updateUserAccountStatus(userId, accountStatus, enforce);
+        userMatchControllerSender.configure(userId, isMatchingEnabled);
     }
 
     @Override
@@ -248,6 +276,16 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void addDealUser(InternalDealUserWeb internalDealUserWeb) {
+        addDealUserWithStatusAndType(internalDealUserWeb, DealUserStatus.PENDING, DealUserPermissionType.READ_ONLY);
+    }
+
+    @Override
+    public void confirmAddDealUser(InternalDealUserWeb internalDealUserWeb) {
+        addDealUserWithStatusAndType(internalDealUserWeb, DealUserStatus.ACTIVE, DealUserPermissionType.CREATE);
+    }
+
+    private void addDealUserWithStatusAndType(InternalDealUserWeb internalDealUserWeb, DealUserStatus dealUserStatus,
+                                              DealUserPermissionType dealUserPermissionType) {
         Deal deal = checkDealPermissions(internalDealUserWeb.getDealId(),
                 internalDealUserWeb.getUserOriginId(), NEED_FULL_ACCESS);
         Long userToAddId = internalDealUserWeb.getUserToChangeId();
@@ -255,7 +293,13 @@ public class DealServiceImpl implements DealService {
             log.warn("User {} has already active deal", userToAddId);
             throw new SystemException(String.format("User %d has already active deal", userToAddId));
         }
-        DealUser dealUser = new DealUser(userToAddId, deal, DealUserStatus.PENDING, DealUserPermissionType.READ_ONLY);
+        DealUser dealUser = dealUserRepository.findByDealIdAndUserId(deal.getId(), userToAddId);
+        if (dealUser == null) {
+            dealUser = new DealUser(userToAddId, deal, dealUserStatus, dealUserPermissionType);
+        } else {
+            dealUser.setDealUserStatus(dealUserStatus);
+            dealUser.setDealUserPermissionType(dealUserPermissionType);
+        }
         dealUserRepository.save(dealUser);
     }
 

@@ -21,9 +21,10 @@ public class ConfirmationDealUserAddingServiceImpl implements ConfirmationDealUs
     }
 
     @Override
-    public ConfirmationDealUserAdding get(Long dealId, Long userIdToAdd, String groupUUID) {
+    public ConfirmationDealUserAdding get(Long dealId, Long userId, Long userIdToAdd, String groupUUID) {
         return ConfirmationDealUserAdding.builder()
                 .dealId(dealId)
+                .userId(userId)
                 .userIdToAdd(userIdToAdd)
                 .groupUUID(groupUUID)
                 .confirmationUUID(UUID.randomUUID().toString())

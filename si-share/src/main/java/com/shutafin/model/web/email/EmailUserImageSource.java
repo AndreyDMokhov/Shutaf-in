@@ -1,5 +1,6 @@
 package com.shutafin.model.web.email;
 
+import com.shutafin.annotations.annotations.LimitSize;
 import lombok.*;
 
 @AllArgsConstructor
@@ -12,5 +13,6 @@ public class EmailUserImageSource {
     private Long userId;
     private String firstName;
     private String lastName;
-    private byte[] imageSource;
+    @LimitSize
+    private String imageSource;
 }

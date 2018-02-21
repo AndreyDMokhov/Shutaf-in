@@ -34,6 +34,7 @@ public class ConfirmationResponseDealUserAddingComponent implements BaseConfirma
 
         return EmailDealUserAddingResponse.builder()
                 .dealId(confirmation.getDealId())
+                .userOriginId(confirmation.getUserId())
                 .userIdToAdd(confirmation.getUserIdToAdd())
                 .countUsersSend(countUsersSend)
                 .countUsersConfirmed(countUsersConfirmed)

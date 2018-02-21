@@ -21,9 +21,10 @@ public class ConfirmationDealCreationServiceImpl implements ConfirmationDealCrea
     }
 
     @Override
-    public ConfirmationDealCreation get(Long dealId) {
+    public ConfirmationDealCreation get(Long dealId, Long userId) {
         return ConfirmationDealCreation.builder()
                 .dealId(dealId)
+                .userId(userId)
                 .confirmationUUID(UUID.randomUUID().toString())
                 .isConfirmed(false)
                 .expiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION))

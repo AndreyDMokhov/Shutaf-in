@@ -10,6 +10,7 @@ import com.shutafin.model.exception.exceptions.validation.InputValidationExcepti
 import com.shutafin.model.web.account.*;
 import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.model.web.common.UserSearchResponse;
+import com.shutafin.model.web.email.EmailUserLanguage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Slf4j
 @RestController
@@ -185,6 +185,11 @@ public class UserAccountController {
     @GetMapping(value = "/info-search")
     public UserSearchResponse getUserSearchObject(@RequestParam("userId") Long userId) {
         return userInfoService.findUserSearchInfo(userId);
+    }
+
+    @PostMapping(value = "/info/emails/languages", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<EmailUserLanguage> getEmailUserLanguage(@RequestBody List<Long> userIds) {
+        return userInfoService.getEmailUserLanguage(userIds);
     }
 
     private void checkBindingResult(BindingResult result) {

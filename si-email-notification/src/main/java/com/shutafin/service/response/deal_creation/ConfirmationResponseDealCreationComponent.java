@@ -34,6 +34,7 @@ public class ConfirmationResponseDealCreationComponent implements BaseConfirmati
 
         return EmailDealCreationResponse.builder()
                 .dealId(confirmation.getDealId())
+                .userId(confirmation.getUserId())
                 .countUsersSend(countUsersSend)
                 .countUsersConfirmed(countUsersConfirmed)
                 .isConfirmed(countUsersSend - countUsersConfirmed == 0 ? true : false)

@@ -30,7 +30,7 @@ public class SenderDealCreationComponent implements BaseEmailDealInterface {
 
         for (EmailUserLanguage emailUserLanguage : emailNotificationDealWeb.getEmailUserLanguage()) {
             ConfirmationDealCreation confirmation =
-                    confirmationDealCreationService.get(emailNotificationDealWeb.getDealId());
+                    confirmationDealCreationService.get(emailNotificationDealWeb.getDealId(), emailUserLanguage.getUserId());
             confirmationDealCreationService.save(confirmation);
             EmailMessage emailMessage = emailTemplateService.getEmailMessageDeal(
                     emailNotificationDealWeb,

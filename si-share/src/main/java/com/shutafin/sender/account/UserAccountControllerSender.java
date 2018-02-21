@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutafin.model.web.account.*;
 import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.model.web.common.UserSearchResponse;
+import com.shutafin.model.web.email.EmailUserLanguage;
 import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import lombok.SneakyThrows;
@@ -156,4 +157,14 @@ public class UserAccountControllerSender {
         return restTemplate.getForEntity(url, AccountStatus.class).getBody();
     }
 
+    @SneakyThrows
+    public List<EmailUserLanguage> getEmailUserLanguage(List<Long> users) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/users/info/emails/languages");
+
+        String jsonBody = restTemplate.postForEntity(url, users, String.class).getBody();
+
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<EmailUserLanguage>>() {
+        });
+    }
 }

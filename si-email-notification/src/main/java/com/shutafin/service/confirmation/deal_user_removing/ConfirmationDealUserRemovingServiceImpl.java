@@ -21,9 +21,10 @@ public class ConfirmationDealUserRemovingServiceImpl implements ConfirmationDeal
     }
 
     @Override
-    public ConfirmationDealUserRemoving get(Long dealId, Long userIdToRemove, String groupUUID) {
+    public ConfirmationDealUserRemoving get(Long dealId, Long userId, Long userIdToRemove, String groupUUID) {
         return ConfirmationDealUserRemoving.builder()
                 .dealId(dealId)
+                .userId(userId)
                 .userIdToRemove(userIdToRemove)
                 .groupUUID(groupUUID)
                 .confirmationUUID(UUID.randomUUID().toString())

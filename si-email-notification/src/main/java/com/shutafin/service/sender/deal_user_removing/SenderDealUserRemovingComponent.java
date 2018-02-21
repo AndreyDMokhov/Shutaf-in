@@ -35,6 +35,7 @@ public class SenderDealUserRemovingComponent implements BaseEmailDealInterface {
             ConfirmationDealUserRemoving confirmation =
                     confirmationDealUserRemovingService.get(
                             emailNotificationDealWeb.getDealId(),
+                            emailNotificationDealWeb.getUserOrigin().getUserId(),
                             emailNotificationDealWeb.getUserToChange().getUserId(),
                             groupUUID);
             confirmationDealUserRemovingService.save(confirmation);

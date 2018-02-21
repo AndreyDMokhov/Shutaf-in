@@ -8,12 +8,19 @@ import com.shutafin.model.entities.UserInfo;
 import com.shutafin.model.web.account.AccountUserInfoRequest;
 import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
 import com.shutafin.model.web.common.UserSearchResponse;
-import com.shutafin.repository.account.*;
+import com.shutafin.model.web.email.EmailUserLanguage;
+import com.shutafin.repository.account.ImagePairRepository;
+import com.shutafin.repository.account.UserAccountRepository;
+import com.shutafin.repository.account.UserInfoRepository;
+import com.shutafin.repository.account.UserRepository;
 import com.shutafin.repository.locale.CityRepository;
 import com.shutafin.repository.locale.GenderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -39,7 +46,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         this.cityRepository = cityRepository;
         this.genderRepository = genderRepository;
         this.userAccountRepository = userAccountRepository;
-        this.imagePairRepository =imagePairRepository;
+        this.imagePairRepository = imagePairRepository;
     }
 
     @Override
@@ -159,5 +166,19 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserSearchResponse findUserSearchInfo(Long userId) {
         return userInfoRepository.getUserSearchResponseByUserId(userId);
+    }
+
+    @Override
+    public List<EmailUserLanguage> getEmailUserLanguage(List<Long> userIds) {
+        List<EmailUserLanguage> emailUserLanguageList = new ArrayList<>();
+        List<UserAccount> userAccounts = userAccountRepository.findAllByUserIn(userRepository.findAllByIdIn(userIds));
+        for (UserAccount userAccount : userAccounts) {
+            emailUserLanguageList.add(EmailUserLanguage.builder()
+                    .userId(userAccount.getUser().getId())
+                    .email(userAccount.getUser().getEmail())
+                    .languageCode(userAccount.getLanguage().getDescription())
+                    .build());
+        }
+        return emailUserLanguageList;
     }
 }
