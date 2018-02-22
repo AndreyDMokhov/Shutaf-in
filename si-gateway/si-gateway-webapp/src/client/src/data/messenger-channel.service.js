@@ -103,9 +103,13 @@ app.service('messengerChannelService', function (webSocketService) {
 
     /**
      *  Passes callback function for incoming messages to existing subscription due chatId
+     *  vm.subscriptionsCallbacks[chatData.id].$$state.pending - contains array of promises for callback functions
      */
     function registerSubscriptionCallback(callback, chatData) {
         if (chatData.isActiveUser) {
+            if(vm.subscriptionsCallbacks[chatData.id].$$state.pending){
+                vm.subscriptionsCallbacks[chatData.id].$$state.pending.length = 0;
+            }
             vm.subscriptionsCallbacks[chatData.id].then(null, null,
                 function (message) {
                     callback(message);
