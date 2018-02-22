@@ -25,6 +25,7 @@ class DummyUserApplication {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("com.shutafin");
         context.register(DummyUserApplication.class);
         context.getBean(DummyUsersRunner.class).run(COUNT_USERS, COUNT_THREADS);
+        context.close();
     }
 
     @Bean
