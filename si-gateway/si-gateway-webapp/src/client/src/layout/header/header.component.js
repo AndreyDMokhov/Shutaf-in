@@ -51,6 +51,11 @@ app.component('headerComponent', {
             }
 
 
+            function search(fullName) {
+                $state.go('userSearch', {'name': fullName});
+            }
+
+
             function setLanguageCode(languageId) {
                 languageService.updateUserLanguage(languageId);
                 $state.go('home', {}, {reload: true});
@@ -70,7 +75,7 @@ app.component('headerComponent', {
 
             vm.setLanguageCode = setLanguageCode;
             vm.getUserImage = getUserImage;
-
+            vm.search = search;
         }
     }
 );

@@ -57,15 +57,20 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     }
 
     @Override
-    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, AccountUserFilterRequest accountUserFilterRequest){
+    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
         Map<Long, Integer> userMatchingScores = getUserMatchingScores(userId);
-        if(userMatchingScores.isEmpty()){
+        if (userMatchingScores.isEmpty()) {
             return new ArrayList<>();
         }
         List<Long> usersList = new ArrayList<>(userMatchingScores.keySet());
         accountUserFilterRequest.setUserIds(usersList);
-        List<UserSearchResponse> userSearchResponses = userFilterControllerSender.saveUserFiltersAndGetUsers(userId,accountUserFilterRequest);
-        return userSearchResponses.stream().peek(r -> r.setScore(userMatchingScores.get(r.getUserId()))).collect(Collectors.toList());
+        List<UserSearchResponse> userSearchResponses = userFilterControllerSender.saveUserFiltersAndGetUsers(userId, accountUserFilterRequest);
+
+
+        return userSearchResponses
+                .stream()
+                .peek(r -> r.setScore(userMatchingScores.get(r.getUserId())))
+                .collect(Collectors.toList());
     }
 
     @Override

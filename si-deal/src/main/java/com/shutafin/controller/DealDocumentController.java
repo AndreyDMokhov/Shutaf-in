@@ -1,6 +1,7 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.entities.DealDocument;
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.deal.PermissionType;
 import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
 import com.shutafin.model.web.deal.DealTitleChangeWeb;
@@ -30,7 +31,7 @@ public class DealDocumentController {
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
             log.warn(result.toString());
-            throw new RuntimeException();
+            throw new InputValidationException(result);
         }
 
         DealDocument dealDocument = dealDocumentService.addDealDocument(dealUserDocumentWeb, PermissionType.DEAL);
