@@ -30,7 +30,7 @@ label.required:after {
 div[role="main"] {
   height: 82vh;
   overflow-y: scroll;
-  background-color: #f9fcf6;
+  background: transparent;
 }
 .margin-top {
   margin-top: 5vh;
