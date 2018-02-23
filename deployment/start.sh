@@ -1,4 +1,5 @@
 #! /bin/sh
+cd ..
 if [ -d "servers" ]
 then
 	echo "REMOVING 'servers'"

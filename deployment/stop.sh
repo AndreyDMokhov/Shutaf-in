@@ -1,5 +1,5 @@
 #! /bin/sh
-
+cd ..
 if [ -d "pids" ]
 then
         cd pids
