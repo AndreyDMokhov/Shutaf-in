@@ -31,6 +31,7 @@ div[role="main"] {
   height: 82vh;
   overflow-y: scroll;
   background: transparent;
+  background-size: 100% 100%;
 }
 .margin-top {
   margin-top: 5vh;
