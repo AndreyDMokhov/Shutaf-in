@@ -74,9 +74,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-		<configuration>
-			<finalName>si-deal</finalName>
-		</configuration>
+                <configuration>
+                    <finalName>si-deal</finalName>
+                </configuration>
             </plugin>
         </plugins>
     </build>
