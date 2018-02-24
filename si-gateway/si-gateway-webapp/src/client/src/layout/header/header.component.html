@@ -6,7 +6,7 @@
                         {{$root.brand}}
                     </a>
                     <a ng-show="vm.sessionService.isAuthenticated()"
-                       ui-sref="userProfile({id:vm.userProfile.userId})"
+                       ui-sref="myUserProfile({id:vm.userProfile.userId})"
                        uib-tooltip="{{'UserProfile.title' | translate}}"
                        tooltip-placement="bottom">
                         <span>

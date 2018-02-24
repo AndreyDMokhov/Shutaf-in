@@ -3,7 +3,7 @@
         <div class="col-md-12 toppad">
             <div class="card-custom">
                 <div class="card-header pointer">
-                    <span> {{vm.userProfile.firstName}}
+                    <span> ({{'UserProfile.current' | translate}}) {{vm.userProfile.firstName}}
                             {{vm.userProfile.lastName}}</span>
                     <span> <a class="fa fa-pencil"
                               ui-sref="settings.personal"
@@ -21,8 +21,14 @@
                             </user-profile-image>
                         </div>
                         <div class=" col-md-7 col-lg-7 " style="margin-left: 30px">
-                            <user-profile-info user-profile="vm.userProfile"></user-profile-info>
+                            <my-user-profile-info user-profile="vm.userProfile"></my-user-profile-info>
                         </div>
+                    </div>
+                    <div class="row">
+                        <my-selected-requared-questions-answers-component></my-selected-requared-questions-answers-component>
+                    </div>
+                    <div class="row">
+                        <my-selected-extended-questions-answers-component></my-selected-extended-questions-answers-component>
                     </div>
                 </div>
             </div>

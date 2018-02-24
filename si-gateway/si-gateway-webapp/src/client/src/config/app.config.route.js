@@ -47,6 +47,14 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
                         accessibleToAccountStatus: accountStatus.Statuses.COMPLETED_USER_INFO   //3
                 }
             })
+        .state('myUserProfile',
+            {
+                template: '<my-user-profile-component></my-user-profile-component>',
+                url: '/my-profile/{id:int}',
+                params: {
+                    accessibleToAccountStatus: accountStatus.Statuses.COMPLETED_USER_INFO   //3
+                }
+            })
 
         .state('login',
             {
