@@ -23,7 +23,9 @@ app.component("dealPresentationComponent", {
 
             dealPresentationModel.getDealInfo(deal.dealId).then(
                 function (success) {
+
                     vm.dealInfo = success.data.data;
+
                     vm.dealTabClicked = true;
                     vm.showLoading = false;
                 },
