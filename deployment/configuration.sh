@@ -11,3 +11,4 @@ debconf-set-selections <<< "mysql-server mysql-server/root_password password $ro
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $rootPassword"
 sudo apt-get -y install mysql-server
 sudo cp resources/my.cnf /etc/mysql/my.cnf
+sudo service mysql restart
