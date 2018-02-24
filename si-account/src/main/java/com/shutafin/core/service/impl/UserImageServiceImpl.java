@@ -28,6 +28,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+import static com.shutafin.image.Image.getImage;
+
 @Service
 @Transactional
 @Slf4j
@@ -137,20 +139,9 @@ public class UserImageServiceImpl implements UserImageService {
     }
 
     @Override
-    @SneakyThrows
     @Transactional
     public String getDefaultImageBase64() {
-        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_AVATAR);
-
-        if (resourceAsStream != null) {
-            byte[] imageDecoded = new byte[resourceAsStream.available()];
-            resourceAsStream.read(imageDecoded);
-            resourceAsStream.close();
-            return Base64.getEncoder().encodeToString(imageDecoded);
-        }
-
-        return null;
-
+        return getImage(this.getClass(), DEFAULT_AVATAR);
     }
 
     private void deleteLocalImage(UserImage userImage) {

@@ -38,7 +38,7 @@ class DummyUserApplication {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(COUNT_THREADS);
         executor.setMaxPoolSize(COUNT_THREADS);
-        executor.setQueueCapacity(COUNT_THREADS*2);
+        executor.setQueueCapacity(COUNT_THREADS * 2);
         executor.setThreadNamePrefix(THREAD_NAME_PREFIX);
         executor.initialize();
         return executor;
