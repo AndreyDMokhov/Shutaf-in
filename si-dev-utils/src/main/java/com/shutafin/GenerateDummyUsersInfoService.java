@@ -48,7 +48,7 @@ public class GenerateDummyUsersInfoService {
                 .email(getEmail(num))
                 .cityId(CITY_ID)
                 .genderId(GENDER_ID)
-                .dateOfBirth(new Date(1000L))
+                .dateOfBirth(new Date(0L))
                 .build();
     }
 

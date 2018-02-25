@@ -1,6 +1,6 @@
 package com.shutafin.model.web.account;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -34,7 +34,7 @@ public class AccountUserInfoRequest {
     @Min(value = 1)
     private Integer genderId;
 
-    @JsonDeserialize(using = CustomerDateAndTimeDeserialize.class)
+    @JsonFormat(locale = "en", shape = JsonFormat.Shape.STRING, pattern = "MMM dd, yyyy hh:mm:ss a")
     private Date dateOfBirth;
 
     @Length(max = 255)
