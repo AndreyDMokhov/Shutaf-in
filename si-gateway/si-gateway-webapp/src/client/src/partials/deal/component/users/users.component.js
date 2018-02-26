@@ -6,7 +6,7 @@ app.component('usersDealComponent', {
     controllerAs: 'vm',
     controller: function () {
         var vm = this;
-        var limitUsersForShow = 2;
+        var limitUsersForShow = 4;
         var lastElement=0;
         vm.partUsersInfo = [];
         vm.arrowUp = false;
@@ -28,7 +28,7 @@ app.component('usersDealComponent', {
         };
 
         vm.downArrow = function () {
-            debugger;
+
             if(lastElement === vm.usersInfo.length){
                 return;
             }
