@@ -13,7 +13,7 @@
                             <img class="logo-center" style="padding: 0" src="{{vm.getUserImage()}}" width="28" height="28">
                         </span>
                         &nbsp;
-                        {{$root.brand}}
+                        {{$root.brand | limitTo: 20}}
                     </a>
                     </li>
 
