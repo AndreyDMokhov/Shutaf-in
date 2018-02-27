@@ -1,7 +1,8 @@
 angular.module('app').directive('userAvatar', function ($uibModal,
                                                         userSearchModel,
                                                         $filter,
-                                                        notify) {
+                                                        notify,
+                                                        $sessionStorage) {
     return {
         restrict: "E",
         template: '<img ng-click="openModalImageSize()" ng-src={{image}} class="logo-center pointer" width="{{width}}" height="{{height}}">',
@@ -23,6 +24,12 @@ angular.module('app').directive('userAvatar', function ($uibModal,
                 if (!scope.userId) {
                     scope.image = DEFAULT_IMAGE_PATH;
                 }
+                else if ($sessionStorage.userProfile.userId == scope.userId && $sessionStorage.userProfile.userImage) {
+                    scope.image = BASE64_IMAGE_PATH + $sessionStorage.userProfile.userImage;
+                }
+                else if ($sessionStorage[scope.userId] && $sessionStorage[scope.userId].image) {
+                    scope.image = BASE64_IMAGE_PATH + $sessionStorage[scope.userId].image;
+                }
                 else {
                     userSearchModel.getCompressedUserImageById(scope.userId).then(
                         function (success) {
@@ -36,10 +43,7 @@ angular.module('app').directive('userAvatar', function ($uibModal,
                             }
                         },
                         function (error) {
-                            if (error === undefined || error === null) {
-                                notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                            }
-                            notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                            scope.image = DEFAULT_IMAGE_PATH;
                         }
                     );
                 }
