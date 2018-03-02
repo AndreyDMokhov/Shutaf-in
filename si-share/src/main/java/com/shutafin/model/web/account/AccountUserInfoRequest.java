@@ -1,10 +1,10 @@
 package com.shutafin.model.web.account;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Min;
 import java.util.Date;
@@ -34,7 +34,7 @@ public class AccountUserInfoRequest {
     @Min(value = 1)
     private Integer genderId;
 
-    @JsonFormat(locale = "en", shape = JsonFormat.Shape.STRING, pattern = "MMM dd, yyyy hh:mm:ss a")
+    @DateTimeFormat(style = "L-")
     private Date dateOfBirth;
 
     @Length(max = 255)

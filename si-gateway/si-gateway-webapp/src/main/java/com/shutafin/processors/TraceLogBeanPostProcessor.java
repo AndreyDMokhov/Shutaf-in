@@ -1,6 +1,7 @@
 package com.shutafin.processors;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -62,8 +63,9 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
         }
     }
 
+    @SneakyThrows
     private Object helperInvoke(Class beanClass, Object bean, Method method, Object... args) throws Throwable {
-        Gson gson = new Gson();
+        ObjectMapper objectMapper = new ObjectMapper();
         String methodName = method.getName();
         log.trace("\t\tCLASS NAME ----> {}", beanClass.getSimpleName());
         log.trace("\t\t\tMETHOD ENTRY ----> {}:{} ", method.getReturnType(), methodName);
@@ -73,7 +75,7 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
             if (parameters[i].getType() == HttpServletResponse.class) {
                 log.trace("\t\t\t\tPARAMETER #{}. {} : {} = {}", i + 1, parameters[i].getType().getTypeName(), parameters[i].getName(), args[i]);
             } else {
-                log.trace("\t\t\t\tPARAMETER #{}. {} : {} = {}", i + 1, parameters[i].getType().getTypeName(), parameters[i].getName(), gson.toJson(args[i]));
+                log.trace("\t\t\t\tPARAMETER #{}. {} : {} = {}", i + 1, parameters[i].getType().getTypeName(), parameters[i].getName(), objectMapper.writeValueAsString(args[i]));
             }
         }
 
@@ -81,7 +83,7 @@ public class TraceLogBeanPostProcessor implements BeanPostProcessor {
         if (method.getReturnType() == Void.TYPE) {
             log.trace("\t\t\tMETHOD EXIT ----> {}:{};  RETURNED ----> {}", method.getReturnType().getName(), methodName, "no data");
         } else {
-            log.trace("\t\t\tMETHOD EXIT ----> {}:{};  RETURNED ----> {}", method.getReturnType().getName(), methodName, gson.toJson(methodResult));
+            log.trace("\t\t\tMETHOD EXIT ----> {}:{};  RETURNED ----> {}", method.getReturnType().getName(), methodName, (methodResult));
         }
 
         return methodResult;

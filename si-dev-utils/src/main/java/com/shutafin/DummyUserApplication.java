@@ -17,8 +17,8 @@ import java.util.concurrent.Executor;
 @EnableAsync
 class DummyUserApplication {
 
-    private static final int COUNT_USERS = 1000;
-    private static final int COUNT_THREADS = 100;
+    private static final int COUNT_USERS = 10;
+    private static final int COUNT_THREADS = 10;
     private static final String THREAD_NAME_PREFIX = "DummyExecutor-";
 
     public static void main(String[] args) {
