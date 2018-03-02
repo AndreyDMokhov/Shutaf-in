@@ -1,6 +1,5 @@
 package com.shutafin;
 
-import com.google.gson.Gson;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,11 +14,11 @@ public class RestTemplateService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-        HttpEntity<String> entity;
+        HttpEntity entity;
         if (object == null) {
             entity = new HttpEntity<>(headers);
         } else {
-            entity = new HttpEntity<>(new Gson().toJson(object), headers);
+            entity = new HttpEntity<>(object, headers);
         }
         restTemplate.exchange(url, httpMethod, entity, Void.class);
     }
