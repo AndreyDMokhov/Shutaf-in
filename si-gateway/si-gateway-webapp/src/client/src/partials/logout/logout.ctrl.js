@@ -28,6 +28,10 @@ app.controller('logoutController', function (
         delete $sessionStorage.selectedExtendedAnswers;
         delete $sessionStorage.showExtendedQuestions;
         delete $sessionStorage.accountStatus;
+        angular.forEach($sessionStorage.userIdsInChat, function (userId) {
+           delete $sessionStorage[userId];
+        });
+        delete $sessionStorage.userIdsInChat;
         $rootScope.brand = 'Shutaf-In';
     }
 

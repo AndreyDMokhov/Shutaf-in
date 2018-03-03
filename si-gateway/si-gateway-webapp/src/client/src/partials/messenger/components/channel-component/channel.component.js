@@ -8,6 +8,7 @@ app.component('channelComponent', {
         var vm = this;
 
         vm.listOfChats = [];
+        vm.userIdsInChat = [];
 
         function activate() {
             messengerChannelService.registerListOfChatsObserver(updateListOfChats);
@@ -18,6 +19,7 @@ app.component('channelComponent', {
 
         function updateListOfChats(newChatData) {
             vm.listOfChats = messengerChannelService.listOfChats;
+            cacheMessengerUsersData();
             if (!newChatData) {
                 checkChatTitlesList();
             }
@@ -47,6 +49,41 @@ app.component('channelComponent', {
                 fullChatTitle = fullChatTitle + ', ' + elem.firstName + ' ' + elem.lastName;
             });
             chatData.chatTitle = chatData.chatTitle + fullChatTitle;
+        }
+
+        function cacheMessengerUsersData() {
+            vm.userIdsInChat = [];
+            angular.forEach(vm.listOfChats, function (chatItem) {
+                _findAndSaveUsersDataToStorage(chatItem.usersInChat);
+            });
+            _deleteRedundantDataInCache();
+            /**
+             * Update data in sessionStorage after deleting old user data
+             */
+            $sessionStorage.userIdsInChat = vm.userIdsInChat;
+        }
+
+        function _findAndSaveUsersDataToStorage(usersInChat) {
+            angular.forEach(usersInChat, function (chatUser) {
+                if (vm.userIdsInChat.indexOf(chatUser.userId) === -1) {
+                    vm.userIdsInChat.push(chatUser.userId);
+                    userSearchModel.getCompressedUserImageById(chatUser.userId).then(
+                        function (success) {
+                            $sessionStorage[chatUser.userId] = success.data.data;
+                        }
+                    );
+                }
+            });
+        }
+
+        function _deleteRedundantDataInCache() {
+            if ($sessionStorage.userIdsInChat && $sessionStorage.userIdsInChat.length > 0) {
+                angular.forEach($sessionStorage.userIdsInChat, function (userId) {
+                    if (vm.userIdsInChat.indexOf(userId) === -1) {
+                        delete $sessionStorage[userId];
+                    }
+                });
+            }
         }
 
         activate();
