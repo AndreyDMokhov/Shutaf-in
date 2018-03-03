@@ -82,7 +82,7 @@ app.component('channelComponent', {
                     if (vm.userIdsInChat.indexOf(userId) === -1) {
                         delete $sessionStorage[userId];
                     }
-                })
+                });
             }
         }
 
