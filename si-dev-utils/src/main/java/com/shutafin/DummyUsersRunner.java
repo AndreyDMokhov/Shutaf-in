@@ -11,10 +11,14 @@ public class DummyUsersRunner {
 
     private GenerateDummyUsersService generateDummyUsersService;
     private GenerateDummyQuestionsService generateDummyQuestionsService;
+    private GenerateDummyUsersInfoService generateDummyUsersInfoService;
 
-    public DummyUsersRunner(GenerateDummyUsersService generateDummyUsersService, GenerateDummyQuestionsService generateDummyQuestionsService) {
+    public DummyUsersRunner(GenerateDummyUsersService generateDummyUsersService,
+                            GenerateDummyQuestionsService generateDummyQuestionsService,
+                            GenerateDummyUsersInfoService generateDummyUsersInfoService) {
         this.generateDummyUsersService = generateDummyUsersService;
         this.generateDummyQuestionsService = generateDummyQuestionsService;
+        this.generateDummyUsersInfoService = generateDummyUsersInfoService;
     }
 
     public void run(int countUsers, int countThreads) {
@@ -24,6 +28,9 @@ public class DummyUsersRunner {
         int countUsersInThread = countUsers / newCountThreads;
 
         List<CompletableFuture<String>> futureList = addUsers(newCountThreads, countUsersInThread, countUsers);
+        waitForThreads(futureList);
+
+        futureList = addUsersInfo(newCountThreads, countUsersInThread, countUsers);
         waitForThreads(futureList);
 
         futureList = addQuestions(newCountThreads, countUsersInThread, countUsers);
@@ -40,6 +47,16 @@ public class DummyUsersRunner {
             int userFrom = i * countUsersInThread + 1;
             int userTo = (i == newCountThreads - 1) ? countUsers + 1 : userFrom + countUsersInThread;
             futureList.add(generateDummyUsersService.generateUsers(userFrom, userTo));
+        }
+        return futureList;
+    }
+
+    private List<CompletableFuture<String>> addUsersInfo(int newCountThreads, int countUsersInThread, int countUsers) {
+        List<CompletableFuture<String>> futureList = new ArrayList<>();
+        for (int i = 0; i < newCountThreads; i++) {
+            int userIdFrom = i * countUsersInThread + 1;
+            int userIdTo = (i == newCountThreads - 1) ? countUsers + 1 : userIdFrom + countUsersInThread;
+            futureList.add(generateDummyUsersInfoService.generateUsersInfo(userIdFrom, userIdTo));
         }
         return futureList;
     }

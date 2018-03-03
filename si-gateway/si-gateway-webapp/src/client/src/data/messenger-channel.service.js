@@ -107,7 +107,7 @@ app.service('messengerChannelService', function (webSocketService) {
      */
     function registerSubscriptionCallback(callback, chatData) {
         if (chatData.isActiveUser) {
-            if(vm.subscriptionsCallbacks[chatData.id].$$state.pending){
+            if(vm.subscriptionsCallbacks[chatData.id].$$state && vm.subscriptionsCallbacks[chatData.id].$$state.pending){
                 vm.subscriptionsCallbacks[chatData.id].$$state.pending.length = 0;
             }
             vm.subscriptionsCallbacks[chatData.id].then(null, null,

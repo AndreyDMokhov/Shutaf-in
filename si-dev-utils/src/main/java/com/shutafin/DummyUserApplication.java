@@ -17,14 +17,15 @@ import java.util.concurrent.Executor;
 @EnableAsync
 class DummyUserApplication {
 
-    private static final int COUNT_USERS = 1000;
-    private static final int COUNT_THREADS = 100;
+    private static final int COUNT_USERS = 10;
+    private static final int COUNT_THREADS = 10;
     private static final String THREAD_NAME_PREFIX = "DummyExecutor-";
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("com.shutafin");
         context.register(DummyUserApplication.class);
         context.getBean(DummyUsersRunner.class).run(COUNT_USERS, COUNT_THREADS);
+        context.close();
     }
 
     @Bean
@@ -37,7 +38,7 @@ class DummyUserApplication {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(COUNT_THREADS);
         executor.setMaxPoolSize(COUNT_THREADS);
-        executor.setQueueCapacity(COUNT_THREADS*2);
+        executor.setQueueCapacity(COUNT_THREADS * 2);
         executor.setThreadNamePrefix(THREAD_NAME_PREFIX);
         executor.initialize();
         return executor;

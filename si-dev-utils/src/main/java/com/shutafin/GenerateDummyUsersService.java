@@ -18,7 +18,7 @@ public class GenerateDummyUsersService {
     private static final String EMAIL_PREFIX = "tel";
     private static final String EMAIL_SUFFIX = "@ran";
 
-    private Random random = new Random();
+    private static Random random = new Random();
 
     private RestTemplateService restTemplateService;
 
@@ -36,27 +36,27 @@ public class GenerateDummyUsersService {
 
     private AccountRegistrationRequest getRegistrationRequestWeb(int n) {
         return AccountRegistrationRequest.builder()
-                .firstName(getName(COUNT_CHARACTER_NAME))
-                .lastName(getName(COUNT_CHARACTER_NAME))
+                .firstName(getName())
+                .lastName(getName())
                 .email(getEmail(n))
                 .password(PASSWORD)
                 .userLanguageId(USER_LANGUAGE_ID)
                 .build();
     }
 
-    private String getName(int countChars) {
-        StringBuilder name = new StringBuilder(countChars);
-        for (int i = 0; i < countChars; i++) {
+    public static String getName() {
+        StringBuilder name = new StringBuilder(COUNT_CHARACTER_NAME);
+        for (int i = 0; i < COUNT_CHARACTER_NAME; i++) {
             name.append(getChar());
         }
         return name.toString();
     }
 
-    private char getChar() {
+    private static char getChar() {
         return (char) (random.nextInt('z' - 'a' + 1) + 'a');
     }
 
-    private String getEmail(int number) {
+    public static String getEmail(int number) {
         return EMAIL_PREFIX + Integer.toString(number) + EMAIL_SUFFIX;
     }
 
