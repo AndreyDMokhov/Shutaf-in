@@ -25,10 +25,35 @@ app.component('questionComponent', {
         }
 
         this.newValue = function () {
+
+            if ( this.currentPage < questions.length ){
+                this.nextQuestion();
+            }
+
             checkIfNull();
             addToNumberOfAnswers(this.currentQuestion.questionId);
             if (numberOfAnswers.length === questions.length || flag) {
                 this.disableSubmit = false;
+            }
+            this.pageChanged();
+
+
+        };
+        this.previousPage = function () {
+            if ( this.currentPage > 1 ){
+                this.currentPage--;
+                this.pageChanged();
+            }
+
+        };
+        this.nextQuestion = function () {
+            this.currentPage++;
+        };
+
+        this.nextPage = function () {
+            if ( this.currentPage < questions.length ){
+                this.currentPage++;
+                this.pageChanged();
             }
 
         };

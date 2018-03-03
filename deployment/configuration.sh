@@ -7,8 +7,8 @@ read rootPassword
 echo "Repeat your password:"
 read rootPassword
 sudo apt-get -y install htop
-debconf-set-selections <<< "mysql-server mysql-server/root_password password $rootPassword"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $rootPassword"
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $rootPassword"
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $rootPassword"
 sudo apt-get -y install mysql-server
 sudo cp resources/my.cnf /etc/mysql/my.cnf
 sudo service mysql restart

@@ -56,6 +56,7 @@ app.component('userSettingsComponent', {
 
         function submitChanges() {
             vm.dataLoading = true;
+            vm.userProfile.dateOfBirth = new Date(vm.userProfile.dateOfBirth).getTime();
             userSettingsModel.saveDataPostRegistration(vm.userProfile).then(
                 function (success) {
                     vm.dataLoading = false;
