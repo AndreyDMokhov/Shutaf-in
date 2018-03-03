@@ -25,6 +25,27 @@ public class UserFilterControllerSender {
     private RestTemplate restTemplate;
 
     @SneakyThrows
+    public List<Long> saveUserFiltersAndGetUserIds(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/filters/users/id/%d", userId);
+        String jsonBody = restTemplate.postForEntity(url, accountUserFilterRequest, String.class).getBody();
+
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<Long>>() {
+        });
+    }
+
+    @SneakyThrows
+    public List<UserSearchResponse> getUsers(List<Long> usersId) {
+        String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
+                String.format("/filters/users");
+
+        String jsonBody = restTemplate.postForEntity(url, usersId, String.class).getBody();
+
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserSearchResponse>>() {
+        });
+    }
+
+    @SneakyThrows
     public List<UserSearchResponse> getFilteredUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/filter/%d", userId);

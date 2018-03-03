@@ -3,12 +3,15 @@ package com.shutafin.controller;
 
 
 import com.shutafin.core.service.UserFilterService;
+import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.common.AgeRangeWebDTO;
 import com.shutafin.model.web.common.FiltersWeb;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/filters")
+@Slf4j
 public class UserFilterController {
 
     private final UserFilterService userFilterService;
@@ -24,6 +28,24 @@ public class UserFilterController {
     @Autowired
     public UserFilterController(UserFilterService userFilterService) {
         this.userFilterService = userFilterService;
+    }
+
+    @PostMapping(value = "/users/id/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<Long> saveUserFiltersAndGetUserIds(@PathVariable("userId") Long userId,
+                                                   @RequestBody @Valid AccountUserFilterRequest accountUserFilterRequest,
+                                                   BindingResult result) {
+        log.debug("/filters/users/id/{userId}");
+        if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
+            throw new InputValidationException(result);
+        }
+        return userFilterService.filterMatchedUserIds(userId, accountUserFilterRequest);
+    }
+
+    @PostMapping(value = "/users", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<UserSearchResponse> getUsers(@RequestBody List<Long> usersId) {
+        return userFilterService.getUsers(usersId);
     }
 
     @PostMapping(value = "filter/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})

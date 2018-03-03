@@ -6,6 +6,7 @@ import com.shutafin.processors.TraceLogBeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 
 @Configuration
@@ -28,4 +29,7 @@ public class ApplicationContextConfiguration {
         return new TraceLogBeanPostProcessor();
     }
 
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
+    }
 }

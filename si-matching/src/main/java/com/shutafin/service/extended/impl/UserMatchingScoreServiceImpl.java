@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,8 +63,9 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     }
 
     @Override
-    public Map<Long, Integer> getUserMatchingScores(Long userOriginId) {
+    public Map<Long, Integer> getUserMatchingScores(Long userOriginId, Integer page, Integer results) {
         List<Long> usersToMatch = userMatchService.findMatchingUsers(userOriginId);
+        usersToMatch = usersToMatch.subList(page * results, Math.min(usersToMatch.size() - 1, page * results + results));
         Map<Long, Integer> userMatchingScoresValues = new HashMap<>();
         Map<Long, UserMatchingScore> userMatchingScores = new HashMap<>();
 
@@ -84,7 +82,8 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
             userMatchingScoresValues.put(userToMatch, score.getScore());
             userMatchingScores.put(userToMatch, score);
         }
-        asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
+        //Use next option if you want to save page users score
+//        asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
         return userMatchingScoresValues;
     }
 
@@ -98,15 +97,23 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     }
 
     @Override
-    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, AccountUserFilterRequest accountUserFilterRequest){
-        Map<Long, Integer> userMatchingScores = getUserMatchingScores(userId);
+    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, Integer page, Integer results, AccountUserFilterRequest accountUserFilterRequest){
+        Map<Long, Integer> userMatchingScores = getUserMatchingScores(userId, page, results);
         if(userMatchingScores.isEmpty()){
             return new ArrayList<>();
         }
         List<Long> usersList = new ArrayList<>(userMatchingScores.keySet());
         accountUserFilterRequest.setUserIds(usersList);
         List<UserSearchResponse> userSearchResponses = userFilterControllerSender.saveUserFiltersAndGetUsers(userId,accountUserFilterRequest);
-        return userSearchResponses.stream().peek(r -> r.setScore(userMatchingScores.get(r.getUserId()))).collect(Collectors.toList());
+
+        return getUserSearchResponse(userMatchingScores, userSearchResponses);
+    }
+
+    private List<UserSearchResponse> getUserSearchResponse(Map<Long, Integer> userMatchingScores, List<UserSearchResponse> userSearchResponses) {
+        List<UserSearchResponse> userSearchResponsesScore = userSearchResponses.stream().
+                peek(r -> r.setScore(userMatchingScores.get(r.getUserId()))).collect(Collectors.toList());
+        userSearchResponsesScore.sort(Comparator.comparingInt(UserSearchResponse::getScore).reversed());
+        return userSearchResponsesScore;
     }
 
     @Override

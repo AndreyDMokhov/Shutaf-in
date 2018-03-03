@@ -11,6 +11,8 @@ import java.util.List;
  * Created by evgeny on 10/3/2017.
  */
 public interface UserFilterService {
+    List<Long> filterMatchedUserIds(Long userId, AccountUserFilterRequest accountUserFilterRequest);
+    List<UserSearchResponse> getUsers(List<Long> usersId);
     List<UserSearchResponse> filterMatchedUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest);
     List<UserSearchResponse> saveUserFiltersAndGetUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest);
     void saveUserFilterCity(Long userId, List<Integer> cities);
