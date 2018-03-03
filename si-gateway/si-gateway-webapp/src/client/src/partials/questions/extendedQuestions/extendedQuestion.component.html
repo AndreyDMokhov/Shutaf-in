@@ -19,8 +19,9 @@
                 <label ng-repeat="item in $ctrl.questionImportance" class="radio-inline">
                     <input type="radio" name="optradio"
                            ng-model="$ctrl.variantsOfAnswersImportance"
-                           ng-value="item.id"
-                    >{{item.description}}</label>
+                           ng-value="item.id">
+                    {{item.description}}
+                </label>
             </div>
 
             <br>
@@ -35,6 +36,8 @@
         </div>
     </div>
 
-    <span class="glyphicon glyphicon-chevron-right arrow-next" aria-hidden="true" ng-click="$ctrl.nextPageButton()"></span>
+    <span class="glyphicon glyphicon-chevron-right arrow-next"
+          aria-hidden="true"
+          ng-click="$ctrl.nextPageButton()"></span>
 </div>
 

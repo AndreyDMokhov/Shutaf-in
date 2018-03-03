@@ -35,7 +35,7 @@ app.component('extendedQuestionComponent', {
             vm.variantsOfAnswersImportance = answers[indexArray].questionImportanceId === null ? 1 : answers[indexArray].questionImportanceId;
             vm.answersWithIDForCurrentPage = getArrayOfanswersWithIDForCurrentPage(fullQuestionObjectForCurrentPage.answers);
             vm.previousPage = vm.currentPage;
-        };
+        }
 
         function getValuesOfCheckBox(ifCheckBoxSelected, numberAnsw) {
             if (ifCheckBoxSelected) {

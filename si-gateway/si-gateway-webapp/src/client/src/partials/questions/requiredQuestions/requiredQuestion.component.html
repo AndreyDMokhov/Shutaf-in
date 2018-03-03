@@ -7,18 +7,22 @@
             <h2 style="text-align: center">{{$ctrl.currentQuestion.description}} </h2>
             <div class="radio" ng-repeat="answer in $ctrl.currentQuestion.answers">
                 <label>
-                    <input type="radio" name="answer.description"
+                    <input type="radio"
+                           name="answer.description"
                            ng-model="$ctrl.currentAnswer"
                            ng-value="answer.answerId"
                            value="answer.answerId"
-                           ng-change='$ctrl.newValue();'
-                    >
+                           ng-change='$ctrl.newValue();'>
                     {{answer.description}}
                 </label>
             </div>
             <br>
-            <ul uib-pagination class="question-pagination" direction-links="false" total-items="$ctrl.totalItems"
-                ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()"
+            <ul uib-pagination
+                class="question-pagination"
+                direction-links="false"
+                total-items="$ctrl.totalItems"
+                ng-model="$ctrl.currentPage"
+                ng-change="$ctrl.pageChanged()"
                 items-per-page="$ctrl.itemsPerPage"></ul>
             <button class="btn btn-success pull-right" ng-click="$ctrl.save()" ng-disabled="$ctrl.disableSubmit">
                 {{"Questions.button.save"|translate}}
