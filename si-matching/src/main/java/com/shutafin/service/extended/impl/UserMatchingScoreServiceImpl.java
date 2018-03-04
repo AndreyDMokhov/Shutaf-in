@@ -64,13 +64,14 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
 
     @Override
     public Map<Long, Integer> getUserMatchingScores(Long userOriginId, Integer page, Integer results) {
-        List<Long> usersToMatch = userMatchService.findMatchingUsers(userOriginId);
-        usersToMatch = usersToMatch.subList(page * results, Math.min(usersToMatch.size() - 1, page * results + results));
         Map<Long, Integer> userMatchingScoresValues = new HashMap<>();
         Map<Long, UserMatchingScore> userMatchingScores = new HashMap<>();
 
         Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.findByUserId(userOriginId).getScore().doubleValue();
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOriginId);
+        List<Long> usersToMatch = userMatchService.findMatchingUsers(userOriginId);
+        usersToMatch = userQuestionExtendedAnswerService.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
+        usersToMatch = usersToMatch.subList(page * results, Math.min(usersToMatch.size() - 1, page * results + results));
 
         Map<Long, Double> maxUserMatchingScoresMap = createMaxUserMatchingScoresMap(maxUserMatchingScoreRepository.findByUserIdIn(usersToMatch));
         Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> usersQuestionExtendedAnswers = userQuestionExtendedAnswerService.getUserQuestionExtendedAnswersByUserIds(usersToMatch);
@@ -83,7 +84,7 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
             userMatchingScores.put(userToMatch, score);
         }
         //Use next option if you want to save page users score
-//        asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
+        asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
         return userMatchingScoresValues;
     }
 

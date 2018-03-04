@@ -128,6 +128,11 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
         return selectedAnswers;
     }
 
+    @Override
+    public List<Long> getUsersToMatchSortedByUserAnswersWeightSum(List<Long> usersToMatch) {
+        return userQuestionExtendedAnswerRepository.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
+    }
+
     private List<UserQuestionExtendedAnswersWeb> getNotAnsweredQuestions(Map<QuestionExtended,
             List<UserQuestionExtendedAnswer>> allUserAnswers) {
         List<UserQuestionExtendedAnswersWeb> notAnsweredQuestions = new ArrayList<>();
