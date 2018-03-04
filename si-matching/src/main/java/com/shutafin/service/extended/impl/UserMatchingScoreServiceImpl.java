@@ -84,7 +84,7 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
             userMatchingScores.put(userToMatch, score);
         }
         //Use next option if you want to save page users score
-        asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
+//        asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
         return userMatchingScoresValues;
     }
 
