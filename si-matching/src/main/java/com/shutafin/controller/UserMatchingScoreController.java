@@ -40,11 +40,7 @@ public class UserMatchingScoreController {
                                                                   @NotNull(message = "INP.results.NotNull") @Min(value = 1, message = "INP.results.Min")
                                                                   @RequestParam(value = "results") Integer results
                                                     ) {
-        long startTime = System.currentTimeMillis();
-        Map<Long, Integer> res = userMatchingScoreService.getUserMatchingScores(userId, page, results);
-        log.info("==========time:" + (System.currentTimeMillis() - startTime) + "===========");
-        return res;
-        //return userMatchingScoreService.getUserMatchingScores(userId);
+        return userMatchingScoreService.getUserMatchingScores(userId, page, results);
     }
 
     @PostMapping(value = "/search/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
