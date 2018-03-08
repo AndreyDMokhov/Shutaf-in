@@ -7,7 +7,7 @@ app.component('usersDealComponent', {
     controller: function () {
         var vm = this;
         var limitUsersForShow = 4;
-        var lastElement=0;
+        var lastElement = 0;
         vm.partUsersInfo = [];
         vm.arrowUp = false;
         vm.arrowDown = false;
@@ -15,13 +15,13 @@ app.component('usersDealComponent', {
 
         vm.$onInit = function () {
             var i;
-            if(vm.usersInfo.length <= limitUsersForShow){
-              vm.partUsersInfo = vm.usersInfo;
+            if (vm.usersInfo.length <= limitUsersForShow) {
+                vm.partUsersInfo = vm.usersInfo;
             } else {
-                for ( i=0; i<limitUsersForShow; i++) {
+                for (i = 0; i < limitUsersForShow; i++) {
                     vm.partUsersInfo[i] = vm.usersInfo[i];
                 }
-                vm.arrows =true;
+                vm.arrows = true;
                 vm.arrowDown = true;
                 lastElement = i;
             }
@@ -29,19 +29,19 @@ app.component('usersDealComponent', {
 
         vm.downArrow = function () {
 
-            if(lastElement === vm.usersInfo.length){
+            if (lastElement === vm.usersInfo.length) {
                 return;
             }
             var i = lastElement;
-            var j=0;
+            var j = 0;
             lastElement = lastElement + limitUsersForShow;
             vm.partUsersInfo = [];
-            for(; i < lastElement && i < vm.usersInfo.length; i++){
+            for (; i < lastElement && i < vm.usersInfo.length; i++) {
                 vm.partUsersInfo[j++] = vm.usersInfo[i];
 
             }
 
-            if(i == vm.usersInfo.length  ){
+            if (i == vm.usersInfo.length) {
                 vm.arrowDown = false;
             }
             lastElement = i;
@@ -53,11 +53,13 @@ app.component('usersDealComponent', {
 
             var j = 0;
 
-            var previousElement = lastElement - limitUsersForShow-1;
+            var previousElement = lastElement - limitUsersForShow - 1;
 
-            if (previousElement<0) previousElement = 0;
+            if (previousElement < 0) {
+                previousElement = 0;
+            }
 
-            for (var i = previousElement; i < lastElement-1; i++){
+            for (var i = previousElement; i < lastElement - 1; i++) {
                 vm.partUsersInfo[j++] = vm.usersInfo[i];
             }
 
@@ -74,9 +76,7 @@ app.component('usersDealComponent', {
                 return 'data:image/jpeg;base64,' + img;
             }
         }
+
         vm.getUserImage = getUserImage;
     }
-
-
-
 });

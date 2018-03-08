@@ -1,23 +1,32 @@
-<div class="deal-users-component" xmlns="http://www.w3.org/1999/html">
-<div ng-if="vm.arrows">
-<div class="arrowUpDown" ng-class="{arrowUpEnable: vm.arrowUp, arrowUpDisable: !vm.arrowUp}" ng-click="vm.upArrow()">
-</div>
-</div>
+<div class="deal-users-component">
+    <div ng-if="vm.arrows">
+        <div class="arrowUpDown"
+             ng-class="{arrowUpEnable: vm.arrowUp, arrowUpDisable: !vm.arrowUp}"
+             ng-click="vm.upArrow()">
+        </div>
+    </div>
     <div ng-repeat="user in vm.partUsersInfo">
         <div>
+            <!--todo add href to user profile-->
             <a>
                 <img class="logo-image"
                      uib-popover-html=
                              "'
                               {{user.firstName}} &nbsp; {{user.lastName}}
                             '"
-                     popover-placement="left"  popover-trigger="'mouseenter'"
-                     src="{{vm.getUserImage(user.image)}}" width="60" height="60"/>
+                     popover-placement="left" popover-trigger="'mouseenter'"
+                     src="{{vm.getUserImage(user.image)}}"
+                     width="60"
+                     height="60"/>
             </a>
 
         </div>
     </div>
-    <div  ng-if="vm.arrows">
-        <div class="arrowUpDown" ng-class="{arrowDownEnable: vm.arrowDown, arrowDownDisable: !vm.arrowDown}" ng-click="vm.downArrow()" disabled="vm.arrowDown">
+    <div ng-if="vm.arrows">
+        <div class="arrowUpDown"
+             ng-class="{arrowDownEnable: vm.arrowDown, arrowDownDisable: !vm.arrowDown}"
+             ng-click="vm.downArrow()"
+             disabled="vm.arrowDown">
+        </div>
     </div>
 </div>
