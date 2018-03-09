@@ -58,20 +58,22 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
 
     @Override
     public Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> getUserQuestionExtendedAnswersByUserIds(List<Long> userIds) {
-        Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> res = new HashMap<>();
+        Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> usersAnswers = new HashMap<>();
 
         List<UserQuestionExtendedAnswer> userQuestionExtendedAnswers = userQuestionExtendedAnswerRepository.findAllByUserIdIn(userIds);
         for (UserQuestionExtendedAnswer userQuestionExtendedAnswer : userQuestionExtendedAnswers){
-            if (res.get(userQuestionExtendedAnswer.getUserId()) == null){
-                res.put(userQuestionExtendedAnswer.getUserId(), new HashMap<>());
+            if (usersAnswers.get(userQuestionExtendedAnswer.getUserId()) == null){
+                usersAnswers.put(userQuestionExtendedAnswer.getUserId(), new HashMap<>());
             }
-            if (res.get(userQuestionExtendedAnswer.getUserId()).get(userQuestionExtendedAnswer.getQuestion()) == null){
-                res.get(userQuestionExtendedAnswer.getUserId()).put(userQuestionExtendedAnswer.getQuestion(), new ArrayList<>());
+
+            if (usersAnswers.get(userQuestionExtendedAnswer.getUserId()).get(userQuestionExtendedAnswer.getQuestion()) == null){
+                usersAnswers.get(userQuestionExtendedAnswer.getUserId()).put(userQuestionExtendedAnswer.getQuestion(), new ArrayList<>());
             }
-            res.get(userQuestionExtendedAnswer.getUserId()).get(userQuestionExtendedAnswer.getQuestion()).add(userQuestionExtendedAnswer);
+
+            usersAnswers.get(userQuestionExtendedAnswer.getUserId()).get(userQuestionExtendedAnswer.getQuestion()).add(userQuestionExtendedAnswer);
         }
 
-        return res;
+        return usersAnswers;
     }
 
 
@@ -82,10 +84,9 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
         userMatchingScoreRepository.deleteAllByUserOriginIdOrUserToMatchId(userId, userId);
         Integer maxScore = 0;
         for (UserQuestionExtendedAnswersWeb questionExtendedAnswersWeb : userQuestionExtendedAnswersWebList) {
-            QuestionExtended question = questionExtendedRepository
-                    .findOne(questionExtendedAnswersWeb.getQuestionId());
-            QuestionImportance importance = questionImportanceRepository
-                    .findOne(questionExtendedAnswersWeb.getQuestionImportanceId());
+            QuestionExtended question = questionExtendedRepository.findOne(questionExtendedAnswersWeb.getQuestionId());
+
+            QuestionImportance importance = questionImportanceRepository.findOne(questionExtendedAnswersWeb.getQuestionImportanceId());
             UserQuestionExtendedAnswer userQuestionExtendedAnswer;
 
             AnswerExtended answer = null;
@@ -150,9 +151,6 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     }
 
     private void deleteUserQuestionAnswers(Long userId) {
-        for (UserQuestionExtendedAnswer userQuestionExtendedAnswer :
-                userQuestionExtendedAnswerRepository.findAllByUserId(userId)) {
-            userQuestionExtendedAnswerRepository.delete(userQuestionExtendedAnswer);
-        }
+        userQuestionExtendedAnswerRepository.delete(userQuestionExtendedAnswerRepository.findAllByUserId(userId));
     }
 }

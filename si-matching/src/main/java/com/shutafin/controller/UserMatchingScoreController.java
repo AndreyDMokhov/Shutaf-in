@@ -12,18 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
 
 @RestController
 @RequestMapping("/matching/extended")
-@Validated
 @Slf4j
 public class UserMatchingScoreController {
 
@@ -35,21 +32,17 @@ public class UserMatchingScoreController {
 
     @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<Long, Integer> getUserMatchingScores(@PathVariable("userId") Long userId,
-                                                                  @NotNull(message = "INP.page.NotNull") @Min(value = 1, message = "INP.page.Min")
-                                                                  @RequestParam(value = "page") Integer page,
-                                                                  @NotNull(message = "INP.results.NotNull") @Min(value = 1, message = "INP.results.Min")
-                                                                  @RequestParam(value = "results") Integer results
-                                                    ) {
+                                                    @RequestParam(value = "page") Integer page,
+                                                    @RequestParam(value = "results") Integer results
+    ) {
         return userMatchingScoreService.getUserMatchingScores(userId, page, results);
     }
 
     @PostMapping(value = "/search/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getMatchedUserSearchResponses(@PathVariable("userId") Long userId,
-                                                                  @NotNull(message = "INP.page.NotNull") @Min(value = 1, message = "INP.page.Min")
                                                                   @RequestParam(value = "page") Integer page,
-                                                                  @NotNull(message = "INP.results.NotNull") @Min(value = 1, message = "INP.results.Min")
-                                                                      @RequestParam(value = "results") Integer results,
-                                                                  @RequestBody AccountUserFilterRequest accountUserFilterRequest,
+                                                                  @RequestParam(value = "results") Integer results,
+                                                                  @RequestBody @Valid AccountUserFilterRequest accountUserFilterRequest,
                                                                   BindingResult result) {
         log.debug("/matching/extended/search/{userId}");
         if (result.hasErrors()) {
@@ -57,7 +50,7 @@ public class UserMatchingScoreController {
             log.warn(result.toString());
             throw new InputValidationException(result);
         }
-        return userMatchingScoreService.getMatchedUserSearchResponses(userId, page - 1, results, accountUserFilterRequest);
+        return userMatchingScoreService.getMatchedUserSearchResponses(userId, page, results, accountUserFilterRequest);
     }
 
     @PostMapping(value = "/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})

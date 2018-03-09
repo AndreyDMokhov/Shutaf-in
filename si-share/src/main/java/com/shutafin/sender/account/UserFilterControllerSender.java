@@ -24,6 +24,7 @@ public class UserFilterControllerSender {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Deprecated
     @SneakyThrows
     public List<Long> saveUserFiltersAndGetUserIds(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
@@ -35,9 +36,10 @@ public class UserFilterControllerSender {
     }
 
     @SneakyThrows
+    @Deprecated
     public List<UserSearchResponse> getUsers(List<Long> usersId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
-                String.format("/filters/users");
+                "/filters/users";
 
         String jsonBody = restTemplate.postForEntity(url, usersId, String.class).getBody();
 
@@ -65,24 +67,28 @@ public class UserFilterControllerSender {
         return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserSearchResponse>>() {});
     }
 
+    @Deprecated
     public void saveUserFilterCity(Long userId, List<Integer> cities) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/city/%d", userId);
         restTemplate.put(url, cities);
     }
 
+    @Deprecated
     public void saveUserFilterGender(Long userId, Integer genderId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/gender/%d", userId);
         restTemplate.put(url, genderId);
     }
 
+    @Deprecated
     public void saveUserFilterAgeRange(Long userId, AgeRangeWebDTO ageRangeWebDTO) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/age-range/%d", userId);
         restTemplate.put(url, ageRangeWebDTO);
     }
 
+    @Deprecated
     public FiltersWeb getUserFilters(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/get/%d", userId);
@@ -90,6 +96,7 @@ public class UserFilterControllerSender {
     }
 
     @SneakyThrows
+    @Deprecated
     public List<Integer> getCitiesForFilter(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/city/%d", userId);
@@ -98,12 +105,14 @@ public class UserFilterControllerSender {
         });
     }
 
+    @Deprecated
     public Integer getGenderForFilter(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/gender/%d", userId);
         return restTemplate.getForEntity(url, Integer.class).getBody();
     }
 
+    @Deprecated
     public AgeRangeWebDTO getAgeRangeForFilter(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/filters/age-range/%d", userId);

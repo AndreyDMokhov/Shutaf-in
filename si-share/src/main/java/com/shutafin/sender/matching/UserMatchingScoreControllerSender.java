@@ -38,7 +38,7 @@ public class UserMatchingScoreControllerSender {
     @SneakyThrows
     public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, Integer page, Integer results, AccountUserFilterRequest accountUserFilterRequest) {
         String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
-                String.format("/matching/extended/search/%d?page=%d&&results=%d", userId, page, results);
+                String.format("/matching/extended/search/%d?page=%d&results=%d", userId, page, results);
 
         String jsonBody = restTemplate.postForEntity(url, accountUserFilterRequest, String.class).getBody();
 

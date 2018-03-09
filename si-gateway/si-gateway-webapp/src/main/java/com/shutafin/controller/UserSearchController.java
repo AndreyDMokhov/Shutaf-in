@@ -10,12 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -23,7 +20,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/users")
-@Validated
 @Slf4j
 public class UserSearchController {
     @Autowired
@@ -34,10 +30,8 @@ public class UserSearchController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getMatchingUsers(@RequestParam(value = "name", required = false) String fullName,
-                                                     @NotNull(message = "INP.page.NotNull") @Min(value = 0, message = "INP.page.Min")
                                                      @RequestParam(value = "page") Integer page,
-                                                     @NotNull(message = "INP.results.NotNull") @Min(value = 1, message = "INP.results.Min")
-                                                         @RequestParam(value = "results") Integer results,
+                                                     @RequestParam(value = "results") Integer results,
                                                      @AuthenticatedUser Long authenticatedUserId) {
         return userMatchService.getMatchedUserSearchResponses(authenticatedUserId, fullName, page, results, null);
     }
@@ -49,10 +43,8 @@ public class UserSearchController {
 
     @RequestMapping(value = "/search/save/filters", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> saveUserFilters(@RequestParam(value = "name", required = false) String fullName,
-                                                    @NotNull(message = "INP.page.NotNull") @Min(value = 0, message = "INP.page.Min")
                                                     @RequestParam(value = "page") Integer page,
-                                                    @NotNull(message = "INP.results.NotNull") @Min(value = 1, message = "INP.results.Min")
-                                                        @RequestParam(value = "results") Integer results,
+                                                    @RequestParam(value = "results") Integer results,
                                                     @AuthenticatedUser Long authenticatedUserId,
                                                     @RequestBody @Valid FiltersWeb filtersWeb,
                                                     BindingResult result) {

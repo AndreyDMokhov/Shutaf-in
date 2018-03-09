@@ -30,6 +30,7 @@ public class UserFilterController {
         this.userFilterService = userFilterService;
     }
 
+    @Deprecated
     @PostMapping(value = "/users/id/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Long> saveUserFiltersAndGetUserIds(@PathVariable("userId") Long userId,
                                                    @RequestBody @Valid AccountUserFilterRequest accountUserFilterRequest,
@@ -43,6 +44,7 @@ public class UserFilterController {
         return userFilterService.filterMatchedUserIds(userId, accountUserFilterRequest);
     }
 
+    @Deprecated
     @PostMapping(value = "/users", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getUsers(@RequestBody List<Long> usersId) {
         return userFilterService.getUsers(usersId);
@@ -59,35 +61,44 @@ public class UserFilterController {
        return userFilterService.saveUserFiltersAndGetUsers(userId, accountUserFilterRequest);
     }
 
+    @Deprecated
     @PutMapping(value = "/city/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilterCity(@PathVariable("userId") Long userId, @RequestBody List<Integer> cities) {
         userFilterService.saveUserFilterCity(userId, cities);
     }
 
+    @Deprecated
     @PutMapping(value = "/gender/{userId}/{genderId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilterGender(@PathVariable("userId") Long userId, @PathVariable("genderId") Integer genderId) {
         userFilterService.saveUserFilterGender(userId, genderId);
     }
 
+    @Deprecated
     @PutMapping(value = "/age-range/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void saveUserFilterAgeRange(@PathVariable("userId") Long userId, @RequestBody @Valid AgeRangeWebDTO ageRangeWebDTO) {
         userFilterService.saveUserFilterAgeRange(userId, ageRangeWebDTO);
     }
 
+    @Deprecated
     @GetMapping(value = "/get/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public FiltersWeb getUserFilters(@PathVariable("userId") Long userId) {
         return userFilterService.getUserFilters(userId);
     }
 
+    @Deprecated
     @GetMapping(value = "/city/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Integer> getCitiesForFilter(@PathVariable("userId") Long userId) {
         return userFilterService.getCitiesForFilter(userId);
     }
+
+    @Deprecated
     @GetMapping(value = "/gender/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Integer getGenderForFilter(@PathVariable("userId") Long userId) {
         return userFilterService.getGenderForFilter(userId);
     }
 
+
+    @Deprecated
     @GetMapping(value = "/age-range/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AgeRangeWebDTO getAgeRangeForFilter(@PathVariable("userId") Long userId) {
         return userFilterService.getAgeRangeForFilter(userId);
