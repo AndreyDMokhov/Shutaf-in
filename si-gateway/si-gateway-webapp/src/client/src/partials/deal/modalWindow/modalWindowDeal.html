@@ -16,7 +16,11 @@
                    class="input-modal"
                    ng-model="vm.newTabName"
                    id="newTabName"
-                   name="newTabName">
+                   name="newTabName"
+                   ng-keyup="$event.keyCode == 13 &&
+                   vm.newTabName !== null &&
+                   vm.newTabName !== '' &&
+                   vm.ok()">
             <strong ng-if="vm.getFilenameExtension()">
                 {{vm.getFilenameExtension()}}
             </strong>
@@ -46,7 +50,11 @@
             <input autofocus
                    class="input-modal"
                    ng-model="vm.newTabName"
-                   name="newTabName">
+                   name="newTabName"
+                   ng-keyup="$event.keyCode == 13 &&
+                   vm.newTabName !== null &&
+                   vm.newTabName !== '' &&
+                   vm.ok()">
             <strong>
                 {{vm.getFilenameExtension()}}
             </strong>
@@ -70,10 +78,17 @@
             {{'Deal.deal.modalWindow.remove.content' | translate: vm.componentData}}
         </div>
         <div class="modal-footer ">
-            <button class="btn btn-primary" type="button" ng-click="vm.ok()">{{'Deal.deal.modalWindow.yes'|translate}}
+            <button
+                    class="btn btn-primary"
+                    type="button"
+                    ng-click="vm.ok()">
+                {{'Deal.deal.modalWindow.yes'|translate}}
             </button>
-            <button class="btn btn-warning" type="button" ng-click="vm.cancel()">{{'Deal.deal.modalWindow.no'|
-                translate}}
+            <button
+                    class="btn btn-warning"
+                    type="button"
+                    ng-click="vm.cancel()">
+                {{'Deal.deal.modalWindow.no'| translate}}
             </button>
         </div>
     </div>

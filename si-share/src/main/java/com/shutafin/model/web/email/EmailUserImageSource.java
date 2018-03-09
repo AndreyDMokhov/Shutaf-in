@@ -12,5 +12,5 @@ public class EmailUserImageSource {
     private Long userId;
     private String firstName;
     private String lastName;
-    private byte[] imageSource;
+    private String imageSource;
 }

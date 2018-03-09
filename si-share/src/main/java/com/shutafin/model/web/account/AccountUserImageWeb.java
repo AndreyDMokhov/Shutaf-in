@@ -1,5 +1,6 @@
 package com.shutafin.model.web.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.shutafin.annotations.annotations.LimitSize;
 import lombok.*;
 
@@ -8,6 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountUserImageWeb {
 
     private Long id;

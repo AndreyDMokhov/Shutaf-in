@@ -43,11 +43,11 @@ public class UserAccountController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/{userId}/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb updateUserAccountProfileImage(@PathVariable("userId") Long userId,
+    @PostMapping(value = "/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb updateUserAccountProfileImage(@RequestParam("userId") Long userId,
                                                              @RequestBody @Valid AccountUserImageWeb userImageWeb,
                                                              BindingResult result) {
-        log.debug("/users/{}/profile-image", userId);
+        log.debug("/users/profile-image", userId);
         checkBindingResult(result);
 
         UserImage image = userAccountService.updateProfileImage(userImageWeb, userService.findUserById(userId));
@@ -60,49 +60,86 @@ public class UserAccountController {
                 image.getUser().getId());
     }
 
-    @GetMapping(value = "/{userId}/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getUserAccountProfileImage(@PathVariable("userId") Long userId) {
-        log.debug("/{userId}/profile-image", userId);
+    @GetMapping(value = "/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserImageWeb getUserAccountProfileImage(@RequestParam("userId") Long userId) {
+        log.debug("/profile-image", userId);
         User user = userService.findUserById(userId);
         UserImage image = userAccountService.findUserAccountProfileImage(user);
-        return new AccountUserImageWeb(
-                image.getId(),
-                image.getImageStorage().getImageEncoded(),
-                image.getCreatedDate().getTime(),
-                image.getUser().getFirstName(),
-                image.getUser().getLastName(),
-                image.getUser().getId());
+        return AccountUserImageWeb
+                .builder()
+                .id(image.getId())
+                .image(image.getImageStorage().getImageEncoded())
+                .createdDate(image.getCreatedDate().getTime())
+                .firstName(image.getUser().getFirstName())
+                .lastName(image.getUser().getLastName())
+                .userId(image.getUser().getId())
+                .build();
     }
 
-    @DeleteMapping(value = "/{userId}/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public void deleteUserAccountProfileImage(@PathVariable("userId") Long userId) {
-        log.debug("/users/{}/image", userId);
+    @GetMapping(value = "/profile-images", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<AccountUserImageWeb> getUserAccountProfileImages(@RequestParam("userIds") List<Long> userIds) {
+        log.debug("/profile-images", userIds);
+        List<User> users = userService.findUsersByIds(userIds);
+
+
+        List<AccountUserImageWeb> userImages = new ArrayList<>();
+        for (User user : users) {
+            UserImage profileImage = userAccountService.findUserAccountProfileImage(user);
+            if (profileImage == null) {
+                userImages.add(AccountUserImageWeb
+                        .builder()
+                        .id(null)
+                        .image(null)
+                        .createdDate(null)
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .userId(user.getId())
+                        .build());
+            } else {
+                userImages.add(AccountUserImageWeb
+                        .builder()
+                        .id(profileImage.getId())
+                        .image(profileImage.getImageStorage().getImageEncoded())
+                        .createdDate(profileImage.getCreatedDate().getTime())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .userId(user.getId())
+                        .build());
+            }
+
+        }
+        return userImages;
+    }
+
+    @DeleteMapping(value = "/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void deleteUserAccountProfileImage(@RequestParam("userId") Long userId) {
+        log.debug("/users/image", userId);
         userAccountService.deleteUserAccountProfileImage(userService.findUserById(userId));
     }
 
 
-    @PutMapping(value = "/{userId}/language", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/language", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void updateUserLanguage(@RequestBody @Valid AccountUserLanguageWeb userLanguageWeb,
                                    BindingResult result,
-                                   @PathVariable("userId") Long userId) {
+                                   @RequestParam("userId") Long userId) {
         log.debug("/users/settings/language");
         checkBindingResult(result);
         userLanguageService.updateUserLanguage(userLanguageWeb, userService.findUserById(userId));
     }
 
-    @GetMapping(value = "/{userId}/language")
-    public LanguageWeb getUserLanguage(@PathVariable("userId") Long userId) {
+    @GetMapping(value = "/language")
+    public LanguageWeb getUserLanguage(@RequestParam("userId") Long userId) {
         log.debug("/users/settings/language");
         return userLanguageService.findUserLanguageWeb(userService.findUserById(userId));
     }
 
-    @GetMapping(value = "/{userId}/info", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserInfoResponseDTO getUserInfo(@PathVariable("userId") Long userId) {
+    @GetMapping(value = "/info", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserInfoResponseDTO getUserInfo(@RequestParam("userId") Long userId) {
         return userInfoService.getUserInfo(userService.findUserById(userId));
     }
 
-    @PutMapping(value = "/{userId}/info", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void updateUserInfo(@PathVariable("userId") Long userId,
+    @PutMapping(value = "/info", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void updateUserInfo(@RequestParam("userId") Long userId,
                                @RequestBody @Valid AccountUserInfoRequest userInfoRequest,
                                BindingResult result) {
 
@@ -110,8 +147,8 @@ public class UserAccountController {
         userInfoService.updateUserInfo(userInfoRequest, userService.findUserById(userId));
     }
 
-    @GetMapping(value = "/{userId}/info-base")
-    public AccountUserWeb getBaseInfo(@PathVariable("userId") Long userId) {
+    @GetMapping(value = "/info-base")
+    public AccountUserWeb getBaseInfo(@RequestParam("userId") Long userId) {
         return userService.getAccountUserWebById(userId);
     }
 
@@ -136,8 +173,8 @@ public class UserAccountController {
     }
 
 
-    @PostMapping(value = "/info-base")
-    public List<AccountUserWeb> getBaseInfos(@RequestBody List<Long> userIds) {
+    @GetMapping(value = "/info-bases")
+    public List<AccountUserWeb> getBaseInfos(@RequestParam("userIds") List<Long> userIds) {
         List<AccountUserWeb> accountUserWebs = new ArrayList<>();
         for (Long userId : userIds) {
             accountUserWebs.add(getBaseInfo(userId));
@@ -145,8 +182,8 @@ public class UserAccountController {
         return accountUserWebs;
     }
 
-    @GetMapping(value = "/info-search/{userId}")
-    public UserSearchResponse getUserSearchObject(@PathVariable("userId") Long userId) {
+    @GetMapping(value = "/info-search")
+    public UserSearchResponse getUserSearchObject(@RequestParam("userId") Long userId) {
         return userInfoService.findUserSearchInfo(userId);
     }
 

@@ -7,8 +7,10 @@ import com.shutafin.model.entities.DealUser;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
+import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.*;
+import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.service.DealPanelService;
 import com.shutafin.service.DealService;
 import com.shutafin.service.DealSnapshotService;
@@ -50,6 +52,9 @@ public class DealServiceImpl implements DealService {
 
     @Autowired
     private DealSnapshotService dealSnapshotService;
+
+    @Autowired
+    private UserAccountControllerSender userAccountControllerSender;
 
     @Override
     public InternalDealWeb initiateDeal(InternalDealWeb dealWeb) {
@@ -105,10 +110,13 @@ public class DealServiceImpl implements DealService {
         dealResponse.setTitle(deal.getTitle());
         dealResponse.setStatusId(deal.getDealStatus());
 
-        dealResponse.setUsers(dealUserRepository.findAllByDealIdAndDealUserStatus(dealId, DealUserStatus.ACTIVE)
+        List<Long> userIds = dealUserRepository.findAllByDealIdAndDealUserStatus(dealId, DealUserStatus.ACTIVE)
                 .stream()
                 .map(DealUser::getUserId)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        List<AccountUserImageWeb> userProfiles = userAccountControllerSender.getUserAccountProfileImages(userIds);
+
+        dealResponse.setUsers(userProfiles);
 
         List<DealPanel> dealPanels = dealPanelRepository.findAllByDealId(dealId);
         if (!dealPanels.isEmpty()) {

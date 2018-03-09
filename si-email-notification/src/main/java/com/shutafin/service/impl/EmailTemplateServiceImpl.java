@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
+import java.util.*;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -114,7 +111,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         Map<String, byte[]> imageSources = new TreeMap<>();
 
         for (EmailUserImageSource emailUserImageSource : emailNotificationWeb.getEmailUserImageSources()) {
-            imageSources.put(emailUserImageSource.getUserId().toString(), emailUserImageSource.getImageSource());
+            imageSources.put(emailUserImageSource.getUserId().toString(), Base64.getDecoder().decode(emailUserImageSource.getImageSource()));
             urlLink = urlLink.concat(getUserImageLink(emailUserImageSource, serverAddress, urlProfile));
         }
         urlLink += getSearchLink(serverAddress, urlSearch);
@@ -133,12 +130,12 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         Map<String, String> textReplace = new HashMap<>();
         EmailUserImageSource userOrigin = emailNotificationDealWeb.getUserOrigin();
         String userOriginUrl = getUserImageLink(userOrigin, serverAddress, urlProfile);
-        imageSources.put(userOrigin.getUserId().toString(), userOrigin.getImageSource());
+        imageSources.put(userOrigin.getUserId().toString(), Base64.getDecoder().decode(userOrigin.getImageSource()));
         textReplace.put("userOrigin", userOriginUrl);
         if (emailNotificationDealWeb.getUserToChange() != null){
             EmailUserImageSource userToChange = emailNotificationDealWeb.getUserToChange();
             String userToChangeUrl = getUserImageLink(userToChange, serverAddress, urlProfile);
-            imageSources.put(userToChange.getUserId().toString(), userToChange.getImageSource());
+            imageSources.put(userToChange.getUserId().toString(), Base64.getDecoder().decode(userToChange.getImageSource()));
             textReplace.put("userToChange", userToChangeUrl);
         }
         textReplace.put("dealTitle", emailNotificationDealWeb.getDealTitle());

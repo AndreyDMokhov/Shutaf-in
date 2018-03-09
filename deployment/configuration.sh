@@ -6,12 +6,9 @@ echo "Enter root password for MySQL DB:"
 read rootPassword
 echo "Repeat your password:"
 read rootPassword
-sudo apt-get -y install default-jre
-sudo apt-get -y install default-jdk
-sudo apt-get -y install git
-sudo apt-get -y install maven
 sudo apt-get -y install htop
-debconf-set-selections <<< "mysql-server mysql-server/root_password password $rootPassword"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $rootPassword"
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $rootPassword"
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $rootPassword"
 sudo apt-get -y install mysql-server
-sudo reboot
+sudo cp resources/my.cnf /etc/mysql/my.cnf
+sudo service mysql restart

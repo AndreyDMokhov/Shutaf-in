@@ -19,4 +19,5 @@ public interface UserAccountRepository extends BaseJpaRepository<UserAccount, Lo
 
     @Query("SELECT ucc.userImage.id FROM UserAccount ucc where ucc.user.id = :userId")
     Long findCompressedUserImageIdByUserId(@Param("userId") Long userId);
+    List<UserAccount> findAllByUserIn(List<User> users);
 }

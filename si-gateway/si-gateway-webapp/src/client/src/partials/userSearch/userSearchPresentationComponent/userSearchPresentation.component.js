@@ -29,7 +29,6 @@ app.component('userSearchPresentationComponent', {
             userSearchModel.userSearch(vm.fullName).then(
                 function (success) {
                     vm.userSearchList = success.data.data;
-                    saveUserImagesToStorage();
                 }, function (error) {
                     if (error === undefined || error === null) {
                         notify.set($filter('translate')('Error.SYS'), {type: 'error'});
@@ -46,18 +45,9 @@ app.component('userSearchPresentationComponent', {
                     $sessionStorage.filters.filterAgeRange = filters.filterAgeRange;
 
                     vm.userSearchList = success.data.data;
-                    saveUserImagesToStorage();
                 }, function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
-        }
-
-        function saveUserImagesToStorage() {
-            angular.forEach(vm.userSearchList, function (item) {
-                if(item.userImage && !$sessionStorage[item.userId]){
-                    $sessionStorage[item.userId] = item.userImage;
-                }
-            });
         }
 
         function showUserProfilePopup(userId) {

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -40,5 +42,10 @@ public class UserServiceImpl implements UserService {
                 user.getId(),
                 user.getLastName(),
                 user.getFirstName());
+    }
+
+    @Override
+    public List<User> findUsersByIds(List<Long> userIds) {
+        return userRepository.findAllByIdIn(userIds);
     }
 }
