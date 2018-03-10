@@ -28,24 +28,20 @@ public class GenerateDummyQuestionsService {
     @Async
     public CompletableFuture<String> generateQuestions(int userIdFrom, int userIdTo) {
         for (int i = userIdFrom; i < userIdTo; i++) {
-            updateUserAccountStatus(userIdFrom, userIdTo);
-            addQuestionsMain(userIdFrom, userIdTo);
-            addQuestionsExtended(userIdFrom, userIdTo);
+            updateUserAccountStatus(i);
+            addQuestionsMain(i);
+            addQuestionsExtended(i);
         }
         return CompletableFuture.completedFuture(null);
     }
 
-    private void updateUserAccountStatus(int userIdFrom, int userIdTo) {
-        for (int i = userIdFrom; i < userIdTo; i++) {
-            String url = URL_ACCOUNT_STATUS + "userId=" + i + "&status=" + AccountStatus.COMPLETED_REQUIRED_MATCHING.getCode();
-            restTemplateService.sendRequest(null, url, HttpMethod.GET);
-        }
+    private void updateUserAccountStatus(int userId) {
+        String url = URL_ACCOUNT_STATUS + "userId=" + userId + "&status=" + AccountStatus.COMPLETED_REQUIRED_MATCHING.getCode();
+        restTemplateService.sendRequest(null, url, HttpMethod.GET);
     }
 
-    private void addQuestionsMain(int userIdFrom, int userIdTo) {
-        for (int i = userIdFrom; i < userIdTo; i++) {
-            restTemplateService.sendRequest(getListUserQuestionAnswerDTO(), URL_MATCHING + i, HttpMethod.POST);
-        }
+    private void addQuestionsMain(int userId) {
+        restTemplateService.sendRequest(getListUserQuestionAnswerDTO(), URL_MATCHING + userId, HttpMethod.POST);
     }
 
     private List<UserQuestionAnswerDTO> getListUserQuestionAnswerDTO() {
@@ -59,10 +55,8 @@ public class GenerateDummyQuestionsService {
         return userQuestionAnswerDTOList;
     }
 
-    private void addQuestionsExtended(int userIdFrom, int userIdTo) {
-        for (int i = userIdFrom; i < userIdTo; i++) {
-            restTemplateService.sendRequest(getListUserQuestionExtendedAnswersWeb(), URL_MATCHING_EXTENDED + i, HttpMethod.POST);
-        }
+    private void addQuestionsExtended(int userId) {
+        restTemplateService.sendRequest(getListUserQuestionExtendedAnswersWeb(), URL_MATCHING_EXTENDED + userId, HttpMethod.POST);
     }
 
     private List<UserQuestionExtendedAnswersWeb> getListUserQuestionExtendedAnswersWeb() {
