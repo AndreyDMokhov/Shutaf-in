@@ -1,5 +1,5 @@
 <div ng-if="vm.currentType.pdf">
-    <ng-pdf template-url="/partials/deal/viewer.html"></ng-pdf>
+    <a href="{{vm.getPdfUrl()}}" target="_blank" class="btn btn-danger btn-lg" >OPEN PDF</a>
 </div>
 
 <div ng-if="vm.currentType.image">

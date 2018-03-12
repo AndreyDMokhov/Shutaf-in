@@ -65,9 +65,7 @@ gulp.task('babel', function () {
         '!./.tmp/bower_components/lodash/vendor/firebug-lite/src/firebug-lite-debug.js',
         '!./.tmp/bower_components/ng-dialog/**',
         '!./.tmp/bower_components/ngstorage/**',
-        '!./.tmp/bower_components/angular-pdf/**',
         '!./.tmp/bower_components/file-saver/**',
-        '!./.tmp/bower_components/pdfjs-dist/**',
         '!./.tmp/bower_components/angularjs-slider/**'
     ])
         .pipe(babel({

@@ -16,7 +16,8 @@ app.component('panelComponent', {
                           $sessionStorage,
                           notify,
                           $filter,
-                          documentTypes) {
+                          documentTypes,
+                          $sce) {
         var vm = this;
         vm.documentsShow = [];
         var componentType = 'file';
@@ -34,8 +35,8 @@ app.component('panelComponent', {
             return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
         }
 
-        vm.openDocument = function (docId) {
-            panelModel.getDocument(docId).then(
+        vm.openDocument = function (document) {
+            panelModel.getDocument(document.documentId).then(
                 function (success) {
                     var documentById = success.data.data;
                     modalInput(documentById);
@@ -210,6 +211,15 @@ app.component('panelComponent', {
             var blob = new Blob(byteArrays, {type: contentType});
             return blob;
         }
+
+        vm.getFileUrl = function (document) {
+            var blob = b64toBlob(document.fileData);
+            var currentBlob = new Blob([blob], {type: 'application/pdf'});
+            vm.pdfUrl = window.URL.createObjectURL(currentBlob);
+            vm.pdfUrl = $sce.trustAsResourceUrl(vm.pdfUrl);
+
+            return vm.pdfUrl;
+        };
     }
 
 });

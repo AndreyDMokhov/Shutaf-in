@@ -1,5 +1,5 @@
 app.component('dealLeaveComponent', {
-    templateUrl: "partials/deal/dealLeave/deal.leave.component.html",
+    templateUrl: "partials/deal/leave/deal.leave.component.html",
     bindings: {
         dealInfo: '<'
     },

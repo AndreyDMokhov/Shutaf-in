@@ -7,7 +7,7 @@ app.component('documentDealComponent', {
         resolve: '<'
     },
     controllerAs: 'vm',
-    controller: function (documentModel, $scope) {
+    controller: function (documentModel, $scope, $sce, $window) {
 
         var vm = this;
         vm.document = {};
@@ -63,9 +63,19 @@ app.component('documentDealComponent', {
             return blob;
         }
 
-        var blob = b64toBlob(vm.fullDocument.fileData);
-        var currentBlob = new Blob([blob], {type: 'application/pdf'});
-        $scope.pdfUrl = URL.createObjectURL(currentBlob);
+
+
+        vm.getPdfUrl = function () {
+            debugger;
+            var blob = b64toBlob(vm.fullDocument.fileData);
+            var currentBlob = new Blob([blob], {type: 'application/pdf'});
+            var pdfUrl = window.URL.createObjectURL(currentBlob);
+            pdfUrl = $sce.trustAsUrl(pdfUrl);
+            return pdfUrl;
+        };
+
+        // window.location.href(vm.pdfUrl);
+
 
     }
 });
