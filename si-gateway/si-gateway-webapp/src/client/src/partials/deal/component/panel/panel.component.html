@@ -39,14 +39,13 @@
                      ng-if="document.documentType === 2"
                      ng-click="vm.openDocument(document)"
                 >
-
                 <img class="document-icon" src="./images/iImage.png" alt="Image file"
                      ng-if="document.documentType === 3 "
                      ng-click="vm.downloadDocument(document)"
                 >
                 <img class="document-icon" src="./images/iImage.png" alt="Image file"
                      ng-if="document.documentType >= 4 && document.documentType <= 6"
-                     ng-click="vm.openDocument(document.documentId)"
+                     ng-click="vm.openDocument(document)"
                 >
 
                 <div style="float: right">

@@ -39,6 +39,10 @@ app.component('panelComponent', {
             panelModel.getDocument(document.documentId).then(
                 function (success) {
                     var documentById = success.data.data;
+                    if(documentById.documentTypeId == 2){
+                        openPDFonNewTab(documentById.fileData);
+                    }
+                    else
                     modalInput(documentById);
                 },
                 function (error) {
@@ -158,7 +162,6 @@ app.component('panelComponent', {
             });
         };
 
-
         function getDocumentTypeByFileExtension(filename) {
             var objectTypesExtensions = $sessionStorage.documentTypes;
             var extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length);
@@ -203,22 +206,18 @@ app.component('panelComponent', {
                 for (var i = 0; i < slice.length; i++) {
                     byteNumbers[i] = slice.charCodeAt(i);
                 }
-
                 var byteArray = new Uint8Array(byteNumbers);
-
                 byteArrays.push(byteArray);
             }
             var blob = new Blob(byteArrays, {type: contentType});
             return blob;
         }
 
-        vm.getFileUrl = function (document) {
-            var blob = b64toBlob(document.fileData);
-            var currentBlob = new Blob([blob], {type: 'application/pdf'});
-            vm.pdfUrl = window.URL.createObjectURL(currentBlob);
-            vm.pdfUrl = $sce.trustAsResourceUrl(vm.pdfUrl);
-
-            return vm.pdfUrl;
+        function openPDFonNewTab (base64) {
+            var currentApplicationMIME = 'application/pdf';
+            var blob = b64toBlob(base64, currentApplicationMIME);
+            var pdfUrl = window.URL.createObjectURL(blob);
+            window.open(pdfUrl);
         };
     }
 
