@@ -76,7 +76,7 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
         })
         .state('userSearch', {
             template: '<user-search-component></user-search-component>',
-            url: '/users/search?{name}',
+            url: '/users/search?{name}&{page}&{results}',
             params: {
                 accessibleToAccountStatus: accountStatus.Statuses.COMPLETED_REQUIRED_MATCHING   //4
             }

@@ -30,8 +30,8 @@ public class UserSearchController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<UserSearchResponse> getMatchingUsers(@RequestParam(value = "name", required = false) String fullName,
-                                                     @RequestParam(value = "page") Integer page,
-                                                     @RequestParam(value = "results") Integer results,
+                                                     @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                                     @RequestParam(value = "results", required = false, defaultValue = "10") Integer results,
                                                      @AuthenticatedUser Long authenticatedUserId) {
         return userMatchService.getMatchedUserSearchResponses(authenticatedUserId, fullName, page, results, null);
     }
