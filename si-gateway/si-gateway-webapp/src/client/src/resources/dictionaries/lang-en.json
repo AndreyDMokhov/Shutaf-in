@@ -61,6 +61,7 @@
   "Error.ANC":"Account not activated, please confirm your email",
   "Error.ERI":"Resend interval is 2 minutes",
   "Error.NAP":"No permissions to perform the action",
+  "Error.MDE":"Cannot initiate deal. One or more users are already in deal",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
