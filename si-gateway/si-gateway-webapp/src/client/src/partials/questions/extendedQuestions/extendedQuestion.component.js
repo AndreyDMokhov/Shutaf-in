@@ -35,7 +35,7 @@ app.component('extendedQuestionComponent', {
             vm.variantsOfAnswersImportance = answers[indexArray].questionImportanceId === null ? 1 : answers[indexArray].questionImportanceId;
             vm.answersWithIDForCurrentPage = getArrayOfanswersWithIDForCurrentPage(fullQuestionObjectForCurrentPage.answers);
             vm.previousPage = vm.currentPage;
-        };
+        }
 
         function getValuesOfCheckBox(ifCheckBoxSelected, numberAnsw) {
             if (ifCheckBoxSelected) {
@@ -124,9 +124,26 @@ app.component('extendedQuestionComponent', {
             }
         };
 
+        function previousPageButton () {
+            if ( this.currentPage > 1 ){
+                this.currentPage--;
+                this.pageChanged();
+            }
+
+        };
+        function nextPageButton () {
+            if ( this.currentPage < questions.length ){
+                this.currentPage++;
+                this.pageChanged();
+            }
+
+        };
+
         vm.pageChanged = pageChanged;
         vm.getValuesOfCheckBox = getValuesOfCheckBox;
         vm.save = save;
+        vm.previousPageButton = previousPageButton;
+        vm.nextPageButton = nextPageButton;
     }
 
 });

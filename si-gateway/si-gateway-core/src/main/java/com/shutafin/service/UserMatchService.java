@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface UserMatchService {
     List<Long> findMatchingUsers(Long userId);
-    List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, String fullName, FiltersWeb filtersWeb);
+    List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, String fullName, Integer page, Integer results, FiltersWeb filtersWeb);
     InitializationResponse saveQuestionsAnswers(Long userId, List<UserQuestionAnswerDTO> questionsAnswers);
     List<QuestionsListWithAnswersDTO> getUserQuestionsAnswers(Integer languageId);
     List getUserQuestionsSelectedAnswers(Long userId);

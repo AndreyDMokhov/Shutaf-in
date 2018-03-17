@@ -1,12 +1,14 @@
 package com.shutafin.service.extended.impl;
 
 
+import com.shutafin.model.entities.extended.AnswerSimilarity;
 import com.shutafin.model.entities.extended.QuestionExtended;
 import com.shutafin.model.entities.extended.UserMatchingScore;
 import com.shutafin.model.entities.extended.UserQuestionExtendedAnswer;
 import com.shutafin.repository.UserExamKeyRepository;
 import com.shutafin.repository.extended.MaxUserMatchingScoreRepository;
 import com.shutafin.repository.extended.UserMatchingScoreRepository;
+import com.shutafin.service.AnswerSimilarityCacheService;
 import com.shutafin.service.UserMatchService;
 import com.shutafin.service.extended.AnswerSimilarityService;
 import com.shutafin.service.extended.CoreMatchingService;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +27,7 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
 
     private static final Double BASIC_MATCHING_SCORE = 30.;
 
-    private AnswerSimilarityService answerSimilarityService;
+    private AnswerSimilarityCacheService answerSimilarityCacheService;
 
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
@@ -37,8 +40,8 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     private UserExamKeyRepository userExamKeyRepository;
 
     @Autowired
-    public CoreMatchingServiceImpl(AnswerSimilarityService answerSimilarityService, UserQuestionExtendedAnswerService userQuestionExtendedAnswerService, UserMatchService userMatchService, UserMatchingScoreRepository userMatchingScoreRepository, MaxUserMatchingScoreRepository maxUserMatchingScoreRepository, UserExamKeyRepository userExamKeyRepository) {
-        this.answerSimilarityService = answerSimilarityService;
+    public CoreMatchingServiceImpl(AnswerSimilarityCacheService answerSimilarityCacheService, UserQuestionExtendedAnswerService userQuestionExtendedAnswerService, UserMatchService userMatchService, UserMatchingScoreRepository userMatchingScoreRepository, MaxUserMatchingScoreRepository maxUserMatchingScoreRepository, UserExamKeyRepository userExamKeyRepository) {
+        this.answerSimilarityCacheService = answerSimilarityCacheService;
         this.userQuestionExtendedAnswerService = userQuestionExtendedAnswerService;
         this.userMatchService = userMatchService;
         this.userMatchingScoreRepository = userMatchingScoreRepository;
@@ -47,13 +50,17 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     }
 
     @Override
-    public UserMatchingScore evaluateUserMatchingScore(Long userOriginId, Long userToMatchId) {
+    public UserMatchingScore evaluateUserMatchingScore(Long userOriginId,
+                                                       Long userToMatchId,
+                                                       Double maxPossibleScoreOrigin,
+                                                       Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers,
+                                                       Double maxPossibleScoreToMatch,
+                                                       Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers) {
 
-        Double resultScore = calculateMatchingScore(userOriginId, userToMatchId);
+        Double resultScore = calculateMatchingScore(maxPossibleScoreOrigin, userOriginAnswers, maxPossibleScoreToMatch, userToMatchAnswers);
         UserMatchingScore matchingScore = userMatchingScoreRepository.findByUserOriginIdAndUserToMatchId(userOriginId, userToMatchId);
         if (matchingScore == null) {
             matchingScore = new UserMatchingScore(userOriginId, userToMatchId, resultScore.intValue());
-            userMatchingScoreRepository.save(matchingScore);
         } else {
             matchingScore.setScore(resultScore.intValue());
         }
@@ -61,21 +68,16 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
 
     }
 
-    private Double calculateMatchingScore(Long userOriginId, Long userToMatchId) {
+    private Double calculateMatchingScore(Double maxPossibleScoreOrigin,
+                                          Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers,
+                                          Double maxPossibleScoreToMatch,
+                                          Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers) {
 
-        if (!isUserHasAnswers(userOriginId) || !isUserHasAnswers(userToMatchId)) {
+        Boolean hasUserOriginAnswers = userOriginAnswers != null && !userOriginAnswers.isEmpty();
+        Boolean hasUserToMatchAnswers = userToMatchAnswers != null && !userToMatchAnswers.isEmpty();
+        if (!hasUserOriginAnswers || !hasUserToMatchAnswers) {
             return BASIC_MATCHING_SCORE;
         }
-
-        Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.findByUserId(userOriginId)
-                .getScore().doubleValue();
-        Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.findByUserId(userToMatchId)
-                .getScore().doubleValue();
-
-        Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers =
-                userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOriginId);
-        Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers =
-                userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userToMatchId);
 
         Double totalScore = 0.;
         Double crossScore = 0.;
@@ -108,12 +110,13 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
             return 0;
         }
 
+        Map<Integer, Map<Integer, Integer>> answerSimilarityCache = answerSimilarityCacheService.getAnswerSimilarityCache();
         Integer maxAnswerSimilarityScore = 0;
         Integer currentSimilarityScore;
-        for (UserQuestionExtendedAnswer answer: userOriginAnswers.get(question)) {
+        for (UserQuestionExtendedAnswer answer : userOriginAnswers.get(question)) {
             for (UserQuestionExtendedAnswer answerToMatch : userToMatchAnswers.get(question)) {
-                currentSimilarityScore = answerSimilarityService.getAnswerSimilarity(answer.getAnswer(),
-                        answerToMatch.getAnswer()).getSimilarityScore();
+                currentSimilarityScore = answerSimilarityCache.get(answer.getAnswer().getId()).get(answerToMatch.getAnswer().getId());
+
                 if (currentSimilarityScore > maxAnswerSimilarityScore) {
                     maxAnswerSimilarityScore = currentSimilarityScore;
                 }
@@ -126,17 +129,17 @@ public class CoreMatchingServiceImpl implements CoreMatchingService {
     @Override
     public void evaluateAllUserMatchingScores() {
         for (Long userOrigin : userExamKeyRepository.findAllUserIds()) {
-            evaluateUserMatchingScores(userOrigin);
+            Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.findByUserId(userOrigin).getScore().doubleValue();
+            Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOrigin);
+            evaluateUserMatchingScores(userOrigin, maxPossibleScoreOrigin, userOriginAnswers);
         }
     }
 
-    private void evaluateUserMatchingScores(Long userOriginId) {
+    private void evaluateUserMatchingScores(Long userOriginId, Double maxPossibleScoreOrigin, Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers) {
         for (Long userToMatch : userMatchService.findMatchingUsers(userOriginId)) {
-            evaluateUserMatchingScore(userOriginId, userToMatch);
+            Double maxPossibleScoreToMatch = maxUserMatchingScoreRepository.findByUserId(userToMatch).getScore().doubleValue();
+            Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userToMatchAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userToMatch);
+            evaluateUserMatchingScore(userOriginId, userToMatch, maxPossibleScoreOrigin, userOriginAnswers, maxPossibleScoreToMatch, userToMatchAnswers);
         }
-    }
-
-    private Boolean isUserHasAnswers(Long userId) {
-        return maxUserMatchingScoreRepository.findByUserId(userId) != null;
     }
 }

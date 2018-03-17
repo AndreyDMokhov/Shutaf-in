@@ -51,11 +51,11 @@ public class UserMatchServiceImpl implements UserMatchService {
     }
 
     @Override
-    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, String fullName, FiltersWeb filtersWeb) {
+    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, String fullName, Integer page, Integer results, FiltersWeb filtersWeb) {
         if (userId == null) {
             return new ArrayList<>();
         }
-        return userMatchingScoreControllerSender.getMatchedUserSearchResponses(userId, new AccountUserFilterRequest(null, fullName, filtersWeb));
+        return userMatchingScoreControllerSender.getMatchedUserSearchResponses(userId, page, results, new AccountUserFilterRequest(null, fullName, filtersWeb));
     }
 
     @Override

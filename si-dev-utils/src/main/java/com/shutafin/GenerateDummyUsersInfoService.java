@@ -20,7 +20,8 @@ import static com.shutafin.GenerateDummyUsersService.getName;
 public class GenerateDummyUsersInfoService {
 
     private static final String URL_UPDATE_USER_INFO = "http://localhost:8000/users/info";
-    private static final String URL_UPDATE_USER_IMAGE = "http://localhost:8000/users/profile-image?";
+    private static final String URL_UPDATE_USER_IMAGE = "http://localhost:8000/users/profile-image";
+    private static final String URL_UPDATE_ACCOUNT_STATUS = "http://localhost:8000/users/account-status";
     private static final Integer CITY_ID = 1;
     private static final Integer GENDER_ID = 1;
 
@@ -36,7 +37,9 @@ public class GenerateDummyUsersInfoService {
     public CompletableFuture<String> generateUsersInfo(int userIdFrom, int userIdTo) {
         for (int i = userIdFrom; i < userIdTo; i++) {
             restTemplateService.sendRequest(getAccountUserInfoRequest(i), URL_UPDATE_USER_INFO + "?userId=" + i, HttpMethod.PUT);
-            restTemplateService.sendRequest(getAccountUserImageWeb(), URL_UPDATE_USER_IMAGE + "userId=" + i, HttpMethod.POST);
+            restTemplateService.sendRequest(getAccountUserImageWeb(), URL_UPDATE_USER_IMAGE + "?userId=" + i, HttpMethod.POST);
+            restTemplateService.sendRequest(null, URL_UPDATE_ACCOUNT_STATUS + "?userId=" + i, HttpMethod.GET);
+
         }
         return CompletableFuture.completedFuture(null);
     }
