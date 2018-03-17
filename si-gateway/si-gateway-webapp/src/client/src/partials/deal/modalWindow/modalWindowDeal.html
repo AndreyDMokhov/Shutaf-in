@@ -5,25 +5,20 @@
             <h3 class="modal-title">{{'Deal.deal.modalWindow.creation.header' | translate: vm.componentData}} </h3>
         </div>
         <div class="modal-body-original" id="modal-body">
-            <div>
-                <label for="newTabName">
-                    {{'Deal.deal.modalWindow.creation.content' | translate: vm.componentData}} :
-                </label>
-                <div class="crop modal-window"> {{vm.resolve.type.filename}}</div>
-            </div>
+            <label for="newTabName">
+                {{'Deal.deal.modalWindow.creation.content' | translate: vm.componentData}} :
+            </label>
             <br>
             <input autofocus
-                   class="input-modal"
+                   class="form-control"
                    ng-model="vm.newTabName"
                    id="newTabName"
                    name="newTabName"
+                   placeholder="{{vm.resolve.type.filename}}"
                    ng-keyup="$event.keyCode == 13 &&
                    vm.newTabName !== null &&
                    vm.newTabName !== '' &&
                    vm.ok()">
-            <strong ng-if="vm.getFilenameExtension()">
-                {{vm.getFilenameExtension()}}
-            </strong>
         </div>
         <div class="modal-footer ">
             <button class="btn btn-primary" type="button" ng-click="vm.ok()">
@@ -41,23 +36,19 @@
             <h3 class="modal-title">{{'Deal.deal.modalWindow.rename.header' | translate: vm.componentData}}</h3>
         </div>
         <div class="modal-body-original">
-            <div>
-                <label for="newTabName">
-                    {{'Deal.deal.modalWindow.rename.content' | translate: vm.componentData}}
-                </label>
-                {{vm.resolve.type.filename}}
-            </div>
+            <label for="newTabName">
+                {{'Deal.deal.modalWindow.rename.content' | translate: vm.componentData}} :
+            </label>
+            <br>
             <input autofocus
-                   class="input-modal"
+                   class="form-control"
                    ng-model="vm.newTabName"
                    name="newTabName"
+                   placeholder="{{vm.resolve.type.filename}}"
                    ng-keyup="$event.keyCode == 13 &&
                    vm.newTabName !== null &&
                    vm.newTabName !== '' &&
                    vm.ok()">
-            <strong>
-                {{vm.getFilenameExtension()}}
-            </strong>
         </div>
         <div class="modal-footer ">
             <button class="btn btn-primary" type="button" ng-click="vm.ok()">
