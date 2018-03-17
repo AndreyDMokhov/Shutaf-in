@@ -67,11 +67,13 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
         Map<Long, Integer> userMatchingScoresValues = new HashMap<>();
         Map<Long, UserMatchingScore> userMatchingScores = new HashMap<>();
 
-        Double maxPossibleScoreOrigin = maxUserMatchingScoreRepository.findByUserId(userOriginId).getScore().doubleValue();
+        MaxUserMatchingScore byUserId = maxUserMatchingScoreRepository.findByUserId(userOriginId);
+        Double maxPossibleScoreOrigin = byUserId == null ? null : byUserId.getScore().doubleValue();
+
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOriginId);
         List<Long> usersToMatch = userMatchService.findMatchingUsers(userOriginId);
         usersToMatch = userQuestionExtendedAnswerService.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
-        usersToMatch = usersToMatch.subList(page * results, Math.min(usersToMatch.size() - 1, page * results + results));
+        usersToMatch = usersToMatch.subList(page * results, Math.min(usersToMatch.size(), page * results + results));
 
         Map<Long, Double> maxUserMatchingScoresMap = createMaxUserMatchingScoresMap(maxUserMatchingScoreRepository.findByUserIdIn(usersToMatch));
         Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> usersQuestionExtendedAnswers = userQuestionExtendedAnswerService.getUserQuestionExtendedAnswersByUserIds(usersToMatch);
@@ -88,9 +90,9 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
         return userMatchingScoresValues;
     }
 
-    private Map<Long,Double> createMaxUserMatchingScoresMap(List<MaxUserMatchingScore> maxUserMatchingScores) {
-        Map<Long,Double> res = new HashMap<>();
-        for(MaxUserMatchingScore maxUserMatchingScore : maxUserMatchingScores){
+    private Map<Long, Double> createMaxUserMatchingScoresMap(List<MaxUserMatchingScore> maxUserMatchingScores) {
+        Map<Long, Double> res = new HashMap<>();
+        for (MaxUserMatchingScore maxUserMatchingScore : maxUserMatchingScores) {
             res.put(maxUserMatchingScore.getUserId(), maxUserMatchingScore.getScore().doubleValue());
         }
 
@@ -98,21 +100,23 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     }
 
     @Override
-    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, Integer page, Integer results, AccountUserFilterRequest accountUserFilterRequest){
+    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, Integer page, Integer results, AccountUserFilterRequest accountUserFilterRequest) {
         Map<Long, Integer> userMatchingScores = getUserMatchingScores(userId, page, results);
-        if(userMatchingScores.isEmpty()){
+        if (userMatchingScores.isEmpty()) {
             return new ArrayList<>();
         }
         List<Long> usersList = new ArrayList<>(userMatchingScores.keySet());
         accountUserFilterRequest.setUserIds(usersList);
-        List<UserSearchResponse> userSearchResponses = userFilterControllerSender.saveUserFiltersAndGetUsers(userId,accountUserFilterRequest);
+        List<UserSearchResponse> userSearchResponses = userFilterControllerSender.saveUserFiltersAndGetUsers(userId, accountUserFilterRequest);
 
         return getUserSearchResponse(userMatchingScores, userSearchResponses);
     }
 
     private List<UserSearchResponse> getUserSearchResponse(Map<Long, Integer> userMatchingScores, List<UserSearchResponse> userSearchResponses) {
-        List<UserSearchResponse> userSearchResponsesScore = userSearchResponses.stream().
-                peek(r -> r.setScore(userMatchingScores.get(r.getUserId()))).collect(Collectors.toList());
+        List<UserSearchResponse> userSearchResponsesScore = userSearchResponses
+                .stream()
+                .peek(r -> r.setScore(userMatchingScores.get(r.getUserId())))
+                .collect(Collectors.toList());
         userSearchResponsesScore.sort(Comparator.comparingInt(UserSearchResponse::getScore).reversed());
         return userSearchResponsesScore;
     }

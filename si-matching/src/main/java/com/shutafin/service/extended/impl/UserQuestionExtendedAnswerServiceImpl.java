@@ -131,6 +131,9 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
 
     @Override
     public List<Long> getUsersToMatchSortedByUserAnswersWeightSum(List<Long> usersToMatch) {
+        if (usersToMatch.isEmpty()) {
+            return new ArrayList<>();
+        }
         return userQuestionExtendedAnswerRepository.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
     }
 
