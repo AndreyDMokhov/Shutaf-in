@@ -134,7 +134,10 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
         if (usersToMatch.isEmpty()) {
             return new ArrayList<>();
         }
-        return userQuestionExtendedAnswerRepository.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
+        Set<Long> usersWithExtendedSearch = userQuestionExtendedAnswerRepository.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
+        usersWithExtendedSearch.addAll(usersToMatch);
+
+        return new ArrayList<>(usersWithExtendedSearch);
     }
 
     private List<UserQuestionExtendedAnswersWeb> getNotAnsweredQuestions(Map<QuestionExtended,

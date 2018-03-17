@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserQuestionExtendedAnswerRepository extends BaseJpaRepository<UserQuestionExtendedAnswer, Long> {
     List<UserQuestionExtendedAnswer> findAllByUserIdAndQuestion(Long userId, QuestionExtended question);
@@ -21,5 +22,5 @@ public interface UserQuestionExtendedAnswerRepository extends BaseJpaRepository<
             " GROUP BY uqea.userId " +
             " ORDER BY SUM(uqea.importance.weight) DESC "
     )
-    List<Long> getUsersToMatchSortedByUserAnswersWeightSum(@Param("usersToMatch") List<Long> usersToMatch);
+    Set<Long> getUsersToMatchSortedByUserAnswersWeightSum(@Param("usersToMatch") List<Long> usersToMatch);
 }
