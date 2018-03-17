@@ -38,6 +38,11 @@
   "Deal.deal.status.active":"Active",
   "Deal.deal.status.archive":"Archived",
   "Deal.deal.no.deals":"You don't have deals yet",
+  "Deal.deal.button.initiate":"Initiate deal",
+  "Deal.deal.button.leave":"Leave deal",
+  "Deal.confirmation": "To activate the deal, you need to confirm by email",
+  "Deal.leaving": "You left the deal",
+
 
 
   "SECTION":"HOME",
@@ -56,6 +61,7 @@
   "Error.ANC":"Account not activated, please confirm your email",
   "Error.ERI":"Resend interval is 2 minutes",
   "Error.NAP":"No permissions to perform the action",
+  "Error.MDE":"Cannot initiate deal. One or more users are already in deal",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
