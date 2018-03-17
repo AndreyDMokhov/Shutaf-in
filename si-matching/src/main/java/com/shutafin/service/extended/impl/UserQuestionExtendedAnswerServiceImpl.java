@@ -56,6 +56,26 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
         return userQuestionExtendedAnswerMap;
     }
 
+    @Override
+    public Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> getUserQuestionExtendedAnswersByUserIds(List<Long> userIds) {
+        Map<Long, Map<QuestionExtended, List<UserQuestionExtendedAnswer>>> usersAnswers = new HashMap<>();
+
+        List<UserQuestionExtendedAnswer> userQuestionExtendedAnswers = userQuestionExtendedAnswerRepository.findAllByUserIdIn(userIds);
+        for (UserQuestionExtendedAnswer userQuestionExtendedAnswer : userQuestionExtendedAnswers){
+            if (usersAnswers.get(userQuestionExtendedAnswer.getUserId()) == null){
+                usersAnswers.put(userQuestionExtendedAnswer.getUserId(), new HashMap<>());
+            }
+
+            if (usersAnswers.get(userQuestionExtendedAnswer.getUserId()).get(userQuestionExtendedAnswer.getQuestion()) == null){
+                usersAnswers.get(userQuestionExtendedAnswer.getUserId()).put(userQuestionExtendedAnswer.getQuestion(), new ArrayList<>());
+            }
+
+            usersAnswers.get(userQuestionExtendedAnswer.getUserId()).get(userQuestionExtendedAnswer.getQuestion()).add(userQuestionExtendedAnswer);
+        }
+
+        return usersAnswers;
+    }
+
 
     @Override
     public void addUserQuestionExtendedAnswers(List<UserQuestionExtendedAnswersWeb> userQuestionExtendedAnswersWebList,
@@ -64,10 +84,9 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
         userMatchingScoreRepository.deleteAllByUserOriginIdOrUserToMatchId(userId, userId);
         Integer maxScore = 0;
         for (UserQuestionExtendedAnswersWeb questionExtendedAnswersWeb : userQuestionExtendedAnswersWebList) {
-            QuestionExtended question = questionExtendedRepository
-                    .findOne(questionExtendedAnswersWeb.getQuestionId());
-            QuestionImportance importance = questionImportanceRepository
-                    .findOne(questionExtendedAnswersWeb.getQuestionImportanceId());
+            QuestionExtended question = questionExtendedRepository.findOne(questionExtendedAnswersWeb.getQuestionId());
+
+            QuestionImportance importance = questionImportanceRepository.findOne(questionExtendedAnswersWeb.getQuestionImportanceId());
             UserQuestionExtendedAnswer userQuestionExtendedAnswer;
 
             AnswerExtended answer = null;
@@ -110,6 +129,17 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
         return selectedAnswers;
     }
 
+    @Override
+    public List<Long> getUsersToMatchSortedByUserAnswersWeightSum(List<Long> usersToMatch) {
+        if (usersToMatch.isEmpty()) {
+            return new ArrayList<>();
+        }
+        Set<Long> usersWithExtendedSearch = userQuestionExtendedAnswerRepository.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
+        usersWithExtendedSearch.addAll(usersToMatch);
+
+        return new ArrayList<>(usersWithExtendedSearch);
+    }
+
     private List<UserQuestionExtendedAnswersWeb> getNotAnsweredQuestions(Map<QuestionExtended,
             List<UserQuestionExtendedAnswer>> allUserAnswers) {
         List<UserQuestionExtendedAnswersWeb> notAnsweredQuestions = new ArrayList<>();
@@ -127,9 +157,6 @@ public class UserQuestionExtendedAnswerServiceImpl implements UserQuestionExtend
     }
 
     private void deleteUserQuestionAnswers(Long userId) {
-        for (UserQuestionExtendedAnswer userQuestionExtendedAnswer :
-                userQuestionExtendedAnswerRepository.findAllByUserId(userId)) {
-            userQuestionExtendedAnswerRepository.delete(userQuestionExtendedAnswer);
-        }
+        userQuestionExtendedAnswerRepository.delete(userQuestionExtendedAnswerRepository.findAllByUserId(userId));
     }
 }
