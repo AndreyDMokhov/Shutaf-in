@@ -1,12 +1,11 @@
 package com.shutafin.controller;
 
 
-
 import com.shutafin.core.service.UserFilterService;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
+import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.AgeRangeWebDTO;
 import com.shutafin.model.web.common.FiltersWeb;
-import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,9 @@ import java.util.List;
 @Slf4j
 public class UserFilterController {
 
-    private final UserFilterService userFilterService;
-
     @Autowired
-    public UserFilterController(UserFilterService userFilterService) {
-        this.userFilterService = userFilterService;
-    }
+    private UserFilterService userFilterService;
+
 
     @Deprecated
     @PostMapping(value = "/users/id/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
