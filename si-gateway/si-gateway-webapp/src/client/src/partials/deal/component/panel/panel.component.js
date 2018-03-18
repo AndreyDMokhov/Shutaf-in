@@ -17,7 +17,7 @@ app.component('panelComponent', {
                           notify,
                           $filter,
                           documentTypes,
-                          $sce) {
+                          $window) {
         var vm = this;
         vm.documentsShow = [];
         var componentType = 'file';
@@ -39,11 +39,11 @@ app.component('panelComponent', {
             panelModel.getDocument(document.documentId).then(
                 function (success) {
                     var documentById = success.data.data;
-                    if(documentById.documentTypeId == 2){
-                        openPDFonNewTab(documentById.fileData);
+                    if (documentById.documentTypeId === 2) {
+                        openPDFonNewTab(documentById.fileData, document.filename);
                     }
                     else
-                    modalInput(documentById);
+                        modalInput(documentById);
                 },
                 function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -213,12 +213,12 @@ app.component('panelComponent', {
             return blob;
         }
 
-        function openPDFonNewTab (base64) {
+        function openPDFonNewTab(base64, filename) {
             var currentApplicationMIME = 'application/pdf';
             var blob = b64toBlob(base64, currentApplicationMIME);
             var pdfUrl = window.URL.createObjectURL(blob);
-            window.open(pdfUrl);
-        };
+            window.open(pdfUrl, '_self');
+        }
     }
 
 });
