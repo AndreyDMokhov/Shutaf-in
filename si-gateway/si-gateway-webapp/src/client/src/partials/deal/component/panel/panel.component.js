@@ -16,7 +16,8 @@ app.component('panelComponent', {
                           $sessionStorage,
                           notify,
                           $filter,
-                          documentTypes) {
+                          documentTypes,
+                          $window) {
         var vm = this;
         vm.documentsShow = [];
         var componentType = 'file';
@@ -34,11 +35,15 @@ app.component('panelComponent', {
             return date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
         }
 
-        vm.openDocument = function (docId) {
-            panelModel.getDocument(docId).then(
+        vm.openDocument = function (document) {
+            panelModel.getDocument(document.documentId).then(
                 function (success) {
                     var documentById = success.data.data;
-                    modalInput(documentById);
+                    if (documentById.documentTypeId === 2) {
+                        openPDFonNewTab(documentById.fileData);
+                    }
+                    else
+                        modalInput(documentById);
                 },
                 function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -157,7 +162,6 @@ app.component('panelComponent', {
             });
         };
 
-
         function getDocumentTypeByFileExtension(filename) {
             var objectTypesExtensions = $sessionStorage.documentTypes;
             var extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length);
@@ -202,13 +206,18 @@ app.component('panelComponent', {
                 for (var i = 0; i < slice.length; i++) {
                     byteNumbers[i] = slice.charCodeAt(i);
                 }
-
                 var byteArray = new Uint8Array(byteNumbers);
-
                 byteArrays.push(byteArray);
             }
             var blob = new Blob(byteArrays, {type: contentType});
             return blob;
+        }
+
+        function openPDFonNewTab(base64) {
+            var currentApplicationMIME = 'application/pdf';
+            var blob = b64toBlob(base64, currentApplicationMIME);
+            var pdfUrl = window.URL.createObjectURL(blob);
+            window.open(pdfUrl, '_self');
         }
     }
 

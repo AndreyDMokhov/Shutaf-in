@@ -1,5 +1,5 @@
 app.component('dealInitializeComponent', {
-    templateUrl: "partials/deal/dealInitialize/deal.initialize.component.html",
+    templateUrl: "partials/deal/initialize/deal.initialize.component.html",
     bindings: {
         chatInfo: '<'
     },
