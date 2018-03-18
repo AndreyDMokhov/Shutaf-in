@@ -40,7 +40,7 @@ app.component('panelComponent', {
                 function (success) {
                     var documentById = success.data.data;
                     if (documentById.documentTypeId === 2) {
-                        openPDFonNewTab(documentById.fileData, document.filename);
+                        openPDFonNewTab(documentById.fileData);
                     }
                     else
                         modalInput(documentById);
@@ -213,7 +213,7 @@ app.component('panelComponent', {
             return blob;
         }
 
-        function openPDFonNewTab(base64, filename) {
+        function openPDFonNewTab(base64) {
             var currentApplicationMIME = 'application/pdf';
             var blob = b64toBlob(base64, currentApplicationMIME);
             var pdfUrl = window.URL.createObjectURL(blob);
