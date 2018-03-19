@@ -63,8 +63,36 @@ public class UserFilterServiceImpl implements UserFilterService {
 
 
     @Override
-    public List<UserSearchResponse> filterMatchedUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+    public List<Long> filterMatchedUserIds(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+        saveUserFilters(userId, accountUserFilterRequest);
+
+        List<Long> filteredUsersId = getFilteredUsers(userId, accountUserFilterRequest);
+
+        if (filteredUsersId.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return userInfoRepository.getUserIdListByUserId(filteredUsersId);
+    }
+
+    private List<Long> getFilteredUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
         List<Long> filteredUsersId = accountUserFilterRequest.getUserIds();
+
+        if (!StringUtils.isEmpty(accountUserFilterRequest.getFullName())) {
+            filteredUsersId = userRepository.findAllByFullName(filteredUsersId, accountUserFilterRequest.getFullName());
+        }
+
+        return applyFilters(userId, filteredUsersId);
+    }
+
+    @Override
+    public List<UserSearchResponse> getUsers(List<Long> usersId) {
+        return userInfoRepository.getUserSearchListByUserId(usersId);
+    }
+
+    @Override
+    public List<UserSearchResponse> filterMatchedUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+        List<Long> filteredUsersId = getFilteredUsers(userId, accountUserFilterRequest);
 
         if (!StringUtils.isEmpty(accountUserFilterRequest.getFullName())) {
             filteredUsersId = userRepository.findAllByFullName(filteredUsersId, accountUserFilterRequest.getFullName());
@@ -91,13 +119,16 @@ public class UserFilterServiceImpl implements UserFilterService {
 
     @Override
     public List<UserSearchResponse> saveUserFiltersAndGetUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
+        saveUserFilters(userId, accountUserFilterRequest);
+        return userFilterService.filterMatchedUsers(userId, accountUserFilterRequest);
+    }
+
+    private void saveUserFilters(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
         if (accountUserFilterRequest.getFiltersWeb() != null) {
             userFilterService.saveUserFilterCity(userId, accountUserFilterRequest.getFiltersWeb().getFilterCitiesIds());
             userFilterService.saveUserFilterGender(userId, accountUserFilterRequest.getFiltersWeb().getFilterGenderId());
             userFilterService.saveUserFilterAgeRange(userId, accountUserFilterRequest.getFiltersWeb().getFilterAgeRange());
         }
-
-        return userFilterService.filterMatchedUsers(userId, accountUserFilterRequest);
     }
 
     @Override

@@ -1,8 +1,4 @@
-<div ng-if="vm.currentType.pdf">
-    <ng-pdf template-url="/partials/deal/viewer.html"></ng-pdf>
-</div>
-
-<div ng-if="vm.currentType.image">
+<div >
     <div class="modal-header">
         <div class="description-div">
             <h3>{{vm.fullDocument.documentTitle}}</h3>
@@ -15,7 +11,6 @@
                     <img class="image-style" ng-src="{{vm.getImage()}}"/>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

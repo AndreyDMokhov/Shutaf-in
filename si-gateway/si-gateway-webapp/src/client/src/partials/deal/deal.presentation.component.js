@@ -41,15 +41,6 @@ app.component("dealPresentationComponent", {
         }
 
         vm.getDealSuffix = function (deal) {
-            if (deal.statusId === dealStatus.Status.INITIATED) {
-                return $filter('translate')('Deal.deal.status.inactive');
-            }
-
-            if (deal.statusId === dealStatus.Status.ARCHIVE) {
-                debugger;
-                return $filter('translate')('Deal.deal.status.archive');
-            }
-
             if(deal.userStatusId === dealUserStatus.Status.PENDING) {
                 return $filter('translate')('Deal.deal.status.inactive');
             }

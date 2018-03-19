@@ -19,12 +19,20 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
     function renameDeal(dealId, params) {
         return rest.one('/rename/' +dealId).customPOST(params);
     }
+    function initiateDeal(params){
+        return rest.one('/').customPOST(params);
+    }
+    function leaveDeal(dealId){
+        return rest.one('/leave/' +dealId).customPUT();
+    }
 
 
     return {
         getDeals: getDeals,
         getDealInfo: getDealInfo,
-        renameDeal: renameDeal
+        renameDeal: renameDeal,
+        initiateDeal: initiateDeal,
+        leaveDeal: leaveDeal
 
     };
 });

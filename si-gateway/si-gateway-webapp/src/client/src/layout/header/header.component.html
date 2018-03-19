@@ -13,7 +13,7 @@
                             <img class="logo-center" style="padding: 0" src="{{vm.getUserImage()}}" width="28" height="28">
                         </span>
                         &nbsp;
-                        {{$root.brand}}
+                        {{$root.brand | limitTo: 20}}
                     </a>
                     </li>
 
@@ -28,7 +28,8 @@
                 <li data-ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
                     <a ui-sref="deal"
                        uib-tooltip="{{'Deal.title' | translate}}"
-                       tooltip-placement="bottom">
+                       tooltip-placement="bottom"
+                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
                         <span class="fa fa-handshake-o header-icon-size"></span>
                         &nbsp;
                         {{'Deal.title' | translate}}

@@ -4,13 +4,12 @@ app.component('dealComponent', {
         dealInfo: '<'
     },
     controllerAs: 'vm',
-    controller: function (
-        dealModel,
-        $uibModal,
-        $sessionStorage,
-        $filter,
-        notify,
-        dealStatus) {
+    controller: function (dealModel,
+                          $uibModal,
+                          $sessionStorage,
+                          $filter,
+                          notify,
+                          dealStatus) {
 
         var vm = this;
         var namePanelDef = "Panel";
@@ -26,10 +25,15 @@ app.component('dealComponent', {
         vm.$onChanges = function () {
             if (Object.getOwnPropertyNames(vm.dealInfo.panels).length === 0) {
                 vm.statusDeal = vm.dealInfo.statusId;
-                vm.emptyDeal = true;
+                vm.isEmptyDeal = true;
+            }
+            else if (Object.getOwnPropertyNames(vm.dealInfo.panels).length === 0) {
+                vm.statusDeal = vm.dealInfo.statusId;
+                vm.isEmptyDeal = true;
+                vm.panels = {};
             }
             else {
-                vm.emptyDeal = false;
+                vm.isEmptyDeal = false;
                 vm.statusDeal = vm.dealInfo.statusId;
                 vm.panels = vm.dealInfo.panels;
                 vm.panelId = vm.dealInfo.firstPanel.panelId;
@@ -71,7 +75,7 @@ app.component('dealComponent', {
                 var params = {dealId: dealId, title: newName};
                 dealModel.addPanel(params).then(
                     function (success) {
-                        vm.emptyDeal = false;
+                        vm.isEmptyDeal = false;
                         vm.panelClicked = true;
                         var panel = success.data.data;
                         vm.panelId = panel.panelId;
