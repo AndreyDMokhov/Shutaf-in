@@ -37,7 +37,7 @@ public class ConfirmationResponseDealCreationComponent implements BaseConfirmati
                 .userId(confirmation.getUserId())
                 .countUsersSend(countUsersSend)
                 .countUsersConfirmed(countUsersConfirmed)
-                .isConfirmed(countUsersSend - countUsersConfirmed == 0 ? true : false)
+                .isConfirmed(countUsersSend - countUsersConfirmed == 0)
                 .build();
     }
 

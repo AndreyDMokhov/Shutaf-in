@@ -48,7 +48,9 @@ public class DealServiceImpl implements DealService {
         return dealWeb;
     }
 
-    private EmailNotificationDealWeb getEmailNotificationDealWeb(DealWeb dealWeb, Long originUserId, Long userToChange,
+    private EmailNotificationDealWeb getEmailNotificationDealWeb(DealWeb dealWeb,
+                                                                 Long originUserId,
+                                                                 Long userToChange,
                                                                  EmailReason emailReason) {
         List<EmailUserLanguage> emailUserLanguageList = userAccountControllerSender.getEmailUserLanguage(dealWeb.getUsers());
         return EmailNotificationDealWeb.builder()
@@ -61,8 +63,11 @@ public class DealServiceImpl implements DealService {
                 .build();
     }
 
-    private EmailNotificationDealWeb getEmailNotificationDealWeb(Long dealId, Long originUserId, Long userToChange,
+    private EmailNotificationDealWeb getEmailNotificationDealWeb(Long dealId,
+                                                                 Long originUserId,
+                                                                 Long userToChange,
                                                                  EmailReason emailReason) {
+
         DealResponse deal = dealControllerSender.getDeal(dealId, originUserId);
         List<Long> users = new ArrayList<>();
         for (AccountUserImageWeb accountUserImageWeb : deal.getUsers()) {

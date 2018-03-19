@@ -38,7 +38,7 @@ public class ConfirmationResponseDealUserAddingComponent implements BaseConfirma
                 .userIdToAdd(confirmation.getUserIdToAdd())
                 .countUsersSend(countUsersSend)
                 .countUsersConfirmed(countUsersConfirmed)
-                .isConfirmed(countUsersSend - countUsersConfirmed == 0 ? true : false)
+                .isConfirmed(countUsersSend - countUsersConfirmed == 0)
                 .build();
     }
 

@@ -38,7 +38,7 @@ public class ConfirmationResponseDealUserRemovingComponent implements BaseConfir
                 .userIdToRemove(confirmation.getUserIdToRemove())
                 .countUsersSend(countUsersSend)
                 .countUsersConfirmed(countUsersConfirmed)
-                .isConfirmed(countUsersSend - countUsersConfirmed == 0 ? true : false)
+                .isConfirmed(countUsersSend - countUsersConfirmed == 0)
                 .build();
     }
 

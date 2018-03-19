@@ -285,10 +285,10 @@ public class DealServiceImpl implements DealService {
         addDealUserWithStatusAndType(internalDealUserWeb, DealUserStatus.ACTIVE, DealUserPermissionType.CREATE);
     }
 
-    private void addDealUserWithStatusAndType(InternalDealUserWeb internalDealUserWeb, DealUserStatus dealUserStatus,
+    private void addDealUserWithStatusAndType(InternalDealUserWeb internalDealUserWeb,
+                                              DealUserStatus dealUserStatus,
                                               DealUserPermissionType dealUserPermissionType) {
-        Deal deal = checkDealPermissions(internalDealUserWeb.getDealId(),
-                internalDealUserWeb.getUserOriginId(), NEED_FULL_ACCESS);
+        Deal deal = checkDealPermissions(internalDealUserWeb.getDealId(), internalDealUserWeb.getUserOriginId(), NEED_FULL_ACCESS);
         Long userToAddId = internalDealUserWeb.getUserToChangeId();
         if (userHasActiveDeal(userToAddId)) {
             log.warn("User {} has already active deal", userToAddId);
@@ -343,8 +343,7 @@ public class DealServiceImpl implements DealService {
         DealPanel firstPanel = dealPanels.stream()
                 .min(Comparator.comparing(AbstractEntity::getCreatedDate))
                 .get();
-        DealPanelResponse dealPanelResponse = getDealPanelResponse(userId, firstPanel);
-        return dealPanelResponse;
+        return getDealPanelResponse(userId, firstPanel);
     }
 
     private DealPanelResponse getDealPanelResponse(Long userId, DealPanel dealPanel) {

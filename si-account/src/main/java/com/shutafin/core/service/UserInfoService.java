@@ -11,13 +11,9 @@ import java.util.List;
 public interface UserInfoService {
 
     void createUserInfo(AccountUserInfoRequest userInfoRequest, User user);
-
     AccountUserInfoResponseDTO getUserInfo(User user);
-
     AccountUserInfoResponseDTO getUserInfo(Long userId);
-
     void updateUserInfo(AccountUserInfoRequest userInfoRequest, User user);
-
     UserSearchResponse findUserSearchInfo(Long userId);
 
     List<EmailUserLanguage> getEmailUserLanguage(List<Long> userIds);

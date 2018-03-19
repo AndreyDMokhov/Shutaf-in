@@ -19,8 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -170,15 +170,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public List<EmailUserLanguage> getEmailUserLanguage(List<Long> userIds) {
-        List<EmailUserLanguage> emailUserLanguageList = new ArrayList<>();
-        List<UserAccount> userAccounts = userAccountRepository.findAllByUserIn(userRepository.findAllByIdIn(userIds));
-        for (UserAccount userAccount : userAccounts) {
-            emailUserLanguageList.add(EmailUserLanguage.builder()
-                    .userId(userAccount.getUser().getId())
-                    .email(userAccount.getUser().getEmail())
-                    .languageCode(userAccount.getLanguage().getDescription())
-                    .build());
-        }
-        return emailUserLanguageList;
+        return userAccountRepository
+                .findAllByUserIn(userRepository.findAllByIdIn(userIds))
+                .stream()
+                .map(x -> EmailUserLanguage.builder()
+                        .userId(x.getUser().getId())
+                        .email(x.getUser().getEmail())
+                        .languageCode(x.getLanguage().getDescription())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
