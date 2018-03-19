@@ -80,7 +80,7 @@ app.component('questionComponent', {
             }
         };
 
-        this.totalItems = 4; //questions.length;
+        this.totalItems = questions.length;
         this.itemsPerPage = 1;
 
         function findById(source, id) {
