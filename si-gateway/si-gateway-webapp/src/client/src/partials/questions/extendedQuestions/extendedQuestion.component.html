@@ -1,38 +1,46 @@
 <div class="quiz-area">
     <span class="glyphicon glyphicon-chevron-left arrow-back"
           aria-hidden="true" ng-click="$ctrl.previousPageButton()"></span>
-    <div class="card-question ">
+    <div class="card-question">
         <div class="cardContainer">
-            <h2 style="text-align: center">{{$ctrl.currentQuestion}}</h2>
-            <div ng-repeat="answ in $ctrl.answersWithIDForCurrentPage ">
-                <label>
-                    <input type="checkbox"
-                           ng-model="$ctrl.selectedCheckboxes[$index]"
-                           ng-true-value="'{{answ.id}}'"
-                           ng-change="$ctrl.getValuesOfCheckBox($ctrl.selectedCheckboxes[$index], answ.id)"
-                    >
-                    {{answ.answer}}
-                </label>
-            </div>
-            <br>
-            <div>
-                <label ng-repeat="item in $ctrl.questionImportance" class="radio-inline">
-                    <input type="radio" name="optradio"
-                           ng-model="$ctrl.variantsOfAnswersImportance"
-                           ng-value="item.id">
-                    {{item.description}}
-                </label>
-            </div>
+            <header>
+                <h2 style="margin: auto">{{$ctrl.currentQuestion}}</h2>
+            </header>
+            <content>
+                <div ng-repeat="answ in $ctrl.answersWithIDForCurrentPage ">
+                    <label>
+                        <input type="checkbox"
+                               ng-model="$ctrl.selectedCheckboxes[$index]"
+                               ng-true-value="'{{answ.id}}'"
+                               ng-change="$ctrl.getValuesOfCheckBox($ctrl.selectedCheckboxes[$index], answ.id)"
+                        >
+                        {{answ.answer}}
+                    </label>
+                </div>
+                <br>
+                <div>
+                    <label ng-repeat="item in $ctrl.questionImportance" class="radio-inline">
+                        <input type="radio" name="optradio"
+                               ng-model="$ctrl.variantsOfAnswersImportance"
+                               ng-value="item.id">
+                        {{item.description}}
+                    </label>
+                </div>
 
-            <br>
-            <ul class="question-pagination" uib-pagination total-items="$ctrl.totalItems"
-                direction-links="false"
-                ng-model="$ctrl.currentPage"
-                ng-change="$ctrl.pageChanged()"
-                items-per-page="$ctrl.itemsPerPage"></ul>
-            <button class="btn btn-success pull-right" ng-click="$ctrl.save()">
-                {{"Questions.button.save"|translate}}
-            </button>
+                <br>
+            </content>
+            <footer>
+                <ul class="question-pagination" uib-pagination total-items="$ctrl.totalItems"
+                    direction-links="false"
+                    ng-model="$ctrl.currentPage"
+                    ng-change="$ctrl.pageChanged()"
+                    items-per-page="$ctrl.itemsPerPage"></ul>
+            </footer>
+            <footer-btn>
+                <button class="btn btn-success pull-right" ng-click="$ctrl.save()">
+                    {{"Questions.button.save"|translate}}
+                </button>
+            </footer-btn>
         </div>
     </div>
 

@@ -111,19 +111,39 @@ div[role="main"] {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
   width: 50%;
+  height: 35vh;
   margin-left: auto;
   margin-right: auto;
   border-radius: 5px;
   background-color: #fafafa;
 }
 .card-question:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 .cardContainer {
-  padding: 2px 16px;
+  display: grid;
+  grid-template-areas: "header header" "content content" "footer footer-btn";
+  grid-template-rows: 50px 200px 70px;
+  grid-template-columns: 450px 80px;
+  padding: 5px 16px;
+}
+.cardContainer > header {
+  grid-area: header;
+  margin: 0;
+}
+.cardContainer > content {
+  grid-area: content;
+}
+.cardContainer > footer {
+  grid-area: footer;
+  margin: auto;
+}
+.cardContainer > footer-btn {
+  grid-area: footer-btn;
+  margin: auto;
 }
 .card-custom {
-  box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 2px 4px 3px rgba(0, 0, 0, 0.75);
   transition: 0.5s;
   width: 90%;
   margin: 3vh auto 3vh auto;
@@ -131,7 +151,7 @@ div[role="main"] {
   background-color: #fafafa;
 }
 .card-custom:hover {
-  box-shadow: 2px 3px 6px 4px rgba(0, 0, 0, 0.75);
+  box-shadow: 1px 3px 6px 5px rgba(0, 0, 0, 0.75);
 }
 .card-header {
   padding: 10px 15px;
@@ -299,18 +319,6 @@ a.fa:focus {
   color: #212121;
   text-decoration: underline;
 }
-.pagination > .active > a,
-.pagination > .active > span,
-.pagination > .active > a:hover,
-.pagination > .active > span:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus {
-  z-index: 3;
-  color: #DCEDC8;
-  background-color: #008fa1;
-  border-color: #006b78;
-  cursor: default;
-}
 .has-success .control-label {
   color: #212121;
   text-align: center;
@@ -321,4 +329,106 @@ a.fa:focus {
   background-color: transparent;
   top: -200px;
   left: 200px;
+}
+.question-pagination {
+  align-content: center;
+}
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 0px 0;
+}
+.pagination > li {
+  display: inline;
+}
+.pagination > li > a {
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  text-align: center;
+  transform: scale(1) rotate(0deg) translateX(0px) translateY(0px) skewX(20deg) skewY(0deg);
+}
+.pagination > li {
+  position: relative;
+  float: left;
+  padding: 4px 4px;
+  margin-left: 0.5em;
+  line-height: 1.42857143;
+  color: #33b715;
+  text-decoration: none;
+  background-color: #fff;
+  text-align: center;
+  transform: scale(1) rotate(19deg) translateX(0px) translateY(0px) skewX(-10deg) skewY(-20deg);
+}
+.pagination > li:first-child > a {
+  margin-left: 0;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.pagination > li:last-child > a {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.pagination-page:hover,
+.pagination > li > a:hover,
+.pagination > li > a:focus {
+  z-index: 2;
+  color: #23527c;
+  background-color: #eee;
+  border-color: #ddd;
+}
+.pagination-page.active {
+  background-color: #8BC34A;
+  border-color: #689F38;
+}
+.pagination-page {
+  border-right: 1px solid #bdc5db;
+  box-shadow: 2px 3px 4px #689F38;
+}
+.pagination-page.active,
+.pagination > .active > a,
+.pagination > .active > a:hover,
+.pagination > .active > a:focus {
+  z-index: 3;
+  color: #fff;
+  cursor: default;
+  background-color: #8BC34A;
+  border-color: #689F38;
+}
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus {
+  color: #777;
+  cursor: not-allowed;
+  background-color: #fff;
+  border-color: #ddd;
+}
+.pagination-lg > li > a,
+.pagination-lg > li > span {
+  padding: 10px 16px;
+  font-size: 15px;
+  line-height: 1.3333333;
+}
+.pagination-lg > li:first-child > a,
+.pagination-lg > li:first-child > span {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.pagination-lg > li:last-child > a,
+.pagination-lg > li:last-child > span {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.pagination-sm > li > a {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.pagination-sm > li:first-child > a {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.pagination-sm > li:last-child > a,
+.pagination-sm > li:last-child > span {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
 }

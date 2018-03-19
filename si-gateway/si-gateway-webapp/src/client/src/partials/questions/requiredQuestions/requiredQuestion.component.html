@@ -2,31 +2,52 @@
     <span class="glyphicon glyphicon-chevron-left arrow-back"
           aria-hidden="true" ng-click="$ctrl.previousPage()"></span>
 
-    <div class=" card-question">
-        <div class="cardContainer ">
-            <h2 style="text-align: center">{{$ctrl.currentQuestion.description}} </h2>
-            <div class="radio" ng-repeat="answer in $ctrl.currentQuestion.answers">
-                <label>
-                    <input type="radio"
-                           name="answer.description"
-                           ng-model="$ctrl.currentAnswer"
-                           ng-value="answer.answerId"
-                           value="answer.answerId"
-                           ng-change='$ctrl.newValue();'>
-                    {{answer.description}}
-                </label>
-            </div>
-            <br>
-            <ul uib-pagination
-                class="question-pagination"
-                direction-links="false"
-                total-items="$ctrl.totalItems"
-                ng-model="$ctrl.currentPage"
-                ng-change="$ctrl.pageChanged()"
-                items-per-page="$ctrl.itemsPerPage"></ul>
-            <button class="btn btn-success pull-right" ng-click="$ctrl.save()" ng-disabled="$ctrl.disableSubmit">
-                {{"Questions.button.save"|translate}}
-            </button>
+    <div class="card-question">
+        <div class="cardContainer">
+            <header>
+                                    <h2 style="margin: auto">{{$ctrl.currentQuestion.description}} </h2>
+
+            </header>
+            <content>
+                <div class="radio" ng-repeat="answer in $ctrl.currentQuestion.answers">
+                    <label>
+                        <input type="radio"
+                               name="answer.description"
+                               ng-model="$ctrl.currentAnswer"
+                               ng-value="answer.answerId"
+                               value="answer.answerId"
+                               ng-change='$ctrl.newValue();'>
+                        {{answer.description}}
+                    </label>
+                </div>
+                <br>
+            </content>
+            <footer>
+                <div>
+                    <ul uib-pagination
+                        class="question-pagination"
+                        direction-links="false"
+                        total-items="$ctrl.totalItems"
+                        ng-model="$ctrl.currentPage"
+                        ng-change="$ctrl.pageChanged()"
+                        items-per-page="$ctrl.itemsPerPage"
+                        boundary-link-numbers="true"
+                        max-size="4"
+                        rotate="true">
+
+                    </ul>
+                </div>
+            </footer>
+            <footer-btn>
+                <div>
+                    <button class="btn btn-success save-questions" ng-click="$ctrl.save()"
+                            ng-disabled="$ctrl.disableSubmit">
+                        {{"Questions.button.save"|translate}}
+                    </button>
+                </div>
+            </footer-btn>
+
+
         </div>
     </div>
     <span class="glyphicon glyphicon-chevron-right arrow-next" aria-hidden="true" ng-click="$ctrl.nextPage()"></span>
