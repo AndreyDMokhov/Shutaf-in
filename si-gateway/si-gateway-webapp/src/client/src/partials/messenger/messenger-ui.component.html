@@ -17,6 +17,7 @@
 
     <div class="col-md-8 col-lg-8">
         <strong>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</strong>
+        <deal-initialize-component ng-if="vm.isInChatGroup()" chat-info="vm.currentChat"></deal-initialize-component>
         <hr>
         <div class="message-container">
             <message-list-directive></message-list-directive>

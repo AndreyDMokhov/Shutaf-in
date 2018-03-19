@@ -13,6 +13,7 @@
 .modal-body-original {
   position: relative;
   padding: 15px;
+  background-color: transparent;
 }
 .modal-header.deal {
   background-color: #689F38;

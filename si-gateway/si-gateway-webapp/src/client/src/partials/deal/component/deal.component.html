@@ -5,7 +5,7 @@
                 <i class="fa fa-th-list"></i></label>
         </div>
 
-        <uib-tabset vertical="true" type="pills">
+        <uib-tabset active="active" vertical="true" type="pills">
             <uib-tab
                     ng-repeat="(key, value) in vm.panels"
                     ng-click="vm.selectPanel(key)">
@@ -30,12 +30,12 @@
         </uib-tabset>
     </div>
     <div class="col-md-9">
-        <div ng-if="vm.panelClicked">
+        <div ng-if="vm.panelClicked && !vm.isEmptyDeal">
             <panel-component documents="vm.documents" panel-id="vm.panelId" get-deals="vm.selectPanel"
-                              status-deal="vm.statusDeal"></panel-component>
+                             status-deal="vm.statusDeal"></panel-component>
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-3 col-sm-offset-3 ">
-            <div ng-if="vm.emptyDeal && vm.isDealStatusActive()" class="without-folder">
+            <div ng-if="vm.isEmptyDeal && vm.isDealStatusActive()" class="without-folder">
                 <p>
                     {{'Deal.withoutPanel.text' | translate}}
                 </p>

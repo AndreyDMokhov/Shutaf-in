@@ -5,12 +5,14 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
 
     });
 
-    function userSearch(fullName) {
+    function userSearch(fullName,page,results) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
+        var showPage = (page=='' || page == undefined) ? 0 : page ;
+        var pageSize = (results=='' || results == undefined) ? 10 : results ;
         if (fullName) {
-            return rest.one('/api/users/search?name=' + fullName).customGET();
+            return rest.one('/api/users/search?page='+showPage+'&results='+pageSize+'&name=' + fullName).customGET();
         }
-        return rest.one('/api/users/search').customGET();
+        return rest.one('/api/users/search?page='+showPage+'&results='+pageSize).customGET();
     }
 
     function saveFilters(params,fullName) {

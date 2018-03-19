@@ -37,7 +37,7 @@
                 >
                 <img class="document-icon" src="./images/iPdf.png" alt="Pdf file"
                      ng-if="document.documentType === 2"
-                     ng-click="vm.openDocument(document.documentId)"
+                     ng-click="vm.openDocument(document)"
                 >
                 <img class="document-icon" src="./images/iImage.png" alt="Image file"
                      ng-if="document.documentType === 3 "
@@ -45,27 +45,27 @@
                 >
                 <img class="document-icon" src="./images/iImage.png" alt="Image file"
                      ng-if="document.documentType >= 4 && document.documentType <= 6"
-                     ng-click="vm.openDocument(document.documentId)"
+                     ng-click="vm.openDocument(document)"
                 >
 
                 <div style="float: right">
                     <div>
                         <i
-                                class="fa fa-download icon-download"
+                                class="fa fa-download icon-download pointer"
                                 ng-click="vm.downloadDocument(document)"
                                 uib-tooltip="{{'Deal.download'|translate}}"
                         ></i>
                     </div>
                     <div>
                         <i
-                                class="fa fa-edit icon-rename "
+                                class="fa fa-edit icon-rename pointer"
                                 ng-click="vm.renameDocument(document)"
                                 uib-tooltip="{{'Deal.rename'|translate}}"
                         ></i>
                     </div>
                     <div>
                         <i
-                                class="fa fa-remove icon-delete"
+                                class="fa fa-remove icon-delete pointer"
                                 ng-click="vm.deleteDocument(document)"
                                 uib-tooltip="{{'Deal.delete'|translate}}"
                         ></i>

@@ -4,6 +4,7 @@ import com.shutafin.model.base.AbstractEntity;
 import com.shutafin.model.entities.Deal;
 import com.shutafin.model.entities.DealPanel;
 import com.shutafin.model.entities.DealUser;
+import com.shutafin.model.exception.exceptions.MultipleDealsException;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
@@ -77,7 +78,7 @@ public class DealServiceImpl implements DealService {
                 dealUserRepository.save(dealUser);
             } else {
                 log.warn("User {} has already active deal", userId);
-                throw new SystemException(String.format("User %d has already active deal", userId));
+                throw new MultipleDealsException(String.format("User %d has already active deal", userId));
             }
         }
 
@@ -291,7 +292,7 @@ public class DealServiceImpl implements DealService {
         Long userToAddId = internalDealUserWeb.getUserToChangeId();
         if (userHasActiveDeal(userToAddId)) {
             log.warn("User {} has already active deal", userToAddId);
-            throw new SystemException(String.format("User %d has already active deal", userToAddId));
+            throw new MultipleDealsException(String.format("User %d has already active deal", userToAddId));
         }
         DealUser dealUser = dealUserRepository.findByDealIdAndUserId(deal.getId(), userToAddId);
         if (dealUser == null) {

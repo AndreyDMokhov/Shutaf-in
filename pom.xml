@@ -188,6 +188,10 @@
             <version>1.4.196</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
 
 
     </dependencies>

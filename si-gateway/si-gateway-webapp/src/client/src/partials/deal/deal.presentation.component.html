@@ -2,20 +2,24 @@
     <i ng-show="vm.showLoading" class="fa fa-spinner fa-spin spin-by-center"></i>
     <div class="col-md-12">
         <div ng-if="vm.deals.length > 0">
-            <uib-tabset active="activeDeal" vertical="false" type="pills">
-                <uib-tab
-                        ng-repeat="deal in vm.deals | orderBy: ['userStatusId', 'statusId']"
-                        ng-click="vm.showSelectedDeal(deal)">
-                    <uib-tab-heading>
-                        {{deal.title}} ({{vm.getDealSuffix(deal)}})
-                        <i
-                                class="fa fa-edit deal-rename icon-rename"
-                                ng-click="$event.preventDefault();$event.stopPropagation(); vm.renameDeal(deal)"
-                                uib-tooltip="{{'Deal.rename' | translate}}"
-                        ></i>
-                    </uib-tab-heading>
-                </uib-tab>
-            </uib-tabset>
+            <deal-leave-component deal-info="vm.dealInfo"></deal-leave-component>
+            <div style="float: left">
+                <uib-tabset active="active" disable="true" vertical="false" type="pills">
+                    <uib-tab ng-if="deal.statusId !== 1"
+                            ng-repeat="deal in vm.deals | orderBy: ['userStatusId', 'statusId']"
+                            ng-click="vm.showSelectedDeal(deal)">
+                        <uib-tab-heading>
+                            {{deal.title}} ({{vm.getDealSuffix(deal)}})
+                            <i
+                                    class="fa fa-edit deal-rename icon-rename"
+                                    ng-click="$event.preventDefault();$event.stopPropagation(); vm.renameDeal(deal)"
+                                    uib-tooltip="{{'Deal.rename' | translate}}"
+                            ></i>
+                        </uib-tab-heading>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+
         </div>
         <div ng-if="vm.deals.length === 0">
             {{'Deal.deal.no.deals' | translate}}
@@ -29,4 +33,7 @@
             <deal-component deal-info="vm.dealInfo"></deal-component>
         </div>
     </div>
+</div>
+<div ng-if="vm.dealTabClicked">
+    <users-deal-component users-info="vm.dealInfo.users"></users-deal-component>
 </div>
