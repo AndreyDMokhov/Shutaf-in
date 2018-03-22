@@ -53,4 +53,13 @@ public class ConfirmationDealUserAddingServiceImpl implements ConfirmationDealUs
         return confirmationDealUserAddingRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        ConfirmationDealUserAdding confirmation = confirmationDealUserAddingRepository.findByConfirmationUUID(link);
+        if (confirmation != null) {
+            confirmation.setIsConfirmed(false);
+            confirmationDealUserAddingRepository.save(confirmation);
+        }
+
+    }
 }

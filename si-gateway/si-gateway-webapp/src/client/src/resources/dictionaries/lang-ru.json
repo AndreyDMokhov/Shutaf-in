@@ -90,7 +90,7 @@
   "Login.form.button.login": "Вход",
   "Login.form.button.resendEmailRegistration": "Отправить повторно подтверждение",
   "Login.form.errorEmail": "Введите корректную электронную почту",
-  "Login.form.errorPassword": "Длинна пароля должна быть не мньше 8 знаков",
+  "Login.form.errorPassword": "Длинна пароля должна быть между 8 и 25 символов",
   "Login.message.success": "Мы рады Вас видеть!",
 
   "SECTION": "LOGOUT",

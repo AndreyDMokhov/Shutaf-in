@@ -92,7 +92,7 @@
   "Login.form.button.login": "Login",
   "Login.form.button.resendEmailRegistration": "Resend email confirmation",
   "Login.form.errorEmail": "Please enter a valid email address",
-  "Login.form.errorPassword": "Please enter at least 8 characters",
+  "Login.form.errorPassword": "Password length must be between 8 and 25 characters",
   "Login.message.success": "We are glad to see You again!",
 
   "SECTION": "LOGOUT",

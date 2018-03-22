@@ -42,4 +42,8 @@ public class ConfirmationResponseDealUserAddingComponent implements BaseConfirma
                 .build();
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        confirmationDealUserAddingService.revertConfirmation(link);
+    }
 }

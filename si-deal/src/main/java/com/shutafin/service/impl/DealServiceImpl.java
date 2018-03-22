@@ -254,26 +254,9 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void removeDealUser(InternalDealUserWeb internalDealUserWeb) {
-        Deal deal = checkDealPermissions(internalDealUserWeb.getDealId(),
-                internalDealUserWeb.getUserOriginId(), NEED_FULL_ACCESS);
-        Long userToRemoveId = internalDealUserWeb.getUserToChangeId();
-        DealUser dealUser = dealUserRepository.findByDealIdAndUserId(deal.getId(), userToRemoveId);
-        if (dealUser == null) {
-            log.warn("User {} was not included to deal {}", userToRemoveId,
-                    internalDealUserWeb.getDealId());
-            throw new SystemException(String.format("User %d was not included to deal %d", userToRemoveId,
-                    internalDealUserWeb.getDealId()));
-        }
-        dealSnapshotService.saveDealSnapshot(deal, userToRemoveId);
-        dealUser.setDealUserStatus(DealUserStatus.REMOVED);
-        dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
-
-        setPermissionToReadOnly(deal, userToRemoveId);
-
-        if (dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(), DealUserStatus.ACTIVE).size() < 2) {
-            deleteDeal(deal.getId(), internalDealUserWeb.getUserOriginId());
-        }
+        leaveDeal(internalDealUserWeb.getDealId(), internalDealUserWeb.getUserToChangeId());
     }
+
 
     @Override
     public void addDealUser(InternalDealUserWeb internalDealUserWeb) {

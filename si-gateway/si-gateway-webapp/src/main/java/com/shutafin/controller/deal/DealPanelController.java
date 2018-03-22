@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.controller.deal;
 
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.deal.DealPanelResponse;

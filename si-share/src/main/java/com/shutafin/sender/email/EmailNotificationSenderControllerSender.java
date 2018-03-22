@@ -38,6 +38,11 @@ public class EmailNotificationSenderControllerSender {
         return restTemplate.getForEntity(url, emailReason.getResponseObject()).getBody();
     }
 
+    public void revertConfirmedLink(String link, EmailReason emailReason) {
+        String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) + "/email/confirm/revert?link=" + link + "&reason=" + emailReason;
+        restTemplate.postForEntity(url, null, Void.TYPE);
+    }
+
     public Boolean isLinkValid(String link, EmailReason emailReason) {
         String url = routingService.getRoute(RouteDirection.SI_EMAIL_NOTIFICATION) +
                 String.format("/email/validate/%s?reason=%s", link, emailReason);

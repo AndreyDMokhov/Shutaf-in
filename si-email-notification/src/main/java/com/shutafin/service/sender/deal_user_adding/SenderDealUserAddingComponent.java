@@ -32,6 +32,9 @@ public class SenderDealUserAddingComponent implements BaseEmailDealInterface {
 
         String groupUUID = UUID.randomUUID().toString();
         for (EmailUserLanguage emailUserLanguage : emailNotificationDealWeb.getEmailUserLanguage()) {
+            if (emailUserLanguage.getUserId().equals(emailNotificationDealWeb.getUserOrigin().getUserId())){
+                continue;
+            }
             ConfirmationDealUserAdding confirmation =
                     confirmationDealUserAddingService.get(
                             emailNotificationDealWeb.getDealId(),

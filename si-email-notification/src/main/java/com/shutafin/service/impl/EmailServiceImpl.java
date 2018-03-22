@@ -103,6 +103,18 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    public void revertConfirmation(String link, EmailReason emailReason) {
+        String emailReasonPrefix = emailReason.getPropertyPrefix() + CONFIRMATION_BEAN_NAME_SUFFIX;
+        BaseConfirmationResponseInterface confirmationBean = confirmationResponsesMap.get(emailReasonPrefix);
+        if (confirmationBean == null) {
+            printError("confirmationResponsesMap", emailReasonPrefix);
+            throw new ResourceNotFoundException();
+        }
+
+        confirmationBean.revertConfirmation(link);
+    }
+
+    @Override
     public void resendEmails(EmailResendWeb emailResendWeb) {
 
         EmailNotificationLog emailNotificationLog = emailNotificationLogRepository

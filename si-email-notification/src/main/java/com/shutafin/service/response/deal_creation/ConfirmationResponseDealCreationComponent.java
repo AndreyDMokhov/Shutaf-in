@@ -41,4 +41,8 @@ public class ConfirmationResponseDealCreationComponent implements BaseConfirmati
                 .build();
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        confirmationDealCreationService.revertConfirmation(link);
+    }
 }

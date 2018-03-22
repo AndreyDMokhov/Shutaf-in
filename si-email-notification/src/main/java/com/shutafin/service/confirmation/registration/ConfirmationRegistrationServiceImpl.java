@@ -40,4 +40,13 @@ public class ConfirmationRegistrationServiceImpl implements ConfirmationRegistra
     public ConfirmationRegistration getConfirmed(String link) {
         return confirmationRegistrationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
     }
+
+    @Override
+    public void revertConfirmation(String link) {
+        ConfirmationRegistration confirmation = confirmationRegistrationRepository.findByConfirmationUUID(link);
+        if (confirmation != null) {
+            confirmation.setIsConfirmed(false);
+            confirmationRegistrationRepository.save(confirmation);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.shutafin.service.deal.impl;
 
+import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.model.web.deal.*;
@@ -71,7 +72,7 @@ public class DealServiceImpl implements DealService {
         DealResponse deal = dealControllerSender.getDeal(dealId, originUserId);
         List<Long> users = new ArrayList<>();
         for (AccountUserImageWeb accountUserImageWeb : deal.getUsers()) {
-            if (accountUserImageWeb.getUserId() != userToChange) {
+            if (!accountUserImageWeb.getUserId().equals(userToChange)) {
                 users.add(accountUserImageWeb.getUserId());
             }
         }
@@ -109,6 +110,7 @@ public class DealServiceImpl implements DealService {
             dealControllerSender.confirmDealUser(emailDeal.getDealId(), userId);
         } catch (Exception e) {
             setUserAccountMatchingStatus(userId, AccountStatus.COMPLETED_REQUIRED_MATCHING, true, true);
+            emailNotificationSenderControllerSender.revertConfirmedLink(link, EmailReason.DEAL_CREATION);
         }
         return dealControllerSender.getDeal(emailDeal.getDealId(), userId);
     }
@@ -171,6 +173,9 @@ public class DealServiceImpl implements DealService {
         } catch (Exception e) {
             if (emailDeal.getIsConfirmed()) {
                 setUserAccountMatchingStatus(emailDeal.getUserIdToAdd(), AccountStatus.COMPLETED_REQUIRED_MATCHING, true, true);
+            }
+            if (!(e instanceof ResourceNotFoundException)) {
+                emailNotificationSenderControllerSender.revertConfirmedLink(link, EmailReason.DEAL_USER_ADDING);
             }
         }
         return dealControllerSender.getDeal(emailDeal.getDealId(), emailDeal.getUserOriginId());

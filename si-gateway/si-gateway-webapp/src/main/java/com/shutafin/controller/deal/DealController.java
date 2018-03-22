@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.controller.deal;
 
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.deal.DealResponse;
@@ -39,14 +39,8 @@ public class DealController {
         return dealService.initiateDeal(dealWeb, userId);
     }
 
-    @NoAuthentication
-    @GetMapping(value = "/confirmation", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealResponse confirmDealUser(@RequestParam("link") String link) {
-        log.debug("/deal/confirmation");
-        return dealService.confirmDealUser(link);
-    }
 
-    @GetMapping(value = "/leave/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/leave/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public DealResponse leaveDeal(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId) {
         log.debug("/deal/leave/{dealId}");
         return dealService.leaveDeal(dealId, userId);
@@ -59,12 +53,6 @@ public class DealController {
         dealService.removeDealUser(dealId, userId, userToRemoveId);
     }
 
-    @NoAuthentication
-    @GetMapping(value = "/confirmation/remove/user", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealResponse confirmRemoveDealUser(@RequestParam("link") String link) {
-        log.debug("/deal/confirmation/remove/user");
-        return dealService.confirmRemoveDealUser(link);
-    }
 
     @GetMapping(value = "/add/{dealId}/{userToAddId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public DealResponse addDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
@@ -73,12 +61,6 @@ public class DealController {
         return dealService.addDealUser(dealId, userId, userToAddId);
     }
 
-    @NoAuthentication
-    @GetMapping(value = "/confirmation/add", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public DealResponse confirmAddDealUser(@RequestParam("link") String link) {
-        log.debug("/deal/confirmation/add");
-        return dealService.confirmAddDealUser(link);
-    }
 
     @GetMapping(value = "/all", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<DealUserWeb> getAllUserDeals(@AuthenticatedUser Long userId) {

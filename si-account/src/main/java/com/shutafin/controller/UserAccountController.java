@@ -12,12 +12,17 @@ import com.shutafin.model.web.common.LanguageWeb;
 import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.email.EmailUserLanguage;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,22 +31,19 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserAccountController {
 
+    @Autowired
     private UserAccountService userAccountService;
+    @Autowired
     private UserLanguageService userLanguageService;
+    @Autowired
     private UserInfoService userInfoService;
+    @Autowired
     private UserService userService;
 
-    @Autowired
-    public UserAccountController(
-            UserAccountService userAccountService,
-            UserLanguageService userLanguageService,
-            UserInfoService userInfoService,
-            UserService userService) {
-        this.userAccountService = userAccountService;
-        this.userLanguageService = userLanguageService;
-        this.userInfoService = userInfoService;
-        this.userService = userService;
-    }
+    @Value("classpath:/default_avatar.jpg")
+    private Resource defaultAvatar;
+
+
 
     @PostMapping(value = "/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserImageWeb updateUserAccountProfileImage(@RequestParam("userId") Long userId,
@@ -61,19 +63,30 @@ public class UserAccountController {
     }
 
     @GetMapping(value = "/profile-image", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserImageWeb getUserAccountProfileImage(@RequestParam("userId") Long userId) {
+    public AccountUserImageWeb getUserAccountProfileImage(@RequestParam("userId") Long userId) throws IOException {
         log.debug("/profile-image", userId);
         User user = userService.findUserById(userId);
         UserImage image = userAccountService.findUserAccountProfileImage(user);
-        return AccountUserImageWeb
+        AccountUserImageWeb accountUserImageWeb = AccountUserImageWeb
                 .builder()
-                .id(image.getId())
-                .image(image.getImageStorage().getImageEncoded())
-                .createdDate(image.getCreatedDate().getTime())
-                .firstName(image.getUser().getFirstName())
-                .lastName(image.getUser().getLastName())
-                .userId(image.getUser().getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .userId(user.getId())
                 .build();
+
+        if (image == null) {
+
+            byte[] bytes = IOUtils.toByteArray(defaultAvatar.getInputStream());
+
+            accountUserImageWeb.setImage(Base64.encodeBase64String(bytes));
+
+        } else {
+            accountUserImageWeb.setImage(image.getImageStorage().getImageEncoded());
+            accountUserImageWeb.setCreatedDate(image.getCreatedDate().getTime());
+            accountUserImageWeb.setId(image.getId());
+        }
+
+        return accountUserImageWeb;
     }
 
     @GetMapping(value = "/profile-images", produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -32,6 +32,9 @@ public class SenderDealUserRemovingComponent implements BaseEmailDealInterface {
 
         String groupUUID = UUID.randomUUID().toString();
         for (EmailUserLanguage emailUserLanguage : emailNotificationDealWeb.getEmailUserLanguage()) {
+            if (emailUserLanguage.getUserId().equals(emailNotificationDealWeb.getUserOrigin().getUserId())){
+                continue;
+            }
             ConfirmationDealUserRemoving confirmation =
                     confirmationDealUserRemovingService.get(
                             emailNotificationDealWeb.getDealId(),

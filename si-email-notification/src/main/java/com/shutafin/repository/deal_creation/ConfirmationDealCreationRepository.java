@@ -9,4 +9,6 @@ public interface ConfirmationDealCreationRepository extends BaseConfirmationRepo
 
     Integer countByDealIdAndIsConfirmedIsTrue(Long dealId);
 
+    ConfirmationDealCreation findByConfirmationUUID(String link);
+
 }
