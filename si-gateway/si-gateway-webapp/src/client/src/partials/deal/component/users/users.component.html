@@ -8,17 +8,23 @@
     <div ng-repeat="user in vm.partUsersInfo">
         <div>
             <!--todo add href to user profile-->
-            <a>
+            <div>
+                <i class="fa fa-window-close pull-right pointer"
+                   uib-popover-html="'{{'Deal.users.button.remove' | translate}}'"
+                   popover-placement="left"
+                   popover-trigger="'mouseenter'"
+                   ng-click="vm.remove(user)"></i>
                 <img class="logo-image"
                      uib-popover-html=
                              "'
                               {{user.firstName}} &nbsp; {{user.lastName}}
                             '"
-                     popover-placement="left" popover-trigger="'mouseenter'"
+                     popover-placement="left"
+                     popover-trigger="'mouseenter'"
                      ng-src="{{vm.getUserImage(user.image)}}"
                      width="60"
                      height="60"/>
-            </a>
+            </div>
 
         </div>
     </div>

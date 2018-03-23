@@ -34,11 +34,16 @@ public class ConfirmationResponseDealUserRemovingComponent implements BaseConfir
 
         return EmailDealUserRemovingResponse.builder()
                 .dealId(confirmation.getDealId())
+                .userOriginId(confirmation.getUserId())
                 .userIdToRemove(confirmation.getUserIdToRemove())
                 .countUsersSend(countUsersSend)
                 .countUsersConfirmed(countUsersConfirmed)
-                .isConfirmed(countUsersSend - countUsersConfirmed == 0 ? true : false)
+                .isConfirmed(countUsersSend - countUsersConfirmed == 0)
                 .build();
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        confirmationDealUserRemovingService.revertConfirmation(link);
+    }
 }

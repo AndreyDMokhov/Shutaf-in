@@ -4,7 +4,7 @@ import com.shutafin.model.entity.confirmation.deal_user_removing.ConfirmationDea
 
 public interface ConfirmationDealUserRemovingService extends BaseConfirmationService<ConfirmationDealUserRemoving> {
 
-    ConfirmationDealUserRemoving get(Long dealId, Long userIdToRemove, String groupUUID);
+    ConfirmationDealUserRemoving get(Long dealId, Long userId, Long userIdToRemove, String groupUUID);
 
     Integer getCountUsersSend(String groupUUID);
 

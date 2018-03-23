@@ -53,6 +53,11 @@ public class EmailNotificationSenderController {
         mailSenderService.sendEmails(emailNotificationDealWeb);
     }
 
+    @PostMapping("/confirm/revert")
+    public void revertConfirmedLink(@RequestParam("link") String link, @RequestParam("reason") EmailReason emailReason) {
+        mailSenderService.revertConfirmation(link, emailReason);
+    }
+
     @GetMapping("/confirm")
     public Object confirmLink(@RequestParam("link") String link, @RequestParam("reason") EmailReason emailReason) {
         return mailSenderService.getConfirmationResponse(link, emailReason);

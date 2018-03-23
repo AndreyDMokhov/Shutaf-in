@@ -4,7 +4,13 @@ app.component('dealLeaveComponent', {
         dealInfo: '<'
     },
     controllerAs: "vm",
-    controller: function (dealPresentationModel, dealStatus, $state, $filter, notify, $uibModal) {
+    controller: function (dealPresentationModel,
+                          dealStatus,
+                          $state,
+                          $filter,
+                          notify,
+                          $uibModal,
+                          initializationService) {
 
         var vm = this;
         var componentType = 'deal';
@@ -30,6 +36,7 @@ app.component('dealLeaveComponent', {
                     function (success) {
                         notify.set($filter('translate')("Deal.leaving"));
                         $state.go('home');
+                        initializationService.initializeApplication();
                     },
                     function (error) {
                         notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});

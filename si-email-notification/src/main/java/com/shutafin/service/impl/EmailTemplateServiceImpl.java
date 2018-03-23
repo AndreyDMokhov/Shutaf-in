@@ -40,7 +40,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         String section = properties.getProperty(prefix + SECTION_SUFFIX);
 
         for (Map.Entry<String, String> mapText : textReplace.entrySet()) {
-            section = section.replace("${"+mapText.getKey()+"}", mapText.getValue());
+            section = section.replace("${" + mapText.getKey() + "}", mapText.getValue());
         }
 
         String signature = properties.getProperty("common.signature");
@@ -82,7 +82,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
                 getTemplate(
                         emailNotificationWeb.getEmailReason(),
                         emailNotificationWeb.getLanguageCode(),
-                        new HashMap<String, String>(){{
+                        new HashMap<String, String>() {{
                             put("link", link);
                         }}
                 ),
@@ -132,7 +132,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         String userOriginUrl = getUserImageLink(userOrigin, serverAddress, urlProfile);
         imageSources.put(userOrigin.getUserId().toString(), Base64.getDecoder().decode(userOrigin.getImageSource()));
         textReplace.put("userOrigin", userOriginUrl);
-        if (emailNotificationDealWeb.getUserToChange() != null){
+        if (emailNotificationDealWeb.getUserToChange() != null) {
             EmailUserImageSource userToChange = emailNotificationDealWeb.getUserToChange();
             String userToChangeUrl = getUserImageLink(userToChange, serverAddress, urlProfile);
             imageSources.put(userToChange.getUserId().toString(), Base64.getDecoder().decode(userToChange.getImageSource()));
@@ -153,7 +153,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         );
     }
 
-    private String getServerAddress(){
+    private String getServerAddress() {
         return discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
     }
 

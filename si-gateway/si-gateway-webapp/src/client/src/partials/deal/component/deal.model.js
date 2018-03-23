@@ -23,11 +23,15 @@ app.factory('dealModel', function (Restangular, $sessionStorage) {
         return rest.one('panel/' + panelId).customPOST(param);
     }
 
+    function removeUser(dealId, userId){
+        return rest.one('remove/' + dealId + '/' + userId).customGET();
+    }
+
     return {
         getPanel: getPanel,
         addPanel: addPanel,
         removePanel: removePanel,
-        renamePanel: renamePanel
-
+        renamePanel: renamePanel,
+        removeUser: removeUser
     };
 });

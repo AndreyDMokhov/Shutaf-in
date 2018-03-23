@@ -41,4 +41,12 @@ public class ConfirmationResetPasswordServiceImpl implements ConfirmationResetPa
         return confirmationResetPasswordRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        ConfirmationResetPassword confirmation = confirmationResetPasswordRepository.findByConfirmationUUID(link);
+        if (confirmation != null) {
+            confirmation.setIsConfirmed(false);
+            confirmationResetPasswordRepository.save(confirmation);
+        }
+    }
 }

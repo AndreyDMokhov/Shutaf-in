@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.controller.entry;
 
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountLoginRequest;

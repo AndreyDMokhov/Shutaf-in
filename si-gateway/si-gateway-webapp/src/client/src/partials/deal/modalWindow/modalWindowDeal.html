@@ -83,4 +83,38 @@
             </button>
         </div>
     </div>
+
+    <div ng-switch-when="removeUser">
+        <div class="modal-header deal" style="text-align: center">
+            <h3 class="modal-title">
+                {{'Deal.deal.modalWindow.removeUser.header' | translate}}
+            </h3>
+        </div>
+        <div class="modal-body-original">
+            <h4 style="text-align: center">
+                {{'Deal.deal.modalWindow.removeUser.content' | translate}}
+                <br>
+                <br>
+                <br>
+                <strong>
+                    {{vm.resolve.type.firstName}} {{vm.resolve.type.lastName}}
+                </strong>
+
+            </h4>
+        </div>
+        <div class="modal-footer ">
+            <button
+                    class="btn btn-primary"
+                    type="button"
+                    ng-click="vm.ok()">
+                {{'Deal.deal.modalWindow.yes'|translate}}
+            </button>
+            <button
+                    class="btn btn-warning"
+                    type="button"
+                    ng-click="vm.cancel()">
+                {{'Deal.deal.modalWindow.no'| translate}}
+            </button>
+        </div>
+    </div>
 </div>

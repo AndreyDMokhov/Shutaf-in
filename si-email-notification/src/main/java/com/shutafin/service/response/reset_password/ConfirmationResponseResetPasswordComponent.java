@@ -34,4 +34,8 @@ public class ConfirmationResponseResetPasswordComponent implements BaseConfirmat
         return emailResetPasswordResponse;
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        confirmationResetPasswordService.revertConfirmation(link);
+    }
 }
