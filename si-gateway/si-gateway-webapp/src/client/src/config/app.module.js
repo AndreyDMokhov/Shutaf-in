@@ -17,6 +17,7 @@ var app = angular.module("app", [
     'naif.base64',
     'rzModule',
     'ngStorage',
+    'infinite-scroll',
     'toggle-switch'
     /* @if templateCache **
      ,'templateCache'
