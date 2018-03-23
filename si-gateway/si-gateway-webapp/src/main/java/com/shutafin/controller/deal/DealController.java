@@ -25,7 +25,7 @@ public class DealController {
     @Autowired
     private DealService dealService;
 
-    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/")
     public DealWeb initiateDeal(@AuthenticatedUser Long userId,
                                 @RequestBody @Valid DealWeb dealWeb,
                                 BindingResult result) {
@@ -40,13 +40,13 @@ public class DealController {
     }
 
 
-    @PutMapping(value = "/leave/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/leave/{dealId}")
     public DealResponse leaveDeal(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId) {
         log.debug("/deal/leave/{dealId}");
         return dealService.leaveDeal(dealId, userId);
     }
 
-    @GetMapping(value = "/remove/{dealId}/{userToRemoveId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/remove/{dealId}/{userToRemoveId}")
     public void removeDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
                                @PathVariable(value = "userToRemoveId") Long userToRemoveId) {
         log.debug("/deal/remove/{dealId}/{userToRemoveId}");
@@ -54,7 +54,7 @@ public class DealController {
     }
 
 
-    @GetMapping(value = "/add/{dealId}/{userToAddId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/add/{dealId}/{userToAddId}")
     public DealResponse addDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
                                     @PathVariable(value = "userToAddId") Long userToAddId) {
         log.debug("/deal/add/{dealId}/{userToChangeId}");
@@ -74,7 +74,7 @@ public class DealController {
         return dealService.getDeal(dealId, userId);
     }
 
-    @PostMapping(value = "/rename/{dealId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/rename/{dealId}")
     public DealWeb renameDeal(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
                               @RequestBody @Valid DealTitleChangeWeb newTitle, BindingResult result) {
         log.debug("POST deal/rename/{dealId}");

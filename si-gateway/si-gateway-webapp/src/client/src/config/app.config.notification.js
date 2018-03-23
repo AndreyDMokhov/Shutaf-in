@@ -6,7 +6,7 @@ app.factory('notify', function (ngNotify) {
        return ngNotify.config({
            theme: 'pure',
            position: 'bottom',
-           duration: 5000,
+           duration: 10000,
            sticky: false,
            button: false
        });

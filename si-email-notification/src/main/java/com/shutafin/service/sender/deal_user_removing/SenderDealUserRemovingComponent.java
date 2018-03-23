@@ -16,7 +16,7 @@ import java.util.UUID;
 @Component("dealUserRemoving")
 public class SenderDealUserRemovingComponent implements BaseEmailDealInterface {
 
-    private static final String DEAL_USER_REMOVING_CONFIRMATION_URL = "/#/deal/user/remove/confirmation/";
+    private static final String DEAL_USER_REMOVING_CONFIRMATION_URL = "/#/deal/confirmation/user/remove/";
     private static final String URL_PROFILE = "/#/profile/";
 
     @Autowired

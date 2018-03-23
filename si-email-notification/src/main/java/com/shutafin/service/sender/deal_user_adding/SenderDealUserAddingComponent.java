@@ -16,7 +16,7 @@ import java.util.UUID;
 @Component("dealUserAdding")
 public class SenderDealUserAddingComponent implements BaseEmailDealInterface {
 
-    private static final String DEAL_USER_ADDING_CONFIRMATION_URL = "/#/deal/user/add/confirmation/";
+    private static final String DEAL_USER_ADDING_CONFIRMATION_URL = "/#/deal/confirmation/user/add/";
     private static final String URL_PROFILE = "/#/profile/";
 
     @Autowired

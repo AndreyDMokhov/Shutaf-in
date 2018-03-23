@@ -22,7 +22,7 @@ public class DealPanelController {
     @Autowired
     private DealPanelService dealPanelService;
 
-    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/")
     public DealPanelResponse addDealPanel(@AuthenticatedUser Long userId,
                                           @RequestBody @Valid DealPanelWeb dealPanelWeb,
                                           BindingResult result) {
@@ -43,8 +43,7 @@ public class DealPanelController {
         return dealPanelService.getDealPanel(dealPanelId, userId);
     }
 
-    @PostMapping(value = "/{panelId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{panelId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealPanelResponse renameDealPanel(@AuthenticatedUser Long userId,
                                              @PathVariable(value = "panelId") Long dealPanelId,
                                              @RequestBody @Valid DealTitleChangeWeb panelTitle) {

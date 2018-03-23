@@ -20,21 +20,21 @@ public class DealConfirmationController {
     private DealService dealService;
 
     @NoAuthentication
-    @GetMapping(value = "/initialize", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/initialize")
     public DealResponse confirmDealUser(@RequestParam("link") String link) {
         log.debug("/deal/confirmation");
         return dealService.confirmDealUser(link);
     }
 
     @NoAuthentication
-    @GetMapping(value = "/remove", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/remove")
     public DealResponse confirmRemoveDealUser(@RequestParam("link") String link) {
         log.debug("/deal/confirmation/remove");
         return dealService.confirmRemoveDealUser(link);
     }
 
     @NoAuthentication
-    @GetMapping(value = "/add", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/add")
     public DealResponse confirmAddDealUser(@RequestParam("link") String link) {
         log.debug("/deal/confirmation/add");
         return dealService.confirmAddDealUser(link);

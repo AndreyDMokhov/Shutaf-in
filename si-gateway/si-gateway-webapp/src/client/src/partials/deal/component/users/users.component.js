@@ -1,10 +1,11 @@
 app.component('usersDealComponent', {
     templateUrl: "partials/deal/component/users/users.component.html",
     bindings: {
-        usersInfo: '<'
+        dealInfo: '<'
+
     },
     controllerAs: 'vm',
-    controller: function () {
+    controller: function (dealModel, notify, $filter, $uibModal) {
         var vm = this;
         var limitUsersForShow = 4;
         var lastElement = 0;
@@ -15,11 +16,11 @@ app.component('usersDealComponent', {
 
         vm.$onInit = function () {
             var i;
-            if (vm.usersInfo.length <= limitUsersForShow) {
-                vm.partUsersInfo = vm.usersInfo;
+            if (vm.dealInfo.users.length <= limitUsersForShow) {
+                vm.partUsersInfo = vm.dealInfo.users;
             } else {
                 for (i = 0; i < limitUsersForShow; i++) {
-                    vm.partUsersInfo[i] = vm.usersInfo[i];
+                    vm.partUsersInfo[i] = vm.dealInfo.users[i];
                 }
                 vm.arrows = true;
                 vm.arrowDown = true;
@@ -29,19 +30,19 @@ app.component('usersDealComponent', {
 
         vm.downArrow = function () {
 
-            if (lastElement === vm.usersInfo.length) {
+            if (lastElement === vm.dealInfo.users.length) {
                 return;
             }
             var i = lastElement;
             var j = 0;
             lastElement = lastElement + limitUsersForShow;
             vm.partUsersInfo = [];
-            for (; i < lastElement && i < vm.usersInfo.length; i++) {
-                vm.partUsersInfo[j++] = vm.usersInfo[i];
+            for (; i < lastElement && i < vm.dealInfo.users.length; i++) {
+                vm.partUsersInfo[j++] = vm.dealInfo.users[i];
 
             }
 
-            if (i == vm.usersInfo.length) {
+            if (i == vm.dealInfo.users.length) {
                 vm.arrowDown = false;
             }
             lastElement = i;
@@ -60,7 +61,7 @@ app.component('usersDealComponent', {
             }
 
             for (var i = previousElement; i < lastElement - 1; i++) {
-                vm.partUsersInfo[j++] = vm.usersInfo[i];
+                vm.partUsersInfo[j++] = vm.dealInfo.users[i];
             }
 
             if (previousElement === 0) vm.arrowUp = false;
@@ -76,6 +77,41 @@ app.component('usersDealComponent', {
                 return 'data:image/jpeg;base64,' + img;
             }
         }
+
+        vm.remove = function (user) {
+
+            var type = 'removeUser';
+            var modalInstance = $uibModal.open({
+
+                animation: true,
+                component: 'modalComponent',
+                size: 'sm',
+                resolve: {
+
+                    type: function () {
+                        return {type: type, firstName: user.firstName.toUpperCase(), lastName: user.lastName.toUpperCase()};
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+
+                dealModel.removeUser(vm.dealInfo.dealId, user.userId).then(
+                    function (success) {
+                        notify.set($filter('translate')('Deal.request.removeUser', {
+                            firstName: user.firstName.toUpperCase(),
+                            lastName: user.lastName.toUpperCase(),
+                            dealName: vm.dealInfo.title
+                        }), {sticky: true, button: true});
+                    },
+                    function (error) {
+                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                    }
+                );
+
+            });
+
+
+        };
 
         vm.getUserImage = getUserImage;
     }

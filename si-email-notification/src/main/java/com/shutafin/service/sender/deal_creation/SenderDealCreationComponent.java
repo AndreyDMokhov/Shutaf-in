@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component("dealCreation")
 public class SenderDealCreationComponent implements BaseEmailDealInterface {
 
-    private static final String DEAL_CREATION_CONFIRMATION_URL = "/#/deal/creation/confirmation/";
+    private static final String DEAL_CREATION_CONFIRMATION_URL = "/#/deal/confirmation/initialize/";
     private static final String URL_PROFILE = "/#/profile/";
 
     @Autowired
