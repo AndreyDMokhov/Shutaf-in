@@ -41,4 +41,14 @@ public class ConfirmationEmailChangeServiceImpl implements ConfirmationEmailChan
     public ConfirmationEmailChange getConfirmed(String link) {
         return confirmationEmailChangeRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
     }
+
+    @Override
+    public void revertConfirmation(String link) {
+        ConfirmationEmailChange confirmation = confirmationEmailChangeRepository.findByConfirmationUUID(link);
+        if (confirmation != null) {
+            confirmation.setIsConfirmed(false);
+            confirmationEmailChangeRepository.save(confirmation);
+        }
+
+    }
 }

@@ -166,6 +166,9 @@
             <column name="IS_CONFIRMED" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="DEAL_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -190,6 +193,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="IS_CONFIRMED" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="GROUP_UUID" type="VARCHAR(50)">
@@ -222,6 +228,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="IS_CONFIRMED" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="GROUP_UUID" type="VARCHAR(50)">

@@ -34,7 +34,7 @@ public class DealController {
 
     @PutMapping(value = "/{dealId}/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void confirmDealUser(@PathVariable(value = "dealId") Long dealId,
-                         @PathVariable(value = "userId") Long userId) {
+                                @PathVariable(value = "userId") Long userId) {
         log.debug("/{dealId}/{userId}");
         dealService.confirmDealUser(dealId, userId);
     }
@@ -55,6 +55,12 @@ public class DealController {
     public void addDealUser(@RequestBody InternalDealUserWeb internalDealUserWeb) {
         log.debug("/add");
         dealService.addDealUser(internalDealUserWeb);
+    }
+
+    @PutMapping(value = "/confirmation/add", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public void confirmAddDealUser(@RequestBody InternalDealUserWeb internalDealUserWeb) {
+        log.debug("/confirmation/add");
+        dealService.confirmAddDealUser(internalDealUserWeb);
     }
 
     @GetMapping(value = "/all/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})

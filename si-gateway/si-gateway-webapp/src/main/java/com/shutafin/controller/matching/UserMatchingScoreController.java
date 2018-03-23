@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.controller.matching;
 
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;

@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.controller.account;
 
 import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;

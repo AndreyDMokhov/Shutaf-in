@@ -34,4 +34,8 @@ public class ConfirmationResponseRegistrationComponent implements BaseConfirmati
         return emailRegistrationResponse;
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        confirmationRegistrationService.revertConfirmation(link);
+    }
 }

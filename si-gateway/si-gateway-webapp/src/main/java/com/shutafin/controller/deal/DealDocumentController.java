@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.controller.deal;
 
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.deal.DealUserDocumentWeb;
@@ -21,7 +21,7 @@ public class DealDocumentController {
     @Autowired
     private DealDocumentService dealDocumentService;
 
-    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/")
     public DealUserDocumentWeb addDealDocument(@AuthenticatedUser Long userId,
                                                @RequestBody @Valid DealUserDocumentWeb dealUserDocumentWeb,
                                                BindingResult result) {
@@ -42,8 +42,7 @@ public class DealDocumentController {
         return dealDocumentService.getDealDocument(userId, dealDocumentId);
     }
 
-    @PostMapping(value = "/{docId}", consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{docId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public DealUserDocumentWeb renameDealDocument(@AuthenticatedUser Long userId,
                                                   @PathVariable(value = "docId") Long userDocumentId,
                                                   @RequestBody @Valid DealTitleChangeWeb documentTitle) {

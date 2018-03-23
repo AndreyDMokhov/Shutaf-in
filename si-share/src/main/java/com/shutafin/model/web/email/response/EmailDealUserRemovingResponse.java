@@ -10,6 +10,7 @@ import lombok.*;
 public class EmailDealUserRemovingResponse {
 
     private Long dealId;
+    private Long userOriginId;
     private Long userIdToRemove;
     private Integer countUsersSend;
     private Integer countUsersConfirmed;

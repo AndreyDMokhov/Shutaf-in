@@ -29,6 +29,8 @@
   "Deal.deal.modalWindow.rename.header": "Rename {{component}}",
   "Deal.deal.modalWindow.rename.content": "New name",
   "Deal.deal.modalWindow.remove.header": "Remove {{component}}",
+  "Deal.deal.modalWindow.removeUser.header": "Participant removal",
+  "Deal.deal.modalWindow.removeUser.content": "Start voting for participant removal from deal?",
   "Deal.deal.modalWindow.remove.content": "Are you sure?",
   "Deal.deal.modalWindow.cancel": "Cancel",
   "Deal.deal.modalWindow.ok": "Ok",
@@ -41,6 +43,11 @@
   "Deal.deal.button.initiate":"Initiate deal",
   "Deal.deal.button.leave":"Leave deal",
   "Deal.confirmation": "To activate the deal, you need to confirm by email",
+  "Deal.confirmation.initialization": "Your participation in deal {{dealName}} has been successfully confirmed",
+  "Deal.confirmation.addUser": "You have confirmed the new participant in deal",
+  "Deal.confirmation.removeUser": "You have confirmed participant termination",
+  "Deal.request.removeUser": "You have voted for removing {{firstName}} {{lastName}} from {{dealName}} deal. {{firstName}} {{lastName}} will be removed after every deal participant confirm this action by navigating the link, send to everyone by email",
+  "Deal.users.button.remove": "Vote for removal",
   "Deal.leaving": "You left the deal",
 
 
@@ -92,7 +99,7 @@
   "Login.form.button.login": "Login",
   "Login.form.button.resendEmailRegistration": "Resend email confirmation",
   "Login.form.errorEmail": "Please enter a valid email address",
-  "Login.form.errorPassword": "Please enter at least 8 characters",
+  "Login.form.errorPassword": "Password length must be between 8 and 25 characters",
   "Login.message.success": "We are glad to see You again!",
 
   "SECTION": "LOGOUT",

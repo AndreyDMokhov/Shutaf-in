@@ -9,8 +9,8 @@ import com.shutafin.model.exception.exceptions.AccountBlockedException;
 import com.shutafin.model.exception.exceptions.AccountNotConfirmedException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.types.CompressionType;
+import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.repository.account.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -26,16 +26,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserAccountServiceImpl implements UserAccountService {
 
+    @Autowired
     private UserAccountRepository userAccountRepository;
-    private UserImageService userImageService;
 
     @Autowired
-    public UserAccountServiceImpl(
-            UserAccountRepository userAccountRepository,
-            UserImageService userImageService) {
-        this.userAccountRepository = userAccountRepository;
-        this.userImageService = userImageService;
-    }
+    private UserImageService userImageService;
+
 
     @Override
     public AccountStatus getUserAccountStatus(User user) {

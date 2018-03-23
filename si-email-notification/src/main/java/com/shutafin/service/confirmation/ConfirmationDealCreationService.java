@@ -4,7 +4,7 @@ import com.shutafin.model.entity.confirmation.deal_creation.ConfirmationDealCrea
 
 public interface ConfirmationDealCreationService extends BaseConfirmationService<ConfirmationDealCreation> {
 
-    ConfirmationDealCreation get(Long dealId);
+    ConfirmationDealCreation get(Long dealId, Long userId);
 
     Integer getCountUsersSend(Long dealId);
 

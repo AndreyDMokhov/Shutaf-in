@@ -13,6 +13,8 @@ public interface EmailService {
 
     Object getConfirmationResponse(String link, EmailReason emailReason);
 
+    void revertConfirmation(String link, EmailReason emailReason);
+
     Object getValidLink(String link, EmailReason emailReason);
 
     void resendEmails(EmailResendWeb emailResendWeb);

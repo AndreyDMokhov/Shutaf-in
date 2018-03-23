@@ -44,4 +44,8 @@ public class ConfirmationResponseEmailChangeComponent implements BaseConfirmatio
         return emailChangeResponse;
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        confirmationEmailChangeService.revertConfirmation(link);
+    }
 }

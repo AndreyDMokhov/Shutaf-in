@@ -21,9 +21,10 @@ public class ConfirmationDealCreationServiceImpl implements ConfirmationDealCrea
     }
 
     @Override
-    public ConfirmationDealCreation get(Long dealId) {
+    public ConfirmationDealCreation get(Long dealId, Long userId) {
         return ConfirmationDealCreation.builder()
                 .dealId(dealId)
+                .userId(userId)
                 .confirmationUUID(UUID.randomUUID().toString())
                 .isConfirmed(false)
                 .expiresAt(DateUtils.addHours(new Date(), LINK_HOURS_EXPIRATION))
@@ -50,4 +51,12 @@ public class ConfirmationDealCreationServiceImpl implements ConfirmationDealCrea
         return confirmationDealCreationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        ConfirmationDealCreation confirmation = confirmationDealCreationRepository.findByConfirmationUUID(link);
+        if (confirmation != null) {
+            confirmation.setIsConfirmed(false);
+            confirmationDealCreationRepository.save(confirmation);
+        }
+    }
 }

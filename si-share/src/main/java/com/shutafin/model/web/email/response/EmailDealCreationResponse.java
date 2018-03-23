@@ -10,6 +10,7 @@ import lombok.*;
 public class EmailDealCreationResponse {
 
     private Long dealId;
+    private Long userId;
     private Integer countUsersSend;
     private Integer countUsersConfirmed;
     private Boolean isConfirmed;
