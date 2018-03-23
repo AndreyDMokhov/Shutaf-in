@@ -73,6 +73,9 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOriginId);
         List<Long> usersToMatch = userMatchService.findMatchingUsers(userOriginId);
         usersToMatch = userQuestionExtendedAnswerService.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
+        if (usersToMatch.size() < page * results){
+            return userMatchingScoresValues;
+        }
         usersToMatch = usersToMatch.subList(page * results, Math.min(usersToMatch.size(), page * results + results));
 
         Map<Long, Double> maxUserMatchingScoresMap = createMaxUserMatchingScoresMap(maxUserMatchingScoreRepository.findByUserIdIn(usersToMatch));
