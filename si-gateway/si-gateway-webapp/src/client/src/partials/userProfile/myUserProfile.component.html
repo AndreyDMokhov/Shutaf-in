@@ -8,31 +8,19 @@
                     <span> <a class="fa fa-pencil"
                               ui-sref="settings.personal"
                               uib-tooltip="{{'UserProfile.edit' | translate}}"
-                              tooltip-placement="bottom"
-                              ng-show="vm.isThisMyProfile"></a></span>
+                              tooltip-placement="bottom"></a></span>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-4" align="center">
-                            <user-profile-image
-                                    user-profile="vm.userProfile"
-                                    is-my-profile="vm.isThisMyProfile"
-                                    dialog-user-id="vm.dialogUserId">
-                            </user-profile-image>
+                            <user-profile-image></user-profile-image>
                         </div>
                         <div class=" col-md-7 col-lg-7 " style="margin-left: 30px">
-                            <my-user-profile-info user-profile="vm.userProfile"></my-user-profile-info>
+                            <my-user-profile-info></my-user-profile-info>
                         </div>
-                    </div>
-                    <div class="row">
-                        <my-selected-requared-questions-answers-component></my-selected-requared-questions-answers-component>
-                    </div>
-                    <div class="row">
-                        <my-selected-extended-questions-answers-component></my-selected-extended-questions-answers-component>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>

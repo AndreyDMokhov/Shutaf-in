@@ -3,30 +3,19 @@
         <div class="col-md-12 toppad">
             <div class="card-custom">
                 <div class="card-header pointer">
-                    <span> {{vm.userProfile.firstName}}
-                            {{vm.userProfile.lastName}}</span>
-                    <span> <a class="fa fa-pencil"
-                              ui-sref="settings.personal"
-                              uib-tooltip="{{'UserProfile.edit' | translate}}"
-                              tooltip-placement="bottom"
-                              ng-show="vm.isThisMyProfile"></a></span>
+                    <span> {{vm.userInfo.firstName}} {{vm.userInfo.lastName}}</span>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-4" align="center">
-                            <user-profile-image
-                                    user-profile="vm.userProfile"
-                                    is-my-profile="vm.isThisMyProfile"
-                                    dialog-user-id="vm.dialogUserId">
-                            </user-profile-image>
+                        <div class="col-md-4 userProfileImage" ng-if="vm.userInfo.userId" align="center">
+                            <user-avatar user-id="{{vm.userInfo.userId}}" width="225" height="225"></user-avatar>
                         </div>
-                        <div class=" col-md-7 col-lg-7 " style="margin-left: 30px">
-                            <user-profile-info user-profile="vm.userProfile"></user-profile-info>
+                        <div class="col-md-7 col-lg-7" ng-if="vm.userInfo.userId" style="margin-left: 30px">
+                            <user-profile-info user-profile="vm.userInfo"></user-profile-info>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>

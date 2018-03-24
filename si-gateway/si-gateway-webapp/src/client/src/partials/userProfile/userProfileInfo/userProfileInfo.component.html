@@ -40,3 +40,13 @@
     </tr>
     </tbody>
 </table>
+
+<div ng-if="vm.requiredQuestionsAndAnswers.length > 0">
+    <table class="myQuestionsAnswersTable">
+        <th colspan="2"> Answers on required questions:</th>
+        <tr ng-repeat="item in vm.requiredQuestionsAndAnswers">
+            <td>{{item.question}}</td>
+            <td> {{item.answer}}</td>
+        </tr>
+    </table>
+</div>

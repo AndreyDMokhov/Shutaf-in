@@ -15,7 +15,7 @@
     <h4> {{'Search.results'|translate}} {{vm.userSearchList.length}} </h4>
     <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
     <div class="card-custom" ng-repeat="user in vm.userSearchList | orderBy:'-score'">
-        <div class="card-header pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
+        <div class="card-header pointer" ng-click="vm.openUserProfile({userId:user.userId})">
             <h4 class="panel-title">
                 {{ user.firstName }} {{ user.lastName }}
             </h4>

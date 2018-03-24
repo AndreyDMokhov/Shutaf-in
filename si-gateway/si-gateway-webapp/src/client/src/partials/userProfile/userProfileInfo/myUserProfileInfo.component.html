@@ -40,3 +40,21 @@
     </tr>
     </tbody>
 </table>
+
+<div>
+    <table class="myQuestionsAnswersTable">
+        <th colspan="2"> My answers on required questions:</th>
+        <tr ng-repeat="item in vm.requiredQuestionsAndAnswers">
+            <td>{{item.question}}</td>
+            <td> {{item.answer}}</td>
+        </tr>
+        <th colspan="2"> My answers on extended questions:</th>
+        <tr ng-repeat="item in vm.extendedQuestionsAndAnswers">
+            <td>{{item.question}}
+            </td>
+            <td>
+                <span ng-repeat="answer in item.answers">{{answer}} </span>
+            </td>
+        </tr>
+    </table>
+</div>

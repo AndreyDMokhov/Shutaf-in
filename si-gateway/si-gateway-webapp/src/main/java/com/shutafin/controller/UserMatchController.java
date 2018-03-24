@@ -1,8 +1,10 @@
 package com.shutafin.controller;
 
 import com.shutafin.model.web.initialization.InitializationResponse;
+import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
 import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
+import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.UserMatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,5 +32,11 @@ public class UserMatchController {
     public void configure(@AuthenticatedUser Long userId,
                           @RequestParam("enabled") Boolean isEnabled) {
         userMatchService.setIsUserMatchingEnabled(userId, isEnabled);
+    }
+
+    @NoAuthentication
+    @GetMapping(value = "/required-answers/{userId}")
+    public List<MatchingQuestionsSelectedAnswersDTO> getRequiredAnswers(@PathVariable (value = "userId") Long userId){
+        return userMatchService.getUserQuestionsSelectedAnswers(userId);
     }
 }

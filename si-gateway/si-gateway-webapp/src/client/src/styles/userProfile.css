@@ -36,3 +36,31 @@
   display: none;
   /*hide original close button*/
 }
+.userProfileImage .logo-center{
+  border-radius: 0;
+  -webkit-border-radius: 0;
+}
+
+.myQuestionsAnswersTable {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.myQuestionsAnswersTable td, .myQuestionsAnswersTable th {
+  border-top: 1px solid #ddd;
+  padding: 8px;
+}
+
+.myQuestionsAnswersTable tr:hover {background-color: #ddd;}
+
+.myQuestionsAnswersTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #f2f2f2;
+}
+.myQuestionsAnswersTable td > span:not(:first-child) {
+  border-left: 1px solid #ddd;
+  padding-left: 3px;
+}
