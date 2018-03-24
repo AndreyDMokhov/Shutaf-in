@@ -43,12 +43,12 @@
 
 <div>
     <table class="myQuestionsAnswersTable">
-        <th colspan="2"> My answers on required questions:</th>
+        <th colspan="2" ng-if="vm.requiredQuestionsAndAnswers.length>0"> My answers on required questions:</th>
         <tr ng-repeat="item in vm.requiredQuestionsAndAnswers">
             <td>{{item.question}}</td>
             <td> {{item.answer}}</td>
         </tr>
-        <th colspan="2"> My answers on extended questions:</th>
+        <th colspan="2" ng-if="vm.extendedQuestionsAndAnswers.length>0"> My answers on extended questions:</th>
         <tr ng-repeat="item in vm.extendedQuestionsAndAnswers">
             <td>{{item.question}}
             </td>

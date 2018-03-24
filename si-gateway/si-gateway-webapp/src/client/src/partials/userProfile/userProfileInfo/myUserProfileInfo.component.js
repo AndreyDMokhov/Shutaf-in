@@ -61,6 +61,6 @@ app.component('myUserProfileInfo', {
         }
 
         getDescriptionsForRequiredQuestions();
-        getDescriptionsForExtendedQuestions()
+        getDescriptionsForExtendedQuestions();
     }
 });
