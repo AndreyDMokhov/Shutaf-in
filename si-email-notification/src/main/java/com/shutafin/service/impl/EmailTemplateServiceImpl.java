@@ -8,6 +8,7 @@ import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +23,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     private static final String HEADER_SUFFIX = ".header";
     private static final String SECTION_SUFFIX = ".section";
+
+    @Value("${domain.name}")
+    private String url;
 
     @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
@@ -154,7 +158,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     }
 
     private String getServerAddress() {
-        return discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
+        return "http://" + url;
     }
 
     private String getUserImageLink(EmailUserImageSource emailUserImageSource, String serverAddress, String urlProfile) {
