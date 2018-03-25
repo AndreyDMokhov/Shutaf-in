@@ -206,7 +206,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <domain.name>localhost</domain.name>
+                <domain.name>localhost:7000</domain.name>
                 <server.profiles>dev</server.profiles>
 
                 <!--common build application configurations-->
