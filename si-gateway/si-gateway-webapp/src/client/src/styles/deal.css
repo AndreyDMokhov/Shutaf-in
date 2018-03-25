@@ -87,19 +87,35 @@ uib-tab-heading:hover .deal-rename {
   position: fixed;
   top: 45%;
   transform: translate(0, -50%);
-  right: 30px;
-  width: 70px;
+  right: 50px;
+  width: 60px;
   height: fit-content;
-  background-color: #e4eae2;
+  background-color: #ffffff;
   padding: 5px;
   border-radius: 5px;
+}
+.deal-user-card-cont {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.deal-user-card {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  background-color: #ebe8ff;
+}
+.remove-user {
+  visibility: hidden;
+}
+.deal-user-card:hover .remove-user {
+  visibility: visible !important;
 }
 .logo-image {
   border: 16px #000000;
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
   border-radius: 50px;
-  margin: 5px 0px 5px 0px;
 }
 .arrowUpDown {
   background-size: cover;

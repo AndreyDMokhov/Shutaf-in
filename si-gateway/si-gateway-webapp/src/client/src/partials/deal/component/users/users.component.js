@@ -5,7 +5,7 @@ app.component('usersDealComponent', {
 
     },
     controllerAs: 'vm',
-    controller: function (dealModel, notify, $filter, $uibModal) {
+    controller: function (dealModel, notify, $filter, $uibModal, $sessionStorage) {
         var vm = this;
         var limitUsersForShow = 4;
         var lastElement = 0;
@@ -13,9 +13,12 @@ app.component('usersDealComponent', {
         vm.arrowUp = false;
         vm.arrowDown = false;
         vm.arrows = false;
+        vm.userID = $sessionStorage.userProfile.userId;
 
         vm.$onInit = function () {
             var i;
+            console.log(vm.userID);
+            console.log(vm.dealInfo.users);
             if (vm.dealInfo.users.length <= limitUsersForShow) {
                 vm.partUsersInfo = vm.dealInfo.users;
             } else {
