@@ -8,6 +8,7 @@ import com.shutafin.route.RouteDirection;
 import com.shutafin.service.EmailTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +23,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     private static final String HEADER_SUFFIX = ".header";
     private static final String SECTION_SUFFIX = ".section";
+
+    @Value("${domain.name}")
+    private String url;
 
     @Autowired
     private DiscoveryRoutingService discoveryRoutingService;
@@ -40,7 +44,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         String section = properties.getProperty(prefix + SECTION_SUFFIX);
 
         for (Map.Entry<String, String> mapText : textReplace.entrySet()) {
-            section = section.replace("${"+mapText.getKey()+"}", mapText.getValue());
+            section = section.replace("${" + mapText.getKey() + "}", mapText.getValue());
         }
 
         String signature = properties.getProperty("common.signature");
@@ -82,7 +86,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
                 getTemplate(
                         emailNotificationWeb.getEmailReason(),
                         emailNotificationWeb.getLanguageCode(),
-                        new HashMap<String, String>(){{
+                        new HashMap<String, String>() {{
                             put("link", link);
                         }}
                 ),
@@ -132,7 +136,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         String userOriginUrl = getUserImageLink(userOrigin, serverAddress, urlProfile);
         imageSources.put(userOrigin.getUserId().toString(), Base64.getDecoder().decode(userOrigin.getImageSource()));
         textReplace.put("userOrigin", userOriginUrl);
-        if (emailNotificationDealWeb.getUserToChange() != null){
+        if (emailNotificationDealWeb.getUserToChange() != null) {
             EmailUserImageSource userToChange = emailNotificationDealWeb.getUserToChange();
             String userToChangeUrl = getUserImageLink(userToChange, serverAddress, urlProfile);
             imageSources.put(userToChange.getUserId().toString(), Base64.getDecoder().decode(userToChange.getImageSource()));
@@ -153,8 +157,8 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         );
     }
 
-    private String getServerAddress(){
-        return discoveryRoutingService.getRoute(RouteDirection.SI_GATEWAY);
+    private String getServerAddress() {
+        return "http://" + url;
     }
 
     private String getUserImageLink(EmailUserImageSource emailUserImageSource, String serverAddress, String urlProfile) {

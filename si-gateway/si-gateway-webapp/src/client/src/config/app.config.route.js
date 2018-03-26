@@ -44,7 +44,7 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
                 template: '<user-profile-component></user-profile-component>',
                 url: '/profile/{userId:int}',
                 params: {
-                        accessibleToAccountStatus: accountStatus.Statuses.COMPLETED_USER_INFO   //3
+                    accessibleToAccountStatus: accountStatus.Statuses.COMPLETED_USER_INFO   //3
                 }
             })
         .state('myUserProfile',
@@ -98,17 +98,32 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
             }
         })
         .state('questionsTab.requiredQuestions', {
-            template:'<required-questions-component></required-questions-component>',
+            template: '<required-questions-component></required-questions-component>',
             url: '/required-questions'
         })
         .state('questionsTab.extendedQuestions', {
-            template:'<extended-questions-component></extended-questions-component>',
+            template: '<extended-questions-component></extended-questions-component>',
             url: '/extended-questions'
         })
         /*Deal*/
         .state('deal', {
             url: '/deal',
             template: '<deal-presentation-component></deal-presentation-component>'
+        })
+        .state('dealInitializeConfirmation', {
+            controller: 'dealInitializeConfirmation',
+            controllerAs: 'vm',
+            url: '/deal/confirmation/initialize/{link}'
+        })
+        .state('dealAddUserConfirmation', {
+            controller: 'dealAddUserConfirmation',
+            controllerAs: 'vm',
+            url: '/deal/confirmation/user/add/{link}'
+        })
+        .state('dealRemoveUserConfirmation', {
+            controller: 'dealRemoveUserConfirmation',
+            controllerAs: 'vm',
+            url: '/deal/confirmation/user/remove/{link}'
         })
 
 

@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.controller.entry;
 
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUserType;

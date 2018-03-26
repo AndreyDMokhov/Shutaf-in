@@ -34,11 +34,16 @@ public class ConfirmationResponseDealUserAddingComponent implements BaseConfirma
 
         return EmailDealUserAddingResponse.builder()
                 .dealId(confirmation.getDealId())
+                .userOriginId(confirmation.getUserId())
                 .userIdToAdd(confirmation.getUserIdToAdd())
                 .countUsersSend(countUsersSend)
                 .countUsersConfirmed(countUsersConfirmed)
-                .isConfirmed(countUsersSend - countUsersConfirmed == 0 ? true : false)
+                .isConfirmed(countUsersSend - countUsersConfirmed == 0)
                 .build();
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        confirmationDealUserAddingService.revertConfirmation(link);
+    }
 }

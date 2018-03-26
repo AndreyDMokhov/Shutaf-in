@@ -1,6 +1,6 @@
 package com.shutafin.model.entity.confirmation.deal_user_adding;
 
-import com.shutafin.model.entity.BaseConfirmation;
+import com.shutafin.model.entity.BaseUserConfirmation;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,11 +14,11 @@ import java.util.Date;
 @Table(name = "CONFIRMATION_DEAL_USER_ADDING")
 @NoArgsConstructor
 @Data
-public class ConfirmationDealUserAdding extends BaseConfirmation {
+public class ConfirmationDealUserAdding extends BaseUserConfirmation {
 
     @Builder
-    public ConfirmationDealUserAdding(String confirmationUUID, Boolean isConfirmed, Date expiresAt, String groupUUID, Long dealId, Long userIdToAdd) {
-        super(confirmationUUID, isConfirmed, expiresAt);
+    public ConfirmationDealUserAdding(Long userId, String confirmationUUID, Boolean isConfirmed, Date expiresAt, String groupUUID, Long dealId, Long userIdToAdd) {
+        super(userId, confirmationUUID, isConfirmed, expiresAt);
         this.groupUUID = groupUUID;
         this.dealId = dealId;
         this.userIdToAdd = userIdToAdd;

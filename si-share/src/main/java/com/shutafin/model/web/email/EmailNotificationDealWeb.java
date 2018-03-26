@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,5 +30,5 @@ public class EmailNotificationDealWeb {
 
     @NotNull
     @Valid
-    private Set<EmailUserLanguage> emailUserLanguage;
+    private List<EmailUserLanguage> emailUserLanguage;
 }

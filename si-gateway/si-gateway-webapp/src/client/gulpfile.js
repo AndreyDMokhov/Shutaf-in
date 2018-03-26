@@ -58,7 +58,8 @@ gulp.task('babel', function () {
         '!./.tmp/bower_components/ng-dialog/**',
         '!./.tmp/bower_components/ngstorage/**',
         '!./.tmp/bower_components/file-saver/**',
-        '!./.tmp/bower_components/angularjs-slider/**'
+        '!./.tmp/bower_components/angularjs-slider/**',
+        '!./.tmp/bower_components/ngInfiniteScroll/**'
     ])
         .pipe(babel({
             presets: ['babel-preset-es2015-without-strict'],

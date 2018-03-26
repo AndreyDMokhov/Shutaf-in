@@ -12,5 +12,6 @@ import java.util.Date;
 public interface BaseConfirmationRepository<T, ID extends Serializable> extends BaseJpaRepository<T, ID> {
 
     T findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(String link, Date date);
+    T findByConfirmationUUID(String link);
 
 }

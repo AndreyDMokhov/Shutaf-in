@@ -6,7 +6,7 @@
             <div style="float: left">
                 <uib-tabset active="active" disable="true" vertical="false" type="pills">
                     <uib-tab ng-if="deal.statusId !== 1"
-                            ng-repeat="deal in vm.deals | orderBy: ['userStatusId', 'statusId']"
+                            ng-repeat="deal in vm.deals | orderBy: 'userStatusId'"
                             ng-click="vm.showSelectedDeal(deal)">
                         <uib-tab-heading>
                             {{deal.title}} ({{vm.getDealSuffix(deal)}})
@@ -34,6 +34,6 @@
         </div>
     </div>
 </div>
-<div ng-if="vm.dealTabClicked">
-    <users-deal-component users-info="vm.dealInfo.users"></users-deal-component>
+<div ng-if="vm.dealTabClicked && vm.dealInfo.statusId === 2">
+    <users-deal-component deal-info="vm.dealInfo"></users-deal-component>
 </div>

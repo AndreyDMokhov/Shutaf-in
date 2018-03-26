@@ -16,7 +16,7 @@ import java.util.UUID;
 @Component("dealUserRemoving")
 public class SenderDealUserRemovingComponent implements BaseEmailDealInterface {
 
-    private static final String DEAL_USER_REMOVING_CONFIRMATION_URL = "/#/deal/user/remove/confirmation/";
+    private static final String DEAL_USER_REMOVING_CONFIRMATION_URL = "/#/deal/confirmation/user/remove/";
     private static final String URL_PROFILE = "/#/profile/";
 
     @Autowired
@@ -32,9 +32,13 @@ public class SenderDealUserRemovingComponent implements BaseEmailDealInterface {
 
         String groupUUID = UUID.randomUUID().toString();
         for (EmailUserLanguage emailUserLanguage : emailNotificationDealWeb.getEmailUserLanguage()) {
+            if (emailUserLanguage.getUserId().equals(emailNotificationDealWeb.getUserOrigin().getUserId())){
+                continue;
+            }
             ConfirmationDealUserRemoving confirmation =
                     confirmationDealUserRemovingService.get(
                             emailNotificationDealWeb.getDealId(),
+                            emailNotificationDealWeb.getUserOrigin().getUserId(),
                             emailNotificationDealWeb.getUserToChange().getUserId(),
                             groupUUID);
             confirmationDealUserRemovingService.save(confirmation);

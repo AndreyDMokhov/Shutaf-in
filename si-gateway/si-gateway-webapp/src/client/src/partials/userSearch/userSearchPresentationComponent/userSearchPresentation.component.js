@@ -18,6 +18,10 @@ app.component('userSearchPresentationComponent', {
         vm.genders = $sessionStorage.genders;
         vm.cities = $sessionStorage.cities;
         vm.fullName = $stateParams.name;
+        vm.userSearchList = [];
+        var page = 0;
+        vm.isDisable = false;
+        vm.isLoading = false;
 
         function activate() {
             userSearchService.registerFilterObserver(saveFilters);
@@ -25,9 +29,19 @@ app.component('userSearchPresentationComponent', {
         }
 
         function userSearch() {
-            userSearchModel.userSearch(vm.fullName).then(
+            userSearchModel.userSearch(vm.fullName, page).then(
                 function (success) {
-                    vm.userSearchList = success.data.data;
+                    if(success.data.data.length == 0){
+                        vm.isDisable = true;
+                        vm.isLoading = false;
+                    }
+                    else{
+                        Array.prototype.push.apply(vm.userSearchList, success.data.data);
+                        page++;
+                        vm.isDisable = false;
+                        vm.isLoading = false;
+                    }
+
                 }, function (error) {
                     if (error === undefined || error === null) {
                         notify.set($filter('translate')('Error.SYS'), {type: 'error'});
@@ -42,7 +56,6 @@ app.component('userSearchPresentationComponent', {
                     $sessionStorage.filters.filterGenderId = filters.filterGenderId;
                     $sessionStorage.filters.filterCitiesIds = filters.filterCitiesIds;
                     $sessionStorage.filters.filterAgeRange = filters.filterAgeRange;
-
                     vm.userSearchList = success.data.data;
                 }, function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
@@ -53,11 +66,17 @@ app.component('userSearchPresentationComponent', {
             $state.go('userProfile', userId);
         }
 
+        function fetchNewPage () {
+            vm.isDisable = true;
+            vm.isLoading = true;
+            userSearch();
+        }
+
         activate();
 
         vm.userSearch = userSearch;
         vm.openUserProfile = openUserProfile;
         vm.saveFilters = saveFilters;
+        vm.fetchNewPage = fetchNewPage;
     }
-
 });

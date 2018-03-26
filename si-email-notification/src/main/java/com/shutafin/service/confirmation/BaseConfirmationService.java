@@ -7,4 +7,6 @@ public interface BaseConfirmationService<T> {
     T save(T confirmation);
 
     T getConfirmed(String link);
+
+    void revertConfirmation(String link);
 }

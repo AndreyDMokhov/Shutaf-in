@@ -4,7 +4,7 @@ import com.shutafin.model.entity.confirmation.deal_user_adding.ConfirmationDealU
 
 public interface ConfirmationDealUserAddingService extends BaseConfirmationService<ConfirmationDealUserAdding> {
 
-    ConfirmationDealUserAdding get(Long dealId, Long userIdToAdd, String groupUUID);
+    ConfirmationDealUserAdding get(Long dealId, Long userId, Long userIdToAdd, String groupUUID);
 
     Integer getCountUsersSend(String groupUUID);
 

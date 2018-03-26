@@ -21,9 +21,10 @@ public class ConfirmationDealUserAddingServiceImpl implements ConfirmationDealUs
     }
 
     @Override
-    public ConfirmationDealUserAdding get(Long dealId, Long userIdToAdd, String groupUUID) {
+    public ConfirmationDealUserAdding get(Long dealId, Long userId, Long userIdToAdd, String groupUUID) {
         return ConfirmationDealUserAdding.builder()
                 .dealId(dealId)
+                .userId(userId)
                 .userIdToAdd(userIdToAdd)
                 .groupUUID(groupUUID)
                 .confirmationUUID(UUID.randomUUID().toString())
@@ -52,4 +53,13 @@ public class ConfirmationDealUserAddingServiceImpl implements ConfirmationDealUs
         return confirmationDealUserAddingRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
     }
 
+    @Override
+    public void revertConfirmation(String link) {
+        ConfirmationDealUserAdding confirmation = confirmationDealUserAddingRepository.findByConfirmationUUID(link);
+        if (confirmation != null) {
+            confirmation.setIsConfirmed(false);
+            confirmationDealUserAddingRepository.save(confirmation);
+        }
+
+    }
 }

@@ -7,7 +7,10 @@ import com.shutafin.route.DiscoveryRoutingService;
 import com.shutafin.route.RouteDirection;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -71,6 +74,12 @@ public class DealControllerSender {
         restTemplate.put(requestUrl, internalDealUserWeb);
     }
 
+    public void confirmAddDealUser(Long dealId, Long userOriginId, Long userToAddId) {
+        String requestUrl = getDealUrl() + "confirmation/add";
+        InternalDealUserWeb internalDealUserWeb = new InternalDealUserWeb(dealId, userOriginId, userToAddId);
+        restTemplate.put(requestUrl, internalDealUserWeb);
+    }
+
     @SneakyThrows
     public List<DealUserWeb> getAllUserDeals(Long userId) {
         String requestUrl = getDealUrl() + "all/{userId}";
@@ -108,5 +117,5 @@ public class DealControllerSender {
     private String getDealUrl() {
         return discoveryRoutingService.getRoute(RouteDirection.SI_DEAL) + "/deal/";
     }
-    
+
 }

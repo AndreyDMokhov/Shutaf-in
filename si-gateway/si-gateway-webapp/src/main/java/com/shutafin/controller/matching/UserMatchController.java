@@ -1,4 +1,4 @@
-package com.shutafin.controller;
+package com.shutafin.controller.matching;
 
 import com.shutafin.model.web.initialization.InitializationResponse;
 import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
