@@ -121,7 +121,7 @@
   "UserProfile.answers.not-completed-required-matching" : "Опция поиска будет доступна после ответа на все обязательные вопросы",
   "UserProfile.answers.navigate" : "Navigate",
   "UserProfile.answers.required.header" : "Ответы на обязательные вопросы",
-  "UserProfile.answers.extended.header" : "Ответы на разширеные вопросы",
+  "UserProfile.answers.extended.header" : "Ответы на расширенные вопросы",
 
 
   "SECTION": "RESET_PASSWORD",
