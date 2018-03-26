@@ -120,7 +120,10 @@
   "UserProfile.message.sizeImage":"Image size should not exceed {{size}} MB",
   "UserProfile.current":"your profile",
   "UserProfile.age" : "Age",
+  "UserProfile.answers.not-completed-required-matching" : "Search options will be available after answering all required questions",
+  "UserProfile.answers.navigate" : "Navigate",
   "UserProfile.answers.required.header" : "Answers on required questions",
+  "UserProfile.answers.extended.header" : "Answers on extended questions",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Email sent to specified address",

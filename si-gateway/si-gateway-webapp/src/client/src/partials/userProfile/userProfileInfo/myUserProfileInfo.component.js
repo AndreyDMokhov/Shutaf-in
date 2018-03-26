@@ -2,7 +2,8 @@
 app.component('myUserProfileInfo', {
     templateUrl: 'partials/userProfile/userProfileInfo/myUserProfileInfo.component.html',
     controllerAs: 'vm',
-    controller: function ($sessionStorage) {
+    controller: function ($sessionStorage,
+                          accountStatus) {
         var vm = this;
         vm.cities = $sessionStorage.cities;
         vm.genders = $sessionStorage.genders;
@@ -15,7 +16,14 @@ app.component('myUserProfileInfo', {
         vm.requiredQuestionsAndAnswers = [];
         vm.extendedQuestionsAndAnswers = [];
 
+        vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
+
+        vm.accountStatuses = accountStatus.Statuses;
+
         function getDescriptionsForRequiredQuestions() {
+            if (vm.currentAccountStatus < vm.accountStatuses.COMPLETED_REQUIRED_MATCHING) {
+                return;
+            }
             if (!vm.selectedAnswers || vm.selectedAnswers.length < 1) {
                 return;
             }
@@ -37,6 +45,9 @@ app.component('myUserProfileInfo', {
         }
 
         function getDescriptionsForExtendedQuestions() {
+            if (vm.currentAccountStatus < vm.accountStatuses.COMPLETED_REQUIRED_MATCHING) {
+                return;
+            }
             if (!vm.selectedExtendedAnswers || vm.selectedExtendedAnswers.length < 1) {
                 return;
             }
