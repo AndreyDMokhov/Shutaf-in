@@ -34,7 +34,6 @@ app.component('userProfileInfo', {
             if (!vm.selectedAnswers || vm.selectedAnswers.length < 1) {
                 return;
             }
-            console.log(vm.selectedAnswers);
             angular.forEach(vm.selectedAnswers, function (selectedAnswer) {
                 var questionId = selectedAnswer.questionId,
                     answerId = selectedAnswer.selectedAnswersIds[0];
