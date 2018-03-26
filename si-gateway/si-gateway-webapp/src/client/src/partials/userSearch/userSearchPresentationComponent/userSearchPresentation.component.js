@@ -62,15 +62,8 @@ app.component('userSearchPresentationComponent', {
                 });
         }
 
-        function showUserProfilePopup(userId) {
-            vm.userId = userId;
-            ngDialog.open({
-                scope: $scope,
-                template: '<user-profile-component dialog-user-id="vm.userId"></user-profile-component>',
-                plain: true,
-                className: 'ngdialog-theme-default custom-user-profile-popup',
-                url: '/profile'
-            });
+        function openUserProfile(userId) {
+            $state.go('userProfile', userId);
         }
 
         function fetchNewPage () {
@@ -82,7 +75,7 @@ app.component('userSearchPresentationComponent', {
         activate();
 
         vm.userSearch = userSearch;
-        vm.showUserProfilePopup = showUserProfilePopup;
+        vm.openUserProfile = openUserProfile;
         vm.saveFilters = saveFilters;
         vm.fetchNewPage = fetchNewPage;
     }

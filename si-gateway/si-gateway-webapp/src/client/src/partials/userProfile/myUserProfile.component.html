@@ -1,0 +1,26 @@
+<div class="container margin-top">
+    <div class="row">
+        <div class="col-md-12 toppad">
+            <div class="card-custom">
+                <div class="card-header pointer">
+                    <span> ({{'UserProfile.current' | translate}}) {{vm.userProfile.firstName}}
+                            {{vm.userProfile.lastName}}</span>
+                    <span> <a class="fa fa-pencil"
+                              ui-sref="settings.personal"
+                              uib-tooltip="{{'UserProfile.edit' | translate}}"
+                              tooltip-placement="bottom"></a></span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4" align="center">
+                            <user-profile-image></user-profile-image>
+                        </div>
+                        <div class=" col-md-7 col-lg-7 " style="margin-left: 30px">
+                            <my-user-profile-info></my-user-profile-info>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

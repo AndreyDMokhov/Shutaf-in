@@ -42,7 +42,15 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
         .state('userProfile',
             {
                 template: '<user-profile-component></user-profile-component>',
-                url: '/profile/{id:int}',
+                url: '/profile/{userId:int}',
+                params: {
+                    accessibleToAccountStatus: accountStatus.Statuses.COMPLETED_USER_INFO   //3
+                }
+            })
+        .state('myUserProfile',
+            {
+                template: '<my-user-profile-component></my-user-profile-component>',
+                url: '/my-profile',
                 params: {
                     accessibleToAccountStatus: accountStatus.Statuses.COMPLETED_USER_INFO   //3
                 }
@@ -83,7 +91,7 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
         })
         .state('questionsTab', {
             abstract: true,
-            template: '<questions-tab></questions-tab>  ',
+            template: '<questions-tab></questions-tab>',
             url: '/questions',
             params: {
                 accessibleToAccountStatus: accountStatus.Statuses.COMPLETED_USER_INFO   //3
