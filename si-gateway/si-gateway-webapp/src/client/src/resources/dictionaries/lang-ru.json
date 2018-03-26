@@ -111,6 +111,7 @@
   "UserProfile.message.sizeImage":"Размер изображение не должен превышать {{size}} МБ",
   "UserProfile.current":"ваш профиль",
   "UserProfile.age" : "Возраст",
+  "UserProfile.answers.required.header" : "Ответы на обязательные вопросы",
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Письмо отправлено на указанный адрес",

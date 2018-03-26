@@ -43,7 +43,7 @@
 
 <div ng-if="vm.requiredQuestionsAndAnswers.length > 0">
     <table class="myQuestionsAnswersTable">
-        <th colspan="2"> Answers on required questions:</th>
+        <th colspan="2">{{'UserProfile.answers.required.header' | translate}}:</th>
         <tr ng-repeat="item in vm.requiredQuestionsAndAnswers">
             <td>{{item.question}}</td>
             <td> {{item.answer}}</td>
