@@ -32,21 +32,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DealSnapshotServiceImpl implements DealSnapshotService {
 
+    @Autowired
     private DealSnapshotRepository dealSnapshotRepository;
-    private DealPanelRepository dealPanelRepository;
-    private DealPanelUserRepository dealPanelUserRepository;
-    private DealPanelService dealPanelService;
 
     @Autowired
-    public DealSnapshotServiceImpl(DealSnapshotRepository dealSnapshotRepository,
-                                   DealPanelRepository dealPanelRepository,
-                                   DealPanelUserRepository dealPanelUserRepository,
-                                   DealPanelService dealPanelService) {
-        this.dealSnapshotRepository = dealSnapshotRepository;
-        this.dealPanelRepository = dealPanelRepository;
-        this.dealPanelUserRepository = dealPanelUserRepository;
-        this.dealPanelService = dealPanelService;
-    }
+    private DealPanelRepository dealPanelRepository;
+
+    @Autowired
+    private DealPanelUserRepository dealPanelUserRepository;
+
+    @Autowired
+    private DealPanelService dealPanelService;
+
 
     @Override
     public void saveDealSnapshot(Deal deal, Long userId) {
