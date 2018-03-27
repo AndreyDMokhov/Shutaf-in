@@ -158,7 +158,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     }
 
     private String getServerAddress() {
-        return "http://" + url;
+        return url;
     }
 
     private String getUserImageLink(EmailUserImageSource emailUserImageSource, String serverAddress, String urlProfile) {
