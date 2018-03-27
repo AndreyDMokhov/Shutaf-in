@@ -119,6 +119,11 @@
   "UserProfile.message.sizeImage":"Размер изображение не должен превышать {{size}} МБ",
   "UserProfile.current":"ваш профиль",
   "UserProfile.age" : "Возраст",
+  "UserProfile.answers.not-completed-required-matching" : "Опция поиска будет доступна после ответа на все обязательные вопросы",
+  "UserProfile.answers.navigate" : "Navigate",
+  "UserProfile.answers.required.header" : "Ответы на обязательные вопросы",
+  "UserProfile.answers.extended.header" : "Ответы на расширенные вопросы",
+
 
   "SECTION": "RESET_PASSWORD",
   "ResetPassword.emailSent" : "Письмо отправлено на указанный адрес",
@@ -219,7 +224,7 @@
   "Chat.button.send": "Отправить",
   "Chat.title.compatibleUsers": "Совместимые пользователи",
   "Chat.title.usersInChat": "Пользователи в ",
-  "Chat.title.send.message": "Начать общение",
+  "Chat.title.send.message": "Новый чат",
   "Chat.title.add.user": "Добавить пользователя в чат",
   "Chat.title.delete.user": "Удалить пользователя",
   "Chat.title.find.users": "Найти соседа",

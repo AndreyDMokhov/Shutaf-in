@@ -12,7 +12,6 @@ app.controller('dealInitializeConfirmation', function (dealConfirmationModel,
         }
         dealConfirmationModel.initialize(urlLink).then(
             function (success) {
-                debugger;
                 notify.set($filter('translate')("Deal.confirmation.initialization", {dealName: success.data.data.title}), {type: 'success'});
                 $state.go("home");
             }, function (error) {

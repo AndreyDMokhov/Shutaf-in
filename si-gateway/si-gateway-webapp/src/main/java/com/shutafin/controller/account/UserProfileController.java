@@ -14,15 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by evgeny on 10/24/2017.
  */
 @RestController
-@RequestMapping("/users/profile")
+@RequestMapping("/users")
 public class UserProfileController {
 
     @Autowired
     private UserInfoService userInfoService;
 
     @NoAuthentication
-    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/profile/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public AccountUserInfoResponseDTO getUserInfo(@PathVariable(value = "userId") Long userId){
+        return userInfoService.getUserInfo(userId);
+    }
+
+    @NoAuthentication
+    @RequestMapping(value = "/my-profile/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserInfoResponseDTO getMyUserInfo(@PathVariable(value = "userId") Long userId){
         return userInfoService.getUserInfo(userId);
     }
 }
