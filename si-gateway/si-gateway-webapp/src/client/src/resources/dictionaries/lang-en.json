@@ -69,6 +69,8 @@
   "Error.ERI":"Resend interval is 2 minutes",
   "Error.NAP":"No permissions to perform the action",
   "Error.MDE":"Cannot initiate deal. One or more users are already in deal",
+  "Error.AIC":"The action is already confirmed",
+  "Error.AET":"The action cannot be confirmed because of expiration date",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
