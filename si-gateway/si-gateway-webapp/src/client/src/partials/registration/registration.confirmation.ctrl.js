@@ -7,7 +7,8 @@ app.controller('registrationConfirmation', function (registrationModel,
                                                      $sessionStorage,
                                                      $translate,
                                                      initializationService,
-                                                     $window) {
+                                                     $window,
+                                                     siteAccessRouting) {
 
     function confirmUserRegistration() {
         var urlLink = $stateParams.link;
@@ -18,9 +19,9 @@ app.controller('registrationConfirmation', function (registrationModel,
             function (success) {
 
                 $sessionStorage.sessionId = success.headers('session_id');
-                $window.location.href = "/";
+                $window.location.reload();
                 notify.set($filter('translate')("Registration.form.msg.registration.success"), {type: 'success'});
-                $state.go("home");
+                siteAccessRouting.navigate('home', {});
             }, function (error) {
                 notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 if (error.data.error.errorTypeCode === 'RNF') {
