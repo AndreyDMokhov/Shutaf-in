@@ -72,7 +72,7 @@ app.component('questionComponent', {
             this.sendData();
             this.putAnswers(answers);
             if ($sessionStorage.showExtendedQuestions) {
-                $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
+                $state.go('myUserProfile');
             }
             else {
                 $sessionStorage.showExtendedQuestions = true;

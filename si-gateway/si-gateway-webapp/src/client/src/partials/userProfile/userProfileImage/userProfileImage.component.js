@@ -1,18 +1,13 @@
 "use strict";
 app.component('userProfileImage', {
     templateUrl: 'partials/userProfile/userProfileImage/userProfileImage.component.html',
-    bindings: {
-        userProfile: '=',
-        dialogUserId: '=',
-        isMyProfile: '='
-    },
     controllerAs: 'vm',
     controller: function ($localStorage,
                           $state,
                           $stateParams,
                           $filter,
                           sessionService,
-                          userProfileModel,
+                          myUserProfileModel,
                           $sessionStorage,
                           notify,
                           $timeout,
@@ -26,6 +21,7 @@ app.component('userProfileImage', {
         $scope.myCroppedImage = '';
         vm.fileInfo = {};
         vm.size = IMAGE_MAX_SIZE_MB * 1024;
+        vm.userProfile = $sessionStorage.userProfile;
 
         vm.hideDeleteImageButton = false;
         vm.isThisMyProfile = false;
@@ -61,7 +57,7 @@ app.component('userProfileImage', {
         };
 
         function saveImage(data) {
-            userProfileModel.addOrUpdateImage({image: data}).then(
+            myUserProfileModel.addOrUpdateImage({image: data}).then(
                 function (success) {
                     vm.userProfile.userImage = success.data.data.image;
                     vm.userProfile.userImageId = success.data.data.id;
@@ -103,7 +99,7 @@ app.component('userProfileImage', {
                 return;
             }
 
-            userProfileModel.deleteImage().then(
+            myUserProfileModel.deleteImage().then(
                 function (success) {
                     vm.userProfile.userImage = '../../images/default_avatar.png';
                     vm.userProfile.userImageId = null;
@@ -145,7 +141,7 @@ app.component('userProfileImage', {
                 width = img.width;
                 height = img.height;
                 if (width >= 1000 && height >= 1000) {
-                    $scope.selectedSize = {value: {w: 1000, h: 1000}} ;
+                    $scope.selectedSize = {value: {w: 1000, h: 1000}};
                 }
                 else {
                     if (width >= height) {
@@ -156,52 +152,8 @@ app.component('userProfileImage', {
                     }
                 }
             });
-
         }
 
-        function loadSearchResultsUserProfile() {
-            var profileId = null;
-            var isModalRequest = vm.dialogUserId != null;
-
-            if (!isModalRequest) {
-                profileId = $stateParams.id;
-
-                var hasProfileIdInParam = profileId !== undefined && profileId !== null && profileId !== '';
-
-                if (!hasProfileIdInParam) {
-                    $state.go('error', {code: '404'});
-                }
-            } else {
-
-                profileId = vm.dialogUserId.id;
-            }
-
-            vm.isThisMyProfile = vm.userProfile.userId === profileId;
-
-            vm.enableDisableProfileImageTooltip = true;
-
-
-            userProfileModel.getSelectedUserProfile(profileId).then(
-                function (success) {
-                    if (success.data.data === null) {
-                        $state.go('error', {code: 404});
-                    }
-                    vm.userProfile = success.data.data;
-                    if (!vm.userProfile.originalUserImage) {
-                        vm.image = '../../images/default_avatar.png';
-                    }
-                    else {
-                        vm.image = 'data:image/jpeg;base64,' + vm.userProfile.originalUserImage;
-                    }
-                },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
-            );
-
-        }
-
-        loadSearchResultsUserProfile();
         setProfileImage();
         vm.deleteImage = deleteImage;
     }

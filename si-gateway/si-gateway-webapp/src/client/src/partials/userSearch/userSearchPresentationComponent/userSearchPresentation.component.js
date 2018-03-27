@@ -37,7 +37,6 @@ app.component('userSearchPresentationComponent', {
                     }
                     else{
                         Array.prototype.push.apply(vm.userSearchList, success.data.data);
-                        page++;
                         vm.isDisable = false;
                         vm.isLoading = false;
                     }
@@ -62,18 +61,12 @@ app.component('userSearchPresentationComponent', {
                 });
         }
 
-        function showUserProfilePopup(userId) {
-            vm.userId = userId;
-            ngDialog.open({
-                scope: $scope,
-                template: '<user-profile-component dialog-user-id="vm.userId"></user-profile-component>',
-                plain: true,
-                className: 'ngdialog-theme-default custom-user-profile-popup',
-                url: '/profile'
-            });
+        function openUserProfile(userId) {
+            $state.go('userProfile', userId);
         }
 
         function fetchNewPage () {
+            page++;
             vm.isDisable = true;
             vm.isLoading = true;
             userSearch();
@@ -82,7 +75,7 @@ app.component('userSearchPresentationComponent', {
         activate();
 
         vm.userSearch = userSearch;
-        vm.showUserProfilePopup = showUserProfilePopup;
+        vm.openUserProfile = openUserProfile;
         vm.saveFilters = saveFilters;
         vm.fetchNewPage = fetchNewPage;
     }

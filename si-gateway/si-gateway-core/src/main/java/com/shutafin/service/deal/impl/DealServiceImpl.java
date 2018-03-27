@@ -182,7 +182,7 @@ public class DealServiceImpl implements DealService {
     }
 
     private void changeUsersDealStatus(DealResponse deal, Long userId) {
-        if (deal.getStatusId() == DealStatus.ARCHIVE) {
+        if (deal.getStatusId() == DealStatus.ARCHIVE || deal.getUsers().size() == 2) {
             for (AccountUserImageWeb accountUserImageWeb : deal.getUsers()) {
                 setUserAccountMatchingStatus(accountUserImageWeb.getUserId(),
                         AccountStatus.COMPLETED_REQUIRED_MATCHING, true, true);
@@ -195,7 +195,14 @@ public class DealServiceImpl implements DealService {
     private void rollbackIfDealNotArchive(DealResponse deal, Long userId) {
         if (deal != null) {
             if (deal.getStatusId() != DealStatus.ARCHIVE) {
-                setUserAccountMatchingStatus(userId, AccountStatus.DEAL, false, false);
+                if (deal.getUsers().size() == 2) {
+                    for (AccountUserImageWeb accountUserImageWeb : deal.getUsers()) {
+                        setUserAccountMatchingStatus(accountUserImageWeb.getUserId(),
+                                AccountStatus.DEAL, false, false);
+                    }
+                } else {
+                    setUserAccountMatchingStatus(userId, AccountStatus.DEAL, false, false);
+                }
             }
         }
     }
