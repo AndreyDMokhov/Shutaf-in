@@ -25,7 +25,7 @@ then
 		kill -9 `cat $si_matching`
 	fi
 
-	si_account="si-account"
+	si_account="si-account.pid"
 	if [ -f "$si_account" ]
 	then
 		echo "STOPPING $si_account"
