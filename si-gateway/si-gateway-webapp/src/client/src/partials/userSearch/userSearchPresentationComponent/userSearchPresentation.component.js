@@ -37,7 +37,6 @@ app.component('userSearchPresentationComponent', {
                     }
                     else{
                         Array.prototype.push.apply(vm.userSearchList, success.data.data);
-                        page++;
                         vm.isDisable = false;
                         vm.isLoading = false;
                     }
@@ -67,6 +66,7 @@ app.component('userSearchPresentationComponent', {
         }
 
         function fetchNewPage () {
+            page++;
             vm.isDisable = true;
             vm.isLoading = true;
             userSearch();

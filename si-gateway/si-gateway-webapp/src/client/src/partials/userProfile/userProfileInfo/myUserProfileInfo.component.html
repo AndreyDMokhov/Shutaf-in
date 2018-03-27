@@ -46,20 +46,31 @@
         <a ui-sref="questionsTab.requiredQuestions">{{'UserProfile.answers.navigate' | translate}}</a>
     </div>
 </div>
-
-<div ng-if="vm.currentAccountStatus >= vm.accountStatuses.Status.COMPLETED_REQUIRED_MATCHING">
+<div ng-if="vm.currentAccountStatus >= vm.accountStatuses.COMPLETED_REQUIRED_MATCHING">
     <table class="myQuestionsAnswersTable">
-        <th colspan="2" ng-if="vm.requiredQuestionsAndAnswers.length>0"> {{'UserProfile.answers.required.header' | translate}}:</th>
+        <tr colspan="2" ng-if="vm.requiredQuestionsAndAnswers.length>0">
+            <th>
+                {{'UserProfile.answers.required.header' | translate}}:
+            </th>
+        </tr>
         <tr ng-repeat="item in vm.requiredQuestionsAndAnswers">
             <td>{{item.question}}</td>
             <td> {{item.answer}}</td>
         </tr>
-        <th colspan="2" ng-if="vm.extendedQuestionsAndAnswers.length>0"> {{'UserProfile.answers.extended.header' | translate}}:</th>
+        <br>
+        <tr>
+            <th colspan="2" ng-if="vm.extendedQuestionsAndAnswers.length>0">
+                {{'UserProfile.answers.extended.header' | translate}}:
+            </th>
+        </tr>
         <tr ng-repeat="item in vm.extendedQuestionsAndAnswers">
-            <td>{{item.question}}
+            <td>
+                {{item.question}}
             </td>
             <td>
-                <span ng-repeat="answer in item.answers">{{answer}} </span>
+                <span ng-repeat="answer in item.answers">
+                    {{answer}}
+                </span>
             </td>
         </tr>
     </table>

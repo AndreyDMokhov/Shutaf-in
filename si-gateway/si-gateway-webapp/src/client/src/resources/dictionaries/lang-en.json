@@ -47,6 +47,7 @@
   "Deal.confirmation.removeUser": "You have confirmed participant termination",
   "Deal.request.removeUser": "You have voted for removing {{firstName}} {{lastName}} from {{dealName}} deal. {{firstName}} {{lastName}} will be removed after every deal participant confirm this action by navigating the link, send to everyone by email",
   "Deal.users.button.remove": "Vote for removal",
+  "Deal.users.you": "You",
   "Deal.leaving": "You left the deal",
 
 
@@ -221,8 +222,8 @@
   "Chat.button.send": "Send",
   "Chat.title.compatibleUsers": "Compatible users",
   "Chat.title.usersInChat": "Users in ",
-  "Chat.title.send.message": "Send message",
-  "Chat.title.add.user": "Add user to group",
+  "Chat.title.send.message": "New chat",
+  "Chat.title.add.user": "Add user to chat",
   "Chat.title.delete.user": "Delete user",
   "Chat.title.find.users": "Find neighbour",
   "Chat.title.delete.chat": "Delete correspondence",

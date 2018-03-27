@@ -88,7 +88,7 @@ public class DealPanelServiceImpl implements DealPanelService {
         DealPanel dealPanel = getDealPanelWithPermissions(userId, dealPanelId, !NEED_FULL_ACCESS);
         DealPanelUser dealPanelUser = dealPanelUserRepository.findByDealPanelIdAndUserId(dealPanelId, userId);
         if (dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
-            return dealSnapshotService.getDealPanelFromSnapshot(userId, dealPanelId);
+            return dealSnapshotService.getDealPanelFromSnapshot(dealPanelId, userId);
         }
         return getDealPanelResponse(dealPanel, userId, true);
     }
