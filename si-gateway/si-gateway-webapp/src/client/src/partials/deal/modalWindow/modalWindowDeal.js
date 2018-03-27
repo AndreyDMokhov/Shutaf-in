@@ -1,6 +1,6 @@
 app.component('modalComponent',
     {
-        templateUrl: 'partials/deal/modalWindow/ModalWindowDeal.html',
+        templateUrl: 'partials/deal/modalWindow/modalWindowDeal.html',
         bindings: {
             close: '&',
             dismiss: '&',
