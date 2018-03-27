@@ -17,8 +17,6 @@ app.component('usersDealComponent', {
 
         vm.$onInit = function () {
             var i;
-            console.log(vm.userID);
-            console.log(vm.dealInfo.users);
             if (vm.dealInfo.users.length <= limitUsersForShow) {
                 vm.partUsersInfo = vm.dealInfo.users;
             } else {
