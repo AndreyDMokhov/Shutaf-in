@@ -6,8 +6,7 @@
                 <div ng-if="vm.deals.length > 0">
                     <div class="col-md-11" >
                             <uib-tabset active="active" disable="true" vertical="false" type="pills">
-                                <uib-tab ng-if="deal.statusId !== 1"
-                                         ng-repeat="deal in vm.deals | orderBy: 'userStatusId'"
+                                <uib-tab ng-repeat="deal in vm.deals | orderBy: 'userStatusId'"
                                          ng-click="vm.showSelectedDeal(deal)">
                                     <uib-tab-heading>
                                         {{deal.title}} ({{vm.getDealSuffix(deal)}})
