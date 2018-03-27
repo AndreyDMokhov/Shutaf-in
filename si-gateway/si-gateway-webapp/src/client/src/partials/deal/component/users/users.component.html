@@ -7,23 +7,27 @@
     </div>
     <div ng-repeat="user in vm.partUsersInfo">
         <div>
-            <!--todo add href to user profile-->
-            <div>
-                <i class="fa fa-window-close pull-right pointer"
-                   uib-popover-html="'{{'Deal.users.button.remove' | translate}}'"
-                   popover-placement="left"
-                   popover-trigger="'mouseenter'"
-                   ng-click="vm.remove(user)"></i>
-                <img class="logo-image"
-                     uib-popover-html=
-                             "'
+            <div class="deal-user-card-cont">
+                <div>
+                    <span style="padding-right: 10px" ng-show="vm.userID == user.userId">{{'Deal.users.you' | translate }}</span>
+                </div>
+                <div class="deal-user-card pointer" ui-sref="userProfile({userId:user.userId})">
+                    <i class="fa fa-window-close pull-right pointer remove-user"
+                       uib-popover-html="'{{'Deal.users.button.remove' | translate}}'"
+                       popover-placement="left"
+                       popover-trigger="'mouseenter'"
+                       ng-click="vm.remove(user)"></i>
+                        <img class="logo-image"
+                             uib-popover-html=
+                                     "'
                               {{user.firstName}} &nbsp; {{user.lastName}}
                             '"
-                     popover-placement="left"
-                     popover-trigger="'mouseenter'"
-                     ng-src="{{vm.getUserImage(user.image)}}"
-                     width="60"
-                     height="60"/>
+                             popover-placement="left"
+                             popover-trigger="'mouseenter'"
+                             ng-src="{{vm.getUserImage(user.image)}}"
+                             width="60"
+                             height="60"/>
+                </div>
             </div>
 
         </div>

@@ -47,6 +47,7 @@
   "Deal.confirmation.removeUser": "Вы подтвердили удаление участника",
   "Deal.request.removeUser": "Вы проголосовали за удаление {{firstName}} {{lastName}} из сделки {{dealName}}. {{firstName}} {{lastName}} будет удален, когда все участники сделки перейдут по ссылке, отправленной всем участникам по электронному адресу",
   "Deal.users.button.remove": "Голосовать за исключение",
+  "Deal.users.you": "Вы",
   "Deal.leaving": "Вы покинули сделку",
 
   "SECTION":"HOME",
