@@ -24,6 +24,12 @@ app.component('resetPasswordRequestComponent', {
                     $state.go('home');
                 }, function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+
+                    if (error.data.error.errorTypeCode === 'RNF') {
+                        $state.go("error", {'code': '404'});
+                    } else {
+                        $state.go("home");
+                    }
                 })
                 .finally(function () {
                     vm.loading = false;

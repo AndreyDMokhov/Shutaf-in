@@ -6,9 +6,9 @@ import com.shutafin.model.exception.AbstractAPIException;
 /**
  * Created by evgeny on 3/27/2018.
  */
-public class ActionIsConfirmedException extends AbstractAPIException {
+public class LinkExpiredException extends AbstractAPIException {
     @Override
     public ErrorType getErrorType() {
-        return ErrorType.ACTION_IS_CONFIRMED_EXCEPTION;
+        return ErrorType.LINK_EXPIRED_EXCEPTION;
     }
 }
