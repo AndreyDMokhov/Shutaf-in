@@ -40,13 +40,38 @@
     </tr>
     </tbody>
 </table>
-
-<div ng-if="vm.requiredQuestionsAndAnswers.length > 0">
+<div ng-if="vm.currentAccountStatus < vm.accountStatuses.COMPLETED_REQUIRED_MATCHING">
+    <div class="alert alert-danger text-center">
+        <h4>{{'UserProfile.answers.not-completed-required-matching' | translate}}</h4>
+        <a ui-sref="questionsTab.requiredQuestions">{{'UserProfile.answers.navigate' | translate}}</a>
+    </div>
+</div>
+<div ng-if="vm.currentAccountStatus >= vm.accountStatuses.COMPLETED_REQUIRED_MATCHING">
     <table class="myQuestionsAnswersTable">
-        <th colspan="2">{{'UserProfile.answers.required.header' | translate}}:</th>
+        <tr colspan="2" ng-if="vm.requiredQuestionsAndAnswers.length>0">
+            <th>
+                {{'UserProfile.answers.required.header' | translate}}:
+            </th>
+        </tr>
         <tr ng-repeat="item in vm.requiredQuestionsAndAnswers">
             <td>{{item.question}}</td>
             <td> {{item.answer}}</td>
+        </tr>
+        <br>
+        <tr>
+            <th colspan="2" ng-if="vm.extendedQuestionsAndAnswers.length>0">
+                {{'UserProfile.answers.extended.header' | translate}}:
+            </th>
+        </tr>
+        <tr ng-repeat="item in vm.extendedQuestionsAndAnswers">
+            <td>
+                {{item.question}}
+            </td>
+            <td>
+                <span ng-repeat="answer in item.answers">
+                    {{answer}}
+                </span>
+            </td>
         </tr>
     </table>
 </div>

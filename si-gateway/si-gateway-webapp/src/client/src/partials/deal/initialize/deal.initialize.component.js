@@ -13,7 +13,8 @@ app.component('dealInitializeComponent', {
             users: []
         };
 
-        function getUsersIdInChat() {
+        function collectUsersIdInChat() {
+            dealWeb.users =[];
             vm.chatInfo.usersInChat.forEach(function (user) {
                 dealWeb.users.push(user.userId);
             });
@@ -38,7 +39,7 @@ app.component('dealInitializeComponent', {
                     newName = namePanelDef;
                 }
                 dealWeb.title = newName;
-                getUsersIdInChat();
+                collectUsersIdInChat();
                 dealPresentationModel.initiateDeal(dealWeb).then(
                     function (success) {
                         notify.set($filter('translate')("Deal.confirmation"));

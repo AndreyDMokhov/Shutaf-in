@@ -20,7 +20,7 @@
          infinite-scroll-disabled='vm.isDisable'
          infinite-scroll-container="'#main-div'">
         <div class="card-custom" ng-repeat="user in vm.userSearchList | orderBy:'-score'">
-            <div class="card-header pointer" ng-click="vm.showUserProfilePopup({id:user.userId})">
+            <div class="card-header pointer" ng-click="vm.openUserProfile({userId:user.userId})">
                 <h4 class="panel-title">
                     {{ user.firstName }} {{ user.lastName }}
                 </h4>

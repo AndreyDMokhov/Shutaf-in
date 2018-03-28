@@ -62,7 +62,7 @@ app.component('extendedQuestionComponent', {
             addImportanceIdToAnswers();
             this.putAnswers(answers);
             this.sendData();
-            $state.go('userProfile', {id: $sessionStorage.userProfile.userId});
+            $state.go('myUserProfile');
 
 
         };
