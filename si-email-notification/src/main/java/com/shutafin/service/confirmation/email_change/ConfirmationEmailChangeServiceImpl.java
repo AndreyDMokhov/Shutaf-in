@@ -3,6 +3,7 @@ package com.shutafin.service.confirmation.email_change;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.model.entity.confirmation.email_change.ConfirmationEmailChange;
 import com.shutafin.repository.email_change.ConfirmationEmailChangeRepository;
+import com.shutafin.service.confirmation.AbstractConfirmationService;
 import com.shutafin.service.confirmation.ConfirmationEmailChangeService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class ConfirmationEmailChangeServiceImpl implements ConfirmationEmailChangeService {
+public class ConfirmationEmailChangeServiceImpl extends AbstractConfirmationService implements ConfirmationEmailChangeService {
 
     private ConfirmationEmailChangeRepository confirmationEmailChangeRepository;
 
@@ -39,7 +40,7 @@ public class ConfirmationEmailChangeServiceImpl implements ConfirmationEmailChan
 
     @Override
     public ConfirmationEmailChange getConfirmed(String link) {
-        return confirmationEmailChangeRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
+        return (ConfirmationEmailChange)getConfirmed(confirmationEmailChangeRepository.findByConfirmationUUID(link));
     }
 
     @Override

@@ -66,9 +66,11 @@
   "Error.IPE":"Incorrect password",
   "Error.ABL":"Your account was blocked",
   "Error.ANC":"Account not activated, please confirm your email",
-  "Error.ERI":"Resend interval is 2 minutes",
   "Error.NAP":"No permissions to perform the action",
   "Error.MDE":"Cannot initiate deal. One or more users are already in deal",
+  "Error.ERI":"Resend interval is 2 minutes",
+  "Error.LAC":"Link is already confirmed",
+  "Error.LEE":"Link is expired",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",

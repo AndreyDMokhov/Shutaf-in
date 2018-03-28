@@ -18,13 +18,7 @@ public class ValidationLinkResetPasswordComponent implements BaseValidationLinkI
     @Override
     public ConfirmationResetPassword validate(String link) {
 
-        ConfirmationResetPassword confirmationResetPassword = confirmationResetPasswordService.getConfirmed(link);
-        if (confirmationResetPassword == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
-            throw new ResourceNotFoundException();
-        }
-        return confirmationResetPassword;
+        return confirmationResetPasswordService.getConfirmed(link);
     }
 
 }

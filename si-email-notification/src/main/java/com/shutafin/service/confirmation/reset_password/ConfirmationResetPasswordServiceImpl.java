@@ -3,6 +3,7 @@ package com.shutafin.service.confirmation.reset_password;
 import com.shutafin.model.entity.confirmation.reset_password.ConfirmationResetPassword;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.repository.reset_password.ConfirmationResetPasswordRepository;
+import com.shutafin.service.confirmation.AbstractConfirmationService;
 import com.shutafin.service.confirmation.ConfirmationResetPasswordService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class ConfirmationResetPasswordServiceImpl implements ConfirmationResetPasswordService {
+public class ConfirmationResetPasswordServiceImpl extends AbstractConfirmationService implements ConfirmationResetPasswordService {
 
     private ConfirmationResetPasswordRepository confirmationResetPasswordRepository;
 
@@ -38,7 +39,7 @@ public class ConfirmationResetPasswordServiceImpl implements ConfirmationResetPa
 
     @Override
     public ConfirmationResetPassword getConfirmed(String link) {
-        return confirmationResetPasswordRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
+        return (ConfirmationResetPassword)getConfirmed(confirmationResetPasswordRepository.findByConfirmationUUID(link));
     }
 
     @Override

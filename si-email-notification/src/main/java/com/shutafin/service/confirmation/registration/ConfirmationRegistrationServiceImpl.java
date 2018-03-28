@@ -3,6 +3,7 @@ package com.shutafin.service.confirmation.registration;
 import com.shutafin.model.entity.confirmation.registration.ConfirmationRegistration;
 import com.shutafin.model.web.email.EmailNotificationWeb;
 import com.shutafin.repository.registration.ConfirmationRegistrationRepository;
+import com.shutafin.service.confirmation.AbstractConfirmationService;
 import com.shutafin.service.confirmation.ConfirmationRegistrationService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class ConfirmationRegistrationServiceImpl implements ConfirmationRegistrationService {
+public class ConfirmationRegistrationServiceImpl extends AbstractConfirmationService implements ConfirmationRegistrationService {
 
     private ConfirmationRegistrationRepository confirmationRegistrationRepository;
 
@@ -38,7 +39,7 @@ public class ConfirmationRegistrationServiceImpl implements ConfirmationRegistra
 
     @Override
     public ConfirmationRegistration getConfirmed(String link) {
-        return confirmationRegistrationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
+        return (ConfirmationRegistration)getConfirmed(confirmationRegistrationRepository.findByConfirmationUUID(link));
     }
 
     @Override
