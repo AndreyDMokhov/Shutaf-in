@@ -4,6 +4,7 @@ package com.shutafin.controller;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
+import com.shutafin.model.web.matching.UserBaseResponse;
 import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.service.extended.UserMatchingScoreService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -33,9 +35,33 @@ public class UserMatchingScoreController {
     @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Map<Long, Integer> getUserMatchingScores(@PathVariable("userId") Long userId,
                                                     @RequestParam(value = "page") Integer page,
-                                                    @RequestParam(value = "results") Integer results
-    ) {
+                                                    @RequestParam(value = "results") Integer results) {
+
         return userMatchingScoreService.getUserMatchingScores(userId, page, results);
+    }
+
+    @PostMapping(value = "/base/{userId}")
+    public List<UserBaseResponse> getMatchedUserBaseResponses(@PathVariable("userId") Long userId,
+                                                              @RequestParam(value = "page") Integer page,
+                                                              @RequestParam(value = "results") Integer results,
+                                                              @RequestBody @Valid AccountUserFilterRequest accountUserFilterRequest,
+                                                              BindingResult result) {
+        log.debug("/matching/extended/base/{userId}");
+        if (result.hasErrors()) {
+            log.warn("Input validation exception:");
+            log.warn(result.toString());
+            throw new InputValidationException(result);
+        }
+
+        return userMatchingScoreService.getMatchedUserSearchResponses(userId, page, results, accountUserFilterRequest)
+                .stream()
+                .map(x -> UserBaseResponse.builder()
+                        .userId(x.getUserId())
+                        .firstName(x.getFirstName())
+                        .lastName(x.getLastName())
+                        .profileImage(x.getUserImage())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @PostMapping(value = "/search/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})

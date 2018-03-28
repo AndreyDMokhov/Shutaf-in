@@ -7,7 +7,7 @@ import com.shutafin.model.entities.ChatUser;
 import com.shutafin.model.entities.ReadMessagesRequest;
 import com.shutafin.model.web.APIWebResponse;
 import com.shutafin.model.web.chat.ChatWithUsersListDTO;
-import com.shutafin.model.web.user.UserBaseResponse;
+import com.shutafin.model.web.matching.UserBaseResponse;
 import com.shutafin.service.*;
 import com.shutafin.system.BaseTestImpl;
 import com.shutafin.system.ControllerRequest;

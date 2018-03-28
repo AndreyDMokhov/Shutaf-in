@@ -223,6 +223,7 @@
   "Chat.title.messages": "Сообщения в ",
   "Chat.form.input": "Ваше сообщение",
   "Chat.button.send": "Отправить",
+  "Chat.title.your-chats": "Ваши чаты",
   "Chat.title.compatibleUsers": "Совместимые пользователи",
   "Chat.title.usersInChat": "Пользователи в ",
   "Chat.title.send.message": "Новый чат",
@@ -233,6 +234,10 @@
   "Chat.title.enter.chat": "Войти в чат",
   "Chat.title.edit.chat.title": "Изменить имя чата",
   "Chat.title.new.message": "новые",
+  "Chat.title.help.new-chat-prefix": "Нажмите",
+  "Chat.title.help.new-chat-suffix": "чтобы создать новый чат",
+  "Chat.title.help.existing-chat-prefix": "Нажмите",
+  "Chat.title.help.existing-chat-suffix": "чтобы добавить пользователя в существующий чат",
   "Chat.header.rename.chat.title":"Изменить имя чата:",
 
   "SECTION" : "SITE_ACCESS_ERROR",

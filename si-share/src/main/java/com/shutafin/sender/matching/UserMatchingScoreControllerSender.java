@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
+import com.shutafin.model.web.matching.UserBaseResponse;
 import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.route.DiscoveryRoutingService;
@@ -43,6 +44,16 @@ public class UserMatchingScoreControllerSender {
         String jsonBody = restTemplate.postForEntity(url, accountUserFilterRequest, String.class).getBody();
 
         return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserSearchResponse>>() {});
+    }
+
+    @SneakyThrows
+    public List<UserBaseResponse> getMatchedUserBaseResponses(Long userId, Integer page, Integer results, AccountUserFilterRequest accountUserFilterRequest) {
+        String url = routingService.getRoute(RouteDirection.SI_MATCHING) +
+                String.format("/matching/extended/base/%d?page=%d&results=%d", userId, page, results);
+
+        String jsonBody = restTemplate.postForEntity(url, accountUserFilterRequest, String.class).getBody();
+
+        return new ObjectMapper().readValue(jsonBody, new TypeReference<List<UserBaseResponse>>() {});
     }
 
     public void addUserQuestionExtendedAnswers(Long userId, List<UserQuestionExtendedAnswersWeb> questionExtendedAnswersWeb) {

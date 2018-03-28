@@ -7,7 +7,7 @@ import com.shutafin.model.entities.ReadMessagesRequest;
 import com.shutafin.model.web.chat.ChatMessageRequest;
 import com.shutafin.model.web.chat.ChatMessageResponse;
 import com.shutafin.model.web.chat.ChatWithUsersListDTO;
-import com.shutafin.model.web.user.UserBaseResponse;
+import com.shutafin.model.web.matching.UserBaseResponse;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.WebSocketAuthentication;
 import com.shutafin.service.*;
@@ -42,8 +42,6 @@ public class ChatController {
     @Autowired
     private UserMatchService userMatchService;
 
-    @Autowired
-    private UserSearchService userSearchService;
 
     @GetMapping(value = "/new/{chat_title}/{user_id}")
     public ChatWithUsersListDTO addChat(@PathVariable("chat_title") String chatTitle,
@@ -116,9 +114,9 @@ public class ChatController {
     }
 
     @GetMapping(value = "/allUsers")
-    public List<UserBaseResponse> getUsers(@AuthenticatedUser Long authenticatedUserId) {
-        return userSearchService.userBaseResponseByList(authenticatedUserId,
-                userMatchService.findMatchingUsers(authenticatedUserId));
+    public List<UserBaseResponse> getUsers(@AuthenticatedUser Long authenticatedUserId,
+                                           @RequestParam(value = "fullname", required = false) String fullname) {
+        return userMatchService.getMatchedUserBaseResponses(authenticatedUserId, fullname, 0, 10, null);
     }
 
     @PutMapping(value = "/updateMessagesAsRead", consumes = {MediaType.APPLICATION_JSON_VALUE})
