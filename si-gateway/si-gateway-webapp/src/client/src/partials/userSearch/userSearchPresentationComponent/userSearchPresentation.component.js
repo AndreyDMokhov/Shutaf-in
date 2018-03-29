@@ -19,6 +19,7 @@ app.component('userSearchPresentationComponent', {
         vm.cities = $sessionStorage.cities;
         vm.fullName = $stateParams.name;
         vm.userSearchList = [];
+        vm.totalUsers = 0;
         var page = 0;
         vm.isDisable = false;
         vm.isLoading = false;
@@ -35,12 +36,13 @@ app.component('userSearchPresentationComponent', {
         function userSearch() {
             userSearchModel.userSearch(vm.fullName, page).then(
                 function (success) {
-                    if(success.data.data.length == 0){
+                    if(success.data.data.matchedUsersPerPage.length == 0){
                         vm.isDisable = true;
                         vm.isLoading = false;
                     }
                     else{
-                        Array.prototype.push.apply(vm.userSearchList, success.data.data);
+                        vm.totalUsers = success.data.data.totalUsers;
+                        Array.prototype.push.apply(vm.userSearchList, success.data.data.matchedUsersPerPage);
                         vm.isDisable = false;
                         vm.isLoading = false;
                         vm.userSearchList.filter(isUnique);

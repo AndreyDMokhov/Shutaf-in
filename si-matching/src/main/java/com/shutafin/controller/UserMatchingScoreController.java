@@ -4,9 +4,7 @@ package com.shutafin.controller;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
-import com.shutafin.model.web.matching.UserBaseResponse;
-import com.shutafin.model.web.matching.UserMatchingScoreDTO;
-import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
+import com.shutafin.model.web.matching.*;
 import com.shutafin.service.extended.UserMatchingScoreService;
 import com.shutafin.service.extended.UserQuestionExtendedAnswerService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +31,9 @@ public class UserMatchingScoreController {
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
     @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<Long, Integer> getUserMatchingScores(@PathVariable("userId") Long userId,
-                                                    @RequestParam(value = "page") Integer page,
-                                                    @RequestParam(value = "results") Integer results) {
+    public MatchedUsersScoresSearchResponse getUserMatchingScores(@PathVariable("userId") Long userId,
+                                                                  @RequestParam(value = "page") Integer page,
+                                                                  @RequestParam(value = "results") Integer results) {
 
         return userMatchingScoreService.getUserMatchingScores(userId, page, results);
     }
@@ -53,7 +51,7 @@ public class UserMatchingScoreController {
             throw new InputValidationException(result);
         }
 
-        return userMatchingScoreService.getMatchedUserSearchResponses(userId, page, results, accountUserFilterRequest)
+        return userMatchingScoreService.getMatchedUserSearchResponses(userId, page, results, accountUserFilterRequest).getMatchedUsersPerPage()
                 .stream()
                 .map(x -> UserBaseResponse.builder()
                         .userId(x.getUserId())
@@ -65,11 +63,11 @@ public class UserMatchingScoreController {
     }
 
     @PostMapping(value = "/search/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public List<UserSearchResponse> getMatchedUserSearchResponses(@PathVariable("userId") Long userId,
-                                                                  @RequestParam(value = "page") Integer page,
-                                                                  @RequestParam(value = "results") Integer results,
-                                                                  @RequestBody @Valid AccountUserFilterRequest accountUserFilterRequest,
-                                                                  BindingResult result) {
+    public MatchedUsersSearchResponse getMatchedUserSearchResponses(@PathVariable("userId") Long userId,
+                                                                    @RequestParam(value = "page") Integer page,
+                                                                    @RequestParam(value = "results") Integer results,
+                                                                    @RequestBody @Valid AccountUserFilterRequest accountUserFilterRequest,
+                                                                    BindingResult result) {
         log.debug("/matching/extended/search/{userId}");
         if (result.hasErrors()) {
             log.warn("Input validation exception:");
