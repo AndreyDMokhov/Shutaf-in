@@ -47,7 +47,7 @@ public class DealServiceImpl implements DealService {
         dealWeb.setUsers(dealWeb
                 .getUsers()
                 .stream()
-                .filter(x-> !x.equals(userId))
+                .filter(x -> !x.equals(userId))
                 .distinct()
                 .collect(Collectors.toList()));
 
@@ -75,10 +75,14 @@ public class DealServiceImpl implements DealService {
     private EmailNotificationDealWeb getEmailNotificationDealWeb(Long dealId,
                                                                  Long originUserId,
                                                                  Long userToChange,
-                                                                 EmailReason emailReason) {
+                                                                 EmailReason emailReason,
+                                                                 boolean includeUserToChange) {
 
         DealResponse deal = dealControllerSender.getDeal(dealId, originUserId);
         List<Long> users = new ArrayList<>();
+        if (includeUserToChange) {
+            users.add(userToChange);
+        }
         for (AccountUserImageWeb accountUserImageWeb : deal.getUsers()) {
             if (!accountUserImageWeb.getUserId().equals(userToChange)) {
                 users.add(accountUserImageWeb.getUserId());
@@ -139,7 +143,7 @@ public class DealServiceImpl implements DealService {
     @Override
     public void removeDealUser(Long dealId, Long userOriginId, Long userToRemoveId) {
         emailNotificationSenderControllerSender.sendEmailDeal(
-                getEmailNotificationDealWeb(dealId, userOriginId, userToRemoveId, EmailReason.DEAL_USER_REMOVING));
+                getEmailNotificationDealWeb(dealId, userOriginId, userToRemoveId, EmailReason.DEAL_USER_REMOVING, false));
     }
 
     @Override
@@ -164,7 +168,7 @@ public class DealServiceImpl implements DealService {
     @Override
     public DealResponse addDealUser(Long dealId, Long userOriginId, Long userToAddId) {
         emailNotificationSenderControllerSender.sendEmailDeal(
-                getEmailNotificationDealWeb(dealId, userOriginId, userToAddId, EmailReason.DEAL_USER_ADDING));
+                getEmailNotificationDealWeb(dealId, userOriginId, userToAddId, EmailReason.DEAL_USER_ADDING, true));
         dealControllerSender.addDealUser(dealId, userOriginId, userToAddId);
         return dealControllerSender.getDeal(dealId, userOriginId);
     }
