@@ -647,4 +647,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="6" author="evgenyYablokov">
+        <delete tableName="I_QUESTION">
+            <where>ID = 5</where>
+        </delete>
+    </changeSet>
+
 </databaseChangeLog>
