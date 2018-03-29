@@ -87,6 +87,11 @@ public class DealController {
         return dealService.renameDeal(dealId, userId, newTitle);
     }
 
+    @GetMapping("/available-users")
+    public List<Long> getAvailableUsers(@RequestParam("users") List<Long> users) {
+        return dealService.getAvailableUsers(users);
+    }
+
     //todo DEAL DELETION FOR SNAPSHOT USER
 //    @DeleteMapping(value = "/{dealId}/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteDeal(@PathVariable(value = "dealId") Long dealId, @PathVariable(value = "userId") Long userId) {
