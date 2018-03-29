@@ -93,7 +93,7 @@ public class DealServiceImpl implements DealService {
 
     private boolean userHasActiveDeal(Long userId) {
         List<DealUser> userDeals = dealUserRepository.findAllByUserId(userId);
-        if (userDeals != null && !userDeals.isEmpty()) {
+        if (!userDeals.isEmpty()) {
             for (DealUser dealUser : userDeals) {
                 if (dealUser.getDealUserStatus() == DealUserStatus.ACTIVE) {
                     return true;
@@ -320,6 +320,16 @@ public class DealServiceImpl implements DealService {
                                 .statusId(dealUser.getDeal().getDealStatus())
                                 .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Long> getAvailableUsers(List<Long> users) {
+        List<DealUser> allByUserIdIn = dealUserRepository.findAllByUserIdInAndDealUserStatus(users, DealUserStatus.ACTIVE);
+        allByUserIdIn.stream()
+                .map(DealUser::getUserId)
+                .forEach(users::remove);
+
+        return users;
     }
 
     private DealPanelResponse getFirstDealPanel(List<DealPanel> dealPanels, Long userId) {

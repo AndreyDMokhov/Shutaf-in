@@ -20,4 +20,5 @@ public interface DealService {
     DealResponse getDeal(Long dealId, Long userId);
     DealWeb renameDeal(Long dealId, Long userId, DealTitleChangeWeb dealTitleChangeWeb);
     void deleteDeal(Long dealId, Long userId);
+    List<Long> getAvailableUsers(List<Long> users);
 }
