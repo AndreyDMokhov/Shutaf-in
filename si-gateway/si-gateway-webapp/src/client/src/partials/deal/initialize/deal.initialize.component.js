@@ -14,22 +14,25 @@ app.component('dealInitializeComponent', {
         };
 
         function getUsersIdInChat() {
-            vm.chatInfo.usersInChat.forEach(function (user) {
+            dealWeb.users=[];
+                vm.chatInfo.usersInChat.forEach(function (user) {
                 dealWeb.users.push(user.userId);
             });
         }
 
         function initializeDeal() {
-            var type = 'creation';
+
+            getUsersIdInChat();
+
             var modalInstance = $uibModal.open({
 
                 animation: true,
-                component: 'modalComponent',
+                component: 'modalWinDealInitialize',
                 size: 'sm',
                 resolve: {
 
-                    type: function () {
-                        return {type: type, component: componentType};
+                    dealInfo: function () {
+                        return {users: vm.chatInfo.usersInChat, component: componentType};
                     }
                 }
             });
@@ -38,7 +41,7 @@ app.component('dealInitializeComponent', {
                     newName = namePanelDef;
                 }
                 dealWeb.title = newName;
-                getUsersIdInChat();
+
                 dealPresentationModel.initiateDeal(dealWeb).then(
                     function (success) {
                         notify.set($filter('translate')("Deal.confirmation"));

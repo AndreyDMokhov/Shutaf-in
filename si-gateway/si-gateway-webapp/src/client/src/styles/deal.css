@@ -133,3 +133,22 @@ uib-tab-heading:hover .deal-rename {
 .arrowDownDisable {
   background-image: url(../images/downDisable.png);
 }
+.deal-create-users-container {
+  display: flex;
+  justify-content: center;
+}
+.deal-create-user-container {
+  margin: 6px;
+  text-align: center;
+}
+.arrow-users {
+  font-size: 1.2em;
+  padding: 30px 10px;
+  color: grey;
+  transition: color 0.5s, font-size 0.5s;
+}
+.arrow-users-preview:hover,
+.arrow-users-next:hover {
+  color: black;
+  font-size: 1.5em;
+}

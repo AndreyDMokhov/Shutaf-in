@@ -21,6 +21,7 @@ angular.module('app').directive('userAvatar', function ($uibModal,
             findUserImage();
 
             function findUserImage() {
+
                 if (!scope.userId) {
                     scope.image = DEFAULT_IMAGE_PATH;
                 }
