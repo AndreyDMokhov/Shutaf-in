@@ -9,7 +9,7 @@
                                 <uib-tab ng-repeat="deal in vm.deals | orderBy: 'userStatusId'"
                                          ng-click="vm.showSelectedDeal(deal)">
                                     <uib-tab-heading>
-                                        {{deal.title}} ({{vm.getDealSuffix(deal)}})
+                                        <strong>{{deal.title}}</strong> ({{vm.getDealSuffix(deal)}})
                                         <i
                                                 class="fa fa-edit deal-rename icon-rename"
                                                 ng-click="$event.preventDefault();$event.stopPropagation(); vm.renameDeal(deal)"

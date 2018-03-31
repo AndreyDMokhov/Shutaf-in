@@ -41,14 +41,18 @@ label.required:after {
 }
 
 div[role="main"] {
-  height: 82vh;
+  height: 85vh;
   overflow-y: scroll;
-  background: @background-main  ;
+  background: @background-main;
   background-size: 100% 100%;
 }
 
+body {
+  background: @background-main;
+}
+
 .margin-top {
-  margin-top: 5vh;
+  margin-top: 4vh;
 }
 
 //************Navbar***********
@@ -76,6 +80,10 @@ div[role="main"] {
 .navbar-default .navbar-nav > li > a:focus {
   color: @light-primary-color;
   background-color: transparent;
+}
+.tabs-color {
+  background-color: #f0f0f0;
+  color: @secondary-text;
 }
 
 .navbar-default .navbar-nav > .active > a {
