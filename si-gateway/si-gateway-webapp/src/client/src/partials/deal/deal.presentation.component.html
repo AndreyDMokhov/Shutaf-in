@@ -5,7 +5,10 @@
             <div class="row">
                 <div ng-if="vm.deals.length > 0">
                     <div class="col-md-11" >
-                            <uib-tabset active="active" disable="true" vertical="false" type="pills">
+                            <uib-tabset active="active"
+                                        disable="true"
+                                        vertical="false"
+                                        type="pills">
                                 <uib-tab ng-repeat="deal in vm.deals | orderBy: 'userStatusId'"
                                          ng-click="vm.showSelectedDeal(deal)">
                                     <uib-tab-heading>
