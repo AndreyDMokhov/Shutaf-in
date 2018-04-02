@@ -183,4 +183,8 @@
         <addForeignKeyConstraint baseColumnNames="DEAL_DOCUMENT_ID" baseTableName="DEAL_DOCUMENT_USER" constraintName="DEAL_DOCUMENT_USER_DEAL_DOCUMENT_ID_DEAL_DOCUMENT_ID" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="DEAL_DOCUMENT"/>
     </changeSet>
 
+    <changeSet author="edward" id="3">
+        <renameTable newTableName="DEAL_SNAPSHOT" oldTableName="deal_snapshot"/>
+    </changeSet>
+
 </databaseChangeLog>

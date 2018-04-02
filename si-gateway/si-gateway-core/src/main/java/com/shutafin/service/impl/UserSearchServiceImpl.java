@@ -3,7 +3,7 @@ package com.shutafin.service.impl;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.FiltersWeb;
 import com.shutafin.model.web.common.UserSearchResponse;
-import com.shutafin.model.web.user.UserBaseResponse;
+import com.shutafin.model.web.matching.UserBaseResponse;
 import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.sender.account.UserFilterControllerSender;
 import com.shutafin.service.UserSearchService;
@@ -40,6 +40,7 @@ public class UserSearchServiceImpl implements UserSearchService {
     }
 
     @Override
+    @Deprecated
     public List<UserBaseResponse> userBaseResponseByList(Long authenticatedUser, List<Long> users) {
         return userSearchByList(authenticatedUser, users, "")
                 .stream()

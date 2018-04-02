@@ -2,6 +2,7 @@ package com.shutafin.service.confirmation.deal_user_removing;
 
 import com.shutafin.model.entity.confirmation.deal_user_removing.ConfirmationDealUserRemoving;
 import com.shutafin.repository.deal_user_removing.ConfirmationDealUserRemovingRepository;
+import com.shutafin.service.confirmation.AbstractConfirmationService;
 import com.shutafin.service.confirmation.ConfirmationDealUserRemovingService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class ConfirmationDealUserRemovingServiceImpl implements ConfirmationDealUserRemovingService {
+public class ConfirmationDealUserRemovingServiceImpl extends AbstractConfirmationService implements ConfirmationDealUserRemovingService {
 
     private ConfirmationDealUserRemovingRepository confirmationDealUserRemovingRepository;
 
@@ -50,7 +51,7 @@ public class ConfirmationDealUserRemovingServiceImpl implements ConfirmationDeal
 
     @Override
     public ConfirmationDealUserRemoving getConfirmed(String link) {
-        return confirmationDealUserRemovingRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
+        return (ConfirmationDealUserRemoving)getConfirmed(confirmationDealUserRemovingRepository.findByConfirmationUUID(link));
     }
 
     @Override

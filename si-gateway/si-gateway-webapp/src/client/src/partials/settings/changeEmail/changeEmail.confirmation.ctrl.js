@@ -34,6 +34,8 @@ app.controller('changeEmailConfirmationController', function ($state, $rootScope
                 if (error.data.error.errorTypeCode === 'RNF') {
 
                     $state.go("error", {'code': '404'});
+                } else {
+                    $state.go("home");
                 }
             });
     }

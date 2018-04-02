@@ -20,11 +20,6 @@ public class ConfirmationResponseRegistrationComponent implements BaseConfirmati
     public EmailRegistrationResponse getResponse(String link) {
 
         ConfirmationRegistration confirmationRegistration = confirmationRegistrationService.getConfirmed(link);
-        if (confirmationRegistration == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
-            throw new ResourceNotFoundException();
-        }
 
         confirmationRegistration.setIsConfirmed(true);
         confirmationRegistrationService.save(confirmationRegistration);

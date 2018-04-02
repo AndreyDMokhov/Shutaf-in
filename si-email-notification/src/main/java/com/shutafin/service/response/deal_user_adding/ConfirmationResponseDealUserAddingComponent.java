@@ -20,11 +20,6 @@ public class ConfirmationResponseDealUserAddingComponent implements BaseConfirma
     public EmailDealUserAddingResponse getResponse(String link) {
 
         ConfirmationDealUserAdding confirmation = confirmationDealUserAddingService.getConfirmed(link);
-        if (confirmation == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
-            throw new ResourceNotFoundException();
-        }
 
         confirmation.setIsConfirmed(true);
         confirmationDealUserAddingService.save(confirmation);

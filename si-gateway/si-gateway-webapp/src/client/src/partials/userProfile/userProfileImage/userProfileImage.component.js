@@ -38,12 +38,10 @@ app.component('userProfileImage', {
         }
 
         $scope.onLoad = function (e, reader, file, fileList, fileObjects, fileObj) {
-
             $timeout(function () {
                 $scope.myImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
                 setImageSize();
                 vm.deleteButton = true;
-
                 if (vm.size > vm.fileInfo.filesize / 1024) {
                     showImagePopup();
                 }
@@ -65,16 +63,18 @@ app.component('userProfileImage', {
                     userSearchModel.getOriginalUserImageById(vm.userProfile.userId).then(
                         function (success) {
                             vm.userProfile.originalUserImageId = success.data.data.id;
-                            vm.userProfile.originalUserImage = success.data.data.image;
+                            vm.userProfile.originalUserImage =  success.data.data.image;
+                            $sessionStorage.userProfile = vm.userProfile;
+                            vm.deleteButton = false;
+                            notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
+                            $window.location.reload();
+
                         },
                         function (error) {
                             vm.userProfile.originalUserImage = data;
+                            $window.location.reload();
                         }
                     );
-                    $sessionStorage.userProfile = vm.userProfile;
-                    vm.deleteButton = false;
-                    notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
-                    $window.location.reload();
                 },
 
                 function (error) {
@@ -87,7 +87,6 @@ app.component('userProfileImage', {
                             notify.set($filter('translate')('UserProfile.message.sizeImage'), {type: 'warn'});
                         }
                     }
-
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 }
             );

@@ -13,16 +13,16 @@ app.component('dealInitializeComponent', {
             users: []
         };
 
-        function getUsersIdInChat() {
-            dealWeb.users=[];
-                vm.chatInfo.usersInChat.forEach(function (user) {
+        function collectUsersIdInChat() {
+            dealWeb.users =[];
+            vm.chatInfo.usersInChat.forEach(function (user) {
                 dealWeb.users.push(user.userId);
             });
         }
 
         function initializeDeal() {
 
-            getUsersIdInChat();
+            collectUsersIdInChat();
 
             var modalInstance = $uibModal.open({
 

@@ -8,15 +8,15 @@
 }
 .modal-body {
   height: 80vh;
-  background-color: #f0f0f0;
+  background-color: #EFEBE9;
 }
 .modal-body-original {
   position: relative;
   padding: 15px;
-  background-color: transparent;
+  background-color: #EFEBE9;
 }
 .modal-header.deal {
-  background-color: #689F38;
+  background-color: #00ACC1;
   border-radius: 5px 5px 0 0;
 }
 .image-div {
@@ -45,6 +45,6 @@ div.horizontal {
 }
 .image-style {
   max-width: 100% !important;
-  max-height: 75vh !important;
+  max-height: 100% !important;
   background-color: #fafafa;
 }

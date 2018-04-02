@@ -2,6 +2,7 @@ package com.shutafin.service.confirmation.deal_creation;
 
 import com.shutafin.model.entity.confirmation.deal_creation.ConfirmationDealCreation;
 import com.shutafin.repository.deal_creation.ConfirmationDealCreationRepository;
+import com.shutafin.service.confirmation.AbstractConfirmationService;
 import com.shutafin.service.confirmation.ConfirmationDealCreationService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class ConfirmationDealCreationServiceImpl implements ConfirmationDealCreationService {
+public class ConfirmationDealCreationServiceImpl extends AbstractConfirmationService implements ConfirmationDealCreationService {
 
     private ConfirmationDealCreationRepository confirmationDealCreationRepository;
 
@@ -48,7 +49,7 @@ public class ConfirmationDealCreationServiceImpl implements ConfirmationDealCrea
 
     @Override
     public ConfirmationDealCreation getConfirmed(String link) {
-        return confirmationDealCreationRepository.findByConfirmationUUIDAndExpiresAtAfterAndIsConfirmedIsFalse(link, new Date());
+        return (ConfirmationDealCreation)getConfirmed(confirmationDealCreationRepository.findByConfirmationUUID(link));
     }
 
     @Override

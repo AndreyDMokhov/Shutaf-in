@@ -28,6 +28,10 @@ app.component('userSearchPresentationComponent', {
             userSearch();
         }
 
+        function isUnique(value, index, self) {
+            return self.lastIndexOf(value['userId']) === index;
+        }
+
         function userSearch() {
             userSearchModel.userSearch(vm.fullName, page).then(
                 function (success) {
@@ -39,6 +43,7 @@ app.component('userSearchPresentationComponent', {
                         Array.prototype.push.apply(vm.userSearchList, success.data.data);
                         vm.isDisable = false;
                         vm.isLoading = false;
+                        vm.userSearchList.filter(isUnique);
                     }
 
                 }, function (error) {
