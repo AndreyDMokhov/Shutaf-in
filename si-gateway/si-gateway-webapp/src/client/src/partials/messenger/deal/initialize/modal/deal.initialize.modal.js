@@ -1,6 +1,6 @@
-app.component('modalWinDealInitialize',
+app.component('dealInitializeModalComponent',
     {
-        templateUrl: 'partials/deal/initialize/modalWinDealInitialize/modalWinDealInitialize.html',
+        templateUrl: 'partials/messenger/deal/initialize/modal/deal.initialize.modal.html',
         bindings: {
             close: '&',
             dismiss: '&',
@@ -47,7 +47,7 @@ app.component('modalWinDealInitialize',
 
                 }
 
-                if (i == vm.resolve.dealInfo.users.length) {
+                if (i === vm.resolve.dealInfo.users.length) {
                     vm.arrowNext = false;
                 }
                 lastElement = i;

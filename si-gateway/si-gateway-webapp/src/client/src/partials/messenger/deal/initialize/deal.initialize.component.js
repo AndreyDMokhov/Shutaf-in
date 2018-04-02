@@ -1,5 +1,5 @@
 app.component('dealInitializeComponent', {
-    templateUrl: "partials/deal/initialize/deal.initialize.component.html",
+    templateUrl: "partials/messenger/deal/initialize/deal.initialize.component.html",
     bindings: {
         chatInfo: '<'
     },
@@ -27,7 +27,7 @@ app.component('dealInitializeComponent', {
             var modalInstance = $uibModal.open({
 
                 animation: true,
-                component: 'modalWinDealInitialize',
+                component: 'dealInitializeModalComponent',
                 size: 'sm',
                 resolve: {
 

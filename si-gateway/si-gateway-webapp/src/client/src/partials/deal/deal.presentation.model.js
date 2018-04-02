@@ -26,13 +26,18 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
         return rest.one('/leave/' +dealId).customPUT();
     }
 
+    function getAvailableUsers(usersIds) {
+        return rest.one('/available-users?users=' + usersIds).customGET();
+    }
+
 
     return {
         getDeals: getDeals,
         getDealInfo: getDealInfo,
         renameDeal: renameDeal,
         initiateDeal: initiateDeal,
-        leaveDeal: leaveDeal
+        leaveDeal: leaveDeal,
+        getAvailableUsers: getAvailableUsers
 
     };
 });
