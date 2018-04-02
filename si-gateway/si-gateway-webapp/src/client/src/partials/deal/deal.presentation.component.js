@@ -41,12 +41,22 @@ app.component("dealPresentationComponent", {
         }
 
         vm.getDealSuffix = function (deal) {
+            if (deal.statusId === dealStatus.Status.INITIATED && deal.userStatusId === dealUserStatus.Status.ACTIVE) {
+                return $filter('translate')('Deal.deal.status.inactive.wait-for-approval');
+            }
+
+            if (deal.statusId === dealStatus.Status.INITIATED) {
+                return $filter('translate')('Deal.deal.status.inactive');
+            }
+
             if(deal.userStatusId === dealUserStatus.Status.PENDING) {
                 return $filter('translate')('Deal.deal.status.inactive');
             }
+
             if (deal.userStatusId === dealUserStatus.Status.ACTIVE) {
                 return $filter('translate')('Deal.deal.status.active');
             }
+
             if (deal.userStatusId === dealUserStatus.Status.LEAVED) {
                 return $filter('translate')('Deal.deal.status.archive');
             }
