@@ -1,9 +1,15 @@
 <div class="container margin-top">
     <ul class="nav nav-tabs">
-        <li ui-sref-active="active"><a ui-sref="questionsTab.requiredQuestions">{{"Questions.requiredQuestions" |
-            translate}}</a></li>
-        <li ui-sref-active="active" ng-show="vm.showExtendedQuestions"><a ui-sref="questionsTab.extendedQuestions">{{"Questions.extendedQuestions"
-            | translate}}</a></li>
+        <li ui-sref-active="active">
+            <a ui-sref="questionsTab.requiredQuestions" class="tabs-color">
+                {{"Questions.requiredQuestions" | translate}}
+            </a>
+        </li>
+        <li ui-sref-active="active" ng-show="vm.showExtendedQuestions">
+            <a ui-sref="questionsTab.extendedQuestions" class="tabs-color">
+                {{"Questions.extendedQuestions" | translate}}
+            </a>
+        </li>
     </ul>
 </div>
 <div ui-view></div>

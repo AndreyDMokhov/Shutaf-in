@@ -14,4 +14,6 @@ public interface DealUserRepository extends BaseJpaRepository<DealUser, Long> {
     List<DealUser> findAllByUserId(Long userId);
     List<DealUser> findAllByUserIdAndDealUserStatusNot(Long userId, DealUserStatus dealUserStatus);
     DealUser findByDealIdAndUserId(Long dealId, Long userId);
+
+    List<DealUser> findAllByUserIdInAndDealUserStatus(List<Long> users, DealUserStatus dealUserStatus);
 }

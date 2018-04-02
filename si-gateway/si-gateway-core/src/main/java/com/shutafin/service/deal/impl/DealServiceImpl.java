@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,6 +44,13 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public DealWeb initiateDeal(DealWeb dealWeb, Long userId) {
+        dealWeb.setUsers(dealWeb
+                .getUsers()
+                .stream()
+                .filter(x-> !x.equals(userId))
+                .distinct()
+                .collect(Collectors.toList()));
+
         dealWeb = dealControllerSender.initiateDeal(dealWeb, userId);
         emailNotificationSenderControllerSender.sendEmailDeal(
                 getEmailNotificationDealWeb(dealWeb, userId, null, EmailReason.DEAL_CREATION));
@@ -230,5 +238,10 @@ public class DealServiceImpl implements DealService {
     @Override
     public void deleteDeal(Long dealId, Long userId) {
         dealControllerSender.deleteDeal(dealId, userId);
+    }
+
+    @Override
+    public List<Long> getAvailableUsers(List<Long> users) {
+        return dealControllerSender.getAvailableUsers(users);
     }
 }
