@@ -12,7 +12,7 @@
         </form>
     </div>
 
-    <h4> {{'Search.results'|translate}} {{vm.userSearchList.length}} </h4>
+    <h4> {{'Search.results'|translate}} {{vm.totalUsers}} </h4>
     <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
     <div infinite-scroll='vm.fetchNewPage()'
          infinite-scroll-distance='0'

@@ -7,6 +7,8 @@ import com.shutafin.model.entities.extended.UserMatchingScore;
 import com.shutafin.model.entities.extended.UserQuestionExtendedAnswer;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
 import com.shutafin.model.web.common.UserSearchResponse;
+import com.shutafin.model.web.matching.MatchedUsersScoresSearchResponse;
+import com.shutafin.model.web.matching.MatchedUsersSearchResponse;
 import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.repository.extended.MaxUserMatchingScoreRepository;
 import com.shutafin.repository.extended.UserMatchingScoreRepository;
@@ -63,7 +65,8 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     }
 
     @Override
-    public Map<Long, Integer> getUserMatchingScores(Long userOriginId, Integer page, Integer results) {
+    public MatchedUsersScoresSearchResponse getUserMatchingScores(Long userOriginId, Integer page, Integer results) {
+        MatchedUsersScoresSearchResponse matchedUsersScoresSearchResponse = new MatchedUsersScoresSearchResponse();
         Map<Long, Integer> userMatchingScoresValues = new HashMap<>();
         Map<Long, UserMatchingScore> userMatchingScores = new HashMap<>();
 
@@ -72,9 +75,12 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
 
         Map<QuestionExtended, List<UserQuestionExtendedAnswer>> userOriginAnswers = userQuestionExtendedAnswerService.getAllUserQuestionExtendedAnswers(userOriginId);
         List<Long> usersToMatch = userMatchService.findMatchingUsers(userOriginId);
+        matchedUsersScoresSearchResponse.setTotalUsers(usersToMatch.size());
+
         usersToMatch = userQuestionExtendedAnswerService.getUsersToMatchSortedByUserAnswersWeightSum(usersToMatch);
         if (usersToMatch.size() < page * results){
-            return userMatchingScoresValues;
+            matchedUsersScoresSearchResponse.setMatchedUsersScoresPerPage(userMatchingScoresValues);
+            return matchedUsersScoresSearchResponse;
         }
         usersToMatch = usersToMatch.subList(page * results, Math.min(usersToMatch.size(), page * results + results));
 
@@ -90,7 +96,10 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
         }
         //Use next option if you want to save page users score
         asyncSaveMatchingScoreService.saveMatchingScores(userMatchingScores.values());
-        return userMatchingScoresValues;
+
+        matchedUsersScoresSearchResponse.setMatchedUsersScoresPerPage(userMatchingScoresValues);
+
+        return matchedUsersScoresSearchResponse;
     }
 
     private Map<Long, Double> createMaxUserMatchingScoresMap(List<MaxUserMatchingScore> maxUserMatchingScores) {
@@ -103,16 +112,24 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     }
 
     @Override
-    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, Integer page, Integer results, AccountUserFilterRequest accountUserFilterRequest) {
-        Map<Long, Integer> userMatchingScores = getUserMatchingScores(userId, page, results);
+    public MatchedUsersSearchResponse getMatchedUserSearchResponses(Long userId, Integer page, Integer results, AccountUserFilterRequest accountUserFilterRequest) {
+        MatchedUsersSearchResponse matchedUsersSearchResponse = new MatchedUsersSearchResponse();
+
+        MatchedUsersScoresSearchResponse matchedUsersScoresSearchResponse = getUserMatchingScores(userId, page, results);
+        matchedUsersSearchResponse.setTotalUsers(matchedUsersScoresSearchResponse.getTotalUsers());
+
+        Map<Long, Integer> userMatchingScores = matchedUsersScoresSearchResponse.getMatchedUsersScoresPerPage();
         if (userMatchingScores.isEmpty()) {
-            return new ArrayList<>();
+            matchedUsersSearchResponse.setMatchedUsersPerPage(new ArrayList<>());
+            return matchedUsersSearchResponse;
         }
         List<Long> usersList = new ArrayList<>(userMatchingScores.keySet());
         accountUserFilterRequest.setUserIds(usersList);
         List<UserSearchResponse> userSearchResponses = userFilterControllerSender.saveUserFiltersAndGetUsers(userId, accountUserFilterRequest);
 
-        return getUserSearchResponse(userMatchingScores, userSearchResponses);
+        matchedUsersSearchResponse.setMatchedUsersPerPage(getUserSearchResponse(userMatchingScores, userSearchResponses));
+
+        return matchedUsersSearchResponse;
     }
 
     private List<UserSearchResponse> getUserSearchResponse(Map<Long, Integer> userMatchingScores, List<UserSearchResponse> userSearchResponses) {

@@ -1,5 +1,6 @@
 package com.shutafin.controller.matching;
 
+import com.shutafin.model.web.matching.MatchedUsersScoresSearchResponse;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.service.UserMatchingScoreService;
@@ -9,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/matching")
@@ -21,8 +21,9 @@ public class UserMatchingScoreController {
     @Autowired
     private UserQuestionExtendedAnswerService userQuestionExtendedAnswerService;
 
+    @Deprecated/*DEPRECATION CANDIDATE ALONG WITH MatchedUsersScoresSearchResponse. Reason: not in use*/
     @GetMapping(value = "/extended", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Map<Long, Integer> getUserMatchingScores(@AuthenticatedUser Long authenticatedUserId) {
+    public MatchedUsersScoresSearchResponse getUserMatchingScores(@AuthenticatedUser Long authenticatedUserId) {
         return userMatchingScoreService.getUserMatchingScores(authenticatedUserId);
     }
 
