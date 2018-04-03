@@ -5,7 +5,6 @@ import com.shutafin.model.entities.extended.QuestionExtended;
 import com.shutafin.model.entities.extended.UserMatchingScore;
 import com.shutafin.model.entities.extended.UserQuestionExtendedAnswer;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
-import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.matching.MatchedUsersScoresSearchResponse;
 import com.shutafin.model.web.matching.MatchedUsersSearchResponse;
 import com.shutafin.model.web.matching.UserMatchingScoreDTO;

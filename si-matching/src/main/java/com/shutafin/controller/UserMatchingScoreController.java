@@ -3,7 +3,6 @@ package com.shutafin.controller;
 
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.account.AccountUserFilterRequest;
-import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.matching.*;
 import com.shutafin.service.extended.UserMatchingScoreService;
 import com.shutafin.service.extended.UserQuestionExtendedAnswerService;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
