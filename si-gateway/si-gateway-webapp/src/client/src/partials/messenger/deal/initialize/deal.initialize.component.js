@@ -1,5 +1,5 @@
 app.component('dealInitializeComponent', {
-    templateUrl: "partials/deal/initialize/deal.initialize.component.html",
+    templateUrl: "partials/messenger/deal/initialize/deal.initialize.component.html",
     bindings: {
         chatInfo: '<'
     },
@@ -21,16 +21,18 @@ app.component('dealInitializeComponent', {
         }
 
         function initializeDeal() {
-            var type = 'creation';
+
+            collectUsersIdInChat();
+
             var modalInstance = $uibModal.open({
 
                 animation: true,
-                component: 'modalComponent',
+                component: 'dealInitializeModalComponent',
                 size: 'sm',
                 resolve: {
 
-                    type: function () {
-                        return {type: type, component: componentType};
+                    dealInfo: function () {
+                        return {users: vm.chatInfo.usersInChat, component: componentType};
                     }
                 }
             });
@@ -39,7 +41,7 @@ app.component('dealInitializeComponent', {
                     newName = namePanelDef;
                 }
                 dealWeb.title = newName;
-                collectUsersIdInChat();
+
                 dealPresentationModel.initiateDeal(dealWeb).then(
                     function (success) {
                         notify.set($filter('translate')("Deal.confirmation"));

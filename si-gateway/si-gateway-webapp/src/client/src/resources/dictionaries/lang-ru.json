@@ -36,6 +36,8 @@
   "Deal.deal.modalWindow.yes": "Да",
   "Deal.deal.modalWindow.no": "Нет",
   "Deal.deal.status.inactive":"Неактивный",
+  "Deal.deal.status.inactive.wait-for-approval":"Неактивный, ожидается подтверждение",
+
   "Deal.deal.status.active":"Активный",
   "Deal.deal.status.archive":"Архивный",
   "Deal.deal.no.deals":"У вас еще нет сделок",

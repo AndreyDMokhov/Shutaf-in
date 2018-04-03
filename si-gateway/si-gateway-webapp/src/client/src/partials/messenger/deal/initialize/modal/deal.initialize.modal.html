@@ -1,0 +1,50 @@
+<div class="modal-header deal" style="text-align: center ">
+    <h3 class="modal-title">{{'Deal.deal.modalWindow.creation.header' | translate: vm.componentData}} </h3>
+</div>
+<div class="modal-body-original" id="modal-body">
+    <label for="newTabName">
+        {{'Deal.deal.modalWindow.creation.content' | translate: vm.componentData}} :
+    </label>
+    <br>
+    <input autofocus
+           class="form-control"
+           ng-model="vm.newTabName"
+           id="newTabName"
+           name="newTabName"
+           placeholder="{{vm.resolve.type.filename}}"
+           ng-keyup="$event.keyCode == 13 &&
+                   vm.newTabName !== null &&
+                   vm.newTabName !== '' &&
+                   vm.ok()">
+</div>
+<hr>
+
+<div class="deal-create-users-container">
+
+    <div class="glyphicon glyphicon-chevron-left arrow-users arrow-users-preview"
+         ng-click="!vm.arrowPreview || vm.preview()"></div>
+
+    <div ng-repeat="user in vm.partUsersInfo track by user.userId" index="user.userId">
+        <div class="deal-create-user-container">
+            <user-avatar user-id={{user.userId}} width="50" height="50"></user-avatar>
+            <br>
+            {{user.firstName}} <br>
+            {{user.lastName}}
+        </div>
+    </div>
+    <div class="glyphicon glyphicon-chevron-right arrow-users arrow-users-next"
+         ng-click="!vm.arrowNext || vm.next()"></div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()">
+        {{'Deal.deal.modalWindow.ok' | translate}}
+    </button>
+    <button class="btn btn-warning" type="button" ng-click="vm.cancel()">
+        {{'Deal.deal.modalWindow.cancel' | translate}}
+    </button>
+
+</div>
+
+
+

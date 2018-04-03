@@ -7,7 +7,7 @@ body {
 .divider-vertical {
   min-height: 50px;
   margin: 0 9px;
-  border-left: 1px solid #DCEDC8;
+  border-left: 1px solid #B2EBF2;
   border-right: 1px solid #FFF;
 }
 .header-icon-size {
@@ -31,13 +31,16 @@ label.required:after {
   transition: all 0.1s 0.1s;
 }
 div[role="main"] {
-  height: 82vh;
+  height: 85vh;
   overflow-y: scroll;
-  background: transparent;
+  background: #EFEBE9;
   background-size: 100% 100%;
 }
+body {
+  background: #EFEBE9;
+}
 .margin-top {
-  margin-top: 5vh;
+  margin-top: 4vh;
 }
 .navbar {
   margin-bottom: 0;
@@ -45,8 +48,8 @@ div[role="main"] {
   border-width: 0 0 2px 0;
 }
 .navbar-default {
-  background-color: #689F38;
-  border-color: #4f792b;
+  background-color: #00ACC1;
+  border-color: #007f8e;
 }
 .navbar.navbar-fixed-bottom {
   border-width: 2px 0 0 0;
@@ -56,8 +59,12 @@ div[role="main"] {
 }
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  color: #DCEDC8;
+  color: #B2EBF2;
   background-color: transparent;
+}
+.tabs-color {
+  background-color: #f0f0f0;
+  color: #757575;
 }
 .navbar-default .navbar-nav > .active > a {
   color: #212121;
@@ -65,17 +72,17 @@ div[role="main"] {
 }
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
-  color: #DCEDC8;
+  color: #B2EBF2;
   background-color: transparent;
 }
 .panel-custom {
-  border-color: #8BC34A;
-  box-shadow: 3px 5px 8px 3px #8BC34A;
+  border-color: #80DEEA;
+  box-shadow: 3px 5px 8px 3px #80DEEA;
   border-width: 1px 1px 1px 1px;
 }
 .panel-custom > .panel-heading {
   color: #212121;
-  background-color: #8BC34A;
+  background-color: #80DEEA;
   font-weight: bold;
   border-radius: 8px 8px 0 0;
 }
@@ -88,7 +95,7 @@ div[role="main"] {
   border-top-color: transparent;
 }
 .panel-custom > .panel-heading .badge {
-  color: #689F38;
+  color: #00ACC1;
   background-color: #212121;
 }
 .panel-custom > .panel-footer + .panel-collapse > .panel-body {
@@ -102,7 +109,7 @@ div[role="main"] {
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
   color: #212121;
-  background-color: #8BC34A;
+  background-color: #80DEEA;
 }
 .quiz-area {
   position: relative;
@@ -279,7 +286,7 @@ fieldset[disabled] .btn-primary.focus {
   color: #fff;
 }
 .btn-success {
-  color: #DCEDC8;
+  color: #B2EBF2;
   background-color: #00BCD4;
   border-color: #0098ab;
 }
@@ -300,10 +307,10 @@ fieldset[disabled] .btn-success:focus,
 fieldset[disabled] .btn-success.focus {
   background-color: #006b78;
   border-color: #00464f;
-  color: #c4e0a2;
+  color: #86e0eb;
 }
 a {
-  color: #689F38;
+  color: #00ACC1;
   text-decoration: none;
 }
 a.fa {
@@ -311,7 +318,7 @@ a.fa {
 }
 a:hover,
 a:focus {
-  color: #37541d;
+  color: #00515b;
   text-decoration: underline;
 }
 a.fa:hover,
@@ -377,12 +384,12 @@ a.fa:focus {
   border-color: #ddd;
 }
 .pagination-page.active {
-  background-color: #8BC34A;
-  border-color: #689F38;
+  background-color: #80DEEA;
+  border-color: #00ACC1;
 }
 .pagination-page {
   border-right: 1px solid #bdc5db;
-  box-shadow: 2px 3px 4px #689F38;
+  box-shadow: 2px 3px 4px #00ACC1;
 }
 .pagination-page.active,
 .pagination > .active > a,
@@ -391,8 +398,8 @@ a.fa:focus {
   z-index: 3;
   color: #fff;
   cursor: default;
-  background-color: #8BC34A;
-  border-color: #689F38;
+  background-color: #80DEEA;
+  border-color: #00ACC1;
 }
 .pagination > .disabled > a,
 .pagination > .disabled > a:hover,

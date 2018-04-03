@@ -1,5 +1,6 @@
 package com.shutafin.service.impl;
 
+import com.shutafin.model.web.matching.MatchedUsersScoresSearchResponse;
 import com.shutafin.model.web.matching.UserMatchingScoreDTO;
 import com.shutafin.sender.matching.UserMatchingScoreControllerSender;
 import com.shutafin.service.UserMatchingScoreService;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -27,9 +27,12 @@ public class UserMatchingScoreServiceImpl implements UserMatchingScoreService {
     }
 
     @Override
-    public Map<Long, Integer> getUserMatchingScores(Long userOrigin) {
+    public MatchedUsersScoresSearchResponse getUserMatchingScores(Long userOrigin) {
         if (userOrigin == null) {
-            return new HashMap<>();
+            return MatchedUsersScoresSearchResponse.builder()
+                    .matchedUsersScoresPerPage(new HashMap<>())
+                    .totalUsers(0)
+                    .build();
         }
         return userMatchingScoreControllerSender.getUserMatchingScores(userOrigin);
     }

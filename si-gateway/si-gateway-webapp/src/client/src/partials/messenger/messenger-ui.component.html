@@ -1,5 +1,5 @@
 <div class="row margin-top">
-    <div class="col-md-3 col-lg-3 chat-col-left chat-menu" align="left">
+    <div class="col-md-3 col-lg-3 default-card chat-menu" align="left">
 
         <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}:
             <crop-name-directive
@@ -19,6 +19,7 @@
                                        chat-info="vm.currentChat"></deal-initialize-component>
             <hr>
             <message-list-directive></message-list-directive>
+            <br>
             <send-form-directive></send-form-directive>
         </div>
         <div ng-show="!vm.currentChat.chatTitle" class="col-md-offset-2 col-lg-offset-2">
@@ -31,9 +32,7 @@
                 &nbsp;&nbsp;{{'Chat.title.help.new-chat-suffix' | translate}}
             </h4>
         </div>
-        <div class="col-md-offset-1 col-lg-offset-1 col-lg-11 col-md-11">
-            <hr>
-        </div>
+
         <div ng-show="!vm.currentChat.chatTitle" class="col-md-offset-2 col-lg-offset-2">
             <h4>
                 {{'Chat.title.help.existing-chat-prefix' | translate}}&nbsp;&nbsp;
@@ -43,7 +42,7 @@
         </div>
     </div>
 
-    <div class="col-md-3 col-lg-3 chat-col-left chat-menu" align="right">
+    <div class="col-md-3 col-lg-3 default-card chat-menu" align="right">
         <h4 class="text-center">{{'Chat.title.compatibleUsers' | translate}}</h4>
         <compatible-users-directive users="vm.users"></compatible-users-directive>
     </div>
