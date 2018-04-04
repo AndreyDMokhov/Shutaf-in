@@ -150,6 +150,11 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         textReplace.put("dealTitle", emailNotificationDealWeb.getDealTitle());
         textReplace.put("link", urlLink);
 
+        boolean hasUserToChange = emailNotificationDealWeb.getUserToChange() != null &&
+                emailNotificationDealWeb.getUserToChange().getUserId().equals(emailUserLanguage.getUserId());
+
+
+
         return new EmailMessage(
                 emailUserLanguage.getUserId(),
                 emailUserLanguage.getEmail(),
@@ -157,7 +162,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
                         emailNotificationDealWeb.getEmailReason(),
                         emailUserLanguage.getLanguageCode(),
                         textReplace,
-                        emailUserLanguage.getUserId() == emailNotificationDealWeb.getUserToChange().getUserId() ? END_OF_PREFIX : ""
+                        hasUserToChange ? END_OF_PREFIX : ""
                 ),
                 imageSources
         );

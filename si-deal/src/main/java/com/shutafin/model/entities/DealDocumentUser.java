@@ -3,10 +3,7 @@ package com.shutafin.model.entities;
 import com.shutafin.model.base.AbstractEntity;
 import com.shutafin.model.web.deal.DealUserPermissionType;
 import com.shutafin.model.types.DealUserPermissionTypeConverter;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class DealDocumentUser extends AbstractEntity {
     @Column(name = "USER_ID", nullable = false)
     private Long userId;

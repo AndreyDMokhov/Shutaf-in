@@ -4,11 +4,7 @@ import com.shutafin.model.entities.*;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
 import com.shutafin.model.exception.exceptions.SystemException;
-import com.shutafin.model.web.deal.DealUserPermissionType;
-import com.shutafin.model.web.deal.DealUserStatus;
-import com.shutafin.model.web.deal.DocumentType;
-import com.shutafin.model.web.deal.PermissionType;
-import com.shutafin.model.web.deal.InternalDealUserDocumentWeb;
+import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealService;
@@ -26,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -145,6 +142,29 @@ public class DealDocumentServiceImpl implements DealDocumentService {
         dealDocument.setTitle(newTitle);
         dealDocument.setModifiedByUser(userId);
         return dealDocument;
+    }
+
+    @Override
+    public void grantDealUserDocumentAccessPermissions(Long userId, Long dealId, DealUserPermissionType permissionLevel) {
+
+        List<DealDocumentUser> documentUsers = dealDocumentUserRepository.findAllByDealDocumentDealPanelDealIdAndUserIdAndDealUserPermissionTypeNot(dealId, userId, DealUserPermissionType.NO_READ);
+        if (!documentUsers.isEmpty()) {
+            documentUsers = documentUsers
+                    .stream()
+                    .peek(x -> x.setDealUserPermissionType(permissionLevel))
+                    .collect(Collectors.toList());
+        } else {
+            List<DealDocument> documents = dealDocumentRepository.findAllByDealPanelDealId(dealId);
+
+            documentUsers = documents.stream()
+                    .map(x -> DealDocumentUser.builder()
+                            .userId(userId)
+                            .dealUserPermissionType(permissionLevel)
+                            .dealDocument(x)
+                            .build())
+                    .collect(Collectors.toList());
+        }
+        dealDocumentUserRepository.save(documentUsers);
     }
 
     private DealDocument getDealDocumentWithPermissions(Long userId, Long dealDocumentId, Boolean fullAccess) {

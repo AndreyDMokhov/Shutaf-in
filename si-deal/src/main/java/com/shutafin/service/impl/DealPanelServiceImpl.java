@@ -3,11 +3,7 @@ package com.shutafin.service.impl;
 import com.shutafin.model.entities.*;
 import com.shutafin.model.exception.exceptions.NoPermissionException;
 import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.web.deal.DealUserPermissionType;
-import com.shutafin.model.web.deal.DealUserStatus;
-import com.shutafin.model.web.deal.DealDocumentWeb;
-import com.shutafin.model.web.deal.DealPanelResponse;
-import com.shutafin.model.web.deal.DealPanelWeb;
+import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.*;
 import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealPanelService;
@@ -135,6 +131,29 @@ public class DealPanelServiceImpl implements DealPanelService {
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public void grantDealUserPanelAccessPermissions(Long userId, Long dealId, DealUserPermissionType permissionLevel) {
+        List<DealPanelUser> dealPanelUsers = dealPanelUserRepository.findAllByDealPanelDealIdAndUserIdAndDealUserPermissionTypeNot(dealId, userId, DealUserPermissionType.NO_READ);
+
+        if (!dealPanelUsers.isEmpty()) {
+            dealPanelUsers = dealPanelUsers.stream()
+                    .peek(x -> x.setDealUserPermissionType(permissionLevel))
+                    .collect(Collectors.toList());
+        } else {
+            List<DealPanel> allByDealId = dealPanelRepository.findAllByDealId(dealId);
+            dealPanelUsers = allByDealId
+                    .stream()
+                    .map(x -> DealPanelUser.builder()
+                            .dealPanel(x)
+                            .dealUserPermissionType(permissionLevel)
+                            .userId(userId)
+                            .build())
+                    .collect(Collectors.toList());
+        }
+
+        dealPanelUserRepository.save(dealPanelUsers);
     }
 
     private DealPanel getDealPanelWithPermissions(Long userId, Long dealPanelId, Boolean fullAccess) {

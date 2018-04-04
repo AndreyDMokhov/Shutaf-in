@@ -5,7 +5,6 @@ import com.shutafin.model.exception.exceptions.validation.InputValidationExcepti
 import com.shutafin.model.web.account.AccountRegistrationRequest;
 import com.shutafin.model.web.account.AccountUserWeb;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
-import com.shutafin.processors.annotations.response.SessionResponse;
 import com.shutafin.service.RegistrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -44,14 +43,13 @@ public class RegistrationController {
         registrationService.registerUser(registrationRequestWeb);
     }
 
-    @SessionResponse
     @RequestMapping(value = "/registration/confirmation/{link}", method = RequestMethod.GET)
-    public AccountUserWeb confirmRegistrationUser(@PathVariable String link) {
+    public void confirmRegistrationUser(@PathVariable String link) {
         log.debug("/users/registration/confirmation/{link}");
         if (StringUtils.isBlank(link)) {
             log.warn("Link is blank or empty");
             throw new ResourceNotFoundException();
         }
-        return registrationService.confirmRegistrationUser(link);
+        registrationService.confirmRegistrationUser(link);
     }
 }

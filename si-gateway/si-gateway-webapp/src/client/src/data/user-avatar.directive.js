@@ -24,7 +24,7 @@ angular.module('app').directive('userAvatar', function ($uibModal,
                 if (!scope.userId) {
                     scope.image = DEFAULT_IMAGE_PATH;
                 }
-                else if ($sessionStorage.userProfile.userId == scope.userId && $sessionStorage.userProfile.userImage) {
+                else if ($sessionStorage.userProfile && $sessionStorage.userProfile.userId == scope.userId && $sessionStorage.userProfile.userImage) {
                     scope.image = BASE64_IMAGE_PATH + $sessionStorage.userProfile.userImage;
                     scope.firstName = $sessionStorage.userProfile.firstName;
                     scope.lastName = $sessionStorage.userProfile.lastName;

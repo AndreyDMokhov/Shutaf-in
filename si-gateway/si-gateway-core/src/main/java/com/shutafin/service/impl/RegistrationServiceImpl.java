@@ -28,10 +28,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public AccountUserWeb confirmRegistrationUser(String link) {
+    public void confirmRegistrationUser(String link) {
         EmailRegistrationResponse registrationResponse = (EmailRegistrationResponse) emailNotificationSenderControllerSender.confirmLink(link, EmailReason.REGISTRATION);
 
-        return registrationControllerSender.confirmRegistration(registrationResponse.getUserId());
+        registrationControllerSender.confirmRegistration(registrationResponse.getUserId());
     }
 
 }

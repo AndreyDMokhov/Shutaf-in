@@ -60,7 +60,7 @@ public class RegistrationControllerTest extends BaseTestImpl {
     @Before
     public void setUp() {
         Mockito.doNothing().when(registrationService).registerUser(any(AccountRegistrationRequest.class));
-        Mockito.when(registrationService.confirmRegistrationUser(anyString())).thenReturn(new AccountUserWeb());
+        Mockito.doNothing().when(registrationService).confirmRegistrationUser(anyString());
         Mockito.when(sessionManagementService.generateNewSession(any(AccountUserWeb.class))).thenReturn(SESSION_ID);
         errorList = new ArrayList<>();
     }
