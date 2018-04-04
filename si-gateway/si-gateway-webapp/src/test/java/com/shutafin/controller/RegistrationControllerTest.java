@@ -74,7 +74,6 @@ public class RegistrationControllerTest extends BaseTestImpl {
         MockHttpServletResponse mockHttpServletResponse = getServletResponse(request);
         APIWebResponse response = getResponse(mockHttpServletResponse);
         Assert.assertNull(response.getError());
-        Assert.assertEquals(mockHttpServletResponse.getHeader("session_id"), SESSION_ID);
     }
 
     @Test
