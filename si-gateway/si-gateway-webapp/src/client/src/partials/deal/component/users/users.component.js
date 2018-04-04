@@ -81,6 +81,11 @@ app.component('usersDealComponent', {
 
         vm.remove = function (user) {
 
+            if (user.userId === vm.userID) {
+                notify.set($filter('translate')('Error.DSR'), {type: 'warn'});
+                return;
+            }
+
             var type = 'removeUser';
             var modalInstance = $uibModal.open({
 

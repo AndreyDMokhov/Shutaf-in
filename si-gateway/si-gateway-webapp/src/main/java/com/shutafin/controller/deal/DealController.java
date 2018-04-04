@@ -1,5 +1,6 @@
 package com.shutafin.controller.deal;
 
+import com.shutafin.model.exception.exceptions.DealSelfRemovalException;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
 import com.shutafin.model.web.deal.DealResponse;
 import com.shutafin.model.web.deal.DealTitleChangeWeb;
@@ -47,9 +48,14 @@ public class DealController {
     }
 
     @GetMapping(value = "/remove/{dealId}/{userToRemoveId}")
-    public void removeDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
+    public void removeDealUser(@AuthenticatedUser Long userId,
+                               @PathVariable(value = "dealId") Long dealId,
                                @PathVariable(value = "userToRemoveId") Long userToRemoveId) {
         log.debug("/deal/remove/{dealId}/{userToRemoveId}");
+        if (userToRemoveId.equals(userId)) {
+            log.warn("Cannot vote for self removal. Should use Leave Deal instead!");
+            throw new DealSelfRemovalException();
+        }
         dealService.removeDealUser(dealId, userId, userToRemoveId);
     }
 

@@ -51,7 +51,7 @@ public class MatchingCandidatesEmailNotificationJobService {
         this.userImageService = userImageService;
     }
 
-    @Scheduled(fixedDelay = 720000)
+//    @Scheduled(fixedDelay = 720000)
     @Transactional
     public void sendEmailNotification() {
         List<UserAccount> userAccounts = userAccountRepository.findAllByAccountStatusAndAccountType(

@@ -75,7 +75,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public User confirmRegistration(Long userId) {
+    public void confirmRegistration(Long userId) {
         User user = userRepository.findOne(userId);
         if (user == null) {
             log.warn("User was not found for id: " + userId);
@@ -83,7 +83,8 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         UserAccount userAccount = userAccountService.findUserAccountByUser(user);
         userAccount.setAccountStatus(AccountStatus.CONFIRMED);
-        return user;
+
+        userAccountRepository.save(userAccount);
     }
 
     private void saveUserCredentials(User user, String password) {
