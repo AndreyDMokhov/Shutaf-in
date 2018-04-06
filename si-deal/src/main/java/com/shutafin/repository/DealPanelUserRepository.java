@@ -11,5 +11,5 @@ import java.util.List;
 public interface DealPanelUserRepository extends BaseJpaRepository<DealPanelUser, Long> {
     DealPanelUser findByDealPanelIdAndUserId(Long dealPanelId, Long userId);
     List<DealPanelUser> findAllByDealPanelIdAndDealUserPermissionType(Long dealPanelId, DealUserPermissionType dealUserPermissionType);
-    List<DealPanelUser> findAllByDealPanelDealIdAndUserId(Long dealId, Long useId);
+    List<DealPanelUser> findAllByDealPanelDealIdAndUserIdAndDealUserPermissionTypeNot(Long dealId, Long useId, DealUserPermissionType permissionType);
 }

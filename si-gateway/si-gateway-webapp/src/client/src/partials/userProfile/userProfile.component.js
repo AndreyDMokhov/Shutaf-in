@@ -12,7 +12,8 @@ app.component('userProfileComponent', {
         vm.userInfo = {};
 
         if ($stateParams.userId) {
-            if ($stateParams.userId === $sessionStorage.userProfile.userId) {
+            if ($sessionStorage.userProfile && $stateParams.userId === $sessionStorage.userProfile.userId) {
+
                 $state.go('myUserProfile');
             } else {
                 getUserProfile().then(

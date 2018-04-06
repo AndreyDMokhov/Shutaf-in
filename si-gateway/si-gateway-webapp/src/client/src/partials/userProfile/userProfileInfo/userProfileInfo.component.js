@@ -31,12 +31,17 @@ app.component('userProfileInfo', {
         }
 
         function getDescriptionsForRequiredQuestions() {
+            if (!vm.questions) {
+                return;
+            }
+
             if (!vm.selectedAnswers || vm.selectedAnswers.length < 1) {
                 return;
             }
             angular.forEach(vm.selectedAnswers, function (selectedAnswer) {
-                var questionId = selectedAnswer.questionId,
-                    answerId = selectedAnswer.selectedAnswersIds[0];
+                var questionId = selectedAnswer.questionId;
+                var answerId = selectedAnswer.selectedAnswersIds[0];
+
 
                 var question = vm.questions.find(function (question) {
                     return question.questionId === questionId;

@@ -35,20 +35,28 @@ public class SenderDealUserAddingComponent implements BaseEmailDealInterface {
             if (emailUserLanguage.getUserId().equals(emailNotificationDealWeb.getUserOrigin().getUserId())){
                 continue;
             }
-            ConfirmationDealUserAdding confirmation =
-                    confirmationDealUserAddingService.get(
-                            emailNotificationDealWeb.getDealId(),
-                            emailNotificationDealWeb.getUserOrigin().getUserId(),
-                            emailNotificationDealWeb.getUserToChange().getUserId(),
-                            groupUUID);
-            confirmationDealUserAddingService.save(confirmation);
-            EmailMessage emailMessage = emailTemplateService.getEmailMessageDeal(
-                    emailNotificationDealWeb,
-                    emailUserLanguage,
-                    confirmation.getConfirmationUUID(),
-                    DEAL_USER_ADDING_CONFIRMATION_URL,
-                    URL_PROFILE);
-            senderEmailMessageService.sendEmailMessage(emailNotificationDealWeb.getEmailReason(), emailMessage);
+            senderEmailMessageService.sendEmailMessage(emailNotificationDealWeb.getEmailReason(),
+                    getEmailMessage(emailNotificationDealWeb, groupUUID, emailUserLanguage));
         }
     }
+
+    private EmailMessage getEmailMessage(EmailNotificationDealWeb emailNotificationDealWeb, String groupUUID,
+                                         EmailUserLanguage emailUserLanguage) {
+        ConfirmationDealUserAdding confirmation =
+                confirmationDealUserAddingService.get(
+                        emailNotificationDealWeb.getDealId(),
+                        emailNotificationDealWeb.getUserOrigin().getUserId(),
+                        emailNotificationDealWeb.getUserToChange().getUserId(),
+                        groupUUID);
+        confirmationDealUserAddingService.save(confirmation);
+
+        return emailTemplateService.getEmailMessageDeal(
+                emailNotificationDealWeb,
+                emailUserLanguage,
+                confirmation.getConfirmationUUID(),
+                DEAL_USER_ADDING_CONFIRMATION_URL,
+                URL_PROFILE);
+    }
+
+
 }

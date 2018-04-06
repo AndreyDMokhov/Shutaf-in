@@ -36,12 +36,14 @@
   "Deal.deal.modalWindow.yes": "Да",
   "Deal.deal.modalWindow.no": "Нет",
   "Deal.deal.status.inactive":"Неактивный",
+  "Deal.deal.status.inactive.wait-for-approval":"Неактивный, ожидается подтверждение",
+
   "Deal.deal.status.active":"Активный",
   "Deal.deal.status.archive":"Архивный",
   "Deal.deal.no.deals":"У вас еще нет сделок",
   "Deal.deal.button.initiate":"Создать сделку",
   "Deal.deal.button.leave":"Покинуть сделку",
-  "Deal.confirmation":"Для активации сделки необходимо подтверждение с электронного адреса",
+  "Deal.confirmation":"Сделка будет активирована, когда один из участников подтвердит действие, перейдя по ссылке, отправленной на электронный адрес",
   "Deal.confirmation.initialization": "Ваше участие в сделке {{dealName}} было успешно подтверждено",
   "Deal.confirmation.addUser": "Вы подтвердили участие нового участника в сделке",
   "Deal.confirmation.removeUser": "Вы подтвердили удаление участника",
@@ -69,6 +71,9 @@
   "Error.ERI":"Интервал между повторной отправкой составляет 2 минуты",
   "Error.LAC":"Ссылка уже была подтверждена",
   "Error.LEE":"Срок действия ссылки истек",
+  "Error.DNC":"Сделка не подтверждена еще. Вы получите полный доступ, когда все пользователи сделки подтвердят ваше участие через электронную почту",
+  "Error.DSR":"Вы не можете голосовать на само удаление. Используйте кнопку 'Покинуть сделку'",
+
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Регистрация",
@@ -89,7 +94,7 @@
   "Registration.form.msg.requiredPassword":"Обязательное поле",
   "Registration.form.btn.cancel":"Отмена",
   "Registration.form.btn.registration":"Продолжить",
-  "Registration.form.msg.registration.success":"Добро пожаловать!",
+  "Registration.form.msg.registration.success":"Аккаунт был успешно активирован. Используйте свои емайл и пароль, чтобы войти",
   "Registration.request.success":"Для активации учетной записи, необходимо подтвердить свой электронный адрес",
 
   "SECTION": "LOGIN",
@@ -199,6 +204,7 @@
   "Search.notFound" : "По Вашему запросу пользователи не найдены",
   "Search.request" : "Введите Ваш запрос для поиска",
   "Search.results" : "Результатов:",
+  "Search.filter.title" : "Фильтровать результаты",
   "Search.ChooseAge" : "Выберите возраст",
   "Search.ChooseGender" : "Выберите пол",
   "Search.ChooseCity" : "Выберите город",

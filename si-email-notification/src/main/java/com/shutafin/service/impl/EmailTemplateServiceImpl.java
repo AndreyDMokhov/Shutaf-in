@@ -23,6 +23,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     private static final String HEADER_SUFFIX = ".header";
     private static final String SECTION_SUFFIX = ".section";
+    private static final String END_OF_PREFIX = ".userToChange";
 
     @Value("${domain.name}")
     private String url;
@@ -31,13 +32,17 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     private DiscoveryRoutingService discoveryRoutingService;
 
     private BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, Map<String, String> textReplace) {
+        return getTemplate(emailReason, languageDescription, textReplace, "");
+    }
+
+    private BaseTemplate getTemplate(EmailReason emailReason, String languageDescription, Map<String, String> textReplace, String endOfPrefix) {
         notNull(emailReason);
         notNull(languageDescription);
         notNull(textReplace);
 
         Properties properties = getProperties(languageDescription);
 
-        String prefix = emailReason.getPropertyPrefix();
+        String prefix = emailReason.getPropertyPrefix() + endOfPrefix;
 
         String header = properties.getProperty(prefix + HEADER_SUFFIX);
 
@@ -145,13 +150,19 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         textReplace.put("dealTitle", emailNotificationDealWeb.getDealTitle());
         textReplace.put("link", urlLink);
 
+        boolean hasUserToChange = emailNotificationDealWeb.getUserToChange() != null &&
+                emailNotificationDealWeb.getUserToChange().getUserId().equals(emailUserLanguage.getUserId());
+
+
+
         return new EmailMessage(
                 emailUserLanguage.getUserId(),
                 emailUserLanguage.getEmail(),
                 getTemplate(
                         emailNotificationDealWeb.getEmailReason(),
                         emailUserLanguage.getLanguageCode(),
-                        textReplace
+                        textReplace,
+                        hasUserToChange ? END_OF_PREFIX : ""
                 ),
                 imageSources
         );

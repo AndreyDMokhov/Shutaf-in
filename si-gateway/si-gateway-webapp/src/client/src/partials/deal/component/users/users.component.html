@@ -1,4 +1,4 @@
-<div class="deal-users-component">
+<div class="default-card deal-users-component">
     <div ng-if="vm.arrows">
         <div class="arrowUpDown"
              ng-class="{arrowUpEnable: vm.arrowUp, arrowUpDisable: !vm.arrowUp}"
@@ -11,7 +11,7 @@
                 <div>
                     <span style="padding-right: 10px" ng-show="vm.userID == user.userId">{{'Deal.users.you' | translate }}</span>
                 </div>
-                <div class="deal-user-card pointer" ui-sref="userProfile({userId:user.userId})">
+                <div class="deal-user-card pointer" >
                     <i class="fa fa-window-close pull-right pointer remove-user"
                        uib-popover-html="'{{'Deal.users.button.remove' | translate}}'"
                        popover-placement="left"
@@ -26,7 +26,8 @@
                              popover-trigger="'mouseenter'"
                              ng-src="{{vm.getUserImage(user.image)}}"
                              width="60"
-                             height="60"/>
+                             height="60"
+                             ui-sref="userProfile({userId:user.userId})"/>
                 </div>
             </div>
 

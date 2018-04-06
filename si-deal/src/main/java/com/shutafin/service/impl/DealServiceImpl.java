@@ -1,19 +1,15 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.base.AbstractEntity;
-import com.shutafin.model.entities.Deal;
-import com.shutafin.model.entities.DealPanel;
-import com.shutafin.model.entities.DealUser;
-import com.shutafin.model.exception.exceptions.MultipleDealsException;
-import com.shutafin.model.exception.exceptions.NoPermissionException;
-import com.shutafin.model.exception.exceptions.ResourceNotFoundException;
-import com.shutafin.model.exception.exceptions.SystemException;
+import com.shutafin.model.entities.*;
+import com.shutafin.model.exception.exceptions.*;
 import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.account.AccountUserImageWeb;
 import com.shutafin.model.web.deal.*;
 import com.shutafin.repository.*;
 import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.sender.matching.UserMatchControllerSender;
+import com.shutafin.service.DealDocumentService;
 import com.shutafin.service.DealPanelService;
 import com.shutafin.service.DealService;
 import com.shutafin.service.DealSnapshotService;
@@ -62,6 +58,9 @@ public class DealServiceImpl implements DealService {
     @Autowired
     private UserMatchControllerSender userMatchControllerSender;
 
+    @Autowired
+    private DealDocumentService dealDocumentService;
+
     @Override
     public InternalDealWeb initiateDeal(InternalDealWeb dealWeb) {
         Deal deal = new Deal();
@@ -107,6 +106,9 @@ public class DealServiceImpl implements DealService {
     public DealResponse getDeal(Long dealId, Long userId) {
         Deal deal = checkDealPermissions(dealId, userId, !NEED_FULL_ACCESS);
         DealUser currentDealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
+        if (currentDealUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY && currentDealUser.getDealUserStatus() == DealUserStatus.PENDING) {
+            throw new DealNotConfirmedException();
+        }
         if (currentDealUser.getDealUserPermissionType() == DealUserPermissionType.READ_ONLY) {
             return dealSnapshotService.getDealSnapshot(dealId, userId);
         }
@@ -285,18 +287,22 @@ public class DealServiceImpl implements DealService {
             dealUser.setDealUserPermissionType(dealUserPermissionType);
         }
         dealUserRepository.save(dealUser);
+
+        dealPanelService.grantDealUserPanelAccessPermissions(userToAddId, deal.getId(), dealUserPermissionType);
+        dealDocumentService.grantDealUserDocumentAccessPermissions(userToAddId, deal.getId(), dealUserPermissionType);
+
     }
 
     private void setPermissionToReadOnly(Deal deal, Long userToRemoveId) {
         dealPanelUserRepository
-                .findAllByDealPanelDealIdAndUserId(deal.getId(), userToRemoveId)
+                .findAllByDealPanelDealIdAndUserIdAndDealUserPermissionTypeNot(deal.getId(), userToRemoveId, DealUserPermissionType.NO_READ)
                 .forEach(dealPanelUser -> {
                     if (dealPanelUser.getDealUserPermissionType() == DealUserPermissionType.CREATE)
                         dealPanelUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
                 });
 
         dealDocumentUserRepository
-                .findAllByDealDocumentDealPanelDealIdAndUserId(deal.getId(), userToRemoveId)
+                .findAllByDealDocumentDealPanelDealIdAndUserIdAndDealUserPermissionTypeNot(deal.getId(), userToRemoveId, DealUserPermissionType.NO_READ)
                 .forEach(dealDocumentUser -> {
                     if (dealDocumentUser.getDealUserPermissionType() == DealUserPermissionType.CREATE)
                         dealDocumentUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);

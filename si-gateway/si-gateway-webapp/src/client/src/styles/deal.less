@@ -6,7 +6,6 @@
   height: 100px;
   margin: 10px;
   padding: 10px;
-  border: 2px solid @light-primary-color;
   text-align: center;
 
 }
@@ -100,9 +99,8 @@ uib-tab-heading:hover .deal-rename {
   top: 45%;
   transform: translate(0,-50%);
   right: 50px;
-  width: 60px;
+  width: 71px;
   height: fit-content;
-  background-color: #ffffff;
   padding: 5px;
   border-radius: 5px;
 }
@@ -117,7 +115,7 @@ uib-tab-heading:hover .deal-rename {
   margin-top: 2px;
   margin-bottom: 2px;
   border-radius: 5px;
-  background-color: #ebe8ff;
+  background-color: transparent;
 }
 
 .remove-user {
@@ -129,7 +127,7 @@ uib-tab-heading:hover .deal-rename {
 }
 
 }
-.logo-image{
+.logo-image {
   border:16px #000000;
   -moz-border-radius: 50px;
   -webkit-border-radius: 50px;
@@ -155,4 +153,26 @@ uib-tab-heading:hover .deal-rename {
 }
 .arrowDownDisable{
   background-image: url(../images/downDisable.png);
+}
+.deal-create-users-container {
+  display: flex;
+  justify-content: center;
+}
+.deal-create-user-container {
+  margin: 6px;
+  text-align: center;
+}
+
+
+.arrow-users {
+  font-size: 1.2em;
+  padding: 30px 10px;
+  color: grey;
+  transition: color 0.5s, font-size 0.5s;
+}
+
+.arrow-users-preview:hover, .arrow-users-next:hover {
+  color: black;
+  font-size: 1.5em;
+
 }
