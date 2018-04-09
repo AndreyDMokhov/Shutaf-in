@@ -30,6 +30,11 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
         return rest.one('/available-users?users=' + usersIds).customGET();
     }
 
+    function addUsersToDeal(dealId, userId) {
+        return rest.one('/add/' + dealId + '/' + userId).customGET();
+
+    }
+
 
     return {
         getDeals: getDeals,
@@ -37,7 +42,8 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
         renameDeal: renameDeal,
         initiateDeal: initiateDeal,
         leaveDeal: leaveDeal,
-        getAvailableUsers: getAvailableUsers
+        getAvailableUsers: getAvailableUsers,
+        addUsersToDeal: addUsersToDeal
 
     };
 });

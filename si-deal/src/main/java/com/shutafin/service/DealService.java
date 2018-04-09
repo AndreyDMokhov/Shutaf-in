@@ -19,5 +19,5 @@ public interface DealService {
     Deal checkDealPermissions(Long dealId, Long userId, Boolean needFullAccess);
     void deleteDeal(Long dealId, Long userId);
 
-    List<Long> getAvailableUsers(List<Long> users);
+    DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users);
 }

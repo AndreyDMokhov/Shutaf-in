@@ -94,7 +94,7 @@ public class UserFilterServiceImpl implements UserFilterService {
     public List<UserSearchResponse> filterMatchedUsers(Long userId, AccountUserFilterRequest accountUserFilterRequest) {
         List<Long> filteredUsersId = getFilteredUsers(userId, accountUserFilterRequest);
 
-        if (!StringUtils.isEmpty(accountUserFilterRequest.getFullName())) {
+        if (!StringUtils.isEmpty(accountUserFilterRequest.getFullName()) && !filteredUsersId.isEmpty()) {
             filteredUsersId = userRepository.findAllByFullName(filteredUsersId, accountUserFilterRequest.getFullName());
         }
 

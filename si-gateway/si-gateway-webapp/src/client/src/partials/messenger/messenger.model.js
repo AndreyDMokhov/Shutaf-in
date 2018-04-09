@@ -7,8 +7,12 @@ app.factory('messengerModel', function (Restangular, $sessionStorage) {
     });
 
 
-    function getUsers() {
-        return rest.all('/allUsers').customGET();
+    function getUsers(fullname) {
+        if (fullname !== undefined && fullname !== null && fullname !== '') {
+            return rest.all('/allUsers?fullname=' + fullname).customGET();
+        } else {
+            return rest.all('/allUsers').customGET();
+        }
     }
 
     function addChat(chatName, userId) {
