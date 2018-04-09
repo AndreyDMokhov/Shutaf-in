@@ -88,8 +88,9 @@ public class DealController {
     }
 
     @GetMapping("/available-users")
-    public List<Long> getAvailableUsers(@RequestParam("users") List<Long> users) {
-        return dealService.getAvailableUsers(users);
+    public DealAvailableUsersResponse getAvailableUsers(@RequestParam("currentUser") Long currentUserId,
+                                        @RequestParam("users") List<Long> users) {
+        return dealService.getAvailableUsers(currentUserId, users);
     }
 
     //todo DEAL DELETION FOR SNAPSHOT USER

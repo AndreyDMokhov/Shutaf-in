@@ -1,15 +1,23 @@
 <div class="row margin-top">
-    <div class="col-md-3 col-lg-3 default-card chat-menu" align="left">
+    <div class="col-md-3 col-lg-3 " align="left">
+        <div class="default-card chat-menu">
+            <h4 class="text-center">{{'Chat.title.your-chats' | translate}}</h4>
+            <hr>
+            <channel-component></channel-component>
+        </div>
+        <br>
+        <div ng-show="vm.currentChat.id" class="default-card chat-menu">
+            <h4 >{{'Chat.title.usersInChat' | translate}}:
+                <crop-name-directive
+                        name={{vm.currentChat.chatTitle}}
+                        character-limit="vm.characterLimit">
+                </crop-name-directive>
+            </h4>
+            <hr>
+            <chat-users-directive></chat-users-directive>
+        </div>
 
-        <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}:
-            <crop-name-directive
-                    name={{vm.currentChat.chatTitle}}
-                    character-limit="vm.characterLimit">
-            </crop-name-directive>
-        </h4>
-        <chat-users-directive></chat-users-directive>
-        <h4 class="text-center">{{'Chat.title.your-chats' | translate}}</h4>
-        <channel-component></channel-component>
+
     </div>
 
     <div class="col-md-6 col-lg-6">
@@ -44,6 +52,21 @@
 
     <div class="col-md-3 col-lg-3 default-card chat-menu" align="right">
         <h4 class="text-center">{{'Chat.title.compatibleUsers' | translate}}</h4>
+        <div align="center" >
+            <input
+                    type="text"
+                    ng-model="vm.fullName"
+                    placeholder="{{'Search.button' | translate}}. . . "
+                    style="border-radius: 20px; text-indent: 5px"
+                    tooltip-placement="bottom"
+                    uib-tooltip="{{'Chat.title.compatibleUsers.search' | translate}}"
+                    ng-keyup="$event.keyCode == 13 && vm.getUserData(vm.fullName)"
+                    class="text-center"
+
+            >
+        </div>
+        <hr>
         <compatible-users-directive users="vm.users"></compatible-users-directive>
     </div>
 </div>
+

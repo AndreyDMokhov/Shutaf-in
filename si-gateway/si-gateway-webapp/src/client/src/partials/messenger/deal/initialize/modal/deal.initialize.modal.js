@@ -9,7 +9,7 @@ app.component('dealInitializeModalComponent',
         controllerAs: "vm",
         controller: function ($filter) {
             var vm = this;
-            var translatedComponent = $filter('translate')("Deal." + vm.resolve.dealInfo.component);
+            var translatedComponent = $filter('translate')("Deal.deal");
 
             var limitUsersForShow = 3;
             var lastElement = 0;
@@ -55,7 +55,7 @@ app.component('dealInitializeModalComponent',
 
             };
 
-            vm.preview= function () {
+            vm.preview = function () {
 
                 var j = 0;
 

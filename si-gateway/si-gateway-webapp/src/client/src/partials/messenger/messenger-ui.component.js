@@ -26,8 +26,8 @@ app.component('messengerUiComponent', {
             vm.currentChat = messengerCurrentDataService.currentChat;
         }
 
-        function getUserData() {
-            messengerModel.getUsers().then(
+        function getUserData(fullname) {
+            messengerModel.getUsers(fullname).then(
                 function (success) {
                     vm.users = success.data.data;
                 });
