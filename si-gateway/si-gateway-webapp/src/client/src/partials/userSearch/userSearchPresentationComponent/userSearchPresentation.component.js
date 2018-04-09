@@ -10,8 +10,6 @@ app.component('userSearchPresentationComponent', {
                           userSearchModel,
                           $stateParams,
                           $filter,
-                          ngDialog,
-                          $scope,
                           userSearchService) {
 
         var vm = this;
@@ -49,10 +47,16 @@ app.component('userSearchPresentationComponent', {
                     }
 
                 }, function (error) {
+                    vm.isDisable = false;
+                    vm.isLoading = false;
                     if (error === undefined || error === null) {
                         notify.set($filter('translate')('Error.SYS'), {type: 'error'});
+                    }else {
+                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                        if (error.data.error.errorTypeCode === 'AUT') {
+                            $state.go('logout');
+                        }
                     }
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 
@@ -63,6 +67,7 @@ app.component('userSearchPresentationComponent', {
                     $sessionStorage.filters.filterCitiesIds = filters.filterCitiesIds;
                     $sessionStorage.filters.filterAgeRange = filters.filterAgeRange;
                     vm.userSearchList = success.data.data;
+                    $state.go($state.current, {}, {reload: true});
                 }, function (error) {
                     notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });

@@ -329,13 +329,20 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public List<Long> getAvailableUsers(List<Long> users) {
+    public DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users) {
         List<DealUser> allByUserIdIn = dealUserRepository.findAllByUserIdInAndDealUserStatus(users, DealUserStatus.ACTIVE);
         allByUserIdIn.stream()
                 .map(DealUser::getUserId)
                 .forEach(users::remove);
+        DealUserWeb dealUserWeb = getAllUserDeals(currentUserId).stream()
+                .filter(x -> x.getStatusId() == DealStatus.ACTIVE && x.getUserStatusId() == DealUserStatus.ACTIVE)
+                .findFirst()
+                .orElse(null);
 
-        return users;
+        return DealAvailableUsersResponse.builder()
+                .activeDeal(dealUserWeb)
+                .availableUsers(users)
+                .build();
     }
 
     private DealPanelResponse getFirstDealPanel(List<DealPanel> dealPanels, Long userId) {

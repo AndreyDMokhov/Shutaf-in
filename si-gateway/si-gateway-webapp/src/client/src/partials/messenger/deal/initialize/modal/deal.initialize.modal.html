@@ -1,9 +1,13 @@
 <div class="modal-header deal" style="text-align: center ">
-    <h3 class="modal-title">{{'Deal.deal.modalWindow.creation.header' | translate: vm.componentData}} </h3>
+    <h3 class="modal-title">{{'Deal.deal.modalWindow.' + vm.resolve.dealInfo.type + '.header' | translate: vm.componentData}} </h3>
 </div>
-<div class="modal-body-original" id="modal-body">
+{{vm.resolve.type}}
+<div class="modal-body-original"
+     id="modal-body"
+     ng-if="vm.resolve.type === 'creation'">
     <label for="newTabName">
-        {{'Deal.deal.modalWindow.creation.content' | translate: vm.componentData}} :
+        {{'Deal.deal.modalWindow.' + vm.resolve.dealInfo.type + '.content' | translate: vm.componentData}}
+        <strong>{{vm.resolve.dealInfo.dealName}}</strong>:
     </label>
     <br>
     <input autofocus
@@ -18,8 +22,7 @@
                    vm.ok()">
 </div>
 <hr>
-
-<div class="deal-create-users-container">
+<div class="deal-create-users-container" ng-if="vm.partUsersInfo.length !== 0">
 
     <div class="glyphicon glyphicon-chevron-left arrow-users arrow-users-preview"
          ng-click="!vm.arrowPreview || vm.preview()"></div>
@@ -34,8 +37,16 @@
     </div>
     <div class="glyphicon glyphicon-chevron-right arrow-users arrow-users-next"
          ng-click="!vm.arrowNext || vm.next()"></div>
-
 </div>
+<div class="deal-create-users-container"
+     ng-if="vm.partUsersInfo.length === 0">
+    <br>
+    <br>
+    <strong>
+        {{'Deal.deal.modalWindow.no-users' | translate}}
+    </strong>
+</div>
+
 <div class="modal-footer">
     <button class="btn btn-primary" type="button" ng-click="vm.ok()">
         {{'Deal.deal.modalWindow.ok' | translate}}
