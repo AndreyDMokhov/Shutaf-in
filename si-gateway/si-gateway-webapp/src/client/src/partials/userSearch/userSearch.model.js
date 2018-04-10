@@ -18,9 +18,9 @@ app.factory('userSearchModel', function ($sessionStorage, Restangular) {
     function saveFilters(params,fullName) {
         rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         if (fullName) {
-            return rest.one('/api/users/search/save/filters?name=' + fullName).customPOST(params);
+            return rest.one('/api/users/search/save/filters?page=0&results=10&name=' + fullName).customPOST(params);
         }
-        return rest.one('/api/users/search/save/filters').customPOST(params);
+        return rest.one('/api/users/search/save/filters?page=0&results=10').customPOST(params);
     }
 
     function getCompressedUserImageById(userId) {
