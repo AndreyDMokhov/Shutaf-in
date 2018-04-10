@@ -28,15 +28,6 @@ app.controller('changeEmailConfirmationController', function ($state, $rootScope
                 }
             }, function (error) {
                 vm.dataLoading = false;
-
-                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-
-                if (error.data.error.errorTypeCode === 'RNF') {
-
-                    $state.go("error", {'code': '404'});
-                } else {
-                    $state.go("home");
-                }
             });
     }
 

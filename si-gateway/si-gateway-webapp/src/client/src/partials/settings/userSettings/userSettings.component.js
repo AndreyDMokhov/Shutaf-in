@@ -68,10 +68,6 @@ app.component('userSettingsComponent', {
 
                 }, function (error) {
                     vm.dataLoading = false;
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    if (error.data.error.errorTypeCode === 'AUT') {
-                        $state.go('logout');
-                }
                 });
         }
         vm.submitChanges = submitChanges;

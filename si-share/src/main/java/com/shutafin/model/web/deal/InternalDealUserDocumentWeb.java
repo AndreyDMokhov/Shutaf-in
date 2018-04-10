@@ -1,5 +1,6 @@
 package com.shutafin.model.web.deal;
 
+import com.shutafin.annotations.annotations.LimitSize;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -21,6 +22,7 @@ public class InternalDealUserDocumentWeb {
     private Long dealPanelId;
 
     @NotBlank
+    @LimitSize
     private String fileData;
 
     private Long createdDate;

@@ -36,7 +36,6 @@ app.component('loginComponent', {
 
                         }, function (error) {
                             vm.dataLoading = false;
-                            notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                         });
                 },
                 function (error) {
@@ -44,7 +43,6 @@ app.component('loginComponent', {
                         vm.showResend = true;
                     }
                     vm.dataLoading = false;
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 
@@ -61,7 +59,6 @@ app.component('loginComponent', {
                         vm.showResend = false;
                     }
                     vm.resendLoading = false;
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 }
             );
         }

@@ -17,10 +17,13 @@ app.component('panelComponent', {
                           notify,
                           $filter,
                           documentTypes,
-                          $window) {
+                          $window,
+                          FILE_MAX_SIZE_MB) {
         var vm = this;
         vm.documentsShow = [];
         var componentType = 'file';
+        vm.size = FILE_MAX_SIZE_MB * 1024;
+
 
         vm.$onChanges = function () {
             vm.documentsShow = vm.documents;
@@ -45,9 +48,7 @@ app.component('panelComponent', {
                     else
                         modalInput(documentById);
                 },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
+                function (error) { }
             );
         };
 
@@ -95,16 +96,18 @@ app.component('panelComponent', {
                     uploadedDocument.fileData = vm.fileInfo.base64;
                     uploadedDocument.documentTypeId = getDocumentTypeByFileExtension(vm.fileInfo.filename);
                     uploadedDocument.documentTitle = newName;
+                    if (vm.size < vm.fileInfo.filesize / 1024) {
+                        notify.set($filter('translate')('Deal.panel.file-max-size', {size: vm.size / 1024}), {type: 'warn'});
+                        return;
+                    }
+
                     panelModel.addDocument(uploadedDocument).then(
                         function (success) {
                             vm.getDeals(vm.panelId);
                             vm.showFileName = false;
                             notify.set($filter('translate')('Deal.message.documentSaved'), {type: 'success'});
                         },
-                        function (error) {
-                            notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-
-                        }
+                        function (error) { }
                     );
                 });
         };
@@ -126,9 +129,7 @@ app.component('panelComponent', {
                     function (success) {
                         vm.getDeals(vm.panelId);
                     },
-                    function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
+                    function (error) { }
                 );
             });
         };
@@ -154,10 +155,7 @@ app.component('panelComponent', {
                     function (success) {
                         vm.getDeals(vm.panelId);
                     },
-                    function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-
-                    }
+                    function (error) {}
                 );
             });
         };
@@ -178,10 +176,7 @@ app.component('panelComponent', {
                         saveFile(success.data.data);
                     });
                 },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-
-                }
+                function (error) { }
             );
         };
 

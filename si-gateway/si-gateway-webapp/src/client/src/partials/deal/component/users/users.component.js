@@ -109,9 +109,7 @@ app.component('usersDealComponent', {
                             dealName: vm.dealInfo.title
                         }), {sticky: true, button: true});
                     },
-                    function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
+                    function (error) {}
                 );
 
             });
