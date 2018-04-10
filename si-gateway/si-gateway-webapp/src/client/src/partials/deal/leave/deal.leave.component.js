@@ -38,9 +38,7 @@ app.component('dealLeaveComponent', {
                         $state.go('home');
                         initializationService.initializeApplication();
                     },
-                    function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
+                    function (error) {}
                 );
 
 

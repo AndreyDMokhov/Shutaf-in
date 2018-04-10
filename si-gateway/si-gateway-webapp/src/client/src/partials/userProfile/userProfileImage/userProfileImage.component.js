@@ -13,14 +13,14 @@ app.component('userProfileImage', {
                           $timeout,
                           $scope,
                           ngDialog,
-                          IMAGE_MAX_SIZE_MB,
+                          FILE_MAX_SIZE_MB,
                           $window,
                           userSearchModel) {
 
         var vm = this;
         $scope.myCroppedImage = '';
         vm.fileInfo = {};
-        vm.size = IMAGE_MAX_SIZE_MB * 1024;
+        vm.size = FILE_MAX_SIZE_MB * 1024;
         vm.userProfile = $sessionStorage.userProfile;
 
         vm.hideDeleteImageButton = false;
@@ -76,19 +76,7 @@ app.component('userProfileImage', {
                         }
                     );
                 },
-
-                function (error) {
-                    if (error === undefined || error === null) {
-                        notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                    }
-
-                    if (error.data.error.errorTypeCode === 'INP') {
-                        if (error.data.error.errors.indexOf('INP.image.LimitSize') > 0) {
-                            notify.set($filter('translate')('UserProfile.message.sizeImage'), {type: 'warn'});
-                        }
-                    }
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
+                function (error) {}
             );
         }
 
@@ -110,7 +98,6 @@ app.component('userProfileImage', {
                     $window.location.reload();
                 },
                 function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 

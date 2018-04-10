@@ -26,9 +26,7 @@ app.component('requiredQuestionsComponent', {
                     notify.set($filter('translate')('Questions.confirm'), {type: 'success'});
                     initializationService.initialize(success.data);
                 },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
+                function (error) {}
             );
         }
 

@@ -32,7 +32,6 @@ app.component('dealInitializeComponent', {
                     return deferred.resolve(success.data.data);
                 },
                 function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     return deferred.reject();
                 }
             );
@@ -92,9 +91,7 @@ app.component('dealInitializeComponent', {
                 function (success) {
                     notify.set($filter('translate')("Deal.confirmation"));
                 },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
+                function (error) {}
             );
         }
 
@@ -105,9 +102,7 @@ app.component('dealInitializeComponent', {
                     function (success) {
                         notify.set('User ' + user.firstName + ' will be added after all deal participants confirm this action');
 
-                    }, function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
+                    }, function (error) { }
                 );
             });
         }

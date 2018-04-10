@@ -29,11 +29,6 @@ app.component('matchingSettingsComponent', {
                 },
                 function (error) {
                     vm.switchStatus = !vm.switchStatus;
-                    if (error === undefined || error === null) {
-                        notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                    }
-                    notify.set($filter('translate')('Error' + '.' + error.status), {type: 'error'});
-
                 }
             );
         };

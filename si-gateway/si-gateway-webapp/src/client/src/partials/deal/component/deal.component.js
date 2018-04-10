@@ -49,9 +49,7 @@ app.component('dealComponent', {
                     vm.documents = panel.documents;
                     vm.panelId = id;
                 },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                });
+                function (error) { });
         };
 
         vm.addPanel = function (dealId) {
@@ -82,9 +80,7 @@ app.component('dealComponent', {
                         vm.panels[panel.panelId] = panel.title;
                         vm.showLoading = false;
                     },
-                    function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
+                    function (error) { }
                 );
 
             });
@@ -113,9 +109,7 @@ app.component('dealComponent', {
                             var panel = success.data.data;
                             vm.panels[panel.panelId] = panel.title;
                         },
-                        function (error) {
-                            notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                        });
+                        function (error) {});
                 });
         };
 
@@ -139,9 +133,7 @@ app.component('dealComponent', {
                 dealModel.removePanel(param).then(
                     function (success) {
                         delete vm.panels[idPanel];
-                    }, function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    });
+                    }, function (error) {});
             });
         };
     }

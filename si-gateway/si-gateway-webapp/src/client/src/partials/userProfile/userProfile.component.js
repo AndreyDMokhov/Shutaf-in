@@ -36,7 +36,6 @@ app.component('userProfileComponent', {
                     vm.userInfo = success.data.data;
                 },
                 function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 }
             );
         }

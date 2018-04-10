@@ -24,7 +24,6 @@ app.component('userProfileInfo', {
                         }
                     },
                     function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     }
                 );
             }

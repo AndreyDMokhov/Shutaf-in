@@ -30,9 +30,7 @@ app.component('extendedQuestionsComponent', {
                 function (success) {
                     notify.set($filter('translate')('Questions.confirm'), {type: 'success'});
                 },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
+                function (error) {}
             );
 
         }
