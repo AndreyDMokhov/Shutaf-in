@@ -55,6 +55,7 @@
   "Deal.users.button.remove": "Голосовать за исключение",
   "Deal.users.you": "Вы",
   "Deal.leaving": "Вы покинули сделку",
+  "Deal.deleting": "Вы удалили сделку",
   "Deal.panel.file-max-size":"Максимальный размер файла не может превышать {{size}} МБ",
 
   "SECTION":"HOME",
