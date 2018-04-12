@@ -16,7 +16,14 @@
                                         <i
                                                 class="fa fa-edit deal-rename icon-rename"
                                                 ng-click="$event.preventDefault();$event.stopPropagation(); vm.renameDeal(deal)"
+                                                ng-if="vm.showEditDeal"
                                                 uib-tooltip="{{'Deal.rename' | translate}}"
+                                        ></i>
+                                        <i
+                                                class="fa fa-remove deal-delete icon-delete"
+                                                ng-click="$event.preventDefault();$event.stopPropagation(); vm.deleteDeal(deal)"
+                                                ng-if="vm.showDeleteDeal"
+                                                uib-tooltip="{{'Deal.delete' | translate}}"
                                         ></i>
                                     </uib-tab-heading>
                                 </uib-tab>

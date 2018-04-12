@@ -15,6 +15,8 @@ app.component("dealPresentationComponent", {
         browserTitle.setBrowserTitleByFilterName('Deal.title');
 
         var vm = this;
+        vm.showEditDeal = true;
+        vm.showDeleteDeal = false;
         vm.deals = [];
         vm.dealInfo = {};
 
@@ -41,6 +43,8 @@ app.component("dealPresentationComponent", {
         }
 
         vm.getDealSuffix = function (deal) {
+            vm.showEditDeal = true;
+            vm.showDeleteDeal = false;
             if (deal.statusId === dealStatus.Status.INITIATED && deal.userStatusId === dealUserStatus.Status.ACTIVE) {
                 return $filter('translate')('Deal.deal.status.inactive.wait-for-approval');
             }
@@ -58,6 +62,8 @@ app.component("dealPresentationComponent", {
             }
 
             if (deal.userStatusId === dealUserStatus.Status.LEAVED) {
+                vm.showEditDeal = false;
+                vm.showDeleteDeal = true;
                 return $filter('translate')('Deal.deal.status.archive');
             }
         };
@@ -89,6 +95,32 @@ app.component("dealPresentationComponent", {
                     });
             });
         };
+
+        vm.deleteDeal = function (deal) {
+            var componentType = 'deal',
+                type = 'remove';
+            var modalInstance = $uibModal.open({
+                animation: true,
+                component: 'modalComponent',
+                size: 'sm',
+                resolve: {
+                    type: function () {
+                        return {type: type, component: componentType, filename: document.title};
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+                dealPresentationModel.deleteDeal(deal.dealId).then(
+                    function (success) {
+                        notify.set($filter('translate')("Deal.deleting"));
+                        getDeals();
+                    },
+                    function (error) {
+                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                    });
+            });
+        };
+
         getDeals();
     }
 });
