@@ -32,7 +32,6 @@ app.component("dealPresentationComponent", {
                 function (error) {
                     vm.showLoading = false;
                     vm.dealTabClicked = true;
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         };
 
@@ -91,7 +90,6 @@ app.component("dealPresentationComponent", {
                         getDeals();
                     },
                     function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     });
             });
         };

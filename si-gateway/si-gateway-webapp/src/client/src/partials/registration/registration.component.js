@@ -30,8 +30,6 @@ app.component('registrationComponent', {
                     $state.go("home");
                 }, function (error) {
                     vm.dataLoading = false;
-
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 

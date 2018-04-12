@@ -49,14 +49,6 @@ app.component('userSearchPresentationComponent', {
                 }, function (error) {
                     vm.isDisable = false;
                     vm.isLoading = false;
-                    if (error === undefined || error === null) {
-                        notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                    }else {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                        if (error.data.error.errorTypeCode === 'AUT') {
-                            $state.go('logout');
-                        }
-                    }
                 });
         }
 
@@ -69,7 +61,6 @@ app.component('userSearchPresentationComponent', {
                     vm.userSearchList = success.data.data;
                     $state.go($state.current, {}, {reload: true});
                 }, function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 

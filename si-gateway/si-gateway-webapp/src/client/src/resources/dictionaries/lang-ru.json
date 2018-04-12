@@ -55,7 +55,7 @@
   "Deal.users.button.remove": "Голосовать за исключение",
   "Deal.users.you": "Вы",
   "Deal.leaving": "Вы покинули сделку",
-  "Deal.deleting": "Вы удалили сделку",
+  "Deal.panel.file-max-size":"Максимальный размер файла не может превышать {{size}} МБ",
 
   "SECTION":"HOME",
   "Home.title":"Домашняя",
@@ -78,6 +78,7 @@
   "Error.LEE":"Срок действия ссылки истек",
   "Error.DNC":"Сделка не подтверждена еще. Вы получите полный доступ, когда все пользователи сделки подтвердят ваше участие через электронную почту",
   "Error.DSR":"Вы не можете голосовать на само удаление. Используйте кнопку 'Покинуть сделку'",
+  "Error.NoServerResponse":"Сервер врененно не доступен. Пожалуйста, перезагрузите страницу или попробуйте еще раз позже",
 
 
   "SECTION":"REGISTRATION",
@@ -127,7 +128,7 @@
   "UserProfile.message.confirmDelete" : "Вы уверены, что хотите удалить?",
   "UserProfile.edit":"Редактировать",
   "UserProfile.compatibility":"Совместимость",
-  "UserProfile.message.sizeImage":"Размер изображение не должен превышать {{size}} МБ",
+  "UserProfile.message.sizeImage":"Размер изображения не должен превышать {{size}} МБ",
   "UserProfile.current":"ваш профиль",
   "UserProfile.age" : "Возраст",
   "UserProfile.answers.not-completed-required-matching" : "Опция поиска будет доступна после ответа на все обязательные вопросы",
