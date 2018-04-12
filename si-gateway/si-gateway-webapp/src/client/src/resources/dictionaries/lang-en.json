@@ -79,6 +79,7 @@
   "Error.LEE":"Link is expired",
   "Error.DNC":"Deal is not confirmed yet. You will get full access after you and all current deal users approve your participation by email address confirmation",
   "Error.DSR":"You cannot vote for self removal. Use 'Leave Deal' button instead",
+  "Error.NoServerResponse":"The server is temporary unavailable. Please, reload the page or try again later",
 
   "SECTION":"REGISTRATION",
   "Registration.title":"Registration",
