@@ -27,20 +27,9 @@ app.directive('messageListDirective', function (messengerCurrentDataService) {
                 scope.messages = messengerCurrentDataService.messages;
             }
 
-            function markMessageItems() {
-                angular.element(document).ready(function () {
-                    for (var i = 0; i < scope.messages.length; i++) {
-                        if (scope.messages[i].isNew) {
-                            messageList[0].children[i].style.backgroundColor = '#C3C3C3';
-                        }
-                    }
-                });
 
-            }
-
-            scope.unmarkMessageItem = function (index) {
-                scope.messages[index].isNew = false;
-                messageList[0].children[index].style.backgroundColor = '#FAFAFA';
+            scope.unmarkMessageItem = function (message) {
+                message.isNew = false;
             };
 
             init();

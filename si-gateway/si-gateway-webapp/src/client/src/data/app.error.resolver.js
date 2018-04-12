@@ -17,11 +17,8 @@ app.run(function (Restangular,
                 if ($sessionStorage.sessionId !== undefined && $sessionStorage.sessionId !== null && $sessionStorage.sessionId !== '') {
 
                     $state.go('logout');
-                    return true;
                 }
-
-                $state.go('logout');
-                return false;
+                return true;
 
             } else if (response.data.error.errorTypeCode === 'INP') {
 
