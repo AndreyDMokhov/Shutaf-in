@@ -105,13 +105,36 @@ div[role="main"] {
   background-color: #8BC34A;
 }
 .quiz-area {
-  position: relative;
+  display: grid;
+  grid-template-areas: "arrow-back card-question arrow-next";
+  grid-template-rows: 35vh;
+  grid-template-columns: 7vw 35vw 7vw;
+  justify-content: center;
+}
+.quiz-area > arrow-back {
+  grid-area: arrow-back;
+}
+arrow-back {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quiz-area > arrow-next {
+  grid-area: arrow-next;
+}
+arrow-next {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quiz-area > card-question {
+  grid-area: card-question;
 }
 .card-question {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
-  width: 31vw;
-  height: 35vh;
+  width: 35vw;
+  height: 39vh;
   margin-left: auto;
   margin-right: auto;
   border-radius: 5px;
@@ -120,11 +143,16 @@ div[role="main"] {
 .card-question:hover {
   box-shadow: 1px 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
+.cardContainer > header > h2 {
+  font-weight: bold ;
+  font-size: 1.3vw;
+  margin: auto;
+}
 .cardContainer {
   display: grid;
-  grid-template-areas: "header header" "content content" "footer footer-btn";
-  grid-template-rows: 7vh 21vh 5vh;
-  grid-template-columns: 24vw 5vw;
+  grid-template-areas: "header header" "content content" "contentAnswer contentAnswer" "footer footer-btn";
+  grid-template-rows: 7vh 19vh 5vh 5vh;
+  grid-template-columns: 27.5vw 5vw;
   padding: 5px 16px;
 }
 .cardContainer > header {
@@ -133,6 +161,14 @@ div[role="main"] {
 }
 .cardContainer > content {
   grid-area: content;
+  font-size: 0.9vw;
+}
+.cardContainer > contentAnswer {
+  grid-area: contentAnswer;
+  justify-content: right;
+}
+contentAnswer {
+  font-size: 0.75vw;
 }
 .cardContainer > footer {
   grid-area: footer;
@@ -141,6 +177,10 @@ div[role="main"] {
 .cardContainer > footer-btn {
   grid-area: footer-btn;
   margin: auto;
+}
+.cardContainer > footer-btn > button {
+  background-color: #689F38;
+  font-size: 1.2vh;
 }
 .card-custom {
   box-shadow: 1px 2px 4px 3px rgba(0, 0, 0, 0.75);
@@ -170,27 +210,19 @@ div[role="main"] {
   float: left;
 }
 .arrow-page {
-  position: absolute;
-  top: 40%;
   font-size: 2em;
   color: grey;
   transition: color 0.5s, font-size 0.5s;
 }
 .arrow-back {
-  position: absolute;
-  top: 40%;
   font-size: 2em;
   color: grey;
   transition: color 0.5s, font-size 0.5s;
-  left: 10vw;
 }
 .arrow-next {
-  position: absolute;
-  top: 40%;
   font-size: 2em;
   color: grey;
   transition: color 0.5s, font-size 0.5s;
-  right: 10vw;
 }
 .arrow-back:hover,
 .arrow-next:hover {
@@ -359,9 +391,10 @@ a.fa:focus {
   transform: scale(1) rotate(0deg) translateX(0px) translateY(0px) skewX(15deg) skewY(0deg);
 }
 .pagination > li {
+  font-size: 1.7vh;
   position: relative;
   float: left;
-  padding: 4px 4px;
+  padding: 0.3vw 0.6vw;
   margin-left: 0.5em;
   line-height: 1.42857143;
   color: #33b715;

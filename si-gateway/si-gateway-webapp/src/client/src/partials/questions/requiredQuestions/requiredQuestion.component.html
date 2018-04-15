@@ -1,11 +1,13 @@
 <div class="quiz-area">
+    <arrow-back>
     <span class="glyphicon glyphicon-chevron-left arrow-back"
           aria-hidden="true" ng-click="$ctrl.previousPage()"></span>
+    </arrow-back>
 
-    <div class="card-question">
+    <card-question class="card-question">
         <div class="cardContainer">
             <header>
-                                    <h2 style="margin: auto">{{$ctrl.currentQuestion.description}} </h2>
+                <h2 style="margin: auto">{{$ctrl.currentQuestion.description}} </h2>
 
             </header>
             <content>
@@ -39,16 +41,19 @@
                 </div>
             </footer>
             <footer-btn>
-                <div>
-                    <button class="btn btn-success save-questions" ng-click="$ctrl.save()"
+
+                    <button class="btn" ng-click="$ctrl.save()"
                             ng-disabled="$ctrl.disableSubmit">
                         {{"Questions.button.save"|translate}}
                     </button>
-                </div>
+
             </footer-btn>
 
 
         </div>
-    </div>
-    <span class="glyphicon glyphicon-chevron-right arrow-next" aria-hidden="true" ng-click="$ctrl.nextPage()"></span>
+    </card-question>
+    <arrow-next>
+        <span class="glyphicon glyphicon-chevron-right arrow-next" aria-hidden="true"
+              ng-click="$ctrl.nextPage()"></span>
+    </arrow-next>
 </div>

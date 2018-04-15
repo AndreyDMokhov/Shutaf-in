@@ -1,10 +1,14 @@
 <div class="quiz-area">
-    <span class="glyphicon glyphicon-chevron-left arrow-back"
-          aria-hidden="true" ng-click="$ctrl.previousPageButton()"></span>
-    <div class="card-question">
+    <arrow-back>
+        <div class="glyphicon glyphicon-chevron-left arrow-back"
+             aria-hidden="true" ng-click="$ctrl.previousPageButton()">
+        </div>
+    </arrow-back>
+
+    <card-question class="card-question">
         <div class="cardContainer">
             <header>
-                <h2 style="margin: auto">{{$ctrl.currentQuestion}}</h2>
+                <h2>{{$ctrl.currentQuestion}}</h2>
             </header>
             <content>
                 <div ng-repeat="answ in $ctrl.answersWithIDForCurrentPage ">
@@ -17,18 +21,19 @@
                         {{answ.answer}}
                     </label>
                 </div>
-                <br>
-                <div style="font-size: 0.7vw">
-                    <label ng-repeat="item in $ctrl.questionImportance" class="radio-inline">
-                        <input type="radio" name="optradio"
-                               ng-model="$ctrl.variantsOfAnswersImportance"
-                               ng-value="item.id">
-                        {{item.description}}
-                    </label>
-                </div>
 
-                <br>
             </content>
+            <contentAnswer>
+                <label ng-repeat="item in $ctrl.questionImportance" class="radio-inline">
+                    <input type="radio" name="optradio"
+                           ng-model="$ctrl.variantsOfAnswersImportance"
+                           ng-value="item.id">
+                    {{item.description}}
+                </label>
+            </contentAnswer>
+
+            <br>
+
             <footer>
                 <ul class="question-pagination" uib-pagination total-items="$ctrl.totalItems"
                     direction-links="false"
@@ -37,15 +42,18 @@
                     items-per-page="$ctrl.itemsPerPage"></ul>
             </footer>
             <footer-btn>
-                <button class="btn btn-success pull-right" ng-click="$ctrl.save()">
+                <button class="btn" ng-click="$ctrl.save()">
                     {{"Questions.button.save"|translate}}
                 </button>
             </footer-btn>
         </div>
-    </div>
+    </card-question>
 
-    <span class="glyphicon glyphicon-chevron-right arrow-next"
-          aria-hidden="true"
-          ng-click="$ctrl.nextPageButton()"></span>
+    <arrow-next>
+        <div class="glyphicon glyphicon-chevron-right arrow-next"
+             aria-hidden="true"
+             ng-click="$ctrl.nextPageButton()">
+        </div>
+    </arrow-next>
 </div>
 
