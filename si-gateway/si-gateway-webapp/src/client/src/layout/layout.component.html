@@ -2,7 +2,7 @@
     <div>
         <header-component></header-component>
     </div>
-    <div role="main" id="main-div">
+    <div role="main" id="main-div" class="{{vm.state.current.data.backgroundImage === undefined ? 'default-background' : vm.state.current.data.backgroundImage}}">
         <div class="container">
             <div ui-view></div>
         </div>

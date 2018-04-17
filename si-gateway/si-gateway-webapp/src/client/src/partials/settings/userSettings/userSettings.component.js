@@ -6,16 +6,16 @@ app.component('userSettingsComponent', {
     controller: function ($localStorage,
                           $sessionStorage,
                           userSettingsModel,
-                          notify,
+                          uiNotification,
                           $filter,
                           $state,
-                          initializationService,
                           $window,
-                          browserTitle,
+                          browserTitleService,
                           siteAccessRouting,
-                          $timeout) {
+                          $timeout,
+                          sessionStorageObserver) {
 
-        browserTitle.setBrowserTitleByFilterName('UserSettings.personal.title');
+        browserTitleService.setBrowserTitleByFilterName('UserSettings.personal.title');
 
         var vm = this;
         vm.dataLoading = false;
@@ -48,7 +48,7 @@ app.component('userSettingsComponent', {
         };
 
 
-        vm.userProfile = $sessionStorage.userProfile;
+        vm.userProfile = angular.copy($sessionStorage.userProfile);
         vm.userProfile.dateOfBirth = new Date(vm.userProfile.dateOfBirth);
         vm.country = $sessionStorage.countries;
         vm.cities = $sessionStorage.cities;
@@ -60,11 +60,15 @@ app.component('userSettingsComponent', {
             userSettingsModel.saveDataPostRegistration(vm.userProfile).then(
                 function (success) {
                     vm.dataLoading = false;
-                    notify.set($filter('translate')('UserSettings.message.save.success'), {type: 'success'});
-                    initializationService.initialize(success.data);
-                    $window.location.reload();
 
-                    siteAccessRouting.navigate('userProfile', {id: $sessionStorage.userProfile.userId});
+                    var message = $filter('translate')('UserSettings.message.save.success');
+                    $sessionStorage.userProfile = vm.userProfile;
+
+                    sessionStorageObserver.notifyServiceObservers();
+
+                    uiNotification.show(message, 'success');
+
+                    siteAccessRouting.navigate('myUserProfile');
 
                 }, function (error) {
                     vm.dataLoading = false;

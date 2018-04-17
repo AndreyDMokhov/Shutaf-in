@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app" ng-cloak>
 <head>
-    <title>Shutaf-In</title>
+    <title>getRoomie</title>
 
     <script>
         !function (A, n, g, u, l, a, r) {
@@ -33,7 +33,8 @@
     <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
     <script src="bower_components/ng-dialog/js/ngDialog.min.js"></script>
-    <script src="bower_components/ng-notify/dist/ng-notify.min.js"></script>
+    <!--<script src="bower_components/ng-notify/dist/ng-notify.min.js"></script>-->
+    <script src="bower_components/angular-notify/dist/angular-notify.js"></script>
     <script src="bower_components/restangular/src/restangular.js"></script>
     <script src="bower_components/lodash/dist/lodash.min.js"></script>
     <script src="bower_components/ngstorage/ngStorage.min.js"></script>
@@ -63,22 +64,23 @@
     <!--SI Configurations-->
     <script src="config/app.config.translate.js"></script>
     <script src="config/app.config.route.js"></script>
-    <script src="config/app.config.notification.js"></script>
-    <script src="config/websocket.service.js"></script>
+    <script src="config/app.config.ui-notification.js"></script>
     <script src="config/app.site.access.restriction.js"></script>
-    <script src="data/messenger-channel.service.js"></script>
-    <script src="data/messenger-current-data.service.js"></script>
-    <script src="data/messenger-management.service.js"></script>
-    <script src="data/app.notify.sessionStorage.change.service.js"></script>
-    <script src="data/notification-service.js"></script>
+    <script src="data/app.service.websocket.js"></script>
+    <script src="data/app.service.messenger-channel.js"></script>
+    <script src="data/app.service.messenger-current-data.js"></script>
+    <script src="data/app.service.messenger-management.js"></script>
+    <script src="data/app.service.messenger-notification.js"></script>
+    <script src="data/app.service.ui-notification.js"></script>
+    <script src="observers/app.observer.sessionStorage.js"></script>
 
     <!--SI Data-->
-    <script src="data/app.session.js"></script>
-    <script src="data/app.config.language.js"></script>
-    <script src="data/app.initialization.service.js"></script>
-    <script src="data/app.browserTitle.js"></script>
-    <script src="data/userSearch.service.js"></script>
-    <script src="data/app.error.resolver.js"></script>
+    <script src="data/app.service.session.js"></script>
+    <script src="data/app.service.language.js"></script>
+    <script src="data/app.service.initialization.js"></script>
+    <script src="data/app.service.browser.title.js"></script>
+    <script src="observers/app.observer.userSearch.js"></script>
+    <script src="config/app.error.resolver.js"></script>
     <script src="config/app.site.access.routing.js"></script>
 
     <!--SI Layout-->
@@ -182,6 +184,7 @@
     <!-- endbuild -->
 
 
+    <link href="bower_components/angular-notify/dist/angular-notify.css" rel="stylesheet" type="text/css">
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="bower_components/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -190,7 +193,7 @@
     <link href="bower_components/ng-dialog/css/ngDialog.min.css" rel="stylesheet" type="text/css">
     <link href="bower_components/ng-dialog/css/ngDialog-theme-plain.min.css" rel="stylesheet" type="text/css">
     <link href="bower_components/ng-dialog/css/ngDialog-theme-default.min.css" rel="stylesheet" type="text/css">
-    <link href="bower_components/ng-notify/dist/ng-notify.min.css" rel="stylesheet" type="text/css">
+    <!--<link href="bower_components/ng-notify/dist/ng-notify.min.css" rel="stylesheet" type="text/css">-->
     <link href="bower_components/angular-motion/dist/angular-motion.min.css" rel="stylesheet" type="text/css">
     <link href="bower_components/angularjs-slider/dist/rzslider.css" rel="stylesheet" type="text/css">
     <link href="bower_components/angular-bootstrap-toggle-switch/style/bootstrap3/angular-toggle-switch-bootstrap-3.css" rel="stylesheet" type="text/css">
@@ -201,10 +204,10 @@
     <link rel="stylesheet" href="styles/userProfile.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/userSearch.css">
-    <link rel="stylesheet" href="styles/questionStyle.css">
     <link rel="stylesheet" href="styles/chat.css">
     <link rel="stylesheet" href="styles/modalWindow.css">
     <link rel="stylesheet" href="styles/deal.css">
+    <link rel="stylesheet" href="styles/backgroundImage.css">
     <!-- endbuild -->
     <link rel="shortcut icon" href="favico.png">
 </head>

@@ -7,11 +7,11 @@ app.component('changeEmailComponent', {
         $state,
         $rootScope,
         changeEmailModel,
-        notify,
         $filter,
-        browserTitle) {
+        browserTitleService,
+        uiNotification) {
 
-    browserTitle.setBrowserTitleByFilterName('Settings.security.email.title');
+    browserTitleService.setBrowserTitleByFilterName('Settings.security.email.title');
         var vm = this;
         vm.dataLoading = false;
         vm.isOpened = true;
@@ -23,7 +23,10 @@ app.component('changeEmailComponent', {
             changeEmailModel.emailChangeRequest(vm.securitySettings).then(
                 function (success) {
                     vm.dataLoading = false;
-                    notify.set($filter('translate')("Settings.security.msg.successRequest"), {type: 'success'});
+                    var message = $filter('translate')("Settings.security.msg.successRequest");
+                    uiNotification.show(message, 'success');
+
+
                     $state.go("home");
                 }, function (error) {
                     vm.dataLoading = false;

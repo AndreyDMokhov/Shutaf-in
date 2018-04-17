@@ -1,6 +1,5 @@
 {
   "SECTION":"HEADER",
-  "Header.button.changeLanguage":"Язык",
 
   "SECTION":"ABOUT",
   "About.title":"О нас",
@@ -58,8 +57,11 @@
   "Deal.panel.file-max-size":"Максимальный размер файла не может превышать {{size}} МБ",
 
   "SECTION":"HOME",
-  "Home.title":"Домашняя",
-  "Home.description":"Это сервис для поиска соседей.",
+  "Home.brand-name":"getRoomie",
+  "Home.description-1":"Умное совпадение для",
+  "Home.description-2":"соседей.",
+  "Home.description-3":"Найдите вашего идеального соседа всего за 3 минуты",
+  "Home.description-4-suffix":"в вашу учетную запись",
 
   "SECTION":"ERRORS",
   "Error.SYS":"Произошла непредвиденная ошибка сервера. Попробуйте перезагрузить страницу.",
@@ -82,7 +84,11 @@
 
 
   "SECTION":"REGISTRATION",
-  "Registration.title":"Регистрация",
+  "Registration.title.sign-up":"Регистрация",
+  "Registration.title.register":"Регистрация",
+  "Registration.sign-in-prefix":"или",
+  "Registration.sign-in":"войдите",
+  "Registration.sign-in-suffix":"в свой аккаунт",
   "Registration.description":"Регистрация пользователя",
   "Registration.form.firstName":"Имя",
   "Registration.form.lastName":"Фамилия",
@@ -105,13 +111,15 @@
 
   "SECTION": "LOGIN",
   "Login.title": "Вход",
+  "Login.registration-prefix": "Первый раз на getRoomie?",
+  "Login.registration-suffix": "Создайте учетную запись",
   "Login.form.email": "Электронная почта",
   "Login.form.password": "Пароль ",
   "Login.form.button.login": "Вход",
   "Login.form.button.resendEmailRegistration": "Отправить повторно подтверждение",
   "Login.form.errorEmail": "Введите корректную электронную почту",
   "Login.form.errorPassword": "Длинна пароля должна быть между 8 и 25 символов",
-  "Login.message.success": "Мы рады Вас видеть!",
+  "Login.message.success": "Добро пожаловать!",
 
   "SECTION": "LOGOUT",
   "Logout.button": "Выход",
@@ -126,6 +134,8 @@
   "UserProfile.message.imageSaved" : "Изображение сохранено",
   "UserProfile.message.imageDeleted" : "Изображение было удалено",
   "UserProfile.message.confirmDelete" : "Вы уверены, что хотите удалить?",
+  "UserProfile.image.uploading" : "Фотография загружается",
+  "UserProfile.image.uploaded" : "Фотография загружена",
   "UserProfile.edit":"Редактировать",
   "UserProfile.compatibility":"Совместимость",
   "UserProfile.message.sizeImage":"Размер изображения не должен превышать {{size}} МБ",
@@ -255,7 +265,15 @@
 
   "SECTION" : "SITE_ACCESS_ERROR",
   "SiteAccess.info.settings" : "Информация пользователя не задана",
-  "SiteAccess.questionnaire.settings" : "Пользовательская анкета не заполнена"
+  "SiteAccess.questionnaire.settings" : "Пользовательская анкета не заполнена",
 
+  "SECTION": "TERMS AND POLICIES",
+  "Terms.title":"Условия пользования",
+
+  "SECTION": "PRIVACY",
+  "Privacy.title":"Конфиденциальность",
+
+  "SECTION": "SUPPORT",
+  "Support.title":"Поддержка"
 }
 

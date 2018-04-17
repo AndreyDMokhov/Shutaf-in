@@ -5,12 +5,11 @@ app.component('userSearchPresentationComponent', {
     controllerAs: 'vm',
     controller: function ($state,
                           $sessionStorage,
-                          notify,
                           sessionService,
                           userSearchModel,
                           $stateParams,
                           $filter,
-                          userSearchService) {
+                          userSearchObserver) {
 
         var vm = this;
         vm.genders = $sessionStorage.genders;
@@ -23,7 +22,7 @@ app.component('userSearchPresentationComponent', {
         vm.isLoading = false;
 
         function activate() {
-            userSearchService.registerFilterObserver(saveFilters);
+            userSearchObserver.registerFilterObserver(saveFilters);
             userSearch();
         }
 

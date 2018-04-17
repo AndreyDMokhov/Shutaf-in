@@ -1,6 +1,6 @@
 "use strict";
 app.controller('dealRemoveUserConfirmation', function (dealConfirmationModel,
-                                                       notify,
+                                                       uiNotification,
                                                        $state,
                                                        $filter,
                                                        $stateParams) {
@@ -12,8 +12,7 @@ app.controller('dealRemoveUserConfirmation', function (dealConfirmationModel,
         }
         dealConfirmationModel.removeUser(urlLink).then(
             function (success) {
-
-                notify.set($filter('translate')("Deal.confirmation.removeUser"), {type: 'success'});
+                uiNotification.show($filter('translate')("Deal.confirmation.removeUser"), 'success');
                 $state.go("home");
             }, function (error) {}
             );

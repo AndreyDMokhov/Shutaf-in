@@ -5,13 +5,13 @@ app.component('requiredQuestionsComponent', {
     controller: function ($scope,
                           $state,
                           quizModel,
-                          notify,
+                          uiNotification,
                           $sessionStorage,
                           $filter,
-                          browserTitle,
+                          browserTitleService,
                           initializationService) {
         var vm = this;
-        browserTitle.setBrowserTitleByFilterName('Questions.requiredQuestions');
+        browserTitleService.setBrowserTitleByFilterName('Questions.requiredQuestions');
         vm.questions = $sessionStorage.questions;
         vm.selectedAnswers = $sessionStorage.selectedAnswers;
 
@@ -23,7 +23,9 @@ app.component('requiredQuestionsComponent', {
         function sendData() {
             quizModel.sendAnswers($sessionStorage.selectedAnswers).then(
                 function (success) {
-                    notify.set($filter('translate')('Questions.confirm'), {type: 'success'});
+                    var message = $filter('translate')('Questions.confirm');
+                    uiNotification.show(message, 'success');
+
                     initializationService.initialize(success.data);
                 },
                 function (error) {}

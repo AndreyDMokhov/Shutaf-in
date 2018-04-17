@@ -4,12 +4,12 @@ app.component('resetPasswordRequestComponent', {
     controllerAs: 'vm',
     controller: function (
         resetPasswordModel,
-        notify,
+        uiNotification,
         $filter,
         $state,
-        browserTitle) {
+        browserTitleService) {
 
-    browserTitle.setBrowserTitleByFilterName('ResetPassword.title');
+    browserTitleService.setBrowserTitleByFilterName('ResetPassword.title');
         var vm = this;
         vm.resetPasswordEmail = {};
         vm.emailConfirm = false;
@@ -20,7 +20,7 @@ app.component('resetPasswordRequestComponent', {
             resetPasswordModel.requestResetPassword(vm.resetPasswordEmail).then(
                 function (success) {
                     vm.emailConfirm = true;
-                    notify.set($filter('translate')("ResetPassword.emailSent"));
+                    uiNotification.show($filter('translate')("ResetPassword.emailSent"));
                     $state.go('home');
                 }, function (error) {
 

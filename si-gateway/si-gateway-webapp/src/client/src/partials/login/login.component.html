@@ -1,51 +1,77 @@
-<div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4 col-sm-offset-4">
-    <form name="loginForm" novalidate role="form" class="form-container login">
-        <h2>{{'Login.title' | translate}}</h2>
+<form name="loginForm" novalidate role="form" class="form-container form-horizontal card">
+    <h2 class="text-center">
+        <strong>
+            {{'Login.title' | translate}}
+        </strong>
+    </h2>
+    <br>
+    <div class="header-text text-center">
+        <span>
+            {{'Login.registration-prefix' | translate}}
+        </span>
+        <span class="pointer header-text" ui-sref="registration" style="color: blue;">
+            {{'Login.registration-suffix' | translate}}
+        </span>
 
-        <div class="form-group"
-             ng-class="{
-                    'has-error': loginForm.email.$invalid && loginForm.email.$dirty || loginForm.email.$dirty && loginForm.email.$invalid,
-                    'has-success': loginForm.email.$valid }">
-            <label class="required" for="email">{{'Login.form.email' | translate}}</label>
+    </div>
+    <br>
+
+    <div class="form-group" ng-class="{
+                'has-error': loginForm.email.$invalid && loginForm.email.$dirty || loginForm.email.$dirty && loginForm.email.$invalid,
+                'has-success': loginForm.email.$valid }">
+        <div class="col-md-4 col-md-offset-4">
             <input value="email"
                    type="email"
                    class="form-control"
                    ng-maxLength="50"
+                   placeholder="{{'Login.form.email' | translate}}"
                    name="email"
                    id="email"
                    ng-model="vm.loginData.email"
                    required/>
-            <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">
-                {{'Login.form.errorEmail' | translate}}
-            </p>
-        </div>
 
-        <div ng-class="{
-                    'has-error': loginForm.password.$invalid && loginForm.password.$dirty,
-                    'has-success': loginForm.password.$valid}">
-            <label class="required" for="password">{{'Login.form.password' | translate}}</label>
+        </div>
+        <p class="help-block" ng-if="loginForm.email.$invalid && loginForm.email.$dirty">
+            {{'Login.form.errorEmail' | translate}}
+        </p>
+    </div>
+
+    <div class="form-group" ng-class="{
+                'has-error': loginForm.password.$invalid && loginForm.password.$dirty,
+                'has-success': loginForm.password.$valid}">
+        <div class="col-md-4 col-md-offset-4">
             <input type="password"
                    class="form-control"
+                   placeholder="{{'Login.form.password' | translate}}"
                    name="password"
                    id="password"
                    ng-model="vm.loginData.password"
                    ng-minLength="8"
                    ng-maxLength="25"
                    required/>
-
-            <p class="help-block" ng-if="loginForm.password.$invalid && loginForm.password.$dirty">
-                {{'Login.form.errorPassword' | translate}}
-            </p>
         </div>
-        <br/>
+        <p class="help-block" ng-if="loginForm.password.$invalid && loginForm.password.$dirty">
+            {{'Login.form.errorPassword' | translate}}
+        </p>
+    </div>
+    <div class="form-group">
+        <div class="col-md-4 col-md-offset-4">
+            <span>@Remember Me</span> <input type="checkbox"/>
+        </div>
+        <div class="col-md-4 col-md-offset-4">
+            <span style="color: blue;" class="pointer header-text" ui-sref="resetPasswordRequest">@Forgot password</span>
+        </div>
+    </div>
+    <br/>
 
-        <div class="form-actions" style="margin: 7% 0 7% 0">
+    <div class="form-group">
+        <div class="col-md-4 col-md-offset-4">
             <button ng-click="vm.login()"
                     type="submit"
                     ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid"
                     class="btn btn-success btn-block entry-card-button login">
                 {{'Login.form.button.login' | translate}}
-                <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
+                <i ng-show="vm.dataLoading" class="fa fa-spinner"></i>
             </button>
             <button ng-click="vm.resendEmailRegistration()"
                     ng-if="vm.showResend"
@@ -53,10 +79,8 @@
                     ng-disabled="loginForm.emails.$invalid || loginForm.password.$invalid"
                     class="btn btn-success btn-block entry-card-button login">
                 {{'Login.form.button.resendEmailRegistration' | translate}}
-                <i ng-show="vm.resendLoading" class="fa fa-spinner fa-pulse"></i>
+                <i ng-show="vm.resendLoading" class="fa fa-spinner"></i>
             </button>
-            <a ui-sref="resetPasswordRequest" class="forgot">{{'ResetPassword.title' | translate}}</a>
         </div>
-
-    </form>
-</div>
+    </div>
+</form>

@@ -5,14 +5,14 @@ app.component('registrationComponent', {
     controllerAs: 'vm',
     controller: function (
         registrationModel,
-        notify,
+        uiNotification,
         $state,
         $filter,
         CACHED_LANGUAGE_ID,
         $sessionStorage,
-        browserTitle) {
+        browserTitleService) {
 
-    browserTitle.setBrowserTitleByFilterName('Registration.title');
+    browserTitleService.setBrowserTitleByFilterName('Registration.title.sign-up');
         var vm = this;
         vm.registrationData = {};
 
@@ -26,7 +26,7 @@ app.component('registrationComponent', {
             registrationModel.registerUser(vm.registrationData).then(
                 function (success) {
                     vm.dataLoading = false;
-                    notify.set($filter('translate')('Registration.request.success'));
+                    uiNotification.show($filter('translate')('Registration.request.success'));
                     $state.go("home");
                 }, function (error) {
                     vm.dataLoading = false;

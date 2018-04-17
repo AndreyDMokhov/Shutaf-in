@@ -3,6 +3,8 @@ app.component('layoutComponent', {
     templateUrl: 'layout/layout.component.html',
     bindings: {},
     controllerAs: 'vm',
-    controller: function () {
+    controller: function ($state) {
+        var vm = this;
+        vm.state = $state;
     }
 });
