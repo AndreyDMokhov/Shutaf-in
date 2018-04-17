@@ -5,10 +5,11 @@
 //https://ui-router.github.io/guide/ng1/migrate-to-1_0#state-change-events
 app.run(function ($rootScope,
                   $state,
-                  notify,
                   $filter,
                   sessionService,
-                  $sessionStorage) {
+                  $sessionStorage,
+                  uiNotification,
+                  notify) {
 
     var allowedUnauthenticated = [
         'home',
@@ -40,9 +41,10 @@ app.run(function ($rootScope,
 
 
     $rootScope.$on('$stateChangeStart', function (evt, toState, toParams, fromState, fromParams) {
+        notify.closeAll();
 
         if (!isAllowedToNavigate(toState)) {
-            notify.set($filter('translate')('Error.AUT'), {type: 'error'});
+            uiNotification.show($filter('translate')('Error.AUT'), 'error');
             evt.preventDefault();
             $state.go('home');
             return;
@@ -53,12 +55,12 @@ app.run(function ($rootScope,
             switch ($sessionStorage.accountStatus) {
                 case 2 :
                     evt.preventDefault();
-                    notify.set($filter('translate')('SiteAccess.info.settings'), {type: 'info'});
+                    uiNotification.show($filter('translate')('SiteAccess.info.settings'), 'info');
                     $state.go('settings.personal');
                     break;
                 case 3 :
                     evt.preventDefault();
-                    notify.set($filter('translate')('SiteAccess.questionnaire.settings'), {type: 'info'});
+                    uiNotification.show($filter('translate')('SiteAccess.questionnaire.settings'), 'info');
                     $state.go('questionsTab.requiredQuestions');
                     break;
                 default :

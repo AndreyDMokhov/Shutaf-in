@@ -1,6 +1,6 @@
 "use strict";
 app.controller('registrationConfirmation', function (registrationModel,
-                                                     notify,
+                                                     uiNotification,
                                                      $state,
                                                      $filter,
                                                      $stateParams) {
@@ -12,8 +12,7 @@ app.controller('registrationConfirmation', function (registrationModel,
         }
         registrationModel.confirmRegistration(urlLink).then(
             function (success) {
-
-                notify.set($filter('translate')('Registration.form.msg.registration.success'), {type: 'success'});
+                uiNotification.show($filter('translate')('Registration.form.msg.registration.success'), 'success');
                 $state.go('login');
             }, function (error) {});
     }

@@ -1,6 +1,6 @@
 "use strict";
 app.controller('dealInitializeConfirmation', function (dealConfirmationModel,
-                                                       notify,
+                                                       uiNotification,
                                                        $state,
                                                        $filter,
                                                        $stateParams) {
@@ -12,7 +12,8 @@ app.controller('dealInitializeConfirmation', function (dealConfirmationModel,
         }
         dealConfirmationModel.initialize(urlLink).then(
             function (success) {
-                notify.set($filter('translate')("Deal.confirmation.initialization", {dealName: success.data.data.title}), {type: 'success'});
+                var message = $filter('translate')("Deal.confirmation.initialization", {dealName: success.data.data.title});
+                uiNotification.show(message, 'success');
                 $state.go("home");
             }, function (error) {}
             );

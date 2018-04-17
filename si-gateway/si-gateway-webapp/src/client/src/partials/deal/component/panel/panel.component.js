@@ -14,7 +14,7 @@ app.component('panelComponent', {
                           $timeout,
                           $state,
                           $sessionStorage,
-                          notify,
+                          uiNotification,
                           $filter,
                           documentTypes,
                           $window,
@@ -97,7 +97,7 @@ app.component('panelComponent', {
                     uploadedDocument.documentTypeId = getDocumentTypeByFileExtension(vm.fileInfo.filename);
                     uploadedDocument.documentTitle = newName;
                     if (vm.size < vm.fileInfo.filesize / 1024) {
-                        notify.set($filter('translate')('Deal.panel.file-max-size', {size: vm.size / 1024}), {type: 'warn'});
+                        uiNotification.show($filter('translate')('Deal.panel.file-max-size', {size: vm.size / 1024}), 'warn');
                         return;
                     }
 
@@ -105,7 +105,7 @@ app.component('panelComponent', {
                         function (success) {
                             vm.getDeals(vm.panelId);
                             vm.showFileName = false;
-                            notify.set($filter('translate')('Deal.message.documentSaved'), {type: 'success'});
+                            uiNotification.show($filter('translate')('Deal.message.documentSaved'), 'success');
                         },
                         function (error) { }
                     );

@@ -1,6 +1,6 @@
 {
   "SECTION":"HEADER",
-  "Header.button.changeLanguage":"Language",
+
 
   "SECTION":"ABOUT",
   "About.title":"About",
@@ -60,8 +60,13 @@
 
 
   "SECTION":"HOME",
-  "Home.title":"Home",
-  "Home.description":"This is a service for searching neighbours.",
+  "Home.brand-name":"getRoomie",
+  "Home.description-1":"Smart matching for",
+  "Home.description-2":"roommates.",
+  "Home.description-3":"Find your ideal neighbour in just 3 minutes",
+  "Home.description-4-suffix":"to your account",
+
+
 
   "SECTION":"ERRORS",
   "Error.SYS":"Unexpected server error occurred. Try to reload the page.",
@@ -83,7 +88,11 @@
   "Error.NoServerResponse":"The server is temporary unavailable. Please, reload the page or try again later",
 
   "SECTION":"REGISTRATION",
-  "Registration.title":"Registration",
+  "Registration.title.sign-up":"Sign Up",
+  "Registration.title.register":"Register",
+  "Registration.sign-in-prefix":"or",
+  "Registration.sign-in":"sign in",
+  "Registration.sign-in-suffix":"to your account",
   "Registration.description":"User registration",
   "Registration.form.firstName":"First name",
   "Registration.form.lastName":"Last name",
@@ -105,14 +114,16 @@
   "Registration.request.success":"It is necessary to confirm your email address in order to active your account",
 
   "SECTION": "LOGIN",
-  "Login.title": "Login",
+  "Login.title": "Sign In",
+  "Login.registration-prefix": "New on getRoomie?",
+  "Login.registration-suffix": "Create Account",
   "Login.form.email": "Email ",
   "Login.form.password": "Password ",
-  "Login.form.button.login": "Login",
+  "Login.form.button.login": "Sign in",
   "Login.form.button.resendEmailRegistration": "Resend email confirmation",
   "Login.form.errorEmail": "Please enter a valid email address",
   "Login.form.errorPassword": "Password length must be between 8 and 25 characters",
-  "Login.message.success": "We are glad to see You again!",
+  "Login.message.success": "Welcome!",
 
   "SECTION": "LOGOUT",
   "Logout.button": "Logout",
@@ -124,9 +135,10 @@
   "UserProfile.button.setImage" : "Save image",
   "UserProfile.button.deleteImage" : "Delete image",
   "UserProfile.click.image" : "Click to choose image",
-  "UserProfile.message.imageSaved" : "The image was saved",
   "UserProfile.message.imageDeleted" : "Image was deleted",
   "UserProfile.message.confirmDelete" : "Are you sure you want to delete?",
+  "UserProfile.image.uploading" : "Image is uploading",
+  "UserProfile.image.uploaded" : "Image is uploaded",
   "UserProfile.edit":"Edit",
   "UserProfile.compatibility":"Compatibility",
   "UserProfile.message.sizeImage":"Image size should not exceed {{size}} MB",
@@ -253,5 +265,14 @@
 
   "SECTION" : "SITE_ACCESS_ERROR",
   "SiteAccess.info.settings" : "User info is not set",
-  "SiteAccess.questionnaire.settings" : "User questionnaire is not filled in"
+  "SiteAccess.questionnaire.settings" : "User questionnaire is not filled in",
+
+  "SECTION": "TERMS AND POLICIES",
+  "Terms.title":"Terms and Policies",
+
+  "SECTION": "PRIVACY",
+  "Privacy.title":"Privacy",
+
+  "SECTION": "SUPPORT",
+  "Support.title":"Support"
 }

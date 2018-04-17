@@ -7,12 +7,11 @@ app.component("dealPresentationComponent", {
                           $sessionStorage,
                           $uibModal,
                           dealPresentationModel,
-                          notify,
                           dealUserStatus,
                           dealStatus,
-                          browserTitle) {
+                          browserTitleService) {
 
-        browserTitle.setBrowserTitleByFilterName('Deal.title');
+        browserTitleService.setBrowserTitleByFilterName('Deal.title');
 
         var vm = this;
         vm.deals = [];

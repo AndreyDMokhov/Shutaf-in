@@ -3,9 +3,9 @@ app.component('userSearchComponent', {
     templateUrl: 'partials/userSearch/userSearch.component.html',
     bindings: {},
     controllerAs: 'vm',
-    controller: function (browserTitle) {
+    controller: function (browserTitleService) {
 
-        browserTitle.setBrowserTitleByFilterName('Search.title');
+        browserTitleService.setBrowserTitleByFilterName('Search.title');
     }
 
 });

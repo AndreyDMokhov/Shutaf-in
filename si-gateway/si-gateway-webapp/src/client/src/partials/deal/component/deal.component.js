@@ -8,7 +8,6 @@ app.component('dealComponent', {
                           $uibModal,
                           $sessionStorage,
                           $filter,
-                          notify,
                           dealStatus) {
 
         var vm = this;
