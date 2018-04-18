@@ -3,7 +3,6 @@ app.factory('messengerModel', function (Restangular, $sessionStorage) {
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
         RestangularProvider.setBaseUrl('/api/chat');
-        RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
     });
 
 

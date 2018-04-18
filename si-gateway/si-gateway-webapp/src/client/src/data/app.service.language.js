@@ -64,7 +64,6 @@ app.service('languageService', function ($translate, Restangular, $sessionStorag
         if (!$sessionStorage.sessionId) {
             return;
         }
-        rest.setDefaultHeaders({"session_id": $sessionStorage.sessionId});
         rest.one('/api/users/settings/language').customPUT({id: languageId});
     }
 

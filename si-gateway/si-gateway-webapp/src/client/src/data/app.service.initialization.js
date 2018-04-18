@@ -27,7 +27,6 @@ app.factory('initializationService', function (messengerChannelService,
     function initializeApplication() {
         var deferred = $q.defer();
 
-        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         rest.one('/api/initialization/all').customGET().then(
             function (success) {
 

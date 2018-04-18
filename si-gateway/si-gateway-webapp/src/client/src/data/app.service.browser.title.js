@@ -15,8 +15,9 @@ app.factory('browserTitleService', function ($filter, $window) {
     function setExplicitTitle(value) {
         if (value === undefined || value === null || value === '') {
             _setDefaultTitle();
+        } else {
+            $window.document.title = COMPANY_NAME + ' | ' + (value);
         }
-        $window.document.title = COMPANY_NAME + ' | ' + (value);
     }
 
     function _setTitle(value) {
