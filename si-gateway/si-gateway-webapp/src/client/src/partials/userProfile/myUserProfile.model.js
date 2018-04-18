@@ -5,12 +5,10 @@ app.factory('myUserProfileModel', function (Restangular, $sessionStorage) {
     });
 
     function addOrUpdateImage(params) {
-        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         return rest.one('/api/users/settings/image').customPOST(params);
     }
 
     function deleteImage() {
-        rest.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         return rest.one('/api/users/settings/image').customDELETE();
     }
 

@@ -6,7 +6,7 @@ app.component('userProfileComponent', {
                           $sessionStorage,
                           $stateParams,
                           userProfileModel,
-                          browserTitle) {
+                          browserTitleService) {
 
         var vm = this;
         vm.userInfo = {};
@@ -18,7 +18,7 @@ app.component('userProfileComponent', {
             } else {
                 getUserProfile().then(
                     function () {
-                        browserTitle.setExplicitTitle(vm.userInfo.firstName + ' ' + vm.userInfo.lastName);
+                        browserTitleService.setExplicitTitle(vm.userInfo.firstName + ' ' + vm.userInfo.lastName);
                     }
                 );
             }

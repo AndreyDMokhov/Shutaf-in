@@ -2,7 +2,6 @@ app.factory('panelModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
-        RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         RestangularProvider.setBaseUrl('api/deal/documents');
     });
 

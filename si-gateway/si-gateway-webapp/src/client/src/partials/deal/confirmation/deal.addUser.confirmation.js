@@ -1,9 +1,9 @@
 "use strict";
 app.controller('dealAddUserConfirmation', function (dealConfirmationModel,
-                                                    notify,
                                                     $state,
                                                     $filter,
-                                                    $stateParams) {
+                                                    $stateParams,
+                                                    uiNotification) {
 
     function confirmAddDealUser() {
         var urlLink = $stateParams.link;
@@ -12,8 +12,8 @@ app.controller('dealAddUserConfirmation', function (dealConfirmationModel,
         }
         dealConfirmationModel.addUser(urlLink).then(
             function (success) {
+                uiNotification.show($filter('translate')("Deal.confirmation.addUser"), 'success');
 
-                notify.set($filter('translate')("Deal.confirmation.addUser"), {type: 'success'});
                 $state.go("home");
             }, function (error) {});
     }

@@ -6,7 +6,7 @@ app.component('dealInitializeComponent', {
     controllerAs: "vm",
     controller: function (dealPresentationModel,
                           $uibModal,
-                          notify,
+                          uiNotification,
                           $filter,
                           $q,
                           accountStatus,
@@ -89,7 +89,7 @@ app.component('dealInitializeComponent', {
         function initializeDeal(dealWeb) {
             dealPresentationModel.initiateDeal(dealWeb).then(
                 function (success) {
-                    notify.set($filter('translate')("Deal.confirmation"));
+                    uiNotification.show($filter('translate')("Deal.confirmation"));
                 },
                 function (error) {}
             );
@@ -100,7 +100,7 @@ app.component('dealInitializeComponent', {
 
                 dealPresentationModel.addUsersToDeal(dealId, user.userId).then(
                     function (success) {
-                        notify.set('User ' + user.firstName + ' will be added after all deal participants confirm this action');
+                        uiNotification.show('User ' + user.firstName + ' will be added after all deal participants confirm this action', 'success');
 
                     }, function (error) { }
                 );

@@ -6,11 +6,11 @@ app.component('resetPasswordConfirmationComponent', {
         $filter,
         resetPasswordModel,
         $state,
-        notify,
+        uiNotification,
         $stateParams,
-        browserTitle) {
+        browserTitleService) {
 
-    browserTitle.setBrowserTitleByFilterName('ResetPassword.title');
+    browserTitleService.setBrowserTitleByFilterName('ResetPassword.title');
 
         var vm = this;
         var urlLink = $stateParams.link;
@@ -36,7 +36,7 @@ app.component('resetPasswordConfirmationComponent', {
 
             resetPasswordModel.resetPasswordChange({link: urlLink, newPassword: vm.password.newPassword}).then(
                 function (success) {
-                    notify.set($filter('translate')("ResetPassword.passwordChanged"), {type: 'success'});
+                    uiNotification.show($filter('translate')("ResetPassword.passwordChanged"), 'success');
                     $state.go("home");
                 },
                 function (error) {
