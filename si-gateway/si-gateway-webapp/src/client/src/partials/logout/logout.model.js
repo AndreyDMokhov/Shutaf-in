@@ -6,7 +6,6 @@ app.factory('logoutModel', function (Restangular, $sessionStorage) {
     });
 
     function logout(params) {
-        rest.setDefaultHeaders({'session_id':$sessionStorage.sessionId});
         return  rest.one('/api/logout/').customPOST(params);
     }
 
