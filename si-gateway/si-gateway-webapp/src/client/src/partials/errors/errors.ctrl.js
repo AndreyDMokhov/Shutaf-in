@@ -5,7 +5,7 @@
 app.controller('errorsController', function (
                                             $filter,
                                             $stateParams,
-                                            browserTitle) {
+                                            browserTitleService) {
 
     var vm = this;
     vm.errorData = {};
@@ -17,7 +17,7 @@ app.controller('errorsController', function (
         }
         vm.errorData.code = code;
         vm.errorData.description = $filter('translate')('Error.RNF');
-        browserTitle.setBrowserTitleByFilterName(null);
+        browserTitleService.setBrowserTitleByFilterName(null);
     }
 
     showError();

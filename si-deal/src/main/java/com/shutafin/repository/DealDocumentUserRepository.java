@@ -12,5 +12,5 @@ public interface DealDocumentUserRepository extends BaseJpaRepository<DealDocume
     DealDocumentUser findByDealDocumentIdAndUserId(Long dealDocumentId, Long userId);
     List<DealDocumentUser> findAllByDealDocumentIdAndDealUserPermissionType(Long dealDocumentId,
                                                                             DealUserPermissionType dealUserPermissionType);
-    List<DealDocumentUser> findAllByDealDocumentDealPanelDealIdAndUserId(Long dealId, Long userId);
+    List<DealDocumentUser> findAllByDealDocumentDealPanelDealIdAndUserIdAndDealUserPermissionTypeNot(Long dealId, Long userId, DealUserPermissionType permissionType);
 }

@@ -4,11 +4,10 @@ app.component('userSearchFilterComponent', {
     bindings: {},
     controllerAs: 'vm',
     controller: function ($sessionStorage,
-                          notify,
                           userSearchModel,
                           $stateParams,
                           $filter,
-                          userSearchService) {
+                          userSearchObserver) {
 
         var vm = this;
 
@@ -62,7 +61,7 @@ app.component('userSearchFilterComponent', {
             if (!vm.gender) {
                 vm.searchData.filterGenderId = null;
             }
-            userSearchService.notifyFilterObserver(vm.searchData);
+            userSearchObserver.notifyFilterObserver(vm.searchData);
         }
 
         function setAgeRangeData() {

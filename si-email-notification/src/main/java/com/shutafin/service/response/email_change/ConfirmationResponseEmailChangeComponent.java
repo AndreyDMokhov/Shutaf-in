@@ -20,11 +20,6 @@ public class ConfirmationResponseEmailChangeComponent implements BaseConfirmatio
     public EmailChangeResponse getResponse(String link) {
 
         ConfirmationEmailChange confirmationEmailChange = confirmationEmailChangeService.getConfirmed(link);
-        if (confirmationEmailChange == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
-            throw new ResourceNotFoundException();
-        }
 
         confirmationEmailChange.setIsConfirmed(true);
         confirmationEmailChangeService.save(confirmationEmailChange);

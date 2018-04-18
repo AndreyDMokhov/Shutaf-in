@@ -1,7 +1,23 @@
-<div class="container">
-    <h1>{{'Home.title' | translate}}</h1>
-    <hr>
-    <p>
-        {{'Home.description' | translate}}
-    </p>
+<div style="margin-top: 10%; margin-left: 0">
+    <h3><strong>{{'Home.brand-name' | translate}}</strong> - {{'Home.description-1' | translate}}<br>{{'Home.description-2'
+        | translate}}</h3>
+    <br>
+    <h5>{{'Home.description-3' | translate}}</h5>
+
+    <br>
+    <br>
+    <br>
+    <button class="btn btn-success btn-large entry-card-button"
+            style="color: black; font-weight: bold"
+            ui-sref="registration">
+        {{'Registration.title.register' | translate}}
+    </button>
+    <br>
+    <br>
+    <h5>
+        <strong>
+            <span ui-sref="login" class="pointer" style="color: blue;">{{'Login.title' | translate }}</span>
+            {{'Home.description-4-suffix' | translate}}
+        </strong>
+    </h5>
 </div>

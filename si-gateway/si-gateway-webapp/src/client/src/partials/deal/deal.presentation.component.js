@@ -7,12 +7,11 @@ app.component("dealPresentationComponent", {
                           $sessionStorage,
                           $uibModal,
                           dealPresentationModel,
-                          notify,
                           dealUserStatus,
                           dealStatus,
-                          browserTitle) {
+                          browserTitleService) {
 
-        browserTitle.setBrowserTitleByFilterName('Deal.title');
+        browserTitleService.setBrowserTitleByFilterName('Deal.title');
 
         var vm = this;
         vm.deals = [];
@@ -30,7 +29,6 @@ app.component("dealPresentationComponent", {
                 function (error) {
                     vm.showLoading = false;
                     vm.dealTabClicked = true;
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         };
 
@@ -41,12 +39,22 @@ app.component("dealPresentationComponent", {
         }
 
         vm.getDealSuffix = function (deal) {
+            if (deal.statusId === dealStatus.Status.INITIATED && deal.userStatusId === dealUserStatus.Status.ACTIVE) {
+                return $filter('translate')('Deal.deal.status.inactive.wait-for-approval');
+            }
+
+            if (deal.statusId === dealStatus.Status.INITIATED) {
+                return $filter('translate')('Deal.deal.status.inactive');
+            }
+
             if(deal.userStatusId === dealUserStatus.Status.PENDING) {
                 return $filter('translate')('Deal.deal.status.inactive');
             }
+
             if (deal.userStatusId === dealUserStatus.Status.ACTIVE) {
                 return $filter('translate')('Deal.deal.status.active');
             }
+
             if (deal.userStatusId === dealUserStatus.Status.LEAVED) {
                 return $filter('translate')('Deal.deal.status.archive');
             }
@@ -75,7 +83,6 @@ app.component("dealPresentationComponent", {
                         getDeals();
                     },
                     function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     });
             });
         };

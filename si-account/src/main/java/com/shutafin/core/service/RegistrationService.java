@@ -7,5 +7,5 @@ public interface RegistrationService {
 
     void registerUser(AccountRegistrationRequest registrationRequestWeb);
 
-    User confirmRegistration(Long userId);
+    void confirmRegistration(Long userId);
 }

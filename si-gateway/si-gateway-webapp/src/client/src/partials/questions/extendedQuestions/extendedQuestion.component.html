@@ -1,22 +1,22 @@
 <div class="quiz-area">
     <arrow-back>
         <div class="glyphicon glyphicon-chevron-left arrow-back"
-             aria-hidden="true" ng-click="$ctrl.previousPageButton()">
+             aria-hidden="true" ng-click="vm.previousPageButton()">
         </div>
     </arrow-back>
 
     <card-question class="card-question">
         <div class="cardContainer">
             <header>
-                <h2>{{$ctrl.currentQuestion}}</h2>
+                <h2 class="text-center" style="margin: auto">{{vm.currentQuestion}}</h2>
             </header>
             <content>
-                <div ng-repeat="answ in $ctrl.answersWithIDForCurrentPage ">
+                <div ng-repeat="answ in vm.answersWithIDForCurrentPage ">
                     <label>
                         <input type="checkbox"
-                               ng-model="$ctrl.selectedCheckboxes[$index]"
+                               ng-model="vm.selectedCheckboxes[$index]"
                                ng-true-value="'{{answ.id}}'"
-                               ng-change="$ctrl.getValuesOfCheckBox($ctrl.selectedCheckboxes[$index], answ.id)"
+                               ng-change="vm.getValuesOfCheckBox(vm.selectedCheckboxes[$index], answ.id)"
                         >
                         {{answ.answer}}
                     </label>
@@ -24,9 +24,9 @@
 
             </content>
             <contentAnswer>
-                <label ng-repeat="item in $ctrl.questionImportance" class="radio-inline">
+                <label ng-repeat="item in vm.questionImportance" class="radio-inline">
                     <input type="radio" name="optradio"
-                           ng-model="$ctrl.variantsOfAnswersImportance"
+                           ng-model="vm.variantsOfAnswersImportance"
                            ng-value="item.id">
                     {{item.description}}
                 </label>
@@ -35,14 +35,14 @@
             <br>
 
             <footer>
-                <ul class="question-pagination" uib-pagination total-items="$ctrl.totalItems"
+                <ul class="question-pagination" uib-pagination total-items="vm.totalItems"
                     direction-links="false"
-                    ng-model="$ctrl.currentPage"
-                    ng-change="$ctrl.pageChanged()"
-                    items-per-page="$ctrl.itemsPerPage"></ul>
+                    ng-model="vm.currentPage"
+                    ng-change="vm.pageChanged()"
+                    items-per-page="vm.itemsPerPage"></ul>
             </footer>
             <footer-btn>
-                <button class="btn" ng-click="$ctrl.save()">
+                <button class="btn" ng-click="vm.save()">
                     {{"Questions.button.save"|translate}}
                 </button>
             </footer-btn>
@@ -52,7 +52,7 @@
     <arrow-next>
         <div class="glyphicon glyphicon-chevron-right arrow-next"
              aria-hidden="true"
-             ng-click="$ctrl.nextPageButton()">
+             ng-click="vm.nextPageButton()">
         </div>
     </arrow-next>
 </div>

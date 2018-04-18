@@ -1,12 +1,9 @@
 package com.shutafin.controller.deal;
 
+import com.shutafin.model.exception.exceptions.DealSelfRemovalException;
 import com.shutafin.model.exception.exceptions.validation.InputValidationException;
-import com.shutafin.model.web.deal.DealResponse;
-import com.shutafin.model.web.deal.DealTitleChangeWeb;
-import com.shutafin.model.web.deal.DealUserWeb;
-import com.shutafin.model.web.deal.DealWeb;
+import com.shutafin.model.web.deal.*;
 import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
-import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.deal.DealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,15 +44,21 @@ public class DealController {
     }
 
     @GetMapping(value = "/remove/{dealId}/{userToRemoveId}")
-    public void removeDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
+    public void removeDealUser(@AuthenticatedUser Long userId,
+                               @PathVariable(value = "dealId") Long dealId,
                                @PathVariable(value = "userToRemoveId") Long userToRemoveId) {
         log.debug("/deal/remove/{dealId}/{userToRemoveId}");
+        if (userToRemoveId.equals(userId)) {
+            log.warn("Cannot vote for self removal. Should use Leave Deal instead!");
+            throw new DealSelfRemovalException();
+        }
         dealService.removeDealUser(dealId, userId, userToRemoveId);
     }
 
 
     @GetMapping(value = "/add/{dealId}/{userToAddId}")
-    public DealResponse addDealUser(@AuthenticatedUser Long userId, @PathVariable(value = "dealId") Long dealId,
+    public DealResponse addDealUser(@AuthenticatedUser Long userId,
+                                    @PathVariable(value = "dealId") Long dealId,
                                     @PathVariable(value = "userToAddId") Long userToAddId) {
         log.debug("/deal/add/{dealId}/{userToChangeId}");
         return dealService.addDealUser(dealId, userId, userToAddId);
@@ -84,6 +87,13 @@ public class DealController {
             throw new InputValidationException(result);
         }
         return dealService.renameDeal(dealId, userId, newTitle);
+    }
+
+    @GetMapping("/available-users")
+    public DealAvailableUsersResponse getAvailableUsers(@AuthenticatedUser Long userId,
+                                                        @RequestParam("users") List<Long> users) {
+
+        return dealService.getAvailableUsers(userId, users);
     }
 
     //todo DEAL DELETION FOR SNAPSHOT USER

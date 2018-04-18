@@ -20,11 +20,6 @@ public class ConfirmationResponseResetPasswordComponent implements BaseConfirmat
     public EmailResetPasswordResponse getResponse(String link) {
 
         ConfirmationResetPassword confirmationResetPassword = confirmationResetPasswordService.getConfirmed(link);
-        if (confirmationResetPassword == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
-            throw new ResourceNotFoundException();
-        }
 
         confirmationResetPassword.setIsConfirmed(true);
         confirmationResetPasswordService.save(confirmationResetPassword);

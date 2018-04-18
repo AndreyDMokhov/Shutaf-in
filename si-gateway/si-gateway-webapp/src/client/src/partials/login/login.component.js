@@ -6,15 +6,15 @@ app.component('loginComponent', {
     controller: function (loginModel,
                           $filter,
                           $state,
-                          notify,
+                          uiNotification,
                           $sessionStorage,
                           initializationService,
                           $window,
-                          browserTitle,
+                          browserTitleService,
                           accountStatus,
                           siteAccessRouting) {
 
-        browserTitle.setBrowserTitleByFilterName('Login.title');
+        browserTitleService.setBrowserTitleByFilterName('Login.title');
 
         var vm = this;
         vm.dataLoading = false;
@@ -30,13 +30,12 @@ app.component('loginComponent', {
                     $sessionStorage.sessionId = success.headers('session_id');
                     initializationService.initializeApplication().then(
                         function () {
-                            $window.location.reload();
-                            notify.set($filter('translate')('Login.message.success'), {type: 'success'});
-                            siteAccessRouting.navigate('home', {});
+                            var message = $filter('translate')('Login.message.success');
+                            uiNotification.show(message, 'success');
+                            siteAccessRouting.navigate('myUserProfile', {});
 
                         }, function (error) {
                             vm.dataLoading = false;
-                            notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                         });
                 },
                 function (error) {
@@ -44,7 +43,6 @@ app.component('loginComponent', {
                         vm.showResend = true;
                     }
                     vm.dataLoading = false;
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 
@@ -53,7 +51,7 @@ app.component('loginComponent', {
             loginModel.resendEmailRegistration(vm.loginData).then(
                 function (success) {
                     vm.resendLoading = false;
-                    notify.set($filter('translate')('Registration.request.success'), {type: 'success'});
+                    uiNotification.show($filter('translate')('Registration.request.success'), 'success');
                     siteAccessRouting.navigate('home', {});
                 },
                 function (error) {
@@ -61,7 +59,6 @@ app.component('loginComponent', {
                         vm.showResend = false;
                     }
                     vm.resendLoading = false;
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 }
             );
         }

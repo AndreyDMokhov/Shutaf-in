@@ -3,6 +3,7 @@ package com.shutafin.controller;
 
 import com.shutafin.model.exception.exceptions.AuthenticationException;
 import com.shutafin.model.web.APIWebResponse;
+import com.shutafin.model.web.matching.MatchedUsersScoresSearchResponse;
 import com.shutafin.model.web.matching.UserQuestionExtendedAnswersWeb;
 import com.shutafin.service.SessionManagementService;
 import com.shutafin.service.UserMatchingScoreService;
@@ -47,13 +48,17 @@ public class UserMatchingScoreControllerTest extends BaseTestImpl{
     public void setUp(){
         validUser = 1L;
         userQuestionExtendedAnswersWebList = new ArrayList<>();
-        Map<Long, Integer> longIntegerMap = new HashMap<>();
+        MatchedUsersScoresSearchResponse matchedUsersScoresSearchResponse = MatchedUsersScoresSearchResponse
+                                                                                        .builder()
+                                                                                        .matchedUsersScoresPerPage(new HashMap<>())
+                                                                                        .totalUsers(0)
+                                                                                        .build();
 
         Mockito.when(sessionManagementService.findUserWithValidSession(VALID_SESSION_ID)).thenReturn(validUser);
         Mockito.when(sessionManagementService.findUserWithValidSession(INVALID_SESSION_ID))
                 .thenThrow(new AuthenticationException());
         Mockito.when(userMatchingScoreService.getUserMatchingScores(Mockito.anyLong()))
-                .thenReturn(longIntegerMap);
+                .thenReturn(matchedUsersScoresSearchResponse);
     }
 
     @Test

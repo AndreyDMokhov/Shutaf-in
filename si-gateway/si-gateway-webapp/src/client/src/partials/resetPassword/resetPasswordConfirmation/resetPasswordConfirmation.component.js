@@ -6,11 +6,11 @@ app.component('resetPasswordConfirmationComponent', {
         $filter,
         resetPasswordModel,
         $state,
-        notify,
+        uiNotification,
         $stateParams,
-        browserTitle) {
+        browserTitleService) {
 
-    browserTitle.setBrowserTitleByFilterName('ResetPassword.title');
+    browserTitleService.setBrowserTitleByFilterName('ResetPassword.title');
 
         var vm = this;
         var urlLink = $stateParams.link;
@@ -28,10 +28,6 @@ app.component('resetPasswordConfirmationComponent', {
                     vm.isLinkValid = true;
                 },
                 function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    if (error.data.error.errorTypeCode === 'RNF') {
-                        $state.go("error", {'code': '404'});
-                    }
                 }
             );
         }
@@ -40,14 +36,10 @@ app.component('resetPasswordConfirmationComponent', {
 
             resetPasswordModel.resetPasswordChange({link: urlLink, newPassword: vm.password.newPassword}).then(
                 function (success) {
-                    notify.set($filter('translate')("ResetPassword.passwordChanged"), {type: 'success'});
+                    uiNotification.show($filter('translate')("ResetPassword.passwordChanged"), 'success');
                     $state.go("home");
                 },
                 function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    if (error.data.error.errorCodeType === 'RNF') {
-                        $state.go("error", {'code': '404'});
-                    }
                 }
             );
         }

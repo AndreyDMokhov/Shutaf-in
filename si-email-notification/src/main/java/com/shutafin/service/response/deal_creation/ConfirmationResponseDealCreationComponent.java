@@ -20,11 +20,6 @@ public class ConfirmationResponseDealCreationComponent implements BaseConfirmati
     public EmailDealCreationResponse getResponse(String link) {
 
         ConfirmationDealCreation confirmation = confirmationDealCreationService.getConfirmed(link);
-        if (confirmation == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
-            throw new ResourceNotFoundException();
-        }
 
         confirmation.setIsConfirmed(true);
         confirmationDealCreationService.save(confirmation);

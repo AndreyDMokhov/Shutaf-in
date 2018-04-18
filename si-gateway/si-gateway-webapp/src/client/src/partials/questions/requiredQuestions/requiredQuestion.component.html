@@ -1,24 +1,24 @@
 <div class="quiz-area">
     <arrow-back>
     <span class="glyphicon glyphicon-chevron-left arrow-back"
-          aria-hidden="true" ng-click="$ctrl.previousPage()"></span>
+          aria-hidden="true" ng-click="vm.previousPage()"></span>
     </arrow-back>
 
     <card-question class="card-question">
         <div class="cardContainer">
             <header>
-                <h2 style="margin: auto">{{$ctrl.currentQuestion.description}} </h2>
+                <h2 style="margin: auto" class="text-center">{{vm.currentQuestion.description}} </h2>
 
             </header>
             <content>
-                <div class="radio" ng-repeat="answer in $ctrl.currentQuestion.answers">
+                <div class="radio" ng-repeat="answer in vm.currentQuestion.answers">
                     <label>
                         <input type="radio"
                                name="answer.description"
-                               ng-model="$ctrl.currentAnswer"
+                               ng-model="vm.currentAnswer"
                                ng-value="answer.answerId"
                                value="answer.answerId"
-                               ng-change='$ctrl.newValue();'>
+                               ng-change='vm.newValue();'>
                         {{answer.description}}
                     </label>
                 </div>
@@ -29,10 +29,10 @@
                     <ul uib-pagination
                         class="question-pagination"
                         direction-links="false"
-                        total-items="$ctrl.totalItems"
-                        ng-model="$ctrl.currentPage"
-                        ng-change="$ctrl.pageChanged()"
-                        items-per-page="$ctrl.itemsPerPage"
+                        total-items="vm.totalItems"
+                        ng-model="vm.currentPage"
+                        ng-change="vm.pageChanged()"
+                        items-per-page="vm.itemsPerPage"
                         boundary-link-numbers="true"
                         max-size="4"
                         rotate="true">
@@ -42,8 +42,8 @@
             </footer>
             <footer-btn>
 
-                    <button class="btn" ng-click="$ctrl.save()"
-                            ng-disabled="$ctrl.disableSubmit">
+                    <button class="btn" ng-click="vm.save()"
+                            ng-disabled="vm.disableSubmit">
                         {{"Questions.button.save"|translate}}
                     </button>
 
@@ -54,6 +54,8 @@
     </card-question>
     <arrow-next>
         <span class="glyphicon glyphicon-chevron-right arrow-next" aria-hidden="true"
-              ng-click="$ctrl.nextPage()"></span>
+              ng-click="vm.nextPage()"></span>
+                               ng-model="vm.currentAnswer"
+                               ng-change='vm.newValue();'>
     </arrow-next>
 </div>

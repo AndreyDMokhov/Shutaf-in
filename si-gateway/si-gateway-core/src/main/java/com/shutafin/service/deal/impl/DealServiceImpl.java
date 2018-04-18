@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,6 +44,13 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public DealWeb initiateDeal(DealWeb dealWeb, Long userId) {
+        dealWeb.setUsers(dealWeb
+                .getUsers()
+                .stream()
+                .filter(x -> !x.equals(userId))
+                .distinct()
+                .collect(Collectors.toList()));
+
         dealWeb = dealControllerSender.initiateDeal(dealWeb, userId);
         emailNotificationSenderControllerSender.sendEmailDeal(
                 getEmailNotificationDealWeb(dealWeb, userId, null, EmailReason.DEAL_CREATION));
@@ -67,10 +75,14 @@ public class DealServiceImpl implements DealService {
     private EmailNotificationDealWeb getEmailNotificationDealWeb(Long dealId,
                                                                  Long originUserId,
                                                                  Long userToChange,
-                                                                 EmailReason emailReason) {
+                                                                 EmailReason emailReason,
+                                                                 boolean includeUserToChange) {
 
         DealResponse deal = dealControllerSender.getDeal(dealId, originUserId);
         List<Long> users = new ArrayList<>();
+        if (includeUserToChange) {
+            users.add(userToChange);
+        }
         for (AccountUserImageWeb accountUserImageWeb : deal.getUsers()) {
             if (!accountUserImageWeb.getUserId().equals(userToChange)) {
                 users.add(accountUserImageWeb.getUserId());
@@ -131,7 +143,7 @@ public class DealServiceImpl implements DealService {
     @Override
     public void removeDealUser(Long dealId, Long userOriginId, Long userToRemoveId) {
         emailNotificationSenderControllerSender.sendEmailDeal(
-                getEmailNotificationDealWeb(dealId, userOriginId, userToRemoveId, EmailReason.DEAL_USER_REMOVING));
+                getEmailNotificationDealWeb(dealId, userOriginId, userToRemoveId, EmailReason.DEAL_USER_REMOVING, false));
     }
 
     @Override
@@ -156,7 +168,7 @@ public class DealServiceImpl implements DealService {
     @Override
     public DealResponse addDealUser(Long dealId, Long userOriginId, Long userToAddId) {
         emailNotificationSenderControllerSender.sendEmailDeal(
-                getEmailNotificationDealWeb(dealId, userOriginId, userToAddId, EmailReason.DEAL_USER_ADDING));
+                getEmailNotificationDealWeb(dealId, userOriginId, userToAddId, EmailReason.DEAL_USER_ADDING, true));
         dealControllerSender.addDealUser(dealId, userOriginId, userToAddId);
         return dealControllerSender.getDeal(dealId, userOriginId);
     }
@@ -230,5 +242,10 @@ public class DealServiceImpl implements DealService {
     @Override
     public void deleteDeal(Long dealId, Long userId) {
         dealControllerSender.deleteDeal(dealId, userId);
+    }
+
+    @Override
+    public DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users) {
+        return dealControllerSender.getAvailableUsers(currentUserId, users);
     }
 }

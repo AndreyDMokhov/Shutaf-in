@@ -5,13 +5,11 @@ app.component('matchingSettingsComponent', {
     controllerAs: 'vm',
     controller: function ($sessionStorage,
                           siteAccessRouting,
-                          browserTitle,
+                          browserTitleService,
                           accountStatus,
-                          matchingModel,
-                          notify,
-                          $filter ) {
+                          matchingModel) {
         var vm = this;
-        browserTitle.setBrowserTitleByFilterName('UserSetting.personal.matching.title');
+        browserTitleService.setBrowserTitleByFilterName('UserSetting.personal.matching.title');
         vm.isOpened = true;
         vm.switchStatus = $sessionStorage.isMathingEnabled;
         vm.isEnabledMatching = function () {
@@ -29,11 +27,6 @@ app.component('matchingSettingsComponent', {
                 },
                 function (error) {
                     vm.switchStatus = !vm.switchStatus;
-                    if (error === undefined || error === null) {
-                        notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                    }
-                    notify.set($filter('translate')('Error' + '.' + error.status), {type: 'error'});
-
                 }
             );
         };

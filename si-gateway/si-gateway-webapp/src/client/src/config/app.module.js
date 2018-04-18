@@ -5,7 +5,7 @@ var app = angular.module("app", [
     'ui.bootstrap',
     'mgcrea.ngStrap',
     'ngDialog',
-    'ngNotify',
+    'cgNotify',
     'ui.grid',
     'ui.grid.autoResize',
     'ui.grid.pagination',

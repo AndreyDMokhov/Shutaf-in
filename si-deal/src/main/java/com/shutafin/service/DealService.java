@@ -18,4 +18,6 @@ public interface DealService {
     InternalDealWeb renameDeal(Long dealId, Long userId, DealTitleChangeWeb dealTitleChangeWeb);
     Deal checkDealPermissions(Long dealId, Long userId, Boolean needFullAccess);
     void deleteDeal(Long dealId, Long userId);
+
+    DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users);
 }

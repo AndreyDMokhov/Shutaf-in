@@ -1,129 +1,121 @@
 <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li ng-class="{active : ('userProfile' | includedByState)}" style="margin-top: -3px">
-                    <a class="navbar-brand hover-none" ng-show="!vm.sessionService.isAuthenticated()">
-                        {{$root.brand}}
-                    </a>
-                    <a ng-show="vm.sessionService.isAuthenticated()"
-                       ui-sref="myUserProfile({id:vm.userProfile.userId})"
-                       uib-tooltip="{{'UserProfile.title' | translate}}"
-                       tooltip-placement="bottom">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li ng-class="{active : ('userProfile' | includedByState)}" style="margin-top: -3px">
+                <img ng-show="!vm.sessionService.isAuthenticated()"
+                     ng-src="{{'../images/icon.png'}}"
+                     style="height: 50px; width: 50px;"
+                     ui-sref="home"
+                     class="pointer"/>
+                <a ng-show="vm.sessionService.isAuthenticated()"
+                   ui-sref="myUserProfile({id:vm.userProfile.userId})"
+                   uib-tooltip="{{'UserProfile.title' | translate}}"
+                   tooltip-placement="bottom">
                         <span>
-                            <img class="logo-center" style="padding: 0" src="{{vm.getUserImage()}}" width="28" height="28">
+                            <img class="logo-center" style="padding: 0" src="{{vm.getUserImage()}}" width="28"
+                                 height="28">
                         </span>
-                        &nbsp;
-                        {{$root.brand | limitTo: 20}}
-                    </a>
+                    &nbsp;
+                    {{(vm.userProfile.firstName + ' ' + vm.userProfile.lastName) | limitTo: 20}}
+                </a>
+            </li>
+
+            <li data-ng-show="vm.sessionService.isAuthenticated()"
+                ng-class="{active : ('questions' | includedByState)}">
+                <a ui-sref="deal"
+                   class="header-text"
+                   uib-tooltip="{{'Deal.title' | translate}}"
+                   tooltip-placement="bottom"
+                   ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
+                    {{'Deal.title' | translate}}
+                </a>
+
+            </li>
+
+            <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
+                <a ui-sref="questionsTab.requiredQuestions"
+                   class="header-text"
+                   uib-tooltip="{{'Questions.title' | translate}}"
+                   tooltip-placement="bottom"
+                   ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_USER_INFO']">
+                    {{'Questions.title' | translate}}
+                </a>
+            </li>
+            <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('chat' | includedByState)}">
+                <a ui-sref="chat"
+                   class="header-text"
+                   ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
+                    {{'Chat.title' | translate}}
+                </a>
+            </li>
+            <li ng-show="vm.sessionService.isAuthenticated()"
+                ng-class="{active : ('userSearch' | includedByState)}">
+                <form
+                        class="header-search"
+                        id="userSearchForm"
+                        ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
+                    <input
+                            type="text"
+                            ng-model="vm.fullName"
+                            placeholder="{{'Search.button' | translate}}"
+                            style="border-radius: 20px; text-indent: 5px"
+                            tooltip-placement="bottom"
+                            uib-tooltip="{{'Search.button' | translate}}"
+                            ng-keyup="$event.keyCode == 13 && vm.search(vm.fullName)"
+                            size="50">
+                </form>
+            </li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-hide="vm.sessionService.isAuthenticated()"
+                ng-class="{active : ('registration' | includedByState)}">
+                <a ui-sref="registration"
+                   tooltip-placement="bottom"
+                   uib-tooltip="{{'Registration.title.sign-up' | translate}}"
+                   class="header-text">
+                    {{'Registration.title.sign-up' | translate}}
+                </a>
+            </li>
+            <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('login' | includedByState)}">
+                <a
+                        ui-sref="login"
+                        tooltip-placement="bottom"
+                        uib-tooltip="{{'Login.title' | translate}}"
+                        class="header-text">
+                    {{'Login.title' | translate}}
+                </a>
+            </li>
+            <li ng-show="vm.sessionService.isAuthenticated()"
+                ng-class="{active : (('settings.personal' | includedByState) || ('settings.changeEmailRequest' | includedByState) || ('settings.changePassword' | includedByState)) }">
+                <a ui-sref="settings.personal"
+                   class="header-text"
+                   tooltip-placement="bottom"
+                   uib-tooltip="{{'Settings.title' | translate}}"
+                   ng-show="vm.currentAccountStatus >= vm.accountStatuses['CONFIRMED']">
+                    {{'Settings.title' | translate}}
+                </a>
+            </li>
+            <li ng-show="vm.sessionService.isAuthenticated()">
+                <a ui-sref="logout" class="header-text">
+                    {{'Logout.button' | translate}}
+                </a>
+            </li>
+
+            <li class="divider-vertical"></li>
+            <li uib-dropdown>
+                <a href="#" uib-dropdown-toggle class="header-text">
+                    {{vm.resolveCurrentLanguage().languageNativeName}}
+                    <b class="caret"></b>
+                </a>
+                <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
+                    <li role="menuitem"
+                        ng-repeat="lang in vm.initialization.languages | filter : {isActive : true}"><a
+                            class="pointer" ng-click="vm.setLanguageCode(lang.id)">{{lang.languageNativeName}}</a>
                     </li>
+                </ul>
+            </li>
+        </ul>
 
-                <li ng-show="!vm.sessionService.isAuthenticated()" ng-class="{active : ('home' | includedByState)}">
-                    <a ui-sref="home">
-                        <span class="fa fa-home header-icon-size"></span>
-                        &nbsp;
-                        {{'Home.title' | translate}}
-                    </a>
-                </li>
-
-                <li data-ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
-                    <a ui-sref="deal"
-                       uib-tooltip="{{'Deal.title' | translate}}"
-                       tooltip-placement="bottom"
-                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
-                        <span class="fa fa-handshake-o header-icon-size"></span>
-                        &nbsp;
-                        {{'Deal.title' | translate}}
-                    </a>
-
-                </li>
-
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
-                    <a ui-sref="questionsTab.requiredQuestions"
-                       uib-tooltip="{{'Questions.title' | translate}}"
-                       tooltip-placement="bottom"
-                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_USER_INFO']">
-                        <span class="fa fa-book header-icon-size"></span>
-                        &nbsp;
-                        {{'Questions.title' | translate}}
-                    </a>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('chat' | includedByState)}">
-                    <a ui-sref="chat"
-                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
-                        {{'Chat.title' | translate}}
-                        &nbsp;
-                        <span class="fa fa-comments header-icon-size"></span>
-                    </a>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('userSearch' | includedByState)}">
-                    <form
-                            class="header-search"
-                            id="userSearchForm"
-                            ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
-                        <input
-                                type="text"
-                                ng-model="vm.fullName"
-                                placeholder="{{'Search.button' | translate}}"
-                                style="border-radius: 20px; text-indent: 5px"
-                                tooltip-placement="bottom"
-                                uib-tooltip="{{'Search.button' | translate}}"
-                                ng-keyup="$event.keyCode == 13 && vm.search(vm.fullName)"
-                                size="50">
-                    </form>
-                </li>
-
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li ng-hide="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : ('registration' | includedByState)}">
-                    <a ui-sref="registration" tooltip-placement="bottom"
-                       uib-tooltip="{{'Registration.title' | translate}}">
-                        <i class="glyphicon glyphicon-log-in fa-rotate-90" aria-hidden="true"></i>
-                        &nbsp;
-                        {{'Registration.title' | translate}}
-                    </a>
-                </li>
-                <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('login' | includedByState)}">
-                    <a ui-sref="login" tooltip-placement="bottom" uib-tooltip="{{'Login.title' | translate}}">
-                        <span class="glyphicon glyphicon-log-in"></span>
-                        &nbsp;
-                        {{'Login.title' | translate}}
-                    </a>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()"
-                    ng-class="{active : (('settings.personal' | includedByState) || ('settings.changeEmailRequest' | includedByState) || ('settings.changePassword' | includedByState)) }">
-                    <a ui-sref="settings.personal"
-                       tooltip-placement="bottom"
-                       uib-tooltip="{{'Settings.title' | translate}}"
-                       ng-show="vm.currentAccountStatus >= vm.accountStatuses['CONFIRMED']">
-                        <span class="glyphicon glyphicon-cog"></span>
-                        &nbsp;
-                        {{'Settings.title' | translate}}
-                    </a>
-                </li>
-                <li ng-show="vm.sessionService.isAuthenticated()">
-                    <a ui-sref="logout">
-                        <span class="glyphicon glyphicon-log-out"></span>
-                        {{'Logout.button' | translate}}
-                    </a>
-                </li>
-
-                <li class="divider-vertical"></li>
-                <li uib-dropdown>
-                    <a href="#" uib-dropdown-toggle>|
-                        <span class="fa fa-language header-icon-size" aria-hidden="true"></span>
-                        {{'Header.button.changeLanguage' | translate}}
-                        <b class="caret"></b>
-                    </a>
-                    <ul uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                        <li role="menuitem"
-                            ng-repeat="lang in vm.initialization.languages | filter : {isActive : true}"><a
-                                class="pointer" ng-click="vm.setLanguageCode(lang.id)">{{lang.languageNativeName}}</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-        </div>
-    </nav>
+    </div>
+</nav>

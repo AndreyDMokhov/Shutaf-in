@@ -1,27 +1,72 @@
 <div class="row margin-top">
-    <div class="col-md-4 col-lg-4 chat-col-left chat-menu" align="left">
+    <div class="col-md-3 col-lg-3 " align="left">
+        <div class="default-card chat-menu">
+            <h4 class="text-center">{{'Chat.title.your-chats' | translate}}</h4>
+            <hr>
+            <channel-component></channel-component>
+        </div>
+        <br>
+        <div ng-show="vm.currentChat.id" class="default-card chat-menu">
+            <h4 >{{'Chat.title.usersInChat' | translate}}:
+                <crop-name-directive
+                        name={{vm.currentChat.chatTitle}}
+                        character-limit="vm.characterLimit">
+                </crop-name-directive>
+            </h4>
+            <hr>
+            <chat-users-directive></chat-users-directive>
+        </div>
 
-        <channel-component></channel-component>
 
-        <h4>{{'Chat.title.compatibleUsers' | translate}}</h4>
-        <compatible-users-directive users="vm.users"></compatible-users-directive>
-
-        <h4 ng-show="vm.currentChat.id">{{'Chat.title.usersInChat' | translate}}:
-            <crop-name-directive
-                    name={{vm.currentChat.chatTitle}}
-                    character-limit="vm.characterLimit">
-            </crop-name-directive>
-        </h4>
-        <chat-users-directive></chat-users-directive>
     </div>
 
-    <div class="col-md-8 col-lg-8">
-        <strong>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</strong>
-        <deal-initialize-component ng-if="vm.isInChatGroup()" chat-info="vm.currentChat"></deal-initialize-component>
-        <hr>
-        <div class="message-container">
+    <div class="col-md-6 col-lg-6">
+        <div ng-show="vm.currentChat.chatTitle">
+            <strong>{{'Chat.title.messages' | translate}}: {{vm.currentChat.chatTitle}}</strong>
+            <deal-initialize-component ng-if="vm.isInChatGroup()"
+                                       chat-info="vm.currentChat"></deal-initialize-component>
+            <hr>
             <message-list-directive></message-list-directive>
+            <br>
             <send-form-directive></send-form-directive>
         </div>
+        <div ng-show="!vm.currentChat.chatTitle" class="col-md-offset-2 col-lg-offset-2">
+            <br>
+            <br>
+            <br>
+            <h4>
+                {{'Chat.title.help.new-chat-prefix' | translate}}&nbsp;&nbsp;
+                <i class="fa fa-envelope"></i>
+                &nbsp;&nbsp;{{'Chat.title.help.new-chat-suffix' | translate}}
+            </h4>
+        </div>
+
+        <div ng-show="!vm.currentChat.chatTitle" class="col-md-offset-2 col-lg-offset-2">
+            <h4>
+                {{'Chat.title.help.existing-chat-prefix' | translate}}&nbsp;&nbsp;
+                <i class="fa fa-user-plus"></i>
+                &nbsp;&nbsp;{{'Chat.title.help.existing-chat-suffix' | translate}}
+            </h4>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-lg-3 default-card chat-menu" align="right">
+        <h4 class="text-center">{{'Chat.title.compatibleUsers' | translate}}</h4>
+        <div align="center" >
+            <input
+                    type="text"
+                    ng-model="vm.fullName"
+                    placeholder="{{'Search.button' | translate}}. . . "
+                    style="border-radius: 20px; text-indent: 5px"
+                    tooltip-placement="bottom"
+                    uib-tooltip="{{'Chat.title.compatibleUsers.search' | translate}}"
+                    ng-keyup="$event.keyCode == 13 && vm.getUserData(vm.fullName)"
+                    class="text-center"
+
+            >
+        </div>
+        <hr>
+        <compatible-users-directive users="vm.users"></compatible-users-directive>
     </div>
 </div>
+

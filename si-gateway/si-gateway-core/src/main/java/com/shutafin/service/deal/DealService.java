@@ -1,9 +1,6 @@
 package com.shutafin.service.deal;
 
-import com.shutafin.model.web.deal.DealResponse;
-import com.shutafin.model.web.deal.DealTitleChangeWeb;
-import com.shutafin.model.web.deal.DealUserWeb;
-import com.shutafin.model.web.deal.DealWeb;
+import com.shutafin.model.web.deal.*;
 
 import java.util.List;
 
@@ -20,4 +17,5 @@ public interface DealService {
     DealResponse getDeal(Long dealId, Long userId);
     DealWeb renameDeal(Long dealId, Long userId, DealTitleChangeWeb dealTitleChangeWeb);
     void deleteDeal(Long dealId, Long userId);
+    DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users);
 }

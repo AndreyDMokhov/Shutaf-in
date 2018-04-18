@@ -19,7 +19,11 @@ public enum ErrorType {
     ACCOUNT_NOT_CONFIRMED(403, ErrorCode.ANC, AccountNotConfirmedException.class),
     ACCOUNT_BLOCKED(403, ErrorCode.ABL, AccountBlockedException.class),
     NO_ACCESS_PERMISSION(403, ErrorCode.NAP, NoPermissionException.class),
-    MULTIPLE_DEALS_ERROR(400, ErrorCode.MDE, MultipleDealsException.class);
+    LINK_ALREADY_CONFIRMED_EXCEPTION(400, ErrorCode.LAC, LinkAlreadyConfirmedException.class),
+    LINK_EXPIRED_EXCEPTION(400, ErrorCode.LEE, LinkExpiredException.class),
+    MULTIPLE_DEALS_ERROR(400, ErrorCode.MDE, MultipleDealsException.class),
+    DEAL_NOT_CONFIRMED_EXCEPTION(403, ErrorCode.DNC, DealNotConfirmedException.class),
+    DEAL_SELF_REMOVAL_EXCEPTION(400, ErrorCode.DSR, DealSelfRemovalException.class);
 
     private Integer httpCode;
     private ErrorCode errorCodeType;
@@ -60,5 +64,5 @@ public enum ErrorType {
 
 
 enum ErrorCode {
-    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANC, ABL, NAP, ERI, MDE;
+    INP, SYS, AUT, ESE, ECE, EDE, RNF, IPE, ANC, ABL, NAP, ERI, MDE, LAC, LEE, DNC, DSR;
 }

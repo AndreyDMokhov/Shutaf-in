@@ -23,10 +23,10 @@ public class RegistrationControllerSender {
         restTemplate.postForEntity(url, registrationRequestWeb, EmailNotificationWeb.class).getBody();
     }
 
-    public AccountUserWeb confirmRegistration(Long userId) {
+    public void confirmRegistration(Long userId) {
         String url = routingService.getRoute(RouteDirection.SI_ACCOUNT) +
                 String.format("/users/registration/confirm/%d", userId);
-        return restTemplate.getForEntity(url, AccountUserWeb.class).getBody();
+        restTemplate.getForEntity(url, Void.class);
     }
 }
 

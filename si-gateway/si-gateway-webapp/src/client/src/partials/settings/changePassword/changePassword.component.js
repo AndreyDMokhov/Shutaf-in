@@ -6,12 +6,12 @@ app.component('changePasswordComponent', {
     controller: function (
         $rootScope,
         changePasswordModel,
-        notify,
         $filter,
         $state,
-        browserTitle) {
+        browserTitleService,
+        uiNotification) {
 
-    browserTitle.setBrowserTitleByFilterName('Settings.security.password.title');
+    browserTitleService.setBrowserTitleByFilterName('Settings.security.password.title');
         var vm = this;
 
         vm.isOpened = true;
@@ -27,15 +27,13 @@ app.component('changePasswordComponent', {
             changePasswordModel.changePassword(vm.securitySettings).then(
                 function (success) {
                     vm.dataLoading = false;
-                    notify.set($filter('translate')("Settings.security.msg.success"), {type: 'success'});
+
+                    var message = $filter('translate')("Settings.security.msg.success");
+                    uiNotification.show(message, 'success');
+
                     $state.go('settings');
                 }, function (error) {
                     vm.dataLoading = false;
-
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    if (error.data.error.errorTypeCode === 'AUT') {
-                        $state.go('logout');
-                    }
                 });
         }
 

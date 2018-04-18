@@ -5,12 +5,12 @@ app.component('extendedQuestionsComponent', {
     controller: function ($scope,
                           $state,
                           extendedQuestionsModel,
-                          notify,
+                          uiNotification,
                           $sessionStorage,
                           $filter,
-                          browserTitle) {
+                          browserTitleService) {
         var vm = this;
-        browserTitle.setBrowserTitleByFilterName('Questions.extendedQuestions');
+        browserTitleService.setBrowserTitleByFilterName('Questions.extendedQuestions');
         vm.questions = $sessionStorage.questionsExtended;
         vm.selectedAnswers = $sessionStorage.selectedExtendedAnswers;
         var answersToSend = [];
@@ -28,11 +28,11 @@ app.component('extendedQuestionsComponent', {
         function sendData() {
             extendedQuestionsModel.sendAnswers(answersToSend).then(
                 function (success) {
-                    notify.set($filter('translate')('Questions.confirm'), {type: 'success'});
+
+                    var message = $filter('translate')('Questions.confirm');
+                    uiNotification.show(message, 'success');
                 },
-                function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
+                function (error) {}
             );
 
         }

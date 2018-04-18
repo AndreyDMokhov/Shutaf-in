@@ -5,9 +5,7 @@ import com.shutafin.model.web.common.FiltersWeb;
 import com.shutafin.model.web.common.UserSearchResponse;
 import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.initialization.InitializationResponse;
-import com.shutafin.model.web.matching.MatchingQuestionsSelectedAnswersDTO;
-import com.shutafin.model.web.matching.QuestionsListWithAnswersDTO;
-import com.shutafin.model.web.matching.UserQuestionAnswerDTO;
+import com.shutafin.model.web.matching.*;
 import com.shutafin.sender.account.UserAccountControllerSender;
 import com.shutafin.sender.matching.UserMatchControllerSender;
 import com.shutafin.sender.matching.UserMatchingScoreControllerSender;
@@ -51,11 +49,19 @@ public class UserMatchServiceImpl implements UserMatchService {
     }
 
     @Override
-    public List<UserSearchResponse> getMatchedUserSearchResponses(Long userId, String fullName, Integer page, Integer results, FiltersWeb filtersWeb) {
+    public MatchedUsersSearchResponse getMatchedUserSearchResponses(Long userId, String fullName, Integer page, Integer results, FiltersWeb filtersWeb) {
+        if (userId == null) {
+            return new MatchedUsersSearchResponse();
+        }
+        return userMatchingScoreControllerSender.getMatchedUserSearchResponses(userId, page, results, new AccountUserFilterRequest(null, fullName, filtersWeb));
+    }
+
+    @Override
+    public List<UserBaseResponse> getMatchedUserBaseResponses(Long userId, String fullName, Integer page, Integer results, FiltersWeb filtersWeb) {
         if (userId == null) {
             return new ArrayList<>();
         }
-        return userMatchingScoreControllerSender.getMatchedUserSearchResponses(userId, page, results, new AccountUserFilterRequest(null, fullName, filtersWeb));
+        return userMatchingScoreControllerSender.getMatchedUserBaseResponses(userId, page, results, new AccountUserFilterRequest(null, fullName, filtersWeb));
     }
 
     @Override

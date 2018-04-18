@@ -20,11 +20,6 @@ public class ConfirmationResponseDealUserRemovingComponent implements BaseConfir
     public EmailDealUserRemovingResponse getResponse(String link) {
 
         ConfirmationDealUserRemoving confirmation = confirmationDealUserRemovingService.getConfirmed(link);
-        if (confirmation == null) {
-            log.warn("Resource not found exception:");
-            log.warn("UrlLink {} was not found", link);
-            throw new ResourceNotFoundException();
-        }
 
         confirmation.setIsConfirmed(true);
         confirmationDealUserRemovingService.save(confirmation);

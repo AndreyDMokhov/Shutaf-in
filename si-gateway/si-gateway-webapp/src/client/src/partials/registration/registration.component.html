@@ -1,151 +1,148 @@
-<div class="col-md-8 col-md-offset-2">
-
-    <form name="form" ng-submit="vm.register()" role="form" class="form-container form-horizontal">
-        <h2>{{"Registration.title"|translate}}</h2>
-        <div class="form-group form-group-md"
-             ng-class="{
-                'has-error':  form.firstName.$dirty && !form.firstName.$valid }">
-
-            <label class="required col-sm-4 control-label" style="text-align: center" for="firstName">
-                <i class="fa fa-user"></i> &nbsp{{"Registration.form.firstName"|translate}}
-            </label>
-            <div class="col-sm-7">
-
+<form name="form" ng-submit="vm.register()" novalidate role="form" class="form-container form-horizontal card" >
+    <h2 class="text-center">
+        <strong>
+            {{"Registration.title.sign-up"|translate}}
+        </strong>
+    </h2>
+    <br>
+    <div class="header-text text-center">
+        <h5>
+            <strong>
+                <span ui-sref="login" class="pointer" style="color: blue;">{{'Login.title' | translate }}</span>
+                {{'Home.description-4-suffix' | translate}}
+            </strong>
+        </h5>
+    </div>
+    <br>
+    <div>
+        <div class="form-group" ng-class="{ 'has-error':  form.firstName.$dirty && !form.firstName.$valid }">
+            <div class="col-md-4 col-md-offset-4">
                 <input type="text"
                        name="firstName"
                        id="firstName"
                        class="form-control "
+                       placeholder="{{'Registration.form.firstName' | translate}}"
                        ng-model="vm.registrationData.firstName"
                        required
                        minlength="3"
                        ng-maxlength="50"/>
+            </div>
             <span ng-show="form.firstName.$invalid && form.firstName.$error.required || form.firstName.$dirty && !form.firstName.$valid">
                 <span ng-show="form.firstName.$invalid && form.firstName.$error.required && form.firstName.$dirty"
                       class="help-block">
-                        {{"Registration.form.msg.requiredFirstName"|translate}}
+                    {{'Registration.form.msg.requiredFirstName' | translate}}
                 </span>
                 <span ng-show="form.firstName.$dirty && !form.firstName.$valid &&!form.firstName.$error.required"
                       class="help-block">
-                        {{"Registration.form.msg.shortFirstName"|translate}}
+                    {{'Registration.form.msg.shortFirstName' | translate}}
                 </span>
-           </span>
+            </span>
+        </div>
+        <div class="form-group "
+             ng-class="{'has-error': form.lastName.$dirty && form.lastName.$error.required || form.lastName.$dirty && !form.lastName.$valid }">
+            <div class="col-md-4 col-md-offset-4">
+                <input type="text"
+                       name="lastName"
+                       id="lastName"
+                       class="form-control"
+                       ng-model="vm.registrationData.lastName"
+                       required
+                       placeholder="{{'Registration.form.lastName' | translate}}"
+                       minlength="3"
+                       maxlength="50"/>
             </div>
-        </div>
-        <div class="form-group form-group-md"
-             ng-class="{
-                'has-error': form.lastName.$dirty && form.lastName.$error.required
-                    || form.lastName.$dirty && !form.lastName.$valid }">
-            <label class="required col-sm-4 control-label" style="text-align: center" for="lastName"><i
-                    class="fa fa-user-o"></i> &nbsp{{"Registration.form.lastName"|translate}}</label>
-            <div class="col-sm-7">
-            <input type="text"
-                   name="lastName"
-                   id="lastName"
-                   class="form-control"
-                   ng-model="vm.registrationData.lastName"
-                   required
-                   minlength="3"
-                   maxlength="50"/>
             <span ng-show="form.lastName.$invalid && form.lastName.$error.required || form.lastName.$dirty && !form.lastName.$valid">
-              <span ng-show="form.lastName.$invalid && form.lastName.$error.required && form.lastName.$dirty"
-                    class="help-block">
-                  {{"Registration.form.msg.requiredLastName"|translate}}
-              </span>
-              <span ng-show="form.lastName.$dirty && !form.lastName.$valid &&!form.lastName.$error.required"
-                    class="help-block">
-                    {{"Registration.form.msg.shortLastName"|translate}}
-              </span>
-              </span>
+                <p ng-show="form.lastName.$invalid && form.lastName.$error.required && form.lastName.$dirty"
+                       class="help-block">
+                    {{'Registration.form.msg.requiredLastName' | translate}}
+                </p>
+                <p ng-show="form.lastName.$dirty && !form.lastName.$valid &&!form.lastName.$error.required"
+                   class="help-block">
+                    {{'Registration.form.msg.shortLastName' | translate}}
+                </p>
+            </span>
         </div>
-        </div>
-        <div class="form-group form-group-md"
-             ng-class="{
-             'has-error': form.email.$dirty && form.email.$error.email || form.email.$dirty && form.email.$invalid}">
-
-            <label class="required col-sm-4 control-label" style="text-align: center" for="email"><i
-                    class="fa fa-envelope"></i> &nbsp{{"Registration.form.email"|translate}}</label>
-            <div class="col-sm-7">
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': form.email.$dirty && form.email.$error.email || form.email.$dirty && form.email.$invalid}">
+        <div class="col-md-4 col-md-offset-4">
             <input type="email"
                    name="email"
                    id="email"
                    class="form-control"
                    ng-model="vm.registrationData.email"
                    required
+                   placeholder="{{'Registration.form.email'|translate}}"
                    maxlength="50"/>
-            <span ng-show="form.email.$invalid && form.email.$error.required || form.email.$dirty && form.email.$invalid"
-                  class="help-block">
-                 <span ng-show="form.email.$invalid && form.email.$error.required && form.email.$dirty"
-                       class="help-block">
-                        {{"Registration.form.msg.requiredEmail"|translate}}
-                 </span>
-                <span ng-show="form.email.$dirty && form.email.$invalid && !form.email.$error.required"
-                      class="help-block">
-                    {{"Registration.form.msg.wrongEmail"|translate}}
-                </span>
-            </span>
         </div>
-        </div>
-        <div class="form-group form-group-md"
-             ng-class="{
-                'has-error': form.password.$dirty && form.password.$invalid }">
-            <label class="required col-sm-4 control-label" style="text-align: center" for="password"><i
-                    class="fa fa-lock"></i> &nbsp{{"Registration.form.password"|translate}}</label>
-            <div class="col-sm-7">
+        <span ng-show="form.email.$invalid && form.email.$error.required || form.email.$dirty && form.email.$invalid"
+              class="help-block">
+             <p ng-show="form.email.$invalid && form.email.$error.required && form.email.$dirty"
+                class="help-block">
+                {{"Registration.form.msg.requiredEmail"|translate}}
+             </p>
+             <p ng-show="form.email.$dirty && form.email.$invalid && !form.email.$error.required"
+                class="help-block">
+                {{"Registration.form.msg.wrongEmail"|translate}}
+             </p>
+        </span>
+    </div>
+    <div class="form-group" ng-class="{'has-error': form.password.$dirty && form.password.$invalid }">
+        <div class="col-md-4 col-md-offset-4">
             <input type="password"
                    name="password"
                    id="password"
+                   placeholder="{{'Registration.form.password' | translate}}"
                    class="form-control"
                    ng-model="vm.registrationData.password"
                    required="required"
                    minlength="8"
                    maxlength="25"/>
-            <span ng-show="form.password.$error.required || form.password.$invalid && form.password.$dirty">
-            <span ng-show="form.password.$error.required && form.password.$invalid && form.password.$dirty"
-                  class="help-block">
+        </div>
+        <span ng-show="form.password.$error.required || form.password.$invalid && form.password.$dirty">
+            <p ng-show="form.password.$error.required && form.password.$invalid && form.password.$dirty"
+               class="help-block">
                     {{"Registration.form.msg.requiredPassword"|translate}}
-            </span>
-            <span ng-show="form.password.$invalid && form.password.$dirty && !form.password.$error.required "
-                  class="help-block">
+            </p>
+            <p ng-show="form.password.$invalid && form.password.$dirty && !form.password.$error.required "
+               class="help-block">
                     {{"Registration.form.msg.shortPassword"|translate}}
-            </span>
-            </span>
-        </div>
-        </div>
-        <div class="form-group form-group-md"
-             ng-class="{
-                    'has-error': form.confirmPassword.$dirty && form.confirmPassword.$error.required || form.password.$modelValue !== form.confirmPassword.$modelValue && !form.confirmPassword.$error.required}">
-            <label class="required col-sm-4 control-label" style="text-align: center" for="confirmPassword"><i
-                    class="fa fa-lock"></i> &nbsp{{"Registration.form.confirmPassword"|translate}}</label>
-            <div class="col-sm-7">
+            </p>
+        </span>
+    </div>
+    <div class="form-group"
+         ng-class="{ 'has-error': form.confirmPassword.$dirty && form.confirmPassword.$error.required || form.password.$modelValue !== form.confirmPassword.$modelValue && !form.confirmPassword.$error.required}">
+        <div class="col-md-4 col-md-offset-4">
             <input type="password"
                    name="confirmPassword"
                    id="confirmPassword"
                    class="form-control"
-                   ng-model="conpassword"
+                   placeholder="{{'Registration.form.confirmPassword' | translate}}"
                    required
                    minlength="8"
                    maxlength="25"/>
-            <span ng-show="form.confirmPassword.$invalid && form.confirmPassword.$error.required || form.password.$modelValue !== form.confirmPassword.$modelValue">
-                <span ng-show="form.confirmPassword.$invalid && form.confirmPassword.$error.required && form.confirmPassword.$dirty"
-                      class="help-block">
-                        {{"Registration.form.msg.requiredPassword"|translate}}
-                </span>
-                <span ng-show="form.password.$modelValue !== form.confirmPassword.$modelValue && !form.confirmPassword.$error.required"
-                      class="help-block">
-                            {{"Registration.form.msg.confirmPassword"|translate}}
-                </span>
+        </div>
+        <span ng-show="form.confirmPassword.$invalid && form.confirmPassword.$error.required || form.password.$modelValue !== form.confirmPassword.$modelValue">
+            <span ng-show="form.confirmPassword.$invalid && form.confirmPassword.$error.required && form.confirmPassword.$dirty"
+                  class="help-block">
+                    {{'Registration.form.msg.requiredPassword' | translate}}
             </span>
-        </div>
-        </div>
+            <span ng-show="form.password.$modelValue !== form.confirmPassword.$modelValue && !form.confirmPassword.$error.required"
+                  class="help-block">
+                        {{'Registration.form.msg.confirmPassword' | translate}}
+            </span>
+        </span>
+    </div>
 
-        <div>
+    <div class="form-group">
+        <div class="col-md-4 col-md-offset-4 ">
             <button ng-click="vm.registerUser()"
                     type="submit"
                     ng-disabled="form.$invalid"
-                    class="btn btn-success btn-block entry-card-button">
-                {{"Registration.form.btn.registration"|translate}}
-                <i ng-show="vm.dataLoading" class="fa fa-spinner fa-pulse"></i>
+                    class="btn btn-success btn-block ">
+                {{'Registration.form.btn.registration' | translate}}
+                <i ng-show="vm.dataLoading" class="fa fa-spinner"></i>
             </button>
         </div>
-    </form>
-</div>
+    </div>
+</form>

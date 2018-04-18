@@ -3,10 +3,18 @@ app.component('myUserProfileComponent', {
     templateUrl: 'partials/userProfile/myUserProfile.component.html',
     controllerAs: 'vm',
     controller: function ($sessionStorage,
-                          browserTitle) {
+                          browserTitleService,
+                          sessionStorageObserver) {
 
         var vm = this;
         vm.userProfile = $sessionStorage.userProfile;
-        browserTitle.setExplicitTitle(vm.userProfile.firstName + " " + vm.userProfile.lastName);
+
+        browserTitleService.setExplicitTitle(vm.userProfile.firstName + " " + vm.userProfile.lastName);
+
+        function userProfileUpdated() {
+            vm.userProfile = $sessionStorage.userProfile;
+        }
+
+        sessionStorageObserver.registerServiceObserver(userProfileUpdated);
     }
 });

@@ -7,7 +7,8 @@ app.component('extendedQuestionComponent', {
         listQuestions: '=',
         selectedAnswers: '='
     },
-    controller: function ($sessionStorage, $state) {
+    controllerAs: 'vm',
+    controller: function ($sessionStorage, $state, $scope) {
         var vm = this;
         vm.questionImportance = $sessionStorage.questionImportance;
 
@@ -60,8 +61,8 @@ app.component('extendedQuestionComponent', {
 
         function save() {
             addImportanceIdToAnswers();
-            this.putAnswers(answers);
-            this.sendData();
+            vm.putAnswers(answers);
+            vm.sendData();
             $state.go('myUserProfile');
 
 
@@ -125,19 +126,37 @@ app.component('extendedQuestionComponent', {
         };
 
         function previousPageButton () {
-            if ( this.currentPage > 1 ){
-                this.currentPage--;
-                this.pageChanged();
+            if ( vm.currentPage > 1 ){
+                vm.currentPage--;
+                vm.pageChanged();
             }
 
         };
         function nextPageButton () {
-            if ( this.currentPage < questions.length ){
-                this.currentPage++;
-                this.pageChanged();
+            if ( vm.currentPage < questions.length ){
+                vm.currentPage++;
+                vm.pageChanged();
             }
 
         };
+
+        //This section intercepts rights and left arrow events and triggers next and previous question
+        var angularDocument = angular.element(document);
+
+        angularDocument.on('keydown', navigateToQuestion);
+        $scope.$on('$destroy',function(){
+            angularDocument.off('keydown', navigateToQuestion);
+        });
+
+        function navigateToQuestion(event) {
+
+            if (event.keyCode === 39) {
+                nextPageButton();
+            } else if (event.keyCode === 37) {
+                previousPageButton();
+            }
+            $scope.$apply();
+        }
 
         vm.pageChanged = pageChanged;
         vm.getValuesOfCheckBox = getValuesOfCheckBox;

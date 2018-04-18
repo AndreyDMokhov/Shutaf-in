@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class DealControllerSender {
@@ -112,6 +113,20 @@ public class DealControllerSender {
         uriVariables.put("dealId", dealId);
         uriVariables.put("userId", userId);
         restTemplate.delete(requestUrl, uriVariables);
+    }
+
+    @SneakyThrows
+    public DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users) {
+
+        String url = getDealUrl() + String.format("/available-users?currentUser=%s&users=%s",
+                currentUserId,
+                users.stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining(",", "", "")));
+        Map<String, List<Long>> uriVariables = new HashMap<>();
+
+
+        return restTemplate.getForEntity(url, DealAvailableUsersResponse.class, uriVariables).getBody();
     }
 
     private String getDealUrl() {

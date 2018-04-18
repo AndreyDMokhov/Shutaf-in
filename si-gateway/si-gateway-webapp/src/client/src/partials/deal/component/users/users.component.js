@@ -5,7 +5,11 @@ app.component('usersDealComponent', {
 
     },
     controllerAs: 'vm',
-    controller: function (dealModel, notify, $filter, $uibModal, $sessionStorage) {
+    controller: function (dealModel,
+                          uiNotification,
+                          $filter,
+                          $uibModal,
+                          $sessionStorage) {
         var vm = this;
         var limitUsersForShow = 4;
         var lastElement = 0;
@@ -81,6 +85,11 @@ app.component('usersDealComponent', {
 
         vm.remove = function (user) {
 
+            if (user.userId === vm.userID) {
+                uiNotification.show($filter('translate')('Error.DSR'), 'warn');
+                return;
+            }
+
             var type = 'removeUser';
             var modalInstance = $uibModal.open({
 
@@ -98,15 +107,12 @@ app.component('usersDealComponent', {
 
                 dealModel.removeUser(vm.dealInfo.dealId, user.userId).then(
                     function (success) {
-                        notify.set($filter('translate')('Deal.request.removeUser', {
+                        uiNotification.show($filter('translate')('Deal.request.removeUser', {
                             firstName: user.firstName.toUpperCase(),
                             lastName: user.lastName.toUpperCase(),
-                            dealName: vm.dealInfo.title
-                        }), {sticky: true, button: true});
+                            dealName: vm.dealInfo.title}));
                     },
-                    function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
+                    function (error) {}
                 );
 
             });

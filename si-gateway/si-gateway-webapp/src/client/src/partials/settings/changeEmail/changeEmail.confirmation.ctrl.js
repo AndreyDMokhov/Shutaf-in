@@ -1,5 +1,11 @@
 "use strict";
-app.controller('changeEmailConfirmationController', function ($state, $rootScope, changeEmailModel, notify, $filter, $stateParams) {
+app.controller('changeEmailConfirmationController', function (
+                                                            $state,
+                                                            $rootScope,
+                                                            changeEmailModel,
+                                                            $filter,
+                                                            $stateParams,
+                                                            uiNotification) {
 
     var vm = this;
 
@@ -16,25 +22,20 @@ app.controller('changeEmailConfirmationController', function ($state, $rootScope
             function (success) {
                 vm.dataLoading = false;
                 if (success.data.data.isEmailChanged === false) {
-
-                    notify.set($filter('translate')("Settings.security.firstEmailConfirmed.success"), {type: 'success'});
+                    var message = $filter('translate')("Settings.security.firstEmailConfirmed.success");
+                    uiNotification.show(message, 'success');
                     $state.go('home');
                 }
 
                 if (success.data.data.isEmailChanged === true) {
 
-                    notify.set($filter('translate')("Settings.security.secondEmailConfirmed.success"), {type: 'success'});
+                    var message = $filter('translate')("Settings.security.secondEmailConfirmed.success");
+                    uiNotification.show(message, 'success');
+
                     $state.go("logout");
                 }
             }, function (error) {
                 vm.dataLoading = false;
-
-                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-
-                if (error.data.error.errorTypeCode === 'RNF') {
-
-                    $state.go("error", {'code': '404'});
-                }
             });
     }
 

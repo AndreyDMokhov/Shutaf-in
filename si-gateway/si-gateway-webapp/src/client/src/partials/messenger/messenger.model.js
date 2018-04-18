@@ -3,12 +3,15 @@ app.factory('messengerModel', function (Restangular, $sessionStorage) {
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
         RestangularProvider.setBaseUrl('/api/chat');
-        RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
     });
 
 
-    function getUsers() {
-        return rest.all('/allUsers').customGET();
+    function getUsers(fullname) {
+        if (fullname !== undefined && fullname !== null && fullname !== '') {
+            return rest.all('/allUsers?fullname=' + fullname).customGET();
+        } else {
+            return rest.all('/allUsers').customGET();
+        }
     }
 
     function addChat(chatName, userId) {

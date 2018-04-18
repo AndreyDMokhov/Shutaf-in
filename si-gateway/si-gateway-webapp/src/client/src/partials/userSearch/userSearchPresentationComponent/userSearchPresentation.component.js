@@ -5,47 +5,49 @@ app.component('userSearchPresentationComponent', {
     controllerAs: 'vm',
     controller: function ($state,
                           $sessionStorage,
-                          notify,
                           sessionService,
                           userSearchModel,
                           $stateParams,
                           $filter,
-                          ngDialog,
-                          $scope,
-                          userSearchService) {
+                          userSearchObserver) {
 
         var vm = this;
         vm.genders = $sessionStorage.genders;
         vm.cities = $sessionStorage.cities;
         vm.fullName = $stateParams.name;
         vm.userSearchList = [];
+        vm.totalUsers = 0;
         var page = 0;
         vm.isDisable = false;
         vm.isLoading = false;
 
         function activate() {
-            userSearchService.registerFilterObserver(saveFilters);
+            userSearchObserver.registerFilterObserver(saveFilters);
             userSearch();
+        }
+
+        function isUnique(value, index, self) {
+            return self.lastIndexOf(value['userId']) === index;
         }
 
         function userSearch() {
             userSearchModel.userSearch(vm.fullName, page).then(
                 function (success) {
-                    if(success.data.data.length == 0){
+                    if(success.data.data.matchedUsersPerPage.length == 0){
                         vm.isDisable = true;
                         vm.isLoading = false;
                     }
                     else{
-                        Array.prototype.push.apply(vm.userSearchList, success.data.data);
+                        vm.totalUsers = success.data.data.totalUsers;
+                        Array.prototype.push.apply(vm.userSearchList, success.data.data.matchedUsersPerPage);
                         vm.isDisable = false;
                         vm.isLoading = false;
+                        vm.userSearchList.filter(isUnique);
                     }
 
                 }, function (error) {
-                    if (error === undefined || error === null) {
-                        notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                    }
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                    vm.isDisable = false;
+                    vm.isLoading = false;
                 });
         }
 
@@ -56,8 +58,8 @@ app.component('userSearchPresentationComponent', {
                     $sessionStorage.filters.filterCitiesIds = filters.filterCitiesIds;
                     $sessionStorage.filters.filterAgeRange = filters.filterAgeRange;
                     vm.userSearchList = success.data.data;
+                    $state.go($state.current, {}, {reload: true});
                 }, function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 

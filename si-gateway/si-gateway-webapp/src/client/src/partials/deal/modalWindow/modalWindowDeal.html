@@ -5,20 +5,34 @@
             <h3 class="modal-title">{{'Deal.deal.modalWindow.creation.header' | translate: vm.componentData}} </h3>
         </div>
         <div class="modal-body-original" id="modal-body">
-            <label for="newTabName">
-                {{'Deal.deal.modalWindow.creation.content' | translate: vm.componentData}} :
-            </label>
-            <br>
-            <input autofocus
-                   class="form-control"
-                   ng-model="vm.newTabName"
-                   id="newTabName"
-                   name="newTabName"
-                   placeholder="{{vm.resolve.type.filename}}"
-                   ng-keyup="$event.keyCode == 13 &&
-                   vm.newTabName !== null &&
-                   vm.newTabName !== '' &&
-                   vm.ok()">
+
+            <form name="dealCreationForm" novalidate role="form">
+                <div class="form-group" ng-class="{
+        'has-error': dealCreationForm.createTabName.$invalid && dealCreationForm.createTabName.$dirty,
+        'has-success': dealCreationForm.createTabName.$valid }">
+                    <label for="createTabName" class="required">
+                        {{'Deal.deal.modalWindow.creation.content' | translate: vm.componentData}} :
+                    </label>
+                    <br>
+                    <input autofocus
+                           class="form-control"
+                           ng-model="vm.newTabName"
+                           id="createTabName"
+                           name="createTabName"
+                           required
+                           minlength="3"
+                           placeholder="{{vm.resolve.type.filename}}"
+                           ng-keyup="$event.keyCode == 13 &&
+                           vm.newTabName !== null &&
+                           vm.newTabName !== '' &&
+                           vm.ok()">
+                    <p class="help-block"
+                       ng-if="dealCreationForm.createTabName.$invalid && dealCreationForm.createTabName.$dirty">
+                        {{'Deal.deal.modalWindow.length' | translate}}
+                    </p>
+                </div>
+            </form>
+
         </div>
         <div class="modal-footer ">
             <button class="btn btn-primary" type="button" ng-click="vm.ok()">
@@ -36,19 +50,33 @@
             <h3 class="modal-title">{{'Deal.deal.modalWindow.rename.header' | translate: vm.componentData}}</h3>
         </div>
         <div class="modal-body-original">
-            <label for="newTabName">
-                {{'Deal.deal.modalWindow.rename.content' | translate: vm.componentData}} :
-            </label>
-            <br>
-            <input autofocus
-                   class="form-control"
-                   ng-model="vm.newTabName"
-                   name="newTabName"
-                   placeholder="{{vm.resolve.type.filename}}"
-                   ng-keyup="$event.keyCode == 13 &&
-                   vm.newTabName !== null &&
-                   vm.newTabName !== '' &&
-                   vm.ok()">
+            <form name="dealRenameForm" novalidate role="form">
+                <div class="form-group" ng-class="{
+        'has-error': dealRenameForm.renameTabName.$invalid && dealRenameForm.renameTabName.$dirty,
+        'has-success': dealRenameForm.renameTabName.$valid }">
+                    <label for="renameTabName" class="required">
+                        {{'Deal.deal.modalWindow.rename.content' | translate: vm.componentData}} :
+                    </label>
+                    <br>
+                    <br>
+                    <input autofocus
+                           class="form-control"
+                           ng-model="vm.newTabName"
+                           id="renameTabName"
+                           name="renameTabName"
+                           required
+                           minlength="3"
+                           placeholder="{{vm.resolve.type.filename}}"
+                           ng-keyup="$event.keyCode == 13 &&
+                           vm.newTabName !== null &&
+                           vm.newTabName !== '' &&
+                           vm.ok()">
+                    <p class="help-block"
+                       ng-if="dealRenameForm.renameTabName.$invalid && dealRenameForm.renameTabName.$dirty">
+                        {{'Deal.deal.modalWindow.length' | translate}}
+                    </p>
+                </div>
+            </form>
         </div>
         <div class="modal-footer ">
             <button class="btn btn-primary" type="button" ng-click="vm.ok()">

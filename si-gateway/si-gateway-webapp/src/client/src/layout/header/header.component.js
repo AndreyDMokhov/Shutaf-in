@@ -13,7 +13,7 @@ app.component('headerComponent', {
                               initializationService,
                               webSocketService,
                               accountStatus,
-                              notifySessionStorageChangeService) {
+                              sessionStorageObserver) {
 
             var vm = this;
             vm.userProfile = {};
@@ -28,13 +28,17 @@ app.component('headerComponent', {
             vm.accountStatuses['DEAL'] = accountStatus.Statuses.DEAL;
             vm.accountStatuses['BLOCKED'] = accountStatus.Statuses.BLOCKED;
 
-            function updateAccountStatus(){
+            function userProfileInitialized() {
+
+                console.log('userProfileInitialized');
+
                 vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
+                vm.userProfile = angular.copy($sessionStorage.userProfile);
             }
-            notifySessionStorageChangeService.registerServiceObserver(updateAccountStatus);
+
+            sessionStorageObserver.registerServiceObserver(userProfileInitialized);
 
             vm.sessionService = sessionService;
-            $rootScope.brand = "Shutaf-In";
             vm.initialization = {};
             function init() {
                 initializationService.initializeLanguages().then(function (languages) {
@@ -42,8 +46,6 @@ app.component('headerComponent', {
                     languageService.setFrontendLanguage($sessionStorage.currentLanguage);
                     if ($sessionStorage.sessionId) {
                         initializationService.initializeApplication().then(function () {
-                            vm.userProfile = $sessionStorage.userProfile;
-                            $rootScope.brand = vm.userProfile.firstName + ' ' + vm.userProfile.lastName;
                             webSocketService.getConnection();
                         });
                     }
@@ -59,7 +61,7 @@ app.component('headerComponent', {
             function setLanguageCode(languageId) {
                 languageService.updateUserLanguage(languageId);
                 $state.go('home', {}, {reload: true});
-                $window.location.reload();
+                initializationService.initializeApplication();
             }
 
             function getUserImage() {
@@ -71,11 +73,20 @@ app.component('headerComponent', {
                 }
             }
 
+            function resolveCurrentLanguage() {
+                var language = languageService.getLanguage($sessionStorage.currentLanguage);
+                if (language === undefined || language === null) {
+                    return {languageNativeName: 'English'};
+                }
+                return language;
+            }
+
             init();
 
             vm.setLanguageCode = setLanguageCode;
             vm.getUserImage = getUserImage;
             vm.search = search;
+            vm.resolveCurrentLanguage = resolveCurrentLanguage;
         }
     }
 );

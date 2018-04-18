@@ -5,9 +5,9 @@ app.controller('logoutController', function (
                                             $state,
                                             languageService,
                                             $sessionStorage,
-                                            browserTitle) {
+                                            browserTitleService) {
 
-    browserTitle.setExplicitTitle('');
+    browserTitleService.setExplicitTitle('');
 
     function logout() {
         logoutModel.logout().then(function (success) {
@@ -32,7 +32,6 @@ app.controller('logoutController', function (
            delete $sessionStorage[userId];
         });
         delete $sessionStorage.userIdsInChat;
-        $rootScope.brand = 'Shutaf-In';
     }
 
     logout();
