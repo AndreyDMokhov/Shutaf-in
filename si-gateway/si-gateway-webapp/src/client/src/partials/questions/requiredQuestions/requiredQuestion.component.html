@@ -1,12 +1,12 @@
 <div class="quiz-area">
-    <span class="glyphicon glyphicon-chevron-left arrow-back"
-          aria-hidden="true" ng-click="vm.previousPage()"></span>
+    <arrow-back>
+        <span class="glyphicon glyphicon-chevron-left arrow-back" aria-hidden="true" ng-click="vm.previousPage()"></span>
+    </arrow-back>
 
-    <div class="card-question">
+    <card-question class="card-question">
         <div class="cardContainer">
             <header>
-                <h2 style="margin: auto" class="text-center">{{vm.currentQuestion.description}} </h2>
-
+                <h2 style="margin: auto" class="text-center">{{vm.currentQuestion.description}}</h2>
             </header>
             <content>
                 <div class="radio" ng-repeat="answer in vm.currentQuestion.answers">
@@ -39,16 +39,15 @@
                 </div>
             </footer>
             <footer-btn>
-                <div>
-                    <button class="btn btn-success save-questions" ng-click="vm.save()"
-                            ng-disabled="vm.disableSubmit">
-                        {{"Questions.button.save"|translate}}
-                    </button>
-                </div>
+                <button class="btn" ng-click="vm.save()"
+                        ng-disabled="vm.disableSubmit">
+                    {{"Questions.button.save"|translate}}
+                </button>
             </footer-btn>
-
-
         </div>
-    </div>
-    <span class="glyphicon glyphicon-chevron-right arrow-next" aria-hidden="true" ng-click="vm.nextPage()"></span>
+    </card-question>
+    <arrow-next>
+        <span class="glyphicon glyphicon-chevron-right arrow-next" aria-hidden="true"
+              ng-click="vm.nextPage()"></span>
+    </arrow-next>
 </div>

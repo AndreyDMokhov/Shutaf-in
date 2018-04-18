@@ -70,6 +70,7 @@
             <td>
                 <span ng-repeat="answer in item.answers">
                     {{answer}}
+                    <span ng-if="!$last">,</span>
                 </span>
             </td>
         </tr>
