@@ -1,4 +1,4 @@
-app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
+app.service('webSocketService', function ($q, $sessionStorage, sessionService, sessionStorageObserver) {
 
         var vm = this;
 
@@ -6,7 +6,12 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
         vm.stompClient = null;
         vm.subscriptionsList = [];
         vm.connecting = false;
+        vm.sendSessionIdObj = {};
 
+        function webSocketReloadSessionId(){
+            vm.sendSessionIdObj = {'session_id': $sessionStorage.sessionId};
+        }
+        sessionStorageObserver.registerServiceObserver(webSocketReloadSessionId);
 
         /**
          * Checks if authenticated or already connected, then call connect()
@@ -52,7 +57,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
              */
             vm.stompClient.debug = false;
             return $q(function (resolve, reject) {
-                vm.stompClient.connect({'session_id': $sessionStorage.sessionId}, function (success) {
+                vm.stompClient.connect(vm.sendSessionIdObj , function (success) {
                     vm.connecting = false;
                     vm.isConnected = true;
                     resolve();
@@ -79,7 +84,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
             } else {
                 vm.subscriptionsList[destination] = vm.stompClient.subscribe(destination, function (message) {
                     deferred.notify(JSON.parse(message.body));
-                }, {'session_id': $sessionStorage.sessionId});
+                }, vm.sendSessionIdObj );
             }
             return deferred.promise;
         }
@@ -102,7 +107,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
          */
         function getSocket() {
             var protocols = ['xhr-polling', 'xdr-polling', 'xdr-streaming', 'xhr-streaming'];
-            var url = '/api/socket?SESSION_ID='+$sessionStorage.sessionId;
+            var url = '/api/socket?SESSION_ID='+vm.sendSessionIdObj.session_id;
             return new SockJS(url, null, {transports: protocols, server: 'shutaf-in'});
         }
 
@@ -113,7 +118,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService) {
          * @param address: channel (@MessageMapping info)
          */
         function sendMessage(message, address) {
-            vm.stompClient.send(address, {'session_id': $sessionStorage.sessionId}, JSON.stringify(message));
+            vm.stompClient.send(address, vm.sendSessionIdObj , JSON.stringify(message));
         }
 
         /**

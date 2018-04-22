@@ -12,7 +12,8 @@ app.component('loginComponent', {
                           $window,
                           browserTitleService,
                           accountStatus,
-                          siteAccessRouting) {
+                          siteAccessRouting,
+                          sessionStorageObserver) {
 
         browserTitleService.setBrowserTitleByFilterName('Login.title');
 
@@ -33,6 +34,7 @@ app.component('loginComponent', {
                             var message = $filter('translate')('Login.message.success');
                             uiNotification.show(message, 'success');
                             siteAccessRouting.navigate('myUserProfile', {});
+                            sessionStorageObserver.notifyServiceObservers();
 
                         }, function (error) {
                             vm.dataLoading = false;

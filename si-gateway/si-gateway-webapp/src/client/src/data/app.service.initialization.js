@@ -66,7 +66,7 @@ app.factory('initializationService', function (messengerChannelService,
 
         languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
 
-        sessionStorageObserver.notifyServiceObservers();
+//        sessionStorageObserver.notifyServiceObservers();
     }
 
     function _getSelectedAnswers(data) {

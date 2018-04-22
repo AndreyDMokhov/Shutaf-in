@@ -44,7 +44,7 @@ app.component('headerComponent', {
                 initializationService.initializeLanguages().then(function (languages) {
                     vm.initialization.languages = languages;
                     languageService.setFrontendLanguage($sessionStorage.currentLanguage);
-                    if ($sessionStorage.sessionId) {
+                    if (sessionService.isAuthenticated()) {
                         initializationService.initializeApplication().then(function () {
                             webSocketService.getConnection();
                         });
@@ -65,7 +65,7 @@ app.component('headerComponent', {
             }
 
             function getUserImage() {
-                if (!vm.userProfile.userImage) {
+                if (!vm.userProfile || !vm.userProfile.userImage) {
                     return '../../images/default_avatar.png';
                 }
                 else {

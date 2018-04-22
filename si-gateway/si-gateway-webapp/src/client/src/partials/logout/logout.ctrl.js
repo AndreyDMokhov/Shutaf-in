@@ -5,7 +5,8 @@ app.controller('logoutController', function (
                                             $state,
                                             languageService,
                                             $sessionStorage,
-                                            browserTitleService) {
+                                            browserTitleService,
+                                            sessionStorageObserver) {
 
     browserTitleService.setExplicitTitle('');
 
@@ -32,6 +33,7 @@ app.controller('logoutController', function (
            delete $sessionStorage[userId];
         });
         delete $sessionStorage.userIdsInChat;
+        sessionStorageObserver.notifyServiceObservers();
     }
 
     logout();
