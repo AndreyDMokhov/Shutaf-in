@@ -35,7 +35,7 @@ app.component('dealLeaveComponent', {
                 dealPresentationModel.leaveDeal(vm.dealInfo.dealId).then(
                     function (success) {
                         uiNotification.show($filter('translate')('Deal.leaving'));
-                        $state.go('home');
+                        $state.go('userSearch');
                         initializationService.initializeApplication();
                     },
                     function (error) {}

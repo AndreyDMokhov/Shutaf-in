@@ -18,6 +18,9 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
     function renameDeal(dealId, params) {
         return rest.one('/rename/' +dealId).customPOST(params);
     }
+    function deleteDeal(dealId) {
+        return rest.one('/' +dealId).customDELETE();
+    }
     function initiateDeal(params){
         return rest.one('/').customPOST(params);
     }
@@ -39,6 +42,7 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
         getDeals: getDeals,
         getDealInfo: getDealInfo,
         renameDeal: renameDeal,
+        deleteDeal: deleteDeal,
         initiateDeal: initiateDeal,
         leaveDeal: leaveDeal,
         getAvailableUsers: getAvailableUsers,

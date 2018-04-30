@@ -55,9 +55,8 @@
   "Deal.users.button.remove": "Vote for removal",
   "Deal.users.you": "You",
   "Deal.leaving": "You left the deal",
+  "Deal.deleting": "You deleted the deal",
   "Deal.panel.file-max-size":"File maximum size should not exceed {{size}} MB",
-
-
 
   "SECTION":"HOME",
   "Home.brand-name":"getRoomie",
