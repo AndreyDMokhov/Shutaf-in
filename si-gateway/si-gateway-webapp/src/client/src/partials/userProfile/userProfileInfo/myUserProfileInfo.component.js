@@ -3,7 +3,8 @@ app.component('myUserProfileInfo', {
     templateUrl: 'partials/userProfile/userProfileInfo/myUserProfileInfo.component.html',
     controllerAs: 'vm',
     controller: function ($sessionStorage,
-                          accountStatus) {
+                          accountStatus,
+                          $filter) {
         var vm = this;
         vm.cities = $sessionStorage.cities;
         vm.genders = $sessionStorage.genders;
@@ -37,9 +38,15 @@ app.component('myUserProfileInfo', {
                 if (!question) {
                     return;
                 }
-                var answer = question.answers.find(function (answer) {
-                    return answer.answerId === answerId;
-                });
+                var answer = {};
+                if (selectedAnswer.answerId !== undefined && selectedAnswer.answerId !== null) {
+
+                    answer = question.answers.find(function (answer) {
+                        return answer.answerId === answerId;
+                    });
+                } else {
+                    answer = {'answerId': null, 'description': $filter('translate')('UserProfile.answers.required.not-answered')};
+                }
                 vm.requiredQuestionsAndAnswers.push({question: question.description, answer: answer.description});
             });
         }
