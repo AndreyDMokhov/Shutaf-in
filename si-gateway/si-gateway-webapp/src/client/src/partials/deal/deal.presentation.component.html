@@ -21,7 +21,7 @@
                                         ></i>
                                         <i
                                                 class="fa fa-remove deal-delete icon-delete"
-                                                ng-click="$event.preventDefault();$event.stopPropagation(); vm.deleteDeal(deal)"
+                                                ng-click="vm.deleteDeal(deal)"
                                                 ng-if="vm.showDeleteDeal"
                                                 uib-tooltip="{{'Deal.delete' | translate}}"
                                         ></i>

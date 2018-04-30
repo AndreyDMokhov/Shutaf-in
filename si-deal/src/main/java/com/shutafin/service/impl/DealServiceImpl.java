@@ -242,14 +242,12 @@ public class DealServiceImpl implements DealService {
 
         setPermissionToReadOnly(deal, userId);
 
-        if (dealUserRepository.findAllByDealIdAndDealUserStatus(dealId, DealUserStatus.ACTIVE).size() == 1) {
+        if (dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(), DealUserStatus.ACTIVE).size() == 1) {
             deal.setDealStatus(DealStatus.ARCHIVE);
             dealRepository.save(deal);
 
             List<DealUser> dealUsers = dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(), DealUserStatus.ACTIVE);
-            for (DealUser du : dealUsers) {
-                du.setDealUserStatus(DealUserStatus.LEAVED);
-            }
+            dealUsers.forEach(x-> x.setDealUserStatus(DealUserStatus.LEAVED));
 
             dealUserRepository.save(dealUsers);
         }
