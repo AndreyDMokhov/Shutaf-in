@@ -116,19 +116,17 @@ public class DealControllerSender {
     }
 
     @SneakyThrows
-    public List<Long> getAvailableUsers(List<Long> users) {
+    public DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users) {
 
-        String url = getDealUrl() + String.format("/available-users?users=%s",
+        String url = getDealUrl() + String.format("/available-users?currentUser=%s&users=%s",
+                currentUserId,
                 users.stream()
                         .map(Object::toString)
                         .collect(Collectors.joining(",", "", "")));
         Map<String, List<Long>> uriVariables = new HashMap<>();
 
 
-        String body = restTemplate.getForEntity(url, String.class, uriVariables).getBody();
-
-        return new ObjectMapper().readValue(body, new TypeReference<List<Long>>() {
-        });
+        return restTemplate.getForEntity(url, DealAvailableUsersResponse.class, uriVariables).getBody();
     }
 
     private String getDealUrl() {

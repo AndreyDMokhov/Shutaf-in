@@ -1,5 +1,5 @@
 "use strict";
-app.controller('aboutController', function ($state, browserTitle) {
+app.controller('aboutController', function ($state, browserTitleService) {
     var vm = this;
-    browserTitle.setBrowserTitleByFilterName('About.title');
+    browserTitleService.setBrowserTitleByFilterName('About.title');
 });

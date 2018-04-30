@@ -8,7 +8,7 @@ app.component('dealLeaveComponent', {
                           dealStatus,
                           $state,
                           $filter,
-                          notify,
+                          uiNotification,
                           $uibModal,
                           initializationService) {
 
@@ -34,13 +34,11 @@ app.component('dealLeaveComponent', {
             modalInstance.result.then(function () {
                 dealPresentationModel.leaveDeal(vm.dealInfo.dealId).then(
                     function (success) {
-                        notify.set($filter('translate')("Deal.leaving"));
-                        $state.go('home');
+                        uiNotification.show($filter('translate')('Deal.leaving'));
+                        $state.go('userSearch');
                         initializationService.initializeApplication();
                     },
-                    function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
+                    function (error) {}
                 );
 
 

@@ -1,5 +1,8 @@
-<div
-        class="btn btn-success pull-right"
-        ng-click="vm.initializeDeal()">
-    {{"Deal.deal.button.initiate" |translate}}
+<div class="btn btn-success pull-right" ng-click="vm.configureDeal()">
+    <div ng-if="vm.currentAccountStatus !== vm.accountStatuses.DEAL">
+        {{"Deal.deal.button.initiate" |translate}}
+    </div>
+    <div ng-if="vm.currentAccountStatus === vm.accountStatuses.DEAL">
+        {{"Deal.deal.button.addUser" |translate}}
+    </div>
 </div>

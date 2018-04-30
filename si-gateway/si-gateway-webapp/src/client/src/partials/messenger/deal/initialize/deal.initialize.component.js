@@ -4,56 +4,109 @@ app.component('dealInitializeComponent', {
         chatInfo: '<'
     },
     controllerAs: "vm",
-    controller: function (dealPresentationModel, $uibModal, notify, $filter) {
+    controller: function (dealPresentationModel,
+                          $uibModal,
+                          uiNotification,
+                          $filter,
+                          $q,
+                          accountStatus,
+                          $sessionStorage) {
 
         var vm = this;
-        var namePanelDef = 'Deal', componentType = 'deal';
+        vm.accountStatuses = accountStatus.Statuses;
         var dealWeb = {
             title: '',
             users: []
         };
 
+        vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
+
         function collectUsersIdInChat() {
-            dealWeb.users =[];
-            vm.chatInfo.usersInChat.forEach(function (user) {
-                dealWeb.users.push(user.userId);
+            var deferred = $q.defer();
+            dealWeb.users = vm.chatInfo.usersInChat.map(function (x) {
+                return x['userId'];
             });
+
+            dealPresentationModel.getAvailableUsers(dealWeb.users).then(
+                function (success) {
+                    return deferred.resolve(success.data.data);
+                },
+                function (error) {
+                    return deferred.reject();
+                }
+            );
+
+            return deferred.promise;
         }
 
-        function initializeDeal() {
+        function configureDeal() {
 
-            collectUsersIdInChat();
+            collectUsersIdInChat().then(function (dealAvailableUsers) {
 
-            var modalInstance = $uibModal.open({
+                var dealInfo = {};
 
-                animation: true,
-                component: 'dealInitializeModalComponent',
-                size: 'sm',
-                resolve: {
+                dealInfo.users = vm.chatInfo.usersInChat.filter(function (x) {
+                    return dealAvailableUsers.availableUsers.indexOf(x['userId']) >= 0;
+                });
 
-                    dealInfo: function () {
-                        return {users: vm.chatInfo.usersInChat, component: componentType};
+                if (dealAvailableUsers.activeDeal) {
+                    dealInfo.type = 'addUser';
+                    dealInfo.dealName = dealAvailableUsers.activeDeal.title;
+                } else {
+                    dealInfo.type = 'creation';
+                }
+
+                var modalInstance = $uibModal.open({
+
+                    animation: true,
+                    component: 'dealInitializeModalComponent',
+                    size: 'sm',
+                    resolve: {
+
+                        dealInfo: function () {
+                            return dealInfo;
+                        }
                     }
-                }
-            });
-            modalInstance.result.then(function (newName) {
-                if (newName === undefined) {
-                    newName = namePanelDef;
-                }
-                dealWeb.title = newName;
+                });
+                modalInstance.result.then(function (newName) {
 
-                dealPresentationModel.initiateDeal(dealWeb).then(
+                    if (dealAvailableUsers.activeDeal) {
+                        addUserToDeal(dealInfo.users, dealAvailableUsers.activeDeal.dealId);
+
+                    } else {
+                        if (newName === undefined) {
+                            newName = 'Deal';
+                        }
+                        dealWeb.title = newName;
+                        initializeDeal(dealWeb);
+                    }
+
+                });
+            });
+
+        }
+
+        function initializeDeal(dealWeb) {
+            dealPresentationModel.initiateDeal(dealWeb).then(
+                function (success) {
+                    uiNotification.show($filter('translate')("Deal.confirmation"));
+                },
+                function (error) {}
+            );
+        }
+
+        function addUserToDeal(usersToAdd, dealId) {
+            angular.forEach(usersToAdd, function (user) {
+
+                dealPresentationModel.addUsersToDeal(dealId, user.userId).then(
                     function (success) {
-                        notify.set($filter('translate')("Deal.confirmation"));
-                    },
-                    function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                    }
-                );
+                        uiNotification.show('User ' + user.firstName + ' will be added after all deal participants confirm this action', 'success');
 
+                    }, function (error) { }
+                );
             });
         }
 
-        vm.initializeDeal = initializeDeal;
+        vm.configureDeal = configureDeal;
     }
 });

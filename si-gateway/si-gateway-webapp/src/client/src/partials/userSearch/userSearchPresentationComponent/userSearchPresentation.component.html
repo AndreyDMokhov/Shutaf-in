@@ -6,13 +6,15 @@
                    ng-model="vm.fullName"
                    ng-maxlength="50"
                    placeholder="{{'Search.request' | translate}}"/>
-            <button type="submit" ng-click="vm.userSearch()" class="btn btn-primary btn-sm">
+            <button type="submit"
+                    ui-sref="userSearch({name : vm.fullName})"
+                    class="btn btn-primary btn-sm">
                 {{"Search.button" | translate}}
             </button>
         </form>
     </div>
 
-    <h4> {{'Search.results'|translate}} {{vm.totalUsers}} </h4>
+    <h5> {{'Search.results'|translate}}: {{vm.totalUsers}} </h5>
     <span ng-show="vm.userSearchList.length==0">{{'Search.notFound'|translate}}</span>
     <div infinite-scroll='vm.fetchNewPage()'
          infinite-scroll-distance='0'

@@ -5,14 +5,11 @@ app.component('userSearchPresentationComponent', {
     controllerAs: 'vm',
     controller: function ($state,
                           $sessionStorage,
-                          notify,
                           sessionService,
                           userSearchModel,
                           $stateParams,
                           $filter,
-                          ngDialog,
-                          $scope,
-                          userSearchService) {
+                          userSearchObserver) {
 
         var vm = this;
         vm.genders = $sessionStorage.genders;
@@ -25,7 +22,7 @@ app.component('userSearchPresentationComponent', {
         vm.isLoading = false;
 
         function activate() {
-            userSearchService.registerFilterObserver(saveFilters);
+            userSearchObserver.registerFilterObserver(saveFilters);
             userSearch();
         }
 
@@ -49,10 +46,8 @@ app.component('userSearchPresentationComponent', {
                     }
 
                 }, function (error) {
-                    if (error === undefined || error === null) {
-                        notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                    }
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
+                    vm.isDisable = false;
+                    vm.isLoading = false;
                 });
         }
 
@@ -63,8 +58,8 @@ app.component('userSearchPresentationComponent', {
                     $sessionStorage.filters.filterCitiesIds = filters.filterCitiesIds;
                     $sessionStorage.filters.filterAgeRange = filters.filterAgeRange;
                     vm.userSearchList = success.data.data;
+                    $state.go($state.current, {}, {reload: true});
                 }, function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 

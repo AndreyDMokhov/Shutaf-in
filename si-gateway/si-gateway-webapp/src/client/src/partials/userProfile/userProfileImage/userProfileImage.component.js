@@ -2,30 +2,28 @@
 app.component('userProfileImage', {
     templateUrl: 'partials/userProfile/userProfileImage/userProfileImage.component.html',
     controllerAs: 'vm',
-    controller: function ($localStorage,
-                          $state,
-                          $stateParams,
+    controller: function ($state,
                           $filter,
-                          sessionService,
                           myUserProfileModel,
                           $sessionStorage,
-                          notify,
+                          uiNotification,
                           $timeout,
                           $scope,
                           ngDialog,
-                          IMAGE_MAX_SIZE_MB,
+                          FILE_MAX_SIZE_MB,
                           $window,
-                          userSearchModel) {
+                          userSearchModel,
+                          sessionStorageObserver) {
 
         var vm = this;
         $scope.myCroppedImage = '';
         vm.fileInfo = {};
-        vm.size = IMAGE_MAX_SIZE_MB * 1024;
+        vm.size = FILE_MAX_SIZE_MB * 1024;
         vm.userProfile = $sessionStorage.userProfile;
 
         vm.hideDeleteImageButton = false;
         vm.isThisMyProfile = false;
-        vm.disableLoadImage = false;
+        vm.isUploading = false;
 
         function setProfileImage() {
             if (!vm.userProfile.originalUserImage) {
@@ -47,7 +45,8 @@ app.component('userProfileImage', {
                 }
                 else {
                     setProfileImage();
-                    notify.set($filter('translate')('UserProfile.message.sizeImage', {size: vm.size / 1024}), {type: 'warn'});
+                    var message = $filter('translate')('UserProfile.message.sizeImage', {size: vm.size / 1024});
+                    uiNotification.show(message, 'warn');
                 }
             }, 0);
 
@@ -55,6 +54,8 @@ app.component('userProfileImage', {
         };
 
         function saveImage(data) {
+            var uploadingNotification = uiNotification.show("<h5>{{'UserProfile.image.uploading' | translate}}&nbsp;<span class='fa fa-spinner fa-spin'></span></h5>", 'warn', true);
+
             myUserProfileModel.addOrUpdateImage({image: data}).then(
                 function (success) {
                     vm.userProfile.userImage = success.data.data.image;
@@ -62,33 +63,22 @@ app.component('userProfileImage', {
                     vm.userProfile.createdDate = success.data.data.createdDate;
                     userSearchModel.getOriginalUserImageById(vm.userProfile.userId).then(
                         function (success) {
+                            uploadingNotification.close();
                             vm.userProfile.originalUserImageId = success.data.data.id;
                             vm.userProfile.originalUserImage =  success.data.data.image;
                             $sessionStorage.userProfile = vm.userProfile;
                             vm.deleteButton = false;
-                            notify.set($filter('translate')('UserProfile.message.imageSaved'), {type: 'success'});
-                            $window.location.reload();
+                            uiNotification.show($filter('translate')('UserProfile.image.uploaded'), 'success');
+                            sessionStorageObserver.notifyServiceObservers();
 
                         },
                         function (error) {
                             vm.userProfile.originalUserImage = data;
-                            $window.location.reload();
+                            sessionStorageObserver.notifyServiceObservers();
                         }
                     );
                 },
-
-                function (error) {
-                    if (error === undefined || error === null) {
-                        notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                    }
-
-                    if (error.data.error.errorTypeCode === 'INP') {
-                        if (error.data.error.errors.indexOf('INP.image.LimitSize') > 0) {
-                            notify.set($filter('translate')('UserProfile.message.sizeImage'), {type: 'warn'});
-                        }
-                    }
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                }
+                function (error) {}
             );
         }
 
@@ -106,11 +96,10 @@ app.component('userProfileImage', {
                     $sessionStorage.userProfile = vm.userProfile;
                     vm.image = '../../images/default_avatar.png';
                     vm.deleteButton = true;
-                    notify.set($filter('translate')('UserProfile.message.imageDeleted'), {type: 'success'});
-                    $window.location.reload();
+                    uiNotification.show($filter('translate')('UserProfile.message.imageDeleted'), 'success');
+                    sessionStorageObserver.notifyServiceObservers();
                 },
                 function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         }
 
@@ -156,6 +145,5 @@ app.component('userProfileImage', {
         setProfileImage();
         vm.deleteImage = deleteImage;
     }
-
 
 });

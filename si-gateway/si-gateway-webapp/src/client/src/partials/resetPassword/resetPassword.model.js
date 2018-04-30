@@ -1,7 +1,7 @@
 "use strict";
-app.factory('resetPasswordModel', function (Restangular, $state, browserTitle) {
+app.factory('resetPasswordModel', function (Restangular, $state, browserTitleService) {
 
-    browserTitle.setExplicitTitle($state.current.title);
+    browserTitleService.setExplicitTitle($state.current.title);
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
     });

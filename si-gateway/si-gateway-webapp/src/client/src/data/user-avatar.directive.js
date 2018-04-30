@@ -1,8 +1,7 @@
-angular.module('app').directive('userAvatar', function ($uibModal,
-                                                        userSearchModel,
-                                                        $filter,
-                                                        notify,
-                                                        $sessionStorage) {
+app.directive('userAvatar', function ($uibModal,
+                                      userSearchModel,
+                                      $filter,
+                                      $sessionStorage) {
     return {
         restrict: "E",
         template: '<img ng-click="openModalImageSize()" ng-src={{image}} class="logo-center pointer" width="{{width}}" height="{{height}}">',
@@ -83,10 +82,6 @@ angular.module('app').directive('userAvatar', function ($uibModal,
                             scope.open();
                         },
                         function (error) {
-                            if (error === undefined || error === null) {
-                                notify.set($filter('translate')('Error.SYS'), {type: 'error'});
-                            }
-                            notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                         }
                     );
                 }

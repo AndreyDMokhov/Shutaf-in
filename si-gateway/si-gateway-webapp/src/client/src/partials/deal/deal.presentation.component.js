@@ -7,14 +7,16 @@ app.component("dealPresentationComponent", {
                           $sessionStorage,
                           $uibModal,
                           dealPresentationModel,
-                          notify,
                           dealUserStatus,
                           dealStatus,
-                          browserTitle) {
+                          browserTitleService,
+                          uiNotification) {
 
-        browserTitle.setBrowserTitleByFilterName('Deal.title');
+        browserTitleService.setBrowserTitleByFilterName('Deal.title');
 
         var vm = this;
+        vm.showEditDeal = true;
+        vm.showDeleteDeal = false;
         vm.deals = [];
         vm.dealInfo = {};
 
@@ -30,7 +32,6 @@ app.component("dealPresentationComponent", {
                 function (error) {
                     vm.showLoading = false;
                     vm.dealTabClicked = true;
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 });
         };
 
@@ -41,24 +42,20 @@ app.component("dealPresentationComponent", {
         }
 
         vm.getDealSuffix = function (deal) {
+            vm.showEditDeal = true;
+            vm.showDeleteDeal = false;
             if (deal.statusId === dealStatus.Status.INITIATED && deal.userStatusId === dealUserStatus.Status.ACTIVE) {
                 return $filter('translate')('Deal.deal.status.inactive.wait-for-approval');
-            }
-
-            if (deal.statusId === dealStatus.Status.INITIATED) {
+            } else if (deal.statusId === dealStatus.Status.INITIATED) {
                 return $filter('translate')('Deal.deal.status.inactive');
-            }
-
-            if(deal.userStatusId === dealUserStatus.Status.PENDING) {
+            } else if (deal.userStatusId === dealUserStatus.Status.PENDING) {
                 return $filter('translate')('Deal.deal.status.inactive');
-            }
-
-            if (deal.userStatusId === dealUserStatus.Status.ACTIVE) {
-                return $filter('translate')('Deal.deal.status.active');
-            }
-
-            if (deal.userStatusId === dealUserStatus.Status.LEAVED) {
+            } else if (deal.userStatusId === dealUserStatus.Status.LEAVED || deal.statusId === dealStatus.Status.ARCHIVE) {
+                vm.showEditDeal = false;
+                vm.showDeleteDeal = true;
                 return $filter('translate')('Deal.deal.status.archive');
+            } else if (deal.userStatusId === dealUserStatus.Status.ACTIVE) {
+                return $filter('translate')('Deal.deal.status.active');
             }
         };
 
@@ -85,10 +82,36 @@ app.component("dealPresentationComponent", {
                         getDeals();
                     },
                     function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     });
             });
         };
+
+        vm.deleteDeal = function (deal) {
+            var componentType = 'deal',
+                type = 'remove';
+            var modalInstance = $uibModal.open({
+                animation: true,
+                component: 'modalComponent',
+                size: 'sm',
+                resolve: {
+                    type: function () {
+                        return {type: type, component: componentType, filename: document.title};
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+                dealPresentationModel.deleteDeal(deal.dealId).then(
+                    function (success) {
+                        var message = '<p>' + $filter("translate")("Deal.deleting") + ': <strong>' + deal.title + '</strong></p>';
+                        uiNotification.show(message, 'info', true);
+                        var index = vm.deals.indexOf(deal);
+                        vm.deals.splice(index, 1);
+                    },
+                    function (error) {
+                    });
+            });
+        };
+
         getDeals();
     }
 });

@@ -3,7 +3,6 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
-        RestangularProvider.setDefaultHeaders({'session_id': $sessionStorage.sessionId});
         RestangularProvider.setBaseUrl('api/deal');
     });
 
@@ -19,6 +18,9 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
     function renameDeal(dealId, params) {
         return rest.one('/rename/' +dealId).customPOST(params);
     }
+    function deleteDeal(dealId) {
+        return rest.one('/' +dealId).customDELETE();
+    }
     function initiateDeal(params){
         return rest.one('/').customPOST(params);
     }
@@ -30,14 +32,21 @@ app.factory('dealPresentationModel', function (Restangular, $sessionStorage) {
         return rest.one('/available-users?users=' + usersIds).customGET();
     }
 
+    function addUsersToDeal(dealId, userId) {
+        return rest.one('/add/' + dealId + '/' + userId).customGET();
+
+    }
+
 
     return {
         getDeals: getDeals,
         getDealInfo: getDealInfo,
         renameDeal: renameDeal,
+        deleteDeal: deleteDeal,
         initiateDeal: initiateDeal,
         leaveDeal: leaveDeal,
-        getAvailableUsers: getAvailableUsers
+        getAvailableUsers: getAvailableUsers,
+        addUsersToDeal: addUsersToDeal
 
     };
 });

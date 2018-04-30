@@ -12,7 +12,7 @@ app.directive('channelDirective', function (messengerModel, webSocketService, $s
 
             scope.messages = [];
             scope.lastMessage = {};
-            scope.characterLimit = 20;
+            scope.characterLimit = 15;
             scope.newMessageCounter = 0;
             var userId = $sessionStorage.userProfile.userId;
             var messageIdList = [];

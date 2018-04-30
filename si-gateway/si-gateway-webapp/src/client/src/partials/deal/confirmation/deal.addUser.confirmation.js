@@ -1,9 +1,9 @@
 "use strict";
 app.controller('dealAddUserConfirmation', function (dealConfirmationModel,
-                                                    notify,
                                                     $state,
                                                     $filter,
-                                                    $stateParams) {
+                                                    $stateParams,
+                                                    uiNotification) {
 
     function confirmAddDealUser() {
         var urlLink = $stateParams.link;
@@ -12,17 +12,10 @@ app.controller('dealAddUserConfirmation', function (dealConfirmationModel,
         }
         dealConfirmationModel.addUser(urlLink).then(
             function (success) {
+                uiNotification.show($filter('translate')("Deal.confirmation.addUser"), 'success');
 
-                notify.set($filter('translate')("Deal.confirmation.addUser"), {type: 'success'});
                 $state.go("home");
-            }, function (error) {
-                notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
-                if (error.data.error.errorTypeCode === 'RNF') {
-                    $state.go("error", {'code': '404'});
-                } else {
-                    $state.go("home");
-                }
-            });
+            }, function (error) {});
     }
 
     confirmAddDealUser();

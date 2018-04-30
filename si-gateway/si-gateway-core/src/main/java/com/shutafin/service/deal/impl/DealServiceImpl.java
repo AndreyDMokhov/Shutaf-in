@@ -245,7 +245,7 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public List<Long> getAvailableUsers(List<Long> users) {
-        return dealControllerSender.getAvailableUsers(users);
+    public DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users) {
+        return dealControllerSender.getAvailableUsers(currentUserId, users);
     }
 }

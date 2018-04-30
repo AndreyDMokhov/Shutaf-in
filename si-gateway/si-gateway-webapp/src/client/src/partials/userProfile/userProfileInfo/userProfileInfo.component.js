@@ -5,7 +5,7 @@ app.component('userProfileInfo', {
         userProfile: '='
     },
     controllerAs: 'vm',
-    controller: function ($sessionStorage, quizModel, notify, $filter) {
+    controller: function ($sessionStorage, quizModel) {
         var vm = this;
         vm.cities = $sessionStorage.cities;
         vm.genders = $sessionStorage.genders;
@@ -24,7 +24,6 @@ app.component('userProfileInfo', {
                         }
                     },
                     function (error) {
-                        notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                     }
                 );
             }

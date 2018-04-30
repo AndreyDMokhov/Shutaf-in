@@ -6,7 +6,7 @@ app.component('userProfileComponent', {
                           $sessionStorage,
                           $stateParams,
                           userProfileModel,
-                          browserTitle) {
+                          browserTitleService) {
 
         var vm = this;
         vm.userInfo = {};
@@ -18,7 +18,7 @@ app.component('userProfileComponent', {
             } else {
                 getUserProfile().then(
                     function () {
-                        browserTitle.setExplicitTitle(vm.userInfo.firstName + ' ' + vm.userInfo.lastName);
+                        browserTitleService.setExplicitTitle(vm.userInfo.firstName + ' ' + vm.userInfo.lastName);
                     }
                 );
             }
@@ -36,7 +36,6 @@ app.component('userProfileComponent', {
                     vm.userInfo = success.data.data;
                 },
                 function (error) {
-                    notify.set($filter('translate')('Error' + '.' + error.data.error.errorTypeCode), {type: 'error'});
                 }
             );
         }

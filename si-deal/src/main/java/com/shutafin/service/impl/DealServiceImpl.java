@@ -1,7 +1,9 @@
 package com.shutafin.service.impl;
 
 import com.shutafin.model.base.AbstractEntity;
-import com.shutafin.model.entities.*;
+import com.shutafin.model.entities.Deal;
+import com.shutafin.model.entities.DealPanel;
+import com.shutafin.model.entities.DealUser;
 import com.shutafin.model.exception.exceptions.*;
 import com.shutafin.model.web.account.AccountStatus;
 import com.shutafin.model.web.account.AccountUserImageWeb;
@@ -183,17 +185,16 @@ public class DealServiceImpl implements DealService {
 
     @Override
     public void deleteDeal(Long dealId, Long userId) {
-        Deal deal = checkDealPermissions(dealId, userId, NEED_FULL_ACCESS);
-        deal.setDealStatus(DealStatus.ARCHIVE);
-        deal.setModifiedByUser(userId);
-        dealPanelRepository.findAllByDealIdAndIsDeletedFalse(dealId)
-                .forEach(dealPanel -> dealPanelService.deleteDealPanel(dealPanel.getId(), userId));
-        dealUserRepository.findAllByDealId(dealId)
-                .forEach(dealUser ->
-                {
-                    dealUser.setDealUserStatus(DealUserStatus.REMOVED);
-                    dealUser.setDealUserPermissionType(DealUserPermissionType.READ_ONLY);
-                });
+        checkDealPermissions(dealId, userId, false);
+        DealUser dealUser = dealUserRepository.findByDealIdAndUserId(dealId, userId);
+        if (dealUser.getDealUserStatus() == DealUserStatus.LEAVED) {
+            dealUser.setDealUserStatus(DealUserStatus.REMOVED);
+            dealUser.setDealUserPermissionType(DealUserPermissionType.NO_READ);
+        } else {
+            log.warn("Deal with ID {} not deleted, because user with ID {} haven't status LEAVED", dealId, userId);
+            throw new NoPermissionException(String.format(
+                    "Deal with ID {} not deleted, because user with ID {} haven't status LEAVED", dealId, userId));
+        }
     }
 
     @Override
@@ -241,14 +242,12 @@ public class DealServiceImpl implements DealService {
 
         setPermissionToReadOnly(deal, userId);
 
-        if (dealUserRepository.findAllByDealIdAndDealUserStatus(dealId, DealUserStatus.ACTIVE).size() == 1) {
+        if (dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(), DealUserStatus.ACTIVE).size() == 1) {
             deal.setDealStatus(DealStatus.ARCHIVE);
             dealRepository.save(deal);
 
             List<DealUser> dealUsers = dealUserRepository.findAllByDealIdAndDealUserStatus(deal.getId(), DealUserStatus.ACTIVE);
-            for (DealUser du : dealUsers) {
-                du.setDealUserStatus(DealUserStatus.LEAVED);
-            }
+            dealUsers.forEach(x-> x.setDealUserStatus(DealUserStatus.LEAVED));
 
             dealUserRepository.save(dealUsers);
         }
@@ -329,13 +328,20 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public List<Long> getAvailableUsers(List<Long> users) {
+    public DealAvailableUsersResponse getAvailableUsers(Long currentUserId, List<Long> users) {
         List<DealUser> allByUserIdIn = dealUserRepository.findAllByUserIdInAndDealUserStatus(users, DealUserStatus.ACTIVE);
         allByUserIdIn.stream()
                 .map(DealUser::getUserId)
                 .forEach(users::remove);
+        DealUserWeb dealUserWeb = getAllUserDeals(currentUserId).stream()
+                .filter(x -> x.getStatusId() == DealStatus.ACTIVE && x.getUserStatusId() == DealUserStatus.ACTIVE)
+                .findFirst()
+                .orElse(null);
 
-        return users;
+        return DealAvailableUsersResponse.builder()
+                .activeDeal(dealUserWeb)
+                .availableUsers(users)
+                .build();
     }
 
     private DealPanelResponse getFirstDealPanel(List<DealPanel> dealPanels, Long userId) {

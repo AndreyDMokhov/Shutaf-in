@@ -6,20 +6,29 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
                 templateUrl: 'partials/home/home.html',
                 controller: 'homeController',
                 controllerAs: 'vm',
-                url: '/home'
+                url: '/home',
+                data: {
+                    backgroundImage: 'home-background'
+                }
             })
         .state('about',
             {
                 templateUrl: 'partials/about/about.html',
                 controller: 'aboutController',
                 controllerAs: 'vm',
-                url: '/about'
+                url: '/about',
+                data: {
+                    backgroundImage: 'registration-background'
+                }
             })
 
         .state('registration',
             {
                 template: '<registration-component></registration-component>',
-                url: '/registration/request'
+                url: '/registration/request',
+                data: {
+                    backgroundImage: 'registration-background'
+                }
             })
         .state('registrationConfirmation',
             {
@@ -59,7 +68,10 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
         .state('login',
             {
                 template: '<login-component></login-component>',
-                url: '/login'
+                url: '/login',
+                data: {
+                    backgroundImage: 'login-background'
+                }
             })
         .state('logout', {
             controller: 'logoutController',
@@ -73,6 +85,9 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
             url: '/reset-password/request',
             params: {
                 accessibleToAccountStatus: accountStatus.Statuses.CONFIRMED     //2
+            },
+            data: {
+                backgroundImage: 'login-background'
             }
         })
         .state('resetPasswordNewPassword', {
@@ -80,6 +95,9 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
             template: '<reset-password-confirmation-component></reset-password-confirmation-component>',
             params: {
                 accessibleToAccountStatus: accountStatus.Statuses.CONFIRMED     //2
+            },
+            data: {
+                backgroundImage: 'login-background'
             }
         })
         .state('userSearch', {
