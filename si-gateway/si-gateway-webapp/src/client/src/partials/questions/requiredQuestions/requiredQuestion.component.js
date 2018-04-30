@@ -39,8 +39,6 @@ app.component('questionComponent', {
                 vm.disableSubmit = false;
             }
             vm.pageChanged();
-
-
         };
         vm.previousPage = function () {
             if (vm.currentPage > 1) {

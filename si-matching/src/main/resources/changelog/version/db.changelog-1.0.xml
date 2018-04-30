@@ -653,4 +653,11 @@
         </delete>
     </changeSet>
 
+    <changeSet author="edwardKats" id="7">
+        <dropNotNullConstraint columnDataType="int"
+                               columnName="ANSWER_ID"
+                               tableName="I_ANSWER"/>
+        <dropColumn columnName="ANSWER_ID"
+                    tableName="I_ANSWER"/>
+    </changeSet>
 </databaseChangeLog>

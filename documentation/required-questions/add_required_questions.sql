@@ -18,7 +18,7 @@ FROM i_answer;
 
 SET @is_universal_answer := 0; -- 1 = universal, 0 = NOT universal
 
-INSERT INTO i_answer (ANSWER_ID, IS_UNIVERSAL, QUESTION_ID) VALUES (@answer_id, @is_universal_answer, @question_id);
+INSERT INTO i_answer (ID, IS_UNIVERSAL, QUESTION_ID) VALUES (@answer_id, @is_universal_answer, @question_id);
 
 INSERT INTO i_answer_locale (LANGUAGE_ID, DESCRIPTION, ANSWER_ID) VALUES (1, 'Answer number 1', @answer_id);
 INSERT INTO i_answer_locale (LANGUAGE_ID, DESCRIPTION, ANSWER_ID) VALUES (2, 'Ответ номер 1', @answer_id);
@@ -30,7 +30,7 @@ FROM i_answer;
 
 SET @is_universal_answer := 1; -- 1 = universal, 0 = NOT universal
 
-INSERT INTO i_answer (ANSWER_ID, IS_UNIVERSAL, QUESTION_ID) VALUES (@answer_id, @is_universal_answer, @question_id);
+INSERT INTO i_answer (ID, IS_UNIVERSAL, QUESTION_ID) VALUES (@answer_id, @is_universal_answer, @question_id);
 
 INSERT INTO i_answer_locale (LANGUAGE_ID, DESCRIPTION, ANSWER_ID) VALUES (1, 'Answer number 2', @answer_id);
 INSERT INTO i_answer_locale (LANGUAGE_ID, DESCRIPTION, ANSWER_ID) VALUES (2, 'Ответ номер 2', @answer_id);
