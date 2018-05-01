@@ -29,9 +29,6 @@ app.component('headerComponent', {
             vm.accountStatuses['BLOCKED'] = accountStatus.Statuses.BLOCKED;
 
             function userProfileInitialized() {
-
-                console.log('userProfileInitialized');
-
                 vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
                 vm.userProfile = angular.copy($sessionStorage.userProfile);
             }

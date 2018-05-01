@@ -54,6 +54,7 @@
   "Deal.users.button.remove": "Голосовать за исключение",
   "Deal.users.you": "Вы",
   "Deal.leaving": "Вы покинули сделку",
+  "Deal.deleting": "Вы удалили сделку",
   "Deal.panel.file-max-size":"Максимальный размер файла не может превышать {{size}} МБ",
 
   "SECTION":"HOME",
@@ -144,6 +145,7 @@
   "UserProfile.answers.not-completed-required-matching" : "Опция поиска будет доступна после ответа на все обязательные вопросы",
   "UserProfile.answers.navigate" : "Navigate",
   "UserProfile.answers.required.header" : "Ответы на обязательные вопросы",
+  "UserProfile.answers.required.not-answered" : "Не ответил (-а)",
   "UserProfile.answers.extended.header" : "Ответы на расширенные вопросы",
 
 

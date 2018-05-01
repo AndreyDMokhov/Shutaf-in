@@ -51,7 +51,7 @@ app.component('userProfileInfo', {
                 var answer = question.answers.find(function (answer) {
                     return answer.answerId === answerId;
                 });
-                vm.requiredQuestionsAndAnswers.push({question: question.description, answer: answer.description});
+                vm.requiredQuestionsAndAnswers.push({question: question.description, answer: answer.description ? answer.description : $filter('translate')('UserProfile.answers.required.not-answered')});
             });
         }
 
