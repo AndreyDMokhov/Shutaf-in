@@ -12,13 +12,9 @@ app.factory('myUserProfileModel', function (Restangular, $sessionStorage) {
         return rest.one('/api/users/settings/image').customDELETE();
     }
 
-    function getSelectedUserProfile(userId) {
-        return rest.one('/api/users/my-profile/'+userId).customGET();
-    }
 
     return {
         addOrUpdateImage: addOrUpdateImage,
-        deleteImage: deleteImage,
-        getSelectedUserProfile: getSelectedUserProfile
+        deleteImage: deleteImage
     };
 });

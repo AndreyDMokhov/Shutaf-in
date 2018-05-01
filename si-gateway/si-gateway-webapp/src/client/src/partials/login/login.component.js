@@ -12,7 +12,9 @@ app.component('loginComponent', {
                           $window,
                           browserTitleService,
                           accountStatus,
-                          siteAccessRouting) {
+                          siteAccessRouting,
+                          sessionStorageObserver,
+                          authenticationService) {
 
         browserTitleService.setBrowserTitleByFilterName('Login.title');
 
@@ -27,12 +29,13 @@ app.component('loginComponent', {
             loginModel.login(vm.loginData).then(
                 function (success) {
                     vm.dataLoading = false;
-                    $sessionStorage.sessionId = success.headers('session_id');
+                    authenticationService.setSessionId(success.headers('session_id'));
                     initializationService.initializeApplication().then(
                         function () {
                             var message = $filter('translate')('Login.message.success');
                             uiNotification.show(message, 'success');
                             siteAccessRouting.navigate('myUserProfile', {});
+                            sessionStorageObserver.notifyServiceObservers();
 
                         }, function (error) {
                             vm.dataLoading = false;
