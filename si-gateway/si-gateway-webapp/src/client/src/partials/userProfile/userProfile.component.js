@@ -30,7 +30,7 @@ app.component('userProfileComponent', {
         function getUserProfile() {
             return userProfileModel.getSelectedUserProfile($stateParams.userId).then(
                 function (success) {
-                    if (success.data.data === null) {
+                    if (!success.data.data) {
                         $state.go('error', {code: 404});
                     }
                     vm.userInfo = success.data.data;

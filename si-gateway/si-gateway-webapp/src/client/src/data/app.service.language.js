@@ -1,5 +1,9 @@
 "use strict";
-app.service('languageService', function ($translate, Restangular, $sessionStorage, sessionService) {
+app.service('languageService', function (
+                                        $translate,
+                                        Restangular,
+                                        $sessionStorage,
+                                        authenticationService) {
 
     var rest = Restangular.withConfig(function (RestangularProvider) {
         RestangularProvider.setFullResponse(true);
@@ -61,7 +65,7 @@ app.service('languageService', function ($translate, Restangular, $sessionStorag
     function updateUserLanguage(languageId) {
         setFrontendLanguage(languageId);
 
-        if (!sessionService.isAuthenticated()) {
+        if (!authenticationService.isAuthenticated()) {
             return;
         }
         rest.one('/api/users/settings/language').customPUT({id: languageId});
@@ -76,7 +80,7 @@ app.service('languageService', function ($translate, Restangular, $sessionStorag
     }
 
     return {
-        getLanguage:getLanguage,
+        getLanguage: getLanguage,
         getUserLanguage: getUserLanguage,
         setFrontendLanguage: setFrontendLanguage,
         updateUserLanguage: updateUserLanguage,

@@ -1,10 +1,19 @@
 app.run(function (Restangular,
                   $sessionStorage,
-                  sessionService) {
-    Restangular.addFullRequestInterceptor(function (element, operation, route, url, headers, params, httpConfig) {
-        if (sessionService.isAuthenticated()) {
+                  authenticationService,
+                  authenticationObserver) {
 
-            headers = {'session_id': $sessionStorage.sessionId};
+    var sessionId = {};
+
+    function getSessionId(){
+        sessionId = authenticationService.getSessionId();
+    }
+
+    authenticationObserver.registerObserverCallback(getSessionId);
+
+    Restangular.addFullRequestInterceptor(function (element, operation, route, url, headers, params, httpConfig) {
+        if (authenticationService.isAuthenticated()) {
+            headers = sessionId;
         }
 
         return {

@@ -6,7 +6,7 @@
 app.run(function ($rootScope,
                   $state,
                   $filter,
-                  sessionService,
+                  authenticationService,
                   $sessionStorage,
                   uiNotification,
                   notify) {
@@ -27,7 +27,7 @@ app.run(function ($rootScope,
     ];
 
     function isAllowedToNavigate(toState) {
-        if (sessionService.isAuthenticated()) {
+        if (authenticationService.isAuthenticated()) {
             return true;
         }
 

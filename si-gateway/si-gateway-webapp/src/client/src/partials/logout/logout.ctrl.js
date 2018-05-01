@@ -6,7 +6,8 @@ app.controller('logoutController', function (
                                             languageService,
                                             $sessionStorage,
                                             browserTitleService,
-                                            sessionStorageObserver) {
+                                            sessionStorageObserver,
+                                            authenticationService) {
 
     browserTitleService.setExplicitTitle('');
 
@@ -16,16 +17,11 @@ app.controller('logoutController', function (
         setTimeout(function () {
             $state.go('home');
         });
-        delete $sessionStorage.sessionId;
+        authenticationService.removeSessionId();
+
         languageService.setDefaultLanguage();  //set default GUI language
         delete $sessionStorage.userProfile;
-        delete $sessionStorage.questions;
         delete $sessionStorage.selectedAnswers;
-        delete $sessionStorage.cities;
-        delete $sessionStorage.countries;
-        delete $sessionStorage.genders;
-        delete $sessionStorage.questionsExtended;
-        delete $sessionStorage.questionImportance;
         delete $sessionStorage.selectedExtendedAnswers;
         delete $sessionStorage.showExtendedQuestions;
         delete $sessionStorage.accountStatus;

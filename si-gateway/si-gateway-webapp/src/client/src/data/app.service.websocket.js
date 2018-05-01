@@ -1,4 +1,4 @@
-app.service('webSocketService', function ($q, $sessionStorage, sessionService, sessionStorageObserver) {
+app.service('webSocketService', function ($q, $sessionStorage, authenticationService, authenticationObserver) {
 
         var vm = this;
 
@@ -6,19 +6,20 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService, s
         vm.stompClient = null;
         vm.subscriptionsList = [];
         vm.connecting = false;
-        vm.sendSessionIdObj = {};
+        vm.sessionId = {};
 
         function webSocketReloadSessionId(){
-            vm.sendSessionIdObj = {'session_id': $sessionStorage.sessionId};
+            vm.sessionId = authenticationService.getSessionId();
         }
-        sessionStorageObserver.registerServiceObserver(webSocketReloadSessionId);
+
+        authenticationObserver.registerObserverCallback(webSocketReloadSessionId);
 
         /**
          * Checks if authenticated or already connected, then call connect()
          * @returns {*}
          */
         function getConnection() {
-            if (!sessionService.isAuthenticated() || vm.isConnected || vm.connecting) {
+            if (!authenticationService.isAuthenticated() || vm.isConnected || vm.connecting) {
                 return;
             }
             /**
@@ -46,7 +47,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService, s
          * @returns {*}
          */
         function connect() {
-            if (!sessionService.isAuthenticated() || vm.isConnected) {
+            if (!authenticationService.isAuthenticated() || vm.isConnected) {
                 return;
             }
             vm.connecting = true;
@@ -57,7 +58,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService, s
              */
             vm.stompClient.debug = false;
             return $q(function (resolve, reject) {
-                vm.stompClient.connect(vm.sendSessionIdObj , function (success) {
+                vm.stompClient.connect(vm.sessionId , function (success) {
                     vm.connecting = false;
                     vm.isConnected = true;
                     resolve();
@@ -84,7 +85,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService, s
             } else {
                 vm.subscriptionsList[destination] = vm.stompClient.subscribe(destination, function (message) {
                     deferred.notify(JSON.parse(message.body));
-                }, vm.sendSessionIdObj );
+                }, vm.sessionId );
             }
             return deferred.promise;
         }
@@ -107,7 +108,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService, s
          */
         function getSocket() {
             var protocols = ['xhr-polling', 'xdr-polling', 'xdr-streaming', 'xhr-streaming'];
-            var url = '/api/socket?SESSION_ID='+vm.sendSessionIdObj.session_id;
+            var url = '/api/socket?SESSION_ID='+vm.sessionId.session_id;
             return new SockJS(url, null, {transports: protocols, server: 'shutaf-in'});
         }
 
@@ -118,7 +119,7 @@ app.service('webSocketService', function ($q, $sessionStorage, sessionService, s
          * @param address: channel (@MessageMapping info)
          */
         function sendMessage(message, address) {
-            vm.stompClient.send(address, vm.sendSessionIdObj , JSON.stringify(message));
+            vm.stompClient.send(address, vm.sessionId , JSON.stringify(message));
         }
 
         /**

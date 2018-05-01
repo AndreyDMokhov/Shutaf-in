@@ -2,7 +2,7 @@ app.run(function (Restangular,
                   $state,
                   $filter,
                   uiNotification,
-                  sessionService,
+                  authenticationService,
                   FILE_MAX_SIZE_MB) {
 
     Restangular.setErrorInterceptor(
@@ -20,7 +20,7 @@ app.run(function (Restangular,
                 uiNotification.show(message, 'error');
 
 
-                if (sessionService.isAuthenticated()) {
+                if (authenticationService.isAuthenticated()) {
 
                     $state.go('logout');
                 }

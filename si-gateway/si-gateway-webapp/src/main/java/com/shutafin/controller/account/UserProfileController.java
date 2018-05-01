@@ -1,6 +1,7 @@
 package com.shutafin.controller.account;
 
 import com.shutafin.model.web.account.AccountUserInfoResponseDTO;
+import com.shutafin.processors.annotations.authentication.AuthenticatedUser;
 import com.shutafin.processors.annotations.authentication.NoAuthentication;
 import com.shutafin.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,8 @@ public class UserProfileController {
         return userInfoService.getUserInfo(userId);
     }
 
-    @NoAuthentication
-    @RequestMapping(value = "/my-profile/{userId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public AccountUserInfoResponseDTO getMyUserInfo(@PathVariable(value = "userId") Long userId){
+    @RequestMapping(value = "/my-profile", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public AccountUserInfoResponseDTO getMyUserInfo(@AuthenticatedUser Long userId){
         return userInfoService.getUserInfo(userId);
     }
 }
