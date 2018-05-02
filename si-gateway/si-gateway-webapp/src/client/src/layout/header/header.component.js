@@ -5,7 +5,7 @@ app.component('headerComponent', {
         controllerAs: 'vm',
         controller: function ($rootScope,
                               languageService,
-                              sessionService,
+                              authenticationService,
                               $filter,
                               $sessionStorage,
                               $state,
@@ -13,7 +13,8 @@ app.component('headerComponent', {
                               initializationService,
                               webSocketService,
                               accountStatus,
-                              sessionStorageObserver) {
+                              sessionStorageObserver,
+                              authenticationObserver) {
 
             var vm = this;
             vm.userProfile = {};
@@ -29,22 +30,25 @@ app.component('headerComponent', {
             vm.accountStatuses['BLOCKED'] = accountStatus.Statuses.BLOCKED;
 
             function userProfileInitialized() {
-
-                console.log('userProfileInitialized');
-
                 vm.currentAccountStatus = ($sessionStorage.accountStatus != null) ? $sessionStorage.accountStatus : 0;
                 vm.userProfile = angular.copy($sessionStorage.userProfile);
             }
 
+            function isAuthenticated() {
+                vm.isAuthenticated = authenticationService.isAuthenticated();
+            }
+
+            authenticationObserver.registerObserverCallback(isAuthenticated);
             sessionStorageObserver.registerServiceObserver(userProfileInitialized);
 
-            vm.sessionService = sessionService;
+            vm.isAuthenticated = false;
+
             vm.initialization = {};
             function init() {
                 initializationService.initializeLanguages().then(function (languages) {
                     vm.initialization.languages = languages;
                     languageService.setFrontendLanguage($sessionStorage.currentLanguage);
-                    if ($sessionStorage.sessionId) {
+                    if (authenticationService.isAuthenticated()) {
                         initializationService.initializeApplication().then(function () {
                             webSocketService.getConnection();
                         });
@@ -65,7 +69,7 @@ app.component('headerComponent', {
             }
 
             function getUserImage() {
-                if (!vm.userProfile.userImage) {
+                if (!vm.userProfile || !vm.userProfile.userImage) {
                     return '../../images/default_avatar.png';
                 }
                 else {

@@ -5,7 +5,7 @@ app.component('userSearchPresentationComponent', {
     controllerAs: 'vm',
     controller: function ($state,
                           $sessionStorage,
-                          sessionService,
+                          authenticationService,
                           userSearchModel,
                           $stateParams,
                           $filter,
@@ -33,7 +33,7 @@ app.component('userSearchPresentationComponent', {
         function userSearch() {
             userSearchModel.userSearch(vm.fullName, page).then(
                 function (success) {
-                    if(success.data.data.matchedUsersPerPage.length == 0){
+                    if(success.data.data.matchedUsersPerPage.length === 0){
                         vm.isDisable = true;
                         vm.isLoading = false;
                     }

@@ -647,4 +647,17 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="6" author="evgenyYablokov">
+        <delete tableName="I_QUESTION">
+            <where>ID = 5</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="edwardKats" id="7">
+        <dropNotNullConstraint columnDataType="int"
+                               columnName="ANSWER_ID"
+                               tableName="I_ANSWER"/>
+        <dropColumn columnName="ANSWER_ID"
+                    tableName="I_ANSWER"/>
+    </changeSet>
 </databaseChangeLog>

@@ -58,9 +58,8 @@
   "Deal.users.button.remove": "Vote for removal",
   "Deal.users.you": "You",
   "Deal.leaving": "You left the deal",
+  "Deal.deleting": "You deleted the deal",
   "Deal.panel.file-max-size":"File maximum size should not exceed {{size}} MB",
-
-
 
   "SECTION":"HOME",
   "Home.brand-name":"getRoomie",
@@ -150,6 +149,7 @@
   "UserProfile.answers.not-completed-required-matching" : "Search options will be available after answering all required questions",
   "UserProfile.answers.navigate" : "Navigate",
   "UserProfile.answers.required.header" : "Answers on required questions",
+  "UserProfile.answers.required.not-answered" : "Not answered",
   "UserProfile.answers.extended.header" : "Answers on extended questions",
 
   "SECTION": "RESET_PASSWORD",

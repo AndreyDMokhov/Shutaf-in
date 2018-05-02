@@ -3,17 +3,16 @@ app.component('userSettingsComponent', {
     templateUrl: 'partials/settings/userSettings/userSettings.component.html',
     bindings: {},
     controllerAs: 'vm',
-    controller: function ($localStorage,
-                          $sessionStorage,
+    controller: function ($sessionStorage,
                           userSettingsModel,
                           uiNotification,
                           $filter,
                           $state,
-                          $window,
                           browserTitleService,
                           siteAccessRouting,
                           $timeout,
-                          sessionStorageObserver) {
+                          sessionStorageObserver,
+                          initializationService) {
 
         browserTitleService.setBrowserTitleByFilterName('UserSettings.personal.title');
 
@@ -63,6 +62,7 @@ app.component('userSettingsComponent', {
 
                     var message = $filter('translate')('UserSettings.message.save.success');
                     $sessionStorage.userProfile = vm.userProfile;
+                    initializationService.initialize(success.data);
 
                     sessionStorageObserver.notifyServiceObservers();
 

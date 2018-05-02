@@ -9,11 +9,14 @@ app.component("dealPresentationComponent", {
                           dealPresentationModel,
                           dealUserStatus,
                           dealStatus,
-                          browserTitleService) {
+                          browserTitleService,
+                          uiNotification) {
 
         browserTitleService.setBrowserTitleByFilterName('Deal.title');
 
         var vm = this;
+        vm.showEditDeal = true;
+        vm.showDeleteDeal = false;
         vm.deals = [];
         vm.dealInfo = {};
 
@@ -39,24 +42,20 @@ app.component("dealPresentationComponent", {
         }
 
         vm.getDealSuffix = function (deal) {
+            vm.showEditDeal = true;
+            vm.showDeleteDeal = false;
             if (deal.statusId === dealStatus.Status.INITIATED && deal.userStatusId === dealUserStatus.Status.ACTIVE) {
                 return $filter('translate')('Deal.deal.status.inactive.wait-for-approval');
-            }
-
-            if (deal.statusId === dealStatus.Status.INITIATED) {
+            } else if (deal.statusId === dealStatus.Status.INITIATED) {
                 return $filter('translate')('Deal.deal.status.inactive');
-            }
-
-            if(deal.userStatusId === dealUserStatus.Status.PENDING) {
+            } else if (deal.userStatusId === dealUserStatus.Status.PENDING) {
                 return $filter('translate')('Deal.deal.status.inactive');
-            }
-
-            if (deal.userStatusId === dealUserStatus.Status.ACTIVE) {
-                return $filter('translate')('Deal.deal.status.active');
-            }
-
-            if (deal.userStatusId === dealUserStatus.Status.LEAVED) {
+            } else if (deal.userStatusId === dealUserStatus.Status.LEAVED || deal.statusId === dealStatus.Status.ARCHIVE) {
+                vm.showEditDeal = false;
+                vm.showDeleteDeal = true;
                 return $filter('translate')('Deal.deal.status.archive');
+            } else if (deal.userStatusId === dealUserStatus.Status.ACTIVE) {
+                return $filter('translate')('Deal.deal.status.active');
             }
         };
 
@@ -86,6 +85,33 @@ app.component("dealPresentationComponent", {
                     });
             });
         };
+
+        vm.deleteDeal = function (deal) {
+            var componentType = 'deal',
+                type = 'remove';
+            var modalInstance = $uibModal.open({
+                animation: true,
+                component: 'modalComponent',
+                size: 'sm',
+                resolve: {
+                    type: function () {
+                        return {type: type, component: componentType, filename: document.title};
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+                dealPresentationModel.deleteDeal(deal.dealId).then(
+                    function (success) {
+                        var message = '<p>' + $filter("translate")("Deal.deleting") + ': <strong>' + deal.title + '</strong></p>';
+                        uiNotification.show(message, 'info', true);
+                        var index = vm.deals.indexOf(deal);
+                        vm.deals.splice(index, 1);
+                    },
+                    function (error) {
+                    });
+            });
+        };
+
         getDeals();
     }
 });

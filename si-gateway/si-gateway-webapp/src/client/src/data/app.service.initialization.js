@@ -66,7 +66,7 @@ app.factory('initializationService', function (messengerChannelService,
 
         languageService.setFrontendLanguage($sessionStorage.userProfile.languageId);
 
-        sessionStorageObserver.notifyServiceObservers();
+       sessionStorageObserver.notifyServiceObservers();
     }
 
     function _getSelectedAnswers(data) {
@@ -82,12 +82,7 @@ app.factory('initializationService', function (messengerChannelService,
         return answers;
     }
     function showExtendedQuestions() {
-        if( $sessionStorage.selectedAnswers[0].answerId === null){
-            return false;
-        }
-        else{
-            return true;
-        }
+        return $sessionStorage.selectedAnswers[0].answerId !== null;
     }
 
     return {

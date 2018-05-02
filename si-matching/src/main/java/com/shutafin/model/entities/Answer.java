@@ -18,9 +18,6 @@ import javax.persistence.*;
 @Setter
 public class Answer extends AbstractKeyConstEntity {
 
-    @Column(name = "ANSWER_ID", nullable = false)
-    private Integer answerId;
-
     @Column(name = "IS_UNIVERSAL", nullable = false)
     private Boolean isUniversal = false;
 

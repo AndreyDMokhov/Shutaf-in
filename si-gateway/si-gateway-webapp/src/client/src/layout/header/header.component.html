@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav">
             <li ng-class="{active : ('userProfile' | includedByState)}" style="margin-top: -3px">
-                <img ng-show="!vm.sessionService.isAuthenticated()"
+                <img ng-show="!vm.isAuthenticated"
                      ng-src="{{'../images/icon.png'}}"
                      style="height: 50px; width: 50px;"
                      ui-sref="home"
                      class="pointer"/>
-                <a ng-show="vm.sessionService.isAuthenticated()"
+                <a ng-show="vm.isAuthenticated"
                    ui-sref="myUserProfile({id:vm.userProfile.userId})"
                    uib-tooltip="{{'UserProfile.title' | translate}}"
                    tooltip-placement="bottom">
@@ -20,7 +20,7 @@
                 </a>
             </li>
 
-            <li data-ng-show="vm.sessionService.isAuthenticated()"
+            <li data-ng-show="vm.isAuthenticated"
                 ng-class="{active : ('questions' | includedByState)}">
                 <a ui-sref="deal"
                    class="header-text"
@@ -32,7 +32,7 @@
 
             </li>
 
-            <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('questions' | includedByState)}">
+            <li ng-show="vm.isAuthenticated" ng-class="{active : ('questions' | includedByState)}">
                 <a ui-sref="questionsTab.requiredQuestions"
                    class="header-text"
                    uib-tooltip="{{'Questions.title' | translate}}"
@@ -41,14 +41,14 @@
                     {{'Questions.title' | translate}}
                 </a>
             </li>
-            <li ng-show="vm.sessionService.isAuthenticated()" ng-class="{active : ('chat' | includedByState)}">
+            <li ng-show="vm.isAuthenticated" ng-class="{active : ('chat' | includedByState)}">
                 <a ui-sref="chat"
                    class="header-text"
                    ng-show="vm.currentAccountStatus >= vm.accountStatuses['COMPLETED_REQUIRED_MATCHING']">
                     {{'Chat.title' | translate}}
                 </a>
             </li>
-            <li ng-show="vm.sessionService.isAuthenticated()"
+            <li ng-show="vm.isAuthenticated"
                 ng-class="{active : ('userSearch' | includedByState)}">
                 <form
                         class="header-search"
@@ -68,7 +68,7 @@
 
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li ng-hide="vm.sessionService.isAuthenticated()"
+            <li ng-hide="vm.isAuthenticated"
                 ng-class="{active : ('registration' | includedByState)}">
                 <a ui-sref="registration"
                    tooltip-placement="bottom"
@@ -77,7 +77,7 @@
                     {{'Registration.title.sign-up' | translate}}
                 </a>
             </li>
-            <li ng-hide="vm.sessionService.isAuthenticated()" ng-class="{active : ('login' | includedByState)}">
+            <li ng-hide="vm.isAuthenticated" ng-class="{active : ('login' | includedByState)}">
                 <a
                         ui-sref="login"
                         tooltip-placement="bottom"
@@ -86,7 +86,7 @@
                     {{'Login.title' | translate}}
                 </a>
             </li>
-            <li ng-show="vm.sessionService.isAuthenticated()"
+            <li ng-show="vm.isAuthenticated"
                 ng-class="{active : (('settings.personal' | includedByState) || ('settings.changeEmailRequest' | includedByState) || ('settings.changePassword' | includedByState)) }">
                 <a ui-sref="settings.personal"
                    class="header-text"
@@ -96,7 +96,7 @@
                     {{'Settings.title' | translate}}
                 </a>
             </li>
-            <li ng-show="vm.sessionService.isAuthenticated()">
+            <li ng-show="vm.isAuthenticated">
                 <a ui-sref="logout" class="header-text">
                     {{'Logout.button' | translate}}
                 </a>

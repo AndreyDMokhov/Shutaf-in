@@ -33,6 +33,13 @@ canvas.rotate0 {
 uib-tab-heading:hover .deal-rename {
   opacity: 1;
 }
+.deal-delete {
+  opacity: 0;
+  transition: .5s ease;
+}
+uib-tab-heading:hover .deal-delete {
+  opacity: 1;
+}
 .without-folder {
   -moz-box-shadow: inset 0 0 10px #000000;
   -webkit-box-shadow: inset 0 0 10px #000000;
