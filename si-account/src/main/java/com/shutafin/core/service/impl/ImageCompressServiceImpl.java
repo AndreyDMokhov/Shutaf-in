@@ -33,18 +33,15 @@ public class ImageCompressServiceImpl implements ImageCompressService {
 
     private static final String IMAGE_EXTENSION = "jpg";
 
+    @Autowired
     private ImagePairRepository imagePairRepository;
-    private UserImageRepository userImageRepository;
-    private UserImageService userImageService;
 
     @Autowired
-    public ImageCompressServiceImpl(ImagePairRepository imagePairRepository,
-                                    UserImageRepository userImageRepository,
-                                    UserImageService userImageService) {
-        this.imagePairRepository = imagePairRepository;
-        this.userImageRepository = userImageRepository;
-        this.userImageService = userImageService;
-    }
+    private UserImageRepository userImageRepository;
+
+    @Autowired
+    private UserImageService userImageService;
+
 
     @Override
     public UserImage addCompressedUserImage(UserImage userImage, CompressionType compressionType) {
