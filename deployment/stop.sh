@@ -1,4 +1,5 @@
 #! /bin/sh
+sh ./backup.sh
 cd ..
 if [ -d "pids" ]
 then
@@ -51,5 +52,4 @@ then
         cd ..
         rm -rf pids
 fi
-
 
