@@ -123,6 +123,7 @@
   "Login.form.button.resendEmailRegistration": "Отправить повторно подтверждение",
   "Login.form.errorEmail": "Введите корректную электронную почту",
   "Login.form.errorPassword": "Длинна пароля должна быть между 8 и 25 символов",
+  "Login.form.remember-me": "Запомнить меня",
   "Login.message.success": "Добро пожаловать!",
 
   "SECTION": "LOGOUT",

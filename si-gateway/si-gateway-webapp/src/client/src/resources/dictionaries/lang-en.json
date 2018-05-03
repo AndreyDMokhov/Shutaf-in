@@ -125,6 +125,7 @@
   "Login.form.button.resendEmailRegistration": "Resend email confirmation",
   "Login.form.errorEmail": "Please enter a valid email address",
   "Login.form.errorPassword": "Password length must be between 8 and 25 characters",
+  "Login.form.remember-me": "Remember me",
   "Login.message.success": "Welcome!",
 
   "SECTION": "LOGOUT",
