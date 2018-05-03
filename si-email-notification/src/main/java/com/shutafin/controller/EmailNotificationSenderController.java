@@ -19,13 +19,9 @@ import javax.validation.Valid;
 @Slf4j
 public class EmailNotificationSenderController {
 
+    @Autowired
     private EmailService mailSenderService;
 
-    @Autowired
-    public EmailNotificationSenderController(
-            EmailService emailService) {
-        this.mailSenderService = emailService;
-    }
 
     @PostMapping(
             value = "/send",

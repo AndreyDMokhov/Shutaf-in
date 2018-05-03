@@ -125,8 +125,12 @@ public class EmailServiceImpl implements EmailService {
                     emailResendWeb.getEmailTo(), emailResendWeb.getEmailReason());
             throw new ResourceNotFoundException();
         }
+        if (emailResendWeb.getEmailReason() == EmailReason.REGISTRATION) {
+            emailNotificationLog.setUpdatedDate(new Date());
+        }
+
         if (DateUtils.addMinutes(emailNotificationLog.getUpdatedDate(), INTERVAL_RESEND_EMAIL_MINUTES).after(new Date())) {
-            log.warn("resendEmails: interval of resend email {} minuts", INTERVAL_RESEND_EMAIL_MINUTES);
+            log.warn("resendEmails: interval of resend email {} minutes", INTERVAL_RESEND_EMAIL_MINUTES);
             throw new EmailResendIntervalException();
         }
         senderEmailMessageService.sendEmailMessage(emailNotificationLog, null);
