@@ -14,6 +14,7 @@ mysqldump -u$user -p$pass si_gateway > si_gateway.sql
 mysqldump -u$user -p$pass si_account > si_account.sql
 mysqldump -u$user -p$pass si_matching > si_matching.sql
 mysqldump -u$user -p$pass si_email > si_email.sql
+mysqldump -u$user -p$pass si_deal > si_deal.sql
 
 mkdir -p servers
 cd ..
