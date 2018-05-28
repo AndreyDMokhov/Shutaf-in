@@ -176,14 +176,9 @@ app.config(function ($stateProvider, $urlRouterProvider, accountStatus) {
                 accessibleToAccountStatus: accountStatus.Statuses.CONFIRMED     //2
             }
         })
-        .state('settings.changePassword', {
-            url: '/password',
-            template: '<change-password-component></change-password-component>',
-            params: {
-                accessibleToAccountStatus: accountStatus.Statuses.CONFIRMED     //2
-            }
-        })
-        .state('settings.matching', {
+
+
+        .state('settings.notification', {
             url: '/matching',
             template: '<matching-settings-component></matching-settings-component>',
             params: {

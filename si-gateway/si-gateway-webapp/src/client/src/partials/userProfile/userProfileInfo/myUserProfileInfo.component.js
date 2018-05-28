@@ -62,6 +62,7 @@ app.component('myUserProfileInfo', {
                 var questionId = selectedAnswer.questionId,
                     answersId = selectedAnswer.answersId;
 
+
                 var question = vm.questionsExtended.find(function (question) {
                     return question.questionId === questionId;
                 });
@@ -74,7 +75,9 @@ app.component('myUserProfileInfo', {
                         answers.push(question.answers[id]);
                     }
                 });
-                vm.extendedQuestionsAndAnswers.push({question: question.questionDescription, answers: answers});
+                if(answers.length !== 0) {
+                    vm.extendedQuestionsAndAnswers.push({question: question.questionDescription, answers: answers});
+                }
             });
         }
 

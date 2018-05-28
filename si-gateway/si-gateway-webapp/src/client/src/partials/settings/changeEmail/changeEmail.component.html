@@ -1,74 +1,78 @@
-<div class="col-md-8 col-md-offset-2">
-    <fieldset>
-        <legend>
-            <h2>
-                {{'Settings.security.email.title' | translate}}
-            </h2>
-        </legend>
-    </fieldset>
-    <div class="row">
-        <form name="form" novalidate role="form">
-            <uib-accordion close-others="oneAtATime">
-                <div uib-accordion-group class="panel-custom" is-open="vm.isOpened">
-                    <uib-accordion-heading>
-                        {{'Settings.security.email.title' | translate}}
-                        <i class="pull-right fa fa-chevron-down"
-                           ng-class="{'open' : vm.isOpened}">
-                        </i>
-                    </uib-accordion-heading>
-                    <div class="form-group"
-                         ng-class="{
-                                'has-error': form.newEmail.$invalid && form.newEmail.$dirty,
-                                'has-success': form.newEmail.$valid}">
-                        <label class="required" for="newEmail">{{'Settings.security.form.newEmail' |
-                            translate}}</label>
-                        <input type="email"
-                               class="form-control"
-                               name="newEmail"
-                               id="newEmail"
-                               ng-model="vm.securitySettings.newEmail"
-                               ng-maxlength="50"
-                               required/>
-
-                        <p class="help-block" ng-if="form.newEmail.$invalid && form.newEmail.$dirty">
-                            {{'Settings.security.form.wrongEmail' | translate}}
-                        </p>
-                    </div>
-
-                    <div class="form-group"
-                         ng-class="{
-                                'has-error': form.userPassword.$invalid && form.userPassword.$dirty,
-                                'has-success': form.userPassword.$valid}">
-                        <label class="required" for="userPassword">{{'Settings.security.form.password' |
-                            translate}}</label>
-                        <input type="password"
-                               class="form-control"
-                               name="userPassword"
-                               id="userPassword"
-                               ng-model="vm.securitySettings.userPassword"
-                               ng-minLength="8"
-                               ng-maxLength="25"
-                               required/>
-
-                        <p class="help-block" ng-if="form.userPassword.$invalid && form.userPassword.$dirty">
-                            {{'Settings.security.form.errorPassword' | translate}}
-                        </p>
-                    </div>
-
-                    <div>
-                        <button ng-click="vm.changeEmailRequest()"
-                                type="submit"
-                                ng-disabled="form.$invalid"
-                                class="btn btn-success">
-                            <span ng-show="!vm.dataLoading">{{"Settings.security.form.btn.saveChanges"|translate}}</span>
-                            <span ng-show="vm.dataLoading">{{"Settings.security.form.btn.loading"|translate}}</span>
-                            <i ng-show="vm.dataLoading" class="fa fa-spinner"></i>
-                        </button>
-
-                    </div>
-                </div>
-
-            </uib-accordion>
-        </form>
+<div class="row">
+    <div class="col-md-12 margin-top" style="padding: 0">
+        <div class="header-settings-field">
+            {{"Settings.security.title"|translate}}
+        </div>
     </div>
 </div>
+
+<div class="row">
+    <form name="form" novalidate role="form">
+
+
+            <div class="card-settings">
+                <div class="card-header-settings">
+
+                    {{'Settings.security.email.title' | translate}}
+                </div>
+                <div class="form-group"
+                     ng-class="{
+                                'has-error': form.newEmail.$invalid && form.newEmail.$dirty,
+                                'has-success': form.newEmail.$valid}">
+                    <label class="required" for="newEmail">{{'Settings.security.form.newEmail' |
+                        translate}}</label>
+                    <input type="email"
+                           class="form-control"
+                           name="newEmail"
+                           id="newEmail"
+                           ng-model="vm.securitySettings.newEmail"
+                           ng-maxlength="50"
+                           required/>
+
+                    <p class="help-block" ng-if="form.newEmail.$invalid && form.newEmail.$dirty">
+                        {{'Settings.security.form.wrongEmail' | translate}}
+                    </p>
+                </div>
+
+                <div class="form-group"
+                     ng-class="{
+                                'has-error': form.userPassword.$invalid && form.userPassword.$dirty,
+                                'has-success': form.userPassword.$valid}">
+                    <label class="required" for="userPassword">{{'Settings.security.form.password' |
+                        translate}}</label>
+                    <input type="password"
+                           class="form-control"
+                           name="userPassword"
+                           id="userPassword"
+                           ng-model="vm.securitySettings.userPassword"
+                           ng-minLength="8"
+                           ng-maxLength="25"
+                           required/>
+
+                    <p class="help-block" ng-if="form.userPassword.$invalid && form.userPassword.$dirty">
+                        {{'Settings.security.form.errorPassword' | translate}}
+                    </p>
+                </div>
+
+                <div>
+                    <button ng-click="vm.changeEmailRequest()"
+                            type="submit"
+                            ng-disabled="form.$invalid"
+                            class="btn btn-success">
+                        <span ng-show="!vm.dataLoading">{{"Settings.security.form.btn.saveChanges"|translate}}</span>
+                        <span ng-show="vm.dataLoading">{{"Settings.security.form.btn.loading"|translate}}</span>
+                        <i ng-show="vm.dataLoading" class="fa fa-spinner"></i>
+                    </button>
+                </div>
+            </div>
+
+            <change-password-component></change-password-component>
+
+    </form>
+</div>
+
+
+
+</div>
+
+

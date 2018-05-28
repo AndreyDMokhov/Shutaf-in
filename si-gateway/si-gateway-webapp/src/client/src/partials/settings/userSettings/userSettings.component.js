@@ -21,24 +21,14 @@ app.component('userSettingsComponent', {
         var time;
         var timeIsOver = false;
 
+
         vm.status = {
             isGeneralOpen: true,
-            isAdditionalOpen: false
+            isAdditionalOpen: false,
+            isPhotoOpen: false
         };
 
-        vm.overOpenCloseChangeStatus = function (tabName) {
 
-            timeIsOver = false;
-            time = $timeout(function () {
-                if (tabName === "general") {
-                    vm.status.isGeneralOpen = !vm.status.isGeneralOpen;
-                }
-                else if (tabName === "additional") {
-                    vm.status.isAdditionalOpen = !vm.status.isAdditionalOpen;
-                }
-                timeIsOver = true;
-            }, 600);
-        };
 
         vm.leaveOpenCloseChangeStatus = function () {
             if (!timeIsOver) {

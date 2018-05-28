@@ -10,7 +10,7 @@ app.component('matchingSettingsComponent', {
                           matchingModel) {
         var vm = this;
         browserTitleService.setBrowserTitleByFilterName('UserSetting.personal.matching.title');
-        vm.isOpened = true;
+
         vm.switchStatus = $sessionStorage.isMathingEnabled;
         vm.isEnabledMatching = function () {
 

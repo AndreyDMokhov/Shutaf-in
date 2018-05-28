@@ -153,7 +153,7 @@ gulp.task('runServer', function () {
         livereload: true,
         middleware: function (connect, opt) {
             return [
-                proxy('http://localhost:8080/api')
+                proxy(' http://138.68.105.68:8080/api')
             ];
         }
     });

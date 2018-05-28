@@ -12,8 +12,11 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-4" align="center">
-                            <user-profile-image></user-profile-image>
+                        <div class="col-md-4">
+                            <div style="display: flex; justify-content: center; margin-top: 50px">
+                            <user-avatar user-id="{{vm.userProfile.userId}}" width="225" height="225"></user-avatar>
+                            </div>
+                           <!-- <user-profile-image></user-profile-image> -->
                         </div>
                         <div class=" col-md-7 col-lg-7 " style="margin-left: 30px">
                             <my-user-profile-info></my-user-profile-info>

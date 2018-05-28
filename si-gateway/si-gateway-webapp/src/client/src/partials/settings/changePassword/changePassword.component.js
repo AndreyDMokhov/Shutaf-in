@@ -14,8 +14,6 @@ app.component('changePasswordComponent', {
     browserTitleService.setBrowserTitleByFilterName('Settings.security.password.title');
         var vm = this;
 
-        vm.isOpened = true;
-
         vm.dataLoading = false;
 
         vm.securitySettings = {};

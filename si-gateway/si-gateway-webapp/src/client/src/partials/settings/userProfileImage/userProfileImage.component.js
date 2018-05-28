@@ -1,6 +1,6 @@
 "use strict";
 app.component('userProfileImage', {
-    templateUrl: 'partials/userProfile/userProfileImage/userProfileImage.component.html',
+    templateUrl: 'partials/settings/userProfileImage/userProfileImage.component.html',
     controllerAs: 'vm',
     controller: function ($state,
                           $filter,
@@ -37,6 +37,7 @@ app.component('userProfileImage', {
 
         $scope.onLoad = function (e, reader, file, fileList, fileObjects, fileObj) {
             $timeout(function () {
+                debugger;
                 $scope.myImage = 'data:image/jpeg;base64,' + vm.fileInfo.base64;
                 setImageSize();
                 vm.deleteButton = true;

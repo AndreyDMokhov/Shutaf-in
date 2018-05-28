@@ -16,24 +16,46 @@ app.component('settingsComponent', {
             },
             {
                 tabId: 2,
-                title: $filter('translate')('Settings.security.email.title'),
+                title: $filter('translate')('Settings.security.title'),
                 state: 'settings.changeEmailRequest',
                 icon: 'fa-envelope'
             },
             {
                 tabId: 3,
-                title: $filter('translate')('Settings.security.password.title'),
-                state: 'settings.changePassword',
+                title: $filter('translate')('UserSetting.personal.notification.title'),
+                state: 'settings.notification',
                 icon: 'fa-key'
-            },
-            {
-                tabId: 4,
-                title: $filter('translate')('UserSetting.personal.matching.title'),
-                state: 'settings.matching',
-                icon: ' fa-search'
             }
 
         ];
+
+        /*vm.tabs = [
+                {
+                    tabId: 1,
+                    title: $filter('translate')('UserSettings.personal.title'),
+                    state: 'settings.personal',
+                    icon: 'fa-info'
+                },
+                {
+                    tabId: 2,
+                    title: $filter('translate')('Settings.security.email.title'),
+                    state: 'settings.changeEmailRequest',
+                    icon: 'fa-envelope'
+                },
+                {
+                    tabId: 3,
+                    title: $filter('translate')('Settings.security.password.title'),
+                    state: 'settings.changePassword',
+                    icon: 'fa-key'
+                },
+                {
+                    tabId: 4,
+                    title: $filter('translate')('UserSetting.personal.matching.title'),
+                    state: 'settings.matching',
+                    icon: ' fa-search'
+                }
+
+        ];*/
 
         vm.getCurrentStateName = function() {
             return $state.$current.name;
