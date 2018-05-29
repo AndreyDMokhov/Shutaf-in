@@ -1,17 +1,16 @@
 "use strict";
 app.component('changePasswordComponent', {
-    templateUrl: 'partials/settings/changePassword/changePassword.component.html',
+    templateUrl: 'partials/settings/changeEmail/changePassword/changePassword.component.html',
     bindings: {},
     controllerAs: 'vm',
-    controller: function (
-        $rootScope,
-        changePasswordModel,
-        $filter,
-        $state,
-        browserTitleService,
-        uiNotification) {
+    controller: function ($rootScope,
+                          changePasswordModel,
+                          $filter,
+                          $state,
+                          browserTitleService,
+                          uiNotification) {
 
-    browserTitleService.setBrowserTitleByFilterName('Settings.security.password.title');
+        browserTitleService.setBrowserTitleByFilterName('Settings.security.password.title');
         var vm = this;
 
         vm.dataLoading = false;
@@ -32,7 +31,8 @@ app.component('changePasswordComponent', {
                     $state.go('settings');
                 }, function (error) {
                     vm.dataLoading = false;
-                });
+                }
+            );
         }
 
 

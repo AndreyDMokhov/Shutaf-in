@@ -1,6 +1,6 @@
 "use strict";
 app.component('userProfileImage', {
-    templateUrl: 'partials/settings/userProfileImage/userProfileImage.component.html',
+    templateUrl: 'partials/settings/userSettings/userProfileImage/userProfileImage.component.html',
     controllerAs: 'vm',
     controller: function ($state,
                           $filter,

@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-4">
+        <div class="input-group">
+
+            <div class="border-img-setting">
+                <img
+                        ng-src="{{vm.image}}"
+                        height="225px"
+                        width="225px"
+                >
+                <div class="border-img"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-8">
+        <textarea name="about_me" placeholder="{{'UserSetting.yourPhoto.aboutMe'| translate}}"
+                  style="height: 170px; width: 500px"></textarea>
+        <label for="filename">
+            <div
+                    class="btn btn-primary"
+                    ng-disabled="vm.deleteButton"
+                    tooltip-enable="true"
+                    tooltip-placement="bottom"
+                    tooltip-class="custom-class"
+                    uib-tooltip="{{'UserSetting.click.image'|translate}}">
+                {{'UserSetting.button.loadImage'|translate}}
+                <input
+                        ng-show="hide"
+                        type="file"
+                        ng-model="vm.fileInfo"
+                        name="filename"
+                        id="filename"
+                        base-sixty-four-input
+                        do-not-parse-if-oversize
+                        onload="onLoad;"
+                        maxsize="{{vm.size}}"
+                        accept="image/jpeg">
+            </div>
+        </label>
+    </div>
+</div>
