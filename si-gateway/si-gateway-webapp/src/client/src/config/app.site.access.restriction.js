@@ -9,7 +9,8 @@ app.run(function ($rootScope,
                   authenticationService,
                   $sessionStorage,
                   uiNotification,
-                  notify) {
+                  notify,
+                  $window) {
 
     var allowedUnauthenticated = [
         'home',
@@ -25,6 +26,10 @@ app.run(function ($rootScope,
         'dealAddUserConfirmation',
         'dealRemoveUserConfirmation'
     ];
+
+
+
+
 
     function isAllowedToNavigate(toState) {
         if (authenticationService.isAuthenticated()) {

@@ -59,7 +59,8 @@
             <span>@Remember Me</span> <input type="checkbox"/>
         </div>
         <div class="col-md-4 col-md-offset-4">
-            <span style="color: blue;" class="pointer header-text" ui-sref="resetPasswordRequest">@Forgot password</span>
+            <span style="color: blue;" class="pointer header-text"
+                  ui-sref="resetPasswordRequest">@Forgot password</span>
         </div>
     </div>
     <br/>
@@ -82,5 +83,12 @@
                 <i ng-show="vm.resendLoading" class="fa fa-spinner"></i>
             </button>
         </div>
+    </div>
+    <div class="col-md-4 col-md-offset-4">
+        <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with"
+             data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+
+        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+        </fb:login-button>
     </div>
 </form>
